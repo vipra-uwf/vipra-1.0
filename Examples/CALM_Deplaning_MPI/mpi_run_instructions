@@ -1,0 +1,4 @@
+module load mpi/openmpi-x86_64
+mpirun --version
+make
+mpirun -np 3 ./calm

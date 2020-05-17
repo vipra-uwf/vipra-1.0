@@ -14,12 +14,12 @@
 #include <map>
 
 //#define NumberOfPassengers 182
-//#define NumberOfPassengers 144
+#define NumberOfPassengers 144
 //#define NumberOfPassengers 201
 //#define NumberOfPassengers 50
 
 //#define NumberOfObstacles 772
-//#define NumberOfObstacles 593
+#define NumberOfObstacles 593
 //#define NumberOfObstacles 972
 //#define NumberOfObstacles 321
 

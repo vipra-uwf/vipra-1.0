@@ -58,7 +58,7 @@ using namespace std;
 
 int id;    // process rank
 int np;    // number of MPI processes
-int NUM = 8000;   // number of tasks to be processed  (given 
+int NUM = 4;   // number of tasks to be processed  (given 
 char filename[32] = "sequences.txt";
 int main ( int argc, char **argv );
 void timestamp ( );
