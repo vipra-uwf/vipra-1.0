@@ -1,7 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <initial-locations>
 
     <passenger-set>
-        <passenger type=="first-class" x="" y="" />
+        <passenger type="first-class" x="5" y="2" />
+        <passenger type="first-class" x="4" y="1" />
     </passenger-set>
 
     <obstacle-set>
