@@ -54,6 +54,8 @@ void Simulation::read_coordinates_file(std::string xml_file)
 
         obstacle_node = obstacle_node->next_sibling();
     }
+
+    coordinate_file.close();
 }
 
 void Simulation::print_passenger_data()
