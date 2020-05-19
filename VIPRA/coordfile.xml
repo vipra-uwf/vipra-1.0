@@ -1,4 +1,5 @@
-<inital-locations>
+<?xml version="1.0" encoding="utf-8"?>
+<initial-locations>
 	<passenger-set>
 		 <passenger type="first-class" x="1" y="1"/>
 		 <passenger type="first-class" x="1" y="2"/>
