@@ -1,0 +1,14 @@
+<inital-locations>
+	<passenger-set>
+		 <passenger type=="first-class" x="1" y="1"/>
+		 <passenger type=="first-class" x="1" y="2"/>
+		 <passenger type=="first-class" x="1" y="-1"/>
+		 <passenger type=="first-class" x="1" y="-2"/>
+	</passenger-set>
+	<obstacle-set>
+		<obstacle x="1.2" y=1" />
+		<obstacle x="1.2" y="2" />
+		<obstacle x="1.2" y="-1" />
+		<obstacle x="1.2" y="-2" />
+	</obstacle-set>
+</initial-locations>
