@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "rapidxml-1.13/rapidxml.hpp"
-#include "readerinterface.hpp"
+#include "input_data_loader.hpp"
 
 class Simulation
 {

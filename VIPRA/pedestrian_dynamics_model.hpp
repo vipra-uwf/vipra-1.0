@@ -3,13 +3,14 @@
 
 //#include <vector>
 //#include <utility>
+#include "data.hpp"
 
 class PedestrianDynamicsModel
 {
     public:
-        virtual .... setData(Data* initialData);
-        virtual .... precompute() = 0;
-        virtual .... update() = 0;
+        virtual void setData(Data* initialData) = 0;
+        virtual void precompute() = 0;
+        virtual void update() = 0;
 };
 
 #endif

@@ -1,11 +1,12 @@
 //TODO: Fill in with actual details
+#include "calm_pedestrian_model.hpp"
 
-setData(Data* initialData)
+void CalmPedestrianModel::setData(Data* initialData)
 {
 
 }
 
-precompute()
+void CalmPedestrianModel::precompute()
 {
     //TODO: Perform precomputation for all passengers
     //Equations 6 and 7 of CALM paper
@@ -13,7 +14,7 @@ precompute()
     //result needs to be stored for each passenger
 }
 
-update()
+void CalmPedestrianModel::update()
 {
     //
 }
