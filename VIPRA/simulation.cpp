@@ -8,7 +8,6 @@ Simulation::Simulation()
 
 Simulation::Simulation(InputDataLoader* reader)
 {
-    this->passengerTypes = reader->getPassengerTypes();
     this->passengerCoordinates = reader->getPassengerCoordinates();
     this->obstacleCoordinates = reader->getObstacleCoordinates();
 }
@@ -32,8 +31,8 @@ void Simulation::printPassengerData()
 {
     for(int i = 0; i < this->passengerCoordinates.size(); ++i)
     {
-        std::cout << "Passenger " << i + 1 << " (" << this->passengerTypes[i] << ") ["
-        << this->passengerCoordinates[i].first << ", " << this->passengerCoordinates[i].second << "]" << std::endl;
+        std::cout << "Passenger " << i + 1 << " [" << this->passengerCoordinates[i].first << ", " 
+        << this->passengerCoordinates[i].second << "]" << std::endl;
     }
 }
 

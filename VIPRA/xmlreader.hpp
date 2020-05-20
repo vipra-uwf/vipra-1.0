@@ -18,13 +18,11 @@ class XMLReader: public InputDataLoader
         XMLReader();
         XMLReader(std::string);
         virtual void readData();
-        virtual std::vector<std::string> getPassengerTypes();
         virtual std::vector<std::pair<double, double>> getPassengerCoordinates();
         virtual std::vector<std::pair<double, double>> getObstacleCoordinates();
 
     private:
         std::string fileName;
-        std::vector<std::string> passengerTypes;
         std::vector<std::pair<double, double>> passengerCoordinates;
         std::vector<std::pair<double, double>> obstacleCoordinates;
 

@@ -23,12 +23,13 @@ void XMLReader::readCoordinatesFile()
     std::ifstream fileStream(this->fileName);
     std::vector<char> buffer((std::istreambuf_iterator<char>(fileStream)), std::istreambuf_iterator<char>());
     this->fileContents = buffer;
-    //std::cout << &this->fileContents[0] << std::endl;
+    std::cout << &this->fileContents[0] << std::endl;
 }
 
 void XMLReader::parseCoordinatesDocument()
 {
-    this->coordinateDocument.parse<rapidxml::parse_declaration_node | rapidxml::parse_no_data_nodes>(&this->fileContents[0]);
+   //this->coordinateDocument.parse<0>(&this->fileContents[0]);
+   this->coordinateDocument.parse<rapidxml::parse_declaration_node | rapidxml::parse_no_data_nodes>(&this->fileContents[0]);
 }
 
 void XMLReader::storePassengerData()
@@ -40,11 +41,8 @@ void XMLReader::storePassengerData()
 
     while(passengerNode != 0)
     {
-        std::string type =  passengerNode->first_attribute("type")->value();
         std::string x = passengerNode->first_attribute("x")->value();
         std::string y = passengerNode->first_attribute("y")->value();
-
-        this->passengerTypes.push_back(type);
 
         double xCoordinate = std::stod(x);
         double yCoordinate = std::stod(y);
@@ -76,11 +74,6 @@ void XMLReader::storeObstacleData()
 
         obstacleNode = obstacleNode->next_sibling();
     }
-}
-
-std::vector<std::string> XMLReader::getPassengerTypes()
-{
-    return this->passengerTypes;
 }
 
 std::vector<std::pair<double, double>> XMLReader::getPassengerCoordinates()

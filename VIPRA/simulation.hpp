@@ -20,7 +20,6 @@ class Simulation
         void run();
 
     private:
-        std::vector<std::string> passengerTypes;
         std::vector<std::pair<double, double>> passengerCoordinates;
         std::vector<std::pair<double, double>> obstacleCoordinates;
 };
