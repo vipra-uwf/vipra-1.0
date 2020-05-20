@@ -22,8 +22,9 @@ void XMLReader::readCoordinatesFile()
 {
     std::ifstream fileStream(this->fileName);
     std::vector<char> buffer((std::istreambuf_iterator<char>(fileStream)), std::istreambuf_iterator<char>());
+    buffer.push_back('\0');
     this->fileContents = buffer;
-    std::cout << &this->fileContents[0] << std::endl;
+    //std::cout << &this->fileContents[0] << std::endl;
 }
 
 void XMLReader::parseCoordinatesDocument()
