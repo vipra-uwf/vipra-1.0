@@ -4,19 +4,13 @@
 
 int main()
 {
-    Simulation simulation = Simulation();
-
-    simulation.readCoordinatesFile("coordinates.xml");
-
     XMLReader xmlReader("coordinates.xml");
     xmlReader.readData();
 
-    Simulation simulation2(&xmlReader);
-
+    Simulation simulation(&xmlReader);
 
     simulation.printPassengerData();
     simulation.printObstacleData();
-
 
     return 0;
 }

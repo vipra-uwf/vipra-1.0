@@ -13,7 +13,7 @@
 class XMLReader: public ReaderInterface
 {
     public:
-        //XMLReader();
+        XMLReader();
         XMLReader(std::string);
         virtual void readData();
         virtual std::vector<std::string> getPassengerTypes();
@@ -28,7 +28,12 @@ class XMLReader: public ReaderInterface
 
         rapidxml::xml_document<> coordinateDocument;
         rapidxml::xml_node<> * documentRootNode;
+        std::vector<char> fileContents;
 
+        void readCoordinatesFile();
+        void parseCoordinatesDocument();
+        void storePassengerData();
+        void storeObstacleData();
 
 
 };

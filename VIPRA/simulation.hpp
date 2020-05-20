@@ -15,7 +15,6 @@ class Simulation
     public:
         Simulation();
         Simulation(ReaderInterface*);
-        void readCoordinatesFile(std::string);
         void printPassengerData();
         void printObstacleData();
 
