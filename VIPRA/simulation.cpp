@@ -6,11 +6,26 @@ Simulation::Simulation()
 
 }
 
-Simulation::Simulation(ReaderInterface* reader)
+Simulation::Simulation(InputDataLoader* reader)
 {
     this->passengerTypes = reader->getPassengerTypes();
     this->passengerCoordinates = reader->getPassengerCoordinates();
     this->obstacleCoordinates = reader->getObstacleCoordinates();
+}
+
+
+//pedestrian dynamics model
+    //input to model - pedestrians, layout, goal for each pedestrian
+    //how each pedestrian will move
+    //output - positions of the pedestrians, velocity, additional movement characteristics
+//human behavior model
+//policy
+//ODE solver
+void Simulation::run()
+{
+    //until goal is met
+        //on pedestrian dynamics model, do precompute
+        //on pedestrian dynamics model, do update
 }
 
 void Simulation::printPassengerData()

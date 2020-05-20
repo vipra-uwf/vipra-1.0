@@ -1,10 +1,10 @@
-#ifndef READERINTERFACE_HPP
-#define READERINTERFACE_HPP
+#ifndef INPUTDATALOADER_HPP
+#define INPUTDATALOADER_HPP
 
 #include <vector>
 #include <utility>
 
-class ReaderInterface
+class InputDataLoader
 {
     public:
         virtual void readData() = 0;

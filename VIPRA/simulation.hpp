@@ -14,9 +14,10 @@ class Simulation
 {
     public:
         Simulation();
-        Simulation(ReaderInterface*);
+        Simulation(InputDataLoader*);
         void printPassengerData();
         void printObstacleData();
+        void run();
 
     private:
         std::vector<std::string> passengerTypes;

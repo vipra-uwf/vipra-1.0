@@ -1,6 +1,8 @@
 #ifndef XMLREADER_HPP
 #define XMLREADER_HPP
 
+//TODO: Refactor to use the Data object
+
 #include <vector>
 #include <string>
 #include <utility>
@@ -10,7 +12,7 @@
 #include "rapidxml-1.13/rapidxml.hpp"
 #include "readerinterface.hpp"
 
-class XMLReader: public ReaderInterface
+class XMLReader: public InputDataLoader
 {
     public:
         XMLReader();
