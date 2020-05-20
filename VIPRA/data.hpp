@@ -14,12 +14,22 @@
 class Data
 {
     public:
-        
+
+       std::vector<double> getXPedestrianCoordinates();
+       std::vector<double> getYPedestrianCoordinates();
+
+       std::vector<double> getXObstacleCoordinates();
+       std::vector<double> getYObstacleCoordinates(); 
+
+       void printPedestrianCoordinates();
+       void printObstacleCoordinates();
 
     private:
         std::vector<double> xPedestrianCoordinates;
         std::vector<double> yPedestrianCoordinates;
 
+        std::vector<double> xObstacleCoordinates;
+        std::vector<double> yObstacleCoordinates;
         
 };
 

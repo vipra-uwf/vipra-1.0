@@ -17,15 +17,22 @@ class XMLReader: public InputDataLoader
     public:
         XMLReader();
         XMLReader(std::string);
+ 
         virtual void readData();
-        virtual std::vector<std::pair<double, double>> getPassengerCoordinates();
-        virtual std::vector<std::pair<double, double>> getObstacleCoordinates();
+        virtual std::vector<double> getXPedestrianCoordinates();
+        virtual std::vector<double> getYPedestrianCoordinates();
+        virtual std::vector<double> getXObstacleCoordinates();
+        virtual std::vector<double> getYObstacleCoordinates(); 
+       
 
     private:
         std::string fileName;
-        std::vector<std::pair<double, double>> passengerCoordinates;
-        std::vector<std::pair<double, double>> obstacleCoordinates;
-
+       
+        std::vector<double> xPedestrianCoordinates;
+        std::vector<double> yPedestrianCoordinates;
+        std::vector<double> xObstacleCoordinates;
+        std::vector<double> yObstacleCoordinates;
+       
         rapidxml::xml_document<> coordinateDocument;
         rapidxml::xml_node<> * documentRootNode;
         std::vector<char> fileContents;

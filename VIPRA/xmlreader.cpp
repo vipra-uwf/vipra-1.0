@@ -48,8 +48,8 @@ void XMLReader::storePassengerData()
         double xCoordinate = std::stod(x);
         double yCoordinate = std::stod(y);
 
-        std::pair<double, double> coordinatePair(xCoordinate, yCoordinate);
-        this->passengerCoordinates.push_back(coordinatePair);
+        this->xPedestrianCoordinates.push_back(xCoordinate);
+        this->yPedestrianCoordinates.push_back(yCoordinate);
 
         passengerNode = passengerNode->next_sibling();
     }
@@ -70,19 +70,29 @@ void XMLReader::storeObstacleData()
         double xCoordinate = std::stod(x);
         double yCoordinate = std::stod(y);
 
-        std::pair<double, double> coordinatePair(xCoordinate, yCoordinate);
-        this->obstacleCoordinates.push_back(coordinatePair);
+        this->xObstacleCoordinates.push_back(xCoordinate);
+        this->yObstacleCoordinates.push_back(yCoordinate);
 
         obstacleNode = obstacleNode->next_sibling();
     }
 }
 
-std::vector<std::pair<double, double>> XMLReader::getPassengerCoordinates()
+std::vector<double> XMLReader::getXPedestrianCoordinates()
 {
-    return this->passengerCoordinates;
+    return this->xPedestrianCoordinates;
 }
 
-std::vector<std::pair<double, double>> XMLReader::getObstacleCoordinates()
+std::vector<double> XMLReader::getYPedestrianCoordinates()
 {
-    return this->obstacleCoordinates;
+    return this->yPedestrianCoordinates;
 }
+
+std::vector<double> XMLReader::getXObstacleCoordinates()
+{
+    return this-> xObstacleCoordinates;
+}
+
+std::vector<double> XMLReader::getYObstacleCoordinates()
+{
+    return this->yObstacleCoordinates;
+} 

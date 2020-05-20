@@ -10,8 +10,8 @@ int main()
     //TODO: Remove xmlReader from simulation, send data instead
     Simulation simulation(&xmlReader);
 
-    simulation.printPassengerData();
-    simulation.printObstacleData();
+    simulation.printPedestrianCoordinates();
+    simulation.printObstacleCoordinates();
 
     return 0;
 }

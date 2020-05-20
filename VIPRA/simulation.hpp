@@ -15,13 +15,17 @@ class Simulation
     public:
         Simulation();
         Simulation(InputDataLoader*);
-        void printPassengerData();
-        void printObstacleData();
+        void printPedestrianCoordinates();
+        void printObstacleCoordinates();
         void run();
 
     private:
-        std::vector<std::pair<double, double>> passengerCoordinates;
-        std::vector<std::pair<double, double>> obstacleCoordinates;
+        std::vector<double> xPedestrianCoordinates;
+        std::vector<double> yPedestrianCoordinates;
+
+        std::vector<double> xObstacleCoordinates;
+        std::vector<double> yObstacleCoordinates;
+
 };
 
 #endif

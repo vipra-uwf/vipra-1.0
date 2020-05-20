@@ -6,10 +6,13 @@ Simulation::Simulation()
 
 }
 
-Simulation::Simulation(InputDataLoader* reader)
+Simulation::Simulation(InputDataLoader* loader) 
 {
-    this->passengerCoordinates = reader->getPassengerCoordinates();
-    this->obstacleCoordinates = reader->getObstacleCoordinates();
+    this->xPedestrianCoordinates = loader->getXPedestrianCoordinates();
+    this->yPedestrianCoordinates = loader->getYPedestrianCoordinates();
+
+    this->xObstacleCoordinates = loader->getXObstacleCoordinates();
+    this->yObstacleCoordinates = loader->getYObstacleCoordinates();
 }
 
 
@@ -27,20 +30,20 @@ void Simulation::run()
         //on pedestrian dynamics model, do update
 }
 
-void Simulation::printPassengerData()
+void Simulation::printPedestrianCoordinates()
 {
-    for(int i = 0; i < this->passengerCoordinates.size(); ++i)
+    for(int i = 0; i < this->xPedestrianCoordinates.size(); ++i)
     {
-        std::cout << "Passenger " << i + 1 << " [" << this->passengerCoordinates[i].first << ", " 
-        << this->passengerCoordinates[i].second << "]" << std::endl;
+        std::cout << "Pedestrian " << i + 1 << " [" << this->xPedestrianCoordinates[i]<< ", " 
+        << this->yPedestrianCoordinates[i] << "]" << std::endl;
     }
 }
 
-void Simulation::printObstacleData()
+void Simulation::printObstacleCoordinates()
 {
-    for(int i = 0; i < this->obstacleCoordinates.size(); ++i)
+    for(int i = 0; i < this->xObstacleCoordinates.size(); ++i)
     {
-        std::cout << "Obstacle " << i + 1 << " [" << this->obstacleCoordinates[i].first << ", "
-        << this->obstacleCoordinates[i].second << "]" << std::endl;
+        std::cout << "Obstacle " << i + 1 << " [" << this->xObstacleCoordinates[i] << ", "
+        << this->yObstacleCoordinates[i] << "]" << std::endl;
     }
 }
