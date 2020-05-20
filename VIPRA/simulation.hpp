@@ -8,19 +8,21 @@
 #include <utility>
 
 #include "rapidxml-1.13/rapidxml.hpp"
+#include "readerinterface.hpp"
 
 class Simulation
 {
     public:
         Simulation();
-        void read_coordinates_file(std::string);
-        void print_passenger_data();
-        void print_obstacle_data();
+        Simulation(ReaderInterface*);
+        void readCoordinatesFile(std::string);
+        void printPassengerData();
+        void printObstacleData();
 
     private:
-        std::vector<std::string> passenger_types;
-        std::vector<std::pair<double, double>> passenger_coordinates;
-        std::vector<std::pair<double, double>> obstacle_coordinates;
+        std::vector<std::string> passengerTypes;
+        std::vector<std::pair<double, double>> passengerCoordinates;
+        std::vector<std::pair<double, double>> obstacleCoordinates;
 };
 
 #endif

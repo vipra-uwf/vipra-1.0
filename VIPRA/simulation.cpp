@@ -6,7 +6,14 @@ Simulation::Simulation()
 
 }
 
-void Simulation::read_coordinates_file(std::string xml_file)
+Simulation::Simulation(ReaderInterface* reader)
+{
+    this->passengerTypes = reader->getPassengerTypes();
+    this->passengerCoordinates = reader->getPassengerCoordinates();
+    this->obstacleCoordinates = reader->getObstacleCoordinates();
+}
+
+void Simulation::readCoordinatesFile(std::string xml_file)
 {
     rapidxml::xml_document<> doc;
     rapidxml::xml_node<> * root_node;
@@ -27,13 +34,13 @@ void Simulation::read_coordinates_file(std::string xml_file)
         std::string x = passenger_node->first_attribute("x")->value();
         std::string y = passenger_node->first_attribute("y")->value();
 
-        this->passenger_types.push_back(type);
+        this->passengerTypes.push_back(type);
 
         double x_coordinate = std::stod(x);
         double y_coordinate = std::stod(y);
 
-        std::pair<double, double> coordinate_pair(x_coordinate, y_coordinate);
-        this->passenger_coordinates.push_back(coordinate_pair);
+        std::pair<double, double> coordinatePair(x_coordinate, y_coordinate);
+        this->passengerCoordinates.push_back(coordinatePair);
 
         passenger_node = passenger_node->next_sibling();
     }
@@ -49,8 +56,8 @@ void Simulation::read_coordinates_file(std::string xml_file)
         double x_coordinate = std::stod(x);
         double y_coordinate = std::stod(y);
 
-        std::pair<double, double> coordinate_pair(x_coordinate, y_coordinate);
-        this->obstacle_coordinates.push_back(coordinate_pair);
+        std::pair<double, double> coordinatePair(x_coordinate, y_coordinate);
+        this->obstacleCoordinates.push_back(coordinatePair);
 
         obstacle_node = obstacle_node->next_sibling();
     }
@@ -58,20 +65,20 @@ void Simulation::read_coordinates_file(std::string xml_file)
     coordinate_file.close();
 }
 
-void Simulation::print_passenger_data()
+void Simulation::printPassengerData()
 {
-    for(int i = 0; i < this->passenger_coordinates.size(); ++i)
+    for(int i = 0; i < this->passengerCoordinates.size(); ++i)
     {
-        std::cout << "Passenger " << i + 1 << " (" << this->passenger_types[i] << ") ["
-        << this->passenger_coordinates[i].first << ", " << this->passenger_coordinates[i].second << "]" << std::endl;
+        std::cout << "Passenger " << i + 1 << " (" << this->passengerTypes[i] << ") ["
+        << this->passengerCoordinates[i].first << ", " << this->passengerCoordinates[i].second << "]" << std::endl;
     }
 }
 
-void Simulation::print_obstacle_data()
+void Simulation::printObstacleData()
 {
-    for(int i = 0; i < this->obstacle_coordinates.size(); ++i)
+    for(int i = 0; i < this->obstacleCoordinates.size(); ++i)
     {
-        std::cout << "Obstacle " << i + 1 << " [" << this->obstacle_coordinates[i].first << ", "
-        << this->obstacle_coordinates[i].second << "]" << std::endl;
+        std::cout << "Obstacle " << i + 1 << " [" << this->obstacleCoordinates[i].first << ", "
+        << this->obstacleCoordinates[i].second << "]" << std::endl;
     }
 }
