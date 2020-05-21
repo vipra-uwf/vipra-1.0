@@ -15,7 +15,7 @@ void XMLReader::readData(Data* data)
     this->data = data;
     readCoordinatesFile();
     parseCoordinatesDocument();
-    storeData("passenger");
+    storeData("pedestrian");
     storeData("obstacle");
 }
 
@@ -48,7 +48,7 @@ void XMLReader::storeData(std::string type)//does both passengers and obstacles
         double xCoordinate = std::stod(x);
         double yCoordinate = std::stod(y);
 
-        if (type == "passenger"){
+        if (type == "pedestrian"){
             this->data->pushXPedestrianCoordinate(xCoordinate);
             this->data->pushYPedestrianCoordinate(yCoordinate);
         }else if (type == "obstacle"){
