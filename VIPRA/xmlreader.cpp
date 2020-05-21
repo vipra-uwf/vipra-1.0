@@ -14,11 +14,8 @@ void XMLReader::readData()
 {
     readCoordinatesFile();
     parseCoordinatesDocument();
-
-    //storePassengerData();
-    //storeObstacleData();
-    storeData("passenger");//testing
-    storeData("obstacle");//testing
+    storeData("passenger");
+    storeData("obstacle");
 }
 
 void XMLReader::readCoordinatesFile()
@@ -35,50 +32,6 @@ void XMLReader::parseCoordinatesDocument()
    //this->coordinateDocument.parse<0>(&this->fileContents[0]);
    this->coordinateDocument.parse<rapidxml::parse_declaration_node | rapidxml::parse_no_data_nodes>(&this->fileContents[0]);
 }
-
-/*void XMLReader::storePassengerData()
-{
-    this->documentRootNode = coordinateDocument.first_node("initial-locations");
-
-    rapidxml::xml_node<>* passengerSetNode = this->documentRootNode->first_node("passenger-set");
-    rapidxml::xml_node<>* passengerNode = passengerSetNode->first_node("passenger");
-
-    while(passengerNode != 0)
-    {
-        std::string x = passengerNode->first_attribute("x")->value();
-        std::string y = passengerNode->first_attribute("y")->value();
-
-        double xCoordinate = std::stod(x);
-        double yCoordinate = std::stod(y);
-
-        this->xPedestrianCoordinates.push_back(xCoordinate);
-        this->yPedestrianCoordinates.push_back(yCoordinate);
-
-        passengerNode = passengerNode->next_sibling();
-    }
-}
-
-void XMLReader::storeObstacleData()
-{
-    this->documentRootNode = coordinateDocument.first_node("initial-locations");
-
-    rapidxml::xml_node<>* obstacleSetNode = this->documentRootNode->first_node("obstacle-set");
-    rapidxml::xml_node<>* obstacleNode = obstacleSetNode->first_node("obstacle");
-
-    while(obstacleNode != 0)
-    {
-        std::string x = obstacleNode->first_attribute("x")->value();
-        std::string y = obstacleNode->first_attribute("y")->value();
-
-        double xCoordinate = std::stod(x);
-        double yCoordinate = std::stod(y);
-
-        this->xObstacleCoordinates.push_back(xCoordinate);
-        this->yObstacleCoordinates.push_back(yCoordinate);
-
-        obstacleNode = obstacleNode->next_sibling();
-    }
-}*/
 
 void XMLReader::storeData(std::string type)//does both passengers and obstacles 
 {   

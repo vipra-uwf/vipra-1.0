@@ -41,8 +41,6 @@ class XMLReader: public InputDataLoader
 
         void readCoordinatesFile();
         void parseCoordinatesDocument();
-        void storePassengerData();
-        void storeObstacleData();
         void storeData(std::string type);
 
 };
