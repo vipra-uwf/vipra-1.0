@@ -8,6 +8,8 @@
 #include <utility>
 #include <iostream>
 #include <fstream>
+#include <cstring>
+#include <string>
 
 #include "rapidxml-1.13/rapidxml.hpp"
 #include "input_data_loader.hpp"
@@ -41,7 +43,7 @@ class XMLReader: public InputDataLoader
         void parseCoordinatesDocument();
         void storePassengerData();
         void storeObstacleData();
-
+        void storeData(std::string type);
 
 };
 

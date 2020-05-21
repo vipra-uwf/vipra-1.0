@@ -14,8 +14,11 @@ void XMLReader::readData()
 {
     readCoordinatesFile();
     parseCoordinatesDocument();
-    storePassengerData();
-    storeObstacleData();
+
+    //storePassengerData();
+    //storeObstacleData();
+    storeData("passenger");//testing
+    storeData("obstacle");//testing
 }
 
 void XMLReader::readCoordinatesFile()
@@ -33,7 +36,7 @@ void XMLReader::parseCoordinatesDocument()
    this->coordinateDocument.parse<rapidxml::parse_declaration_node | rapidxml::parse_no_data_nodes>(&this->fileContents[0]);
 }
 
-void XMLReader::storePassengerData()
+/*void XMLReader::storePassengerData()
 {
     this->documentRootNode = coordinateDocument.first_node("initial-locations");
 
@@ -74,6 +77,33 @@ void XMLReader::storeObstacleData()
         this->yObstacleCoordinates.push_back(yCoordinate);
 
         obstacleNode = obstacleNode->next_sibling();
+    }
+}*/
+
+void XMLReader::storeData(std::string type)//does both passengers and obstacles 
+{   
+    this->documentRootNode = coordinateDocument.first_node("initial-locations");
+
+    rapidxml::xml_node<>* setNode = this->documentRootNode->first_node((type + "-set").c_str());
+    rapidxml::xml_node<>* node = setNode->first_node(type.c_str());
+
+    while(node != 0)
+    {
+        std::string x = node->first_attribute("x")->value();
+        std::string y = node->first_attribute("y")->value();
+
+        double xCoordinate = std::stod(x);
+        double yCoordinate = std::stod(y);
+
+        if (type == "passenger"){
+            this->xPedestrianCoordinates.push_back(xCoordinate);
+            this->yPedestrianCoordinates.push_back(yCoordinate);
+        }else if (type == "obstacle"){
+            this->xObstacleCoordinates.push_back(xCoordinate);
+            this->yObstacleCoordinates.push_back(yCoordinate);
+        }
+
+        node = node->next_sibling();
     }
 }
 
