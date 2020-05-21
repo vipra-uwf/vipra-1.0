@@ -1,7 +1,7 @@
 #ifndef XML_READER_HPP
 #define XML_READER_HPP
 
-//TODO: Refactor to use the Data object
+//TODO: Refactor to use the Data object COMPLETE
 
 #include <vector>
 #include <string>
@@ -19,11 +19,16 @@ class XMLReader: public InputDataLoader
 {
     public:
         XMLReader();
-        XMLReader(std::string);
-        virtual void readData(Data*);
+        //XMLReader(std::string);
+        void openFile(std::string);
+        void setRootNodeName(std::string);
+        void setParseNodeName(std::string);
+        virtual void writeData(Data*);
 
     private:
         std::string fileName;
+        std::string rootNodeName;
+        std::string parseNodeName;
         Data* data;
        
         rapidxml::xml_document<> coordinateDocument;
@@ -32,8 +37,8 @@ class XMLReader: public InputDataLoader
 
         void readCoordinatesFile();
         void parseCoordinatesDocument();
-        void storeData(std::string type);
-
+        void storeData();
+        void setDataCoordinates(rapidxml::xml_node<>*);
 };
 
 #endif
