@@ -1,5 +1,5 @@
-#ifndef INPUTDATALOADER_HPP
-#define INPUTDATALOADER_HPP
+#ifndef INPUT_DATALOADER_HPP
+#define INPUT_DATALOADER_HPP
 
 #include <vector>
 #include <utility>

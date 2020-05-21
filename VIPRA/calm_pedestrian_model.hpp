@@ -1,5 +1,5 @@
-#ifndef CALMPEDESTRIANMODEL_HPP
-#define CALMPEDESTRIANMODEL_HPP
+#ifndef CALM_PEDESTRIAN_MODEL_HPP
+#define CALM_PEDESTRIAN_MODEL_HPP
 
 //#include <vector>
 //#include <utility>

@@ -1,5 +1,5 @@
-#ifndef XMLREADER_HPP
-#define XMLREADER_HPP
+#ifndef XML_READER_HPP
+#define XML_READER_HPP
 
 //TODO: Refactor to use the Data object
 
