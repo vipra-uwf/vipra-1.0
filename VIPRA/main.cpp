@@ -1,17 +1,19 @@
 #include "simulation.hpp"
 #include "xmlreader.hpp"
+#include "calm_pedestrian_model.hpp"
 #include <iostream>
 
 int main()
 {
-    XMLReader xmlReader("coordinates.xml");
-    xmlReader.readData();
-    
-    //TODO: Remove xmlReader from simulation, send data instead
-    Simulation simulation(&xmlReader);
+    Data data;
 
-    simulation.printPedestrianCoordinates();
-    simulation.printObstacleCoordinates();
+    XMLReader xmlReader("coordinates.xml");
+    xmlReader.readData(&data);
+
+    CalmPedestrianModel calmModel;
+    calmModel.setData(&data);
+    
+    Simulation simulation(&calmModel);
 
     return 0;
 }

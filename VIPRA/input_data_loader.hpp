@@ -4,16 +4,12 @@
 #include <vector>
 #include <utility>
 
+#include "data.hpp"
+
 class InputDataLoader
 {
     public:
-        virtual void readData() = 0;
-       
-        virtual std::vector<double> getXPedestrianCoordinates() = 0;
-        virtual std::vector<double> getYPedestrianCoordinates() = 0;
-
-        virtual std::vector<double> getXObstacleCoordinates() = 0;
-        virtual std::vector<double> getYObstacleCoordinates() = 0; 
+        virtual void readData(Data* data) = 0;
 };
 
 #endif

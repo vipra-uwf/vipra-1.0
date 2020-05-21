@@ -10,19 +10,30 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 class Data
 {
     public:
+        Data();
 
-       std::vector<double> getXPedestrianCoordinates();
-       std::vector<double> getYPedestrianCoordinates();
+        std::vector<double> getXPedestrianCoordinates();
+        std::vector<double> getYPedestrianCoordinates();
+        std::vector<double> getXObstacleCoordinates();
+        std::vector<double> getYObstacleCoordinates(); 
 
-       std::vector<double> getXObstacleCoordinates();
-       std::vector<double> getYObstacleCoordinates(); 
+        void setXPedestrianCoordinates(std::vector<double>);
+        void setYPedestrianCoordinates(std::vector<double>);
+        void setXObstacleCoordinates(std::vector<double>);
+        void setYObstacleCoordinates(std::vector<double>);
 
-       void printPedestrianCoordinates();
-       void printObstacleCoordinates();
+        void pushXPedestrianCoordinate(double);
+        void pushYPedestrianCoordinate(double);
+        void pushXObstacleCoordinate(double);
+        void pushYObstacleCoordinate(double);
+
+        void printPedestrianCoordinates();
+        void printObstacleCoordinates();
 
     private:
         std::vector<double> xPedestrianCoordinates;

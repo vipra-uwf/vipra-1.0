@@ -3,7 +3,7 @@
 
 void CalmPedestrianModel::setData(Data* initialData)
 {
-
+    this->data = initialData;
 }
 
 void CalmPedestrianModel::precompute()
@@ -16,5 +16,15 @@ void CalmPedestrianModel::precompute()
 
 void CalmPedestrianModel::update()
 {
-    //
+
+}
+
+void CalmPedestrianModel::printPedestrianCoordinates()
+{
+    this->data->printPedestrianCoordinates();
+}
+
+void CalmPedestrianModel::printObstacleCoordinates()
+{
+    this->data->printObstacleCoordinates();
 }

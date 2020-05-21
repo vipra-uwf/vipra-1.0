@@ -10,8 +10,9 @@ XMLReader::XMLReader(std::string fileName)
     this->fileName = fileName;
 }
 
-void XMLReader::readData()
+void XMLReader::readData(Data* data)
 {
+    this->data = data;
     readCoordinatesFile();
     parseCoordinatesDocument();
     storeData("passenger");
@@ -29,7 +30,6 @@ void XMLReader::readCoordinatesFile()
 
 void XMLReader::parseCoordinatesDocument()
 {
-   //this->coordinateDocument.parse<0>(&this->fileContents[0]);
    this->coordinateDocument.parse<rapidxml::parse_declaration_node | rapidxml::parse_no_data_nodes>(&this->fileContents[0]);
 }
 
@@ -49,33 +49,13 @@ void XMLReader::storeData(std::string type)//does both passengers and obstacles
         double yCoordinate = std::stod(y);
 
         if (type == "passenger"){
-            this->xPedestrianCoordinates.push_back(xCoordinate);
-            this->yPedestrianCoordinates.push_back(yCoordinate);
+            this->data->pushXPedestrianCoordinate(xCoordinate);
+            this->data->pushYPedestrianCoordinate(yCoordinate);
         }else if (type == "obstacle"){
-            this->xObstacleCoordinates.push_back(xCoordinate);
-            this->yObstacleCoordinates.push_back(yCoordinate);
+            this->data->pushXObstacleCoordinate(xCoordinate);
+            this->data->pushYObstacleCoordinate(yCoordinate);
         }
 
         node = node->next_sibling();
     }
 }
-
-std::vector<double> XMLReader::getXPedestrianCoordinates()
-{
-    return this->xPedestrianCoordinates;
-}
-
-std::vector<double> XMLReader::getYPedestrianCoordinates()
-{
-    return this->yPedestrianCoordinates;
-}
-
-std::vector<double> XMLReader::getXObstacleCoordinates()
-{
-    return this-> xObstacleCoordinates;
-}
-
-std::vector<double> XMLReader::getYObstacleCoordinates()
-{
-    return this->yObstacleCoordinates;
-} 

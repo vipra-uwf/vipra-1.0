@@ -13,27 +13,18 @@
 
 #include "rapidxml-1.13/rapidxml.hpp"
 #include "input_data_loader.hpp"
+#include "data.hpp"
 
 class XMLReader: public InputDataLoader
 {
     public:
         XMLReader();
         XMLReader(std::string);
- 
-        virtual void readData();
-        virtual std::vector<double> getXPedestrianCoordinates();
-        virtual std::vector<double> getYPedestrianCoordinates();
-        virtual std::vector<double> getXObstacleCoordinates();
-        virtual std::vector<double> getYObstacleCoordinates(); 
-       
+        virtual void readData(Data*);
 
     private:
         std::string fileName;
-       
-        std::vector<double> xPedestrianCoordinates;
-        std::vector<double> yPedestrianCoordinates;
-        std::vector<double> xObstacleCoordinates;
-        std::vector<double> yObstacleCoordinates;
+        Data* data;
        
         rapidxml::xml_document<> coordinateDocument;
         rapidxml::xml_node<> * documentRootNode;
