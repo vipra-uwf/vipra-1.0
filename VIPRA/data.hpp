@@ -27,6 +27,8 @@ class Data
         void setXObstacleCoordinates(std::vector<double>);
         void setYObstacleCoordinates(std::vector<double>);
 
+        void pushCoordinateData(double, std::string, std::string);
+
         void pushXPedestrianCoordinate(double);
         void pushYPedestrianCoordinate(double);
         void pushXObstacleCoordinate(double);

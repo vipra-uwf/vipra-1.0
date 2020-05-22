@@ -1,11 +1,8 @@
 #ifndef XML_READER_HPP
 #define XML_READER_HPP
 
-//TODO: Refactor to use the Data object COMPLETE
-
 #include <vector>
 #include <string>
-#include <utility>
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -19,26 +16,30 @@ class XMLReader: public InputDataLoader
 {
     public:
         XMLReader();
-        //XMLReader(std::string);
-        void openFile(std::string);
-        void setRootNodeName(std::string);
-        void setParseNodeName(std::string);
-        virtual void writeData(Data*);
-
-    private:
-        std::string fileName;
-        std::string rootNodeName;
-        std::string parseNodeName;
-        Data* data;
+        
+        void extractFileData(std::string, std::string, std::string);
+        virtual void storeData(Data*);
        
-        rapidxml::xml_document<> coordinateDocument;
-        rapidxml::xml_node<> * documentRootNode;
+    private:
+        Data* data;
+        std::ifstream fileStream;      
         std::vector<char> fileContents;
+        std::string rootElement;
+        std::string parseElement;
+   
+        rapidxml::xml_document<> document;
+        rapidxml::xml_node<>* rootNode;
+        rapidxml::xml_node<>* dataNode;
 
-        void readCoordinatesFile();
-        void parseCoordinatesDocument();
-        void storeData();
-        void setDataCoordinates(rapidxml::xml_node<>*);
+        void openFile(std::string);
+        void setRootElement(std::string);
+        void setParseElement(std::string);
+        void readFile();
+        void parseXMLDocument();
+
+        void setData(Data*);
+        void initializeTraversalNodes();
+        double getNodeAttributeValue(rapidxml::xml_node<>*, std::string); //probably change to return any type
 };
 
 #endif

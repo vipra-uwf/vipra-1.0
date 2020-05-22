@@ -9,7 +9,7 @@
 class InputDataLoader
 {
     public:
-        virtual void writeData(Data* data) = 0;
+        virtual void storeData(Data* data) = 0;
 };
 
 #endif

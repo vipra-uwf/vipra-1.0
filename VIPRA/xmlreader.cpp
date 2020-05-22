@@ -5,71 +5,78 @@ XMLReader::XMLReader()
 
 }
 
-/*XMLReader::XMLReader(std::string fileName)
+void XMLReader::openFile(std::string fileName)
 {
-    this->fileName = fileName;
-}*/
-
-void XMLReader::openFile(std::string fileName){
-    this->fileName = fileName;
+    this->fileStream.open(fileName);
 }
 
-void XMLReader::setRootNodeName(std::string rootNodeName){
-    this->rootNodeName = rootNodeName;
+void XMLReader::setRootElement(std::string rootElement)
+{
+    this->rootElement = rootElement;
 }
 
-void XMLReader::setParseNodeName(std::string parseNodeName)
+void XMLReader::setParseElement(std::string parseElement)
 {
-    this->parseNodeName = parseNodeName;
+    this->parseElement = parseElement;
 }
 
-
-void XMLReader::writeData(Data* data)
+void XMLReader::readFile()
 {
-    this->data = data;
-    readCoordinatesFile();
-    //parseCoordinatesDocument();
-    //storeData();
-}
-
-void XMLReader::readCoordinatesFile()
-{
-    std::ifstream fileStream(this->fileName);
-    std::vector<char> buffer((std::istreambuf_iterator<char>(fileStream)), std::istreambuf_iterator<char>());
+    std::vector<char> buffer((std::istreambuf_iterator<char>(this->fileStream)), std::istreambuf_iterator<char>());
     buffer.push_back('\0');
     this->fileContents = buffer;
-    std::cout << &this->fileContents[0] << std::endl;
+    this->fileStream.close();
+   // std::cout << &this->fileContents[0] << std::endl;
 }
 
-void XMLReader::parseCoordinatesDocument()
+void XMLReader::parseXMLDocument()
 {
-   this->coordinateDocument.parse<rapidxml::parse_declaration_node | rapidxml::parse_no_data_nodes>(&this->fileContents[0]);
+   this->document.parse<rapidxml::parse_declaration_node | rapidxml::parse_no_data_nodes>(&this->fileContents[0]);
 }
 
-void XMLReader::storeData()//does both passengers and obstacles 
-{   
-    
-    this->documentRootNode = coordinateDocument.first_node(rootNodeName.c_str());
-    rapidxml::xml_node<>* node = this->documentRootNode->first_node(parseNodeName.c_str());
+void XMLReader::extractFileData(std::string fileName, std::string rootElement, std::string parseElement)
+{
+    openFile(fileName);
+    readFile();
+    setRootElement(rootElement);
+    setParseElement(parseElement);
+    parseXMLDocument();
+}
 
-    while(node != 0)
-    {
-        setDataCoordinates(node);
-        node = node->next_sibling();
+void XMLReader::setData(Data* data)
+{
+    this->data = data;
+}
+
+void XMLReader::initializeTraversalNodes()
+{
+    this->rootNode = this->document.first_node(this->rootElement.c_str());
+    this->dataNode = this->rootNode->first_node(this->parseElement.c_str());
+}
+
+double XMLReader::getNodeAttributeValue(rapidxml::xml_node<>* node, std::string attribute)
+{
+    return std::stod(node->first_attribute(attribute.c_str())->value());
+}
+
+void XMLReader::storeData(Data* data)
+{
+    setData(data);
+    initializeTraversalNodes();
+
+    while(this->dataNode != 0)
+    {   
+        double xCoordinate = getNodeAttributeValue(this->dataNode, "x");
+        double yCoordinate = getNodeAttributeValue(this->dataNode, "y");
+
+        this->data->pushCoordinateData(xCoordinate, this->parseElement, "x");
+        this->data->pushCoordinateData(yCoordinate, this->parseElement, "y");
+       
+        this->dataNode = this->dataNode->next_sibling();
     }
 }
 
-void XMLReader::setDataCoordinates(rapidxml::xml_node<>* node){
 
-    double xCoordinate = std::stod(node->first_attribute("x")->value());
-    double yCoordinate = std::stod(node->first_attribute("y")->value());
 
-    if (parseNodeName == "pedestrian"){
-        this->data->pushXPedestrianCoordinate(xCoordinate);
-        this->data->pushYPedestrianCoordinate(yCoordinate);
-    }else if (parseNodeName == "obstacle"){
-        this->data->pushXObstacleCoordinate(xCoordinate);
-        this->data->pushYObstacleCoordinate(yCoordinate);
-    }
-}
+
 

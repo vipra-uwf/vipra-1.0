@@ -65,6 +65,32 @@ void Data::pushYObstacleCoordinate(double yCoordinate)
     this->yObstacleCoordinates.push_back(yCoordinate);
 }
 
+void Data::pushCoordinateData(double value, std::string entity, std::string axis)
+{
+   if(entity.compare("pedestrian") == 0)
+   {
+       if(axis.compare("x") == 0)
+       {
+           pushXPedestrianCoordinate(value);
+       }
+       else if(axis.compare("y") == 0)
+       {
+           pushYPedestrianCoordinate(value);
+       }
+   } 
+   else if(entity.compare("obstacle") == 0)
+   {
+       if(axis.compare("x") == 0)
+       {
+           pushXObstacleCoordinate(value);
+       }
+       else if(axis.compare("y") == 0)
+       {
+           pushYObstacleCoordinate(value);
+       }
+   }
+}
+
 void Data::printPedestrianCoordinates()
 {
     for(int i = 0; i < this->xPedestrianCoordinates.size(); ++i)

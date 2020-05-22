@@ -12,18 +12,13 @@ int main()
 
     Data data;
     XMLReader xmlReader;
+    //xmlReader.setData(&data);
 
-   /* xmlReader.openFile("pedestrianCoordinates.xml");
-    xmlReader.setRootNodeName("pedestrian-set");
-    xmlReader.setParseNodeName("pedestrian");
-    xmlReader.writeData(&data);*/
+    xmlReader.extractFileData("pedestrian_coordinates.xml", "pedestrian-set", "pedestrian");
+    xmlReader.storeData(&data);
 
-    //only one or the other works right now
-
-    xmlReader.openFile("obstacleCoordinates.xml");
-    xmlReader.setRootNodeName("obstacle-set");
-    xmlReader.setParseNodeName("obstacle");
-    xmlReader.writeData(&data);
+    xmlReader.extractFileData("obstacle_coordinates.xml", "obstacle-set", "obstacle");
+    xmlReader.storeData(&data);
 
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
