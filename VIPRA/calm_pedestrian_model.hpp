@@ -12,12 +12,13 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void setData(Data* initialData);
         virtual void precompute();
         virtual void update();
+        virtual void calculatePropulsion(pedestrian* currentPedestrian);
         virtual void printPedestrianCoordinates();
         virtual void printObstacleCoordinates();
 
     private:
         Data* data;
-        
+
 };
 
 #endif

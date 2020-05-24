@@ -12,10 +12,27 @@ void CalmPedestrianModel::precompute()
     //Equations 6 and 7 of CALM paper
     //Decrease Force and Propulsion force in CALM code
     //result needs to be stored for each passenger
+
 }
 
 void CalmPedestrianModel::update()
 {
+    //use clock, calculated force prop and calculated force rep to update positions ~Elizabeth
+}
+
+void CalmPedestrianModel::calculatePropulsion(pedestrian* currentPedestrian)
+{
+
+    double forceOfPropulsion;
+
+    if(currentPedestrian->getPedestrianGoal() != 0)
+    forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/0.25/*average reaction time in seconds*/) * currentPedestrian->getPedestrianMass();
+
+    else
+    forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityXDirection())/0.25) * currentPedestrian->getPedestrianMass();
+
+
+    currentPedestrian->setForceOfPropulsion(forceOfPropulsion);
 
 }
 

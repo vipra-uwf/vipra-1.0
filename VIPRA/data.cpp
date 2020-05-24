@@ -23,7 +23,7 @@ std::vector<double> Data::getXObstacleCoordinates()
 std::vector<double> Data::getYObstacleCoordinates()
 {
     return this->yObstacleCoordinates;
-} 
+}
 
 void Data::setXPedestrianCoordinates(std::vector<double> xPedestrianCoordinates)
 {
@@ -77,7 +77,7 @@ void Data::pushCoordinateData(double value, std::string entity, std::string axis
        {
            pushYPedestrianCoordinate(value);
        }
-   } 
+   }
    else if(entity.compare("obstacle") == 0)
    {
        if(axis.compare("x") == 0)
@@ -95,7 +95,7 @@ void Data::printPedestrianCoordinates()
 {
     for(int i = 0; i < this->xPedestrianCoordinates.size(); ++i)
     {
-        std::cout << "Pedestrian " << i + 1 << " [" << this->xPedestrianCoordinates[i]<< ", " 
+        std::cout << "Pedestrian " << i + 1 << " [" << this->xPedestrianCoordinates[i]<< ", "
         << this->yPedestrianCoordinates[i] << "]" << std::endl;
     }
 }
@@ -107,6 +107,20 @@ void Data::printObstacleCoordinates()
         std::cout << "Obstacle " << i + 1 << " [" << this->xObstacleCoordinates[i] << ", "
         << this->yObstacleCoordinates[i] << "]" << std::endl;
     }
+}
+
+void Data::createPedestrians()
+{
+    //gets number of pedestrians
+    int numberOfPedestrians = xPedestrianCoordinates.size();
+
+    //fills vector of pedestrian objects
+    for(int i = 0; i < numberOfPedestrians; ++i)
+    {
+        pedestrian temp;
+        pedestrians.push_back(temp);
+    }
+
 }
 
 

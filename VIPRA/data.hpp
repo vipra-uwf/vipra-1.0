@@ -12,6 +12,8 @@
 #include <string>
 #include <iostream>
 
+#include "pedestrian.hpp"
+
 class Data
 {
     public:
@@ -20,7 +22,7 @@ class Data
         std::vector<double> getXPedestrianCoordinates();
         std::vector<double> getYPedestrianCoordinates();
         std::vector<double> getXObstacleCoordinates();
-        std::vector<double> getYObstacleCoordinates(); 
+        std::vector<double> getYObstacleCoordinates();
 
         void setXPedestrianCoordinates(std::vector<double>);
         void setYPedestrianCoordinates(std::vector<double>);
@@ -37,13 +39,15 @@ class Data
         void printPedestrianCoordinates();
         void printObstacleCoordinates();
 
+        void createPedestrians();
+
     private:
         std::vector<double> xPedestrianCoordinates;
         std::vector<double> yPedestrianCoordinates;
+        std::vector<pedestrian> pedestrians;
 
         std::vector<double> xObstacleCoordinates;
         std::vector<double> yObstacleCoordinates;
-        
 };
 
 #endif
