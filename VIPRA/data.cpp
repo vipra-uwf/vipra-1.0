@@ -117,7 +117,7 @@ void Data::createPedestrians()
     //fills vector of pedestrian objects
     for(int i = 0; i < numberOfPedestrians; ++i)
     {
-        pedestrian temp;
+        Pedestrian temp;
         pedestrians.push_back(temp);
     }
 

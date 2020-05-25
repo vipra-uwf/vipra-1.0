@@ -44,7 +44,7 @@ class Data
     private:
         std::vector<double> xPedestrianCoordinates;
         std::vector<double> yPedestrianCoordinates;
-        std::vector<pedestrian> pedestrians;
+        std::vector<Pedestrian> pedestrians;
 
         std::vector<double> xObstacleCoordinates;
         std::vector<double> yObstacleCoordinates;

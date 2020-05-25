@@ -1,82 +1,82 @@
 #include "pedestrian.hpp"
 
-pedestrian::pedestrian()
+Pedestrian::Pedestrian()
 {
     desiredVelocity = 1.0;
     velocityXDirection = 0;
     velocityYDirection = 0;
-    mass = 70;
+    mass = 70;//kg
 }
 
 //MUTATORS
-void pedestrian::setNearestNeighbor(double nearestNeighborX, double nearestNeighborY)
+void Pedestrian::setNearestNeighbor(double nearestNeighborX, double nearestNeighborY)
 {
     nearestNeighbor.push_back(nearestNeighborX);
     nearestNeighbor.push_back(nearestNeighborY);
 }
 
-void pedestrian::setPedestrianGoal(int goal)
+void Pedestrian::setPedestrianGoal(int goal)
 {
     this->goal = goal;
 }
 
-void pedestrian::setDesiredVelocity(double desiredVelocity)
+void Pedestrian::setDesiredVelocity(double desiredVelocity)
 {
     this->desiredVelocity = desiredVelocity;
 }
 
-void pedestrian::setVelocityXDirection(double velocityXDirection)
+void Pedestrian::setVelocityXDirection(double velocityXDirection)
 {
     this->velocityXDirection = velocityXDirection;
 }
 
-void pedestrian::setVelocityYDirection(double velocityYDirection)
+void Pedestrian::setVelocityYDirection(double velocityYDirection)
 {
     this->velocityYDirection = velocityYDirection;
 }
 
-void pedestrian::setPedestrianMass(double mass)
+void Pedestrian::setPedestrianMass(double mass)
 {
     this->mass = mass;
 }
 
-void pedestrian::setForceOfPropulsion(double forceOfPropulsion)
+void Pedestrian::setForceOfPropulsion(double forceOfPropulsion)
 {
     this->forceOfPropulsion = forceOfPropulsion;
 }
 
 //ACESSORS
-std::vector<double> pedestrian::getNearestNeighbor()
+std::vector<double> Pedestrian::getNearestNeighbor()
 {
     return nearestNeighbor;
 }
 
-int pedestrian::getPedestrianGoal()
+int Pedestrian::getPedestrianGoal()
 {
     return goal;
 }
 
-double pedestrian::getDesiredVelocity()
+double Pedestrian::getDesiredVelocity()
 {
     return desiredVelocity;
 }
 
-double pedestrian::getVelocityXDirection()
+double Pedestrian::getVelocityXDirection()
 {
     return velocityXDirection;
 }
 
-double pedestrian::getVelocityYDirection()
+double Pedestrian::getVelocityYDirection()
 {
     return velocityYDirection;
 }
 
-double pedestrian::getPedestrianMass()
+double Pedestrian::getPedestrianMass()
 {
     return mass;
 }
 
-double pedestrian::getForceOfPropulsion()
+double Pedestrian::getForceOfPropulsion()
 {
     return forceOfPropulsion;
 }
