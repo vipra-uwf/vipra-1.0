@@ -11,7 +11,7 @@ class PedestrianDynamicsModel
         virtual void setData(Data* initialData) = 0;
         virtual void precompute() = 0;
         virtual void update() = 0;
-        virtual void calculatePropulsion(pedestrian* currentPedestrian) = 0;
+        virtual void calculatePropulsion(Pedestrian* currentPedestrian) = 0;
         virtual void printPedestrianCoordinates() = 0;
         virtual void printObstacleCoordinates() = 0;
 

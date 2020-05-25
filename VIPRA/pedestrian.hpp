@@ -3,10 +3,10 @@
 
 #include <vector>
 
-class pedestrian
+class Pedestrian
 {
     public:
-        pedestrian();
+        Pedestrian();
 
         void setNearestNeighbor(double, double);
 
@@ -38,7 +38,7 @@ class pedestrian
         double desiredVelocity;
         double velocityXDirection;
         double velocityYDirection;
-        double mass;
+        double mass; //kg
 
         double forceOfPropulsion;
 
