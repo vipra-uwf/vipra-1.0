@@ -2,7 +2,6 @@ CC = g++
 CFLAGS  = -std=c++11 -g -Wall
 
 SRCS = $(wildcard *.cpp)#use any .cpp files
-#SRCS := $(filter-out FILE_TO_IGNORE.hpp, $(SRCS))
 
 OBJECTS = $(SRCS:%.cpp=%.o)
 
