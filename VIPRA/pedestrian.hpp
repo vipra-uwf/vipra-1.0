@@ -3,7 +3,7 @@
 
 #include <vector>
 
-class Pedestrian
+class Pedestrian // no longer in use!!!
 {
     public:
         Pedestrian();

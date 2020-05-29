@@ -1,5 +1,7 @@
 #include "pedestrian.hpp"
 
+// no longer in use!!!
+
 Pedestrian::Pedestrian()
 {
     desiredVelocity = 1.0;

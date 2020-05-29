@@ -1,7 +1,11 @@
 CC = g++
 CFLAGS  = -std=c++11 -g -Wall
 
-OBJECTS = simulation.o xml_reader.o data.o calm_pedestrian_model.o pedestrian_set.o obstacle_set.o
+SRCS = $(wildcard *.cpp)#use any .cpp files
+#SRCS := $(filter-out FILE_TO_IGNORE.hpp, $(SRCS))
+
+OBJECTS = $(SRCS:%.cpp=%.o)
+
 HEADERS := $(shell find . -path ./test -prune -o -name "*.hpp" -print)
 
 main: main.o $(OBJECTS)
