@@ -39,7 +39,7 @@ class XMLReader: public InputDataLoader
 
         void setData(Data*);
         void initializeTraversalNodes();
-        double getNodeAttributeValue(rapidxml::xml_node<>*, std::string); //probably change to return any type
+        FLOATING_NUMBER getNodeAttributeValue(rapidxml::xml_node<>*, std::string); //probably change to return any type
 };
 
 #endif

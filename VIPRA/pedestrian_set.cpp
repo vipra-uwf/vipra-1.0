@@ -14,10 +14,10 @@ void PedestrianSet::addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER y
     numPedestrians++;
 }
 
-std::vector<double>* PedestrianSet::getXCoordinates(){
+std::vector<FLOATING_NUMBER>* PedestrianSet::getXCoordinates(){
     return &this->xCoordinates;
 }
 
-std::vector<double>* PedestrianSet::getYCoordinates(){
+std::vector<FLOATING_NUMBER>* PedestrianSet::getYCoordinates(){
     return &this->yCoordinates;
 }

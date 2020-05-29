@@ -10,7 +10,7 @@ PedestrianSet* Data::getPedestrianSet(){
     return &this->pedestrianSet;
 }
 
-void Data::pushCoordinates(std::string parseElement, double xCoordinate, double yCoordinate)
+void Data::pushCoordinates(std::string parseElement, FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate)
 {
     if(parseElement.compare("pedestrian") == 0)
     {

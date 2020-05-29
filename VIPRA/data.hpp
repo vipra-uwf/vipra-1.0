@@ -13,7 +13,7 @@ class Data
     public:
         Data();
 
-        void pushCoordinates(std::string parseElement, double x, double y);
+        void pushCoordinates(std::string parseElement, FLOATING_NUMBER x, FLOATING_NUMBER y);
 
         void printPedestrianCoordinates();
         void printObstacleCoordinates();

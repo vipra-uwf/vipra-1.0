@@ -24,9 +24,9 @@ void CalmPedestrianModel::update()
 // void CalmPedestrianModel::calculatePropulsion(Pedestrian* currentPedestrian)
 // {
 
-//     double forceOfPropulsion;
+//     FLOATING_NUMBER forceOfPropulsion;
 
-        // double averageActionReactionTimeS = 0.25; //TODO: refactor to not be hardcoded
+        // FLOATING_NUMBER averageActionReactionTimeS = 0.25; //TODO: refactor to not be hardcoded
         // if(currentPedestrian->getPedestrianGoal() != 0){
         //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/0.25/*average reaction time in seconds*/) * currentPedestrian->getPedestrianMass();
         //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/averageActionReactionTimeS) * currentPedestrian->getPedestrianMass();
