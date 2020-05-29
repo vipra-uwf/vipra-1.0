@@ -3,6 +3,8 @@
 
 #include <vector>
 
+//typedef primitives to make easier to change later
+
 class Pedestrian
 {
     public:
@@ -10,8 +12,11 @@ class Pedestrian
 
         void setNearestNeighbor(double, double);
 
+        //the goal should be x,y coordinates
         void setPedestrianGoal(int);
+        //setDesiredSpeed or make setDesiredVelocity and send in speed and direction
         void setDesiredVelocity(double);
+        //refactor to set velocity direction as one function so can be overloaded later
         void setVelocityXDirection(double);
         void setVelocityYDirection(double);
         void setPedestrianMass(double);
@@ -22,6 +27,7 @@ class Pedestrian
 
         int getPedestrianGoal();
         double getDesiredVelocity();
+        //change velocity to be a struct type
         double getVelocityXDirection();
         double getVelocityYDirection();
         double getPedestrianMass();
@@ -38,7 +44,7 @@ class Pedestrian
         double desiredVelocity;
         double velocityXDirection;
         double velocityYDirection;
-        double mass; //kg
+        double mass;
 
         double forceOfPropulsion;
 

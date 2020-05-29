@@ -14,6 +14,7 @@
 
 #include "pedestrian.hpp"
 
+//Refactor for PedestriansSet (class of arrays) and ObstaclesSet (class of arrays) to be separate
 class Data
 {
     public:

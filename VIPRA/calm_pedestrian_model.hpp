@@ -10,10 +10,12 @@
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     public:
+        //split the data sources into pedestrian and obstacle
         virtual void setData(Data* initialData);
         virtual void precompute();
         virtual void update();
         virtual void calculatePropulsion(Pedestrian* currentPedestrian);
+        //TODO: Remove below functions
         virtual void printPedestrianCoordinates();
         virtual void printObstacleCoordinates();
 
