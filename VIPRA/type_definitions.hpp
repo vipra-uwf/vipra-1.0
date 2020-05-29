@@ -1,0 +1,1 @@
+typedef double FLOATING_NUMBER;

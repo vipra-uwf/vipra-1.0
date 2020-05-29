@@ -69,8 +69,11 @@ void XMLReader::storeData(Data* data)
         double xCoordinate = getNodeAttributeValue(this->dataNode, "x");
         double yCoordinate = getNodeAttributeValue(this->dataNode, "y");
 
-        this->data->pushCoordinateData(xCoordinate, this->parseElement, "x");
-        this->data->pushCoordinateData(yCoordinate, this->parseElement, "y");
+        
+
+        //this->data->pushCoordinateData(xCoordinate, this->parseElement, "x");
+        //this->data->pushCoordinateData(yCoordinate, this->parseElement, "y");
+        this->data->pushCoordinates(this->parseElement, xCoordinate, yCoordinate);
        
         this->dataNode = this->dataNode->next_sibling();
     }

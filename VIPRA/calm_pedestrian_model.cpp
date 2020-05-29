@@ -20,20 +20,20 @@ void CalmPedestrianModel::update()
     //use clock, calculated force prop and calculated force rep to update positions ~Elizabeth
 }
 
-void CalmPedestrianModel::calculatePropulsion(Pedestrian* currentPedestrian)
-{
+// void CalmPedestrianModel::calculatePropulsion(Pedestrian* currentPedestrian)
+// {
 
-    double forceOfPropulsion;
+//     double forceOfPropulsion;
 
-    if(currentPedestrian->getPedestrianGoal() != 0){
-        forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/0.25/*average reaction time in seconds*/) * currentPedestrian->getPedestrianMass();
-    }else{
-        forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityXDirection())/0.25) * currentPedestrian->getPedestrianMass();
-    }
+//     if(currentPedestrian->getPedestrianGoal() != 0){
+//         forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/0.25/*average reaction time in seconds*/) * currentPedestrian->getPedestrianMass();
+//     }else{
+//         forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityXDirection())/0.25) * currentPedestrian->getPedestrianMass();
+//     }
 
-    currentPedestrian->setForceOfPropulsion(forceOfPropulsion);
+//     currentPedestrian->setForceOfPropulsion(forceOfPropulsion);
 
-}
+// }
 
 void CalmPedestrianModel::printPedestrianCoordinates()
 {

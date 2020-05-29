@@ -1,10 +1,3 @@
-//TODO: define the data object to hold the below information
-
-//pedestrian locations
-//layout
-    //obstacles with coordinates
-    //provide obstacles as geometric objects (points, lines, shapes)
-
 #ifndef DATA_HPP
 #define DATA_HPP
 
@@ -12,42 +5,25 @@
 #include <string>
 #include <iostream>
 
-#include "pedestrian.hpp"
+#include "pedestrian_set.hpp"
+#include "obstacle_set.hpp"
 
 class Data
 {
     public:
         Data();
 
-        std::vector<double> getXPedestrianCoordinates();
-        std::vector<double> getYPedestrianCoordinates();
-        std::vector<double> getXObstacleCoordinates();
-        std::vector<double> getYObstacleCoordinates();
-
-        void setXPedestrianCoordinates(std::vector<double>);
-        void setYPedestrianCoordinates(std::vector<double>);
-        void setXObstacleCoordinates(std::vector<double>);
-        void setYObstacleCoordinates(std::vector<double>);
-
-        void pushCoordinateData(double, std::string, std::string);
-
-        void pushXPedestrianCoordinate(double);
-        void pushYPedestrianCoordinate(double);
-        void pushXObstacleCoordinate(double);
-        void pushYObstacleCoordinate(double);
+        void pushCoordinates(std::string parseElement, double x, double y);
 
         void printPedestrianCoordinates();
         void printObstacleCoordinates();
 
-        void createPedestrians();
+        PedestrianSet* getPedestrianSet();
 
     private:
-        std::vector<double> xPedestrianCoordinates;
-        std::vector<double> yPedestrianCoordinates;
-        std::vector<Pedestrian> pedestrians;
+        PedestrianSet pedestrianSet;
+        ObstacleSet obstacleSet;
 
-        std::vector<double> xObstacleCoordinates;
-        std::vector<double> yObstacleCoordinates;
 };
 
 #endif

@@ -13,7 +13,10 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void setData(Data* initialData);
         virtual void precompute();
         virtual void update();
-        virtual void calculatePropulsion(Pedestrian* currentPedestrian);
+
+        //TODO: refactor because no longer using pedestrian objects
+        //virtual void calculatePropulsion(Pedestrian* currentPedestrian);
+
         virtual void printPedestrianCoordinates();
         virtual void printObstacleCoordinates();
 
