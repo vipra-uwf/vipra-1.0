@@ -1,1 +1,1 @@
-typedef double FLOATING_NUMBER;
+typedef float FLOATING_NUMBER;
