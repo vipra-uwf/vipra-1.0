@@ -23,6 +23,7 @@ Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
         //define an output format similar to our input format
 //human behavior model
 //policy
+//ODE solver
 //ODE solver - look into boost ode solvers
 void Simulation::run()
 {

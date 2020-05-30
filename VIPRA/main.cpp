@@ -4,8 +4,6 @@
 #include <iostream>
 #include <string>
 
-//coordinates.xml was split into obstacleCoordinates.xml and pedestrianCoordinates
-
 int main()
 {
 

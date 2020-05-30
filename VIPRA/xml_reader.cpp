@@ -54,7 +54,7 @@ void XMLReader::initializeTraversalNodes()
     this->dataNode = this->rootNode->first_node(this->parseElement.c_str());
 }
 
-double XMLReader::getNodeAttributeValue(rapidxml::xml_node<>* node, std::string attribute)
+FLOATING_NUMBER XMLReader::getNodeAttributeValue(rapidxml::xml_node<>* node, std::string attribute)
 {
     return std::stod(node->first_attribute(attribute.c_str())->value());
 }
@@ -66,11 +66,14 @@ void XMLReader::storeData(Data* data)
 
     while(this->dataNode != 0)
     {   
-        double xCoordinate = getNodeAttributeValue(this->dataNode, "x");
-        double yCoordinate = getNodeAttributeValue(this->dataNode, "y");
+        FLOATING_NUMBER xCoordinate = getNodeAttributeValue(this->dataNode, "x");
+        FLOATING_NUMBER yCoordinate = getNodeAttributeValue(this->dataNode, "y");
 
-        this->data->pushCoordinateData(xCoordinate, this->parseElement, "x");
-        this->data->pushCoordinateData(yCoordinate, this->parseElement, "y");
+        
+
+        //this->data->pushCoordinateData(xCoordinate, this->parseElement, "x");
+        //this->data->pushCoordinateData(yCoordinate, this->parseElement, "y");
+        this->data->pushCoordinates(this->parseElement, xCoordinate, yCoordinate);
        
         this->dataNode = this->dataNode->next_sibling();
     }

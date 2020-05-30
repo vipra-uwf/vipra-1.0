@@ -20,20 +20,24 @@ void CalmPedestrianModel::update()
     //use clock, calculated force prop and calculated force rep to update positions ~Elizabeth
 }
 
-void CalmPedestrianModel::calculatePropulsion(Pedestrian* currentPedestrian)
-{
+//TODO: refactor to not use pedestrian object
+// void CalmPedestrianModel::calculatePropulsion(Pedestrian* currentPedestrian)
+// {
 
-    double forceOfPropulsion;
-    double averageActionReactionTimeS = 0.25; //TODO: refactor to not be hardcoded
-    if(currentPedestrian->getPedestrianGoal() != 0){
-        forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/averageActionReactionTimeS) * currentPedestrian->getPedestrianMass();
-    }else{
-        forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityXDirection())/averageActionReactionTimeS) * currentPedestrian->getPedestrianMass();
-    }
+//     FLOATING_NUMBER forceOfPropulsion;
 
-    currentPedestrian->setForceOfPropulsion(forceOfPropulsion);
+        // FLOATING_NUMBER averageActionReactionTimeS = 0.25; //TODO: refactor to not be hardcoded
+        // if(currentPedestrian->getPedestrianGoal() != 0){
+        //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/0.25/*average reaction time in seconds*/) * currentPedestrian->getPedestrianMass();
+        //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/averageActionReactionTimeS) * currentPedestrian->getPedestrianMass();
+        // }else{
+        //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityXDirection())/0.25) * currentPedestrian->getPedestrianMass();
+        //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityXDirection())/averageActionReactionTimeS) * currentPedestrian->getPedestrianMass();
+        // }
 
-}
+//     currentPedestrian->setForceOfPropulsion(forceOfPropulsion);
+
+// }
 
 void CalmPedestrianModel::printPedestrianCoordinates()
 {
