@@ -5,6 +5,7 @@ PedestrianSet::PedestrianSet(){
 }
 
 int PedestrianSet::getNumPedestrians(){
+    this->numPedestrians = xCoordinates.size(); //CHANGE .. THIS IS BAD 
     return this->numPedestrians;
 }
 

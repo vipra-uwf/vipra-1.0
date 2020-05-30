@@ -2,17 +2,7 @@
 
 XMLWriter::XMLWriter()
 {
-    this->xTest.push_back("5.5");
-    this->yTest.push_back("2.1");
 
-    this->xTest.push_back("8.3");
-    this->yTest.push_back("9.9");
-
-    this->xTest.push_back("4.1");
-    this->yTest.push_back("7.6");
-
-    this->xTest.push_back("1.9");
-    this->yTest.push_back("3.7");
 }
 
 void XMLWriter::openFile(std::string fileName)
@@ -35,11 +25,11 @@ void XMLWriter::setNumDataNodes(int numDataNodes)
     this->numDataNodes = numDataNodes;
 }
 
-void XMLWriter::initializeXMLDeclaration(std::string version, std::string versionNum, std::string encoding, std::string encodingType)
+void XMLWriter::initializeXMLDeclaration(std::string versionNum, std::string encodingType)
 {
     rapidxml::xml_node<>* declarationNode = this->document.allocate_node(rapidxml::node_declaration);
-    declarationNode->append_attribute(this->document.allocate_attribute(version.c_str(), versionNum.c_str()));
-    declarationNode->append_attribute(this->document.allocate_attribute(encoding.c_str(), encodingType.c_str()));
+    declarationNode->append_attribute(this->document.allocate_attribute("version", this->document.allocate_string(versionNum.c_str())));
+    declarationNode->append_attribute(this->document.allocate_attribute("encoding", this->document.allocate_string(encodingType.c_str())));
     this->document.append_node(declarationNode);
 }
 
@@ -51,11 +41,8 @@ void XMLWriter::initializeRootNode()
 
 void XMLWriter::generateDataNode()
 {
-    rapidxml::xml_node<>* dataNode = this->document.allocate_node(rapidxml::node_element, "pedestrian");
+    rapidxml::xml_node<>* dataNode = this->document.allocate_node(rapidxml::node_element, this->dataNodeName.c_str());
     this->rootNode->append_node(dataNode);
-    this->dataNodes.push_back(dataNode);
-    
-    // appendDataNodeAttribute(dataNode, "z", "10");
 }
 
 void XMLWriter::appendDataNodeAttribute(rapidxml::xml_node<>* node, std::string key, std::string value)
@@ -71,79 +58,40 @@ void XMLWriter::initializeDataNodes()
     }
 }
 
-void XMLWriter::writeVectorDataToNodes(std::string key, std::vector<std::string> valuesVector)
+void XMLWriter::writeVectorDataToNodes(std::string key, std::vector<FLOATING_NUMBER> valuesVector)
 {
+    int i = 0; 
 
-   int i = 0; 
-
-    for(rapidxml::xml_node<>* child = this->rootNode->first_node(); child; child = child->next_sibling())
+    for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); dataNode; dataNode = dataNode->next_sibling())
     {
-        // std::cout << child->parent()->name() << std::endl;
-        // std::cout << child->name() << std::endl;
-        // std::cout << child << std::endl;
-
-
-        // child->append_attribute(this->document.allocate_attribute(key.c_str(), valuesVector[i].c_str()));
-
-
-        
-
-        child->append_attribute(this->document.allocate_attribute(key.c_str(), document.allocate_string(valuesVector[i].c_str())));
-
-
-        //child->append_attribute(rapidxml::xml_attribute("x" , "12"));
-
+        // std::cout << valuesVector[i] << std::endl;
+        std::string value = std::to_string(valuesVector[i]);
+        dataNode->append_attribute(this->document.allocate_attribute(key.c_str(), document.allocate_string(value.c_str())));
         i++;
     }
 }
 
+void XMLWriter::configureXMLDocumentStructure(std::string fileName, std::string rootNodeName, std::string dataNodeName, std::string versionNum, std::string encodingType)
+{
+    openFile(fileName);
+    setRootNodeName(rootNodeName);
+    setDataNodeName(dataNodeName);
+
+    initializeXMLDeclaration(versionNum, encodingType);
+    initializeRootNode();
+}
+
+
 void XMLWriter::writeData(Data* data)
 {
-    openFile("pedestrian_data.xml");
-    setRootNodeName("pedestrian-set");
-    setDataNodeName("pedestrian");
-    
-    initializeXMLDeclaration("version", "1.0", "encoding", "utf-8");
-    initializeRootNode();
-
-    // generateDataNode();
-    // appendDataNodeAttribute("x", "5.5");
-    // appendDataNodeAttribute("y", "2.5");
-
-    setNumDataNodes(this->xTest.size());
+    setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
     initializeDataNodes();
 
-
-    writeVectorDataToNodes("x", this->xTest);
-    writeVectorDataToNodes("y", this->yTest);
-
-
-    // writeVectorDataToNodes("x", this->xTest);
-    // writeVectorDataToNodes("y", this->yTest);
-
-    // rapidxml::xml_node<>* currentNode = this->rootNode->first_node(0);
-    // std::cout << currentNode->name() << std::endl;
-
-
-
-
-
-    // appendDataNodeAttribute(this->dataNodes[1], "x", this->xTest[1]);
-
-    // generateDataNode();
-    // appendDataNodeAttribute("x", "5.5");
-    // appendDataNodeAttribute("y", "2.5");
-
-
-   
-    // std::string xml_as_string;
-    // rapidxml::print(std::back_inserter(xml_as_string), this->document, 0);
-
-    //PROBABLY NEED TO WIPE dataNodes (vector)
+    writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinates());
+    writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinates());
 
     this->fileStream << this->document;
 
     this->fileStream.close();
     this->document.clear();
-
 }
