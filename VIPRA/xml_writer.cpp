@@ -5,37 +5,109 @@ XMLWriter::XMLWriter()
 
 }
 
+void XMLWriter::openFile(std::string fileName)
+{
+    this->fileStream.open(fileName);
+}
+
+void XMLWriter::setRootNodeName(std::string rootNodeName)
+{
+    this->rootNodeName = rootNodeName;
+}
+
+void XMLWriter::setDataNodeName(std::string dataNodeName)
+{
+    this->dataNodeName = dataNodeName;
+}
+
+void XMLWriter::setNumDataNodes(int numDataNodes)
+{
+    this->numDataNodes = numDataNodes;
+}
+
+void XMLWriter::initializeXMLDeclaration(std::string version, std::string versionNum, std::string encoding, std::string encodingType)
+{
+    rapidxml::xml_node<>* declarationNode = this->document.allocate_node(rapidxml::node_declaration);
+    declarationNode->append_attribute(this->document.allocate_attribute(version.c_str(), versionNum.c_str()));
+    declarationNode->append_attribute(this->document.allocate_attribute(encoding.c_str(), encodingType.c_str()));
+    this->document.append_node(declarationNode);
+}
+
+void XMLWriter::initializeRootNode()
+{
+    this->rootNode = this->document.allocate_node(rapidxml::node_element, this->rootNodeName.c_str());
+    this->document.append_node(rootNode);
+}
+
+void XMLWriter::generateDataNode()
+{
+    this->dataNode = this->document.allocate_node(rapidxml::node_element, "pedestrian");
+    this->rootNode->append_node(dataNode);
+}
+
+void XMLWriter::appendDataNodeAttribute(std::string key, std::string value)
+{
+    this->dataNode->append_attribute(this->document.allocate_attribute(key.c_str(), value.c_str()));
+}
+
+void XMLWriter::initializeDataNodes()
+{
+    for(int i = 0; i < this->numDataNodes; ++i)
+    {
+        generateDataNode();
+    }
+}
+
+void XMLWriter::writeVectorDataToNodes(std::string key, std::vector<std::string> valuesVector)
+{
+   this->dataNode = this->rootNode->first_node(this->dataNodeName.c_str());
+
+   for(int i = 0; i < this->numDataNodes; ++i)
+   {
+       appendDataNodeAttribute(key, valuesVector[i]);
+       this->dataNode = this->dataNode->next_sibling();
+   }
+}
+
 void XMLWriter::writeData(Data* data)
 {
-    std::cout  << "writing data" << std::endl;
+    openFile("pedestrian_data.xml");
+    setRootNodeName("pedestrian-set");
+    setDataNodeName("pedestrian");
 
-    rapidxml::xml_node<>* declarationNode = this->document.allocate_node(rapidxml::node_declaration);
-    declarationNode->append_attribute(this->document.allocate_attribute("version", "1.0"));
-    declarationNode->append_attribute(this->document.allocate_attribute("encoding", "utf-8"));
-    this->document.append_node(declarationNode);
+    
+    initializeXMLDeclaration("version", "1.0", "encoding", "utf-8");
+    initializeRootNode();
 
-    this->rootNode = this->document.allocate_node(rapidxml::node_element, "passenger-set");
-    this->document.append_node(rootNode);
+    // generateDataNode();
+    // appendDataNodeAttribute("x", "5.5");
+    // appendDataNodeAttribute("y", "2.5");
 
-    this->dataNode = this->document.allocate_node(rapidxml::node_element, "passenger");
-    this->dataNode->append_attribute(this->document.allocate_attribute("x", "5.2"));
-    this->dataNode->append_attribute(this->document.allocate_attribute("y", "1.7"));
+    std::vector<std::string> xTest;
+    std::vector<std::string> yTest;
 
-    this->rootNode->append_node(dataNode);
+    xTest.push_back("5.5");
+    yTest.push_back("2.1");
 
-    this->dataNode = this->document.allocate_node(rapidxml::node_element, "passenger");
-    this->dataNode->append_attribute(this->document.allocate_attribute("x", "4.1"));
-    this->dataNode->append_attribute(this->document.allocate_attribute("y", "7.8"));
+    xTest.push_back("8.3");
+    yTest.push_back("9.9");
 
-    this->rootNode->append_node(dataNode);
+    xTest.push_back("4.1");
+    yTest.push_back("7.6");
 
-    std::string xml_as_string;
-    rapidxml::print(std::back_inserter(xml_as_string), this->document, 0);
+    xTest.push_back("1.9");
+    yTest.push_back("3.7");
 
-    // std::cout << this->document;
+    setNumDataNodes(xTest.size());
+    initializeDataNodes();
 
+    writeVectorDataToNodes("x", xTest);
+    writeVectorDataToNodes("y", yTest);
+    
+    
+    // std::string xml_as_string;
+    // rapidxml::print(std::back_inserter(xml_as_string), this->document, 0);
 
-    this->fileStream.open("passengerwritten.xml");
     this->fileStream << this->document;
 
     this->fileStream.close();
