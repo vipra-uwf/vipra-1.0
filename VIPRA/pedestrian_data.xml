@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <pedestrian-set>
-	<pedestrian ="°õ`" ="°õ`"/>
-	<pedestrian ="°õ`" ="°õ`"/>
-	<pedestrian ="°õ`" ="°õ`"/>
-	<pedestrian ="°õ`" ="°õ`"/>
+	<pedestrian x="5.5" y="2.1"/>
+	<pedestrian x="8.3" y="9.9"/>
+	<pedestrian x="4.1" y="7.6"/>
+	<pedestrian x="1.9" y="3.7"/>
 </pedestrian-set>
 

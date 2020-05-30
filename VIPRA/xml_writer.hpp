@@ -27,9 +27,13 @@ class XMLWriter: public OutputDataWriter
 
         rapidxml::xml_document<> document;
         rapidxml::xml_node<>* rootNode;
-        rapidxml::xml_node<>* dataNode;
+        // rapidxml::xml_node<>* dataNode;
+
+        std::vector<rapidxml::xml_node<>*> dataNodes;
 
         int numDataNodes;
+        std::vector<std::string> xTest;
+        std::vector<std::string> yTest;        
 
         void openFile(std::string);
         void setRootNodeName(std::string);
@@ -42,7 +46,7 @@ class XMLWriter: public OutputDataWriter
         void initializeDataNodes();
         void writeVectorDataToNodes(std::string, std::vector<std::string>);
         void generateDataNode();
-        void appendDataNodeAttribute(std::string, std::string);
+        void appendDataNodeAttribute(rapidxml::xml_node<>*, std::string, std::string);
         
 };
 
