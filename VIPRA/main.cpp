@@ -1,5 +1,6 @@
 #include "simulation.hpp"
 #include "xml_reader.hpp"
+#include "xml_writer.hpp"
 #include "calm_pedestrian_model.hpp"
 #include <iostream>
 #include <string>
@@ -20,6 +21,9 @@ int main()
     calmModel.setData(&data);
     
     Simulation simulation(&calmModel);
+
+    XMLWriter xmlWriter;
+    xmlWriter.writeData(&data);
 
     return 0;
 }
