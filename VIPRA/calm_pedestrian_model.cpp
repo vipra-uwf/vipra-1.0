@@ -13,6 +13,8 @@ void CalmPedestrianModel::precompute()
     //Decrease Force and Propulsion force in CALM code
     //result needs to be stored for each passenger
 
+    calculatePropulsion();
+
 }
 
 void CalmPedestrianModel::update()
@@ -21,23 +23,32 @@ void CalmPedestrianModel::update()
 }
 
 //TODO: refactor to not use pedestrian object
-// void CalmPedestrianModel::calculatePropulsion(Pedestrian* currentPedestrian)
-// {
+void CalmPedestrianModel::calculatePropulsion()
+{
 
-//     FLOATING_NUMBER forceOfPropulsion;
+     FLOATING_NUMBER forceOfPropulsion;
+     for(int id = 0; id < data->getPedestrianSet()->getNumPedestrians(); ++id)
+     {
+         data->getPedestrianSet()->setPropulsionForces(id, ((data->getPedestrianSet()->getDesiredSpeed() * data->getPedestrianSet()->getSpeeds()->at(id)) / data->getPedestrianSet()->getReactionTime()) * data->getPedestrianSet()->getMassKg());
+     }
 
-        // FLOATING_NUMBER averageActionReactionTimeS = 0.25; //TODO: refactor to not be hardcoded
-        // if(currentPedestrian->getPedestrianGoal() != 0){
-        //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/0.25/*average reaction time in seconds*/) * currentPedestrian->getPedestrianMass();
-        //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityYDirection())/averageActionReactionTimeS) * currentPedestrian->getPedestrianMass();
-        // }else{
-        //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityXDirection())/0.25) * currentPedestrian->getPedestrianMass();
-        //     forceOfPropulsion = ((currentPedestrian->getDesiredVelocity() - currentPedestrian->getVelocityXDirection())/averageActionReactionTimeS) * currentPedestrian->getPedestrianMass();
-        // }
+}
 
-//     currentPedestrian->setForceOfPropulsion(forceOfPropulsion);
+void CalmPedestrianModel::calculateRepulsion()
+{
 
-// }
+     FLOATING_NUMBER forceOfPropulsion;
+     for(int id = 0; id < data->getPedestrianSet()->getNumPedestrians(); ++id)
+     {
+         data->getPedestrianSet()->setRepulsionForces(id, 1);
+     }
+
+}
+
+void CalmPedestrianModel::calculateBeta()
+{
+
+}
 
 void CalmPedestrianModel::printPedestrianCoordinates()
 {
