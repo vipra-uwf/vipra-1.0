@@ -14,7 +14,7 @@ class PedestrianDynamicsModel
 
         virtual void calculatePropulsion() = 0;
         virtual void calculateRepulsion() = 0;
-        virtual void calculateBeta() = 0;
+        virtual FLOATING_NUMBER calculateBeta(int id) = 0;
 
         virtual void printPedestrianCoordinates() = 0;
         virtual void printObstacleCoordinates() = 0;

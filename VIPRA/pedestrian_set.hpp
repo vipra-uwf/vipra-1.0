@@ -1,6 +1,7 @@
 #include "type_definitions.hpp"
 #include <vector>
 #include <string>
+#include <math.h>
 
 class PedestrianSet{
     public:
@@ -10,7 +11,9 @@ class PedestrianSet{
         void setSpeed(int, FLOATING_NUMBER);
         void setPropulsionForces(int, FLOATING_NUMBER);
         void setRepulsionForces(int, FLOATING_NUMBER);
-        void calculateAim(int);
+        void calculateAim();
+        void calculateNearestNeighbor();
+        FLOATING_NUMBER calculateDistance(int, int);
 
         int getNumPedestrians();
         FLOATING_NUMBER getDesiredSpeed();
@@ -18,8 +21,7 @@ class PedestrianSet{
         FLOATING_NUMBER getReactionTime();
 
         std::vector<std::string>* getAims();
-        std::vector<FLOATING_NUMBER>* getNearestNeighborX();
-        std::vector<FLOATING_NUMBER>* getNearestNeighborY();
+        std::vector<int>* getNearestNeighbor();
 
         std::vector<FLOATING_NUMBER>* getXCoordinates();
         std::vector<FLOATING_NUMBER>* getYCoordinates();
@@ -35,8 +37,7 @@ class PedestrianSet{
         FLOATING_NUMBER reactionTime;
 
         std::vector<std::string> aims; //vector of aim strings used to determine the aim of the pedestrian such as down to isle or up to isle or in isle
-        std::vector<FLOATING_NUMBER>nearestNeighborX;
-        std::vector<FLOATING_NUMBER>nearestNeighborY;
+        std::vector<int> nearestNeighbor;
 
 
         std::vector<FLOATING_NUMBER> goalXCoordinates;

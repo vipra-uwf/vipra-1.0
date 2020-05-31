@@ -13,7 +13,10 @@ void CalmPedestrianModel::precompute()
     //Decrease Force and Propulsion force in CALM code
     //result needs to be stored for each passenger
 
+    data->getPedestrianSet()->calculateAim();
+    data->getPedestrianSet()->calculateNearestNeighbor();
     calculatePropulsion();
+    calculateRepulsion();
 
 }
 
@@ -22,14 +25,17 @@ void CalmPedestrianModel::update()
     //use clock, calculated force prop and calculated force rep to update positions ~Elizabeth
 }
 
-//TODO: refactor to not use pedestrian object
 void CalmPedestrianModel::calculatePropulsion()
 {
 
      FLOATING_NUMBER forceOfPropulsion;
      for(int id = 0; id < data->getPedestrianSet()->getNumPedestrians(); ++id)
      {
-         data->getPedestrianSet()->setPropulsionForces(id, ((data->getPedestrianSet()->getDesiredSpeed() * data->getPedestrianSet()->getSpeeds()->at(id)) / data->getPedestrianSet()->getReactionTime()) * data->getPedestrianSet()->getMassKg());
+         std::cout << "old propulsion force: " << data->getPedestrianSet()->getPropulsionForces()->at(id) << std::endl;
+         data->getPedestrianSet()->setPropulsionForces(id, ((data->getPedestrianSet()->getDesiredSpeed() - data->getPedestrianSet()->getSpeeds()->at(id)) / data->getPedestrianSet()->getReactionTime()) * data->getPedestrianSet()->getMassKg());
+         std::cout << "new propulsion force: " << data->getPedestrianSet()->getPropulsionForces()->at(id) << std::endl;
+         std::cout << "aim: " << data->getPedestrianSet()->getAims()->at(id) << std::endl;
+         std::cout << "nearest neighbor: " << data->getPedestrianSet()->getNearestNeighbor()->at(id) << std::endl;
      }
 
 }
@@ -37,16 +43,24 @@ void CalmPedestrianModel::calculatePropulsion()
 void CalmPedestrianModel::calculateRepulsion()
 {
 
-     FLOATING_NUMBER forceOfPropulsion;
      for(int id = 0; id < data->getPedestrianSet()->getNumPedestrians(); ++id)
      {
-         data->getPedestrianSet()->setRepulsionForces(id, 1);
+         std::cout << "old repulsion force: " << data->getPedestrianSet()->getRepulsionForces()->at(id) << std::endl;
+         data->getPedestrianSet()->setRepulsionForces(id, (((calculateBeta(id)*data->getPedestrianSet()->getDesiredSpeed()) - data->getPedestrianSet()->getSpeeds()->at(id)) / data->getPedestrianSet()->getReactionTime()));
+         std::cout << "new repulsion force: " << data->getPedestrianSet()->getRepulsionForces()->at(id) << std::endl;
      }
 
 }
 
-void CalmPedestrianModel::calculateBeta()
+FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int id)
 {
+    FLOATING_NUMBER a = -2.111;
+    FLOATING_NUMBER b = 0.366;
+    FLOATING_NUMBER c = 0.966;
+
+    return (c - exp(a * (data->getPedestrianSet()->calculateDistance(id, data->getPedestrianSet()->getNearestNeighbor()->at(id)) - b)));
+
+
 
 }
 
