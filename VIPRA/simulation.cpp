@@ -13,6 +13,8 @@ Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
     std::cout << "\nInitializing simulation with coordinates: " << std::endl;
     this->pedestrianDynamicsModel->printPedestrianCoordinates();
     this->pedestrianDynamicsModel->printObstacleCoordinates();
+    this->pedestrianDynamicsModel->precompute();
+
 }
 
 //pedestrian dynamics model

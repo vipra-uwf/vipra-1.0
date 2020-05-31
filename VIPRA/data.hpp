@@ -8,7 +8,6 @@
 #include "pedestrian_set.hpp"
 #include "obstacle_set.hpp"
 
-//Refactor for PedestriansSet (class of arrays) and ObstaclesSet (class of arrays) to be separate
 class Data
 {
     public:
