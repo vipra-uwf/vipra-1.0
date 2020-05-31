@@ -7,6 +7,7 @@ ObstacleSet::ObstacleSet(){
 void ObstacleSet::addObstacle(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate){
     this->xCoordinates.push_back(xCoordinate);
     this->yCoordinates.push_back(yCoordinate);
+    this->numObstacles++;
 }
 
 int ObstacleSet::getNumObstacles(){
