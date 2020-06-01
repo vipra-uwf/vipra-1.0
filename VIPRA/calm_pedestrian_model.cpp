@@ -59,9 +59,6 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int id)
     FLOATING_NUMBER c = 0.966;
 
     return (c - exp(a * (data->getPedestrianSet()->calculateDistance(id, data->getPedestrianSet()->getNearestNeighbor()->at(id)) - b)));
-
-
-
 }
 
 void CalmPedestrianModel::printPedestrianCoordinates()
