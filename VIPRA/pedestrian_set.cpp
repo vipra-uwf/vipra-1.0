@@ -3,22 +3,22 @@
 PedestrianSet::PedestrianSet()
 {
     numPedestrians = 0;
-    desiredSpeed = 1;
-    reactionTime = .25;
-    massKg = 70;
+    //desiredSpeed = 1; 
+    //reactionTime = .25;
+    //massKg = 70;
 }
 
 void PedestrianSet::addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate)
 {
     this->xCoordinates.push_back(xCoordinate);
     this->yCoordinates.push_back(yCoordinate);
-    nearestNeighbor.push_back(-1);
+    //nearestNeighbor.push_back(-1);
 
     goalXCoordinates.push_back(0);
     goalYCoordinates.push_back(0);
-    aims.push_back("NULL");
+    //aims.push_back("NULL");
 
-    speeds.push_back(0);
+    //speeds.push_back(0);
     propulsionForces.push_back(0);
     repulsionForces.push_back(0);
 
@@ -27,7 +27,7 @@ void PedestrianSet::addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER y
 
 void PedestrianSet::setSpeed(int id, FLOATING_NUMBER speed)
 {
-    speeds.at(id) = speed;
+    speedsMetersPerSecond.at(id) = speed;
 }
 
 void PedestrianSet::setPropulsionForces(int id, FLOATING_NUMBER propulsionForce)
@@ -40,7 +40,7 @@ void PedestrianSet::setRepulsionForces(int id, FLOATING_NUMBER repulsionForce)
     repulsionForces.at(id) = repulsionForce;
 }
 
-void PedestrianSet::calculateAim()
+/*void PedestrianSet::calculateAim()
 {
     for (int id = 0; id < numPedestrians; ++id)
     {
@@ -58,10 +58,12 @@ void PedestrianSet::calculateAim()
         aims.at(id) = "IN_ISLE";
     }
     }
-}
+}*/
 
 void PedestrianSet::calculateNearestNeighbor()
 {
+    //"speeds" have 2 dimension and therefore indicate direction so they replace "aims"? -valkor
+    /*
     for (int id = 0; id < numPedestrians; ++id)
     {
 
@@ -145,6 +147,7 @@ void PedestrianSet::calculateNearestNeighbor()
             }
         }
     }
+    */
 }
 
 FLOATING_NUMBER PedestrianSet::calculateDistance(int idOfFirst, int idOfSecond)
@@ -159,52 +162,49 @@ int PedestrianSet::getNumPedestrians()
     return this->numPedestrians;
 }
 
-FLOATING_NUMBER PedestrianSet::getDesiredSpeed()
+FLOATING_NUMBER PedestrianSet::getDesiredSpeed(int i)
 {
-    return desiredSpeed;
+    return this->speedsMetersPerSecond.at(i);
 }
 
-FLOATING_NUMBER PedestrianSet::getMassKg()
+FLOATING_NUMBER PedestrianSet::getMassKg(int i)
 {
-    return massKg;
+    return this->massesKg.at(i);
 }
 
-FLOATING_NUMBER PedestrianSet::getReactionTime()
+FLOATING_NUMBER PedestrianSet::getReactionTimeSeconds(int i)
 {
-    return reactionTime;
+    return this->reactionTimesSeconds.at(i);
 }
 
-std::vector<std::string>* PedestrianSet::getAims()
+
+
+int PedestrianSet::getNearestNeighbor(int i)
 {
-    return &this->aims;
+    return this->nearestNeighbors.at(i);
 }
 
-std::vector<int>* PedestrianSet::getNearestNeighbor()
+FLOATING_NUMBER PedestrianSet::getXCoordinate(int i)
 {
-    return &this->nearestNeighbor;
+    return this->xCoordinates.at(i);
 }
 
-std::vector<FLOATING_NUMBER>* PedestrianSet::getXCoordinates()
+FLOATING_NUMBER PedestrianSet::getYCoordinate(int i)
 {
-    return &this->xCoordinates;
+    return this->yCoordinates.at(i);
 }
 
-std::vector<FLOATING_NUMBER>* PedestrianSet::getYCoordinates()
+FLOATING_NUMBER PedestrianSet::getSpeed(int i)
 {
-    return &this->yCoordinates;
+    return this->speedsMetersPerSecond.at(i);
 }
 
-std::vector<FLOATING_NUMBER>* PedestrianSet::getSpeeds()
+FLOATING_NUMBER PedestrianSet::getPropulsionForce(int i)
 {
-    return &this->speeds;
+    return this->propulsionForces.at(i);
 }
 
-std::vector<FLOATING_NUMBER>* PedestrianSet::getPropulsionForces()
+FLOATING_NUMBER PedestrianSet::getRepulsionForce(int i)
 {
-    return &this->propulsionForces;
-}
-
-std::vector<FLOATING_NUMBER>* PedestrianSet::getRepulsionForces()
-{
-    return &this->repulsionForces;
+    return this->repulsionForces.at(i);
 }

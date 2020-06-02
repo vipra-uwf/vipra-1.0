@@ -11,35 +11,34 @@ class PedestrianSet{
         void setSpeed(int, FLOATING_NUMBER);
         void setPropulsionForces(int, FLOATING_NUMBER);
         void setRepulsionForces(int, FLOATING_NUMBER);
-        void calculateAim();
+        //void calculateAim();
         void calculateNearestNeighbor();
         FLOATING_NUMBER calculateDistance(int, int);
 
         int getNumPedestrians();
-        FLOATING_NUMBER getDesiredSpeed();
-        FLOATING_NUMBER getMassKg();
-        FLOATING_NUMBER getReactionTime();
+        
 
 
-        //update these to be based on an index instead of returning entire vectors
-        std::vector<std::string>* getAims();
-        std::vector<int>* getNearestNeighbor();
 
-        std::vector<FLOATING_NUMBER>* getXCoordinates();
-        std::vector<FLOATING_NUMBER>* getYCoordinates();
+        int getNearestNeighbor(int i);
+        FLOATING_NUMBER getDesiredSpeed(int i);
+        FLOATING_NUMBER getMassKg(int i);
+        FLOATING_NUMBER getReactionTimeSeconds(int i);
 
-        std::vector<FLOATING_NUMBER>* getSpeeds();
-        std::vector<FLOATING_NUMBER>* getPropulsionForces();
-        std::vector<FLOATING_NUMBER>* getRepulsionForces();
+        FLOATING_NUMBER getXCoordinate(int i);
+        FLOATING_NUMBER getYCoordinate(int i);
+
+        FLOATING_NUMBER getSpeed(int i);
+        FLOATING_NUMBER getPropulsionForce(int i);
+        FLOATING_NUMBER getRepulsionForce(int i);
 
     private:
         int numPedestrians;
-        FLOATING_NUMBER desiredSpeed; //should this be just the vector?
-        FLOATING_NUMBER massKg; //vector for all pedestrians
-        FLOATING_NUMBER reactionTime; //vector for all pedestrians
+        std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
+        std::vector<FLOATING_NUMBER> massesKg;
+        std::vector<FLOATING_NUMBER> reactionTimesSeconds;
 
-        std::vector<std::string> aims; //get rid of this
-        std::vector<int> nearestNeighbor; //move to the specific model
+        std::vector<int> nearestNeighbors; //move to the specific model
 
         //intermediate goals are here, completion of goals determined in goal class
             //intermediate goals should be able to be used in place of aims
