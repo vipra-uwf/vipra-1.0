@@ -27,7 +27,7 @@ class PedestrianSet{
 
         std::vector<FLOATING_NUMBER>* getXCoordinates();
         std::vector<FLOATING_NUMBER>* getYCoordinates();
-
+       
         std::vector<FLOATING_NUMBER>* getSpeeds();
         std::vector<FLOATING_NUMBER>* getPropulsionForces();
         std::vector<FLOATING_NUMBER>* getRepulsionForces();
@@ -48,6 +48,8 @@ class PedestrianSet{
 
         std::vector<FLOATING_NUMBER> xCoordinates;
         std::vector<FLOATING_NUMBER> yCoordinates;
+
+        std::vector<FLOATING_NUMBER> speeds;
 
         //add currentVelocities (vectors)
         std::vector<FLOATING_NUMBER> desiredSpeeds;

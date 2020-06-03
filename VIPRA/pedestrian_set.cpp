@@ -196,7 +196,7 @@ std::vector<FLOATING_NUMBER>* PedestrianSet::getYCoordinates()
 
 std::vector<FLOATING_NUMBER>* PedestrianSet::getSpeeds()
 {
-    return &this->speeds;
+   return &this->speeds;
 }
 
 std::vector<FLOATING_NUMBER>* PedestrianSet::getPropulsionForces()
