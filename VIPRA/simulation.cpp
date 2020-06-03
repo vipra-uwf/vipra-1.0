@@ -19,8 +19,7 @@ Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
 
 //pedestrian dynamics model
     //input to model - pedestrians, layout, goal for each pedestrian
-        //goals will likely need to be defined as a template class or function pointer 
-            //two goals - one for simulation, one for each pedestrian
+        //goals will likely need to be defined as a template class or function pointer
     //how each pedestrian will move
     //output - positions of the pedestrians, velocity, additional movement characteristics
         //define an output format similar to our input format

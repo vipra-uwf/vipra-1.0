@@ -6,8 +6,8 @@ class ObstacleSet{
         ObstacleSet();
         void addObstacle(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate);
         int getNumObstacles();
-        FLOATING_NUMBER getXCoordinate(int i);
-        FLOATING_NUMBER getYCoordinate(int i);
+        std::vector<FLOATING_NUMBER>* getXCoordinates();
+        std::vector<FLOATING_NUMBER>* getYCoordinates();
     private:
         int numObstacles;
         std::vector<FLOATING_NUMBER> xCoordinates;

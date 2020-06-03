@@ -11,46 +11,42 @@ class PedestrianSet{
         void setSpeed(int, FLOATING_NUMBER);
         void setPropulsionForces(int, FLOATING_NUMBER);
         void setRepulsionForces(int, FLOATING_NUMBER);
-        //void calculateAim();
+        void calculateAim();
         void calculateNearestNeighbor();
         FLOATING_NUMBER calculateDistance(int, int);
 
         int getNumPedestrians();
-        
+        FLOATING_NUMBER getDesiredSpeed();
+        FLOATING_NUMBER getMassKg();
+        FLOATING_NUMBER getReactionTime();
 
+        std::vector<std::string>* getAims();
+        std::vector<int>* getNearestNeighbor();
 
+        std::vector<FLOATING_NUMBER>* getXCoordinates();
+        std::vector<FLOATING_NUMBER>* getYCoordinates();
 
-        int getNearestNeighbor(int i);
-        FLOATING_NUMBER getDesiredSpeed(int i);
-        FLOATING_NUMBER getMassKg(int i);
-        FLOATING_NUMBER getReactionTimeSeconds(int i);
-
-        FLOATING_NUMBER getXCoordinate(int i);
-        FLOATING_NUMBER getYCoordinate(int i);
-
-        FLOATING_NUMBER getSpeed(int i);
-        FLOATING_NUMBER getPropulsionForce(int i);
-        FLOATING_NUMBER getRepulsionForce(int i);
+        std::vector<FLOATING_NUMBER>* getSpeeds();
+        std::vector<FLOATING_NUMBER>* getPropulsionForces();
+        std::vector<FLOATING_NUMBER>* getRepulsionForces();
 
     private:
         int numPedestrians;
-        std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
-        std::vector<FLOATING_NUMBER> massesKg;
-        std::vector<FLOATING_NUMBER> reactionTimesSeconds;
+        FLOATING_NUMBER desiredSpeed;
+        FLOATING_NUMBER massKg;
+        FLOATING_NUMBER reactionTime;
 
-        std::vector<int> nearestNeighbors; //move to the specific model
+        std::vector<std::string> aims; //vector of aim strings used to determine the aim of the pedestrian such as down to isle or up to isle or in isle
+        std::vector<int> nearestNeighbor;
 
-        //intermediate goals are here, completion of goals determined in goal class
-            //intermediate goals should be able to be used in place of aims
+
         std::vector<FLOATING_NUMBER> goalXCoordinates;
         std::vector<FLOATING_NUMBER> goalYCoordinates;
 
         std::vector<FLOATING_NUMBER> xCoordinates;
         std::vector<FLOATING_NUMBER> yCoordinates;
 
-        //add currentVelocities (vectors)
-        std::vector<FLOATING_NUMBER> desiredSpeeds;
-        //forces and types of forces are model dependent, need to refactor (tbd)
+        std::vector<FLOATING_NUMBER> speeds;
         std::vector<FLOATING_NUMBER> propulsionForces;
         std::vector<FLOATING_NUMBER> repulsionForces;
 };

@@ -2,6 +2,7 @@
 #define INPUT_DATALOADER_HPP
 
 #include <vector>
+#include <utility>
 
 #include "data.hpp"
 
