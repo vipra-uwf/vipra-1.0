@@ -6,6 +6,11 @@ void CalmPedestrianModel::setData(Data* initialData)
     this->data = initialData;
 }
 
+Data* CalmPedestrianModel::getData()
+{
+    return this->data;
+}
+
 void CalmPedestrianModel::precompute()
 {
     //TODO: Perform precomputation for all passengers
@@ -59,14 +64,4 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int id)
     FLOATING_NUMBER c = 0.966;
 
     return (c - exp(a * (data->getPedestrianSet()->calculateDistance(id, data->getPedestrianSet()->getNearestNeighbor()->at(id)) - b)));
-}
-
-void CalmPedestrianModel::printPedestrianCoordinates()
-{
-    this->data->printPedestrianCoordinates();
-}
-
-void CalmPedestrianModel::printObstacleCoordinates()
-{
-    this->data->printObstacleCoordinates();
 }

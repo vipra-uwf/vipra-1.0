@@ -89,6 +89,7 @@ void XMLWriter::writeData(Data* data)
 
     writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinates());
     writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinates());
+    // writeVectorDataToNodes("type", *data->getPedestrianSet()->getTypes());
 
     this->fileStream << this->document;
 

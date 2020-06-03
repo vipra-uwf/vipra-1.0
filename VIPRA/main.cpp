@@ -9,12 +9,8 @@ int main()
 {
 
     Data data;
+
     XMLReader xmlReader;
-
-    xmlReader.extractFileData("pedestrian_coordinates.xml", "pedestrian-set", "pedestrian");
-    xmlReader.storeData(&data);
-
-    xmlReader.extractFileData("obstacle_coordinates.xml", "obstacle-set", "obstacle");
     xmlReader.storeData(&data);
 
     CalmPedestrianModel calmModel;
@@ -22,9 +18,11 @@ int main()
     
     Simulation simulation(&calmModel);
 
-    XMLWriter xmlWriter;
-    xmlWriter.configureXMLDocumentStructure("export_pedestrian_data.xml", "pedestrian-set", "pedestrian", "1.0", "utf-8");
-    xmlWriter.writeData(&data);
+    simulation.run();
+
+    // XMLWriter xmlWriter;
+    // xmlWriter.configureXMLDocumentStructure("export_pedestrian_data.xml", "pedestrian-set", "pedestrian", "1.0", "utf-8");
+    // xmlWriter.writeData(&data);
 
     return 0;
 }

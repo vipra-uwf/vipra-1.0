@@ -8,6 +8,7 @@ class PedestrianDynamicsModel
 {
     public:
         virtual void setData(Data* initialData) = 0;
+        virtual Data* getData() = 0;
         virtual void precompute() = 0;
         virtual void update() = 0;
 
@@ -15,11 +16,10 @@ class PedestrianDynamicsModel
         virtual void calculateRepulsion() = 0;
         virtual FLOATING_NUMBER calculateBeta(int id) = 0;
 
+
+
         //TODO refactor to not use Pedestrian obj, maybe send a pointer to obstacleSet object?
         //virtual void calculatePropulsion(Pedestrian* currentPedestrian) = 0;
-        
-        virtual void printPedestrianCoordinates() = 0;
-        virtual void printObstacleCoordinates() = 0;
 
 };
 

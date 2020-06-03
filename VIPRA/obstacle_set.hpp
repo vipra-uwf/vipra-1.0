@@ -8,6 +8,10 @@ class ObstacleSet{
         int getNumObstacles();
         std::vector<FLOATING_NUMBER>* getXCoordinates();
         std::vector<FLOATING_NUMBER>* getYCoordinates();
+        
+        void setXCoordinates(std::vector<FLOATING_NUMBER>);
+        void setYCoordinates(std::vector<FLOATING_NUMBER>);
+
     private:
         int numObstacles;
         std::vector<FLOATING_NUMBER> xCoordinates;

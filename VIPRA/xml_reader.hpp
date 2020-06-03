@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <string>
-#include <iostream>
 #include <fstream>
 #include <cstring>
 
@@ -15,9 +14,6 @@
 class XMLReader: public InputDataLoader
 {
     public:
-        XMLReader();
-        
-        void extractFileData(std::string, std::string, std::string);
         virtual void storeData(Data*);
        
     private:
@@ -37,9 +33,14 @@ class XMLReader: public InputDataLoader
         void readFile();
         void parseXMLDocument();
 
-        void setData(Data*);
         void initializeTraversalNodes();
-        FLOATING_NUMBER getNodeAttributeValue(rapidxml::xml_node<>*, std::string); //probably change to return any type
+        FLOATING_NUMBER getFloatValue(rapidxml::xml_node<>*, std::string);
+        std::string getStringValue(rapidxml::xml_node<>*, std::string);
+
+        std::vector<FLOATING_NUMBER> getFloatDataSet(std::string);
+        std::vector<std::string> getStringDataSet(std::string);
+
+        void extractFileData(std::string, std::string, std::string);
 };
 
 #endif

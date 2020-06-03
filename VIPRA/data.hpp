@@ -19,6 +19,7 @@ class Data
         void printObstacleCoordinates();
 
         PedestrianSet* getPedestrianSet();
+        ObstacleSet* getObstacleSet();
 
     private:
         PedestrianSet pedestrianSet;
