@@ -21,3 +21,17 @@ std::vector<FLOATING_NUMBER>* ObstacleSet::getXCoordinates(){
 std::vector<FLOATING_NUMBER>* ObstacleSet::getYCoordinates(){
     return &this->yCoordinates;
 }
+
+
+
+
+void ObstacleSet::setXCoordinates(std::vector<FLOATING_NUMBER> xCoordinates)
+{
+    this->xCoordinates = xCoordinates;
+}
+
+void ObstacleSet::setYCoordinates(std::vector<FLOATING_NUMBER> yCoordinates)
+{
+    this->yCoordinates = yCoordinates;
+}
+

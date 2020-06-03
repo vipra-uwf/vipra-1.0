@@ -3,7 +3,12 @@
 #include <string>
 #include <math.h>
 
-class PedestrianSet{
+
+
+#include <iostream>
+
+class PedestrianSet
+{
     public:
         PedestrianSet();
         void addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate);
@@ -27,10 +32,29 @@ class PedestrianSet{
 
         std::vector<FLOATING_NUMBER>* getXCoordinates();
         std::vector<FLOATING_NUMBER>* getYCoordinates();
+        std::vector<std::string>* getTypes();
        
         std::vector<FLOATING_NUMBER>* getSpeeds();
         std::vector<FLOATING_NUMBER>* getPropulsionForces();
         std::vector<FLOATING_NUMBER>* getRepulsionForces();
+
+
+        void setXCoordinates(std::vector<FLOATING_NUMBER>);
+        void setYCoordinates(std::vector<FLOATING_NUMBER>);
+        void setTypes(std::vector<std::string>);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private:
         int numPedestrians;
@@ -48,6 +72,7 @@ class PedestrianSet{
 
         std::vector<FLOATING_NUMBER> xCoordinates;
         std::vector<FLOATING_NUMBER> yCoordinates;
+        std::vector<std::string> types;
 
         std::vector<FLOATING_NUMBER> speeds;
 

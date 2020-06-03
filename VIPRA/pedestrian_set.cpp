@@ -194,6 +194,11 @@ std::vector<FLOATING_NUMBER>* PedestrianSet::getYCoordinates()
     return &this->yCoordinates;
 }
 
+std::vector<std::string>* PedestrianSet::getTypes()
+{
+    return &this->types;
+}
+
 std::vector<FLOATING_NUMBER>* PedestrianSet::getSpeeds()
 {
    return &this->speeds;
@@ -208,3 +213,22 @@ std::vector<FLOATING_NUMBER>* PedestrianSet::getRepulsionForces()
 {
     return &this->repulsionForces;
 }
+
+
+
+void PedestrianSet::setXCoordinates(std::vector<FLOATING_NUMBER> xCoordinates)
+{
+    this->xCoordinates = xCoordinates;
+}
+
+void PedestrianSet::setYCoordinates(std::vector<FLOATING_NUMBER> yCoordinates)
+{
+    this->yCoordinates = yCoordinates;
+}
+
+void PedestrianSet::setTypes(std::vector<std::string> types)
+{
+    this->types = types;
+}
+
+
