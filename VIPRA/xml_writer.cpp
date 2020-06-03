@@ -60,7 +60,7 @@ void XMLWriter::initializeDataNodes()
 
 void XMLWriter::writeVectorDataToNodes(std::string key, std::vector<FLOATING_NUMBER> valuesVector)
 {
-    int i = 0; 
+    int i = 0;
 
     for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); dataNode; dataNode = dataNode->next_sibling())
     {
@@ -84,14 +84,14 @@ void XMLWriter::configureXMLDocumentStructure(std::string fileName, std::string 
 
 void XMLWriter::writeData(Data* data)
 {
-    setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
-    initializeDataNodes();
+    //setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
+    //initializeDataNodes();
 
-    writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinates());
-    writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinates());
+    //writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinate());
+    //writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinate());
 
-    this->fileStream << this->document;
+    //this->fileStream << this->document;
 
-    this->fileStream.close();
-    this->document.clear();
+    //this->fileStream.close();
+    //this->document.clear();
 }
