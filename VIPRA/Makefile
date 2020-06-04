@@ -1,5 +1,5 @@
-CC = g++
-CXXFLAGS = -std=c++11 -g -Wall
+CXX = g++
+CXXFLAGS = -std=c++11 -g
 
 SRCS = $(wildcard *.cpp)
 OBJECTS = $(SRCS:%.cpp=%.o)
@@ -7,7 +7,7 @@ OBJECTS = $(SRCS:%.cpp=%.o)
 HEADERS := $(shell find . -path ./test -prune -o -name "*.hpp" -print)
 
 main: main.o $(OBJECTS)
-	$(CC) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 $(OBJECTS): $(HEADERS)
 
