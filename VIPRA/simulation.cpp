@@ -10,9 +10,9 @@ Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
 {
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
 
-    std::cout << "\nInitializing simulation with coordinates: " << std::endl;
-    this->pedestrianDynamicsModel->printPedestrianCoordinates();
-    this->pedestrianDynamicsModel->printObstacleCoordinates();
+    // std::cout << "\nInitializing simulation with coordinates: " << std::endl;
+    // this->pedestrianDynamicsModel->printPedestrianCoordinates();
+    // this->pedestrianDynamicsModel->printObstacleCoordinates();
     this->pedestrianDynamicsModel->precompute();
 
 }
@@ -33,5 +33,31 @@ void Simulation::run()
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
+
+
+
+   printDataDELETETHIS(); 
+
 }
 
+void Simulation::printDataDELETETHIS()
+{
+    Data* data = this->pedestrianDynamicsModel->getData();
+
+    std::cout << "Pedestrians: " << std::endl; 
+
+    for(int i = 0; i < (data->getPedestrianSet()->getXCoordinates()->size()); i++)
+    {
+        std::cout << "[" << (*data->getPedestrianSet()->getXCoordinates())[i] << ", ";
+        std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "] ";
+        std::cout << (*data->getPedestrianSet()->getTypes())[i] << std::endl;
+    }
+
+    std::cout <<"\nObstacles: " << std::endl;
+   
+    for(int i = 0; i < (data->getObstacleSet()->getXCoordinates()->size()); i++)
+    {
+        std::cout << "[" << (*data->getObstacleSet()->getXCoordinates())[i] << ", ";
+        std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "] " << std::endl;
+    }
+}

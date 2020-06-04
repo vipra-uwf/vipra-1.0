@@ -6,6 +6,11 @@ void CalmPedestrianModel::setData(Data* initialData)
     this->data = initialData;
 }
 
+Data* CalmPedestrianModel::getData()
+{
+    return this->data;
+}
+
 void CalmPedestrianModel::precompute()
 {
     //TODO: Perform precomputation for all passengers

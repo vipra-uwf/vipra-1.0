@@ -9,6 +9,7 @@
 #include "rapidxml-1.13/rapidxml.hpp"
 #include "input_data_loader.hpp"
 #include "pedestrian_dynamics_model.hpp"
+#include "data.hpp" //REMOVE ME WHEN PRINTDATADELETETHIS() IS REMOVED
 
 class Simulation
 {
@@ -16,6 +17,8 @@ class Simulation
         Simulation();
         Simulation(PedestrianDynamicsModel*);
         void run();
+
+        void printDataDELETETHIS();
 
     private:
         PedestrianDynamicsModel* pedestrianDynamicsModel;

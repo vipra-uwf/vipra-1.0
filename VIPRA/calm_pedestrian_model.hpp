@@ -11,6 +11,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     public:
         virtual void setData(Data* initialData);
+        virtual Data* getData();
         virtual void precompute();
         virtual void update();
 

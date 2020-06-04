@@ -28,10 +28,10 @@ class PedestrianSet{
         FLOATING_NUMBER getMassKg(int);
         FLOATING_NUMBER getReactionTimeSeconds(int);
 
-        std::vector<FLOATING_NUMBER> getXCoordinates();
-        std::vector<FLOATING_NUMBER> getYCoordinates();
+        std::vector<FLOATING_NUMBER>* getXCoordinates();
+        std::vector<FLOATING_NUMBER>* getYCoordinates();
 
-        std::vector<std::string> getTypes();
+        std::vector<std::string>* getTypes();
 
         FLOATING_NUMBER getXCoordinate(int);
         FLOATING_NUMBER getYCoordinate(int);

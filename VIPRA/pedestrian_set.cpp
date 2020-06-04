@@ -87,19 +87,19 @@ int PedestrianSet::getNearestNeighbor(int pedestrianIndex)
 {
     return this->nearestNeighbors.at(pedestrianIndex);
 }
-std::vector<FLOATING_NUMBER> PedestrianSet::getXCoordinates()
+std::vector<FLOATING_NUMBER>* PedestrianSet::getXCoordinates()
 {
-    return xCoordinates;
+    return &xCoordinates;
 }
 
-std::vector<FLOATING_NUMBER> PedestrianSet::getYCoordinates()
+std::vector<FLOATING_NUMBER>* PedestrianSet::getYCoordinates()
 {
-    return yCoordinates;
+    return &yCoordinates;
 }
 
-std::vector<std::string> PedestrianSet::getTypes()
+std::vector<std::string>* PedestrianSet::getTypes()
 {
-    return types;
+    return &types;
 }
 
 FLOATING_NUMBER PedestrianSet::getXCoordinate(int pedestrianIndex)
