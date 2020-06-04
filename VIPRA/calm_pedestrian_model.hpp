@@ -24,7 +24,6 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         FLOATING_NUMBER calculateBeta(int);
         int calculateNearestNeighbor(int);
 
-
     private:
         Data* data;
 

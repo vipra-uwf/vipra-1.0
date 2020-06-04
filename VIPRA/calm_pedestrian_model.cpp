@@ -62,13 +62,3 @@ int CalmPedestrianModel::calculateNearestNeighbor(int pedestrianIndex)
 {
     return 1;
 }
-
-void CalmPedestrianModel::printPedestrianCoordinates()
-{
-    this->data->printPedestrianCoordinates();
-}
-
-void CalmPedestrianModel::printObstacleCoordinates()
-{
-    this->data->printObstacleCoordinates();
-}
