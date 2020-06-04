@@ -25,7 +25,7 @@ class XMLWriter: public OutputDataWriter
         std::ofstream fileStream;
         std::string rootNodeName;
         std::string dataNodeName;
-        int numDataNodes;     
+        int numDataNodes;
         rapidxml::xml_document<> document;
         rapidxml::xml_node<>* rootNode;
 

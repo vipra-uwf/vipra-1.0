@@ -14,10 +14,24 @@ int ObstacleSet::getNumObstacles(){
     return this->numObstacles;
 }
 
-FLOATING_NUMBER ObstacleSet::getXCoordinate(int i){
-    return this->xCoordinates.at(i);
+std::vector<FLOATING_NUMBER>* ObstacleSet::getXCoordinates(){
+    return &this->xCoordinates;
 }
 
-FLOATING_NUMBER ObstacleSet::getYCoordinate(int i){
-    return this->yCoordinates.at(i);
+std::vector<FLOATING_NUMBER>* ObstacleSet::getYCoordinates(){
+    return &this->yCoordinates;
 }
+
+
+
+
+void ObstacleSet::setXCoordinates(std::vector<FLOATING_NUMBER> xCoordinates)
+{
+    this->xCoordinates = xCoordinates;
+}
+
+void ObstacleSet::setYCoordinates(std::vector<FLOATING_NUMBER> yCoordinates)
+{
+    this->yCoordinates = yCoordinates;
+}
+

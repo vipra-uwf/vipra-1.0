@@ -37,6 +37,31 @@ FLOATING_NUMBER PedestrianSet::calculateDistance(int pedestrianIndexOfFirst, int
     return (sqrt(xDistance + yDistance));
 }
 
+void PedestrianSet::setXCoordinates(std::vector<FLOATING_NUMBER> xCoordinates)
+{
+    this->xCoordinates = xCoordinates;
+}
+
+void PedestrianSet::setYCoordinates(std::vector<FLOATING_NUMBER> yCoordinates)
+{
+    this->yCoordinates = yCoordinates;
+}
+
+void PedestrianSet::setTypes(std::vector<std::string> types)
+{
+    this->types = types;
+}
+
+void PedestrianSet::setXCoordinate(int pedestrianIndex, FLOATING_NUMBER newPosition)
+{
+    xCoordinates.at(pedestrianIndex) = newPosition;
+}
+
+void PedestrianSet::setYCoordinate(int pedestrianIndex, FLOATING_NUMBER newPosition)
+{
+    yCoordinates.at(pedestrianIndex) = newPosition;
+}
+
 int PedestrianSet::getNumPedestrians()
 {
     return this->numPedestrians;
@@ -61,6 +86,20 @@ FLOATING_NUMBER PedestrianSet::getReactionTimeSeconds(int pedestrianIndex)
 int PedestrianSet::getNearestNeighbor(int pedestrianIndex)
 {
     return this->nearestNeighbors.at(pedestrianIndex);
+}
+std::vector<FLOATING_NUMBER> PedestrianSet::getXCoordinates()
+{
+    return xCoordinates;
+}
+
+std::vector<FLOATING_NUMBER> PedestrianSet::getYCoordinates()
+{
+    return yCoordinates;
+}
+
+std::vector<std::string> PedestrianSet::getTypes()
+{
+    return types;
 }
 
 FLOATING_NUMBER PedestrianSet::getXCoordinate(int pedestrianIndex)

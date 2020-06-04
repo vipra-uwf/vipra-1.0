@@ -10,18 +10,28 @@ class PedestrianSet{
 
         void setPropulsionForces(int, FLOATING_NUMBER);
         void setRepulsionForces(int, FLOATING_NUMBER);
-        int getNumPedestrians();
+
+        void setXCoordinates(std::vector<FLOATING_NUMBER>);
+        void setYCoordinates(std::vector<FLOATING_NUMBER>);
+
+        void setTypes(std::vector<std::string>);
+
+        void setXCoordinate(int, FLOATING_NUMBER);
+        void setYCoordinate(int, FLOATING_NUMBER);
 
         FLOATING_NUMBER calculateDistance(int, int);
         void calculateNearestNeighbor();
 
-
-
-
+        int getNumPedestrians();
         int getNearestNeighbor(int);
         FLOATING_NUMBER getDesiredSpeed(int);
         FLOATING_NUMBER getMassKg(int);
         FLOATING_NUMBER getReactionTimeSeconds(int);
+
+        std::vector<FLOATING_NUMBER> getXCoordinates();
+        std::vector<FLOATING_NUMBER> getYCoordinates();
+
+        std::vector<std::string> getTypes();
 
         FLOATING_NUMBER getXCoordinate(int);
         FLOATING_NUMBER getYCoordinate(int);
@@ -45,6 +55,8 @@ class PedestrianSet{
 
         std::vector<FLOATING_NUMBER> xCoordinates;
         std::vector<FLOATING_NUMBER> yCoordinates;
+
+        std::vector<std::string> types;
 
         //add currentVelocities (vectors)
         std::vector<FLOATING_NUMBER> currentVelocityX;

@@ -84,14 +84,15 @@ void XMLWriter::configureXMLDocumentStructure(std::string fileName, std::string 
 
 void XMLWriter::writeData(Data* data)
 {
-    //setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
-    //initializeDataNodes();
+    setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
+    initializeDataNodes();
 
-    //writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinate());
-    //writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinate());
+    writeVectorDataToNodes("x", data->getPedestrianSet()->getXCoordinates());
+    writeVectorDataToNodes("y", data->getPedestrianSet()->getYCoordinates());
+//    writeVectorDataToNodes("type", data->getPedestrianSet()->getTypes());
 
-    //this->fileStream << this->document;
+    this->fileStream << this->document;
 
-    //this->fileStream.close();
-    //this->document.clear();
+    this->fileStream.close();
+    this->document.clear();
 }

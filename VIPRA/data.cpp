@@ -6,22 +6,20 @@ Data::Data()
     obstacleSet = ObstacleSet();
 }
 
-PedestrianSet* Data::getPedestrianSet(){
+PedestrianSet* Data::getPedestrianSet()
+{
     return &this->pedestrianSet;
 }
 
-void Data::pushCoordinates(std::string parseElement, FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate)
+ObstacleSet* Data::getObstacleSet()
 {
-    //this is not how we do this, will refactor
-    if(parseElement.compare("pedestrian") == 0)
-    {
-        pedestrianSet.addPedestrian(xCoordinate, yCoordinate);
-    }
-    else if(parseElement.compare("obstacle") == 0)
-    {
-        obstacleSet.addObstacle(xCoordinate, yCoordinate);
-    }
+    return &this->obstacleSet;
 }
+
+
+
+
+
 
 void Data::printPedestrianCoordinates()
 {
@@ -35,11 +33,11 @@ void Data::printPedestrianCoordinates()
 
 void Data::printObstacleCoordinates()
 {
-    for(int pedestrianIndex = 0; pedestrianIndex < this->obstacleSet.getNumObstacles(); ++pedestrianIndex)
+    for(int i = 0; i < this->obstacleSet.getNumObstacles(); ++i)
     {
-        std::cout << "Obstacle " << pedestrianIndex + 1 << " ["
-        << this->obstacleSet.getXCoordinate(pedestrianIndex) << ", "
-        << this->obstacleSet.getYCoordinate(pedestrianIndex) << "]" << std::endl;
+        std::cout << "Obstacle " << i + 1 << " ["
+        << this->obstacleSet.getXCoordinates()->at(i) << ", "
+        << this->obstacleSet.getYCoordinates()->at(i) << "]" << std::endl;
     }
 }
 

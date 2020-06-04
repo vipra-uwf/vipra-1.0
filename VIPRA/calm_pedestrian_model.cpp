@@ -55,7 +55,7 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedestrianIndex)
 
 int CalmPedestrianModel::calculateNearestNeighbor(int pedestrianIndex)
 {
-
+    return 1;
 }
 
 void CalmPedestrianModel::printPedestrianCoordinates()
