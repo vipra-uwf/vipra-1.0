@@ -29,4 +29,8 @@ void Simulation::run()
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
+
+    printDataDELETETHIS();
+
+
 }

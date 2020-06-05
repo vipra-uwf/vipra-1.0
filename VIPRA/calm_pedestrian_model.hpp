@@ -20,6 +20,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 
         FLOATING_NUMBER calculateDistance(int, int);
 
+
         FLOATING_NUMBER calculateBeta(int);
         int calculateNearestNeighbor(int);
 
