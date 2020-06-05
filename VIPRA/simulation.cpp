@@ -34,3 +34,26 @@ void Simulation::run()
 
 
 }
+
+
+void Simulation::printDataDELETETHIS()
+{
+    Data* data = this->pedestrianDynamicsModel->getData();
+
+    std::cout << "Pedestrians: " << std::endl; 
+
+    for(int i = 0; i < (data->getPedestrianSet()->getXCoordinates()->size()); i++)
+    {
+        std::cout << "[" << (*data->getPedestrianSet()->getXCoordinates())[i] << ", ";
+        std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "] ";
+        std::cout << (*data->getPedestrianSet()->getTypes())[i] << std::endl;
+    }
+
+    std::cout <<"\nObstacles: " << std::endl;
+   
+    for(int i = 0; i < (data->getObstacleSet()->getXCoordinates()->size()); i++)
+    {
+        std::cout << "[" << (*data->getObstacleSet()->getXCoordinates())[i] << ", ";
+        std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "] " << std::endl;
+    }
+}

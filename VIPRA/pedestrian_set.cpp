@@ -85,14 +85,14 @@ FLOATING_NUMBER PedestrianSet::getGoalYCoordinates(int pedestrianIndex)
     return this->goalYCoordinates.at(pedestrianIndex);
 }
 
-std::vector<FLOATING_NUMBER> PedestrianSet::getXCoordinates()
+std::vector<FLOATING_NUMBER>* PedestrianSet::getXCoordinates()
 {
-    return xCoordinates;
+    return &xCoordinates;
 }
 
-std::vector<FLOATING_NUMBER> PedestrianSet::getYCoordinates()
+std::vector<FLOATING_NUMBER>* PedestrianSet::getYCoordinates()
 {
-    return yCoordinates;
+    return &yCoordinates;
 }
 
 std::vector<std::string>* PedestrianSet::getTypes()

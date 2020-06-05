@@ -29,15 +29,13 @@ class PedestrianSet{
 
         FLOATING_NUMBER getGoalXCoordinates(int);
         FLOATING_NUMBER getGoalYCoordinates(int);
-
-        std::vector<FLOATING_NUMBER> getXCoordinates();
-        std::vector<FLOATING_NUMBER> getYCoordinates();
-
-
-        std::vector<std::string>* getTypes();
+ 
         FLOATING_NUMBER getXCoordinate(int);
         FLOATING_NUMBER getYCoordinate(int);
-
+        std::vector<FLOATING_NUMBER>* getXCoordinates();
+        std::vector<FLOATING_NUMBER>* getYCoordinates();
+        std::vector<std::string>* getTypes();
+        
         FLOATING_NUMBER getSpeed(int);
 
     private:
@@ -54,6 +52,7 @@ class PedestrianSet{
 
         std::vector<FLOATING_NUMBER> xCoordinates;
         std::vector<FLOATING_NUMBER> yCoordinates;
+        std::vector<std::string> types;
 
 
         //add currentVelocities (vectors)
