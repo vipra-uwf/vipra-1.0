@@ -18,9 +18,6 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void calculatePropulsion();
         virtual void calculateRepulsion();
 
-        virtual void printPedestrianCoordinates();
-        virtual void printObstacleCoordinates();
-
         FLOATING_NUMBER calculateBeta(int);
         int calculateNearestNeighbor(int);
 
