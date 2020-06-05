@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<pedestrian-set>
+	<pedestrian x="5.100000" y="3.800000"/>
+	<pedestrian x="7.500000" y="2.100000"/>
+	<pedestrian x="-2.600000" y="-3.700000"/>
+	<pedestrian x="-1.900000" y="-2.200000"/>
 <pedestrian-set/>
+
 

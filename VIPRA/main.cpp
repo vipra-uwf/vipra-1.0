@@ -15,7 +15,7 @@ int main()
 
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
-    
+
     Simulation simulation(&calmModel);
 
     simulation.run();

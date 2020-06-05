@@ -60,7 +60,7 @@ void XMLWriter::initializeDataNodes()
 
 void XMLWriter::writeVectorDataToNodes(std::string key, std::vector<FLOATING_NUMBER> valuesVector)
 {
-    int i = 0; 
+    int i = 0;
 
     for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); dataNode; dataNode = dataNode->next_sibling())
     {
@@ -89,7 +89,8 @@ void XMLWriter::writeData(Data* data)
 
     writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinates());
     writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinates());
-    // writeVectorDataToNodes("type", *data->getPedestrianSet()->getTypes());
+    //writeVectorDataToNodes("type", data->getPedestrianSet()->getTypes()); this line needs to be fixed it does not work with the function it is calling
+
 
     this->fileStream << this->document;
 

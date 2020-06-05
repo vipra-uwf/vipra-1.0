@@ -23,11 +23,11 @@ ObstacleSet* Data::getObstacleSet()
 
 void Data::printPedestrianCoordinates()
 {
-    for(int i = 0; i < this->pedestrianSet.getNumPedestrians(); ++i)
+    for(int pedestrianIndex = 0; pedestrianIndex < this->pedestrianSet.getNumPedestrians(); ++pedestrianIndex)
     {
-        std::cout << "Pedestrian " << i + 1 << " [" 
-        << this->pedestrianSet.getXCoordinates()->at(i) << ", "
-        << this->pedestrianSet.getYCoordinates()->at(i) << "]" << std::endl;
+        std::cout << "Pedestrian " << pedestrianIndex + 1 << " ["
+        << this->pedestrianSet.getXCoordinate(pedestrianIndex) << ", "
+        << this->pedestrianSet.getYCoordinate(pedestrianIndex) << "]" << std::endl;
     }
 }
 
@@ -35,7 +35,7 @@ void Data::printObstacleCoordinates()
 {
     for(int i = 0; i < this->obstacleSet.getNumObstacles(); ++i)
     {
-        std::cout << "Obstacle " << i + 1 << " [" 
+        std::cout << "Obstacle " << i + 1 << " ["
         << this->obstacleSet.getXCoordinates()->at(i) << ", "
         << this->obstacleSet.getYCoordinates()->at(i) << "]" << std::endl;
     }

@@ -9,9 +9,6 @@ Simulation::Simulation()
 Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
 {
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
-
-
-
     this->pedestrianDynamicsModel->precompute();
 
 }
@@ -32,11 +29,6 @@ void Simulation::run()
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
-
-
-
-   printDataDELETETHIS(); 
-
 }
 
 void Simulation::printDataDELETETHIS()
@@ -60,4 +52,3 @@ void Simulation::printDataDELETETHIS()
         std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "] " << std::endl;
     }
 }
-
