@@ -31,22 +31,28 @@ void CalmPedestrianModel::update()
 void CalmPedestrianModel::calculatePropulsion()
 {
 
-     FLOATING_NUMBER forceOfPropulsion;
-     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
-     {
-         propulsionForces.at(pedestrianIndex) = ((data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex) - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex)) * data->getPedestrianSet()->getMassKg(pedestrianIndex);
-     }
+    std::cout << "calculatePropulsion(): numPedestrians = " << data->getPedestrianSet()->getNumPedestrians() << std::endl;
+    
+    
+    FLOATING_NUMBER forceOfPropulsion;
 
+    for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
+    {
+        std::cout << "pedestrianIndex: " << pedestrianIndex << std::endl;
+
+        propulsionForces.at(pedestrianIndex) = ((data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex) - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex)) * data->getPedestrianSet()->getMassKg(pedestrianIndex);
+    }
 }
 
 void CalmPedestrianModel::calculateRepulsion()
 {
 
-     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
-     {
-         repulsionForces.at(pedestrianIndex) = (pedestrianIndex, (((calculateBeta(pedestrianIndex)*data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex)) - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex)));
-     }
+    std::cout << "calculateRepulsion(): numPedestrians = " << data->getPedestrianSet()->getNumPedestrians() << std::endl;
 
+    for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
+    {
+        repulsionForces.at(pedestrianIndex) = (pedestrianIndex, (((calculateBeta(pedestrianIndex)*data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex)) - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex)));
+    }
 }
 
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedestrianIndex)

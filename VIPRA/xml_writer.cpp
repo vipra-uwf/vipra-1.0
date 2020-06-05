@@ -1,8 +1,29 @@
 #include "xml_writer.hpp"
 
-XMLWriter::XMLWriter()
+void XMLWriter::configureXMLDocumentStructure(std::string fileName, std::string rootNodeName, std::string dataNodeName, std::string versionNum, std::string encodingType)
 {
+    openFile(fileName);
+    setRootNodeName(rootNodeName);
+    setDataNodeName(dataNodeName);
 
+    initializeXMLDeclaration(versionNum, encodingType);
+    initializeRootNode();
+}
+
+void XMLWriter::writeData(Data* data)
+{
+    //rethink -- dont rely on one vector.. 
+    setNumDataNodes(data->getPedestrianSet()->getXCoordinates()->size());
+    initializeDataNodes();
+
+    writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinates());
+    writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinates());
+    //writeVectorDataToNodes("type", *data->getPedestrianSet()->getTypes()); 
+
+    this->fileStream << this->document;
+
+    this->fileStream.close();
+    this->document.clear();
 }
 
 void XMLWriter::openFile(std::string fileName)
@@ -52,6 +73,9 @@ void XMLWriter::appendDataNodeAttribute(rapidxml::xml_node<>* node, std::string 
 
 void XMLWriter::initializeDataNodes()
 {
+
+    // std::cout << "Initializing nodes: " << this->numDataNodes << std::endl;
+
     for(int i = 0; i < this->numDataNodes; ++i)
     {
         generateDataNode();
@@ -71,29 +95,3 @@ void XMLWriter::writeVectorDataToNodes(std::string key, std::vector<FLOATING_NUM
     }
 }
 
-void XMLWriter::configureXMLDocumentStructure(std::string fileName, std::string rootNodeName, std::string dataNodeName, std::string versionNum, std::string encodingType)
-{
-    openFile(fileName);
-    setRootNodeName(rootNodeName);
-    setDataNodeName(dataNodeName);
-
-    initializeXMLDeclaration(versionNum, encodingType);
-    initializeRootNode();
-}
-
-
-void XMLWriter::writeData(Data* data)
-{
-    setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
-    initializeDataNodes();
-
-    // writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinates());
-    // writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinates());
-    // //writeVectorDataToNodes("type", data->getPedestrianSet()->getTypes()); this line needs to be fixed it does not work with the function it is calling
-
-
-    this->fileStream << this->document;
-
-    this->fileStream.close();
-    this->document.clear();
-}

@@ -2,11 +2,12 @@
 #include <vector>
 #include <string>
 #include <math.h>
+#include <iostream> //remove me
 
 class PedestrianSet{
     public:
         PedestrianSet();
-        void addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate);
+        // void addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate);
 
         void setGoalXCoordinates(int, FLOATING_NUMBER);
         void setGoalYCoordinates(int, FLOATING_NUMBER);

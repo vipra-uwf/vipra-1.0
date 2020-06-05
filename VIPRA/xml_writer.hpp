@@ -16,7 +16,6 @@
 class XMLWriter: public OutputDataWriter
 {
     public:
-        XMLWriter();
         void configureXMLDocumentStructure(std::string, std::string, std::string, std::string, std::string);
         virtual void writeData(Data*);
 

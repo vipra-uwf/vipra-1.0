@@ -1,13 +1,11 @@
 #ifndef SIMULATION_HPP
 #define SIMULATION_HPP
 
-//#include <vector>
-#include <iostream>
-//#include <fstream>
-#include <string>
+#include <iostream> 
 
 #include "rapidxml-1.13/rapidxml.hpp"
-#include "input_data_loader.hpp"
+#include "input_data_loader.hpp" //may be able to remove -- is data *always* loaded outside of the simulation?
+#include "output_data_writer.hpp"
 #include "pedestrian_dynamics_model.hpp"
 #include "data.hpp" //REMOVE ME WHEN PRINTDATADELETETHIS() IS REMOVED
 
@@ -18,10 +16,14 @@ class Simulation
         Simulation(PedestrianDynamicsModel*);
         void run();
 
+        void setOutputDataWriter(OutputDataWriter*);
+
+
         void printDataDELETETHIS();
 
     private:
         PedestrianDynamicsModel* pedestrianDynamicsModel;
+        OutputDataWriter* outputDataWriter;
 };
 
 #endif

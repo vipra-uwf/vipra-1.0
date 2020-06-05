@@ -9,9 +9,15 @@ Simulation::Simulation()
 Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
 {
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
-    this->pedestrianDynamicsModel->precompute();
 
 }
+
+void Simulation::setOutputDataWriter(OutputDataWriter* outputDataWriter)
+{
+    this->outputDataWriter = outputDataWriter;
+}
+
+
 
 //pedestrian dynamics model
     //input to model - pedestrians, layout, goal for each pedestrian
@@ -30,9 +36,14 @@ void Simulation::run()
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
 
+       // xmlWriter.writeData(&data);
+
+    // this->pedestrianDynamicsModel->precompute();
+
     printDataDELETETHIS();
 
 
+    this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
 }
 
 
@@ -42,7 +53,7 @@ void Simulation::printDataDELETETHIS()
 
     std::cout << "Pedestrians: " << std::endl; 
 
-    for(int i = 0; i < (data->getPedestrianSet()->getXCoordinates()->size()); i++)
+    for(long long unsigned int i = 0; i < (data->getPedestrianSet()->getXCoordinates()->size()); i++)
     {
         std::cout << "[" << (*data->getPedestrianSet()->getXCoordinates())[i] << ", ";
         std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "] ";
@@ -51,7 +62,7 @@ void Simulation::printDataDELETETHIS()
 
     std::cout <<"\nObstacles: " << std::endl;
    
-    for(int i = 0; i < (data->getObstacleSet()->getXCoordinates()->size()); i++)
+    for(long long unsigned int i = 0; i < (data->getObstacleSet()->getXCoordinates()->size()); i++)
     {
         std::cout << "[" << (*data->getObstacleSet()->getXCoordinates())[i] << ", ";
         std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "] " << std::endl;

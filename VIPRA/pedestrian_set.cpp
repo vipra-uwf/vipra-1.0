@@ -5,16 +5,18 @@ PedestrianSet::PedestrianSet()
     numPedestrians = 0;
 }
 
-void PedestrianSet::addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate)
-{
-    this->xCoordinates.push_back(xCoordinate);
-    this->yCoordinates.push_back(yCoordinate);
+// void PedestrianSet::addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate)
+// {
+//     this->xCoordinates.push_back(xCoordinate);
+//     this->yCoordinates.push_back(yCoordinate);
 
-    goalXCoordinates.push_back(0);
-    goalYCoordinates.push_back(0);
+//     goalXCoordinates.push_back(0);
+//     goalYCoordinates.push_back(0);
 
-    numPedestrians++;
-}
+//     numPedestrians++;
+// }
+
+
 
 void PedestrianSet::setGoalXCoordinates(int pedestrianIndex, FLOATING_NUMBER goalXCoordinate)
 {
@@ -58,6 +60,8 @@ void PedestrianSet::setYCoordinate(int pedestrianIndex, FLOATING_NUMBER yCoordin
 
 int PedestrianSet::getNumPedestrians()
 {
+    this->numPedestrians = this->xCoordinates.size();
+    
     return this->numPedestrians;
 }
 
