@@ -15,9 +15,10 @@ class PedestrianDynamicsModel
         virtual void calculatePropulsion() = 0;
         virtual void calculateRepulsion() = 0;
 
+
+
         //TODO refactor to not use Pedestrian obj, maybe send a pointer to obstacleSet object?
         //virtual void calculatePropulsion(Pedestrian* currentPedestrian) = 0;
-
 };
 
 #endif
