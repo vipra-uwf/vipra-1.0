@@ -87,9 +87,9 @@ void XMLWriter::writeData(Data* data)
     setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
     initializeDataNodes();
 
-    writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinates());
-    writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinates());
-    //writeVectorDataToNodes("type", data->getPedestrianSet()->getTypes()); this line needs to be fixed it does not work with the function it is calling
+    // writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinates());
+    // writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinates());
+    // //writeVectorDataToNodes("type", data->getPedestrianSet()->getTypes()); this line needs to be fixed it does not work with the function it is calling
 
 
     this->fileStream << this->document;

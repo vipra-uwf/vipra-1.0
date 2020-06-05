@@ -13,28 +13,22 @@ void PedestrianSet::addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER y
     goalXCoordinates.push_back(0);
     goalYCoordinates.push_back(0);
 
-    propulsionForces.push_back(0);
-    repulsionForces.push_back(0);
-
     numPedestrians++;
 }
 
-
-void PedestrianSet::setPropulsionForces(int pedestrianIndex, FLOATING_NUMBER propulsionForce)
+void PedestrianSet::setGoalXCoordinates(int pedestrianIndex, FLOATING_NUMBER goalXCoordinate)
 {
-    propulsionForces.at(pedestrianIndex) = propulsionForce;
+    this->goalXCoordinates.at(pedestrianIndex) = goalXCoordinate;
 }
 
-void PedestrianSet::setRepulsionForces(int pedestrianIndex, FLOATING_NUMBER repulsionForce)
+void PedestrianSet::setGoalYCoordinates(int pedestrianIndex, FLOATING_NUMBER goalYCoordinate)
 {
-    repulsionForces.at(pedestrianIndex) = repulsionForce;
+    this->goalYCoordinates.at(pedestrianIndex) = goalYCoordinate;
 }
 
-FLOATING_NUMBER PedestrianSet::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
+void PedestrianSet::setSpeed(int pedestrianIndex, FLOATING_NUMBER speedMetersPerSecond)
 {
-    FLOATING_NUMBER xDistance = pow((xCoordinates.at(pedestrianIndexOfFirst) - xCoordinates.at(pedestrianIndexOfSecond)), 2);
-    FLOATING_NUMBER yDistance = pow((yCoordinates.at(pedestrianIndexOfFirst) - yCoordinates.at(pedestrianIndexOfSecond)), 2);
-    return (sqrt(xDistance + yDistance));
+    this->speedsMetersPerSecond.at(pedestrianIndex) = speedMetersPerSecond;
 }
 
 void PedestrianSet::setXCoordinates(std::vector<FLOATING_NUMBER> xCoordinates)
@@ -52,14 +46,14 @@ void PedestrianSet::setTypes(std::vector<std::string> types)
     this->types = types;
 }
 
-void PedestrianSet::setXCoordinate(int pedestrianIndex, FLOATING_NUMBER newPosition)
+void PedestrianSet::setXCoordinate(int pedestrianIndex, FLOATING_NUMBER xCoordinate)
 {
-    xCoordinates.at(pedestrianIndex) = newPosition;
+    this->xCoordinates.at(pedestrianIndex) = xCoordinate;
 }
 
-void PedestrianSet::setYCoordinate(int pedestrianIndex, FLOATING_NUMBER newPosition)
+void PedestrianSet::setYCoordinate(int pedestrianIndex, FLOATING_NUMBER yCoordinate)
 {
-    yCoordinates.at(pedestrianIndex) = newPosition;
+    this->yCoordinates.at(pedestrianIndex) = yCoordinate;
 }
 
 int PedestrianSet::getNumPedestrians()
@@ -82,11 +76,15 @@ FLOATING_NUMBER PedestrianSet::getReactionTimeSeconds(int pedestrianIndex)
     return this->reactionTimesSeconds.at(pedestrianIndex);
 }
 
-
-int PedestrianSet::getNearestNeighbor(int pedestrianIndex)
+FLOATING_NUMBER PedestrianSet::getGoalXCoordinates(int pedestrianIndex)
 {
-    return this->nearestNeighbors.at(pedestrianIndex);
+    return this->goalXCoordinates.at(pedestrianIndex);
 }
+FLOATING_NUMBER PedestrianSet::getGoalYCoordinates(int pedestrianIndex)
+{
+    return this->goalYCoordinates.at(pedestrianIndex);
+}
+
 std::vector<FLOATING_NUMBER>* PedestrianSet::getXCoordinates()
 {
     return &xCoordinates;
@@ -112,22 +110,7 @@ FLOATING_NUMBER PedestrianSet::getYCoordinate(int pedestrianIndex)
     return this->yCoordinates.at(pedestrianIndex);
 }
 
-
 FLOATING_NUMBER PedestrianSet::getSpeed(int pedestrianIndex)
 {
     return this->speedsMetersPerSecond.at(pedestrianIndex);
 }
-
-FLOATING_NUMBER PedestrianSet::getPropulsionForce(int pedestrianIndex)
-{
-    return this->propulsionForces.at(pedestrianIndex);
-}
-
-FLOATING_NUMBER PedestrianSet::getRepulsionForce(int pedestrianIndex)
-{
-    return this->repulsionForces.at(pedestrianIndex);
-}
-
-
-
-
