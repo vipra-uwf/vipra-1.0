@@ -1,5 +1,11 @@
 #include "xml_reader.hpp"
 
+XMLReader::XMLReader()
+{
+    this->rootNode = NULL;
+    this->dataNode = NULL;
+}
+
 void XMLReader::extractFileData(std::string fileName, std::string rootElement, std::string parseElement)
 {
     openFile(fileName);
