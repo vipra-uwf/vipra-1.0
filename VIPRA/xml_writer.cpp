@@ -58,19 +58,19 @@ void XMLWriter::initializeXMLDeclaration(std::string versionNum, std::string enc
 
 void XMLWriter::initializeRootNode()
 {
-    this->rootNode = this->document.allocate_node(rapidxml::node_element, this->rootNodeName.c_str());
+    this->rootNode = this->document.allocate_node(rapidxml::node_element, this->document.allocate_string(this->rootNodeName.c_str()));
     this->document.append_node(rootNode);
 }
 
 void XMLWriter::generateDataNode()
 {
-    rapidxml::xml_node<>* dataNode = this->document.allocate_node(rapidxml::node_element, this->dataNodeName.c_str());
+    rapidxml::xml_node<>* dataNode = this->document.allocate_node(rapidxml::node_element, this->document.allocate_string(this->dataNodeName.c_str()));
     this->rootNode->append_node(dataNode);
 }
 
 void XMLWriter::appendDataNodeAttribute(rapidxml::xml_node<>* node, std::string key, std::string value)
 {
-    node->append_attribute(this->document.allocate_attribute(key.c_str(), value.c_str()));
+    node->append_attribute(this->document.allocate_attribute(this->document.allocate_string(key.c_str()), this->document.allocate_string(value.c_str())));
 }
 
 void XMLWriter::initializeDataNodes()
@@ -88,7 +88,7 @@ void XMLWriter::writeFloatDataSet(std::string key, std::vector<FLOATING_NUMBER> 
     for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); dataNode; dataNode = dataNode->next_sibling())
     {
         std::string data = std::to_string(dataSet[i]);
-        dataNode->append_attribute(this->document.allocate_attribute(key.c_str(), document.allocate_string(data.c_str())));
+        dataNode->append_attribute(this->document.allocate_attribute(document.allocate_string(key.c_str()), document.allocate_string(data.c_str())));
         i++;
     }
 }
@@ -100,7 +100,7 @@ void XMLWriter::writeStringDataSet(std::string key, std::vector<std::string> dat
     for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); dataNode; dataNode = dataNode->next_sibling())
     {
         std::string data = dataSet[i];
-        dataNode->append_attribute(this->document.allocate_attribute(key.c_str(), document.allocate_string(data.c_str())));
+        dataNode->append_attribute(this->document.allocate_attribute(document.allocate_string(key.c_str()), document.allocate_string(data.c_str())));
         i++;
     }
 }
