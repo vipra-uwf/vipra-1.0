@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <pedestrian-set>
-	<pedestrian x="1.000000" y="3.200000"/>
-	<pedestrian x="1.000000" y="2.100000"/>
-	<pedestrian x="1.000000" y="0.900000"/>
-	<pedestrian x="1.000000" y="-0.800000"/>
-	<pedestrian x="1.000000" y="-1.700000"/>
-	<pedestrian x="1.000000" y="-2.200000"/>
+	<pedestrian x="2.000000" y="3.200000" type="leader"/>
+	<pedestrian x="1.000000" y="2.100000" type="follower"/>
+	<pedestrian x="1.000000" y="0.900000" type="leader"/>
+	<pedestrian x="1.000000" y="-0.800000" type="follower"/>
+	<pedestrian x="1.000000" y="-1.700000" type="follower"/>
+	<pedestrian x="4.000000" y="-2.200000" type="follower"/>
 </pedestrian-set>
 

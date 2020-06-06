@@ -38,7 +38,14 @@ class XMLWriter: public OutputDataWriter
         void initializeDataNodes();
         void generateDataNode();
         void appendDataNodeAttribute(rapidxml::xml_node<>*, std::string, std::string);
-        void writeVectorDataToNodes(std::string, std::vector<FLOATING_NUMBER>);
+
+        void writeFloatDataSet(std::string, std::vector<FLOATING_NUMBER>);
+        void writeStringDataSet(std::string, std::vector<std::string>);
+        void writeFloatData(std::string, FLOATING_NUMBER);
+        void writeStringData(std::string, std::string);
+
+
+
 };
 
 

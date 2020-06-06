@@ -12,13 +12,14 @@ void XMLWriter::configureXMLDocumentStructure(std::string fileName, std::string 
 
 void XMLWriter::writeData(Data* data)
 {
-    //rethink -- dont rely on one vector.. 
+    //TODO: rethink -- dont rely on one vector to get the numDataNodes  -- should we read in number of passengers? 
+    //should we keep track of number of passenger nodes iterated in XMLReader and then PassengerSet::setNumPassengers()??
     setNumDataNodes(data->getPedestrianSet()->getXCoordinates()->size());
     initializeDataNodes();
 
-    writeVectorDataToNodes("x", *data->getPedestrianSet()->getXCoordinates());
-    writeVectorDataToNodes("y", *data->getPedestrianSet()->getYCoordinates());
-    //writeVectorDataToNodes("type", *data->getPedestrianSet()->getTypes()); 
+    writeFloatDataSet("x", *data->getPedestrianSet()->getXCoordinates());
+    writeFloatDataSet("y", *data->getPedestrianSet()->getYCoordinates());
+    writeStringDataSet("type", *data->getPedestrianSet()->getTypes()); 
 
     this->fileStream << this->document;
 
@@ -73,25 +74,44 @@ void XMLWriter::appendDataNodeAttribute(rapidxml::xml_node<>* node, std::string 
 
 void XMLWriter::initializeDataNodes()
 {
-
-    // std::cout << "Initializing nodes: " << this->numDataNodes << std::endl;
-
     for(int i = 0; i < this->numDataNodes; ++i)
     {
         generateDataNode();
     }
 }
 
-void XMLWriter::writeVectorDataToNodes(std::string key, std::vector<FLOATING_NUMBER> valuesVector)
+void XMLWriter::writeFloatDataSet(std::string key, std::vector<FLOATING_NUMBER> dataSet)
 {
     int i = 0;
 
     for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); dataNode; dataNode = dataNode->next_sibling())
     {
-        // std::cout << valuesVector[i] << std::endl;
-        std::string value = std::to_string(valuesVector[i]);
-        dataNode->append_attribute(this->document.allocate_attribute(key.c_str(), document.allocate_string(value.c_str())));
+        std::string data = std::to_string(dataSet[i]);
+        dataNode->append_attribute(this->document.allocate_attribute(key.c_str(), document.allocate_string(data.c_str())));
         i++;
     }
 }
+
+void XMLWriter::writeStringDataSet(std::string key, std::vector<std::string> dataSet)
+{
+    int i = 0;
+
+    for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); dataNode; dataNode = dataNode->next_sibling())
+    {
+        std::string data = dataSet[i];
+        dataNode->append_attribute(this->document.allocate_attribute(key.c_str(), document.allocate_string(data.c_str())));
+        i++;
+    }
+}
+
+void XMLWriter::writeFloatData(std::string, FLOATING_NUMBER)
+{
+
+}
+
+void XMLWriter::writeStringData(std::string, std::string)
+{
+
+}
+
 

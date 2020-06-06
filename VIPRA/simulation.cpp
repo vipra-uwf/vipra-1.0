@@ -9,7 +9,6 @@ Simulation::Simulation()
 Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
 {
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
-
 }
 
 void Simulation::setOutputDataWriter(OutputDataWriter* outputDataWriter)
@@ -36,12 +35,10 @@ void Simulation::run()
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
 
-       // xmlWriter.writeData(&data);
 
     // this->pedestrianDynamicsModel->precompute();
 
     printDataDELETETHIS();
-
 
     this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
 }
