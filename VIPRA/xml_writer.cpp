@@ -12,6 +12,7 @@ void XMLWriter::configureXMLDocumentStructure(std::string fileName, std::string 
 
 void XMLWriter::writeData(Data* data)
 {
+    //..
     //TODO: rethink -- dont rely on one vector to get the numDataNodes  -- should we read in number of passengers? 
     //should we keep track of number of passenger nodes iterated in XMLReader and then PassengerSet::setNumPassengers()??
     setNumDataNodes(data->getPedestrianSet()->getXCoordinates()->size());
