@@ -57,8 +57,10 @@ void XMLReader::parseXMLDocument()
 
 void XMLReader::initializeTraversalNodes()
 {
-    this->rootNode = this->document.first_node(this->rootElement.c_str());
-    this->dataNode = this->rootNode->first_node(this->parseElement.c_str());
+    this->rootNode = this->document.first_node(this->document.allocate_string(this->rootElement.c_str()));
+    this->dataNode = this->rootNode->first_node(this->document.allocate_string(this->parseElement.c_str()));
+
+    std::cout << "First data node: " << this->dataNode << std::endl;
 }
 
 FLOATING_NUMBER XMLReader::getFloatValue(rapidxml::xml_node<>* node, std::string attribute)
@@ -84,6 +86,8 @@ std::vector<FLOATING_NUMBER> XMLReader::getFloatDataSet(std::string attribute)
         dataSet.push_back(value);
 
         this->dataNode = this->dataNode->next_sibling();
+
+        std::cout << this->dataNode << std::endl;
     }
 
     return dataSet;
