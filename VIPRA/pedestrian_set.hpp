@@ -2,52 +2,58 @@
 #include <vector>
 #include <string>
 #include <math.h>
-#include <iostream> //remove me
 
-class PedestrianSet{
+class PedestrianSet
+{
     public:
         PedestrianSet();
-        // void addPedestrian(FLOATING_NUMBER xCoordinate, FLOATING_NUMBER yCoordinate);
 
-        void setGoalXCoordinates(int, FLOATING_NUMBER);
-        void setGoalYCoordinates(int, FLOATING_NUMBER);
-
-        void setSpeed(int, FLOATING_NUMBER);
-
-        void setXCoordinates(std::vector<FLOATING_NUMBER>);
-        void setYCoordinates(std::vector<FLOATING_NUMBER>);
-        void setTypes(std::vector<std::string>);
-        
-        void setXCoordinate(int, FLOATING_NUMBER);
-        void setYCoordinate(int, FLOATING_NUMBER);
-
+        //TODO this method isnt used? -- why?
         FLOATING_NUMBER calculateDistance(int, int);
 
+        //TODO xmlreader can keep track when reading then pass at end of reading
+        //probably better than calling vector.size() -- what if data sets are huge? 
         int getNumPedestrians();
+
+        FLOATING_NUMBER getSpeed(int);
         FLOATING_NUMBER getDesiredSpeed(int);
         FLOATING_NUMBER getMassKg(int);
         FLOATING_NUMBER getReactionTimeSeconds(int);
 
+        //TODO make singular getters not have plural names       
         FLOATING_NUMBER getGoalXCoordinates(int);
         FLOATING_NUMBER getGoalYCoordinates(int);
  
         FLOATING_NUMBER getXCoordinate(int);
         FLOATING_NUMBER getYCoordinate(int);
+        
         std::vector<FLOATING_NUMBER>* getXCoordinates();
         std::vector<FLOATING_NUMBER>* getYCoordinates();
         std::vector<std::string>* getTypes();
+
+        void setNumPedestrians(int);
+        void setSpeed(int, FLOATING_NUMBER);
+        //TODO setters for desired speed, mass, reaction time??
+
+        //TODO make singular setters not have plural names
+        void setGoalXCoordinates(int, FLOATING_NUMBER);
+        void setGoalYCoordinates(int, FLOATING_NUMBER);
         
-        FLOATING_NUMBER getSpeed(int);
+        void setXCoordinate(int, FLOATING_NUMBER);
+        void setYCoordinate(int, FLOATING_NUMBER);
+
+        void setXCoordinates(std::vector<FLOATING_NUMBER>);
+        void setYCoordinates(std::vector<FLOATING_NUMBER>);
+        void setTypes(std::vector<std::string>);
 
     private:
         int numPedestrians;
 
         std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
+        std::vector<FLOATING_NUMBER> desiredSpeeds;
         std::vector<FLOATING_NUMBER> massesKg;
         std::vector<FLOATING_NUMBER> reactionTimesSeconds;
 
-        //intermediate goals are here, completion of goals determined in goal class
-            //intermediate goals should be able to be used in place of aims
         std::vector<FLOATING_NUMBER> goalXCoordinates;
         std::vector<FLOATING_NUMBER> goalYCoordinates;
 
@@ -55,10 +61,7 @@ class PedestrianSet{
         std::vector<FLOATING_NUMBER> yCoordinates;
         std::vector<std::string> types;
 
-
-        //add currentVelocities (vectors)
+        //TODO currently has no getters/setters
         std::vector<FLOATING_NUMBER> currentVelocityX;
         std::vector<FLOATING_NUMBER> currentVelocityY;
-
-        std::vector<FLOATING_NUMBER> desiredSpeeds;
 };

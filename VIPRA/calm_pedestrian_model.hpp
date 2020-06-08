@@ -3,6 +3,7 @@
 
 //#include <vector>
 //#include <utility>
+#include <iostream>
 #include "pedestrian_dynamics_model.hpp"
 #include "data.hpp"
 
