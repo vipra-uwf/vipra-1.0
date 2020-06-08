@@ -20,7 +20,6 @@ void CalmPedestrianModel::precompute()
 
     calculatePropulsion();
     calculateRepulsion();
-
 }
 
 void CalmPedestrianModel::update()

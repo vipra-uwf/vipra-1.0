@@ -20,17 +20,16 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void calculateRepulsion();
 
         FLOATING_NUMBER calculateDistance(int, int);
-
-
         FLOATING_NUMBER calculateBeta(int);
         int calculateNearestNeighbor(int);
 
     private:
         Data* data;
+
+        //TODO initialize with 0s using data.pedset.getNumPedestrians()
         std::vector<FLOATING_NUMBER> propulsionForces;
         std::vector<FLOATING_NUMBER> repulsionForces;
         std::vector<int> nearestNeighbors;
-
 };
 
 #endif
