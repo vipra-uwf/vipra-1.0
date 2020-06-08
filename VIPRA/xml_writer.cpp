@@ -12,9 +12,7 @@ void XMLWriter::configureXMLDocumentStructure(std::string fileName, std::string 
 
 void XMLWriter::writeData(Data* data)
 {
-    //..
-    //TODO: rethink -- dont rely on one vector to get the numDataNodes  -- should we read in number of passengers? 
-    //should we keep track of number of passenger nodes iterated in XMLReader and then PassengerSet::setNumPassengers()??
+    //TODO use PedestrianSet.getNumPedestrians() -- first must set it in the XMLReader 
     setNumDataNodes(data->getPedestrianSet()->getXCoordinates()->size());
     initializeDataNodes();
 
@@ -107,12 +105,12 @@ void XMLWriter::writeStringDataSet(std::string key, std::vector<std::string> dat
 
 void XMLWriter::writeFloatData(std::string, FLOATING_NUMBER)
 {
-
+    //will we have multiple file streams open?
 }
 
 void XMLWriter::writeStringData(std::string, std::string)
 {
-
+    
 }
 
 

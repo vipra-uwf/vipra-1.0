@@ -43,9 +43,6 @@ class XMLWriter: public OutputDataWriter
         void writeStringDataSet(std::string, std::vector<std::string>);
         void writeFloatData(std::string, FLOATING_NUMBER);
         void writeStringData(std::string, std::string);
-
-
-
 };
 
 

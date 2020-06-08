@@ -3,10 +3,16 @@
     //time
     //state of the obstacles and pedestrians
 
-class Goal {
-    //keep track of final goals
+#ifndef GOAL_HPP
+#define GOAL_HPP 
 
-    initializeGoals(data)
-    determinePedestrianGoals(data, time)
-    isSimulationGoalMet(data, time)
-}
+class Goal
+{
+    //keep track of final goals
+    public:
+//         void initializeGoals(Data*);
+//         void determinePedestrianGoals(Data*, time);
+//         void isSimulationGoalMet(Data*, time);
+};
+
+#endif
