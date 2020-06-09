@@ -33,7 +33,7 @@ void CalmPedestrianModel::calculatePropulsion()
     std::cout << "calculatePropulsion(): numPedestrians = " << data->getPedestrianSet()->getNumPedestrians() << std::endl;
     
     
-    FLOATING_NUMBER forceOfPropulsion;
+    // FLOATING_NUMBER forceOfPropulsion;
 
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
@@ -50,7 +50,7 @@ void CalmPedestrianModel::calculateRepulsion()
 
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
-        repulsionForces.at(pedestrianIndex) = (pedestrianIndex, (((calculateBeta(pedestrianIndex)*data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex)) - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex)));
+        repulsionForces.at(pedestrianIndex) = (calculateBeta(pedestrianIndex)*data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex)) - (data->getPedestrianSet()->getSpeed(pedestrianIndex) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex));
     }
 }
 

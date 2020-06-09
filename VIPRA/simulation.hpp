@@ -4,10 +4,10 @@
 #include <iostream> 
 
 #include "rapidxml-1.13/rapidxml.hpp"
-#include "input_data_loader.hpp" //may be able to remove -- is data *always* loaded outside of the simulation?
+#include "input_data_loader.hpp" //TODO may be able to remove -- is data *always* loaded outside of the simulation?
 #include "output_data_writer.hpp"
 #include "pedestrian_dynamics_model.hpp"
-#include "data.hpp" //REMOVE ME WHEN PRINTDATADELETETHIS() IS REMOVED
+#include "data.hpp" //TODO REMOVE ME WHEN PRINTDATADELETETHIS() IS REMOVED
 
 class Simulation
 {
@@ -18,7 +18,7 @@ class Simulation
 
         void setOutputDataWriter(OutputDataWriter*);
 
-
+        //TODO will be removed once debugger segfault is resolved
         void printDataDELETETHIS();
 
     private:

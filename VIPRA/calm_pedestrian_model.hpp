@@ -1,12 +1,11 @@
 #ifndef CALM_PEDESTRIAN_MODEL_HPP
 #define CALM_PEDESTRIAN_MODEL_HPP
 
-//#include <vector>
-//#include <utility>
+#include <vector>
 #include <iostream>
+
 #include "pedestrian_dynamics_model.hpp"
 #include "data.hpp"
-
 
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {
