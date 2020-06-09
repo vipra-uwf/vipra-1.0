@@ -1,7 +1,11 @@
-#include "type_definitions.hpp"
+#ifndef PEDESTRIAN_SET_HPP
+#define PEDESTRIAN_SET_HPP
+
 #include <vector>
 #include <string>
 #include <math.h>
+
+#include "type_definitions.hpp"
 
 class PedestrianSet
 {
@@ -65,3 +69,5 @@ class PedestrianSet
         std::vector<FLOATING_NUMBER> currentVelocityX;
         std::vector<FLOATING_NUMBER> currentVelocityY;
 };
+
+#endif

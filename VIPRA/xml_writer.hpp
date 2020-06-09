@@ -45,5 +45,4 @@ class XMLWriter: public OutputDataWriter
         void writeStringData(std::string, std::string);
 };
 
-
 #endif

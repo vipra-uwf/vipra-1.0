@@ -1,13 +1,13 @@
+#include <iostream>
+#include <string>
+
 #include "simulation.hpp"
 #include "xml_reader.hpp"
 #include "xml_writer.hpp"
 #include "calm_pedestrian_model.hpp"
-#include <iostream>
-#include <string>
 
 int main()
 {
-
     Data data;
 
     XMLReader xmlReader;
@@ -19,12 +19,10 @@ int main()
     Simulation simulation(&calmModel);
 
     XMLWriter xmlWriter; 
-    //TODO: rethink this -- what if writing to multiple files in simulation at the same time?
     xmlWriter.configureXMLDocumentStructure("export_pedestrian_data.xml", "pedestrian-set", "pedestrian", "1.0", "utf-8");
     
     simulation.setOutputDataWriter(&xmlWriter);
     simulation.run();
-
   
     return 0;
 }

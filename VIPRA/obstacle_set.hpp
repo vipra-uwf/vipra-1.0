@@ -1,5 +1,9 @@
-#include "type_definitions.hpp"
+#ifndef OBSTACLE_SET_HPP
+#define OBSTACLE_SET_HPP
+
 #include <vector>
+
+#include "type_definitions.hpp"
 
 class ObstacleSet
 {
@@ -19,3 +23,5 @@ class ObstacleSet
         std::vector<FLOATING_NUMBER> xCoordinates;
         std::vector<FLOATING_NUMBER> yCoordinates;
 };
+
+#endif
