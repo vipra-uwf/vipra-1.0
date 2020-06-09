@@ -26,6 +26,30 @@ void XMLWriter::writeData(Data* data)
     this->document.clear();
 }
 
+void XMLWriter::writeFloatData(std::string key, FLOATING_NUMBER value)
+{
+    //how to initialize currentNode?
+
+    /*
+    if node->first_attribute(key) == 0          //value not found, meaning stay on currentNode
+        appendDataNodeAttribute(currentNode, key, value)
+
+    else                                        //value already written to, generate new node
+        generateDataNode();
+        currentNode = currentNode->next_sibling()
+        appendDataNodeAttribute(newNode, key, value)
+
+    */
+
+
+
+}
+
+void XMLWriter::writeStringData(std::string key, std::string value)
+{
+    
+}
+
 void XMLWriter::openFile(std::string fileName)
 {
     this->fileStream.open(fileName);
@@ -86,6 +110,7 @@ void XMLWriter::writeFloatDataSet(std::string key, std::vector<FLOATING_NUMBER> 
     for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); dataNode; dataNode = dataNode->next_sibling())
     {
         std::string data = std::to_string(dataSet[i]);
+        //add this-> to document
         dataNode->append_attribute(this->document.allocate_attribute(document.allocate_string(key.c_str()), document.allocate_string(data.c_str())));
         i++;
     }
@@ -103,14 +128,6 @@ void XMLWriter::writeStringDataSet(std::string key, std::vector<std::string> dat
     }
 }
 
-void XMLWriter::writeFloatData(std::string, FLOATING_NUMBER)
-{
-    //will we have multiple file streams open?
-}
 
-void XMLWriter::writeStringData(std::string, std::string)
-{
-    
-}
 
 
