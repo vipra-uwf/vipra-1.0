@@ -30,6 +30,9 @@ void XMLWriter::writeFloatData(std::string key, FLOATING_NUMBER value)
 {
     //how to initialize currentNode?
 
+    //how should we initialize currentNode? -- if currentNode == NULL?? (need to init in constructor)
+    
+    
     /*
     if node->first_attribute(key) == 0          //value not found, meaning stay on currentNode
         appendDataNodeAttribute(currentNode, key, value)
@@ -40,8 +43,6 @@ void XMLWriter::writeFloatData(std::string key, FLOATING_NUMBER value)
         appendDataNodeAttribute(newNode, key, value)
 
     */
-
-
 
 }
 

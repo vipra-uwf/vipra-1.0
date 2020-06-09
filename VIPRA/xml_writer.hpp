@@ -29,6 +29,7 @@ class XMLWriter: public OutputDataWriter
         int numDataNodes;
         rapidxml::xml_document<> document;
         rapidxml::xml_node<>* rootNode;
+        rapidxml::xml_node<>* currentNode;
 
         void openFile(std::string);
         void setRootNodeName(std::string);
