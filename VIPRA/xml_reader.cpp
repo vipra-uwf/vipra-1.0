@@ -6,15 +6,6 @@ XMLReader::XMLReader()
     this->dataNode = NULL;
 }
 
-void XMLReader::extractFileData(std::string fileName, std::string rootElement, std::string parseElement)
-{
-    openFile(fileName);
-    readFile();
-    setRootElement(rootElement);
-    setParseElement(parseElement);
-    parseXMLDocument();
-}
-
 void XMLReader::storeData(Data* data)
 {
     extractFileData("pedestrian_coordinates.xml", "pedestrian-set", "pedestrian");
@@ -27,9 +18,26 @@ void XMLReader::storeData(Data* data)
     data->getObstacleSet()->setYCoordinates(getFloatDataSet("y")); 
 }
 
+void XMLReader::extractFileData(std::string fileName, std::string rootElement, std::string parseElement)
+{
+    openFile(fileName);
+    readFile();
+    setRootElement(rootElement);
+    setParseElement(parseElement);
+    parseXMLDocument();
+}
+
 void XMLReader::openFile(std::string fileName)
 {
     this->fileStream.open(fileName);
+}
+
+void XMLReader::readFile()
+{
+    std::vector<char> buffer((std::istreambuf_iterator<char>(this->fileStream)), std::istreambuf_iterator<char>());
+    buffer.push_back('\0');
+    this->fileContents = buffer;
+    this->fileStream.close();
 }
 
 void XMLReader::setRootElement(std::string rootElement)
@@ -40,14 +48,6 @@ void XMLReader::setRootElement(std::string rootElement)
 void XMLReader::setParseElement(std::string parseElement)
 {
     this->parseElement = parseElement;
-}
-
-void XMLReader::readFile()
-{
-    std::vector<char> buffer((std::istreambuf_iterator<char>(this->fileStream)), std::istreambuf_iterator<char>());
-    buffer.push_back('\0');
-    this->fileContents = buffer;
-    this->fileStream.close();
 }
 
 void XMLReader::parseXMLDocument()

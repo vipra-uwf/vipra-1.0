@@ -29,9 +29,9 @@ class XMLReader: public InputDataLoader
         rapidxml::xml_node<>* dataNode;
 
         void openFile(std::string);
+        void readFile();
         void setRootElement(std::string);
         void setParseElement(std::string);
-        void readFile();
         void parseXMLDocument();
 
         void initializeTraversalNodes();
