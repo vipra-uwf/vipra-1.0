@@ -4,6 +4,12 @@
 void CalmPedestrianModel::setData(Data* initialData)
 {
     this->data = initialData;
+
+    for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
+    {
+        propulsionForces.push_back(0);
+        repulsionForces.push_back(0);
+    }
 }
 
 Data* CalmPedestrianModel::getData()
@@ -30,37 +36,25 @@ void CalmPedestrianModel::update()
 void CalmPedestrianModel::calculatePropulsion()
 {
 
-    std::cout << "calculatePropulsion(): numPedestrians = " << data->getPedestrianSet()->getNumPedestrians() << std::endl;
-    
-    
-    // FLOATING_NUMBER forceOfPropulsion;
 
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
-        std::cout << "pedestrianIndex: " << pedestrianIndex << std::endl;
-
-        propulsionForces.at(pedestrianIndex) = ((data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex) - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex)) * data->getPedestrianSet()->getMassKg(pedestrianIndex);
+        propulsionForces.at(pedestrianIndex) = ((desiredSpeed - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / reactionTime) * data->getPedestrianSet()->getMassKg(pedestrianIndex);
     }
 }
 
 void CalmPedestrianModel::calculateRepulsion()
 {
 
-    std::cout << "calculateRepulsion(): numPedestrians = " << data->getPedestrianSet()->getNumPedestrians() << std::endl;
-
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
-        repulsionForces.at(pedestrianIndex) = (calculateBeta(pedestrianIndex)*data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex)) - (data->getPedestrianSet()->getSpeed(pedestrianIndex) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex));
+        repulsionForces.at(pedestrianIndex) = (calculateBeta(pedestrianIndex)*desiredSpeed) - (data->getPedestrianSet()->getSpeed(pedestrianIndex) / reactionTime);
     }
 }
 
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedestrianIndex)
 {
-    FLOATING_NUMBER a = -2.111;
-    FLOATING_NUMBER b = 0.366;
-    FLOATING_NUMBER c = 0.966;
-
-    return (c - exp(a * (calculateDistance(pedestrianIndex,calculateNearestNeighbor(pedestrianIndex) - b))));
+    return (c - exp(a * (calculateDistance(pedestrianIndex, nearestNeighbors.at(pedestrianIndex) - b))));
 }
 
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
@@ -68,31 +62,4 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirs
     FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
     FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getYCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
     return (sqrt(xDistance + yDistance));
-}
-
-int CalmPedestrianModel::calculateNearestNeighbor(int pedestrianIndex)
-{
-    int nearest = 0;
-    for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
-    {
-        if(data->getPedestrianSet()->getGoalXCoordinates(i) == data->getPedestrianSet()->getGoalXCoordinates(pedestrianIndex))
-        {
-            //check for objects in between
-            if (calculateDistance(pedestrianIndex, nearest) < calculateDistance(pedestrianIndex, i))
-            {
-                nearest = i;
-            }
-        }
-
-        else if(data->getPedestrianSet()->getGoalYCoordinates(i) == data->getPedestrianSet()->getGoalYCoordinates(pedestrianIndex))
-        {
-            //check for objects in between
-            if (calculateDistance(pedestrianIndex, nearest) < calculateDistance(pedestrianIndex, i))
-            {
-                nearest = i;
-            }
-        }
-    }
-
-    return nearest;
 }
