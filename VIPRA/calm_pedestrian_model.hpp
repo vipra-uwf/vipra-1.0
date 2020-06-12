@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 #include "pedestrian_dynamics_model.hpp"
 #include "data.hpp"
@@ -10,6 +11,10 @@
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     public:
+
+        CalmPedestrianModel();
+        void initializeForces();
+
         virtual void setData(Data* initialData);
         virtual Data* getData();
         virtual void precompute();
@@ -17,6 +22,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 
         virtual void calculatePropulsion();
         virtual void calculateRepulsion();
+        
         
         FLOATING_NUMBER calculateDistance(int, int);
         FLOATING_NUMBER calculateBeta(int);
@@ -29,8 +35,10 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         std::vector<FLOATING_NUMBER> repulsionForces;
         std::vector<int> nearestNeighbors;
 
+
         FLOATING_NUMBER desiredSpeed;
         FLOATING_NUMBER reactionTime;
+
 
         const FLOATING_NUMBER a = -2.111;
         const FLOATING_NUMBER b = 0.366;

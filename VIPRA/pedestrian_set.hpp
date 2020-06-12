@@ -32,9 +32,6 @@ class PedestrianSet
 
         void setNumPedestrians(int);
         void setSpeed(int, FLOATING_NUMBER);
-        //TODO setters for desired speed, mass, reaction time??
-        //Desired speed needs to be read in from an xml called calm parameters, as well as reaction time, mass needs to be
-        //read in from pedestrian xml
 
         void setGoalXCoordinate(int, FLOATING_NUMBER);
         void setGoalYCoordinate(int, FLOATING_NUMBER);
