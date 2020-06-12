@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <math.h>
 
 #include "type_definitions.hpp"
@@ -12,21 +13,17 @@ class PedestrianSet
     public:
         PedestrianSet();
 
-        //TODO this method isnt used? -- why?
-        FLOATING_NUMBER calculateDistance(int, int);
+        void initializeSpeeds();
 
         //TODO xmlreader can keep track when reading then pass at end of reading
         //probably better than calling vector.size() -- what if data sets are huge? 
         int getNumPedestrians();
 
         FLOATING_NUMBER getSpeed(int);
-        FLOATING_NUMBER getDesiredSpeed(int);
         FLOATING_NUMBER getMassKg(int);
-        FLOATING_NUMBER getReactionTimeSeconds(int);
-
-        //TODO make singular getters not have plural names       
-        FLOATING_NUMBER getGoalXCoordinates(int);
-        FLOATING_NUMBER getGoalYCoordinates(int);
+      
+        FLOATING_NUMBER getGoalXCoordinate(int);
+        FLOATING_NUMBER getGoalYCoordinate(int);
  
         FLOATING_NUMBER getXCoordinate(int);
         FLOATING_NUMBER getYCoordinate(int);
@@ -38,10 +35,11 @@ class PedestrianSet
         void setNumPedestrians(int);
         void setSpeed(int, FLOATING_NUMBER);
         //TODO setters for desired speed, mass, reaction time??
+        //Desired speed needs to be read in from an xml called calm parameters, as well as reaction time, mass needs to be
+        //read in from pedestrian xml
 
-        //TODO make singular setters not have plural names
-        void setGoalXCoordinates(int, FLOATING_NUMBER);
-        void setGoalYCoordinates(int, FLOATING_NUMBER);
+        void setGoalXCoordinate(int, FLOATING_NUMBER);
+        void setGoalYCoordinate(int, FLOATING_NUMBER);
         
         void setXCoordinate(int, FLOATING_NUMBER);
         void setYCoordinate(int, FLOATING_NUMBER);
@@ -49,14 +47,13 @@ class PedestrianSet
         void setXCoordinates(std::vector<FLOATING_NUMBER>);
         void setYCoordinates(std::vector<FLOATING_NUMBER>);
         void setTypes(std::vector<std::string>);
+        void setMassesKg(std::vector<FLOATING_NUMBER>);
 
     private:
         int numPedestrians;
 
         std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
-        std::vector<FLOATING_NUMBER> desiredSpeeds;
         std::vector<FLOATING_NUMBER> massesKg;
-        std::vector<FLOATING_NUMBER> reactionTimesSeconds;
 
         std::vector<FLOATING_NUMBER> goalXCoordinates;
         std::vector<FLOATING_NUMBER> goalYCoordinates;
