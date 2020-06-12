@@ -12,7 +12,7 @@ int main()
 
     XMLReader xmlReader;
     xmlReader.storeData(&data);
-
+    
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
 

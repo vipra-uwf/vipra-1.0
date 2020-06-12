@@ -29,25 +29,16 @@ void CalmPedestrianModel::update()
 
 void CalmPedestrianModel::calculatePropulsion()
 {
-
-    std::cout << "calculatePropulsion(): numPedestrians = " << data->getPedestrianSet()->getNumPedestrians() << std::endl;
-    
-    
     // FLOATING_NUMBER forceOfPropulsion;
 
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
-        std::cout << "pedestrianIndex: " << pedestrianIndex << std::endl;
-
         propulsionForces.at(pedestrianIndex) = ((data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex) - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex)) * data->getPedestrianSet()->getMassKg(pedestrianIndex);
     }
 }
 
 void CalmPedestrianModel::calculateRepulsion()
 {
-
-    std::cout << "calculateRepulsion(): numPedestrians = " << data->getPedestrianSet()->getNumPedestrians() << std::endl;
-
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
         repulsionForces.at(pedestrianIndex) = (calculateBeta(pedestrianIndex)*data->getPedestrianSet()->getDesiredSpeed(pedestrianIndex)) - (data->getPedestrianSet()->getSpeed(pedestrianIndex) / data->getPedestrianSet()->getReactionTimeSeconds(pedestrianIndex));

@@ -45,6 +45,7 @@ void Simulation::run()
     {
         this->outputDataWriter->writeFloatData("x", i);
         this->outputDataWriter->writeFloatData("y", -i);
+        i++;
     }
 
 

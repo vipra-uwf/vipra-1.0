@@ -23,6 +23,8 @@ class XMLReader: public InputDataLoader
         std::vector<char> fileContents;
         std::string rootElement;
         std::string parseElement;
+
+        int numEntities;
    
         rapidxml::xml_document<> document;
         rapidxml::xml_node<>* rootNode;
