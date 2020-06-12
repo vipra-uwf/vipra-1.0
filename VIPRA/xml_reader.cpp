@@ -2,8 +2,10 @@
 
 XMLReader::XMLReader()
 {
+    //TODO these nulls may not matter -- trying to figure out "segfault"
     this->rootNode = NULL;
     this->dataNode = NULL;
+    this->numEntities = 0;
 }
 
 void XMLReader::storeData(Data* data)
@@ -12,10 +14,12 @@ void XMLReader::storeData(Data* data)
     data->getPedestrianSet()->setXCoordinates(getFloatDataSet("x"));
     data->getPedestrianSet()->setYCoordinates(getFloatDataSet("y"));
     data->getPedestrianSet()->setTypes(getStringDataSet("type"));
+    data->getPedestrianSet()->setNumPedestrians(this->numEntities);
 
     extractFileData("obstacle_coordinates.xml", "obstacle-set", "obstacle");
     data->getObstacleSet()->setXCoordinates(getFloatDataSet("x"));
     data->getObstacleSet()->setYCoordinates(getFloatDataSet("y")); 
+    data->getObstacleSet()->setNumObstacles(this->numEntities);
 }
 
 void XMLReader::extractFileData(std::string fileName, std::string rootElement, std::string parseElement)
@@ -80,6 +84,8 @@ std::vector<FLOATING_NUMBER> XMLReader::getFloatDataSet(std::string attribute)
 
     initializeTraversalNodes();
 
+    this->numEntities = 0;
+
     while(this->dataNode != 0)
     {   
         FLOATING_NUMBER value = getFloatValue(this->dataNode, attribute);
@@ -88,6 +94,8 @@ std::vector<FLOATING_NUMBER> XMLReader::getFloatDataSet(std::string attribute)
 
         this->dataNode = this->dataNode->next_sibling();
 
+        this->numEntities++;
+        
         //to try to track down debugger problems -- will remove soon
         // std::cout << this->dataNode << std::endl;
     }

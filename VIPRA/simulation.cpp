@@ -39,8 +39,18 @@ void Simulation::run()
     // this->pedestrianDynamicsModel->precompute();
 
 
+    // int i = 0; 
+
+    // while(i < 10)
+    // {
+    //     this->outputDataWriter->writeFloatData("x", i);
+    //     this->outputDataWriter->writeFloatData("y", -i);
+    //     i++;
+    // }
+
+
     //TODO this will be removed once our debugger segfault is resolved
-    printDataDELETETHIS();
+    //printDataDELETETHIS();
 
     this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
 }

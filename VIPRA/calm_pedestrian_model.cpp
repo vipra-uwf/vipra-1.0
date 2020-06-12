@@ -35,8 +35,6 @@ void CalmPedestrianModel::update()
 
 void CalmPedestrianModel::calculatePropulsion()
 {
-
-
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
         propulsionForces.at(pedestrianIndex) = ((desiredSpeed - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / reactionTime) * data->getPedestrianSet()->getMassKg(pedestrianIndex);
@@ -45,7 +43,6 @@ void CalmPedestrianModel::calculatePropulsion()
 
 void CalmPedestrianModel::calculateRepulsion()
 {
-
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
         repulsionForces.at(pedestrianIndex) = (calculateBeta(pedestrianIndex)*desiredSpeed) - (data->getPedestrianSet()->getSpeed(pedestrianIndex) / reactionTime);
