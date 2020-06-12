@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pedestrian-set>
+    <pedestrian type="leader" massKg="70" x="2" y="3.2"/>
+    <pedestrian type="follower" massKg="70" x="1" y="2.1"/>
+    <pedestrian type="leader" massKg="70" x="1" y="0.9"/>
+    <pedestrian type="follower" massKg="70" x="1" y="-0.8"/>
+    <pedestrian type="follower" massKg="70" x="1" y="-1.7"/>
+    <pedestrian type="follower" massKg="70" x="4" y="-2.2"/>
+</pedestrian-set>
+
