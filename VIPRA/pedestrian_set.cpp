@@ -7,9 +7,6 @@ PedestrianSet::PedestrianSet()
 
 int PedestrianSet::getNumPedestrians()
 {
-    //TODO this is terrible, use the setter when in the XMLReader
-    this->numPedestrians = this->xCoordinates.size();
-    
     return this->numPedestrians;
 }
 

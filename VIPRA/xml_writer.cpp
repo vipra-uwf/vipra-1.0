@@ -12,8 +12,7 @@ void XMLWriter::configureXMLDocumentStructure(std::string fileName, std::string 
 
 void XMLWriter::writeData(Data* data)
 {
-    //TODO use PedestrianSet.getNumPedestrians() -- first must set it in the XMLReader 
-    setNumDataNodes(data->getPedestrianSet()->getXCoordinates()->size());
+    setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
     initializeDataNodes();
 
     writeFloatDataSet("x", *data->getPedestrianSet()->getXCoordinates());
