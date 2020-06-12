@@ -111,7 +111,7 @@ void XMLWriter::writeFloatDataSet(std::string key, std::vector<FLOATING_NUMBER> 
     {
         std::string data = std::to_string(dataSet[i]);
         //add this-> to document
-        dataNode->append_attribute(this->document.allocate_attribute(document.allocate_string(key.c_str()), document.allocate_string(data.c_str())));
+        dataNode->append_attribute(this->document.allocate_attribute(this->document.allocate_string(key.c_str()), this->document.allocate_string(data.c_str())));
         i++;
     }
 }
@@ -123,7 +123,7 @@ void XMLWriter::writeStringDataSet(std::string key, std::vector<std::string> dat
     for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); dataNode; dataNode = dataNode->next_sibling())
     {
         std::string data = dataSet[i];
-        dataNode->append_attribute(this->document.allocate_attribute(document.allocate_string(key.c_str()), document.allocate_string(data.c_str())));
+        dataNode->append_attribute(this->document.allocate_attribute(this->document.allocate_string(key.c_str()), this->document.allocate_string(data.c_str())));
         i++;
     }
 }

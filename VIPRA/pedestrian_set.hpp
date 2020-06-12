@@ -15,8 +15,6 @@ class PedestrianSet
 
         void initializeSpeeds();
 
-        //TODO xmlreader can keep track when reading then pass at end of reading
-        //probably better than calling vector.size() -- what if data sets are huge? 
         int getNumPedestrians();
 
         FLOATING_NUMBER getSpeed(int);

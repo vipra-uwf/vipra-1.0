@@ -2,11 +2,13 @@
 
 PedestrianSet::PedestrianSet()
 {
+    this->numPedestrians = 0;
 }
 
 void PedestrianSet::initializeSpeeds()
 {
-  std::fill (speedsMetersPerSecond.begin(),speedsMetersPerSecond.begin()+numPedestrians,0);
+    //TODO test to make sure this works as expected
+    std::fill (speedsMetersPerSecond.begin(),speedsMetersPerSecond.begin()+numPedestrians,0);
 }
 
 int PedestrianSet::getNumPedestrians()
