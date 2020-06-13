@@ -2,3 +2,6 @@
 *.o
 .vscode
 build
+rapidxml
+*.mdj
+odeint-v2

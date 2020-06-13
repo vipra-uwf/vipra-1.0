@@ -6,13 +6,17 @@ BUILD_DIR = build
 SRCS = $(wildcard *.cpp)
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
-all: directories main
+all: setup directories main
 
 main: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+setup:
+	@test -e rapidxml || git clone https://github.com/dwd/rapidxml.git
+
 
 directories:
 	@mkdir  -p $(BUILD_DIR)
