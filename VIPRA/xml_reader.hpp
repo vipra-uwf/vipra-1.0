@@ -37,7 +37,6 @@ class XMLReader: public InputDataLoader
         void setParseElement(std::string);
         void parseXMLDocument();
 
-        void initializeTraversalNodes();
         FLOATING_NUMBER getFloatValue(rapidxml::xml_node<>*, std::string);
         std::string getStringValue(rapidxml::xml_node<>*, std::string);
 
