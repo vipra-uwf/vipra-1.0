@@ -6,14 +6,13 @@
 
 class Data
 {
+    private:
+        PedestrianSet pedestrianSet;
+        ObstacleSet obstacleSet;
     public:
         Data();
         PedestrianSet* getPedestrianSet();
         ObstacleSet* getObstacleSet();
-
-    private:
-        PedestrianSet pedestrianSet;
-        ObstacleSet obstacleSet;
 };
 
 #endif

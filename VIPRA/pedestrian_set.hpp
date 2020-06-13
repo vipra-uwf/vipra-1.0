@@ -10,6 +10,23 @@
 
 class PedestrianSet
 {
+    private:
+        int numPedestrians;
+
+        std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
+        std::vector<FLOATING_NUMBER> massesKg;
+
+        std::vector<FLOATING_NUMBER> goalXCoordinates;
+        std::vector<FLOATING_NUMBER> goalYCoordinates;
+
+        std::vector<FLOATING_NUMBER> xCoordinates;
+        std::vector<FLOATING_NUMBER> yCoordinates;
+        std::vector<std::string> types;
+
+        //TODO currently has no getters/setters
+        std::vector<FLOATING_NUMBER> currentVelocityX;
+        std::vector<FLOATING_NUMBER> currentVelocityY;
+
     public:
         PedestrianSet();
 
@@ -44,22 +61,6 @@ class PedestrianSet
         void setTypes(std::vector<std::string>);
         void setMassesKg(std::vector<FLOATING_NUMBER>);
 
-    private:
-        int numPedestrians;
-
-        std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
-        std::vector<FLOATING_NUMBER> massesKg;
-
-        std::vector<FLOATING_NUMBER> goalXCoordinates;
-        std::vector<FLOATING_NUMBER> goalYCoordinates;
-
-        std::vector<FLOATING_NUMBER> xCoordinates;
-        std::vector<FLOATING_NUMBER> yCoordinates;
-        std::vector<std::string> types;
-
-        //TODO currently has no getters/setters
-        std::vector<FLOATING_NUMBER> currentVelocityX;
-        std::vector<FLOATING_NUMBER> currentVelocityY;
 };
 
 #endif

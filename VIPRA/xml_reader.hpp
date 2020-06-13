@@ -13,9 +13,6 @@
 
 class XMLReader: public InputDataLoader
 {
-    public:
-        XMLReader();
-        virtual void storeData(Data*);
        
     private:
         Data* data;
@@ -44,6 +41,10 @@ class XMLReader: public InputDataLoader
         std::vector<std::string> getStringDataSet(std::string);
 
         void extractFileData(std::string, std::string, std::string);
+
+    public:
+        XMLReader();
+        virtual void storeData(Data*);
 };
 
 #endif
