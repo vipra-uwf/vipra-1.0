@@ -59,13 +59,22 @@ void XMLReader::parseXMLDocument()
    this->document.parse<rapidxml::parse_declaration_node | rapidxml::parse_no_data_nodes>(&this->fileContents[0]);
 }
 
+void XMLReader::initializeRootNode()
+{
+    this->rootNode = this->document.first_node(this->document.allocate_string(this->rootElement.c_str()));
+    std::cout << "Root Node: " << this->rootNode << "    (" << this->rootElement << ")" << std::endl;
+}
+
+void XMLReader::initializeDataNode()
+{
+    this->dataNode = this->rootNode->first_node(this->document.allocate_string(this->parseElement.c_str()));
+    std::cout << "Data Node[0]: " << this->dataNode << "    (" << this->parseElement << ")" << std::endl;
+}
+
 void XMLReader::initializeTraversalNodes()
 {
     this->rootNode = this->document.first_node(this->document.allocate_string(this->rootElement.c_str()));
     this->dataNode = this->rootNode->first_node(this->document.allocate_string(this->parseElement.c_str()));
-
-    //to try to track down debugger problems -- will remove soon
-    // std::cout << "First data node: " << this->dataNode << std::endl;
 }
 
 FLOATING_NUMBER XMLReader::getFloatValue(rapidxml::xml_node<>* node, std::string attribute)
@@ -82,7 +91,9 @@ std::vector<FLOATING_NUMBER> XMLReader::getFloatDataSet(std::string attribute)
 {
     std::vector<FLOATING_NUMBER> dataSet;
 
-    initializeTraversalNodes();
+    // initializeTraversalNodes();
+    initializeRootNode();
+    initializeDataNode();
 
     this->numEntities = 0;
 
@@ -97,7 +108,7 @@ std::vector<FLOATING_NUMBER> XMLReader::getFloatDataSet(std::string attribute)
         this->numEntities++;
         
         //to try to track down debugger problems -- will remove soon
-        // std::cout << this->dataNode << std::endl;
+        std::cout << "Data Node[" << this->numEntities << "]: " << this->dataNode << "   (" << this->parseElement << ")" << std::endl;
     }
 
     return dataSet;
@@ -107,8 +118,13 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
 {
     std::vector<std::string> dataSet;
 
-    initializeTraversalNodes();
+    // initializeTraversalNodes();
 
+    initializeRootNode();
+    initializeDataNode();
+
+    this->numEntities = 0;
+   
     while(this->dataNode != 0)
     {   
         std::string value = getStringValue(this->dataNode, attribute);
@@ -116,6 +132,10 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
         dataSet.push_back(value);
 
         this->dataNode = this->dataNode->next_sibling();
+
+        this->numEntities++;
+
+        std::cout << "Data Node[" << this->numEntities << "]: " << this->dataNode << "    (" << this->parseElement << ")" << std::endl;
     }
 
     return dataSet;

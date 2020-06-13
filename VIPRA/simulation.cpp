@@ -50,7 +50,7 @@ void Simulation::run()
 
 
     //TODO this will be removed once our debugger segfault is resolved
-    //printDataDELETETHIS();
+    // printDataDELETETHIS();
 
     this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
 }

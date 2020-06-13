@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <cstring>
+#include <iostream>
 
 #include "type_definitions.hpp"
 #include "rapidxml-1.13/rapidxml.hpp"
@@ -44,6 +45,9 @@ class XMLReader: public InputDataLoader
         std::vector<std::string> getStringDataSet(std::string);
 
         void extractFileData(std::string, std::string, std::string);
+
+        void initializeRootNode();
+        void initializeDataNode();
 };
 
 #endif
