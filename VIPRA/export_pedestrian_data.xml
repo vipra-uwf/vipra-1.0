@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <pedestrian-set>
-	<pedestrian x="2.000000" y="3.200000" type="leader"/>
-	<pedestrian x="1.000000" y="2.100000" type="follower"/>
-	<pedestrian x="1.000000" y="0.900000" type="leader"/>
-	<pedestrian x="1.000000" y="-0.800000" type="follower"/>
-	<pedestrian x="1.000000" y="-1.700000" type="follower"/>
-	<pedestrian x="4.000000" y="-2.200000" type="follower"/>
+	<pedestrian x="0.000000" y="0.000000" type="follower"/>
+	<pedestrian x="1.000000" y="-1.000000" type="follower"/>
+	<pedestrian x="2.000000" y="-2.000000" type="follower"/>
+	<pedestrian x="3.000000" y="-3.000000" type="follower"/>
+	<pedestrian x="4.000000" y="-4.000000" type="follower"/>
+	<pedestrian x="5.000000" y="-5.000000" type="follower"/>
+	<pedestrian x="6.000000" y="-6.000000" type="follower"/>
+	<pedestrian x="7.000000" y="-7.000000" type="follower"/>
+	<pedestrian x="8.000000" y="-8.000000" type="follower"/>
+	<pedestrian x="9.000000" y="-9.000000" type="follower"/>
+	<pedestrian x="10.000000" y="-10.000000" type="follower"/>
+	<pedestrian x="11.000000" y="-11.000000" type="follower"/>
+	<pedestrian x="12.000000" y="-12.000000" type="follower"/>
+	<pedestrian x="13.000000" y="-13.000000" type="follower"/>
+	<pedestrian x="14.000000" y="-14.000000" type="follower"/>
+	<pedestrian x="15.000000" y="-15.000000" type="follower"/>
+	<pedestrian x="16.000000" y="-16.000000" type="follower"/>
+	<pedestrian x="17.000000" y="-17.000000" type="follower"/>
+	<pedestrian x="18.000000" y="-18.000000" type="follower"/>
+	<pedestrian x="19.000000" y="-19.000000" type="follower"/>
 </pedestrian-set>
 

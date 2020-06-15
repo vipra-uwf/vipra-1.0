@@ -16,10 +16,12 @@
 class XMLWriter: public OutputDataWriter
 {
     public:
+        XMLWriter();
         void configureXMLDocumentStructure(std::string, std::string, std::string, std::string, std::string);
         virtual void writeData(Data*);
         virtual void writeFloatData(std::string, FLOATING_NUMBER);
         virtual void writeStringData(std::string, std::string);
+        void writeDocumentContents();
     
     private:
         Data* data;

@@ -23,6 +23,8 @@ int main()
     
     simulation.setOutputDataWriter(&xmlWriter);
     simulation.run();
-  
+
+    xmlWriter.writeDocumentContents();
+
     return 0;
 }

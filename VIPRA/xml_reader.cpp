@@ -86,13 +86,13 @@ std::vector<FLOATING_NUMBER> XMLReader::getFloatDataSet(std::string attribute)
     initializeRootNode();
     initializeDataNode();
 
-    std::cout << "\nRoot Node: " << this->rootNode << "            (" << this->rootElement << ")" << std::endl;
+    // std::cout << "\nRoot Node: " << this->rootNode << "            (" << this->rootElement << ")" << std::endl;
 
     this->numEntities = 0;
 
     while(this->dataNode != 0)
     {   
-        std::cout << "Data Node[" << this->numEntities << "]: " << this->dataNode << "           (" << this->parseElement << ")" << "            Parent: " << this->dataNode->parent() << std::endl; 
+        // std::cout << "Data Node[" << this->numEntities << "]: " << this->dataNode << "           (" << this->parseElement << ")" << "            Parent: " << this->dataNode->parent() << std::endl; 
         
         FLOATING_NUMBER value = getFloatValue(this->dataNode, attribute);
 
@@ -113,13 +113,13 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
     initializeRootNode();
     initializeDataNode();
 
-    std::cout << "\nRoot Node: " << this->rootNode << "            (" << this->rootElement << ")" << std::endl;
+    // std::cout << "\nRoot Node: " << this->rootNode << "            (" << this->rootElement << ")" << std::endl;
     
     this->numEntities = 0;
    
     while(this->dataNode != 0)
     {   
-        std::cout << "Data Node[" << this->numEntities << "]: " << this->dataNode << "           (" << this->parseElement << ")" << "            Parent: " << this->dataNode->parent() << std::endl; 
+        // std::cout << "Data Node[" << this->numEntities << "]: " << this->dataNode << "           (" << this->parseElement << ")" << "            Parent: " << this->dataNode->parent() << std::endl; 
         
         std::string value = getStringValue(this->dataNode, attribute);
 
