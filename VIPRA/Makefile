@@ -15,8 +15,8 @@ $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 setup:
-	@test -e rapidxml || git clone https://github.com/dwd/rapidxml.git
-
+	@test -e rapidxml || git clone --depth=1 --branch=master https://github.com/dwd/rapidxml.git rapidxml
+	@rm -rf ./rapidxml/.git
 
 directories:
 	@mkdir  -p $(BUILD_DIR)
