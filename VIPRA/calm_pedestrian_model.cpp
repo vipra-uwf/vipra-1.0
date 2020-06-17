@@ -1,15 +1,21 @@
 //TODO: Fill in with actual details
 #include "calm_pedestrian_model.hpp"
 
+CalmPedestrianModel::CalmPedestrianModel()
+{
+    desiredSpeed = 0;
+    reactionTime = 0;
+}
+
+void CalmPedestrianModel::initializeForces()
+{
+    std::fill (propulsionForces.begin(),propulsionForces.begin()+data->getPedestrianSet()->getNumPedestrians(),0);
+    std::fill (repulsionForces.begin(),repulsionForces.begin()+data->getPedestrianSet()->getNumPedestrians(),0);
+}
+
 void CalmPedestrianModel::setData(Data* initialData)
 {
     this->data = initialData;
-
-    for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
-    {
-        propulsionForces.push_back(0);
-        repulsionForces.push_back(0);
-    }
 }
 
 Data* CalmPedestrianModel::getData()
@@ -43,6 +49,7 @@ void CalmPedestrianModel::calculatePropulsion()
 
 void CalmPedestrianModel::calculateRepulsion()
 {
+
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
         repulsionForces.at(pedestrianIndex) = (calculateBeta(pedestrianIndex)*desiredSpeed) - (data->getPedestrianSet()->getSpeed(pedestrianIndex) / reactionTime);
