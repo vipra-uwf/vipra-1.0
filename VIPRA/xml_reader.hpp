@@ -14,10 +14,6 @@
 
 class XMLReader: public InputDataLoader
 {
-    public:
-        XMLReader();
-        virtual void storeData(Data*);
-       
     private:
         Data* data;
         std::ifstream fileStream;      
@@ -44,9 +40,12 @@ class XMLReader: public InputDataLoader
         std::vector<std::string> getStringDataSet(std::string);
 
         void extractFileData(std::string, std::string, std::string);
-
         void initializeRootNode();
         void initializeDataNode();
+
+    public:
+        XMLReader();
+        virtual void storeData(Data*);
 };
 
 #endif

@@ -7,6 +7,10 @@
 
 class ObstacleSet
 {
+    private:
+        int numObstacles;
+        std::vector<FLOATING_NUMBER> xCoordinates;
+        std::vector<FLOATING_NUMBER> yCoordinates;
     public:
         ObstacleSet();
         
@@ -17,11 +21,6 @@ class ObstacleSet
         void setNumObstacles(int); 
         void setXCoordinates(std::vector<FLOATING_NUMBER>);
         void setYCoordinates(std::vector<FLOATING_NUMBER>);
-
-    private:
-        int numObstacles;
-        std::vector<FLOATING_NUMBER> xCoordinates;
-        std::vector<FLOATING_NUMBER> yCoordinates;
 };
 
 #endif

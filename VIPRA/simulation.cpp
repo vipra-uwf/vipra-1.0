@@ -40,7 +40,7 @@ void Simulation::run()
 
     int i = 0; 
 
-    while(i < 20)
+    while(i < 10)
     {
         this->outputDataWriter->writeFloatData("x", i);
         this->outputDataWriter->writeFloatData("y", -i);

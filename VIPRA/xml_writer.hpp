@@ -15,14 +15,6 @@
 
 class XMLWriter: public OutputDataWriter
 {
-    public:
-        XMLWriter();
-        void configureXMLDocumentStructure(std::string, std::string, std::string, std::string, std::string);
-        virtual void writeData(Data*);
-        virtual void writeFloatData(std::string, FLOATING_NUMBER);
-        virtual void writeStringData(std::string, std::string);
-        void writeDocumentContents();
-    
     private:
         Data* data;
         std::ofstream fileStream;
@@ -46,6 +38,14 @@ class XMLWriter: public OutputDataWriter
 
         void writeFloatDataSet(std::string, std::vector<FLOATING_NUMBER>);
         void writeStringDataSet(std::string, std::vector<std::string>);
+        
+    public:
+        XMLWriter();
+        void configureXMLDocumentStructure(std::string, std::string, std::string, std::string, std::string);
+        virtual void writeData(Data*);
+        virtual void writeFloatData(std::string, FLOATING_NUMBER);
+        virtual void writeStringData(std::string, std::string);
+        void writeDocumentContents();
 };
 
 #endif
