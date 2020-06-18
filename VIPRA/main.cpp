@@ -23,6 +23,7 @@ int main()
     
     simulation.setOutputDataWriter(&xmlWriter);
     simulation.run();
-  
+    
+    std::cout << "End of main(), program closing..(0)" << std::endl;
     return 0;
 }
