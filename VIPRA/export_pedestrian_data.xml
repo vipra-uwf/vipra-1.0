@@ -10,5 +10,15 @@
 	<pedestrian x="7.000000" y="-7.000000" type="follower"/>
 	<pedestrian x="8.000000" y="-8.000000" type="follower"/>
 	<pedestrian x="9.000000" y="-9.000000" type="follower"/>
+	<pedestrian x="10.000000" y="-10.000000" type="follower"/>
+	<pedestrian x="11.000000" y="-11.000000" type="follower"/>
+	<pedestrian x="12.000000" y="-12.000000" type="follower"/>
+	<pedestrian x="13.000000" y="-13.000000" type="follower"/>
+	<pedestrian x="14.000000" y="-14.000000" type="follower"/>
+	<pedestrian x="15.000000" y="-15.000000" type="follower"/>
+	<pedestrian x="16.000000" y="-16.000000" type="follower"/>
+	<pedestrian x="17.000000" y="-17.000000" type="follower"/>
+	<pedestrian x="18.000000" y="-18.000000" type="follower"/>
+	<pedestrian x="19.000000" y="-19.000000" type="follower"/>
 </pedestrian-set>
 
