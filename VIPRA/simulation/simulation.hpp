@@ -3,10 +3,10 @@
 
 #include <iostream> 
 
-#include "rapidxml/rapidxml.hpp"
-#include "input_data_loader.hpp" //TODO may be able to remove -- is data *always* loaded outside of the simulation?
-#include "output_data_writer.hpp"
-#include "pedestrian_dynamics_model.hpp"
+#include "../rapidxml/rapidxml.hpp"
+#include "../readers/input_data_loader.hpp" //TODO may be able to remove -- is data *always* loaded outside of the simulation?
+#include "../writers/output_data_writer.hpp"
+#include "../models/pedestrian_dynamics_model.hpp"
 #include "data.hpp" //TODO REMOVE ME WHEN PRINTDATADELETETHIS() IS REMOVED
 
 class Simulation

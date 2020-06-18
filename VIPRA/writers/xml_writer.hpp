@@ -8,10 +8,10 @@
 #include <iostream>
 #include <cstring>
 
-#include "rapidxml/rapidxml.hpp"
-#include "rapidxml/rapidxml_print.hpp"
+#include "../rapidxml/rapidxml.hpp"
+#include "../rapidxml/rapidxml_print.hpp"
 #include "output_data_writer.hpp"
-#include "data.hpp"
+#include "../simulation/data.hpp"
 
 class XMLWriter: public OutputDataWriter
 {

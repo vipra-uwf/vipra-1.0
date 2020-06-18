@@ -1,7 +1,7 @@
 #ifndef PEDESTRIAN_DYNAMICS_MODEL_HPP
 #define PEDESTRIAN_DYNAMICS_MODEL_HPP
 
-#include "data.hpp"
+#include "../simulation/data.hpp"
 
 class PedestrianDynamicsModel
 {

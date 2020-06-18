@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "type_definitions.hpp"
+#include "../type_definitions.hpp"
 
 class ObstacleSet
 {
