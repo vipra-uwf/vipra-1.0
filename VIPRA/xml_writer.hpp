@@ -40,11 +40,12 @@ class XMLWriter: public OutputDataWriter
         void writeStringDataSet(std::string, std::vector<std::string>);
         
     public:
+        XMLWriter();
         void configureXMLDocumentStructure(std::string, std::string, std::string, std::string, std::string);
         virtual void writeData(Data*);
         virtual void writeFloatData(std::string, FLOATING_NUMBER);
         virtual void writeStringData(std::string, std::string);
-    
+        void writeDocumentContents();
 };
 
 #endif
