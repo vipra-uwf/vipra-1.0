@@ -3,7 +3,7 @@
 
 #include <iostream> 
 
-#include "rapidxml-1.13/rapidxml.hpp"
+#include "rapidxml/rapidxml.hpp"
 #include "input_data_loader.hpp" //TODO may be able to remove -- is data *always* loaded outside of the simulation?
 #include "output_data_writer.hpp"
 #include "pedestrian_dynamics_model.hpp"

@@ -8,8 +8,8 @@
 #include <iostream>
 #include <cstring>
 
-#include "rapidxml-1.13/rapidxml.hpp"
-#include "rapidxml-1.13/rapidxml_print.hpp"
+#include "rapidxml/rapidxml.hpp"
+#include "rapidxml/rapidxml_print.hpp"
 #include "output_data_writer.hpp"
 #include "data.hpp"
 

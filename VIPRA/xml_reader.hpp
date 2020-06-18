@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "type_definitions.hpp"
-#include "rapidxml-1.13/rapidxml.hpp"
+#include "rapidxml/rapidxml.hpp"
 #include "input_data_loader.hpp"
 #include "data.hpp"
 
