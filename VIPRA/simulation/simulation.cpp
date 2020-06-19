@@ -38,15 +38,15 @@ void Simulation::run()
 
     // this->pedestrianDynamicsModel->precompute();
 
-    int i = 0; 
+    // int i = 0; 
 
-    while(i < 20)
-    {
-        this->outputDataWriter->writeFloatData("x", i);
-        this->outputDataWriter->writeFloatData("y", -i);
-        this->outputDataWriter->writeStringData("type", "follower");
-        i++;
-    }
+    // while(i < 30)
+    // {
+    //     this->outputDataWriter->writeFloatData("x", i);
+    //     this->outputDataWriter->writeFloatData("y", -i);
+    //     this->outputDataWriter->writeStringData("type", "follower");
+    //     i++;
+    // }
 
 
     // TODO this will be removed once our debugger segfault is resolved
@@ -65,15 +65,15 @@ void Simulation::printDataDELETETHIS()
     for(long long unsigned int i = 0; i < (data->getPedestrianSet()->getXCoordinates()->size()); i++)
     {
         std::cout << "[" << (*data->getPedestrianSet()->getXCoordinates())[i] << ", ";
-        std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "] ";
-        std::cout << (*data->getPedestrianSet()->getTypes())[i] << std::endl;
+        std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "],  ";
+        // std::cout << (*data->getPedestrianSet()->getTypes())[i] << std::endl;
     }
 
-    std::cout <<"\nObstacles: " << std::endl;
+    std::cout <<"\n\nObstacles: " << std::endl;
    
     for(long long unsigned int i = 0; i < (data->getObstacleSet()->getXCoordinates()->size()); i++)
     {
         std::cout << "[" << (*data->getObstacleSet()->getXCoordinates())[i] << ", ";
-        std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "] " << std::endl;
+        std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "],  ";
     }
 }
