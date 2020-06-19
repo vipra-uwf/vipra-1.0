@@ -1,3 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pedestrian-set/>
+<pedestrian-set>
+	<pedestrian x="0.000000" y="0.000000"/>
+	<pedestrian x="1.000000" y="-1.000000"/>
+	<pedestrian x="2.000000" y="-2.000000"/>
+	<pedestrian x="3.000000" y="-3.000000"/>
+	<pedestrian x="4.000000" y="-4.000000"/>
+	<pedestrian x="5.000000" y="-5.000000"/>
+	<pedestrian x="6.000000" y="-6.000000"/>
+	<pedestrian x="7.000000" y="-7.000000"/>
+	<pedestrian x="8.000000" y="-8.000000"/>
+	<pedestrian x="9.000000" y="-9.000000"/>
+	<pedestrian x="10.000000" y="-10.000000"/>
+	<pedestrian x="11.000000" y="-11.000000"/>
+	<pedestrian x="12.000000" y="-12.000000"/>
+	<pedestrian x="13.000000" y="-13.000000"/>
+	<pedestrian x="14.000000" y="-14.000000"/>
+	<pedestrian x="15.000000" y="-15.000000"/>
+	<pedestrian x="16.000000" y="-16.000000"/>
+	<pedestrian x="17.000000" y="-17.000000"/>
+	<pedestrian x="18.000000" y="-18.000000"/>
+	<pedestrian x="19.000000" y="-19.000000"/>
+	<pedestrian x="20.000000" y="-20.000000"/>
+	<pedestrian x="21.000000" y="-21.000000"/>
+	<pedestrian x="22.000000" y="-22.000000"/>
+	<pedestrian x="23.000000" y="-23.000000"/>
+	<pedestrian x="24.000000" y="-24.000000"/>
+	<pedestrian x="25.000000" y="-25.000000"/>
+	<pedestrian x="26.000000" y="-26.000000"/>
+	<pedestrian x="27.000000" y="-27.000000"/>
+	<pedestrian x="28.000000" y="-28.000000"/>
+	<pedestrian x="29.000000" y="-29.000000"/>
+</pedestrian-set>
 
