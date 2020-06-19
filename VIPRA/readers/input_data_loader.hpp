@@ -1,7 +1,7 @@
 #ifndef INPUT_DATALOADER_HPP
 #define INPUT_DATALOADER_HPP
 
-#include "data.hpp"
+#include "../simulation/data.hpp"
 
 class InputDataLoader
 {

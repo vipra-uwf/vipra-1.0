@@ -7,10 +7,10 @@
 #include <cstring>
 #include <iostream>
 
-#include "type_definitions.hpp"
-#include "rapidxml/rapidxml.hpp"
+#include "../type_definitions.hpp"
+#include "../rapidxml/rapidxml.hpp"
 #include "input_data_loader.hpp"
-#include "data.hpp"
+#include "../simulation/data.hpp"
 
 class XMLReader: public InputDataLoader
 {

@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "data.hpp"
-#include "type_definitions.hpp"
+#include "../simulation/data.hpp"
+#include "../type_definitions.hpp"
 
 class OutputDataWriter
 {
