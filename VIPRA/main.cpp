@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 
-#include "simulation.hpp"
-#include "xml_reader.hpp"
-#include "xml_writer.hpp"
-#include "calm_pedestrian_model.hpp"
+#include "simulation/simulation.hpp"
+#include "readers/xml_reader.hpp"
+#include "writers/xml_writer.hpp"
+#include "models/calm_pedestrian_model.hpp"
 
 int main()
 {

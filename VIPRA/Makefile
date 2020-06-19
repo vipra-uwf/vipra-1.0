@@ -3,8 +3,8 @@ CXXFLAGS = -std=c++11 -g -Wall
 
 BUILD_DIR = build
 
-SRCS = $(wildcard *.cpp)
-OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
+SRCS = $(wildcard *.cpp) $(wildcard */*.cpp)
+OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o) 
 
 all: setup directories main
 
@@ -19,7 +19,14 @@ setup:
 	@rm -rf ./rapidxml/.git
 
 directories:
-	@mkdir  -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)/entity_sets
+	@mkdir -p $(BUILD_DIR)/goals
+	@mkdir -p $(BUILD_DIR)/models
+	@mkdir -p $(BUILD_DIR)/readers
+	@mkdir -p $(BUILD_DIR)/writers
+	@mkdir -p $(BUILD_DIR)/simulation
+	
 
 .PHONY: directories
 

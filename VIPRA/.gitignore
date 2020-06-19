@@ -3,5 +3,6 @@
 .vscode
 build
 rapidxml
+rapidxml-1.13
 *.mdj
 odeint-v2

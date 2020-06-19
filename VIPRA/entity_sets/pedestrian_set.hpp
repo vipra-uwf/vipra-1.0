@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <math.h>
 
-#include "type_definitions.hpp"
+#include "../type_definitions.hpp"
 
 class PedestrianSet
 {

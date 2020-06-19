@@ -6,7 +6,7 @@
 #include <algorithm>
 
 #include "pedestrian_dynamics_model.hpp"
-#include "data.hpp"
+#include "../simulation/data.hpp"
 
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {

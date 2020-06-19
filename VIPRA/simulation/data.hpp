@@ -1,8 +1,8 @@
 #ifndef DATA_HPP
 #define DATA_HPP
 
-#include "pedestrian_set.hpp"
-#include "obstacle_set.hpp"
+#include "../entity_sets/pedestrian_set.hpp"
+#include "../entity_sets/obstacle_set.hpp"
 
 class Data
 {
