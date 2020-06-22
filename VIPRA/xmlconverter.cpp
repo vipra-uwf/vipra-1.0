@@ -19,6 +19,7 @@ void XMLConverter::convertToXML(std::string fileName, int flag)
     {
         std::stringstream linestream(line);
 
+        //to ignore the first 2 model parameter lines
         if(i > 2)
         {
             int indicator;
@@ -31,9 +32,9 @@ void XMLConverter::convertToXML(std::string fileName, int flag)
             {
                 this->xmlWriter.writeFloatData("x", x);
                 this->xmlWriter.writeFloatData("y", y);
+                // this->xmlWriter.writeFloatData("mass", 1);
             }
         }
-        //to ignore the first 2 model parameter lines
         i++;
     }
 

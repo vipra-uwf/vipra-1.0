@@ -64,7 +64,7 @@ void Simulation::printDataDELETETHIS()
     for(long long unsigned int i = 0; i < (data->getPedestrianSet()->getXCoordinates()->size()); i++)
     {
         std::cout << "[" << (*data->getPedestrianSet()->getXCoordinates())[i] << ", ";
-        std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "],  ";
+        std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "],  mass = " << data->getPedestrianSet()->getMassKg(i) << std::endl;
         // std::cout << (*data->getPedestrianSet()->getTypes())[i] << std::endl;
     }
 

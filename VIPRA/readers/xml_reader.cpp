@@ -15,6 +15,7 @@ void XMLReader::storeData(Data* data)
     // data->getPedestrianSet()->setMassesKg(getFloatDataSet("massKg"));
     data->getPedestrianSet()->setXCoordinates(getFloatDataSet("x"));
     data->getPedestrianSet()->setYCoordinates(getFloatDataSet("y"));
+    data->getPedestrianSet()->setMassesKg(getFloatDataSet("mass"));
     data->getPedestrianSet()->setNumPedestrians(this->numEntities);
 
     extractFileData("./data_sets/a320_144_obstacles.xml", "obstacle-set", "obstacle");
