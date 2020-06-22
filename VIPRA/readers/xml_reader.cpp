@@ -10,7 +10,7 @@ XMLReader::XMLReader()
 
 void XMLReader::storeData(Data* data)
 {
-    extractFileData("./data_sets/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
+    extractFileData("./input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
     // data->getPedestrianSet()->setTypes(getStringDataSet("type"));
     // data->getPedestrianSet()->setMassesKg(getFloatDataSet("massKg"));
     data->getPedestrianSet()->setXCoordinates(getFloatDataSet("x"));
@@ -18,7 +18,7 @@ void XMLReader::storeData(Data* data)
     data->getPedestrianSet()->setMassesKg(getFloatDataSet("mass"));
     data->getPedestrianSet()->setNumPedestrians(this->numEntities);
 
-    extractFileData("./data_sets/a320_144_obstacles.xml", "obstacle-set", "obstacle");
+    extractFileData("./input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
     data->getObstacleSet()->setXCoordinates(getFloatDataSet("x"));
     data->getObstacleSet()->setYCoordinates(getFloatDataSet("y")); 
     data->getObstacleSet()->setNumObstacles(this->numEntities);

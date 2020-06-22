@@ -25,7 +25,7 @@ int main()
     Simulation simulation(&calmModel);
 
     XMLWriter xmlWriter; 
-    xmlWriter.configureXMLDocumentStructure("pedestrian_trajectory.xml", "pedestrian-set", "pedestrian", "1.0", "utf-8");
+    xmlWriter.configureXMLDocumentStructure("./output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian", "1.0", "utf-8");
     
     simulation.setOutputDataWriter(&xmlWriter);
     simulation.run();
