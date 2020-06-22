@@ -36,12 +36,13 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void precompute();
         virtual void update();
 
-        virtual void calculatePropulsion();
-        virtual void calculateRepulsion();
+        void calculatePropulsion();
+        void calculateRepulsion();
         
         
         FLOATING_NUMBER calculateDistance(int, int);
         FLOATING_NUMBER calculateBeta(int);
+        void calculateNearestNeighbors();
 };
 
 #endif
