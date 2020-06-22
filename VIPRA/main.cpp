@@ -32,6 +32,6 @@ int main()
 
     xmlWriter.writeDocumentContents();
     
-    // std::cout << "End of main(), program closing..(0)" << std::endl;
+    std::cout << "End of main(), program closing..(0)" << std::endl;
     return 0;
 }
