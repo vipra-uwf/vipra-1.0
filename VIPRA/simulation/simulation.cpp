@@ -40,17 +40,19 @@ void Simulation::run()
 
     int i = 0; 
 
-    while(i < 20)
+    Data* data = this->pedestrianDynamicsModel->getData();
+
+    // indicates a single time step - Alex
+    while(i < data->getPedestrianSet()->getNumPedestrians())
     {
         this->outputDataWriter->writeFloatData("x", i);
         this->outputDataWriter->writeFloatData("y", -i);
-        this->outputDataWriter->writeStringData("type", "follower");
         i++;
     }
 
 
     // TODO this will be removed once our debugger segfault is resolved
-    printDataDELETETHIS();
+    // printDataDELETETHIS();
 
     // this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
 }
@@ -65,15 +67,15 @@ void Simulation::printDataDELETETHIS()
     for(long long unsigned int i = 0; i < (data->getPedestrianSet()->getXCoordinates()->size()); i++)
     {
         std::cout << "[" << (*data->getPedestrianSet()->getXCoordinates())[i] << ", ";
-        std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "] ";
-        std::cout << (*data->getPedestrianSet()->getTypes())[i] << std::endl;
+        std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "],  mass = " << data->getPedestrianSet()->getMassKg(i) << std::endl;
+        // std::cout << (*data->getPedestrianSet()->getTypes())[i] << std::endl;
     }
 
-    std::cout <<"\nObstacles: " << std::endl;
+    std::cout <<"\n\nObstacles: " << std::endl;
    
     for(long long unsigned int i = 0; i < (data->getObstacleSet()->getXCoordinates()->size()); i++)
     {
         std::cout << "[" << (*data->getObstacleSet()->getXCoordinates())[i] << ", ";
-        std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "] " << std::endl;
+        std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "],  ";
     }
 }
