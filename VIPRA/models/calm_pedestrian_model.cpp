@@ -38,7 +38,7 @@ void CalmPedestrianModel::precompute()
     calculateRepulsion();
 
     // will be removed once we figure out why the rapidxml "segfault" is happening - Alex
-    printDataDELETETHIS();
+    // printDataDELETETHIS();
 }
 
 void CalmPedestrianModel::update()
