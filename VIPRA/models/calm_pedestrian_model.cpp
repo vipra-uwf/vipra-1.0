@@ -1,21 +1,24 @@
-//TODO: Fill in with actual details
 #include "calm_pedestrian_model.hpp"
 
 CalmPedestrianModel::CalmPedestrianModel()
 {
-    desiredSpeed = 0;
-    reactionTime = 0;
+    // this->desiredSpeed = 0;
+    // this->reactionTime = 0;
 }
 
 void CalmPedestrianModel::initializeForces()
 {
-    std::fill (propulsionForces.begin(),propulsionForces.begin()+data->getPedestrianSet()->getNumPedestrians(),0);
-    std::fill (repulsionForces.begin(),repulsionForces.begin()+data->getPedestrianSet()->getNumPedestrians(),0);
+    this->propulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians(), 0);
+    this->repulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians(), 0);
+    this->nearestNeighbors.resize(this->data->getPedestrianSet()->getNumPedestrians(), 0);
 }
 
 void CalmPedestrianModel::setData(Data* initialData)
 {
     this->data = initialData;
+
+    //find a better home for this function call - Alex
+    initializeForces();
 }
 
 Data* CalmPedestrianModel::getData()
@@ -30,8 +33,12 @@ void CalmPedestrianModel::precompute()
     //Decrease Force and Propulsion force in CALM code
     //result needs to be stored for each passenger
 
+    calculateNearestNeighbors();
     calculatePropulsion();
     calculateRepulsion();
+
+    // will be removed once we figure out why the rapidxml "segfault" is happening - Alex
+    // printDataDELETETHIS();
 }
 
 void CalmPedestrianModel::update()
@@ -43,16 +50,15 @@ void CalmPedestrianModel::calculatePropulsion()
 {
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
-        propulsionForces.at(pedestrianIndex) = ((desiredSpeed - data->getPedestrianSet()->getSpeed(pedestrianIndex)) / reactionTime) * data->getPedestrianSet()->getMassKg(pedestrianIndex);
+        this->propulsionForces.at(pedestrianIndex) = ((this->desiredSpeed - this->data->getPedestrianSet()->getSpeed(pedestrianIndex)) / this->reactionTime) * this->data->getPedestrianSet()->getMassKg(pedestrianIndex);
     }
 }
 
 void CalmPedestrianModel::calculateRepulsion()
 {
-
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
-        repulsionForces.at(pedestrianIndex) = (calculateBeta(pedestrianIndex)*desiredSpeed) - (data->getPedestrianSet()->getSpeed(pedestrianIndex) / reactionTime);
+        this->repulsionForces.at(pedestrianIndex) = (this->calculateBeta(pedestrianIndex)*desiredSpeed) - (this->data->getPedestrianSet()->getSpeed(pedestrianIndex) / reactionTime);
     }
 }
 
@@ -66,4 +72,33 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirs
     FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
     FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getYCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
     return (sqrt(xDistance + yDistance));
+}
+void CalmPedestrianModel::calculateNearestNeighbors()
+{
+    for (int pedestrianIndex =0; pedestrianIndex < this->data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
+    {
+        int nearest = 0;
+        for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); ++i)
+        {
+            if(i != pedestrianIndex)
+            {
+                if(calculateDistance(pedestrianIndex, i) < calculateDistance(pedestrianIndex, nearest))
+                {
+                    nearest = i;
+                }
+            }
+        }
+        this->nearestNeighbors.at(pedestrianIndex) = nearest;
+    }
+}
+
+
+void CalmPedestrianModel::printDataDELETETHIS()
+{
+    for(int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); i++)
+    {
+        std::cout << "Pedestrian " << i << " | Propulsion Force = " << this->propulsionForces[i];
+        std::cout << " | Repulsion Force = " << this->repulsionForces[i];
+        std::cout << " | Nearest Neighbor = " << this->nearestNeighbors[i] << std::endl;
+    }
 }

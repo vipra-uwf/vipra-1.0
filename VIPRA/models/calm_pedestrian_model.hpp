@@ -18,10 +18,10 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         std::vector<FLOATING_NUMBER> repulsionForces;
         std::vector<int> nearestNeighbors;
 
-
-        FLOATING_NUMBER desiredSpeed;
-        FLOATING_NUMBER reactionTime;
-
+        // TODO will probably read in from a file -- maybe?? - Alex
+        // should these be here? or should we make a vector like mass in pedset - Alex
+        const FLOATING_NUMBER desiredSpeed = 1;
+        const FLOATING_NUMBER reactionTime = 0.4;
 
         const FLOATING_NUMBER a = -2.111;
         const FLOATING_NUMBER b = 0.366;
@@ -36,12 +36,16 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void precompute();
         virtual void update();
 
-        virtual void calculatePropulsion();
-        virtual void calculateRepulsion();
+        void calculatePropulsion();
+        void calculateRepulsion();
         
         
         FLOATING_NUMBER calculateDistance(int, int);
         FLOATING_NUMBER calculateBeta(int);
+        void calculateNearestNeighbors();
+
+
+        void printDataDELETETHIS();
 };
 
 #endif

@@ -35,14 +35,13 @@ void Simulation::run()
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
 
-
-    // this->pedestrianDynamicsModel->precompute();
+    this->pedestrianDynamicsModel->precompute();
 
     int i = 0; 
 
     Data* data = this->pedestrianDynamicsModel->getData();
 
-    // indicates a single time step - Alex
+    // indicates what writing will be like for a single time step - Alex
     while(i < data->getPedestrianSet()->getNumPedestrians())
     {
         this->outputDataWriter->writeFloatData("x", i);
