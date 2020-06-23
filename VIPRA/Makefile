@@ -2,7 +2,6 @@ CXX = g++
 CXXFLAGS = -std=c++11 -g -Wall
 
 BUILD_DIR = build
-
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp)
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o) 
 
