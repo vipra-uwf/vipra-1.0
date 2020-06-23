@@ -40,7 +40,8 @@ void Simulation::run()
 
     int i = 0; 
 
-    while(i < 30)
+    Data* data = this->pedestrianDynamicsModel->getData();
+    while(i < data->getPedestrianSet()->getNumPedestrians())
     {
         this->outputDataWriter->writeFloatData("x", i);
         this->outputDataWriter->writeFloatData("y", -i);
