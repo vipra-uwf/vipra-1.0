@@ -8,6 +8,7 @@
 #include "../writers/output_data_writer.hpp"
 #include "../models/pedestrian_dynamics_model.hpp"
 #include "data.hpp" //TODO REMOVE ME WHEN PRINTDATADELETETHIS() IS REMOVED
+#include "../timer.hpp"
 
 class Simulation
 {
