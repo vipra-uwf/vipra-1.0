@@ -6,9 +6,17 @@
 #include "writers/xml_writer.hpp"
 #include "models/calm_pedestrian_model.hpp"
 
+
+// #include "xmlconverter.hpp"
+
 int main()
 {
     Data data;
+
+    // XMLConverter xmlConverter;
+    // xmlConverter.convertToXML("coord_A320_144.d_coordinates.txt", 13);
+    // xmlConverter.convertToXML("coord_A320_144.d_coordinates.txt", 16);
+
 
     XMLReader xmlReader;
     xmlReader.storeData(&data);

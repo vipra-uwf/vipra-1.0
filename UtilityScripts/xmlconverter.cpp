@@ -36,7 +36,9 @@ void XMLConverter::convertToXML(std::string fileName, int flag)
             {
                 this->xmlWriter.writeFloatData("x", x);
                 this->xmlWriter.writeFloatData("y", y);
-                // this->xmlWriter.writeFloatData("mass", 1);
+                this->xmlWriter.writeFloatData("mass", 1);
+                this->xmlWriter.writeFloatData("reaction_time", 0.4);
+                this->xmlWriter.writeFloatData("desired_speed", 1);
             }
         }
         i++;
