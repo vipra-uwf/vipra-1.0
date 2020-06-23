@@ -35,8 +35,7 @@ void Simulation::run()
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
 
-
-    // this->pedestrianDynamicsModel->precompute();
+    this->pedestrianDynamicsModel->precompute();
 
     int i = 0; 
 

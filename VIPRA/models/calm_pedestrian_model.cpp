@@ -12,12 +12,14 @@ void CalmPedestrianModel::initializeForces()
     this->propulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians());
     this->repulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians());
     this->nearestNeighbors.resize(this->data->getPedestrianSet()->getNumPedestrians());
-    
 }
 
 void CalmPedestrianModel::setData(Data* initialData)
 {
     this->data = initialData;
+
+    //find a better home for this function call - Alex
+    initializeForces();
 }
 
 Data* CalmPedestrianModel::getData()
@@ -35,6 +37,9 @@ void CalmPedestrianModel::precompute()
     calculateNearestNeighbors();
     calculatePropulsion();
     calculateRepulsion();
+
+
+    printDataDELETETHIS();
 }
 
 void CalmPedestrianModel::update()
@@ -52,7 +57,6 @@ void CalmPedestrianModel::calculatePropulsion()
 
 void CalmPedestrianModel::calculateRepulsion()
 {
-
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
         this->repulsionForces.at(pedestrianIndex) = (this->calculateBeta(pedestrianIndex)*desiredSpeed) - (this->data->getPedestrianSet()->getSpeed(pedestrianIndex) / reactionTime);
@@ -81,10 +85,21 @@ void CalmPedestrianModel::calculateNearestNeighbors()
             {
                 if(calculateDistance(pedestrianIndex, i) < calculateDistance(pedestrianIndex, nearest))
                 {
-                nearest = i;
+                    nearest = i;
                 }
             }
         }
-    this->nearestNeighbors.at(pedestrianIndex) = nearest;
+        this->nearestNeighbors.at(pedestrianIndex) = nearest;
+    }
+}
+
+
+void CalmPedestrianModel::printDataDELETETHIS()
+{
+    for(int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); i++)
+    {
+        std::cout << "Pedestrian " << i << " | Propulsion Force = " << this->propulsionForces[i];
+        std::cout << " | Repulsion Force = " << this->repulsionForces[i];
+        std::cout << " | Nearest Neighbor = " << this->nearestNeighbors[i] << std::endl;
     }
 }
