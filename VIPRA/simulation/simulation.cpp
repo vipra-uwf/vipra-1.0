@@ -41,7 +41,7 @@ void Simulation::run()
 
     Data* data = this->pedestrianDynamicsModel->getData();
 
-    // indicates a single time step - Alex
+    // indicates what writing will be like for a single time step - Alex
     while(i < data->getPedestrianSet()->getNumPedestrians())
     {
         this->outputDataWriter->writeFloatData("x", i);

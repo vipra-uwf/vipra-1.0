@@ -1,17 +1,16 @@
-//TODO: Fill in with actual details
 #include "calm_pedestrian_model.hpp"
 
 CalmPedestrianModel::CalmPedestrianModel()
 {
-    this->desiredSpeed = 0;
-    this->reactionTime = 0;
+    // this->desiredSpeed = 0;
+    // this->reactionTime = 0;
 }
 
 void CalmPedestrianModel::initializeForces()
 {
-    this->propulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians());
-    this->repulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians());
-    this->nearestNeighbors.resize(this->data->getPedestrianSet()->getNumPedestrians());
+    this->propulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians(), 0);
+    this->repulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians(), 0);
+    this->nearestNeighbors.resize(this->data->getPedestrianSet()->getNumPedestrians(), 0);
 }
 
 void CalmPedestrianModel::setData(Data* initialData)
@@ -38,7 +37,7 @@ void CalmPedestrianModel::precompute()
     calculatePropulsion();
     calculateRepulsion();
 
-
+    // will be removed once we figure out why the rapidxml "segfault" is happening - Alex
     printDataDELETETHIS();
 }
 

@@ -7,7 +7,7 @@ PedestrianSet::PedestrianSet()
 
 void PedestrianSet::initializeSpeeds()
 {
-    this->speedsMetersPerSecond.resize(this->numPedestrians);
+    this->speedsMetersPerSecond.resize(this->numPedestrians, 0);
     // std::fill (speedsMetersPerSecond.begin(),speedsMetersPerSecond.begin()+numPedestrians,0);
 }
 
