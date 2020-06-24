@@ -22,7 +22,6 @@ void XMLWriter::writeData(Data* data)
 
     writeFloatDataSet("x", *data->getPedestrianSet()->getXCoordinates());
     writeFloatDataSet("y", *data->getPedestrianSet()->getYCoordinates());
-    // writeStringDataSet("type", *data->getPedestrianSet()->getTypes()); 
 
     this->fileStream << this->document;
 

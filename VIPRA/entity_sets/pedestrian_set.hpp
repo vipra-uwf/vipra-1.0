@@ -21,6 +21,8 @@ class PedestrianSet
 
         std::vector<FLOATING_NUMBER> xCoordinates;
         std::vector<FLOATING_NUMBER> yCoordinates;
+
+        //probably delete types.. was only used as an example - Alex
         std::vector<std::string> types;
 
         //TODO currently has no getters/setters
