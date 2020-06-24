@@ -29,5 +29,5 @@ directories:
 .PHONY: directories
 
 clean:
-	$(RM) *.o *.exe $(BUILD_DIR)/*.o
+	$(RM) *.o *.exe main
 	$(RM) -rf $(BUILD_DIR)
