@@ -2,38 +2,52 @@
 
 Timer::Timer()
 {
-    
+    this->simulationElapsedMilliseconds = 0;
 }
 
 void Timer::start()
 {
-    this->startTime = std::chrono::system_clock::now(); 
+    this->realStartTime = std::chrono::system_clock::now(); 
 }
 
 void Timer::stop()
 {
-    this->endTime = std::chrono::system_clock::now(); 
+    this->realEndTime = std::chrono::system_clock::now(); 
 }
 
-void Timer::printStartTime()
+void Timer::printRealStartTime()
 {
-    std::time_t time = std::chrono::system_clock::to_time_t(this->startTime);
-    std::cout << "computation started: " << std::ctime(&time) << std::endl;
+    std::time_t time = std::chrono::system_clock::to_time_t(this->realStartTime);
+    std::cout << "computation started: " << std::ctime(&time);
 }
 
-void Timer::calculateElapsedSeconds()
+void Timer::calculateRealElapsedSeconds()
 {
-    this->elapsedSeconds = this->endTime - this->startTime;
+    this->realElapsedSeconds = this->realEndTime - this->realStartTime;
 }
 
-void Timer::printDuration()
+void Timer::printRealDuration()
 {
-    calculateElapsedSeconds();
-    std::cout << "elapsed time: " << this->elapsedSeconds.count() << "s\n"; 
+    calculateRealElapsedSeconds();
+    std::cout << "elapsed time: " << this->realElapsedSeconds.count() << "s\n"; 
 }
 
-void Timer::printEndTime()
+void Timer::printRealEndTime()
 {
-    std::time_t time = std::chrono::system_clock::to_time_t(this->endTime);
-    std::cout << "computation finished: " << std::ctime(&time) << std::endl;
+    std::time_t time = std::chrono::system_clock::to_time_t(this->realEndTime);
+    std::cout << "computation finished: " << std::ctime(&time);
+}
+
+void Timer::addSimulationTimeMilliseconds(unsigned long milliseconds)
+{
+    this->simulationElapsedMilliseconds += milliseconds;
+}
+
+void Timer::printSimulationDuration()
+{
+    
+    std::cout << "Simulation duration: " 
+        << float(this->simulationElapsedMilliseconds)/1000
+        << "s"
+        << std::endl;
 }

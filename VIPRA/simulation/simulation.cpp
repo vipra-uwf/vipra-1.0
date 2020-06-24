@@ -36,7 +36,7 @@ void Simulation::run()
         //on pedestrian dynamics model, do update
     Timer timer;
     timer.start();
-    timer.printStartTime();
+    timer.printRealStartTime();
     
     this->pedestrianDynamicsModel->precompute();
 
@@ -50,16 +50,18 @@ void Simulation::run()
         this->outputDataWriter->writeFloatData("x", i);
         this->outputDataWriter->writeFloatData("y", -i);
         i++;
+        timer.addSimulationTimeMilliseconds(150);//150 is arbitrary, use whatever ms is needed
     }
-
+    
 
     // TODO this will be removed once our debugger segfault is resolved
     // printDataDELETETHIS();
 
     // this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
     timer.stop();
-    timer.printEndTime();
-    timer.printDuration();
+    timer.printRealEndTime();
+    timer.printRealDuration();
+    timer.printSimulationDuration();
 }
 
 

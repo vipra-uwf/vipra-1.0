@@ -8,17 +8,22 @@
 class Timer
 {
     private:
-        std::chrono::time_point<std::chrono::system_clock> startTime;
-        std::chrono::time_point<std::chrono::system_clock> endTime;
-        std::chrono::duration<double> elapsedSeconds;
-        void calculateElapsedSeconds();
+        std::chrono::time_point<std::chrono::system_clock> realStartTime;
+        std::chrono::time_point<std::chrono::system_clock> realEndTime;
+        std::chrono::time_point<std::chrono::system_clock> simulationEndTime;
+        std::chrono::duration<double> realElapsedSeconds;
+        void calculateRealElapsedSeconds();
+        unsigned long simulationElapsedMilliseconds;
+
     public:
         Timer();
         void start();
         void stop();
-        void printStartTime(); 
-        void printDuration();
-        void printEndTime();    
+        void printRealStartTime(); 
+        void printRealDuration();
+        void printRealEndTime();
+        void addSimulationTimeMilliseconds(unsigned long milliseconds);
+        void printSimulationDuration();
 };
 
 #endif
