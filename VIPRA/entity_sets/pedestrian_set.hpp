@@ -7,9 +7,8 @@
 class PedestrianSet
 {
     public:
-
         //TODO .. may not be necessary but is for now because of reader structure
-        virtual void initializeValues();
+        virtual void initializeValues() = 0;
 
         virtual int getNumPedestrians() = 0;
         virtual std::vector<FLOATING_NUMBER>* getCoordinatesX() = 0;
@@ -20,7 +19,7 @@ class PedestrianSet
         virtual std::vector<FLOATING_NUMBER>* getVelocityX() = 0;
         virtual std::vector<FLOATING_NUMBER>* getVelocityY() = 0;
 
-        // TODO.. necessary to align with our storeData. I dont like it though -- Alex
+        // TODO.. necessary getters to align with our storeData. I dont like it though -- Alex
         virtual std::vector<FLOATING_NUMBER>* getMasses() = 0;
         virtual std::vector<FLOATING_NUMBER>* getReactionTimes() = 0;
         virtual std::vector<FLOATING_NUMBER>* getDesiredSpeeds() = 0;
@@ -28,7 +27,7 @@ class PedestrianSet
         virtual std::vector<FLOATING_NUMBER>* getRepulsionForces() = 0;
         virtual std::vector<int>* getNearestNeighbor() = 0;
 
-        void setNumPedestrians(int);
+        virtual void setNumPedestrians(int) = 0;
         virtual void setCoordinatesX(std::vector<FLOATING_NUMBER>) = 0;
         virtual void setCoordinatesY(std::vector<FLOATING_NUMBER>) = 0;
         virtual void setGoalCoordinatesX(std::vector<FLOATING_NUMBER>) = 0;

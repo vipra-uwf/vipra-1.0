@@ -35,7 +35,7 @@ void Simulation::run()
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
 
-    // this->pedestrianDynamicsModel->precompute();
+    this->pedestrianDynamicsModel->precompute();
 
     int i = 0; 
 
@@ -51,7 +51,7 @@ void Simulation::run()
 
 
     // TODO this will be removed once our debugger segfault is resolved
-    // printDataDELETETHIS();
+    printDataDELETETHIS();
 
     // this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
 }
@@ -66,7 +66,7 @@ void Simulation::printDataDELETETHIS()
     for(int i = 0; i < (data->getPedestrianSet()->getNumPedestrians()); i++)
     {
         std::cout
-        << "(" << (*data->getPedestrianSet()->getCoordinatesX())[i] << ", " 
+        << "coordinates = (" << (*data->getPedestrianSet()->getCoordinatesX())[i] << ", " 
         << (*data->getPedestrianSet()->getCoordinatesY())[i] << ")"
         << " | speed = " << (*data->getPedestrianSet()->getSpeeds())[i] 
         << " | mass = " << (*data->getPedestrianSet()->getMasses())[i] 

@@ -2,6 +2,7 @@
 #define CALM_PEDESTRIAN_SET
 
 #include "pedestrian_set.hpp"
+#include "../type_definitions.hpp"
 
 class CalmPedestrianSet: public PedestrianSet
 {
@@ -38,7 +39,7 @@ class CalmPedestrianSet: public PedestrianSet
 
         virtual void initializeValues();
 
-        int getNumPedestrians();
+        virtual int getNumPedestrians();
         virtual std::vector<FLOATING_NUMBER>* getCoordinatesX();
         virtual std::vector<FLOATING_NUMBER>* getCoordinatesY();
         virtual std::vector<FLOATING_NUMBER>* getGoalCoordinatesX();
@@ -55,7 +56,7 @@ class CalmPedestrianSet: public PedestrianSet
         virtual std::vector<FLOATING_NUMBER>* getRepulsionForces();
         virtual std::vector<int>* getNearestNeighbor();
         
-        void setNumPedestrians(int);
+        virtual void setNumPedestrians(int);
         virtual void setCoordinatesX(std::vector<FLOATING_NUMBER>);
         virtual void setCoordinatesY(std::vector<FLOATING_NUMBER>);
         virtual void setGoalCoordinatesX(std::vector<FLOATING_NUMBER>);
