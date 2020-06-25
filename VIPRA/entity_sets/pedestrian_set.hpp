@@ -19,7 +19,7 @@ class PedestrianSet
         virtual std::vector<FLOATING_NUMBER>* getVelocityX() = 0;
         virtual std::vector<FLOATING_NUMBER>* getVelocityY() = 0;
 
-        // TODO.. necessary getters to align with our storeData. I dont like it though -- Alex
+        // TODO.. necessary gettersto align with our storeData. I dont like it though -- Alex
         virtual std::vector<FLOATING_NUMBER>* getMasses() = 0;
         virtual std::vector<FLOATING_NUMBER>* getReactionTimes() = 0;
         virtual std::vector<FLOATING_NUMBER>* getDesiredSpeeds() = 0;
