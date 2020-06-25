@@ -10,14 +10,16 @@ XMLReader::XMLReader()
 
 void XMLReader::storeData(Data* data)
 {
+    // TODO maybe have extractFileData and getFloatDataSet be the virtual methods instead of storeData
+    // why should the reader store the data? -- Alex 
     extractFileData("./input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
-    // data->getPedestrianSet()->setTypes(getStringDataSet("type"));
-    // data->getPedestrianSet()->setMassesKg(getFloatDataSet("massKg"));
-    data->getPedestrianSet()->setXCoordinates(getFloatDataSet("x"));
-    data->getPedestrianSet()->setYCoordinates(getFloatDataSet("y"));
-    data->getPedestrianSet()->setMassesKg(getFloatDataSet("mass"));
+    data->getPedestrianSet()->setCoordinatesX(getFloatDataSet("x"));
+    data->getPedestrianSet()->setCoordinatesY(getFloatDataSet("y"));
+    data->getPedestrianSet()->setMasses(getFloatDataSet("mass"));
+    data->getPedestrianSet()->setReactionTimes(getFloatDataSet("reaction_time"));
+    data->getPedestrianSet()->setDesiredSpeeds(getFloatDataSet("desired_speed"));
     data->getPedestrianSet()->setNumPedestrians(this->numEntities);
-    data->getPedestrianSet()->initializeSpeeds();
+    data->getPedestrianSet()->initializeValues();
 
     extractFileData("./input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
     data->getObstacleSet()->setXCoordinates(getFloatDataSet("x"));

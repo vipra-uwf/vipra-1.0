@@ -5,6 +5,46 @@ CalmPedestrianSet::CalmPedestrianSet()
     this->numPedestrians = 0;
 }
 
+void CalmPedestrianSet::initializeValues()
+{
+    initializeSpeeds();
+    initializeGoalsX();
+    initializeGoalsY(); 
+    initializePropulsionForces();
+    initializeRepulsionForces();
+    initializeNearestNeighbors();
+}
+
+void CalmPedestrianSet::initializeSpeeds()
+{
+    this->speedsMetersPerSecond.resize(this->numPedestrians, 0);
+}
+
+void CalmPedestrianSet::initializeGoalsX()
+{
+    this->goalCoordinatesX.resize(this->numPedestrians, 0);
+}
+
+void CalmPedestrianSet::initializeGoalsY()
+{
+    this->goalCoordinatesY.resize(this->numPedestrians, 0);
+}
+
+void CalmPedestrianSet::initializePropulsionForces()
+{
+    this->propulsionForces.resize(this->numPedestrians, 0);
+}
+
+void CalmPedestrianSet::initializeRepulsionForces()
+{
+    this->repulsionForces.resize(this->numPedestrians, 0);
+}
+
+void CalmPedestrianSet::initializeNearestNeighbors()
+{
+    this->nearestNeighbor.resize(this->numPedestrians, 0);
+}
+
 int CalmPedestrianSet::getNumPedestrians()
 {
     return this->numPedestrians;
@@ -60,6 +100,21 @@ std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getDesiredSpeeds()
     return &this->desiredSpeeds;
 }
 
+std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPropulsionForces()
+{
+    return &this->propulsionForces;
+}
+
+std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getRepulsionForces()
+{
+    return &this->repulsionForces;
+}
+
+std::vector<int>* CalmPedestrianSet::getNearestNeighbor()
+{
+    return &this->nearestNeighbor;
+}
+
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
 {
    this->numPedestrians = numPedestrians; 
@@ -113,6 +168,21 @@ void CalmPedestrianSet::setReactionTimes(std::vector<FLOATING_NUMBER> reactionTi
 void CalmPedestrianSet::setDesiredSpeeds(std::vector<FLOATING_NUMBER> desiredSpeeds)
 {
     this->desiredSpeeds = desiredSpeeds;
+}
+
+void CalmPedestrianSet::setPropulsionForces(std::vector<FLOATING_NUMBER> propulsionForces)
+{
+    this->propulsionForces = propulsionForces;
+}
+
+void CalmPedestrianSet::setRepulsionForces(std::vector<FLOATING_NUMBER> repulsionForces)
+{
+    this->repulsionForces = repulsionForces;
+}
+
+void CalmPedestrianSet::setNearestNeighbor(std::vector<int> nearestNeighbor)
+{
+   this->nearestNeighbor = nearestNeighbor; 
 }
 
 // void PedestrianSet::initializeSpeeds()

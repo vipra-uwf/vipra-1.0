@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <math.h>
 
 #include "pedestrian_dynamics_model.hpp"
 #include "../simulation/data.hpp"
@@ -12,8 +13,8 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     private:
         Data* data;
-
-        //TODO initialize with 0s using data.pedset.getNumPedestrians()
+        
+        // REMOVE .. WILL BE USED IN PEDESTRIAN SET
         std::vector<FLOATING_NUMBER> propulsionForces;
         std::vector<FLOATING_NUMBER> repulsionForces;
         std::vector<int> nearestNeighbors;
