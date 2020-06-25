@@ -15,6 +15,7 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER> massesKg;
         std::vector<FLOATING_NUMBER> reactionTimes;
         std::vector<FLOATING_NUMBER> desiredSpeeds;
+        //TODO .. add getters and setters for velocity
         std::vector<FLOATING_NUMBER> currentVelocityX;
         std::vector<FLOATING_NUMBER> currentVelocityY;
         std::vector<FLOATING_NUMBER> propulsionForces;
@@ -26,6 +27,8 @@ class CalmPedestrianSet: public PedestrianSet
         void initializeSpeeds();
         void initializeGoalsX();
         void initializeGoalsY(); 
+        // void initializeVelocityX();
+        // void initializeVelocityY();
         void initializePropulsionForces();
         void initializeRepulsionForces();
         void initializeNearestNeighbors();

@@ -50,7 +50,7 @@ void CalmPedestrianModel::calculatePropulsion()
 {
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
-        this->propulsionForces.at(pedestrianIndex) = ((this->desiredSpeed - this->data->getPedestrianSet()->getSpeed(pedestrianIndex)) / this->reactionTime) * this->data->getPedestrianSet()->getMassKg(pedestrianIndex);
+        this->propulsionForces.at(pedestrianIndex) = ((this->desiredSpeed - (*this->data->getPedestrianSet()->getSpeeds())[pedestrianIndex]) / this->reactionTime) * (*this->data->getPedestrianSet()->getMasses())[pedestrianIndex];
     }
 }
 
@@ -58,7 +58,7 @@ void CalmPedestrianModel::calculateRepulsion()
 {
     for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
     {
-        this->repulsionForces.at(pedestrianIndex) = (this->calculateBeta(pedestrianIndex)*desiredSpeed) - (this->data->getPedestrianSet()->getSpeed(pedestrianIndex) / reactionTime);
+        this->repulsionForces.at(pedestrianIndex) = (this->calculateBeta(pedestrianIndex)*desiredSpeed) - ((*this->data->getPedestrianSet()->getSpeeds())[pedestrianIndex] / reactionTime);
     }
 }
 
@@ -69,8 +69,8 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedestrianIndex)
 
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
 {
-    FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
-    FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getYCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
+    FLOATING_NUMBER xDistance = pow(((*data->getPedestrianSet()->getCoordinatesX())[pedestrianIndexOfFirst] - (*data->getPedestrianSet()->getCoordinatesX())[pedestrianIndexOfSecond]), 2);
+    FLOATING_NUMBER yDistance = pow(((*data->getPedestrianSet()->getCoordinatesY())[pedestrianIndexOfFirst] - (*data->getPedestrianSet()->getCoordinatesY())[pedestrianIndexOfSecond]), 2);
     return (sqrt(xDistance + yDistance));
 }
 void CalmPedestrianModel::calculateNearestNeighbors()

@@ -184,8 +184,3 @@ void CalmPedestrianSet::setNearestNeighbor(std::vector<int> nearestNeighbor)
 {
    this->nearestNeighbor = nearestNeighbor; 
 }
-
-// void PedestrianSet::initializeSpeeds()
-// {
-//     this->speedsMetersPerSecond.resize(this->numPedestrians, 0);
-// }
