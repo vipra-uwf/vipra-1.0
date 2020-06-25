@@ -66,7 +66,8 @@ void Simulation::printDataDELETETHIS()
     for(int i = 0; i < (data->getPedestrianSet()->getNumPedestrians()); i++)
     {
         std::cout
-        << "coordinates = (" << (*data->getPedestrianSet()->getCoordinatesX())[i] << ", " 
+        << i 
+        << " | coordinates = (" << (*data->getPedestrianSet()->getCoordinatesX())[i] << ", " 
         << (*data->getPedestrianSet()->getCoordinatesY())[i] << ")"
         << " | speed = " << (*data->getPedestrianSet()->getSpeeds())[i] 
         << " | mass = " << (*data->getPedestrianSet()->getMasses())[i] 
