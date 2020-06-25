@@ -36,6 +36,7 @@ void CalmPedestrianModel::calculatePropulsion()
     }
 }
 
+// TODO .. strangely, it calculates the repulsion force for the first pedestrian as a negative value.. i do not think this is intended behavior -- Alex
 void CalmPedestrianModel::calculateRepulsion()
 {
     for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
@@ -59,6 +60,7 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirs
     return (sqrt(xDistance + yDistance));
 }
 
+// TODO .. i am pretty sure that this has some unintended behavior. the first pedestrian's nearest neighbor is itself. i do not think this is intentional -- Alex
 void CalmPedestrianModel::calculateNearestNeighbors()
 {
     for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); ++i)
