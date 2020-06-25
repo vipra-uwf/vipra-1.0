@@ -16,6 +16,11 @@ int PedestrianSet::getNumPedestrians()
     return this->numPedestrians;
 }
 
+int PedestrianSet::getNumDimensions()
+{
+    return this->numDimensions;
+}
+
 FLOATING_NUMBER PedestrianSet::getSpeed(int pedestrianIndex)
 {
     return this->speedsMetersPerSecond.at(pedestrianIndex);
@@ -26,43 +31,31 @@ FLOATING_NUMBER PedestrianSet::getMassKg(int pedestrianIndex)
     return this->massesKg.at(pedestrianIndex);
 }
 
-FLOATING_NUMBER PedestrianSet::getGoalXCoordinate(int pedestrianIndex)
+FLOATING_NUMBER PedestrianSet::getGoalCoordinate(int dimension, int pedestrianIndex)
 {
-    return this->goalXCoordinates.at(pedestrianIndex);
-}
-FLOATING_NUMBER PedestrianSet::getGoalYCoordinate(int pedestrianIndex)
-{
-    return this->goalYCoordinates.at(pedestrianIndex);
+    return this->goalCoordinates.at(dimension).at(pedestrianIndex);
 }
 
-FLOATING_NUMBER PedestrianSet::getXCoordinate(int pedestrianIndex)
+FLOATING_NUMBER PedestrianSet::getPedestrianCoordinate(int dimension, int pedestrianIndex)
 {
-    return this->xCoordinates.at(pedestrianIndex);
+    return this->pedestrianCoordinates.at(dimension).at(pedestrianIndex);
 }
 
-FLOATING_NUMBER PedestrianSet::getYCoordinate(int pedestrianIndex)
+
+std::vector<std::vector<FLOATING_NUMBER>>* PedestrianSet::getPedestrianCoordinates()
 {
-    return this->yCoordinates.at(pedestrianIndex);
+    return &pedestrianCoordinates;
 }
 
-std::vector<FLOATING_NUMBER>* PedestrianSet::getXCoordinates()
-{
-    return &xCoordinates;
-}
-
-std::vector<FLOATING_NUMBER>* PedestrianSet::getYCoordinates()
-{
-    return &yCoordinates;
-}
-
-std::vector<std::string>* PedestrianSet::getTypes()
-{
-    return &types;
-}
 
 void PedestrianSet::setNumPedestrians(int numPedestrians)
 {
     this->numPedestrians = numPedestrians;
+}
+
+void PedestrianSet::setNumDimensions(int numDimensions)
+{
+    this->numDimensions = numDimensions;
 }
 
 void PedestrianSet::setSpeed(int pedestrianIndex, FLOATING_NUMBER speedMetersPerSecond)
@@ -70,40 +63,21 @@ void PedestrianSet::setSpeed(int pedestrianIndex, FLOATING_NUMBER speedMetersPer
     this->speedsMetersPerSecond.at(pedestrianIndex) = speedMetersPerSecond;
 }
 
-void PedestrianSet::setGoalXCoordinate(int pedestrianIndex, FLOATING_NUMBER goalXCoordinate)
+void PedestrianSet::setGoalCoordinate(int dimension, int pedestrianIndex, FLOATING_NUMBER goalCoordinate)
 {
-    this->goalXCoordinates.at(pedestrianIndex) = goalXCoordinate;
+    this->goalCoordinates.at(dimension).at(pedestrianIndex) = goalCoordinate;
 }
 
-void PedestrianSet::setGoalYCoordinate(int pedestrianIndex, FLOATING_NUMBER goalYCoordinate)
+void PedestrianSet::setPedestrianCoordinate(int dimension, int pedestrianIndex, FLOATING_NUMBER coordinate)
 {
-    this->goalYCoordinates.at(pedestrianIndex) = goalYCoordinate;
+    this->pedestrianCoordinates.at(dimension).at(pedestrianIndex) = coordinate;
 }
 
-void PedestrianSet::setXCoordinate(int pedestrianIndex, FLOATING_NUMBER xCoordinate)
+void PedestrianSet::setPedestrianCoordinates(std::vector<FLOATING_NUMBER> Coordinates)
 {
-    this->xCoordinates.at(pedestrianIndex) = xCoordinate;
+    this->pedestrianCoordinates.push_back(Coordinates);
 }
 
-void PedestrianSet::setYCoordinate(int pedestrianIndex, FLOATING_NUMBER yCoordinate)
-{
-    this->yCoordinates.at(pedestrianIndex) = yCoordinate;
-}
-
-void PedestrianSet::setXCoordinates(std::vector<FLOATING_NUMBER> xCoordinates)
-{
-    this->xCoordinates = xCoordinates;
-}
-
-void PedestrianSet::setYCoordinates(std::vector<FLOATING_NUMBER> yCoordinates)
-{
-    this->yCoordinates = yCoordinates;
-}
-
-void PedestrianSet::setTypes(std::vector<std::string> types)
-{
-    this->types = types;
-}
 void PedestrianSet::setMassesKg(std::vector<FLOATING_NUMBER> massesKG)
 {
     this->massesKg = massesKG;

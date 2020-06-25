@@ -12,20 +12,17 @@ class PedestrianSet
 {
     private:
         int numPedestrians;
+        int numDimensions;
 
         std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
         std::vector<FLOATING_NUMBER> massesKg;
 
-        std::vector<FLOATING_NUMBER> goalXCoordinates;
-        std::vector<FLOATING_NUMBER> goalYCoordinates;
+        std::vector<std::vector<FLOATING_NUMBER>> goalCoordinates;
 
-        std::vector<FLOATING_NUMBER> xCoordinates;
-        std::vector<FLOATING_NUMBER> yCoordinates;
-        std::vector<std::string> types;
+        std::vector<std::vector<FLOATING_NUMBER>> pedestrianCoordinates;
 
         //TODO currently has no getters/setters
-        std::vector<FLOATING_NUMBER> currentVelocityX;
-        std::vector<FLOATING_NUMBER> currentVelocityY;
+        std::vector<std::vector<FLOATING_NUMBER>> currentVelocitys;
 
     public:
         PedestrianSet();
@@ -33,32 +30,27 @@ class PedestrianSet
         void initializeSpeeds();
 
         int getNumPedestrians();
+        int getNumDimensions();
 
         FLOATING_NUMBER getSpeed(int);
         FLOATING_NUMBER getMassKg(int);
       
-        FLOATING_NUMBER getGoalXCoordinate(int);
-        FLOATING_NUMBER getGoalYCoordinate(int);
+        FLOATING_NUMBER getGoalCoordinate(int, int);
  
-        FLOATING_NUMBER getXCoordinate(int);
-        FLOATING_NUMBER getYCoordinate(int);
+        FLOATING_NUMBER getPedestrianCoordinate(int, int);
         
-        std::vector<FLOATING_NUMBER>* getXCoordinates();
-        std::vector<FLOATING_NUMBER>* getYCoordinates();
-        std::vector<std::string>* getTypes();
+        std::vector<std::vector<FLOATING_NUMBER>>* getPedestrianCoordinates();
+
+        void setNumDimensions(int);
 
         void setNumPedestrians(int);
         void setSpeed(int, FLOATING_NUMBER);
 
-        void setGoalXCoordinate(int, FLOATING_NUMBER);
-        void setGoalYCoordinate(int, FLOATING_NUMBER);
+        void setGoalCoordinate(int, int, FLOATING_NUMBER);
         
-        void setXCoordinate(int, FLOATING_NUMBER);
-        void setYCoordinate(int, FLOATING_NUMBER);
+        void setPedestrianCoordinate(int, int, FLOATING_NUMBER);
 
-        void setXCoordinates(std::vector<FLOATING_NUMBER>);
-        void setYCoordinates(std::vector<FLOATING_NUMBER>);
-        void setTypes(std::vector<std::string>);
+        void setPedestrianCoordinates(std::vector<FLOATING_NUMBER>);
         void setMassesKg(std::vector<FLOATING_NUMBER>);
 
 };
