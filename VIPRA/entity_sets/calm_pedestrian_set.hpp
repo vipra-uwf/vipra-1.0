@@ -18,37 +18,41 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER> currentVelocityX;
         std::vector<FLOATING_NUMBER> currentVelocityY;
         
+        // should these exist?? should we read these in from file and
+        // instead use our virtual setters? -- Alex
         void initializeSpeeds();
         void initializeGoalsX();
         void initializeGoalsY(); 
 
     public:
-        
+
+        CalmPedestrianSet();
+
         int getNumPedestrians();
 
-        std::vector<FLOATING_NUMBER>* getCoordinatesX();
-        std::vector<FLOATING_NUMBER>* getCoordinatesY();
-        std::vector<FLOATING_NUMBER>* getGoalCoordinatesX();
-        std::vector<FLOATING_NUMBER>* getGoalCoordinatesY();
-        std::vector<FLOATING_NUMBER>* getSpeeds();
+        virtual std::vector<FLOATING_NUMBER>* getCoordinatesX();
+        virtual std::vector<FLOATING_NUMBER>* getCoordinatesY();
+        virtual std::vector<FLOATING_NUMBER>* getGoalCoordinatesX();
+        virtual std::vector<FLOATING_NUMBER>* getGoalCoordinatesY();
+        virtual std::vector<FLOATING_NUMBER>* getSpeeds();
+        virtual std::vector<FLOATING_NUMBER>* getVelocityX();
+        virtual std::vector<FLOATING_NUMBER>* getVelocityY();
         std::vector<FLOATING_NUMBER>* getMasses();
         std::vector<FLOATING_NUMBER>* getReactionTimes();
         std::vector<FLOATING_NUMBER>* getDesiredSpeeds();
-        std::vector<FLOATING_NUMBER>* getVelocityX();
-        std::vector<FLOATING_NUMBER>* getVelocityY();
         
         void setNumPedestrians(int);
 
-        void setCoordinatesX(std::vector<FLOATING_NUMBER>);
-        void setCoordinatesY(std::vector<FLOATING_NUMBER>);
-        void setGoalCoordinatesX(std::vector<FLOATING_NUMBER>);
-        void setGoalCoordinatesY(std::vector<FLOATING_NUMBER>);
-        void setSpeeds(std::vector<FLOATING_NUMBER>);
+        virtual void setCoordinatesX(std::vector<FLOATING_NUMBER>);
+        virtual void setCoordinatesY(std::vector<FLOATING_NUMBER>);
+        virtual void setGoalCoordinatesX(std::vector<FLOATING_NUMBER>);
+        virtual void setGoalCoordinatesY(std::vector<FLOATING_NUMBER>);
+        virtual void setSpeeds(std::vector<FLOATING_NUMBER>);
+        virtual void setVelocityX(std::vector<FLOATING_NUMBER>);
+        virtual void setVelocityY(std::vector<FLOATING_NUMBER>);
         void setMasses(std::vector<FLOATING_NUMBER>);
         void setReactionTimes(std::vector<FLOATING_NUMBER>);
         void setDesiredSpeeds(std::vector<FLOATING_NUMBER>);
-        void setVelocityX(std::vector<FLOATING_NUMBER>);
-        void setVelocityY(std::vector<FLOATING_NUMBER>);
 };
 
 #endif

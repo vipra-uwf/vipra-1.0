@@ -5,12 +5,15 @@
 #include "readers/xml_reader.hpp"
 #include "writers/xml_writer.hpp"
 #include "models/calm_pedestrian_model.hpp"
-
+#include "entity_sets/calm_pedestrian_set.hpp"
 // #include "xmlconverter.hpp"
 
 int main()
 {
+    CalmPedestrianSet calmPedSet;
     Data data;
+
+    data.setPedestrianSet(&calmPedSet);
 
     // XMLConverter xmlConverter;
     // xmlConverter.convertToXML("coord_A320_144.d_coordinates.txt", 13);
