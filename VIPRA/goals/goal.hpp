@@ -16,14 +16,13 @@ class Goal
     private:
     //keep track of final goals
     //TODO: create dimension struct for velocity and goals? -elizabeth
-    std::vector<FLOATING_NUMBER> exitGoalX;
-    std::vector<FLOATING_NUMBER> exitGoalY;
+    std::vector<std::vector<FLOATING_NUMBER>> exitGoal;
 
 
     public:
          Goal();
-         void setExitGoal(FLOATING_NUMBER, FLOATING_NUMBER);
-         //void initializeGoals(Data*);
+         void initializeGoals(Data*);
+         void setExitGoal(int, FLOATING_NUMBER);
          //void determinePedestrianGoals(Data*, Time); -Need more information on time class - elizabeth
          void determinePedestrianGoals(Data*);
          //void isSimulationGoalMet(Data*, Time); -Need more information on time class - elizabeth
