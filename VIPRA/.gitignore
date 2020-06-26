@@ -1,12 +1,4 @@
-# Ignore all
-*
-
-# Unignore all with extensions
-!*.*
-
-# Unignore all dirs
-!*
-
+main
 *.exe
 *.out
 *.o
@@ -16,3 +8,5 @@ rapidxml
 rapidxml-1.13
 *.mdj
 odeint-v2
+tempMake.txt
+uml_screenshot.png
