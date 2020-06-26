@@ -13,6 +13,7 @@ class PedestrianSet
     private:
         int numPedestrians;
 
+
         std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
         std::vector<FLOATING_NUMBER> massesKg;
 

@@ -13,6 +13,8 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
     private:
         Data* data;
 
+        //
+
         //TODO initialize with 0s using data.pedset.getNumPedestrians()
         std::vector<FLOATING_NUMBER> propulsionForces;
         std::vector<FLOATING_NUMBER> repulsionForces;
