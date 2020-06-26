@@ -1,11 +1,11 @@
-#ifndef TIMER_HPP
-#define TIMER_HPP
+#ifndef CLOCK_HPP
+#define CLOCK_HPP
 
 #include <iostream> 
 #include <chrono> 
 #include <ctime> 
 
-class Timer
+class Clock
 {
     private:
         std::chrono::time_point<std::chrono::system_clock> realStartTime;
@@ -16,7 +16,7 @@ class Timer
         unsigned long simulationElapsedMilliseconds;
 
     public:
-        Timer();
+        Clock();
         void start();
         void stop();
         void printRealStartTime(); 

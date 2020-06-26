@@ -34,9 +34,9 @@ void Simulation::run()
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
-    Timer timer;
-    timer.start();
-    timer.printRealStartTime();
+    Clock clock;
+    clock.start();
+    clock.printRealStartTime();
     
     this->pedestrianDynamicsModel->precompute();
 
@@ -50,7 +50,7 @@ void Simulation::run()
         this->outputDataWriter->writeFloatData("x", i);
         this->outputDataWriter->writeFloatData("y", -i);
         i++;
-        timer.addSimulationTimeMilliseconds(150);//150 is arbitrary, use whatever ms is needed
+        clock.addSimulationTimeMilliseconds(150);//150 is arbitrary, use whatever ms is needed
     }
     
 
@@ -58,10 +58,10 @@ void Simulation::run()
     // printDataDELETETHIS();
 
     // this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
-    timer.stop();
-    timer.printRealEndTime();
-    timer.printRealDuration();
-    timer.printSimulationDuration();
+    clock.stop();
+    clock.printRealEndTime();
+    clock.printRealDuration();
+    clock.printSimulationDuration();
 }
 
 
