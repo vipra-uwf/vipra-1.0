@@ -2,16 +2,21 @@
 
 Data::Data()
 {
-    pedestrianSet = PedestrianSet();
+    // pedestrianSet = PedestrianSet();
     obstacleSet = ObstacleSet();
 }
 
 PedestrianSet* Data::getPedestrianSet()
 {
-    return &this->pedestrianSet;
+    return this->pedestrianSet;
 }
 
 ObstacleSet* Data::getObstacleSet()
 {
     return &this->obstacleSet;
+}
+
+void Data::setPedestrianSet(PedestrianSet* pedestrianSet)
+{
+    this->pedestrianSet = pedestrianSet;
 }

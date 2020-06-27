@@ -9,10 +9,9 @@ int ObstacleSet::getNumObstacles()
 {
     return this->numObstacles;
 }
-
-void ObstacleSet::initializeObstacles()
+int ObstacleSet::getNumDimensions()
 {
-    this->obstacleCoordinates.resize(numDimensions);
+    return this->numDimensions;
 }
 
 std::vector<std::vector<FLOATING_NUMBER>>* ObstacleSet::getObstacleCoordinates()
@@ -20,14 +19,17 @@ std::vector<std::vector<FLOATING_NUMBER>>* ObstacleSet::getObstacleCoordinates()
     return &this->obstacleCoordinates;
 }
 
-
 void ObstacleSet::setNumObstacles(int numObstacles)
 {
     this->numObstacles = numObstacles;
 }
-
-void ObstacleSet::setObstacleCoordinates(std::vector<FLOATING_NUMBER> coordinates)
+void ObstacleSet::setNumDimensions(int numDimensions)
 {
-    this->obstacleCoordinates.push_back(coordinates);
+    this->numDimensions = numDimensions;
+}
+
+void ObstacleSet::setObstacleCoordinates(std::vector<std::vector<FLOATING_NUMBER>> coordinates)
+{
+    this->obstacleCoordinates = coordinates;
 }
 

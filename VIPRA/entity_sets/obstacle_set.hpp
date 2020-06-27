@@ -17,11 +17,11 @@ class ObstacleSet
         
         int getNumObstacles();
         int getNumDimensions();
-        void initializeObstacles();
         std::vector<std::vector<FLOATING_NUMBER>>* getObstacleCoordinates();
 
         void setNumObstacles(int); 
-        void setObstacleCoordinates(std::vector<FLOATING_NUMBER>);
+        void setNumDimensions(int);
+        void setObstacleCoordinates(std::vector<std::vector<FLOATING_NUMBER>>);
 };
 
 #endif
