@@ -20,8 +20,8 @@ void XMLWriter::writeData(Data* data)
     setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
     initializeDataNodes();
 
-    writeFloatDataSet("x", *data->getPedestrianSet()->getXCoordinates());
-    writeFloatDataSet("y", *data->getPedestrianSet()->getYCoordinates());
+    writeFloatDataSet("x", *data->getPedestrianSet()->getCoordinatesX());
+    writeFloatDataSet("y", *data->getPedestrianSet()->getCoordinatesY());
 
     this->fileStream << this->document;
 

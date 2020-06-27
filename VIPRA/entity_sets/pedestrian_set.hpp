@@ -2,68 +2,47 @@
 #define PEDESTRIAN_SET_HPP
 
 #include <vector>
-#include <string>
-#include <algorithm>
-#include <math.h>
-
 #include "../type_definitions.hpp"
 
 class PedestrianSet
 {
-    private:
-        int numPedestrians;
-
-
-        std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
-        std::vector<FLOATING_NUMBER> massesKg;
-
-        std::vector<FLOATING_NUMBER> goalXCoordinates;
-        std::vector<FLOATING_NUMBER> goalYCoordinates;
-
-        std::vector<FLOATING_NUMBER> xCoordinates;
-        std::vector<FLOATING_NUMBER> yCoordinates;
-
-        //probably delete types.. was only used as an example - Alex
-        std::vector<std::string> types;
-
-        //TODO currently has no getters/setters
-        std::vector<FLOATING_NUMBER> currentVelocityX;
-        std::vector<FLOATING_NUMBER> currentVelocityY;
-
     public:
-        PedestrianSet();
+        //TODO .. may not be necessary but is for now because of reader structure
+        virtual void initializeValues() = 0;
 
-        void initializeSpeeds();
+        virtual int getNumPedestrians() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getCoordinatesX() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getCoordinatesY() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getGoalCoordinatesX() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getGoalCoordinatesY() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getSpeeds() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getVelocityX() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getVelocityY() = 0;
 
-        int getNumPedestrians();
+        // TODO.. necessary gettersto align with our storeData. I dont like it though -- Alex
+        virtual std::vector<FLOATING_NUMBER>* getMasses() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getReactionTimes() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getDesiredSpeeds() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getPropulsionForces() = 0;
+        virtual std::vector<FLOATING_NUMBER>* getRepulsionForces() = 0;
+        virtual std::vector<int>* getNearestNeighbor() = 0;
 
-        FLOATING_NUMBER getSpeed(int);
-        FLOATING_NUMBER getMassKg(int);
-      
-        FLOATING_NUMBER getGoalXCoordinate(int);
-        FLOATING_NUMBER getGoalYCoordinate(int);
- 
-        FLOATING_NUMBER getXCoordinate(int);
-        FLOATING_NUMBER getYCoordinate(int);
+        virtual void setNumPedestrians(int) = 0;
+        virtual void setCoordinatesX(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setCoordinatesY(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setGoalCoordinatesX(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setGoalCoordinatesY(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setSpeeds(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setVelocityX(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setVelocityY(std::vector<FLOATING_NUMBER>) = 0;
         
-        std::vector<FLOATING_NUMBER>* getXCoordinates();
-        std::vector<FLOATING_NUMBER>* getYCoordinates();
-        std::vector<std::string>* getTypes();
-
-        void setNumPedestrians(int);
-        void setSpeed(int, FLOATING_NUMBER);
-
-        void setGoalXCoordinate(int, FLOATING_NUMBER);
-        void setGoalYCoordinate(int, FLOATING_NUMBER);
-        
-        void setXCoordinate(int, FLOATING_NUMBER);
-        void setYCoordinate(int, FLOATING_NUMBER);
-
-        void setXCoordinates(std::vector<FLOATING_NUMBER>);
-        void setYCoordinates(std::vector<FLOATING_NUMBER>);
-        void setTypes(std::vector<std::string>);
-        void setMassesKg(std::vector<FLOATING_NUMBER>);
-
+        //TODO same as necessary getters.. these are unique to Calm and should'nt be virtual --Alex
+        virtual void setMasses(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setReactionTimes(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setDesiredSpeeds(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setPropulsionForces(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setRepulsionForces(std::vector<FLOATING_NUMBER>) = 0;
+        virtual void setNearestNeighbor(std::vector<int>) = 0;
 };
 
 #endif

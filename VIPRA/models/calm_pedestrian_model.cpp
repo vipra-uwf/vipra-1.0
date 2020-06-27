@@ -1,24 +1,8 @@
 #include "calm_pedestrian_model.hpp"
 
-CalmPedestrianModel::CalmPedestrianModel()
-{
-    // this->desiredSpeed = 0;
-    // this->reactionTime = 0;
-}
-
-void CalmPedestrianModel::initializeForces()
-{
-    this->propulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians(), 0);
-    this->repulsionForces.resize(this->data->getPedestrianSet()->getNumPedestrians(), 0);
-    this->nearestNeighbors.resize(this->data->getPedestrianSet()->getNumPedestrians(), 0);
-}
-
 void CalmPedestrianModel::setData(Data* initialData)
 {
     this->data = initialData;
-
-    //find a better home for this function call - Alex
-    initializeForces();
 }
 
 Data* CalmPedestrianModel::getData()
@@ -36,9 +20,6 @@ void CalmPedestrianModel::precompute()
     calculateNearestNeighbors();
     calculatePropulsion();
     calculateRepulsion();
-
-    // will be removed once we figure out why the rapidxml "segfault" is happening - Alex
-    // printDataDELETETHIS();
 }
 
 void CalmPedestrianModel::update()
@@ -48,57 +29,56 @@ void CalmPedestrianModel::update()
 
 void CalmPedestrianModel::calculatePropulsion()
 {
-    for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
+    for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
     {
-        this->propulsionForces.at(pedestrianIndex) = ((this->desiredSpeed - this->data->getPedestrianSet()->getSpeed(pedestrianIndex)) / this->reactionTime) * this->data->getPedestrianSet()->getMassKg(pedestrianIndex);
+        // this->propulsionForces.at(pedestrianIndex) = ((this->desiredSpeed - (*this->data->getPedestrianSet()->getSpeeds())[pedestrianIndex]) / this->reactionTime) * (*this->data->getPedestrianSet()->getMasses())[pedestrianIndex];
+        (*this->data->getPedestrianSet()->getPropulsionForces())[i] = (((*this->data->getPedestrianSet()->getDesiredSpeeds())[i] - (*this->data->getPedestrianSet()->getSpeeds())[i]) / (*this->data->getPedestrianSet()->getReactionTimes())[i]) * (*this->data->getPedestrianSet()->getMasses())[i];
     }
 }
 
+// TODO .. strangely, it calculates the repulsion force for the first pedestrian as a negative value.. i do not think this is intended behavior -- Alex
 void CalmPedestrianModel::calculateRepulsion()
 {
-    for(int pedestrianIndex = 0; pedestrianIndex < data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
+    for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
     {
-        this->repulsionForces.at(pedestrianIndex) = (this->calculateBeta(pedestrianIndex)*desiredSpeed) - (this->data->getPedestrianSet()->getSpeed(pedestrianIndex) / reactionTime);
+        // this->repulsionForces.at(pedestrianIndex) = (this->calculateBeta(pedestrianIndex)*desiredSpeed) - ((*this->data->getPedestrianSet()->getSpeeds())[pedestrianIndex] / reactionTime);
+        (*this->data->getPedestrianSet()->getRepulsionForces())[i] = (calculateBeta(i) * (*this->data->getPedestrianSet()->getDesiredSpeeds())[i]) - ((*this->data->getPedestrianSet()->getSpeeds())[i] / (*this->data->getPedestrianSet()->getReactionTimes())[i]);
     }
 }
 
-FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedestrianIndex)
+FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int i)
 {
-    return (c - exp(a * (calculateDistance(pedestrianIndex, nearestNeighbors.at(pedestrianIndex) - b))));
+    // TODO .. is this equation correct? nearestNeighbors[i] - b is an integer minus a floating number.. are we trying to round by casting it as an integer? -- Alex
+    // return (c - exp(a * (calculateDistance(i, nearestNeighbors.at(i) - b))));
+    return (c - exp(a * (calculateDistance(i, (*this->data->getPedestrianSet()->getNearestNeighbor())[i] - b))));
 }
 
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
 {
-    FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
-    FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getYCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
+    FLOATING_NUMBER xDistance = pow(((*data->getPedestrianSet()->getCoordinatesX())[pedestrianIndexOfFirst] - (*data->getPedestrianSet()->getCoordinatesX())[pedestrianIndexOfSecond]), 2);
+    FLOATING_NUMBER yDistance = pow(((*data->getPedestrianSet()->getCoordinatesY())[pedestrianIndexOfFirst] - (*data->getPedestrianSet()->getCoordinatesY())[pedestrianIndexOfSecond]), 2);
     return (sqrt(xDistance + yDistance));
 }
+
+// TODO .. i am pretty sure that this has some unintended behavior. the first pedestrian's nearest neighbor is itself. i do not think this is intentional -- Alex
 void CalmPedestrianModel::calculateNearestNeighbors()
 {
-    for (int pedestrianIndex =0; pedestrianIndex < this->data->getPedestrianSet()->getNumPedestrians(); ++pedestrianIndex)
+    for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); ++i)
     {
         int nearest = 0;
-        for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); ++i)
+
+        for (int j = 0; j < this->data->getPedestrianSet()->getNumPedestrians(); ++j)
         {
-            if(i != pedestrianIndex)
+            if(j != i)
             {
-                if(calculateDistance(pedestrianIndex, i) < calculateDistance(pedestrianIndex, nearest))
+                if(calculateDistance(i, j) < calculateDistance(i, nearest))
                 {
-                    nearest = i;
+                    nearest = j;
                 }
             }
         }
-        this->nearestNeighbors.at(pedestrianIndex) = nearest;
-    }
-}
 
-
-void CalmPedestrianModel::printDataDELETETHIS()
-{
-    for(int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); i++)
-    {
-        std::cout << "Pedestrian " << i << " | Propulsion Force = " << this->propulsionForces[i];
-        std::cout << " | Repulsion Force = " << this->repulsionForces[i];
-        std::cout << " | Nearest Neighbor = " << this->nearestNeighbors[i] << std::endl;
+        // this->nearestNeighbors.at(pedestrianIndex) = nearest;
+        (*this->data->getPedestrianSet()->getNearestNeighbor())[i] = nearest;
     }
 }

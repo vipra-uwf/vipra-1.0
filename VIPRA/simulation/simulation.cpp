@@ -55,7 +55,7 @@ void Simulation::run()
     
 
     // TODO this will be removed once our debugger segfault is resolved
-    // printDataDELETETHIS();
+    printDataDELETETHIS();
 
     // this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
     clock.stop();
@@ -71,16 +71,25 @@ void Simulation::printDataDELETETHIS()
 
     std::cout << "Pedestrians: " << std::endl; 
 
-    for(long long unsigned int i = 0; i < (data->getPedestrianSet()->getXCoordinates()->size()); i++)
+    for(int i = 0; i < (data->getPedestrianSet()->getNumPedestrians()); i++)
     {
-        std::cout << "[" << (*data->getPedestrianSet()->getXCoordinates())[i] << ", ";
-        std::cout << (*data->getPedestrianSet()->getYCoordinates())[i] << "],  mass = " << data->getPedestrianSet()->getMassKg(i) << std::endl;
-        // std::cout << (*data->getPedestrianSet()->getTypes())[i] << std::endl;
+        std::cout
+        << i 
+        << " | coordinates = (" << (*data->getPedestrianSet()->getCoordinatesX())[i] << ", " 
+        << (*data->getPedestrianSet()->getCoordinatesY())[i] << ")"
+        << " | speed = " << (*data->getPedestrianSet()->getSpeeds())[i] 
+        << " | mass = " << (*data->getPedestrianSet()->getMasses())[i] 
+        << " | reaction_time = " << (*data->getPedestrianSet()->getReactionTimes())[i] 
+        << " | desired_speed = " << (*data->getPedestrianSet()->getDesiredSpeeds())[i] 
+        << " | propulsion_force = " << (*data->getPedestrianSet()->getPropulsionForces())[i] 
+        << " | repulsion_force = " << (*data->getPedestrianSet()->getRepulsionForces())[i] 
+        << " | nearest_neighbor = " << (*data->getPedestrianSet()->getNearestNeighbor())[i] 
+        << std::endl;
     }
 
     std::cout <<"\n\nObstacles: " << std::endl;
    
-    for(long long unsigned int i = 0; i < (data->getObstacleSet()->getXCoordinates()->size()); i++)
+    for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
     {
         std::cout << "[" << (*data->getObstacleSet()->getXCoordinates())[i] << ", ";
         std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "],  ";
