@@ -10,23 +10,13 @@ XMLReader::XMLReader()
 
 void XMLReader::storeData(Data* data)
 {
-<<<<<<< HEAD
 //TODO fix xmlreader to work with the new dimension functions.
     extractFileData("./input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
     // data->getPedestrianSet()->setMassesKg(getFloatDataSet("massKg"));
     //data->getPedestrianSet()->setXCoordinates(getFloatDataSet("x"));
     //data->getPedestrianSet()->setYCoordinates(getFloatDataSet("y"));
-    data->getPedestrianSet()->setMassesKg(getFloatDataSet("mass"));
-=======
-    // TODO maybe have extractFileData and getFloatDataSet be the virtual methods instead of storeData
-    // why should the reader store the data? -- Alex 
-    extractFileData("./input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
-    data->getPedestrianSet()->setCoordinatesX(getFloatDataSet("x"));
-    data->getPedestrianSet()->setCoordinatesY(getFloatDataSet("y"));
     data->getPedestrianSet()->setMasses(getFloatDataSet("mass"));
-    data->getPedestrianSet()->setReactionTimes(getFloatDataSet("reaction_time"));
-    data->getPedestrianSet()->setDesiredSpeeds(getFloatDataSet("desired_speed"));
->>>>>>> 980aa09babde6e99c8da3b98baae72c7d853f1e1
+
     data->getPedestrianSet()->setNumPedestrians(this->numEntities);
     data->getPedestrianSet()->initializeValues();
 

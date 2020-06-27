@@ -71,19 +71,12 @@ void Simulation::printDataDELETETHIS()
 
     std::cout << "Pedestrians: " << std::endl; 
 
-<<<<<<< HEAD
-    for(long long unsigned int i = 0; i < (data->getPedestrianSet()->getNumPedestrians()); i++)
-    {
-        std::cout << "[" << (*data->getPedestrianSet()->getPedestrianCoordinates()).at(0).at(i) << ", ";
-        std::cout << (*data->getPedestrianSet()->getPedestrianCoordinates()).at(1).at(i) << "],  mass = " << data->getPedestrianSet()->getMassKg(i) << std::endl;
-        // std::cout << (*data->getPedestrianSet()->getTypes())[i] << std::endl;
-=======
     for(int i = 0; i < (data->getPedestrianSet()->getNumPedestrians()); i++)
     {
         std::cout
         << i 
-        << " | coordinates = (" << (*data->getPedestrianSet()->getCoordinatesX())[i] << ", " 
-        << (*data->getPedestrianSet()->getCoordinatesY())[i] << ")"
+        << " | coordinates = (" << (data->getPedestrianSet()->getPedestrianCoordinates()->at(0))[i] << ", " 
+        << (data->getPedestrianSet()->getPedestrianCoordinates()->at(1))[i] << ")"
         << " | speed = " << (*data->getPedestrianSet()->getSpeeds())[i] 
         << " | mass = " << (*data->getPedestrianSet()->getMasses())[i] 
         << " | reaction_time = " << (*data->getPedestrianSet()->getReactionTimes())[i] 
@@ -92,14 +85,13 @@ void Simulation::printDataDELETETHIS()
         << " | repulsion_force = " << (*data->getPedestrianSet()->getRepulsionForces())[i] 
         << " | nearest_neighbor = " << (*data->getPedestrianSet()->getNearestNeighbor())[i] 
         << std::endl;
->>>>>>> 980aa09babde6e99c8da3b98baae72c7d853f1e1
     }
 
     std::cout <<"\n\nObstacles: " << std::endl;
    
     for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
     {
-        std::cout << "[" << (*data->getObstacleSet()->getXCoordinates())[i] << ", ";
-        std::cout << (*data->getObstacleSet()->getYCoordinates())[i] << "],  ";
+        std::cout << "[" << (data->getObstacleSet()->getObstacleCoordinates()->at(0))[i] << ", ";
+        std::cout << (data->getObstacleSet()->getObstacleCoordinates()->at(1))[i] << "],  ";
     }
 }

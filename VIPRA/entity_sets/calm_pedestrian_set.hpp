@@ -37,6 +37,7 @@ class CalmPedestrianSet: public PedestrianSet
         virtual void initializeValues();
 
         virtual int getNumPedestrians();
+        virtual int getNumDimensions();
         virtual std::vector<std::vector<FLOATING_NUMBER>>* getPedestrianCoordinates();
         virtual std::vector<std::vector<FLOATING_NUMBER>>* getGoalCoordinates();
         virtual std::vector<FLOATING_NUMBER>* getSpeeds();

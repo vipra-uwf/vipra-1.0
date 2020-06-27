@@ -59,6 +59,10 @@ int CalmPedestrianSet::getNumPedestrians()
     return this->numPedestrians;
 }
 
+int CalmPedestrianSet::getNumDimensions()
+{
+    return this->numDimensions;
+}
 std::vector<std::vector<FLOATING_NUMBER>>* CalmPedestrianSet::getPedestrianCoordinates()
 {
     return &this->pedestrianCoordinates;
