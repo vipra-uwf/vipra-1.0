@@ -34,7 +34,10 @@ void Simulation::run()
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
-
+    Clock clock;
+    clock.start();
+    clock.printRealStartTime();
+    
     this->pedestrianDynamicsModel->precompute();
 
     int i = 0; 
@@ -47,13 +50,18 @@ void Simulation::run()
         this->outputDataWriter->writeFloatData("x", i);
         this->outputDataWriter->writeFloatData("y", -i);
         i++;
+        clock.addSimulationTimeMilliseconds(150);//150 is arbitrary, use whatever ms is needed
     }
-
+    
 
     // TODO this will be removed once our debugger segfault is resolved
     // printDataDELETETHIS();
 
     // this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
+    clock.stop();
+    clock.printRealEndTime();
+    clock.printRealDuration();
+    clock.printSimulationDuration();
 }
 
 
