@@ -2,7 +2,6 @@ CXX = g++
 CXXFLAGS = -std=c++11 -g -Wall
 
 BUILD_DIR = build
-
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp)
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o) 
 
@@ -27,9 +26,8 @@ directories:
 	@mkdir -p $(BUILD_DIR)/writers
 	@mkdir -p $(BUILD_DIR)/simulation
 	
-
 .PHONY: directories
 
 clean:
-	$(RM) *.o *.exe *.gch core main test/TestCase $(BUILD_DIR)/*.o
-	rmdir $(BUILD_DIR)
+	$(RM) *.o *.exe $(BUILD_DIR)/*.o
+	$(RM) -rf $(BUILD_DIR)

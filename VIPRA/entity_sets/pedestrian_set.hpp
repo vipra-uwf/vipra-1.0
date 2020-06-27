@@ -21,6 +21,7 @@ class PedestrianSet
 
         std::vector<std::vector<FLOATING_NUMBER>> pedestrianCoordinates;
 
+
         //TODO currently has no getters/setters
         std::vector<std::vector<FLOATING_NUMBER>> currentVelocitys;
 
