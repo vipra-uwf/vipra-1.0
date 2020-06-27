@@ -20,8 +20,11 @@ void XMLWriter::writeData(Data* data)
     setNumDataNodes(data->getPedestrianSet()->getNumPedestrians());
     initializeDataNodes();
 
-    writeFloatDataSet("x", *data->getPedestrianSet()->getXCoordinates());
-    writeFloatDataSet("y", *data->getPedestrianSet()->getYCoordinates());
+//TODO: fix xmlwrite to function with the new dimension vectors
+    //writeFloatDataSet("x", *data->getPedestrianSet()->getPedestrianCoordinates());
+    //writeFloatDataSet("y", *data->getPedestrianSet()->getPedestrianCoordinates());
+    // writeStringDataSet("type", *data->getPedestrianSet()->getTypes()); 
+
 
     this->fileStream << this->document;
 

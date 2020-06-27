@@ -9,18 +9,19 @@ class ObstacleSet
 {
     private:
         int numObstacles;
-        std::vector<FLOATING_NUMBER> xCoordinates;
-        std::vector<FLOATING_NUMBER> yCoordinates;
+        int numDimensions;
+        std::vector<std::vector<FLOATING_NUMBER>> obstacleCoordinates;
+
     public:
         ObstacleSet();
         
         int getNumObstacles();
-        std::vector<FLOATING_NUMBER>* getXCoordinates();
-        std::vector<FLOATING_NUMBER>* getYCoordinates();
+        int getNumDimensions();
+        void initializeObstacles();
+        std::vector<std::vector<FLOATING_NUMBER>>* getObstacleCoordinates();
 
         void setNumObstacles(int); 
-        void setXCoordinates(std::vector<FLOATING_NUMBER>);
-        void setYCoordinates(std::vector<FLOATING_NUMBER>);
+        void setObstacleCoordinates(std::vector<FLOATING_NUMBER>);
 };
 
 #endif

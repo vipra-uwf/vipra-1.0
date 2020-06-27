@@ -69,8 +69,11 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedestrianIndex)
 
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
 {
-    FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
-    FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getYCoordinate(pedestrianIndexOfFirst) - data->getPedestrianSet()->getXCoordinate(pedestrianIndexOfSecond)), 2);
+    int x = 0;
+    int y = 1;
+
+    FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getPedestrianCoordinate(x, pedestrianIndexOfFirst) - data->getPedestrianSet()->getPedestrianCoordinate(x, pedestrianIndexOfSecond)), 2);
+    FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getPedestrianCoordinate(y, pedestrianIndexOfFirst) - data->getPedestrianSet()->getPedestrianCoordinate(y, pedestrianIndexOfSecond)), 2);
     return (sqrt(xDistance + yDistance));
 }
 void CalmPedestrianModel::calculateNearestNeighbors()
