@@ -19,11 +19,7 @@ void CalmPedestrianSet::initializeGoals()
 {
     for(int i = 0; i < this->numPedestrians; ++i)
     {
-        for(int j = 0; i < this->numDimensions; ++j)
-        {
-            //TODO .. this reads weird.. renaming should probably happen -- Alex
-            this->goalCoordinates.at(i).coordinates.push_back(0);
-        }
+        this->goalCoordinates.push_back(Dimensions {std::vector<FLOATING_NUMBER> {0, 0}});
     }
 }
 
@@ -31,10 +27,7 @@ void CalmPedestrianSet::initializeVelocities()
 {
     for(int i = 0; i < this->numPedestrians; ++i)
     {
-        for(int j = 0; i < this->numDimensions; ++j)
-        {
-            this->currentVelocities.at(i).coordinates.push_back(0);
-        }
+        this->currentVelocities.push_back(Dimensions {std::vector<FLOATING_NUMBER> {0, 0}});
     }
 }
 

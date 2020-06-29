@@ -2,7 +2,6 @@
 
 XMLReader::XMLReader()
 {
-    //TODO these nulls may not matter -- trying to figure out "segfault"
     this->rootNode = NULL;
     this->dataNode = NULL;
     this->numEntities = 0;
@@ -17,17 +16,16 @@ void XMLReader::storeData(Data* data)
 
     for(int i = 0; i < this->numEntities; ++i)
     {
-        pedestrianCoordinates.at(i).coordinates.push_back(pedestrianCoordinatesX.at(i));
-        pedestrianCoordinates.at(i).coordinates.push_back(pedestrianCoordinatesY.at(i));
+        pedestrianCoordinates.push_back(Dimensions {std::vector<FLOATING_NUMBER> {pedestrianCoordinatesX.at(i), pedestrianCoordinatesY.at(i)}});
     }
-
+    
     data->getPedestrianSet()->setPedestrianCoordinates(pedestrianCoordinates);
     data->getPedestrianSet()->setMasses(getFloatDataSet("mass"));
     data->getPedestrianSet()->setReactionTimes(getFloatDataSet("reaction_time"));
     data->getPedestrianSet()->setDesiredSpeeds(getFloatDataSet("desired_speed"));
     data->getPedestrianSet()->setNumPedestrians(this->numEntities);
     data->getPedestrianSet()->initializeValues();
-
+    
     extractFileData("./input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
     std::vector<Dimensions> obstacleCoordinates;
     std::vector<FLOATING_NUMBER> obstacleCoordinatesX = getFloatDataSet("x");
@@ -35,8 +33,7 @@ void XMLReader::storeData(Data* data)
 
     for(int i = 0; i < this->numEntities; ++i)
     {
-        obstacleCoordinates.at(i).coordinates.push_back(obstacleCoordinatesX.at(i));
-        obstacleCoordinates.at(i).coordinates.push_back(obstacleCoordinatesY.at(i));
+        obstacleCoordinates.push_back(Dimensions {std::vector<FLOATING_NUMBER> {obstacleCoordinatesX.at(i), obstacleCoordinatesY.at(i)}});
     }
 
     data->getObstacleSet()->setObstacleCoordinates(obstacleCoordinates);
