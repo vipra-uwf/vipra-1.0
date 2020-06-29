@@ -3,20 +3,22 @@
 
 #include "pedestrian_set.hpp"
 #include "../type_definitions.hpp"
+#include "../dimensions.hpp"
 
 class CalmPedestrianSet: public PedestrianSet
 {
     private:
         int numPedestrians;
-        int numDimensions;
-        std::vector<std::vector<FLOATING_NUMBER>> pedestrianCoordinates;
-        std::vector<std::vector<FLOATING_NUMBER>> goalCoordinates;
+        int numDimensions = 2; //TODO .. is this an ok spot for this? I think it is because the set is derived -- Alex
+        
+        std::vector<Dimensions> pedestrianCoordinates;
+        std::vector<Dimensions> goalCoordinates;
+        std::vector<Dimensions> currentVelocities;
+        
         std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
         std::vector<FLOATING_NUMBER> massesKg;
         std::vector<FLOATING_NUMBER> reactionTimes;
         std::vector<FLOATING_NUMBER> desiredSpeeds;
-        //TODO .. add getters and setters for velocity
-        std::vector<std::vector<FLOATING_NUMBER>> currentVelocities;
         std::vector<FLOATING_NUMBER> propulsionForces;
         std::vector<FLOATING_NUMBER> repulsionForces;
         std::vector<int> nearestNeighbor;
@@ -38,10 +40,10 @@ class CalmPedestrianSet: public PedestrianSet
 
         virtual int getNumPedestrians();
         virtual int getNumDimensions();
-        virtual std::vector<std::vector<FLOATING_NUMBER>>* getPedestrianCoordinates();
-        virtual std::vector<std::vector<FLOATING_NUMBER>>* getGoalCoordinates();
+        virtual std::vector<Dimensions>* getPedestrianCoordinates();
+        virtual std::vector<Dimensions>* getGoalCoordinates();
+        virtual std::vector<Dimensions>* getVelocities();
         virtual std::vector<FLOATING_NUMBER>* getSpeeds();
-        virtual std::vector<std::vector<FLOATING_NUMBER>>* getVelocities();
         // TODO below getters probably shouldnt be virtual..
         // currently necessary for reader -- Alex
         virtual std::vector<FLOATING_NUMBER>* getMasses();
@@ -53,10 +55,12 @@ class CalmPedestrianSet: public PedestrianSet
         
         virtual void setNumPedestrians(int);
         virtual void setNumDimensions(int);
-        virtual void setPedestrianCoordinates(std::vector<std::vector<FLOATING_NUMBER>>);
-        virtual void setGoalCoordinates(std::vector<std::vector<FLOATING_NUMBER>>);
+
+        virtual void setPedestrianCoordinates(std::vector<Dimensions>);
+        virtual void setGoalCoordinates(std::vector<Dimensions>);
+        virtual void setVelocities(std::vector<Dimensions>);
+
         virtual void setSpeeds(std::vector<FLOATING_NUMBER>);
-        virtual void setVelocities(std::vector<std::vector<FLOATING_NUMBER>>);
         //TODO same as above getters.. below setters probably shouldn't be virtual -- Alex
         virtual void setMasses(std::vector<FLOATING_NUMBER>);
         virtual void setReactionTimes(std::vector<FLOATING_NUMBER>);

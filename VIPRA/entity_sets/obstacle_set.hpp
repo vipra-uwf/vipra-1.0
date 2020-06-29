@@ -4,24 +4,25 @@
 #include <vector>
 
 #include "../type_definitions.hpp"
+#include "../dimensions.hpp"
 
 class ObstacleSet
 {
     private:
         int numObstacles;
-        int numDimensions;
-        std::vector<std::vector<FLOATING_NUMBER>> obstacleCoordinates;
+        int numDimensions = 2;
+        std::vector<Dimensions> obstacleCoordinates;
 
     public:
         ObstacleSet();
         
         int getNumObstacles();
         int getNumDimensions();
-        std::vector<std::vector<FLOATING_NUMBER>>* getObstacleCoordinates();
+        std::vector<Dimensions>* getObstacleCoordinates();
 
         void setNumObstacles(int); 
         void setNumDimensions(int);
-        void setObstacleCoordinates(std::vector<std::vector<FLOATING_NUMBER>>);
+        void setObstacleCoordinates(std::vector<Dimensions>);
 };
 
 #endif

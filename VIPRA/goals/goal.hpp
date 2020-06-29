@@ -10,13 +10,15 @@
 
 #include "../simulation/data.hpp"
 #include "../type_definitions.hpp"
+#include "../dimensions.hpp"
 
 class Goal
 {
     private:
     //keep track of final goals
     //TODO: create dimension struct for velocity and goals? -elizabeth
-    std::vector<std::vector<FLOATING_NUMBER>> exitGoal;
+    
+    std::vector<Dimensions> exitGoal;
 
 
     public:

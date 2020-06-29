@@ -11,6 +11,7 @@
 #include "../rapidxml/rapidxml.hpp"
 #include "input_data_loader.hpp"
 #include "../simulation/data.hpp"
+#include "../dimensions.hpp"
 
 class XMLReader: public InputDataLoader
 {

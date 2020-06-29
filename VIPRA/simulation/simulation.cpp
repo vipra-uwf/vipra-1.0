@@ -75,8 +75,8 @@ void Simulation::printDataDELETETHIS()
     {
         std::cout
         << i 
-        << " | coordinates = (" << (data->getPedestrianSet()->getPedestrianCoordinates()->at(0))[i] << ", " 
-        << (data->getPedestrianSet()->getPedestrianCoordinates()->at(1))[i] << ")"
+        << " | coordinates = (" << (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[0] << ", " 
+        << (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[1] << ")"
         << " | speed = " << (*data->getPedestrianSet()->getSpeeds())[i] 
         << " | mass = " << (*data->getPedestrianSet()->getMasses())[i] 
         << " | reaction_time = " << (*data->getPedestrianSet()->getReactionTimes())[i] 
@@ -91,7 +91,7 @@ void Simulation::printDataDELETETHIS()
    
     for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
     {
-        std::cout << "[" << (data->getObstacleSet()->getObstacleCoordinates()->at(0))[i] << ", ";
-        std::cout << (data->getObstacleSet()->getObstacleCoordinates()->at(1))[i] << "],  ";
+        std::cout << "[" << (data->getObstacleSet()->getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
+        std::cout << (data->getObstacleSet()->getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
     }
 }
