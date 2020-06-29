@@ -12,12 +12,7 @@ int main()
 {
     CalmPedestrianSet calmPedSet;
     Data data;
-
     data.setPedestrianSet(&calmPedSet);
-
-    // XMLConverter xmlConverter;
-    // xmlConverter.convertToXML("coord_A320_144.d_coordinates.txt", 13);
-    // xmlConverter.convertToXML("coord_A320_144.d_coordinates.txt", 16);
 
     XMLReader xmlReader;
     xmlReader.storeData(&data);

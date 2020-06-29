@@ -34,6 +34,9 @@ void Simulation::run()
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
+
+
+    // TODO .. this should probably be a field in the simulation -- Alex
     Clock clock;
     clock.start();
     clock.printRealStartTime();
@@ -87,11 +90,11 @@ void Simulation::printDataDELETETHIS()
         << std::endl;
     }
 
-    std::cout <<"\n\nObstacles: " << std::endl;
+    // std::cout <<"\n\nObstacles: " << std::endl;
    
-    for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
-    {
-        std::cout << "[" << (data->getObstacleSet()->getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
-        std::cout << (data->getObstacleSet()->getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
-    }
+    // for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
+    // {
+    //     std::cout << "[" << (data->getObstacleSet()->getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
+    //     std::cout << (data->getObstacleSet()->getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
+    // }
 }
