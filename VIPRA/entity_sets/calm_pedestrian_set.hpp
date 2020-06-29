@@ -16,7 +16,7 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER> reactionTimes;
         std::vector<FLOATING_NUMBER> desiredSpeeds;
         //TODO .. add getters and setters for velocity
-        std::vector<std::vector<FLOATING_NUMBER>> currentVelocitys;
+        std::vector<std::vector<FLOATING_NUMBER>> currentVelocities;
         std::vector<FLOATING_NUMBER> propulsionForces;
         std::vector<FLOATING_NUMBER> repulsionForces;
         std::vector<int> nearestNeighbor;
@@ -25,7 +25,7 @@ class CalmPedestrianSet: public PedestrianSet
         // instead use our virtual setters? -- Alex
         void initializeSpeeds();
         void initializeGoals();
-        void initializeVelocitys();
+        void initializeVelocities();
         void initializePropulsionForces();
         void initializeRepulsionForces();
         void initializeNearestNeighbors();
@@ -41,7 +41,7 @@ class CalmPedestrianSet: public PedestrianSet
         virtual std::vector<std::vector<FLOATING_NUMBER>>* getPedestrianCoordinates();
         virtual std::vector<std::vector<FLOATING_NUMBER>>* getGoalCoordinates();
         virtual std::vector<FLOATING_NUMBER>* getSpeeds();
-        virtual std::vector<std::vector<FLOATING_NUMBER>>* getVelocitys();
+        virtual std::vector<std::vector<FLOATING_NUMBER>>* getVelocities();
         // TODO below getters probably shouldnt be virtual..
         // currently necessary for reader -- Alex
         virtual std::vector<FLOATING_NUMBER>* getMasses();
@@ -56,7 +56,7 @@ class CalmPedestrianSet: public PedestrianSet
         virtual void setPedestrianCoordinates(std::vector<std::vector<FLOATING_NUMBER>>);
         virtual void setGoalCoordinates(std::vector<std::vector<FLOATING_NUMBER>>);
         virtual void setSpeeds(std::vector<FLOATING_NUMBER>);
-        virtual void setVelocitys(std::vector<std::vector<FLOATING_NUMBER>>);
+        virtual void setVelocities(std::vector<std::vector<FLOATING_NUMBER>>);
         //TODO same as above getters.. below setters probably shouldn't be virtual -- Alex
         virtual void setMasses(std::vector<FLOATING_NUMBER>);
         virtual void setReactionTimes(std::vector<FLOATING_NUMBER>);

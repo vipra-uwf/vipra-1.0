@@ -9,7 +9,7 @@ void CalmPedestrianSet::initializeValues()
 {
     initializeSpeeds();
     initializeGoals();
-    initializeVelocitys();
+    initializeVelocities();
     initializePropulsionForces();
     initializeRepulsionForces();
     initializeNearestNeighbors();
@@ -25,16 +25,16 @@ void CalmPedestrianSet::initializeGoals()
     this->goalCoordinates.resize(this->numDimensions);
     for(int i = 0; i < this->numDimensions; ++i)
     {
-        this->goalCoordinates.at(i).resize(this->numPedestrians,0);
+        this->goalCoordinates.at(i).resize(this->numPedestrians, 0);
     }
 }
 
-void CalmPedestrianSet::initializeVelocitys()
+void CalmPedestrianSet::initializeVelocities()
 {
-    this->currentVelocitys.resize(this->numDimensions);
+    this->currentVelocities.resize(this->numDimensions);
     for(int i = 0; i < this->numDimensions; ++i)
     {
-        this->currentVelocitys.at(i).resize(this->numPedestrians,0);
+        this->currentVelocities.at(i).resize(this->numPedestrians, 0);
     }
 
 }
@@ -78,9 +78,9 @@ std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getSpeeds()
     return &this->speedsMetersPerSecond;    
 }
 
-std::vector<std::vector<FLOATING_NUMBER>>* CalmPedestrianSet::getVelocitys()
+std::vector<std::vector<FLOATING_NUMBER>>* CalmPedestrianSet::getVelocities()
 {
-    return &this->currentVelocitys;
+    return &this->currentVelocities;
 }
 
 std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getMasses()
@@ -138,9 +138,9 @@ void CalmPedestrianSet::setSpeeds(std::vector<FLOATING_NUMBER> speedsMetersPerSe
     this->speedsMetersPerSecond = speedsMetersPerSecond;
 }
 
-void CalmPedestrianSet::setVelocitys(std::vector<std::vector<FLOATING_NUMBER>> currentVelocitys)
+void CalmPedestrianSet::setVelocities(std::vector<std::vector<FLOATING_NUMBER>> currentVelocitys)
 {
-    this->currentVelocitys = currentVelocitys;
+    this->currentVelocities = currentVelocitys;
 }
 
 void CalmPedestrianSet::setMasses(std::vector<FLOATING_NUMBER> massesKg)
