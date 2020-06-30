@@ -12,7 +12,17 @@ void Goal::initializeGoals(Data* data)
 
 void Goal::setExitGoal(int dimension, FLOATING_NUMBER exitCoord)
 {
-    this->exitGoal.at(dimension).push_back(exitCoord);
+    // for(int i = 0; i < this->numPedestrians; ++i)
+    // {
+    //     for(int j = 0; i < this->numDimensions; ++j)
+    //     {
+    //         this->currentVelocities.at(i).coordinates.push_back(0);
+    //     }
+    // }
+
+    // this->exitGoal.at(dimension).push_back(exitCoord);
+
+    // TODO .. need to initialize by using data getters
 }
 
 void Goal::determinePedestrianGoals(Data* data)

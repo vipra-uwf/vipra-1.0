@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "../type_definitions.hpp"
+#include "../dimensions.hpp"
 
 class PedestrianSet
 {
@@ -12,10 +13,10 @@ class PedestrianSet
 
         virtual int getNumPedestrians() = 0;
         virtual int getNumDimensions() = 0;
-        virtual std::vector<std::vector<FLOATING_NUMBER>>* getPedestrianCoordinates() = 0;
-        virtual std::vector<std::vector<FLOATING_NUMBER>>* getGoalCoordinates() = 0;
+        virtual std::vector<Dimensions>* getPedestrianCoordinates() = 0;
+        virtual std::vector<Dimensions>* getGoalCoordinates() = 0;
+        virtual std::vector<Dimensions>* getVelocities() = 0;
         virtual std::vector<FLOATING_NUMBER>* getSpeeds() = 0;
-        virtual std::vector<std::vector<FLOATING_NUMBER>>* getVelocitys() = 0;
 
         // TODO.. necessary gettersto align with our storeData. I dont like it though -- Alex
         virtual std::vector<FLOATING_NUMBER>* getMasses() = 0;
@@ -27,10 +28,10 @@ class PedestrianSet
 
         virtual void setNumPedestrians(int) = 0;
         virtual void setNumDimensions(int) = 0;
-        virtual void setPedestrianCoordinates(std::vector<std::vector<FLOATING_NUMBER>>) = 0;
-        virtual void setGoalCoordinates(std::vector<std::vector<FLOATING_NUMBER>>) = 0;
+        virtual void setPedestrianCoordinates(std::vector<Dimensions>) = 0;
+        virtual void setGoalCoordinates(std::vector<Dimensions>) = 0;
+        virtual void setVelocities(std::vector<Dimensions>) = 0;
         virtual void setSpeeds(std::vector<FLOATING_NUMBER>) = 0;
-        virtual void setVelocitys(std::vector<std::vector<FLOATING_NUMBER>>) = 0;
         
         //TODO same as necessary getters.. these are unique to Calm and should'nt be virtual --Alex
         virtual void setMasses(std::vector<FLOATING_NUMBER>) = 0;

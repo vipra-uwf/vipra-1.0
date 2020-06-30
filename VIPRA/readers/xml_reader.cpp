@@ -2,7 +2,6 @@
 
 XMLReader::XMLReader()
 {
-    //TODO these nulls may not matter -- trying to figure out "segfault"
     this->rootNode = NULL;
     this->dataNode = NULL;
     this->numEntities = 0;
@@ -10,19 +9,48 @@ XMLReader::XMLReader()
 
 void XMLReader::storeData(Data* data)
 {
-//TODO fix xmlreader to work with the new dimension functions.
     extractFileData("./input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
-    // data->getPedestrianSet()->setMassesKg(getFloatDataSet("massKg"));
-    //data->getPedestrianSet()->setXCoordinates(getFloatDataSet("x"));
-    //data->getPedestrianSet()->setYCoordinates(getFloatDataSet("y"));
-    data->getPedestrianSet()->setMasses(getFloatDataSet("mass"));
+    std::vector<Dimensions> pedestrianCoordinates;
+    std::vector<FLOATING_NUMBER> pedestrianCoordinatesX = getFloatDataSet("x");
+    std::vector<FLOATING_NUMBER> pedestrianCoordinatesY = getFloatDataSet("y");
 
+    for(int i = 0; i < this->numEntities; ++i)
+    {
+        pedestrianCoordinates.push_back(
+            Dimensions {
+                std::vector<FLOATING_NUMBER> {
+                    pedestrianCoordinatesX.at(i), 
+                    pedestrianCoordinatesY.at(i)
+                }
+            }
+        );
+    }
+    
+    data->getPedestrianSet()->setPedestrianCoordinates(pedestrianCoordinates);
+    data->getPedestrianSet()->setMasses(getFloatDataSet("mass"));
+    data->getPedestrianSet()->setReactionTimes(getFloatDataSet("reaction_time"));
+    data->getPedestrianSet()->setDesiredSpeeds(getFloatDataSet("desired_speed"));
     data->getPedestrianSet()->setNumPedestrians(this->numEntities);
     data->getPedestrianSet()->initializeValues();
-
+    
     extractFileData("./input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
-    //data->getObstacleSet()->setXCoordinates(getFloatDataSet("x"));
-    //data->getObstacleSet()->setYCoordinates(getFloatDataSet("y")); 
+    std::vector<Dimensions> obstacleCoordinates;
+    std::vector<FLOATING_NUMBER> obstacleCoordinatesX = getFloatDataSet("x");
+    std::vector<FLOATING_NUMBER> obstacleCoordinatesY = getFloatDataSet("y");
+
+    for(int i = 0; i < this->numEntities; ++i)
+    {
+        obstacleCoordinates.push_back(
+            Dimensions {
+                std::vector<FLOATING_NUMBER> {
+                    obstacleCoordinatesX.at(i),
+                    obstacleCoordinatesY.at(i)
+                }
+            }
+        );
+    }
+
+    data->getObstacleSet()->setObstacleCoordinates(obstacleCoordinates);
     data->getObstacleSet()->setNumObstacles(this->numEntities);
 }
 
@@ -90,20 +118,13 @@ std::vector<FLOATING_NUMBER> XMLReader::getFloatDataSet(std::string attribute)
     initializeRootNode();
     initializeDataNode();
 
-    // std::cout << "\nRoot Node: " << this->rootNode << "            (" << this->rootElement << ")" << std::endl;
-
     this->numEntities = 0;
 
     while(this->dataNode != 0)
     {   
-        // std::cout << "Data Node[" << this->numEntities << "]: " << this->dataNode << "           (" << this->parseElement << ")" << "            Parent: " << this->dataNode->parent() << std::endl; 
-        
         FLOATING_NUMBER value = getFloatValue(this->dataNode, attribute);
-
         dataSet.push_back(value);
-
         this->dataNode = this->dataNode->next_sibling();
-
         this->numEntities++;
     }
 
@@ -116,23 +137,15 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
 
     initializeRootNode();
     initializeDataNode();
-
-    // std::cout << "\nRoot Node: " << this->rootNode << "            (" << this->rootElement << ")" << std::endl;
     
     this->numEntities = 0;
    
     while(this->dataNode != 0)
     {   
-        // std::cout << "Data Node[" << this->numEntities << "]: " << this->dataNode << "           (" << this->parseElement << ")" << "            Parent: " << this->dataNode->parent() << std::endl; 
-        
         std::string value = getStringValue(this->dataNode, attribute);
-
         dataSet.push_back(value);
-
         this->dataNode = this->dataNode->next_sibling();
-
         this->numEntities++;
-
     }
 
     return dataSet;

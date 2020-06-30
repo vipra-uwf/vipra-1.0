@@ -12,17 +12,11 @@ int main()
 {
     CalmPedestrianSet calmPedSet;
     Data data;
-
     data.setPedestrianSet(&calmPedSet);
-
-    // XMLConverter xmlConverter;
-    // xmlConverter.convertToXML("coord_A320_144.d_coordinates.txt", 13);
-    // xmlConverter.convertToXML("coord_A320_144.d_coordinates.txt", 16);
-
 
     XMLReader xmlReader;
     xmlReader.storeData(&data);
-    
+
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
 
@@ -30,7 +24,7 @@ int main()
 
     XMLWriter xmlWriter; 
     xmlWriter.configureXMLDocumentStructure("./output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian", "1.0", "utf-8");
-    
+
     simulation.setOutputDataWriter(&xmlWriter);
     simulation.run();
 
