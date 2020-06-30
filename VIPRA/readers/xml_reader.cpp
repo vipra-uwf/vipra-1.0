@@ -16,7 +16,14 @@ void XMLReader::storeData(Data* data)
 
     for(int i = 0; i < this->numEntities; ++i)
     {
-        pedestrianCoordinates.push_back(Dimensions {std::vector<FLOATING_NUMBER> {pedestrianCoordinatesX.at(i), pedestrianCoordinatesY.at(i)}});
+        pedestrianCoordinates.push_back(
+            Dimensions {
+                std::vector<FLOATING_NUMBER> {
+                    pedestrianCoordinatesX.at(i), 
+                    pedestrianCoordinatesY.at(i)
+                }
+            }
+        );
     }
     
     data->getPedestrianSet()->setPedestrianCoordinates(pedestrianCoordinates);
@@ -33,7 +40,14 @@ void XMLReader::storeData(Data* data)
 
     for(int i = 0; i < this->numEntities; ++i)
     {
-        obstacleCoordinates.push_back(Dimensions {std::vector<FLOATING_NUMBER> {obstacleCoordinatesX.at(i), obstacleCoordinatesY.at(i)}});
+        obstacleCoordinates.push_back(
+            Dimensions {
+                std::vector<FLOATING_NUMBER> {
+                    obstacleCoordinatesX.at(i),
+                    obstacleCoordinatesY.at(i)
+                }
+            }
+        );
     }
 
     data->getObstacleSet()->setObstacleCoordinates(obstacleCoordinates);
