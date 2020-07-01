@@ -3,7 +3,7 @@
 
 Simulation::Simulation()
 {
-
+    this->timestep = 0;
 }
 
 Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
@@ -11,9 +11,9 @@ Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
 }
 
-void Simulation::setOutputDataWriter(OutputDataWriter* outputDataWriter)
+void Simulation::setOutputCriterionChecker(OutputCriterionChecker* outputCriterionChecker)
 {
-    this->outputDataWriter = outputDataWriter;
+    this->outputCriterionChecker = outputCriterionChecker;
 }
 
 
@@ -43,19 +43,29 @@ void Simulation::run()
     
     this->pedestrianDynamicsModel->precompute();
 
-    int i = 0; 
+    // int i = 0; 
 
-    Data* data = this->pedestrianDynamicsModel->getData();
+    // Data* data = this->pedestrianDynamicsModel->getData();
 
     // indicates what writing will be like for a single time step - Alex
-    while(i < data->getPedestrianSet()->getNumPedestrians())
+    // while(i < data->getPedestrianSet()->getNumPedestrians())
+    // {
+    //     this->outputDataWriter->writeFloatData("x", i);
+    //     this->outputDataWriter->writeFloatData("y", -i);
+    //     i++;
+    //     clock.addSimulationTimeMilliseconds(150);//150 is arbitrary, use whatever ms is needed
+    // }
+
+    while(this->timestep < 1000)
     {
-        this->outputDataWriter->writeFloatData("x", i);
-        this->outputDataWriter->writeFloatData("y", -i);
-        i++;
-        clock.addSimulationTimeMilliseconds(150);//150 is arbitrary, use whatever ms is needed
+        if(outputCriterionChecker->isOutputCriterionMet())
+        {
+            // outputCriterionChecker->writeData();
+        }
+        
+        this->timestep++;
     }
-    
+
 
     // TODO this will be removed once our debugger segfault is resolved
     printDataDELETETHIS();
@@ -67,6 +77,10 @@ void Simulation::run()
     clock.printSimulationDuration();
 }
 
+int* Simulation::getTimestep()
+{
+    return &this->timestep;
+}
 
 void Simulation::printDataDELETETHIS()
 {
