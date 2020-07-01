@@ -22,7 +22,7 @@ void OutputTimestepChecker::setPedestrianSet(PedestrianSet* pedestrianSet)
 
 bool OutputTimestepChecker::isOutputCriterionMet()
 {
-    return this->frequency % *this->timestep == 0;
+    return *this->timestep % this->frequency == 0;
 }
 
 void OutputTimestepChecker::writeData()

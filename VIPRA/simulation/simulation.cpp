@@ -43,34 +43,20 @@ void Simulation::run()
     
     this->pedestrianDynamicsModel->precompute();
 
-    // int i = 0; 
-
-    // Data* data = this->pedestrianDynamicsModel->getData();
-
-    // indicates what writing will be like for a single time step - Alex
-    // while(i < data->getPedestrianSet()->getNumPedestrians())
-    // {
-    //     this->outputDataWriter->writeFloatData("x", i);
-    //     this->outputDataWriter->writeFloatData("y", -i);
-    //     i++;
-    //     clock.addSimulationTimeMilliseconds(150);//150 is arbitrary, use whatever ms is needed
-    // }
-
     while(this->timestep < 1000)
     {
         if(outputCriterionChecker->isOutputCriterionMet())
         {
-            // outputCriterionChecker->writeData();
+            outputCriterionChecker->writeData();
         }
-        
+
+        clock.addSimulationTimeMilliseconds(150); //150 is arbitrary, use whatever ms is needed
         this->timestep++;
     }
 
-
     // TODO this will be removed once our debugger segfault is resolved
-    printDataDELETETHIS();
+    // printDataDELETETHIS();
 
-    // this->outputDataWriter->writeData(this->pedestrianDynamicsModel->getData());
     clock.stop();
     clock.printRealEndTime();
     clock.printRealDuration();

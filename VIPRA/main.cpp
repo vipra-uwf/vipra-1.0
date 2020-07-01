@@ -32,7 +32,6 @@ int main()
     outputTimestepChecker.setOutputWritingFrequency(250);
 
     simulation.setOutputCriterionChecker(&outputTimestepChecker);
-    
     simulation.run();
 
     xmlWriter.writeDocumentContents();
