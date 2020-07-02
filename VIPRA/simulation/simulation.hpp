@@ -13,7 +13,7 @@
 class Simulation
 {
     private:
-        int timestep = 0;
+        int timestep;
         PedestrianDynamicsModel* pedestrianDynamicsModel;
         OutputCriterionChecker* outputCriterionChecker;
 

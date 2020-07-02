@@ -46,7 +46,7 @@ void Clock::addSimulationTimeMilliseconds(unsigned long milliseconds)
 void Clock::printSimulationDuration()
 {
     
-    std::cout << "Simulation duration: " 
+    std::cout << "simulation duration: " 
         << float(this->simulationElapsedMilliseconds)/1000
         << "s"
         << std::endl;
