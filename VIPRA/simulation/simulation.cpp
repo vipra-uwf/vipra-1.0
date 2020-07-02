@@ -54,9 +54,6 @@ void Simulation::run()
         this->timestep++;
     }
 
-    // TODO this will be removed once our debugger segfault is resolved
-    // printDataDELETETHIS();
-
     clock.stop();
     clock.printRealEndTime();
     clock.printRealDuration();
@@ -66,35 +63,4 @@ void Simulation::run()
 int* Simulation::getTimestep()
 {
     return &this->timestep;
-}
-
-void Simulation::printDataDELETETHIS()
-{
-    Data* data = this->pedestrianDynamicsModel->getData();
-
-    std::cout << "Pedestrians: " << std::endl; 
-
-    for(int i = 0; i < (data->getPedestrianSet()->getNumPedestrians()); i++)
-    {
-        std::cout
-        << i 
-        << " | coordinates = (" << (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[0] << ", " 
-        << (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[1] << ")"
-        << " | speed = " << (*data->getPedestrianSet()->getSpeeds())[i] 
-        << " | mass = " << (*data->getPedestrianSet()->getMasses())[i] 
-        << " | reaction_time = " << (*data->getPedestrianSet()->getReactionTimes())[i] 
-        << " | desired_speed = " << (*data->getPedestrianSet()->getDesiredSpeeds())[i] 
-        << " | propulsion_force = " << (*data->getPedestrianSet()->getPropulsionForces())[i] 
-        << " | repulsion_force = " << (*data->getPedestrianSet()->getRepulsionForces())[i] 
-        << " | nearest_neighbor = " << (*data->getPedestrianSet()->getNearestNeighbor())[i] 
-        << std::endl;
-    }
-
-    // std::cout <<"\n\nObstacles: " << std::endl;
-   
-    // for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
-    // {
-    //     std::cout << "[" << (data->getObstacleSet()->getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
-    //     std::cout << (data->getObstacleSet()->getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
-    // }
 }

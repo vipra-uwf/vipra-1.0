@@ -2,7 +2,6 @@
 
 Data::Data()
 {
-    // pedestrianSet = PedestrianSet();
     obstacleSet = ObstacleSet();
 }
 
