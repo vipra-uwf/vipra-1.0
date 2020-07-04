@@ -33,3 +33,6 @@ cr: clean all
 clean:
 	$(RM) *.o *.exe main
 	$(RM) -rf $(BUILD_DIR)
+
+co: #clear output folder
+	$(RM) output_data/*
