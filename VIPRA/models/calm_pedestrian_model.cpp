@@ -55,8 +55,8 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int i)
 
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
 {
-    FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndexOfFirst).coordinates.at(0) - data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndexOfSecond).coordinates.at(0)), 2);
-    FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndexOfFirst).coordinates.at(1) - data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndexOfSecond).coordinates.at(1)), 2);
+    FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getPedestrianCoordinates()->at(0).coordinates.at(pedestrianIndexOfFirst) - data->getPedestrianSet()->getPedestrianCoordinates()->at(0).coordinates.at(pedestrianIndexOfSecond)), 2);
+    FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getPedestrianCoordinates()->at(1).coordinates.at(pedestrianIndexOfFirst) - data->getPedestrianSet()->getPedestrianCoordinates()->at(1).coordinates.at(pedestrianIndexOfSecond)), 2);
     return (sqrt(xDistance + yDistance));
 }
 
