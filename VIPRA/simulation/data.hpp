@@ -11,12 +11,10 @@ class Data
     private:
         PedestrianSet* pedestrianSet;
         ObstacleSet obstacleSet;
-        Goal goal;
     public:
         Data();
         PedestrianSet* getPedestrianSet();
         ObstacleSet* getObstacleSet();
-        Goal* getGoal();
         void setPedestrianSet(PedestrianSet*);
 };
 

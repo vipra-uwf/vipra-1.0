@@ -9,6 +9,7 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
+#include <string>
 
 #include "../simulation/data.hpp"
 #include "../type_definitions.hpp"
@@ -29,7 +30,7 @@ class Goal
          void determinePedestrianGoals(Data*);
          //void isSimulationGoalMet(Data*, Time); -Need more information on time class - elizabeth
          void findPath(Data*, int, int);
-         bool isBlocked(Data*, int);
+         bool isBlocked(Data*, int, std::string);
          bool hasOpening(Data*, int);
          void isSimulationGoalMet(Data*);
          int nearestGoal(Data*, int);
