@@ -13,7 +13,7 @@ int main()
     CalmPedestrianSet calmPedSet;
     Data data;
     data.setPedestrianSet(&calmPedSet);
-
+	
     XMLReader xmlReader;
     xmlReader.storeData(&data);
 
