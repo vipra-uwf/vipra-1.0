@@ -157,50 +157,33 @@ std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet()
 {
 	
 	
-/*
-	std::cout << "opening...";
     openFile("../simulation_params.xml");
+	std::cout << "opened..." << std::endl;;
 
-	std::cout << "reading...";
 	readFile();
+	std::cout << "read..." << std::endl;;
 
-	std::cout << "setting root...";
-	setRootElement("parameters");
-
-//	std::cout << "setting parse...";
-//	setParseElement("");
-	
-	std::cout << "parsing..."; 
 	parseXMLDocument();
-
-//	std::cout << &this->fileContents[0] << std::endl;
+	std::cout << "parsed..." << std::endl; 
 	
-	std::cout << "initializing root node";
-	initializeRootNode();
-
 	
-
-
-*/
-
-	
-//	initializeRootNode();
-	this->rootNode = this->document.first_node("obstacle-set");
+	this->rootNode = this->document.first_node("parameters");
     this->dataNode = this->rootNode->first_node();	
 
 
 	std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
 
 	while(this->dataNode != 0)
-
 	{
 		std::string key = this->dataNode->name();
 		FLOATING_NUMBER value = std::stod(
-				this->dataNode->first_attribute("x")->value()); 
+				this->dataNode->first_attribute()->value()); 
 
 		hashMapData[key] = value;
 
-		std::cout << key << " " << value << std::endl;	
+//		std::cout << key << " " << value << std::endl;	
+
+		this->dataNode = this->dataNode->next_sibling();
 	}
 
 	return hashMapData;
