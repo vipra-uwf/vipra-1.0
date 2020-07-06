@@ -201,10 +201,12 @@ bool Goal::isBlocked(Data* data, int pedestrianIndex, std::string direction)
 }
 
 
-
-int Goal::nearestGoal(Data* data, int pedestrianIndex)
+//if you intend to return a -1 flag for any reason in the future this will
+//have to be changed back to int, and then i can be cast to int in the inner-most
+//part of the loop, or in the loop's conditionional statement - V
+unsigned int Goal::nearestGoal(Data* data, int pedestrianIndex)
 {
-    int nearest = 0; //index of nearest starts at the first
+    unsigned int nearest = 0; //index of nearest starts at the first
     for(unsigned int i = 1; i < exitGoal.at(0).coordinates.size(); ++i) //starts at position 1 because there should be at least 2 exit goals
     {
         if(calculateDistance(data, pedestrianIndex, i) < calculateDistance(data, pedestrianIndex, nearest)) //compares distance between exits and the pedestrian

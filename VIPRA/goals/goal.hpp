@@ -24,17 +24,17 @@ class Goal
 
 
     public:
-         Goal();
-         void setExitGoal(std::vector<Dimensions>);
-         //void determinePedestrianGoals(Data*, Time); -Need more information on time class - elizabeth
-         void determinePedestrianGoals(Data*);
-         //void isSimulationGoalMet(Data*, Time); -Need more information on time class - elizabeth
-         void findPath(Data*, int, int);
-         bool isBlocked(Data*, int, std::string);
-         bool hasOpening(Data*, int);
-         void isSimulationGoalMet(Data*);
-         int nearestGoal(Data*, int);
-         FLOATING_NUMBER calculateDistance(Data*, int, int);
+        Goal();
+        void setExitGoal(std::vector<Dimensions>);
+        //void determinePedestrianGoals(Data*, Time); -Need more information on time class - elizabeth
+        void determinePedestrianGoals(Data*);
+        //void isSimulationGoalMet(Data*, Time); -Need more information on time class - elizabeth
+        void findPath(Data*, int, int);
+        bool isBlocked(Data*, int, std::string);
+        bool hasOpening(Data*, int);
+        void isSimulationGoalMet(Data*);
+        unsigned int nearestGoal(Data*, int);
+        FLOATING_NUMBER calculateDistance(Data*, int, int);
 };
 
 #endif
