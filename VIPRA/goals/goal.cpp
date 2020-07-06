@@ -205,7 +205,7 @@ bool Goal::isBlocked(Data* data, int pedestrianIndex, std::string direction)
 int Goal::nearestGoal(Data* data, int pedestrianIndex)
 {
     int nearest = 0; //index of nearest starts at the first
-    for(int i = 1; i < exitGoal.at(0).coordinates.size(); ++i) //starts at position 1 because there should be at least 2 exit goals
+    for(unsigned int i = 1; i < exitGoal.at(0).coordinates.size(); ++i) //starts at position 1 because there should be at least 2 exit goals
     {
         if(calculateDistance(data, pedestrianIndex, i) < calculateDistance(data, pedestrianIndex, nearest)) //compares distance between exits and the pedestrian
         {
