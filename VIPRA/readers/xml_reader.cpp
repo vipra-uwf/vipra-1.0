@@ -74,6 +74,7 @@ void XMLReader::readFile()
     std::vector<char> buffer((std::istreambuf_iterator<char>(this->fileStream)), std::istreambuf_iterator<char>());
     buffer.push_back('\0');
     this->fileContents = buffer;
+	//std::cout << &buffer[0] << std::endl;
     this->fileStream.close();
 }
 
@@ -155,22 +156,13 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
 
 std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet()
 {
-	
-	
-    openFile("../simulation_params.xml");
-	std::cout << "opened..." << std::endl;;
-
+    openFile("./simulation_params.xml");
 	readFile();
-	std::cout << "read..." << std::endl;;
-
 	parseXMLDocument();
-	std::cout << "parsed..." << std::endl; 
-	
 	
 	this->rootNode = this->document.first_node("parameters");
     this->dataNode = this->rootNode->first_node();	
-
-
+	
 	std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
 
 	while(this->dataNode != 0)
@@ -180,8 +172,6 @@ std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet()
 				this->dataNode->first_attribute()->value()); 
 
 		hashMapData[key] = value;
-
-//		std::cout << key << " " << value << std::endl;	
 
 		this->dataNode = this->dataNode->next_sibling();
 	}

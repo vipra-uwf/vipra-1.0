@@ -44,13 +44,13 @@ int main()
     xmlWriter.writeDocumentContents();
 
 
-	std::unordered_map<std::string, FLOATING_NUMBER> umap;
-	umap = xmlReader.getHashMapDataSet();
 
-	umap["test"] = 25;
-	umap["test2"] = 20;
 
-	for(auto x: umap)
+
+	std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
+	hashMapData = xmlReader.getHashMapDataSet();
+
+	for(auto x: hashMapData)
 	{
 		std::cout << x.first << " " << x.second << std::endl;
 	}
