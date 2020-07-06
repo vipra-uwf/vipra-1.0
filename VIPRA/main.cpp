@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 
+#include <unordered_map>
+
 #include "simulation/simulation.hpp"
 #include "readers/xml_reader.hpp"
 #include "writers/xml_writer.hpp"
@@ -21,7 +23,12 @@ int main()
     calmModel.setData(&data);
 
     XMLWriter xmlWriter; 
-    xmlWriter.configureXMLDocumentStructure("./output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian", "1.0", "utf-8");
+    xmlWriter.configureXMLDocumentStructure(
+			"./output_data/pedestrian_trajectory.xml", 
+			"pedestrian-set", 
+			"pedestrian", 
+			"1.0", 
+			"utf-8");
     
     Simulation simulation(&calmModel);
     
@@ -35,6 +42,18 @@ int main()
     simulation.run();
 
     xmlWriter.writeDocumentContents();
-    
+
+
+	std::unordered_map<std::string, FLOATING_NUMBER> umap;
+	umap = xmlReader.getHashMapDataSet();
+
+	//umap["test"] = 25;
+	//umap["test2"] = 20;
+
+	for(auto x: umap)
+	{
+		std::cout << x.first << " " << x.second << std::endl;
+	}
+
     return 0;
 }

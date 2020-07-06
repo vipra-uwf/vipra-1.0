@@ -6,6 +6,7 @@
 #include <fstream>
 #include <cstring>
 #include <iostream>
+#include <unordered_map>
 
 #include "../type_definitions.hpp"
 #include "../rapidxml/rapidxml.hpp"
@@ -40,6 +41,7 @@ class XMLReader: public InputDataLoader
         std::vector<FLOATING_NUMBER> getFloatDataSet(std::string);
         std::vector<std::string> getStringDataSet(std::string);
 
+
         void extractFileData(std::string, std::string, std::string);
         void initializeRootNode();
         void initializeDataNode();
@@ -47,6 +49,7 @@ class XMLReader: public InputDataLoader
     public:
         XMLReader();
         virtual void storeData(Data*);
+		std::unordered_map<std::string, FLOATING_NUMBER> getHashMapDataSet();	
 };
 
 #endif

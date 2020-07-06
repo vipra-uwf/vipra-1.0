@@ -1,4 +1,5 @@
 #include "xml_reader.hpp"
+#include <utility>
 
 XMLReader::XMLReader()
 {
@@ -149,4 +150,58 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
     }
 
     return dataSet;
+}
+
+
+std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet()
+{
+	
+	
+/*
+	std::cout << "opening...";
+    openFile("../simulation_params.xml");
+
+	std::cout << "reading...";
+	readFile();
+
+	std::cout << "setting root...";
+	setRootElement("parameters");
+
+//	std::cout << "setting parse...";
+//	setParseElement("");
+	
+	std::cout << "parsing..."; 
+	parseXMLDocument();
+
+//	std::cout << &this->fileContents[0] << std::endl;
+	
+	std::cout << "initializing root node";
+	initializeRootNode();
+
+	
+
+
+*/
+
+	
+//	initializeRootNode();
+	this->rootNode = this->document.first_node("obstacle-set");
+    this->dataNode = this->rootNode->first_node();	
+
+
+	std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
+
+	while(this->dataNode != 0)
+
+	{
+		std::string key = this->dataNode->name();
+		FLOATING_NUMBER value = std::stod(
+				this->dataNode->first_attribute("x")->value()); 
+
+		hashMapData[key] = value;
+
+		std::cout << key << " " << value << std::endl;	
+	}
+
+	return hashMapData;
 }
