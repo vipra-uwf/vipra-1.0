@@ -98,7 +98,7 @@ void Simulation::printDataDELETETHIS()
 	}
 
     // std::cout <<"\n\nObstacles: " << std::endl;
-   
+
     // for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
     // {
     //     std::cout << "[" << (data->getObstacleSet()->getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
