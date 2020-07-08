@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 
-#include <unordered_map>
-
 #include "simulation/simulation.hpp"
 #include "readers/xml_reader.hpp"
 #include "writers/xml_writer.hpp"
@@ -42,18 +40,6 @@ int main()
     simulation.run();
 
     xmlWriter.writeDocumentContents();
-
-
-
-
-
-	std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
-	hashMapData = xmlReader.getHashMapDataSet();
-
-	for(auto x: hashMapData)
-	{
-		std::cout << x.first << " " << x.second << std::endl;
-	}
 
     return 0;
 }

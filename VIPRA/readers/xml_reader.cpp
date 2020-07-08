@@ -53,6 +53,10 @@ void XMLReader::storeData(Data* data)
 
     data->getObstacleSet()->setObstacleCoordinates(obstacleCoordinates);
     data->getObstacleSet()->setNumObstacles(this->numEntities);
+	
+
+	openFile("./input_data/simulation_params.xml");
+	data->setHashMapData(getHashMapDataSet("parameters"));	
 }
 
 void XMLReader::extractFileData(std::string fileName, std::string rootElement, std::string parseElement)
@@ -154,13 +158,12 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
 }
 
 
-std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet()
+std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet(std::string parent_node)
 {
-    openFile("./simulation_params.xml");
 	readFile();
 	parseXMLDocument();
 	
-	this->rootNode = this->document.first_node("parameters");
+	this->rootNode = this->document.first_node(parent_node.c_str());
     this->dataNode = this->rootNode->first_node();	
 	
 	std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
