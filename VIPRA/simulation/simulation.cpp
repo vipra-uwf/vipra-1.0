@@ -54,8 +54,8 @@ void Simulation::run()
         this->timestep++;
     }
 
-    // TODO this will be removed once our debugger segfault is resolved
-    // printDataDELETETHIS();
+    // TODO temporary for data verification
+    //printDataDELETETHIS();
 
     clock.stop();
     clock.printRealEndTime();
@@ -91,7 +91,7 @@ void Simulation::printDataDELETETHIS()
     }
 
     // std::cout <<"\n\nObstacles: " << std::endl;
-   
+
     // for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
     // {
     //     std::cout << "[" << (data->getObstacleSet()->getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
