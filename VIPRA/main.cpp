@@ -13,7 +13,7 @@ int main()
     CalmPedestrianSet calmPedSet;
     Data data;
     data.setPedestrianSet(&calmPedSet);
-
+	
     XMLReader xmlReader;
     xmlReader.storeData(&data);
 
@@ -21,7 +21,12 @@ int main()
     calmModel.setData(&data);
 
     XMLWriter xmlWriter; 
-    xmlWriter.configureXMLDocumentStructure("./output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian", "1.0", "utf-8");
+    xmlWriter.configureXMLDocumentStructure(
+			"./output_data/pedestrian_trajectory.xml", 
+			"pedestrian-set", 
+			"pedestrian", 
+			"1.0", 
+			"utf-8");
     
     Simulation simulation(&calmModel);
     
@@ -35,6 +40,6 @@ int main()
     simulation.run();
 
     xmlWriter.writeDocumentContents();
-    
+
     return 0;
 }
