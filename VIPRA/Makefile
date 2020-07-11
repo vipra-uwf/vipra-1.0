@@ -5,7 +5,7 @@ BUILD_DIR = build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp)
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o) 
 
-all: setup directories main
+compile: setup directories main
 
 main: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
@@ -28,11 +28,17 @@ directories:
 	
 .PHONY: directories
 
-cr: clean all
-
 clean:
 	$(RM) *.o *.exe main
 	$(RM) -rf $(BUILD_DIR)
 
 co: #clear output folder
 	$(RM) output_data/*
+
+cc: clean compile # clean compile
+
+cr: compile # compile & run
+	main
+
+ccr: clean compile # clean compile & run
+	main
