@@ -2,6 +2,7 @@
 
 Goal::Goal()
 {
+    std::cout << "goal created\n";
 }
 
 void Goal::setExitGoal(std::vector<Dimensions> exitGoal)
@@ -11,16 +12,14 @@ void Goal::setExitGoal(std::vector<Dimensions> exitGoal)
 
 void Goal::determinePedestrianGoals(Data* data)
 {
-    for (int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
+    for (int i = 0; i < 2/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
     {
         int nearestExit = 0;
         if(this->exitGoal.at(0).coordinates.size() > 1) //checks for size of array in struct to get the number of exits(may move this to intializeGoals and make a vector of nearestExits) -el
         {
             nearestExit = nearestGoal(data, i); //calls nearestGoal to get nearests goal for ped
         }
-
-
-
+        this->findPath(data, i, nearestExit);
 
     }
 }

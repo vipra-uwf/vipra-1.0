@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <math.h>
 #include <string>
+#include <iostream>
 
 #include "../simulation/data.hpp"
 #include "../type_definitions.hpp"
