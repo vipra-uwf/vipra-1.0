@@ -26,7 +26,7 @@ class Goal
 
     public:
         Goal();
-        void setExitGoal(std::vector<Dimensions>);
+        void setExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>*);
         //void determinePedestrianGoals(Data*, Time); -Need more information on time class - elizabeth
         void determinePedestrianGoals(Data*);
         //void isSimulationGoalMet(Data*, Time); -Need more information on time class - elizabeth

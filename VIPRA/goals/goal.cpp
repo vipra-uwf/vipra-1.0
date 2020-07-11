@@ -5,19 +5,39 @@ Goal::Goal()
     std::cout << "goal created\n";
 }
 
-void Goal::setExitGoal(std::vector<Dimensions> exitGoal)
+void Goal::setExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* hashMapData)
 {
-    this->exitGoal = exitGoal;
+    FLOATING_NUMBER x;
+    FLOATING_NUMBER y;
+
+    x = (*hashMapData)["exit_door_x"];
+    y = (*hashMapData)["exit_door_y"];
+
+    std::vector<Dimensions> exit;
+
+    exit.push_back(
+    Dimensions {
+                std::vector<FLOATING_NUMBER> {
+                    x,
+                    y
+                }
+            }
+    );
+
+    std::cout << "exit has beed set\n";
+
+    this->exitGoal = exit;
 }
 
 void Goal::determinePedestrianGoals(Data* data)
 {
-    for (int i = 0; i < 2/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
+    std::cout << "check1\n";
+    for (int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
     {
         int nearestExit = 0;
         //checks for size of array in struct to get the number of exits
         //(may move this to intializeGoals and make a vector of nearestExits) - E
-        if(this->exitGoal.at(0).coordinates.size() > 1) 
+        if(this->exitGoal.size() > 1) 
         {
             //calls nearestGoal to get nearests goal for ped - E
             nearestExit = nearestGoal(data, i); 
@@ -37,25 +57,36 @@ void Goal::findPath(Data* data, int pedestrianIndex, int nearestExit)
         exitGoal.at(nearestExit).coordinates[1] - 
         data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndex).coordinates[1]
         );
-    bool pathFound = false;
 
     if(x >= 0 && y >= 0)
     {
         if(!isBlocked(data, pedestrianIndex, "POSX"))
         {
-            //is path? set goal - E
+            std::cout << "posx wins\n";
+            std::cout << "x:" << data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndex).coordinates[0] 
+                      << " y:" << data->getPedestrianSet()->getPedestrianCoordinates()
+                      ->at(pedestrianIndex).coordinates[1] << std::endl;
         }
         else if(!isBlocked(data, pedestrianIndex, "POSY"))
         {
-
+            std::cout << "posy wins\n";
+            std::cout << "x:" << data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndex).coordinates[0] 
+                      << " y:" << data->getPedestrianSet()->getPedestrianCoordinates()
+                      ->at(pedestrianIndex).coordinates[1] << std::endl;
         }
         else if(!isBlocked(data, pedestrianIndex, "NEGY"))
         {
-
+            std::cout << "negy wins\n";
+            std::cout << "x:" << data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndex).coordinates[0] 
+                      << " y:" << data->getPedestrianSet()->getPedestrianCoordinates()
+                      ->at(pedestrianIndex).coordinates[1] << std::endl;
         }
         else if(!isBlocked(data, pedestrianIndex, "NEGX"))
         {
-
+            std::cout << "negx wins\n";
+            std::cout << "x:" << data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndex).coordinates[0] 
+                      << " y:" << data->getPedestrianSet()->getPedestrianCoordinates()
+                      ->at(pedestrianIndex).coordinates[1] << std::endl;
         }
     }
     else if(x >=0 && y < 0)
@@ -126,7 +157,7 @@ bool Goal::isBlocked(Data* data, int pedestrianIndex, std::string direction)
     //this value is pulled from the obstacle file. each obj is about 0.79 apart
     //... this should check a healthy range without going over. - E
     //maybe pull from new obstacle file, it shouldn't be hardcoded here? - V
-    FLOATING_NUMBER xRange = 0.7; 
+    FLOATING_NUMBER xRange = 1.2; 
     FLOATING_NUMBER yRange = 0.46;
     FLOATING_NUMBER x;
     FLOATING_NUMBER y;
