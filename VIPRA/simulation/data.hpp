@@ -1,6 +1,9 @@
 #ifndef DATA_HPP
 #define DATA_HPP
 
+#include <unordered_map>
+#include <string>
+
 #include "../entity_sets/pedestrian_set.hpp"
 #include "../entity_sets/obstacle_set.hpp"
 
@@ -12,11 +15,16 @@ class Data
     private:
         PedestrianSet* pedestrianSet;
         ObstacleSet obstacleSet;
+		std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
     public:
         Data();
+
         PedestrianSet* getPedestrianSet();
         ObstacleSet* getObstacleSet();
-        void setPedestrianSet(PedestrianSet*);
+		std::unordered_map<std::string, FLOATING_NUMBER>* getHashMapData();
+        
+		void setPedestrianSet(PedestrianSet*);
+		void setHashMapData(std::unordered_map<std::string, FLOATING_NUMBER>);
 };
 
 #endif

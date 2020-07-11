@@ -1,5 +1,4 @@
 #include "xml_reader.hpp"
-#include <utility>
 
 XMLReader::XMLReader()
 {
@@ -8,56 +7,52 @@ XMLReader::XMLReader()
     this->numEntities = 0;
 }
 
-void XMLReader::storeData(Data* data, Goal* goal)
-{
-    extractFileData("./input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
-    std::vector<Dimensions> pedestrianCoordinates;
-    std::vector<FLOATING_NUMBER> pedestrianCoordinatesX = getFloatDataSet("x");
-    std::vector<FLOATING_NUMBER> pedestrianCoordinatesY = getFloatDataSet("y");
+// void XMLReader::storeData(Data* data)
+// {
+//     extractFileData("./input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
+//     std::vector<Dimensions> pedestrianCoordinates;
+//     std::vector<FLOATING_NUMBER> pedestrianCoordinatesX = getFloatDataSet("x");
+//     std::vector<FLOATING_NUMBER> pedestrianCoordinatesY = getFloatDataSet("y");
 
-    for(int i = 0; i < this->numEntities; ++i)
-    {
-        pedestrianCoordinates.push_back(
-            Dimensions {
-                std::vector<FLOATING_NUMBER> {
-                    pedestrianCoordinatesX.at(i), 
-                    pedestrianCoordinatesY.at(i)
-                }
-            }
-        );
-    }
+//     for(int i = 0; i < this->numEntities; ++i)
+//     {
+//         pedestrianCoordinates.push_back(
+//             Dimensions {
+//                 std::vector<FLOATING_NUMBER> {
+//                     pedestrianCoordinatesX.at(i), 
+//                     pedestrianCoordinatesY.at(i)
+//                 }
+//             }
+//         );
+//     }
     
-    data->getPedestrianSet()->setPedestrianCoordinates(pedestrianCoordinates);
-    data->getPedestrianSet()->setMasses(getFloatDataSet("mass"));
-    data->getPedestrianSet()->setReactionTimes(getFloatDataSet("reaction_time"));
-    data->getPedestrianSet()->setDesiredSpeeds(getFloatDataSet("desired_speed"));
-    data->getPedestrianSet()->setNumPedestrians(this->numEntities);
-    data->getPedestrianSet()->initializeValues();
+//     data->getPedestrianSet()->setPedestrianCoordinates(pedestrianCoordinates);
+//     data->getPedestrianSet()->setMasses(getFloatDataSet("mass"));
+//     data->getPedestrianSet()->setReactionTimes(getFloatDataSet("reaction_time"));
+//     data->getPedestrianSet()->setDesiredSpeeds(getFloatDataSet("desired_speed"));
+//     data->getPedestrianSet()->setNumPedestrians(this->numEntities);
+//     data->getPedestrianSet()->initializeValues();
     
-    extractFileData("./input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
-    std::vector<Dimensions> obstacleCoordinates;
-    std::vector<FLOATING_NUMBER> obstacleCoordinatesX = getFloatDataSet("x");
-    std::vector<FLOATING_NUMBER> obstacleCoordinatesY = getFloatDataSet("y");
+//     extractFileData("./input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
+//     std::vector<Dimensions> obstacleCoordinates;
+//     std::vector<FLOATING_NUMBER> obstacleCoordinatesX = getFloatDataSet("x");
+//     std::vector<FLOATING_NUMBER> obstacleCoordinatesY = getFloatDataSet("y");
 
-    for(int i = 0; i < this->numEntities; ++i)
-    {
-        obstacleCoordinates.push_back(
-            Dimensions {
-                std::vector<FLOATING_NUMBER> {
-                    obstacleCoordinatesX.at(i),
-                    obstacleCoordinatesY.at(i)
-                }
-            }
-        );
-    }
+//     for(int i = 0; i < this->numEntities; ++i)
+//     {
+//         obstacleCoordinates.push_back(
+//             Dimensions {
+//                 std::vector<FLOATING_NUMBER> {
+//                     obstacleCoordinatesX.at(i),
+//                     obstacleCoordinatesY.at(i)
+//                 }
+//             }
+//         );
+//     }
 
-    data->getObstacleSet()->setObstacleCoordinates(obstacleCoordinates);
-    data->getObstacleSet()->setNumObstacles(this->numEntities);
-	
-
-	openFile("./input_data/simulation_params.xml");
-	data->setHashMapData(getHashMapDataSet("parameters"));	
-}
+//     data->getObstacleSet()->setObstacleCoordinates(obstacleCoordinates);
+//     data->getObstacleSet()->setNumObstacles(this->numEntities);
+// }
 
 void XMLReader::extractFileData(std::string fileName, std::string rootElement, std::string parseElement)
 {
@@ -78,7 +73,6 @@ void XMLReader::readFile()
     std::vector<char> buffer((std::istreambuf_iterator<char>(this->fileStream)), std::istreambuf_iterator<char>());
     buffer.push_back('\0');
     this->fileContents = buffer;
-	//std::cout << &buffer[0] << std::endl;
     this->fileStream.close();
 }
 
@@ -155,29 +149,4 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
     }
 
     return dataSet;
-}
-
-
-std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet(std::string parent_node)
-{
-	readFile();
-	parseXMLDocument();
-	
-	this->rootNode = this->document.first_node(parent_node.c_str());
-    this->dataNode = this->rootNode->first_node();	
-	
-	std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
-
-	while(this->dataNode != 0)
-	{
-		std::string key = this->dataNode->name();
-		FLOATING_NUMBER value = std::stod(
-				this->dataNode->first_attribute()->value()); 
-
-		hashMapData[key] = value;
-
-		this->dataNode = this->dataNode->next_sibling();
-	}
-
-	return hashMapData;
 }

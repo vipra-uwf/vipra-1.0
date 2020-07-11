@@ -54,8 +54,8 @@ void Simulation::run()
         this->timestep++;
     }
 
-    // TODO temporary for data verification
-    //printDataDELETETHIS();
+    // TODO this will be removed once our debugger segfault is resolved
+    printDataDELETETHIS();
 
     clock.stop();
     clock.printRealEndTime();
@@ -72,6 +72,7 @@ void Simulation::printDataDELETETHIS()
 {
     Data* data = this->pedestrianDynamicsModel->getData();
 
+	/*
     std::cout << "Pedestrians: " << std::endl; 
 
     for(int i = 0; i < (data->getPedestrianSet()->getNumPedestrians()); i++)
@@ -89,6 +90,12 @@ void Simulation::printDataDELETETHIS()
         << " | nearest_neighbor = " << (*data->getPedestrianSet()->getNearestNeighbor())[i] 
         << std::endl;
     }
+	*/
+
+	for(auto x: *data->getHashMapData())
+	{
+		std::cout << x.first << " " << x.second << std::endl;
+	}
 
     // std::cout <<"\n\nObstacles: " << std::endl;
 

@@ -6,19 +6,17 @@
 #include <fstream>
 #include <cstring>
 #include <iostream>
-#include <unordered_map>
 
-#include "../type_definitions.hpp"
-#include "../rapidxml/rapidxml.hpp"
+#include "type_definitions.hpp"
+#include "rapidxml/rapidxml.hpp"
 #include "input_data_loader.hpp"
-#include "../simulation/data.hpp"
-#include "../dimensions.hpp"
-#include "../goals/goal.hpp"
+// #include "../simulation/data.hpp"
+#include "dimensions.hpp"
 
 class XMLReader: public InputDataLoader
 {
     private:
-        Data* data;
+        // Data* data;
         std::ifstream fileStream;      
         std::vector<char> fileContents;
         std::string rootElement;
@@ -39,18 +37,16 @@ class XMLReader: public InputDataLoader
         FLOATING_NUMBER getFloatValue(rapidxml::xml_node<>*, std::string);
         std::string getStringValue(rapidxml::xml_node<>*, std::string);
 
-        std::vector<FLOATING_NUMBER> getFloatDataSet(std::string);
-        std::vector<std::string> getStringDataSet(std::string);
-		
-		std::unordered_map<std::string, FLOATING_NUMBER> getHashMapDataSet(std::string);	
-
-        void extractFileData(std::string, std::string, std::string);
         void initializeRootNode();
         void initializeDataNode();
 
     public:
         XMLReader();
-        virtual void storeData(Data*, Goal*);
+        // virtual void storeData(Data*);
+        std::vector<FLOATING_NUMBER> getFloatDataSet(std::string);
+        std::vector<std::string> getStringDataSet(std::string);
+        void extractFileData(std::string, std::string, std::string);
+
 };
 
 #endif
