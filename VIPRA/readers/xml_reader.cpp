@@ -8,7 +8,7 @@ XMLReader::XMLReader()
     this->numEntities = 0;
 }
 
-void XMLReader::storeData(Data* data, Goal* goal)
+void XMLReader::storeData(Data* data)
 {
     extractFileData("./input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
     std::vector<Dimensions> pedestrianCoordinates;

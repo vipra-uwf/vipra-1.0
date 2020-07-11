@@ -17,7 +17,7 @@ int main()
     data.setPedestrianSet(&calmPedSet);
 	
     XMLReader xmlReader;
-    xmlReader.storeData(&data, &goal);
+    xmlReader.storeData(&data);
 
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);

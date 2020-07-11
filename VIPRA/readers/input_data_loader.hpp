@@ -7,7 +7,7 @@
 class InputDataLoader
 {
     public:
-        virtual void storeData(Data* data, Goal* goal) = 0;
+        virtual void storeData(Data* data) = 0;
 };
 
 #endif

@@ -50,7 +50,7 @@ class XMLReader: public InputDataLoader
 
     public:
         XMLReader();
-        virtual void storeData(Data*, Goal*);
+        virtual void storeData(Data*);
 };
 
 #endif
