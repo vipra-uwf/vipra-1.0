@@ -61,24 +61,24 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirs
 }
 
 // TODO .. i am pretty sure that this has some unintended behavior. the first pedestrian's nearest neighbor is itself. i do not think this is intentional -- Alex
+// issue resolved - V
 void CalmPedestrianModel::calculateNearestNeighbors()
 {
     for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); ++i)
     {
-        int nearest = 0;
+        int nearest = -1;
 
         for (int j = 0; j < this->data->getPedestrianSet()->getNumPedestrians(); ++j)
         {
-            if(j != i)
+            if(i != j)
             {
-                if(calculateDistance(i, j) < calculateDistance(i, nearest))
+                if (nearest == -1 || calculateDistance(i, j) < calculateDistance(i, nearest))
                 {
                     nearest = j;
                 }
             }
         }
-
-        // this->nearestNeighbors.at(pedestrianIndex) = nearest;
+        
         (*this->data->getPedestrianSet()->getNearestNeighbor())[i] = nearest;
     }
 }
