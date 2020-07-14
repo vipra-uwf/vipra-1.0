@@ -45,8 +45,6 @@ void CalmPedestrianModel::calculatePropulsion()
     }
 }
 
-// TODO .. strangely, it calculates the repulsion force for the first pedestrian as a negative value.. i do not think this is intended behavior -- Alex
-//output no longer shows this, was it fixed? - V
 void CalmPedestrianModel::calculateRepulsion()
 {
     PedestrianSet* set = this->data->getPedestrianSet();
@@ -67,8 +65,6 @@ void CalmPedestrianModel::calculateRepulsion()
 
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int i)
 {
-    // TODO .. is this equation correct? nearestNeighbors[i] - b is an integer minus a floating number.. are we trying to round by casting it as an integer? -- Alex
-    // return from getNearestNeighbor() is now cast to FLOATING_NUMBER before subtraction - V
     FLOATING_NUMBER distance = calculateDistance(
         i, 
         FLOATING_NUMBER(

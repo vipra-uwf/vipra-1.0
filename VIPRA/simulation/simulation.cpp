@@ -3,12 +3,12 @@
 
 Simulation::Simulation()
 {
-    //TODO why is this not in the parameterized constructor? -V
     this->timestep = 0;
 }
 
 Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
 {
+    this->timestep = 0;
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
 }
 
