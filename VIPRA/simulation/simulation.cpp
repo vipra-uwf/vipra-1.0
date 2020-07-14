@@ -3,6 +3,7 @@
 
 Simulation::Simulation()
 {
+    //TODO why is this not in the parameterized constructor? -V
     this->timestep = 0;
 }
 
@@ -35,9 +36,7 @@ void Simulation::run()
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
 
-
-    // TODO .. this should probably be a field in the simulation -- Alex
-    Clock clock;
+    
     clock.start();
     clock.printRealStartTime();
     
@@ -72,7 +71,7 @@ void Simulation::printDataDELETETHIS()
 {
     Data* data = this->pedestrianDynamicsModel->getData();
 
-	/*
+	
     std::cout << "Pedestrians: " << std::endl; 
 
     for(int i = 0; i < (data->getPedestrianSet()->getNumPedestrians()); i++)
@@ -90,12 +89,13 @@ void Simulation::printDataDELETETHIS()
         << " | nearest_neighbor = " << (*data->getPedestrianSet()->getNearestNeighbor())[i] 
         << std::endl;
     }
-	*/
-
+	
+    /*
 	for(auto x: *data->getHashMapData())
 	{
 		std::cout << x.first << " " << x.second << std::endl;
 	}
+    */
 
     // std::cout <<"\n\nObstacles: " << std::endl;
 
