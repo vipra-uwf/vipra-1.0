@@ -41,7 +41,7 @@ class XMLReader: public InputDataLoader
         std::vector<FLOATING_NUMBER> getFloatDataSet(std::string);
         std::vector<std::string> getStringDataSet(std::string);
 		
-		std::unordered_map<std::string, FLOATING_NUMBER> getHashMapDataSet(std::string);	
+		std::unordered_map<std::string, FLOATING_NUMBER> getHashMapDataSet(std::string); //clarify responsibility	
 
         void extractFileData(std::string, std::string, std::string);
         void initializeRootNode();

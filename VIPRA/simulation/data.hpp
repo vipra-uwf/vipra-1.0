@@ -14,7 +14,7 @@ class Data
     private:
         PedestrianSet* pedestrianSet;
         ObstacleSet obstacleSet;
-		std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
+		std::unordered_map<std::string, FLOATING_NUMBER> hashMapData; //rename to match responsibility
     public:
         Data();
 
@@ -23,7 +23,7 @@ class Data
 		std::unordered_map<std::string, FLOATING_NUMBER>* getHashMapData();
         
 		void setPedestrianSet(PedestrianSet*);
-		void setHashMapData(std::unordered_map<std::string, FLOATING_NUMBER>);
+		void setHashMapData(std::unordered_map<std::string, FLOATING_NUMBER>); //rename same as above
 };
 
 #endif
