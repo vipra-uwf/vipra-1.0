@@ -56,7 +56,8 @@ void CalmPedestrianModel::calculateRepulsion()
                 calculateBeta(i) 
                 * (*set->getDesiredSpeeds())[i]
             ) 
-            - (
+            - 
+            (
                 (*set->getSpeeds())[i] 
                 / (*set->getReactionTimes())[i]
             );
@@ -65,31 +66,31 @@ void CalmPedestrianModel::calculateRepulsion()
 
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int i)
 {
+    int nearestNeighhborIndex = (*this->data->getPedestrianSet()->getNearestNeighbor())[i];
+
     FLOATING_NUMBER distance = calculateDistance(
         i, 
-        FLOATING_NUMBER(
-            (*this->data->getPedestrianSet()->getNearestNeighbor())[i]
-        ) 
-        - b
+        FLOATING_NUMBER(nearestNeighhborIndex) - b
     );
-    return (c - exp(a * (distance)));
+    return (c - exp(a * distance));
 }
 
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
 {
     PedestrianSet* set = this->data->getPedestrianSet();
+    std::vector<Dimensions>* coords = set->getPedestrianCoordinates();
 
     FLOATING_NUMBER xDistance = pow(
         (
-            set->getPedestrianCoordinates()->at(pedestrianIndexOfFirst).coordinates.at(0)
-            - set->getPedestrianCoordinates()->at(pedestrianIndexOfSecond).coordinates.at(0)
+            coords->at(pedestrianIndexOfFirst).coordinates.at(0)
+            - coords->at(pedestrianIndexOfSecond).coordinates.at(0)
         ), 
         2
     );
     FLOATING_NUMBER yDistance = pow(
         (
-            set->getPedestrianCoordinates()->at(pedestrianIndexOfFirst).coordinates.at(1)
-            - set->getPedestrianCoordinates()->at(pedestrianIndexOfSecond).coordinates.at(1)
+            coords->at(pedestrianIndexOfFirst).coordinates.at(1)
+            - coords->at(pedestrianIndexOfSecond).coordinates.at(1)
         ), 
         2
     );
