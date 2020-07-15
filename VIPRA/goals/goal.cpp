@@ -7,6 +7,7 @@ Goal::Goal()
 
 void Goal::setExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* hashMapData)
 {
+    //add an additional goal to the vector of exit goals
     FLOATING_NUMBER x;
     FLOATING_NUMBER y;
 
