@@ -9,8 +9,9 @@ class CalmPedestrianSet: public PedestrianSet
 {
     private:
         int numPedestrians;
-        int numDimensions = 2; //TODO .. is this an ok spot for this? I think it is because the set is derived -- Alex
-        
+		//TODO this should be const then delete numPed setter and getter - alex
+        int numDimensions = 2;
+
         std::vector<Dimensions> pedestrianCoordinates;
         std::vector<Dimensions> goalCoordinates;
         std::vector<Dimensions> currentVelocities;
@@ -23,8 +24,6 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER> repulsionForces;
         std::vector<int> nearestNeighbor;
         
-        // should these exist?? should we read these in from file and
-        // instead use our virtual setters? -- Alex
         void initializeSpeeds();
         void initializeGoals();
         void initializeVelocities();
@@ -44,8 +43,8 @@ class CalmPedestrianSet: public PedestrianSet
         virtual std::vector<Dimensions>* getGoalCoordinates();
         virtual std::vector<Dimensions>* getVelocities();
         virtual std::vector<FLOATING_NUMBER>* getSpeeds();
-        // TODO below getters probably shouldnt be virtual..
-        // currently necessary for reader -- Alex
+        
+		// TODO these should not be virtual - alex
         virtual std::vector<FLOATING_NUMBER>* getMasses();
         virtual std::vector<FLOATING_NUMBER>* getReactionTimes();
         virtual std::vector<FLOATING_NUMBER>* getDesiredSpeeds();
@@ -53,21 +52,30 @@ class CalmPedestrianSet: public PedestrianSet
         virtual std::vector<FLOATING_NUMBER>* getRepulsionForces();
         virtual std::vector<int>* getNearestNeighbor();
         
-        virtual void setNumPedestrians(int);
-        virtual void setNumDimensions(int);
+        virtual void setNumPedestrians(int numPedestrians);
+        virtual void setNumDimensions(int numDimensions);
+        virtual void setPedestrianCoordinates(
+				std::vector<Dimensions> coordinates);
+        virtual void setGoalCoordinates(
+				std::vector<Dimensions> goalCoordinates);
+        virtual void setVelocities(
+				std::vector<Dimensions> currentVelocities);
+        virtual void setSpeeds(
+				std::vector<FLOATING_NUMBER> speedsMetersPerSecond);
 
-        virtual void setPedestrianCoordinates(std::vector<Dimensions>);
-        virtual void setGoalCoordinates(std::vector<Dimensions>);
-        virtual void setVelocities(std::vector<Dimensions>);
-
-        virtual void setSpeeds(std::vector<FLOATING_NUMBER>);
-        //TODO same as above getters.. below setters probably shouldn't be virtual -- Alex
-        virtual void setMasses(std::vector<FLOATING_NUMBER>);
-        virtual void setReactionTimes(std::vector<FLOATING_NUMBER>);
-        virtual void setDesiredSpeeds(std::vector<FLOATING_NUMBER>);
-        virtual void setPropulsionForces(std::vector<FLOATING_NUMBER>);
-        virtual void setRepulsionForces(std::vector<FLOATING_NUMBER>);
-        virtual void setNearestNeighbor(std::vector<int>);
+		//TODO these shouldnt be virtual - alex
+	    virtual void setMasses(std::vector<FLOATING_NUMBER> massesKg);
+        virtual void setReactionTimes(
+				std::vector<FLOATING_NUMBER> reactionTimes);
+        virtual void setDesiredSpeeds(
+				std::vector<FLOATING_NUMBER> desiredSpeeds);
+        virtual void setPropulsionForces(
+				std::vector<FLOATING_NUMBER> propulsionForces);
+        virtual void setRepulsionForces(
+				std::vector<FLOATING_NUMBER> repulsionForces);
+		
+		//TODO should probably make this plural - alex	
+		virtual void setNearestNeighbor(std::vector<int> nearestNeighbor);
 };
 
 #endif

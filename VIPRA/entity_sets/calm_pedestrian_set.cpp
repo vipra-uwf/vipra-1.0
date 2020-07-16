@@ -19,7 +19,11 @@ void CalmPedestrianSet::initializeGoals()
 {
     for(int i = 0; i < this->numPedestrians; ++i)
     {
-        this->goalCoordinates.push_back(Dimensions {std::vector<FLOATING_NUMBER> {0, 0}});
+        this->goalCoordinates.push_back(
+			Dimensions {
+				std::vector<FLOATING_NUMBER> {0, 0}
+			}
+		);
     }
 }
 
@@ -27,7 +31,11 @@ void CalmPedestrianSet::initializeVelocities()
 {
     for(int i = 0; i < this->numPedestrians; ++i)
     {
-        this->currentVelocities.push_back(Dimensions {std::vector<FLOATING_NUMBER> {0, 0}});
+        this->currentVelocities.push_back(
+			Dimensions {
+				std::vector<FLOATING_NUMBER> {0, 0}
+			}
+		);
     }
 }
 
@@ -120,22 +128,26 @@ void CalmPedestrianSet::setNumDimensions(int numDimensions)
     this->numDimensions = numDimensions;
 }
 
-void CalmPedestrianSet::setPedestrianCoordinates(std::vector<Dimensions> coordinates)
+void CalmPedestrianSet::setPedestrianCoordinates(
+		std::vector<Dimensions> coordinates)
 {
     this->pedestrianCoordinates = coordinates;
 }
 
-void CalmPedestrianSet::setGoalCoordinates(std::vector<Dimensions> goalCoordinates)
+void CalmPedestrianSet::setGoalCoordinates(
+		std::vector<Dimensions> goalCoordinates)
 {
     this->goalCoordinates = goalCoordinates;
 }
 
-void CalmPedestrianSet::setSpeeds(std::vector<FLOATING_NUMBER> speedsMetersPerSecond)
+void CalmPedestrianSet::setSpeeds(
+		std::vector<FLOATING_NUMBER> speedsMetersPerSecond)
 {
     this->speedsMetersPerSecond = speedsMetersPerSecond;
 }
 
-void CalmPedestrianSet::setVelocities(std::vector<Dimensions> currentVelocities)
+void CalmPedestrianSet::setVelocities(
+		std::vector<Dimensions> currentVelocities)
 {
     this->currentVelocities = currentVelocities;
 }
@@ -145,22 +157,26 @@ void CalmPedestrianSet::setMasses(std::vector<FLOATING_NUMBER> massesKg)
     this->massesKg = massesKg;
 }
 
-void CalmPedestrianSet::setReactionTimes(std::vector<FLOATING_NUMBER> reactionTimes)
+void CalmPedestrianSet::setReactionTimes(
+		std::vector<FLOATING_NUMBER> reactionTimes)
 {
     this->reactionTimes = reactionTimes;
 }
 
-void CalmPedestrianSet::setDesiredSpeeds(std::vector<FLOATING_NUMBER> desiredSpeeds)
+void CalmPedestrianSet::setDesiredSpeeds(
+		std::vector<FLOATING_NUMBER> desiredSpeeds)
 {
     this->desiredSpeeds = desiredSpeeds;
 }
 
-void CalmPedestrianSet::setPropulsionForces(std::vector<FLOATING_NUMBER> propulsionForces)
+void CalmPedestrianSet::setPropulsionForces(
+		std::vector<FLOATING_NUMBER> propulsionForces)
 {
     this->propulsionForces = propulsionForces;
 }
 
-void CalmPedestrianSet::setRepulsionForces(std::vector<FLOATING_NUMBER> repulsionForces)
+void CalmPedestrianSet::setRepulsionForces(
+		std::vector<FLOATING_NUMBER> repulsionForces)
 {
     this->repulsionForces = repulsionForces;
 }
