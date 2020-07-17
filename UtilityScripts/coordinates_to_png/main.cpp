@@ -2,17 +2,17 @@
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
 
-#include "xml_reader.hpp"
-#include <vector>
+#include "../../VIPRA/readers/xml_reader.hpp"
 
 int main() {
+    // g++ main.cpp ../../VIPRA/readers/xml_reader.cpp ../../VIPRA/simulation/data.cpp ../../VIPRA/entity_sets/obstacle_set.cpp -I/usr/include/python3.8 -lpython3.8
 
     XMLReader xmlReader;
-    xmlReader.extractFileData("a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
+    xmlReader.extractFileData("../../VIPRA/input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
     std::vector<FLOATING_NUMBER> pedestrianX = xmlReader.getFloatDataSet("x");
     std::vector<FLOATING_NUMBER> pedestrianY = xmlReader.getFloatDataSet("y");
 
-    xmlReader.extractFileData("a320_144_obstacles.xml", "obstacle-set", "obstacle");
+    xmlReader.extractFileData("../../VIPRA/input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
     std::vector<FLOATING_NUMBER> obstacleX = xmlReader.getFloatDataSet("x");
     std::vector<FLOATING_NUMBER> obstacleY = xmlReader.getFloatDataSet("y");
 
@@ -20,7 +20,7 @@ int main() {
 
     while(i < pedestrianX.size())
     {
-        pedestrianX.at(i) = pedestrianX.at(i) * 1.1;
+        pedestrianX.at(i) = pedestrianX.at(i) * 1.5;
         pedestrianY.at(i) = pedestrianY.at(i) * 1.1;
 
         plt::clf();
@@ -34,12 +34,9 @@ int main() {
         i++;
     }
 
-    // plt::xlim(-30, 30);
-    // plt::ylim(-30, 30); 
-    // plt::plot(pedestrianX, pedestrianY, "r.");
-    // plt::scatter(obstacleX, obstacleY, 1);
-    // plt::save("obstacles.png");
+    plt::pause(2);
+    //plt::save("output.png");
     // plt::show();
 }
 
-// g++ main.cpp xml_reader.cpp -I/usr/include/python3.8 -lpython3.8
+

@@ -38,18 +38,19 @@ class XMLReader: public InputDataLoader
         FLOATING_NUMBER getFloatValue(rapidxml::xml_node<>*, std::string);
         std::string getStringValue(rapidxml::xml_node<>*, std::string);
 
-        std::vector<FLOATING_NUMBER> getFloatDataSet(std::string);
-        std::vector<std::string> getStringDataSet(std::string);
-		
+ 
 		std::unordered_map<std::string, FLOATING_NUMBER> getHashMapDataSet(std::string); //clarify responsibility	
 
-        void extractFileData(std::string, std::string, std::string);
         void initializeRootNode();
         void initializeDataNode();
 
     public:
         XMLReader();
         virtual void storeData(Data*);
+
+        void extractFileData(std::string, std::string, std::string);
+        std::vector<FLOATING_NUMBER> getFloatDataSet(std::string);
+        std::vector<std::string> getStringDataSet(std::string);
 };
 
 #endif
