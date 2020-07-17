@@ -32,22 +32,19 @@ int main() {
         std::vector<FLOATING_NUMBER> pedestrianX(firstX + (i * 144), firstX + ((i + 1) * 144));
         std::vector<FLOATING_NUMBER> pedestrianY(firstY + (i * 144), firstY + ((i + 1) * 144));
 
-        std::cout << pedestrianX.size() << " " << pedestrianY.size() << std::endl;
-
         plt::clf();
-        plt::xlim(-30, 30);
-        plt::ylim(-30, 30); 
+        plt::xlim(-5, 30);
+        plt::ylim(-5, 20); 
         plt::plot(pedestrianX, pedestrianY, "r.");
         plt::scatter(obstacleX, obstacleY, 1);
 
-        plt::pause(1);
+        plt::pause(2);
         i++;
-
     }
 
-    // plt::pause(2);
+    plt::pause(2);
     //plt::save("output.png");
-    // plt::show();
+    plt::show();
 }
 
 

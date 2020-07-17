@@ -43,11 +43,29 @@ void Simulation::run()
     
     this->pedestrianDynamicsModel->precompute();
 
-    while(this->timestep < 1000)
+    while(this->timestep < 5000)
     {
         if(outputCriterionChecker->isOutputCriterionMet())
         {
             outputCriterionChecker->writeData();
+            
+            // -- delete this block once we start getting code that changes pedestrian locations -- alex
+            Data* data = this->pedestrianDynamicsModel->getData();
+            for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); i++)
+            {
+                if(this->timestep < 1500)
+                {
+                    (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[1] *= 0.7;
+                }
+                else
+                {
+                    if((data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[0] * 1.1 < 23.25)
+                    {
+                        (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[0] *= 1.1;
+                    }
+                }
+            }
+            // -- delete this block once we start getting code that changes pedestrian locations -- alex
         }
 
         clock.addSimulationTimeMilliseconds(150); //150 is arbitrary, use whatever ms is needed
