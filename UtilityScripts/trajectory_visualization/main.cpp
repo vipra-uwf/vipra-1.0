@@ -38,7 +38,7 @@ int main() {
         plt::plot(pedestrianX, pedestrianY, "r.");
         plt::scatter(obstacleX, obstacleY, 1);
 
-        plt::pause(2);
+        plt::pause(1);
         i++;
     }
 
