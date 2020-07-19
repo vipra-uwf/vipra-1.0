@@ -14,7 +14,8 @@ class Simulation
         int timestep;
         PedestrianDynamicsModel* pedestrianDynamicsModel;
         OutputCriterionChecker* outputCriterionChecker;
-
+        Clock clock;
+        
     public:
         Simulation();
         Simulation(PedestrianDynamicsModel*);

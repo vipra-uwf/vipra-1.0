@@ -29,56 +29,98 @@ void CalmPedestrianModel::update()
 
 void CalmPedestrianModel::calculatePropulsion()
 {
-    for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
+    PedestrianSet* set = this->data->getPedestrianSet();
+
+    for(int i = 0; i < set->getNumPedestrians(); ++i)
     {
-        // this->propulsionForces.at(pedestrianIndex) = ((this->desiredSpeed - (*this->data->getPedestrianSet()->getSpeeds())[pedestrianIndex]) / this->reactionTime) * (*this->data->getPedestrianSet()->getMasses())[pedestrianIndex];
-        (*this->data->getPedestrianSet()->getPropulsionForces())[i] = (((*this->data->getPedestrianSet()->getDesiredSpeeds())[i] - (*this->data->getPedestrianSet()->getSpeeds())[i]) / (*this->data->getPedestrianSet()->getReactionTimes())[i]) * (*this->data->getPedestrianSet()->getMasses())[i];
+        (*set->getPropulsionForces())[i] = 
+            (
+                (
+                    (*set->getDesiredSpeeds())[i]
+                    - (*set->getSpeeds())[i]
+                ) 
+                / (*set->getReactionTimes())[i]
+            )
+            * (*set->getMasses())[i];
     }
 }
 
-// TODO .. strangely, it calculates the repulsion force for the first pedestrian as a negative value.. i do not think this is intended behavior -- Alex
 void CalmPedestrianModel::calculateRepulsion()
 {
-    for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
+    PedestrianSet* set = this->data->getPedestrianSet();
+
+    for(int i = 0; i < set->getNumPedestrians(); ++i)
     {
-        // this->repulsionForces.at(pedestrianIndex) = (this->calculateBeta(pedestrianIndex)*desiredSpeed) - ((*this->data->getPedestrianSet()->getSpeeds())[pedestrianIndex] / reactionTime);
-        (*this->data->getPedestrianSet()->getRepulsionForces())[i] = (calculateBeta(i) * (*this->data->getPedestrianSet()->getDesiredSpeeds())[i]) - ((*this->data->getPedestrianSet()->getSpeeds())[i] / (*this->data->getPedestrianSet()->getReactionTimes())[i]);
+        (*set->getRepulsionForces())[i] = 
+            (
+                calculateBeta(i) 
+                * (*set->getDesiredSpeeds())[i]
+            ) 
+            - 
+            (
+                (*set->getSpeeds())[i] 
+                / (*set->getReactionTimes())[i]
+            );
     }
 }
 
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int i)
 {
-    // TODO .. is this equation correct? nearestNeighbors[i] - b is an integer minus a floating number.. are we trying to round by casting it as an integer? -- Alex
-    // return (c - exp(a * (calculateDistance(i, nearestNeighbors.at(i) - b))));
-    return (c - exp(a * (calculateDistance(i, (*this->data->getPedestrianSet()->getNearestNeighbor())[i] - b))));
+    int nearestNeighhborIndex = (*this->data->getPedestrianSet()->getNearestNeighbor())[i];
+
+    FLOATING_NUMBER distance = calculateDistance(
+        i, 
+        FLOATING_NUMBER(nearestNeighhborIndex) - b
+    );
+    return (c - exp(a * distance));
 }
 
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
 {
+<<<<<<< HEAD
     FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getPedestrianCoordinates()->at(0).coordinates.at(pedestrianIndexOfFirst) - data->getPedestrianSet()->getPedestrianCoordinates()->at(0).coordinates.at(pedestrianIndexOfSecond)), 2);
     FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getPedestrianCoordinates()->at(1).coordinates.at(pedestrianIndexOfFirst) - data->getPedestrianSet()->getPedestrianCoordinates()->at(1).coordinates.at(pedestrianIndexOfSecond)), 2);
+=======
+    PedestrianSet* set = this->data->getPedestrianSet();
+    std::vector<Dimensions>* coords = set->getPedestrianCoordinates();
+
+    FLOATING_NUMBER xDistance = pow(
+        (
+            coords->at(pedestrianIndexOfFirst).coordinates.at(0)
+            - coords->at(pedestrianIndexOfSecond).coordinates.at(0)
+        ), 
+        2
+    );
+    FLOATING_NUMBER yDistance = pow(
+        (
+            coords->at(pedestrianIndexOfFirst).coordinates.at(1)
+            - coords->at(pedestrianIndexOfSecond).coordinates.at(1)
+        ), 
+        2
+    );
+>>>>>>> master
     return (sqrt(xDistance + yDistance));
 }
 
-// TODO .. i am pretty sure that this has some unintended behavior. the first pedestrian's nearest neighbor is itself. i do not think this is intentional -- Alex
 void CalmPedestrianModel::calculateNearestNeighbors()
 {
-    for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); ++i)
-    {
-        int nearest = 0;
+    PedestrianSet* set = this->data->getPedestrianSet();
 
-        for (int j = 0; j < this->data->getPedestrianSet()->getNumPedestrians(); ++j)
+    for (int i = 0; i < set->getNumPedestrians(); ++i)
+    {
+        int nearest = -1;
+
+        for (int j = 0; j < set->getNumPedestrians(); ++j)
         {
-            if(j != i)
+            if(i != j)
             {
-                if(calculateDistance(i, j) < calculateDistance(i, nearest))
+                if (nearest == -1 || calculateDistance(i, j) < calculateDistance(i, nearest))
                 {
                     nearest = j;
                 }
             }
         }
-
-        // this->nearestNeighbors.at(pedestrianIndex) = nearest;
-        (*this->data->getPedestrianSet()->getNearestNeighbor())[i] = nearest;
+        
+        (*set->getNearestNeighbor())[i] = nearest;
     }
 }
