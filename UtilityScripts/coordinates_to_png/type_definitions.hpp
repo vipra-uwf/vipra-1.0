@@ -1,1 +1,0 @@
-typedef float FLOATING_NUMBER;
