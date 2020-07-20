@@ -25,6 +25,8 @@ class Goal
         virtual void removeExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>*) = 0;
         virtual void clearGoals() = 0;
         virtual void determinePedestrianGoals(Data*) = 0;
+        virtual void checkPedestianGoalsMet() = 0; // added these two methods 
+        virtual bool isSimulationGoalMet() = 0; // added these two methods 
 };
 
 #endif
