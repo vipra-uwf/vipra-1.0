@@ -38,7 +38,7 @@ co: #clear output folder
 cc: clean compile # clean compile
 
 cr: compile # compile & run
-	main
+	./main
 
 ccr: clean compile # clean compile & run
-	main
+	./main
