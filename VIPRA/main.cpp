@@ -19,7 +19,7 @@ int main()
     XMLReader xmlReader;
     xmlReader.storeData(&data);
 
-    goal.setExitGoal(data.getHashMapData());
+    goal.addExitGoal(data.getHashMapData());
 
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);

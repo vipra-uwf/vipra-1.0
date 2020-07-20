@@ -29,8 +29,8 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 
         void calculatePropulsion();
         void calculateRepulsion();
-        FLOATING_NUMBER calculateDistance(int, int);
-        FLOATING_NUMBER calculateBeta(int);
+        FLOATING_NUMBER calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond);
+        FLOATING_NUMBER calculateBeta(int i);
         void calculateNearestNeighbors();
 };
 

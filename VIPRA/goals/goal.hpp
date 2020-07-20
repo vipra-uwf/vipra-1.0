@@ -16,12 +16,14 @@
 #include "../type_definitions.hpp"
 #include "../dimensions.hpp"
 
-
+//name change - Goals
 class Goal
 {
 
     public:
-        virtual void setExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>*) = 0;
+        virtual void addExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>*) = 0;
+        virtual void removeExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>*) = 0;
+        virtual void clearGoals() = 0;
         virtual void determinePedestrianGoals(Data*) = 0;
 };
 

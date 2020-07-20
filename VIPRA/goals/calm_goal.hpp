@@ -23,13 +23,15 @@ class CalmGoal: public Goal
 
     CalmGoal();
 
-    virtual void setExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>*);
-    virtual void determinePedestrianGoals(Data*);
+    virtual void addExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* hashMapData);
+    virtual void removeExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* hashMapData);
+    virtual void clearGoals();
+    virtual void determinePedestrianGoals(Data* data);
 
 
-    void isSimulationGoalMet(Data*);
-    unsigned int nearestGoal(Data*, int);
-    FLOATING_NUMBER calculateDistance(Data*, int, int);
+    void isSimulationGoalMet(Data* data);
+    unsigned int nearestGoal(Data* data, int pedestrianIndex);
+    FLOATING_NUMBER calculateDistance(Data* data, int pedestrianIndex, int exitGoalIndex);
 
 };
 

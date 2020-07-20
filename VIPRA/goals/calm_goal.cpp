@@ -5,7 +5,7 @@ CalmGoal::CalmGoal()
     std::cout << "goal created\n";
 }
 
-void CalmGoal::setExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* hashMapData)
+void CalmGoal::addExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* hashMapData)
 {
     FLOATING_NUMBER x;
     FLOATING_NUMBER y;
@@ -27,6 +27,16 @@ void CalmGoal::setExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* has
     std::cout << "exit has beed set\n";
 
     this->exitGoal = exit;
+}
+
+void CalmGoal::removeExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* hashMapData)
+{
+
+}
+
+void CalmGoal::clearGoals()
+{
+    exitGoal.clear();
 }
 
 void CalmGoal::determinePedestrianGoals(Data* data)
