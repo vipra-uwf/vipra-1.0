@@ -56,10 +56,6 @@ int CalmPedestrianSet::getNumPedestrians()
     return this->numPedestrians;
 }
 
-int CalmPedestrianSet::getNumDimensions()
-{
-    return this->numDimensions;
-}
 std::vector<Dimensions>* CalmPedestrianSet::getPedestrianCoordinates()
 {
     return &this->pedestrianCoordinates;
@@ -113,11 +109,6 @@ std::vector<int>* CalmPedestrianSet::getNearestNeighbor()
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
 {
    this->numPedestrians = numPedestrians; 
-}
-
-void CalmPedestrianSet::setNumDimensions(int numDimensions)
-{
-    this->numDimensions = numDimensions;
 }
 
 void CalmPedestrianSet::setPedestrianCoordinates(std::vector<Dimensions> coordinates)

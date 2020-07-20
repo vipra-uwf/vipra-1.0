@@ -9,8 +9,7 @@ class CalmPedestrianSet: public PedestrianSet
 {
     private:
         int numPedestrians;
-        int numDimensions = 2; //TODO .. is this an ok spot for this? I think it is because the set is derived -- Alex
-        
+    
         std::vector<Dimensions> pedestrianCoordinates;
         std::vector<Dimensions> goalCoordinates;
         std::vector<Dimensions> currentVelocities;
@@ -39,7 +38,6 @@ class CalmPedestrianSet: public PedestrianSet
         virtual void initializeValues();
 
         virtual int getNumPedestrians();
-        virtual int getNumDimensions();
         virtual std::vector<Dimensions>* getPedestrianCoordinates();
         virtual std::vector<Dimensions>* getGoalCoordinates();
         virtual std::vector<Dimensions>* getVelocities();
@@ -54,7 +52,6 @@ class CalmPedestrianSet: public PedestrianSet
         virtual std::vector<int>* getNearestNeighbor();
         
         virtual void setNumPedestrians(int);
-        virtual void setNumDimensions(int);
 
         virtual void setPedestrianCoordinates(std::vector<Dimensions>);
         virtual void setGoalCoordinates(std::vector<Dimensions>);

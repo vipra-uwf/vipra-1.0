@@ -12,7 +12,6 @@ class PedestrianSet
         virtual void initializeValues() = 0;
 
         virtual int getNumPedestrians() = 0;
-        virtual int getNumDimensions() = 0;
         virtual std::vector<Dimensions>* getPedestrianCoordinates() = 0;
         virtual std::vector<Dimensions>* getGoalCoordinates() = 0;
         virtual std::vector<Dimensions>* getVelocities() = 0;
@@ -27,7 +26,6 @@ class PedestrianSet
         virtual std::vector<int>* getNearestNeighbor() = 0;
 
         virtual void setNumPedestrians(int) = 0;
-        virtual void setNumDimensions(int) = 0;
         virtual void setPedestrianCoordinates(std::vector<Dimensions>) = 0;
         virtual void setGoalCoordinates(std::vector<Dimensions>) = 0;
         virtual void setVelocities(std::vector<Dimensions>) = 0;

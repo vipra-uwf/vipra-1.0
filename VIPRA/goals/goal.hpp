@@ -19,23 +19,10 @@
 
 class Goal
 {
-    private:
-    //keep track of final goals
-    std::vector<Dimensions> exitGoal;
-
 
     public:
-        Goal();
-        void setExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>*);
-        //void determinePedestrianGoals(Data*, Time); -Need more information on time class - elizabeth
-        void determinePedestrianGoals(Data*);
-        //void isSimulationGoalMet(Data*, Time); -Need more information on time class - elizabeth
-        void findPath(Data*, int, int);
-        bool isBlocked(Data*, int, std::string);
-        bool hasOpening(Data*, int);
-        void isSimulationGoalMet(Data*);
-        unsigned int nearestGoal(Data*, int);
-        FLOATING_NUMBER calculateDistance(Data*, int, int);
+        virtual void setExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>*) = 0;
+        virtual void determinePedestrianGoals(Data*) = 0;
 };
 
 #endif

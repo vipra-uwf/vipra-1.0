@@ -5,9 +5,19 @@ void CalmPedestrianModel::setData(Data* initialData)
     this->data = initialData;
 }
 
+void CalmPedestrianModel::setGoal(CalmGoal* goal)
+{
+    this->goal = goal;
+}
+
 Data* CalmPedestrianModel::getData()
 {
     return this->data;
+}
+
+CalmGoal* CalmPedestrianModel::getGoal()
+{
+    return this->goal;
 }
 
 void CalmPedestrianModel::precompute()
@@ -18,8 +28,10 @@ void CalmPedestrianModel::precompute()
     //result needs to be stored for each passenger
 
     calculateNearestNeighbors();
+    goal->determinePedestrianGoals(data);
     calculatePropulsion();
     calculateRepulsion();
+
 }
 
 void CalmPedestrianModel::update()
@@ -77,10 +89,6 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int i)
 
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
 {
-<<<<<<< HEAD
-    FLOATING_NUMBER xDistance = pow((data->getPedestrianSet()->getPedestrianCoordinates()->at(0).coordinates.at(pedestrianIndexOfFirst) - data->getPedestrianSet()->getPedestrianCoordinates()->at(0).coordinates.at(pedestrianIndexOfSecond)), 2);
-    FLOATING_NUMBER yDistance = pow((data->getPedestrianSet()->getPedestrianCoordinates()->at(1).coordinates.at(pedestrianIndexOfFirst) - data->getPedestrianSet()->getPedestrianCoordinates()->at(1).coordinates.at(pedestrianIndexOfSecond)), 2);
-=======
     PedestrianSet* set = this->data->getPedestrianSet();
     std::vector<Dimensions>* coords = set->getPedestrianCoordinates();
 
@@ -98,7 +106,6 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirs
         ), 
         2
     );
->>>>>>> master
     return (sqrt(xDistance + yDistance));
 }
 

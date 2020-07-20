@@ -7,13 +7,13 @@
 #include "models/calm_pedestrian_model.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
 #include "writers/output_timestep_checker.hpp"
-#include "goals/goal.hpp"
+#include "goals/calm_goal.hpp"
 
 int main()
 {
     CalmPedestrianSet calmPedSet;
     Data data;
-    Goal goal;
+    CalmGoal goal;
     data.setPedestrianSet(&calmPedSet);
 	
     XMLReader xmlReader;
@@ -23,6 +23,7 @@ int main()
 
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
+    calmModel.setGoal(&goal);
 
     goal.determinePedestrianGoals(&data);
 
