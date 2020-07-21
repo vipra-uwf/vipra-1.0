@@ -10,7 +10,10 @@ XMLReader::XMLReader()
 
 void XMLReader::storeData(Data* data)
 {
-    extractFileData("./input_data/a320_144_pedestrians.xml", "pedestrian-set", "pedestrian");
+    extractFileData(
+        "./input_data/a320_144_pedestrians.xml", 
+        "pedestrian-set", 
+        "pedestrian");
     std::vector<Dimensions> pedestrianCoordinates;
     std::vector<FLOATING_NUMBER> pedestrianCoordinatesX = getFloatDataSet("x");
     std::vector<FLOATING_NUMBER> pedestrianCoordinatesY = getFloatDataSet("y");
@@ -29,12 +32,17 @@ void XMLReader::storeData(Data* data)
     
     data->getPedestrianSet()->setPedestrianCoordinates(pedestrianCoordinates);
     data->getPedestrianSet()->setMasses(getFloatDataSet("mass"));
-    data->getPedestrianSet()->setReactionTimes(getFloatDataSet("reaction_time"));
-    data->getPedestrianSet()->setDesiredSpeeds(getFloatDataSet("desired_speed"));
+    data->getPedestrianSet()->setReactionTimes(
+        getFloatDataSet("reaction_time"));
+    data->getPedestrianSet()->setDesiredSpeeds(
+        getFloatDataSet("desired_speed"));
     data->getPedestrianSet()->setNumPedestrians(this->numEntities);
     data->getPedestrianSet()->initializeValues();
     
-    extractFileData("./input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
+    extractFileData(
+        "./input_data/a320_144_obstacles.xml",
+        "obstacle-set", 
+        "obstacle");
     std::vector<Dimensions> obstacleCoordinates;
     std::vector<FLOATING_NUMBER> obstacleCoordinatesX = getFloatDataSet("x");
     std::vector<FLOATING_NUMBER> obstacleCoordinatesY = getFloatDataSet("y");
@@ -59,7 +67,8 @@ void XMLReader::storeData(Data* data)
 	data->setHashMapData(getHashMapDataSet("parameters"));	
 }
 
-void XMLReader::extractFileData(std::string fileName, std::string rootElement, std::string parseElement)
+void XMLReader::extractFileData(
+    std::string fileName, std::string rootElement, std::string parseElement)
 {
     openFile(fileName);
     readFile();
@@ -75,7 +84,9 @@ void XMLReader::openFile(std::string fileName)
 
 void XMLReader::readFile()
 {
-    std::vector<char> buffer((std::istreambuf_iterator<char>(this->fileStream)), std::istreambuf_iterator<char>());
+    std::vector<char> buffer(
+        (std::istreambuf_iterator<char>(this->fileStream)), 
+        std::istreambuf_iterator<char>());
     buffer.push_back('\0');
     this->fileContents = buffer;
 	//std::cout << &buffer[0] << std::endl;
@@ -94,25 +105,32 @@ void XMLReader::setParseElement(std::string parseElement)
 
 void XMLReader::parseXMLDocument()
 {
-   this->document.parse<rapidxml::parse_declaration_node | rapidxml::parse_no_data_nodes>(&this->fileContents[0]);
+   this->document.parse<
+   rapidxml::parse_declaration_node | 
+   rapidxml::parse_no_data_nodes>(
+       &this->fileContents[0]);
 }
 
 void XMLReader::initializeRootNode()
 {
-    this->rootNode = this->document.first_node(this->document.allocate_string(this->rootElement.c_str()));
+    this->rootNode = this->document.first_node(
+        this->document.allocate_string(this->rootElement.c_str()));
 }
 
 void XMLReader::initializeDataNode()
 {
-    this->dataNode = this->rootNode->first_node(this->document.allocate_string(this->parseElement.c_str()));
+    this->dataNode = this->rootNode->first_node(
+        this->document.allocate_string(this->parseElement.c_str()));
 }
 
-FLOATING_NUMBER XMLReader::getFloatValue(rapidxml::xml_node<>* node, std::string attribute)
+FLOATING_NUMBER XMLReader::getFloatValue(
+    rapidxml::xml_node<>* node, std::string attribute)
 {
     return std::stod(node->first_attribute(attribute.c_str())->value());
 }
 
-std::string XMLReader::getStringValue(rapidxml::xml_node<>* node, std::string attribute)
+std::string XMLReader::getStringValue(
+    rapidxml::xml_node<>* node, std::string attribute)
 {
     return node->first_attribute(attribute.c_str())->value();
 }
@@ -158,7 +176,8 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
 }
 
 
-std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet(std::string parent_node)
+std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet(
+    std::string parent_node)
 {
 	readFile();
 	parseXMLDocument();

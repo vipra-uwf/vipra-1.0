@@ -8,9 +8,9 @@
 #include <iostream>
 #include <unordered_map>
 
+#include "input_data_loader.hpp"
 #include "../type_definitions.hpp"
 #include "../rapidxml/rapidxml.hpp"
-#include "input_data_loader.hpp"
 #include "../simulation/data.hpp"
 #include "../dimensions.hpp"
 
@@ -39,7 +39,8 @@ class XMLReader: public InputDataLoader
         std::string getStringValue(rapidxml::xml_node<>*, std::string);
 
  
-		std::unordered_map<std::string, FLOATING_NUMBER> getHashMapDataSet(std::string); //clarify responsibility	
+		std::unordered_map<std::string, FLOATING_NUMBER> getHashMapDataSet(
+            std::string); //clarify responsibility	
 
         void initializeRootNode();
         void initializeDataNode();

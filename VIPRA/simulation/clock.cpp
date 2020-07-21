@@ -17,7 +17,8 @@ void Clock::stop()
 
 void Clock::printRealStartTime()
 {
-    std::time_t time = std::chrono::system_clock::to_time_t(this->realStartTime);
+    std::time_t time = std::chrono::system_clock::to_time_t(
+        this->realStartTime);
     std::cout << "computation started: " << std::ctime(&time);
 }
 

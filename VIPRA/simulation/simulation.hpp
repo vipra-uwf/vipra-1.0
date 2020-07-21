@@ -24,7 +24,6 @@ class Simulation
         void setOutputCriterionChecker(OutputCriterionChecker*);
         int* getTimestep();
         void printDataDELETETHIS();
-
 };
 
 #endif

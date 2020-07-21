@@ -24,7 +24,8 @@ void CalmPedestrianModel::precompute()
 
 void CalmPedestrianModel::update()
 {
-    //use clock, calculated force prop and calculated force rep to update positions ~Elizabeth
+    //use clock, calculated force prop and 
+    //calculated force rep to update positions ~Elizabeth
 }
 
 void CalmPedestrianModel::calculatePropulsion()
@@ -66,7 +67,8 @@ void CalmPedestrianModel::calculateRepulsion()
 
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int i)
 {
-    int nearestNeighhborIndex = (*this->data->getPedestrianSet()->getNearestNeighbor())[i];
+    int nearestNeighhborIndex = (*this->data->getPedestrianSet()->
+                                getNearestNeighbor())[i];
 
     FLOATING_NUMBER distance = calculateDistance(
         i, 
@@ -75,7 +77,8 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int i)
     return (c - exp(a * distance));
 }
 
-FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
+FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
+    int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
 {
     PedestrianSet* set = this->data->getPedestrianSet();
     std::vector<Dimensions>* coords = set->getPedestrianCoordinates();
@@ -109,7 +112,8 @@ void CalmPedestrianModel::calculateNearestNeighbors()
         {
             if(i != j)
             {
-                if (nearest == -1 || calculateDistance(i, j) < calculateDistance(i, nearest))
+                if (nearest == -1 || 
+                calculateDistance(i, j) < calculateDistance(i, nearest))
                 {
                     nearest = j;
                 }

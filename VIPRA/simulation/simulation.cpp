@@ -17,8 +17,6 @@ void Simulation::setOutputCriterionChecker(OutputCriterionChecker* outputCriteri
     this->outputCriterionChecker = outputCriterionChecker;
 }
 
-
-
 //pedestrian dynamics model
     //input to model - pedestrians, layout, goal for each pedestrian
         //goals will likely need to be defined as a template class or function pointer
@@ -35,7 +33,6 @@ void Simulation::run()
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
-
     
     clock.start();
     clock.printRealStartTime();
@@ -48,26 +45,34 @@ void Simulation::run()
         {
             outputCriterionChecker->writeData();
             
-            // -- delete this block once we start getting code that changes pedestrian locations -- alex
+            // -- delete this block once we start getting 
+            // code that changes pedestrian locations -- alex
             Data* data = this->pedestrianDynamicsModel->getData();
-            for(int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); i++)
+            int numPedestrians = data->getPedestrianSet()->getNumPedestrians();
+
+            for(int i = 0; i < numPedestrians; i++)
             {
                 if(this->timestep < 1500)
                 {
-                    (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[1] *= 0.7;
+                    (data->getPedestrianSet()->getPedestrianCoordinates()->
+                    at(i)).coordinates[1] *= 0.7;
                 }
                 else
                 {
-                    if((data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[0] * 1.1 < 23.25)
+                    if((data->getPedestrianSet()->getPedestrianCoordinates()->
+                    at(i)).coordinates[0] * 1.1 < 23.25)
                     {
-                        (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[0] *= 1.1;
+                        (data->getPedestrianSet()->getPedestrianCoordinates()->
+                        at(i)).coordinates[0] *= 1.1;
                     }
                 }
             }
-            // -- delete this block once we start getting code that changes pedestrian locations -- alex
+            // -- delete this block once we start getting 
+            // code that changes pedestrian locations -- alex
         }
 
-        clock.addSimulationTimeMilliseconds(150); //150 is arbitrary, use whatever ms is needed
+        //150 is arbitrary, use whatever ms is needed
+        clock.addSimulationTimeMilliseconds(150);
         this->timestep++;
     }
 
@@ -96,15 +101,25 @@ void Simulation::printDataDELETETHIS()
     {
         std::cout
         << i 
-        << " | coordinates = (" << (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[0] << ", " 
-        << (data->getPedestrianSet()->getPedestrianCoordinates()->at(i)).coordinates[1] << ")"
-        << " | speed = " << (*data->getPedestrianSet()->getSpeeds())[i] 
-        << " | mass = " << (*data->getPedestrianSet()->getMasses())[i] 
-        << " | reaction_time = " << (*data->getPedestrianSet()->getReactionTimes())[i] 
-        << " | desired_speed = " << (*data->getPedestrianSet()->getDesiredSpeeds())[i] 
-        << " | propulsion_force = " << (*data->getPedestrianSet()->getPropulsionForces())[i] 
-        << " | repulsion_force = " << (*data->getPedestrianSet()->getRepulsionForces())[i] 
-        << " | nearest_neighbor = " << (*data->getPedestrianSet()->getNearestNeighbor())[i] 
+        << " | coordinates = (" 
+        << (data->getPedestrianSet()->getPedestrianCoordinates()->
+        at(i)).coordinates[0] << ", " 
+        << (data->getPedestrianSet()->getPedestrianCoordinates()->
+        at(i)).coordinates[1] << ")"
+        << " | speed = "
+        << (*data->getPedestrianSet()->getSpeeds())[i] 
+        << " | mass = " 
+        << (*data->getPedestrianSet()->getMasses())[i] 
+        << " | reaction_time = " 
+        << (*data->getPedestrianSet()->getReactionTimes())[i] 
+        << " | desired_speed = " 
+        << (*data->getPedestrianSet()->getDesiredSpeeds())[i] 
+        << " | propulsion_force = " 
+        << (*data->getPedestrianSet()->getPropulsionForces())[i] 
+        << " | repulsion_force = " 
+        << (*data->getPedestrianSet()->getRepulsionForces())[i] 
+        << " | nearest_neighbor = " 
+        << (*data->getPedestrianSet()->getNearestNeighbor())[i] 
         << std::endl;
     }
 	
@@ -119,7 +134,9 @@ void Simulation::printDataDELETETHIS()
 
     // for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
     // {
-    //     std::cout << "[" << (data->getObstacleSet()->getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
-    //     std::cout << (data->getObstacleSet()->getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
+    //     std::cout << "[" << (data->getObstacleSet()->
+    ///    getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
+    //     std::cout << (data->getObstacleSet()->
+    //     getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
     // }
 }
