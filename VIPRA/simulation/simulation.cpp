@@ -124,7 +124,7 @@ void Simulation::printDataDELETETHIS()
         << " | repulsion_force = " 
         << (*data->getPedestrianSet()->getRepulsionForces())[i] 
         << " | nearest_neighbor = " 
-        << (*data->getPedestrianSet()->getNearestNeighbor())[i] 
+        << (*data->getPedestrianSet()->getNearestNeighbors())[i] 
         << std::endl;
     }
 	

@@ -16,7 +16,7 @@ void Goal::setExitGoal(int dimension, FLOATING_NUMBER exitCoord)
     // {
     //     for(int j = 0; i < this->numDimensions; ++j)
     //     {
-    //         this->currentVelocities[i].coordinates.push_back(0);
+    //         this->velocities[i].coordinates.push_back(0);
     //     }
     // }
 

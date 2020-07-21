@@ -24,7 +24,7 @@ class PedestrianSet
         virtual std::vector<FLOATING_NUMBER>* getDesiredSpeeds() = 0;
         virtual std::vector<FLOATING_NUMBER>* getPropulsionForces() = 0;
         virtual std::vector<FLOATING_NUMBER>* getRepulsionForces() = 0;
-        virtual std::vector<int>* getNearestNeighbor() = 0;
+        virtual std::vector<int>* getNearestNeighbors() = 0;
 
         virtual void setNumPedestrians(int numPedestrians) = 0;
         virtual void setNumDimensions(int numDimensions) = 0;
@@ -33,7 +33,7 @@ class PedestrianSet
         virtual void setGoalCoordinates(
             std::vector<Dimensions> goalCoordinates) = 0;
         virtual void setVelocities(
-            std::vector<Dimensions> currentVelocities) = 0;
+            std::vector<Dimensions> velocities) = 0;
         virtual void setSpeeds(
             std::vector<FLOATING_NUMBER> speedsMetersPerSecond) = 0;
         
@@ -47,7 +47,7 @@ class PedestrianSet
             std::vector<FLOATING_NUMBER> propulsionForces) = 0;
         virtual void setRepulsionForces(
             std::vector<FLOATING_NUMBER> repulsionForces) = 0;
-        virtual void setNearestNeighbor(std::vector<int> nearestNeighbor) = 0;
+        virtual void setNearestNeighbors(std::vector<int> nearestNeighbors) = 0;
 };
 
 #endif

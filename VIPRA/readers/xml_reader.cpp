@@ -5,7 +5,7 @@ XMLReader::XMLReader()
 {
     this->rootNode = NULL;
     this->dataNode = NULL;
-    this->numEntities = 0;
+    this->numDataNodes = 0;
 }
 
 void XMLReader::storeData(Data* data)
@@ -18,7 +18,7 @@ void XMLReader::storeData(Data* data)
     std::vector<FLOATING_NUMBER> pedestrianCoordinatesX = getFloatDataSet("x");
     std::vector<FLOATING_NUMBER> pedestrianCoordinatesY = getFloatDataSet("y");
 
-    for(int i = 0; i < this->numEntities; ++i)
+    for(int i = 0; i < this->numDataNodes; ++i)
     {
         pedestrianCoordinates.push_back(
             Dimensions {
@@ -36,7 +36,7 @@ void XMLReader::storeData(Data* data)
         getFloatDataSet("reaction_time"));
     data->getPedestrianSet()->setDesiredSpeeds(
         getFloatDataSet("desired_speed"));
-    data->getPedestrianSet()->setNumPedestrians(this->numEntities);
+    data->getPedestrianSet()->setNumPedestrians(this->numDataNodes);
     data->getPedestrianSet()->initializeValues();
     
     extractFileData(
@@ -47,7 +47,7 @@ void XMLReader::storeData(Data* data)
     std::vector<FLOATING_NUMBER> obstacleCoordinatesX = getFloatDataSet("x");
     std::vector<FLOATING_NUMBER> obstacleCoordinatesY = getFloatDataSet("y");
 
-    for(int i = 0; i < this->numEntities; ++i)
+    for(int i = 0; i < this->numDataNodes; ++i)
     {
         obstacleCoordinates.push_back(
             Dimensions {
@@ -60,7 +60,7 @@ void XMLReader::storeData(Data* data)
     }
 
     data->getObstacleSet()->setObstacleCoordinates(obstacleCoordinates);
-    data->getObstacleSet()->setNumObstacles(this->numEntities);
+    data->getObstacleSet()->setNumObstacles(this->numDataNodes);
 	
 
 	openFile("./input_data/simulation_params.xml");
@@ -68,12 +68,12 @@ void XMLReader::storeData(Data* data)
 }
 
 void XMLReader::extractFileData(
-    std::string fileName, std::string rootElement, std::string parseElement)
+    std::string fileName, std::string rootNodeName, std::string dataNodeName)
 {
     openFile(fileName);
     readFile();
-    setRootElement(rootElement);
-    setParseElement(parseElement);
+    setRootNodeName(rootNodeName);
+    setDataNodeName(dataNodeName);
     parseXMLDocument();
 }
 
@@ -93,14 +93,14 @@ void XMLReader::readFile()
     this->fileStream.close();
 }
 
-void XMLReader::setRootElement(std::string rootElement)
+void XMLReader::setRootNodeName(std::string rootNodeName)
 {
-    this->rootElement = rootElement;
+    this->rootNodeName = rootNodeName;
 }
 
-void XMLReader::setParseElement(std::string parseElement)
+void XMLReader::setDataNodeName(std::string dataNodeName)
 {
-    this->parseElement = parseElement;
+    this->dataNodeName = dataNodeName;
 }
 
 void XMLReader::parseXMLDocument()
@@ -114,13 +114,13 @@ void XMLReader::parseXMLDocument()
 void XMLReader::initializeRootNode()
 {
     this->rootNode = this->document.first_node(
-        this->document.allocate_string(this->rootElement.c_str()));
+        this->document.allocate_string(this->rootNodeName.c_str()));
 }
 
 void XMLReader::initializeDataNode()
 {
     this->dataNode = this->rootNode->first_node(
-        this->document.allocate_string(this->parseElement.c_str()));
+        this->document.allocate_string(this->dataNodeName.c_str()));
 }
 
 FLOATING_NUMBER XMLReader::getFloatValue(
@@ -142,14 +142,14 @@ std::vector<FLOATING_NUMBER> XMLReader::getFloatDataSet(std::string attribute)
     initializeRootNode();
     initializeDataNode();
 
-    this->numEntities = 0;
+    this->numDataNodes = 0;
 
     while(this->dataNode != 0)
     {   
         FLOATING_NUMBER value = getFloatValue(this->dataNode, attribute);
         dataSet.push_back(value);
         this->dataNode = this->dataNode->next_sibling();
-        this->numEntities++;
+        this->numDataNodes++;
     }
 
     return dataSet;
@@ -162,14 +162,14 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
     initializeRootNode();
     initializeDataNode();
     
-    this->numEntities = 0;
+    this->numDataNodes = 0;
    
     while(this->dataNode != 0)
     {   
         std::string value = getStringValue(this->dataNode, attribute);
         dataSet.push_back(value);
         this->dataNode = this->dataNode->next_sibling();
-        this->numEntities++;
+        this->numDataNodes++;
     }
 
     return dataSet;
