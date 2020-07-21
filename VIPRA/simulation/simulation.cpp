@@ -77,7 +77,7 @@ void Simulation::run()
         }
 
         //150 is arbitrary, use whatever ms is needed
-        clock.addSimulationTimeMilliseconds(150);
+        clock.addSimulationTimeMs(150);
         this->timestep++;
     }
 

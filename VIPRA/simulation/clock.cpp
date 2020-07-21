@@ -2,7 +2,7 @@
 
 Clock::Clock()
 {
-    this->simulationElapsedMilliseconds = 0;
+    this->simulationElapsedMs = 0;
 }
 
 void Clock::start()
@@ -39,16 +39,16 @@ void Clock::printRealEndTime()
     std::cout << "computation finished: " << std::ctime(&time);
 }
 
-void Clock::addSimulationTimeMilliseconds(unsigned long milliseconds)
+void Clock::addSimulationTimeMs(unsigned long milliseconds)
 {
-    this->simulationElapsedMilliseconds += milliseconds;
+    this->simulationElapsedMs += milliseconds;
 }
 
 void Clock::printSimulationDuration()
 {
     
     std::cout << "simulation duration: " 
-        << float(this->simulationElapsedMilliseconds)/1000
+        << float(this->simulationElapsedMs)/1000
         << "s"
         << std::endl;
 }
