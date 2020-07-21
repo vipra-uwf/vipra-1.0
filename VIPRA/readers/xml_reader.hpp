@@ -5,7 +5,6 @@
 #include <string>
 #include <fstream>
 #include <cstring>
-#include <iostream>
 #include <unordered_map>
 
 #include "input_data_loader.hpp"

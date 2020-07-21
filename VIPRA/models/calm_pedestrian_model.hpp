@@ -2,7 +2,6 @@
 #define CALM_PEDESTRIAN_MODEL_HPP
 
 #include <vector>
-#include <iostream>
 #include <algorithm>
 #include <math.h>
 

@@ -5,7 +5,6 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include <cstring>
 
 #include "output_data_writer.hpp"
