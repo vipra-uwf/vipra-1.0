@@ -27,8 +27,8 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         void calculateRepulsion();
         // TODO the param names for these functions feel inconsistent -- alex
         FLOATING_NUMBER calculateDistance(
-            int pedestrianIndexOfFirst, int pedestrianIndexOfSecond);
-        FLOATING_NUMBER calculateBeta(int i);
+            int firstPedIndex, int secondPedIndex);
+        FLOATING_NUMBER calculateBeta(int pedIndex);
         void calculateNearestNeighborss();
 };
 
