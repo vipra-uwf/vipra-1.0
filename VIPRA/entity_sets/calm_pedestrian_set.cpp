@@ -12,7 +12,7 @@ void CalmPedestrianSet::initializeValues()
     initializeVelocities();
     initializePropulsionForces();
     initializeRepulsionForces();
-    initializeNearestNeighborss();
+    initializeNearestNeighbors();
 }
 
 void CalmPedestrianSet::initializeGoals()
@@ -54,7 +54,7 @@ void CalmPedestrianSet::initializeRepulsionForces()
     this->repulsionForces.resize(this->numPedestrians, 0);
 }
 
-void CalmPedestrianSet::initializeNearestNeighborss()
+void CalmPedestrianSet::initializeNearestNeighbors()
 {
     this->nearestNeighbors.resize(this->numPedestrians, 0);
 }

@@ -31,7 +31,7 @@ class CalmPedestrianSet: public PedestrianSet
     void initializeVelocities();
     void initializePropulsionForces();
     void initializeRepulsionForces();
-    void initializeNearestNeighborss();
+    void initializeNearestNeighbors();
 
 
   public:
