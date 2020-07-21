@@ -23,8 +23,8 @@ void XMLReader::storeData(Data* data)
         pedestrianCoordinates.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    pedestrianCoordinatesX.at(i), 
-                    pedestrianCoordinatesY.at(i)
+                    pedestrianCoordinatesX[i], 
+                    pedestrianCoordinatesY[i]
                 }
             }
         );
@@ -52,8 +52,8 @@ void XMLReader::storeData(Data* data)
         obstacleCoordinates.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    obstacleCoordinatesX.at(i),
-                    obstacleCoordinatesY.at(i)
+                    obstacleCoordinatesX[i],
+                    obstacleCoordinatesY[i]
                 }
             }
         );

@@ -16,11 +16,11 @@ void Goal::setExitGoal(int dimension, FLOATING_NUMBER exitCoord)
     // {
     //     for(int j = 0; i < this->numDimensions; ++j)
     //     {
-    //         this->currentVelocities.at(i).coordinates.push_back(0);
+    //         this->currentVelocities[i].coordinates.push_back(0);
     //     }
     // }
 
-    // this->exitGoal.at(dimension).push_back(exitCoord);
+    // this->exitGoal[dimension].push_back(exitCoord);
 
     // TODO .. need to initialize by using data getters
 }
