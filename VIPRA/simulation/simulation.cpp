@@ -12,10 +12,10 @@ Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
 }
 
-void Simulation::setOutputCriterionChecker(
-    OutputCriterionChecker* outputCriterionChecker)
+void Simulation::setSimulationOutputHandler(
+    SimulationOutputHandler* simulationOutputHandler)
 {
-    this->outputCriterionChecker = outputCriterionChecker;
+    this->simulationOutputHandler = simulationOutputHandler;
 }
 
 /*
@@ -46,9 +46,9 @@ void Simulation::run()
     // will become while(goalIsNotMet) -- alex
     while(this->timestep < 5000)
     {
-        if(outputCriterionChecker->isOutputCriterionMet())
+        if(simulationOutputHandler->isOutputCriterionMet())
         {
-            outputCriterionChecker->writeData();
+            simulationOutputHandler->writeData();
             
             // -- delete this block once we start getting 
             // code that changes pedestrian locations -- alex

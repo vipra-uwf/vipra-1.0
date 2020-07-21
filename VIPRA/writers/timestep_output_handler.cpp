@@ -1,32 +1,32 @@
-#include "output_timestep_checker.hpp"
+#include "timestep_output_handler.hpp"
 
-void OutputTimestepChecker::setOutputWritingFrequency(int frequency)
+void TimestepOutputHandler::setOutputWritingFrequency(int frequency)
 {
     this->frequency = frequency;
 }
 
-void OutputTimestepChecker::setTimestep(int* timestep)
+void TimestepOutputHandler::setTimestep(int* timestep)
 {
     this->timestep = timestep;
 }
 
-void OutputTimestepChecker::setOutputDataWriter(
+void TimestepOutputHandler::setOutputDataWriter(
     OutputDataWriter* outputDataWriter)
 {
     this->outputDataWriter = outputDataWriter;
 }
 
-void OutputTimestepChecker::setPedestrianSet(PedestrianSet* pedestrianSet)
+void TimestepOutputHandler::setPedestrianSet(PedestrianSet* pedestrianSet)
 {
     this->pedestrianSet = pedestrianSet;
 }
 
-bool OutputTimestepChecker::isOutputCriterionMet()
+bool TimestepOutputHandler::isOutputCriterionMet()
 {
     return *this->timestep % this->frequency == 0;
 }
 
-void OutputTimestepChecker::writeData()
+void TimestepOutputHandler::writeData()
 {
     for(int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
     {

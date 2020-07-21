@@ -1,11 +1,10 @@
-#ifndef OUTPUT_CRITERION_CHECKER_HPP
-#define OUTPUT_CRITERION_CHECKER_HPP
+#ifndef SIMULATION_OUTPUT_HANDLER_HPP
+#define SIMULATION_OUTPUT_HANDLER_HPP
 
 #include "output_data_writer.hpp"
 #include "../entity_sets/pedestrian_set.hpp"
 
-//rename SimulationOutputHandler -> TimestepOutputHandler
-class OutputCriterionChecker 
+class SimulationOutputHandler 
 {
     public:
         virtual void setOutputDataWriter(

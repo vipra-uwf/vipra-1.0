@@ -1,9 +1,9 @@
-#ifndef OUTPUT_TIMESTEP_CHECKER_HPP 
-#define OUTPUT_TIMESTEP_CHECKER_HPP 
+#ifndef TIMESTEP_OUTPUT_HANDLER_HPP 
+#define TIMESTEP_OUTPUT_HANDLER_HPP
 
-#include "output_criterion_checker.hpp"
+#include "simulation_output_handler.hpp"
 
-class OutputTimestepChecker: public OutputCriterionChecker
+class TimestepOutputHandler: public SimulationOutputHandler
 {    
     private: 
         int frequency;
