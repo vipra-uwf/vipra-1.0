@@ -85,15 +85,15 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
 
     FLOATING_NUMBER xDistance = pow(
         (
-            coords->at(pedestrianIndexOfFirst).coordinates.at(0)
-            - coords->at(pedestrianIndexOfSecond).coordinates.at(0)
+            coords->at(pedestrianIndexOfFirst).coordinates[0]
+            - coords->at(pedestrianIndexOfSecond).coordinates[0]
         ), 
         2
     );
     FLOATING_NUMBER yDistance = pow(
         (
-            coords->at(pedestrianIndexOfFirst).coordinates.at(1)
-            - coords->at(pedestrianIndexOfSecond).coordinates.at(1)
+            coords->at(pedestrianIndexOfFirst).coordinates[1]
+            - coords->at(pedestrianIndexOfSecond).coordinates[1]
         ), 
         2
     );
