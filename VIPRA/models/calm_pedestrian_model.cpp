@@ -17,7 +17,7 @@ void CalmPedestrianModel::precompute()
     //Decrease Force and Propulsion force in CALM code
     //result needs to be stored for each passenger
 
-    calculateNearestNeighborss();
+    calculateNearestNeighbors();
     calculatePropulsion();
     calculateRepulsion();
 }
@@ -100,7 +100,7 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
     return (sqrt(xDistance + yDistance));
 }
 
-void CalmPedestrianModel::calculateNearestNeighborss()
+void CalmPedestrianModel::calculateNearestNeighbors()
 {
     PedestrianSet* set = this->data->getPedestrianSet();
 
