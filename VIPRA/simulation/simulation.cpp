@@ -12,22 +12,26 @@ Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
 }
 
-void Simulation::setOutputCriterionChecker(OutputCriterionChecker* outputCriterionChecker)
+void Simulation::setOutputCriterionChecker(
+    OutputCriterionChecker* outputCriterionChecker)
 {
     this->outputCriterionChecker = outputCriterionChecker;
 }
 
-//pedestrian dynamics model
-    //input to model - pedestrians, layout, goal for each pedestrian
-        //goals will likely need to be defined as a template class or function pointer
-            //two goals - one for simulation, one for each pedestrian
-    //how each pedestrian will move
-    //output - positions of the pedestrians, velocity, additional movement characteristics
-        //define an output format similar to our input format
-//human behavior model
-//policy
-//ODE solver
-//ODE solver - look into boost ode solvers
+/*
+- pedestrian dynamics model
+    - input to model - pedestrians, layout, goal for each pedestrian
+        - goals will likely need to be defined as 
+        a template class or function pointer
+            - two goals - one for simulation, one for each pedestrian
+    - how each pedestrian will move
+    - output - positions of the pedestrians, velocity, 
+    - additional movement characteristics
+        - define an output format similar to our input format
+- human behavior model
+- policy
+- ODE solver - look into boost ode solvers
+*/
 void Simulation::run()
 {
     //until goal is met
@@ -39,6 +43,7 @@ void Simulation::run()
     
     this->pedestrianDynamicsModel->precompute();
 
+    // will become while(goalIsNotMet) -- alex
     while(this->timestep < 5000)
     {
         if(outputCriterionChecker->isOutputCriterionMet())
@@ -123,12 +128,12 @@ void Simulation::printDataDELETETHIS()
         << std::endl;
     }
 	
-    /*
+    
 	for(auto x: *data->getHashMapData())
 	{
 		std::cout << x.first << " " << x.second << std::endl;
 	}
-    */
+    
 
     // std::cout <<"\n\nObstacles: " << std::endl;
 

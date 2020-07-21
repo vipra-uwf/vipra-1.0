@@ -8,8 +8,9 @@
 class OutputCriterionChecker 
 {
     public:
-        virtual void setOutputDataWriter(OutputDataWriter*) = 0;
-        virtual void setPedestrianSet(PedestrianSet*) = 0;
+        virtual void setOutputDataWriter(
+            OutputDataWriter* outputDataWriter) = 0;
+        virtual void setPedestrianSet(PedestrianSet* pedestrianSet) = 0;
         virtual bool isOutputCriterionMet() = 0;
         virtual void writeData() = 0;
 };

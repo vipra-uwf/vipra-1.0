@@ -18,10 +18,11 @@ class Simulation
         
     public:
         Simulation();
-        Simulation(PedestrianDynamicsModel*);
+        Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel);
         void run();
 
-        void setOutputCriterionChecker(OutputCriterionChecker*);
+        void setOutputCriterionChecker(
+            OutputCriterionChecker* outputCriterionChecker);
         int* getTimestep();
         void printDataDELETETHIS();
 };

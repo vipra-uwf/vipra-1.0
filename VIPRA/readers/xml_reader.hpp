@@ -29,29 +29,34 @@ class XMLReader: public InputDataLoader
         rapidxml::xml_node<>* rootNode;
         rapidxml::xml_node<>* dataNode;
 
-        void openFile(std::string);
+        void openFile(std::string fileName);
         void readFile();
-        void setRootElement(std::string);
-        void setParseElement(std::string);
+        void setRootElement(std::string rootElement);
+        void setParseElement(std::string parseElement);
         void parseXMLDocument();
 
-        FLOATING_NUMBER getFloatValue(rapidxml::xml_node<>*, std::string);
-        std::string getStringValue(rapidxml::xml_node<>*, std::string);
+        FLOATING_NUMBER getFloatValue(
+            rapidxml::xml_node<>* node, std::string attribute);
+        std::string getStringValue(
+            rapidxml::xml_node<>* node, std::string attribute);
 
  
 		std::unordered_map<std::string, FLOATING_NUMBER> getHashMapDataSet(
-            std::string); //clarify responsibility	
+            std::string parentNode); //clarify responsibility	
 
         void initializeRootNode();
         void initializeDataNode();
 
     public:
         XMLReader();
-        virtual void storeData(Data*);
+        virtual void storeData(Data* data);
 
-        void extractFileData(std::string, std::string, std::string);
-        std::vector<FLOATING_NUMBER> getFloatDataSet(std::string);
-        std::vector<std::string> getStringDataSet(std::string);
+        void extractFileData(
+            std::string fileName, 
+            std::string rootElement, 
+            std::string parseElement);
+        std::vector<FLOATING_NUMBER> getFloatDataSet(std::string attribute);
+        std::vector<std::string> getStringDataSet(std::string attribute);
 };
 
 #endif

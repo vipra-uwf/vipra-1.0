@@ -25,9 +25,10 @@ class Data
         ObstacleSet* getObstacleSet();
 		std::unordered_map<std::string, FLOATING_NUMBER>* getHashMapData();
         
-		void setPedestrianSet(PedestrianSet*);
+		void setPedestrianSet(PedestrianSet* pedestrianSet);
         //rename same as above
-		void setHashMapData(std::unordered_map<std::string, FLOATING_NUMBER>); 
+		void setHashMapData(
+            std::unordered_map<std::string, FLOATING_NUMBER> hashMapData); 
 };
 
 #endif

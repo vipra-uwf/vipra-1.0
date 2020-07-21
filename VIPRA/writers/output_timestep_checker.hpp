@@ -13,9 +13,9 @@ class OutputTimestepChecker: public OutputCriterionChecker
 
     public:
         void setTimestep(int*);
-        void setOutputWritingFrequency(int);
-        virtual void setOutputDataWriter(OutputDataWriter*);
-        virtual void setPedestrianSet(PedestrianSet*);
+        void setOutputWritingFrequency(int frequency);
+        virtual void setOutputDataWriter(OutputDataWriter* outputDataWriter);
+        virtual void setPedestrianSet(PedestrianSet* pedestrianSet);
         virtual bool isOutputCriterionMet();
         virtual void writeData();
 };

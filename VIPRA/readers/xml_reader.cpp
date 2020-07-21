@@ -177,12 +177,12 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
 
 
 std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet(
-    std::string parent_node)
+    std::string parentNode)
 {
 	readFile();
 	parseXMLDocument();
 	
-	this->rootNode = this->document.first_node(parent_node.c_str());
+	this->rootNode = this->document.first_node(parentNode.c_str());
     this->dataNode = this->rootNode->first_node();	
 	
 	std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
