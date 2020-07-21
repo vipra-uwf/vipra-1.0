@@ -129,7 +129,7 @@ void Simulation::printDataDELETETHIS()
     }
 	
     
-	for(auto x: *data->getHashMapData())
+	for(auto x: *data->getSimulationParams())
 	{
 		std::cout << x.first << " " << x.second << std::endl;
 	}

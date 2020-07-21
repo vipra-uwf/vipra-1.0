@@ -41,7 +41,7 @@ class XMLReader: public InputDataLoader
             rapidxml::xml_node<>* node, std::string attribute);
 
  
-		std::unordered_map<std::string, FLOATING_NUMBER> getHashMapDataSet(
+		std::unordered_map<std::string, FLOATING_NUMBER> getSimulationParams(
             std::string parentNode); //clarify responsibility	
 
         void initializeRootNode();

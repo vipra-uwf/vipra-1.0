@@ -64,7 +64,7 @@ void XMLReader::storeData(Data* data)
 	
 
 	openFile("./input_data/simulation_params.xml");
-	data->setHashMapData(getHashMapDataSet("parameters"));	
+	data->setSimulationParams(getSimulationParams("parameters"));	
 }
 
 void XMLReader::extractFileData(
@@ -176,7 +176,7 @@ std::vector<std::string> XMLReader::getStringDataSet(std::string attribute)
 }
 
 
-std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet(
+std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getSimulationParams(
     std::string parentNode)
 {
 	readFile();
@@ -185,7 +185,7 @@ std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet(
 	this->rootNode = this->document.first_node(parentNode.c_str());
     this->dataNode = this->rootNode->first_node();	
 	
-	std::unordered_map<std::string, FLOATING_NUMBER> hashMapData;
+	std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
 
 	while(this->dataNode != 0)
 	{
@@ -193,10 +193,10 @@ std::unordered_map<std::string, FLOATING_NUMBER> XMLReader::getHashMapDataSet(
 		FLOATING_NUMBER value = std::stod(
 				this->dataNode->first_attribute()->value()); 
 
-		hashMapData[key] = value;
+		simulationParams[key] = value;
 
 		this->dataNode = this->dataNode->next_sibling();
 	}
 
-	return hashMapData;
+	return simulationParams;
 }

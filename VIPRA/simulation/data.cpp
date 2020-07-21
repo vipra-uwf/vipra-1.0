@@ -15,9 +15,9 @@ ObstacleSet* Data::getObstacleSet()
     return &this->obstacleSet;
 }
 
-std::unordered_map<std::string, FLOATING_NUMBER>* Data::getHashMapData()
+std::unordered_map<std::string, FLOATING_NUMBER>* Data::getSimulationParams()
 {
-	return &this->hashMapData; 
+	return &this->simulationParams; 
 }
 
 void Data::setPedestrianSet(PedestrianSet* pedestrianSet)
@@ -25,8 +25,8 @@ void Data::setPedestrianSet(PedestrianSet* pedestrianSet)
     this->pedestrianSet = pedestrianSet;
 }
 
-void Data::setHashMapData(
-    std::unordered_map<std::string, FLOATING_NUMBER> hashMapData)
+void Data::setSimulationParams(
+    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams)
 {
-	this->hashMapData = hashMapData;
+	this->simulationParams = simulationParams;
 }
