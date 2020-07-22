@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 
 #include "simulation/simulation.hpp"
@@ -6,7 +5,7 @@
 #include "writers/xml_writer.hpp"
 #include "models/calm_pedestrian_model.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
-#include "writers/output_timestep_checker.hpp"
+#include "writers/timestep_output_handler.hpp"
 
 int main()
 {
@@ -30,13 +29,13 @@ int main()
     
     Simulation simulation(&calmModel);
     
-    OutputTimestepChecker outputTimestepChecker;
-    outputTimestepChecker.setPedestrianSet(&calmPedSet);
-    outputTimestepChecker.setOutputDataWriter(&xmlWriter);
-    outputTimestepChecker.setTimestep(simulation.getTimestep()); 
-    outputTimestepChecker.setOutputWritingFrequency(250);
+    TimestepOutputHandler timestepOutputHandler;
+    timestepOutputHandler.setPedestrianSet(&calmPedSet);
+    timestepOutputHandler.setOutputDataWriter(&xmlWriter);
+    timestepOutputHandler.setTimestep(simulation.getTimestep()); 
+    timestepOutputHandler.setOutputWritingFrequency(250);
 
-    simulation.setOutputCriterionChecker(&outputTimestepChecker);
+    simulation.setSimulationOutputHandler(&timestepOutputHandler);
     simulation.run();
 
     xmlWriter.writeDocumentContents();

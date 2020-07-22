@@ -14,16 +14,21 @@ class Data
     private:
         PedestrianSet* pedestrianSet;
         ObstacleSet obstacleSet;
-		std::unordered_map<std::string, FLOATING_NUMBER> hashMapData; //rename to match responsibility
+		
+        //rename to match responsibility
+        std::unordered_map<std::string, FLOATING_NUMBER> simulationParams; 
+    
     public:
         Data();
 
         PedestrianSet* getPedestrianSet();
         ObstacleSet* getObstacleSet();
-		std::unordered_map<std::string, FLOATING_NUMBER>* getHashMapData();
+		std::unordered_map<std::string, FLOATING_NUMBER>* getSimulationParams();
         
-		void setPedestrianSet(PedestrianSet*);
-		void setHashMapData(std::unordered_map<std::string, FLOATING_NUMBER>); //rename same as above
+		void setPedestrianSet(PedestrianSet* pedestrianSet);
+        //rename same as above
+		void setSimulationParams(
+            std::unordered_map<std::string, FLOATING_NUMBER> simulationParams); 
 };
 
 #endif

@@ -13,7 +13,7 @@ class Clock
         std::chrono::time_point<std::chrono::system_clock> simulationEndTime;
         std::chrono::duration<double> realElapsedSeconds;
         void calculateRealElapsedSeconds();
-        unsigned long simulationElapsedMilliseconds;
+        unsigned long simulationElapsedMs;
 
     public:
         Clock();
@@ -22,7 +22,7 @@ class Clock
         void printRealStartTime(); 
         void printRealDuration();
         void printRealEndTime();
-        void addSimulationTimeMilliseconds(unsigned long milliseconds);
+        void addSimulationTimeMs(unsigned long milliseconds);
         void printSimulationDuration();
 };
 

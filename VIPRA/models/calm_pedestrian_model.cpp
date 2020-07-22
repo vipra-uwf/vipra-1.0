@@ -24,7 +24,8 @@ void CalmPedestrianModel::precompute()
 
 void CalmPedestrianModel::update()
 {
-    //use clock, calculated force prop and calculated force rep to update positions ~Elizabeth
+    //use clock, calculated force prop and 
+    //calculated force rep to update positions ~Elizabeth
 }
 
 void CalmPedestrianModel::calculatePropulsion()
@@ -64,33 +65,35 @@ void CalmPedestrianModel::calculateRepulsion()
     }
 }
 
-FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int i)
+FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
 {
-    int nearestNeighhborIndex = (*this->data->getPedestrianSet()->getNearestNeighbor())[i];
+    int nearestNeighhborIndex = (*this->data->getPedestrianSet()->
+                                getNearestNeighbors())[pedIndex];
 
     FLOATING_NUMBER distance = calculateDistance(
-        i, 
+        pedIndex, 
         FLOATING_NUMBER(nearestNeighhborIndex) - b
     );
     return (c - exp(a * distance));
 }
 
-FLOATING_NUMBER CalmPedestrianModel::calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond)
+FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
+    int firstPedIndex, int secondPedIndex)
 {
     PedestrianSet* set = this->data->getPedestrianSet();
     std::vector<Dimensions>* coords = set->getPedestrianCoordinates();
 
     FLOATING_NUMBER xDistance = pow(
         (
-            coords->at(pedestrianIndexOfFirst).coordinates.at(0)
-            - coords->at(pedestrianIndexOfSecond).coordinates.at(0)
+            coords->at(firstPedIndex).coordinates[0]
+            - coords->at(secondPedIndex).coordinates[0]
         ), 
         2
     );
     FLOATING_NUMBER yDistance = pow(
         (
-            coords->at(pedestrianIndexOfFirst).coordinates.at(1)
-            - coords->at(pedestrianIndexOfSecond).coordinates.at(1)
+            coords->at(firstPedIndex).coordinates[1]
+            - coords->at(secondPedIndex).coordinates[1]
         ), 
         2
     );
@@ -109,13 +112,14 @@ void CalmPedestrianModel::calculateNearestNeighbors()
         {
             if(i != j)
             {
-                if (nearest == -1 || calculateDistance(i, j) < calculateDistance(i, nearest))
+                if (nearest == -1 || 
+                calculateDistance(i, j) < calculateDistance(i, nearest))
                 {
                     nearest = j;
                 }
             }
         }
         
-        (*set->getNearestNeighbor())[i] = nearest;
+        (*set->getNearestNeighbors())[i] = nearest;
     }
 }
