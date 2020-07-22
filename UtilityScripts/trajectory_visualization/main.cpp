@@ -23,6 +23,13 @@ int main() {
     int numPedestrians = 144;
     int numberOfSnapshots = trajectorySetX.size() / numPedestrians;
 
+    plt::clf();
+    plt::xlim(-5, 30);
+    plt::ylim(-5, 20); 
+    plt::scatter(obstacleX, obstacleY, 1);
+    plt::pause(2);
+
+
     while(i < numberOfSnapshots)
     {
         std::cout << "Displaying trajectory snapshot: " << i << std::endl;
