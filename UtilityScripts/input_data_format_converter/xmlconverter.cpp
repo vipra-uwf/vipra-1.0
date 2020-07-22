@@ -4,7 +4,8 @@
 // xmlConverter.convertToXML("coord_A320_144.d_coordinates.txt", 13);
 // xmlConverter.convertToXML("coord_A320_144.d_coordinates.txt", 16);
 
-void XMLConverter::convertToXML(std::string fileName, int flag)
+//only set up to convert original CALM coord_*_*.d_coordinates.txt files
+void XMLConverter::convertCoordFileToXML(std::string fileName, int flag)
 {
     this->fileStream.open(fileName);
     std::string line;    
@@ -12,11 +13,15 @@ void XMLConverter::convertToXML(std::string fileName, int flag)
 
     if(flag == 13)
     {
-        this->xmlWriter.configureXMLDocumentStructure("a320_144_pedestrians.xml", "pedestrian-set", "pedestrian", "1.0", "utf-8");
+        this->xmlWriter.configureXMLDocumentStructure(
+            "a320_144_pedestrians.xml", 
+            "pedestrian-set", "pedestrian", "1.0", "utf-8");
     }
     else if(flag == 16) 
     {
-        this->xmlWriter.configureXMLDocumentStructure("a320_144_obstacles.xml", "obstacle-set", "obstacle", "1.0", "utf-8");
+        this->xmlWriter.configureXMLDocumentStructure(
+            "a320_144_obstacles.xml", 
+            "obstacle-set", "obstacle", "1.0", "utf-8");
     }    
     
     while(std::getline(this->fileStream, line))
