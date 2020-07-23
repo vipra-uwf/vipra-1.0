@@ -1,0 +1,12 @@
+main
+*.exe
+*.out
+*.o
+.vscode
+build
+rapidxml
+rapidxml-1.13
+*.mdj
+odeint-v2
+uml_screenshot.png
+.vagrant
