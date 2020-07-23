@@ -8,5 +8,5 @@ rapidxml
 rapidxml-1.13
 *.mdj
 odeint-v2
-tempMake.txt
 uml_screenshot.png
+.vagrant

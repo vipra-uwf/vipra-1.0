@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 
 #include "simulation/simulation.hpp"
@@ -6,26 +5,25 @@
 #include "writers/xml_writer.hpp"
 #include "models/calm_pedestrian_model.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
-#include "writers/output_timestep_checker.hpp"
-#include "goals/calm_goal.hpp"
+#include "writers/timestep_output_handler.hpp"
 
 int main()
 {
     CalmPedestrianSet calmPedSet;
     Data data;
-    CalmGoal goal;
+    //CalmGoal goal;
     data.setPedestrianSet(&calmPedSet);
 	
     XMLReader xmlReader;
     xmlReader.storeData(&data);
 
-    goal.addExitGoal(data.getHashMapData());
+    //goal.addExitGoal(data.getSimulationParams());
 
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
-    calmModel.setGoal(&goal);
+    //calmModel.setGoal(&goal);
 
-    goal.determinePedestrianGoals(&data);
+    //goal.determinePedestrianGoals(&data);
 
     XMLWriter xmlWriter; 
     xmlWriter.configureXMLDocumentStructure(
@@ -37,13 +35,13 @@ int main()
     
     Simulation simulation(&calmModel);
     
-    OutputTimestepChecker outputTimestepChecker;
-    outputTimestepChecker.setPedestrianSet(&calmPedSet);
-    outputTimestepChecker.setOutputDataWriter(&xmlWriter);
-    outputTimestepChecker.setTimestep(simulation.getTimestep()); 
-    outputTimestepChecker.setOutputWritingFrequency(250);
+    TimestepOutputHandler timestepOutputHandler;
+    timestepOutputHandler.setPedestrianSet(&calmPedSet);
+    timestepOutputHandler.setOutputDataWriter(&xmlWriter);
+    timestepOutputHandler.setTimestep(simulation.getTimestep()); 
+    timestepOutputHandler.setOutputWritingFrequency(250);
 
-    simulation.setOutputCriterionChecker(&outputTimestepChecker);
+    simulation.setSimulationOutputHandler(&timestepOutputHandler);
     simulation.run();
 
     xmlWriter.writeDocumentContents();

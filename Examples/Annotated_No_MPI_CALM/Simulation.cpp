@@ -1175,8 +1175,10 @@ void Simulation::WriteOutput(const Passengers & passengers_t, int n, ofstream& o
     for(int its=0; its<NumberOfPassengers; ++its)
     {
       //converting meter to inches
-      double x_pos = passengers_t.position_x[its]*39.3701f;
-      double y_pos = passengers_t.position_y[its]*39.3701f;
+    //   double x_pos = passengers_t.position_x[its]*39.3701f;
+    //   double y_pos = passengers_t.position_y[its]*39.3701f;
+      double x_pos = passengers_t.position_x[its];
+      double y_pos = passengers_t.position_y[its];
 
       stringstream streamy;
       streamy << fixed << setprecision(3) << x_pos;

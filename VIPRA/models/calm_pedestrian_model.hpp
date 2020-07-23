@@ -2,7 +2,6 @@
 #define CALM_PEDESTRIAN_MODEL_HPP
 
 #include <vector>
-#include <iostream>
 #include <algorithm>
 #include <math.h>
 
@@ -29,8 +28,10 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 
         void calculatePropulsion();
         void calculateRepulsion();
-        FLOATING_NUMBER calculateDistance(int pedestrianIndexOfFirst, int pedestrianIndexOfSecond);
-        FLOATING_NUMBER calculateBeta(int i);
+        // TODO the param names for these functions feel inconsistent -- alex
+        FLOATING_NUMBER calculateDistance(
+            int firstPedIndex, int secondPedIndex);
+        FLOATING_NUMBER calculateBeta(int pedIndex);
         void calculateNearestNeighbors();
 };
 

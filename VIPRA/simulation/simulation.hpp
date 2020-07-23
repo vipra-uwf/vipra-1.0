@@ -4,7 +4,7 @@
 #include <iostream> 
 
 #include "../rapidxml/rapidxml.hpp"
-#include "../writers/output_criterion_checker.hpp"
+#include "../writers/simulation_output_handler.hpp"
 #include "../models/pedestrian_dynamics_model.hpp"
 #include "clock.hpp"
 
@@ -13,18 +13,18 @@ class Simulation
     private:
         int timestep;
         PedestrianDynamicsModel* pedestrianDynamicsModel;
-        OutputCriterionChecker* outputCriterionChecker;
+        SimulationOutputHandler* simulationOutputHandler;
         Clock clock;
         
     public:
         Simulation();
-        Simulation(PedestrianDynamicsModel*);
+        Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel);
         void run();
 
-        void setOutputCriterionChecker(OutputCriterionChecker*);
+        void setSimulationOutputHandler(
+            SimulationOutputHandler* simulationOutputHandler);
         int* getTimestep();
         void printDataDELETETHIS();
-
 };
 
 #endif
