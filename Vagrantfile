@@ -6,19 +6,6 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-
-	#config.vm.provision "shell", inline: "sudo apt update"
-	# config.vm.provision "shell" do |s|
-		# s.inline = "echo hello"
-		# s.inline = "sudo apt update"
-		# s.inline = "sudo apt install curl gpg software-properties-common apt-transport-https"
-		# s.inline = "curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -"
-		# s.inline = "echo \"deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main\" | sudo tee /etc/apt/sources.list.d/vscode.list"
-		# s.inline = "sudo apt update"
-		# s.inline = "sudo apt install code"
-		# s.inline = "echo done"
-		# s.inline = "echo the other done"
-	# end
 		
 		
 		
@@ -81,8 +68,16 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-	config.vm.provision "shell", inline: <<-SHELL
-		echo Valkor: Setting up provisions
+  
+	#this runs every time the vm boots, used for testing
+	#config.vm.provision :shell, path: "vagrant/bootstrap2.sh", inline: <<-SHELL, run: 'always' 
+	#	echo Routine startup procedure
+
+	#SHELL
+	
+	#only runs the first time the vm boots (will run again after a vagrant destroy)
+	config.vm.provision :shell, inline: <<-SHELL
+		echo Preparing to install Visual Studio Code
 		apt-get update
 		sudo apt install curl gpg software-properties-common apt-transport-https
 		curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
@@ -91,8 +86,15 @@ Vagrant.configure("2") do |config|
 		sudo apt install code
 		mkdir /home/vagrant/Documents/repos
 		#git clone https://github.com/vipra-uwf/vipra.git /home/vagrant/Documents/repos
-		xrandr --output Virtual1 --mode 1680x1050 
-		echo Valkor: Done setting up provisions
-	 
+		#TODO ssh key
+		#xrandr --output Virtual1 --mode 1680x1050 #doesn't work here for some reason
+		sudo cp /usr/share/backgrounds/kali-16x9/kali-neon.png /usr/share/backgrounds/kali/kali-mesh-16x9.png
+		sudo touch Desktop/start.sh
+		echo "xrandr --output Virtual1 --mode 1680x1050" >> Desktop/start.sh
+		chmod +x Desktop/start.sh
+		echo Provisioning Completed	 
 	SHELL
 end
+
+
+
