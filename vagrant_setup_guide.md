@@ -1,6 +1,6 @@
 ## Installation
 
-1. [Download & Instal Vagrant](https://www.vagrantup.com/downloads.html) (240MB)
+1. [Download & Install Vagrant](https://www.vagrantup.com/downloads.html) (240MB)
 
 2. [Download & Install VirtualBox](https://www.virtualbox.org/wiki/Downloads) (101MB)
 
