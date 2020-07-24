@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-#include "./writers/xml_writer.hpp"
+#include "../../VIPRA/writers/xml_writer.hpp"
 
 class XMLConverter
 {
@@ -13,7 +13,7 @@ class XMLConverter
         std::ifstream fileStream; 
         XMLWriter xmlWriter;
     public:
-        void convertToXML(std::string, int flag);
+        void convertCoordFileToXML(std::string fileName, int flag);
 };
 
 #endif

@@ -10,7 +10,8 @@ int main() {
 
     XMLReader xmlReader;
 
-    xmlReader.extractFileData("../../VIPRA/output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian");
+    // xmlReader.extractFileData("../../VIPRA/output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian");
+    xmlReader.extractFileData("../../VIPRA/output_data/pedestrian_animfile.xml", "pedestrian-set", "pedestrian");
     std::vector<FLOATING_NUMBER> trajectorySetX = xmlReader.getFloatDataSet("x");
     std::vector<FLOATING_NUMBER> trajectorySetY = xmlReader.getFloatDataSet("y");
 
@@ -21,6 +22,13 @@ int main() {
     int i = 0;
     int numPedestrians = 144;
     int numberOfSnapshots = trajectorySetX.size() / numPedestrians;
+
+    plt::clf();
+    plt::xlim(-5, 30);
+    plt::ylim(-5, 20); 
+    plt::scatter(obstacleX, obstacleY, 1);
+    plt::pause(2);
+
 
     while(i < numberOfSnapshots)
     {
@@ -38,7 +46,7 @@ int main() {
         plt::plot(pedestrianX, pedestrianY, "r.");
         plt::scatter(obstacleX, obstacleY, 1);
 
-        plt::pause(1);
+        plt::pause(.15);
         i++;
     }
 
