@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 
 #include "simulation/simulation.hpp"
 #include "readers/xml_reader.hpp"
@@ -11,19 +12,27 @@ int main()
 {
     CalmPedestrianSet calmPedSet;
     Data data;
-    //CalmGoal goal;
+    CalmGoal goal;
     data.setPedestrianSet(&calmPedSet);
 	
     XMLReader xmlReader;
     xmlReader.storeData(&data);
 
-    //goal.addExitGoal(data.getSimulationParams());
+    goal.addExitGoal(data.getSimulationParams());
+    goal.calculateNearestExit(&data);
 
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
-    //calmModel.setGoal(&goal);
+    calmModel.setGoal(&goal);
 
-    //goal.determinePedestrianGoals(&data);
+    goal.determinePedestrianGoals(&data);
+
+    //DELETE WHEN DONE
+    for(int i = 0; i < calmPedSet.getNumPedestrians(); ++i)
+    {
+        std::cout << "ped: " << i << "goal x:" <<calmPedSet.getGoalCoordinates()->at(i).coordinates[0];
+        std::cout << "  goal y:" << calmPedSet.getGoalCoordinates()->at(i).coordinates[1] << std::endl;
+    }
 
     XMLWriter xmlWriter; 
     xmlWriter.configureXMLDocumentStructure(

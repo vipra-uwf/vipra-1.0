@@ -5,13 +5,14 @@ CalmGoal::CalmGoal()
     std::cout << "goal created\n";
 }
 
-void CalmGoal::addExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* hashMapData)
+void CalmGoal::addExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* simulationParams)
 {
+    //TODO fix this method so that exits are read in a different way so that i can read in multiple exits
     FLOATING_NUMBER x;
     FLOATING_NUMBER y;
 
-    x = (*hashMapData)["exit_door_x"];
-    y = (*hashMapData)["exit_door_y"];
+    x = (*simulationParams)["exit_door_x"];
+    y = (*simulationParams)["exit_door_y"];
 
     std::vector<Dimensions> exit;
 
@@ -29,14 +30,36 @@ void CalmGoal::addExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* has
     this->exitGoal = exit;
 }
 
-void CalmGoal::removeExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* hashMapData)
+void CalmGoal::removeExitGoal(int exitIndex)
 {
-
+    this->exitGoal.erase(exitGoal.begin()+exitIndex);
 }
 
 void CalmGoal::clearGoals()
 {
-    exitGoal.clear();
+    this->exitGoal.clear();
+}
+
+void CalmGoal::calculateNearestExit(Data* data)
+{
+
+    if(this->exitGoal.size() > 1) 
+    {
+        for (int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
+        {
+            nearestExit.push_back(nearestGoal(data, i));
+        }
+    }
+    else
+    {
+        for (int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
+        {
+            nearestExit.push_back(0);
+        }
+    }
+    
+
+
 }
 
 void CalmGoal::determinePedestrianGoals(Data* data)
@@ -44,56 +67,80 @@ void CalmGoal::determinePedestrianGoals(Data* data)
     std::vector<Dimensions> newGoal;
     for (int i = 0; i < data->getPedestrianSet()->getNumPedestrians(); ++i)
     {
-        int nearestExit = 0;
-        if(this->exitGoal.size() > 1) 
+        if(!checkPedestianGoalsMet(data, i))
         {
-            nearestExit = nearestGoal(data, i); 
-        }
-
-        if(data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[0] 
-        != exitGoal.at(nearestExit).coordinates.at(0) && 
-        data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[1] != 0)
-        {
-            newGoal.push_back(
-                Dimensions {
-                std::vector<FLOATING_NUMBER> {
-                    data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[0],
-                    0
-                }
-            }
-        );
+            if(data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[0]
+            != exitGoal.at(nearestExit[i]).coordinates.at(0) && 
+            data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[1] != 0)
+            {
+                newGoal.push_back(
+                    Dimensions {
+                    std::vector<FLOATING_NUMBER> {
+                        data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[0],
+                        0
+                    }
+             }
+            );
             
-        }
-
-        else if((data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[0] 
-        != exitGoal.at(nearestExit).coordinates.at(0)) && 
-        (data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[1] = 0))
-        {
-            newGoal.push_back(
-                Dimensions {
-                std::vector<FLOATING_NUMBER> {
-                   exitGoal.at(nearestExit).coordinates[0],
-                   0
-                }
             }
-        );
 
+            else if((data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[0] 
+            != exitGoal.at(nearestExit[i]).coordinates.at(0)) && 
+            (data->getPedestrianSet()->getPedestrianCoordinates()->at(i).coordinates[1] = 0))
+            {
+                newGoal.push_back(
+                    Dimensions {
+                    std::vector<FLOATING_NUMBER> {
+                    exitGoal.at(nearestExit[i]).coordinates[0],
+                    0
+                    }
+                }
+            );
+
+            }
+
+            else
+            {
+                newGoal.push_back(
+                    Dimensions {
+                    std::vector<FLOATING_NUMBER> {
+                    exitGoal.at(nearestExit[i]).coordinates[0],
+                    exitGoal.at(nearestExit[i]).coordinates[1]
+                    }
+                }
+            );
+            }
         }
-
         else
         {
-            newGoal.push_back(
-                Dimensions {
-                std::vector<FLOATING_NUMBER> {
-                   exitGoal.at(nearestExit).coordinates[0],
-                   exitGoal.at(nearestExit).coordinates[1]
-                }
-            }
-        );
+            data->getPedestrianSet()->pedestrianGoalMet(i);
         }
         
-
     }
+}
+
+bool CalmGoal::checkPedestianGoalsMet(Data* data, int pedestrianIndex)
+{
+    bool goalMet = false;
+    if(data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndex).coordinates[0]
+    == exitGoal.at(nearestExit[pedestrianIndex]).coordinates[0] &&
+    data->getPedestrianSet()->getPedestrianCoordinates()->at(pedestrianIndex).coordinates[1]
+    == exitGoal.at(nearestExit[pedestrianIndex]).coordinates[1])
+    {
+        goalMet = true;
+    }
+
+    return goalMet;
+}
+
+bool CalmGoal::isSimulationGoalMet(Data* data)
+{
+    bool simGoalMet = false;
+    if(data->getPedestrianSet()->getNumPedestrians() == 0)
+    {
+        simGoalMet = true;
+    }
+    return simGoalMet;
 }
 
 unsigned int CalmGoal::nearestGoal(Data* data, int pedestrianIndex)

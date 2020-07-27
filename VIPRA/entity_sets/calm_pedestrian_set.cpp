@@ -15,6 +15,23 @@ void CalmPedestrianSet::initializeValues()
     initializeNearestNeighbors();
 }
 
+void CalmPedestrianSet::pedestrianGoalMet(int pedestrianIndex)
+{
+        numPedestrians--;
+    
+        pedestrianCoordinates.erase(pedestrianCoordinates.begin()+pedestrianIndex);
+        goalCoordinates.erase(goalCoordinates.begin()+pedestrianIndex);
+        velocities.erase(velocities.begin()+pedestrianIndex);
+
+        speedsMetersPerSecond.erase(speedsMetersPerSecond.begin()+pedestrianIndex);
+        massesKg.erase(massesKg.begin()+pedestrianIndex);
+        reactionTimes.erase(reactionTimes.begin()+pedestrianIndex);
+        desiredSpeeds.erase(desiredSpeeds.begin()+pedestrianIndex);
+        propulsionForces.erase(propulsionForces.begin()+pedestrianIndex);
+        repulsionForces.erase(repulsionForces.begin()+pedestrianIndex);
+        nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
+}
+
 void CalmPedestrianSet::initializeGoals()
 {
     for(int i = 0; i < this->numPedestrians; ++i)

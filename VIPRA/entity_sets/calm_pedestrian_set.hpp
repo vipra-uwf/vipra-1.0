@@ -34,6 +34,7 @@ class CalmPedestrianSet: public PedestrianSet
         CalmPedestrianSet();
 
         virtual void initializeValues();
+        virtual void pedestrianGoalMet(int pedestrianIndex);
 
         virtual int getNumPedestrians();
         virtual std::vector<Dimensions>* getPedestrianCoordinates();
@@ -50,7 +51,6 @@ class CalmPedestrianSet: public PedestrianSet
         virtual std::vector<int>* getNearestNeighbors();
 
         virtual void setNumPedestrians(int numPedestrians);
-        virtual void setNumDimensions(int numDimensions);
         virtual void setPedestrianCoordinates(
         std::vector<Dimensions> coordinates);
         virtual void setGoalCoordinates(
