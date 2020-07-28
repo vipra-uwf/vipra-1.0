@@ -5,9 +5,19 @@ void CalmPedestrianModel::setData(Data* initialData)
     this->data = initialData;
 }
 
+void CalmPedestrianModel::setGoal(CalmGoal* goal)
+{
+    this->goal = goal;
+}
+
 Data* CalmPedestrianModel::getData()
 {
     return this->data;
+}
+
+CalmGoal* CalmPedestrianModel::getGoal()
+{
+    return this->goal;
 }
 
 void CalmPedestrianModel::precompute()
@@ -18,8 +28,10 @@ void CalmPedestrianModel::precompute()
     //result needs to be stored for each passenger
 
     calculateNearestNeighbors();
+    goal->determinePedestrianGoals(data);
     calculatePropulsion();
     calculateRepulsion();
+
 }
 
 void CalmPedestrianModel::update()

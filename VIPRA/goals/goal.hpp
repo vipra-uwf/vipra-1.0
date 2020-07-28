@@ -7,28 +7,27 @@
 #define GOAL_HPP 
 
 #include <vector>
+#include <algorithm>
+#include <math.h>
+#include <string>
+#include <iostream>
 
 #include "../simulation/data.hpp"
 #include "../type_definitions.hpp"
 #include "../dimensions.hpp"
 
+//name change - Goals
 class Goal
 {
-    private:
-    //keep track of final goals
-    //TODO: create dimension struct for velocity and goals? -elizabeth
-    
-    std::vector<Dimensions> exitGoal;
-
 
     public:
-         Goal();
-         void initializeGoals(Data*);
-         void setExitGoal(int, FLOATING_NUMBER);
-         //void determinePedestrianGoals(Data*, Time); -Need more information on time class - elizabeth
-         void determinePedestrianGoals(Data*);
-         //void isSimulationGoalMet(Data*, Time); -Need more information on time class - elizabeth
-         void isSimulationGoalMet(Data*);
+        virtual void addExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* simulationParams) = 0;
+        virtual void removeExitGoal(int exitIndex) = 0;
+        virtual void clearGoals() = 0;
+        virtual void calculateNearestExit(Data* data) = 0;
+        virtual void determinePedestrianGoals(Data* data) = 0;
+        virtual bool checkPedestianGoalsMet(Data* data, int pedestrianIndex) = 0; // added these two methods 
+        virtual bool isSimulationGoalMet(Data* data) = 0; // added these two methods 
 };
 
 #endif

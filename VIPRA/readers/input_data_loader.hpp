@@ -2,6 +2,7 @@
 #define INPUT_DATALOADER_HPP
 
 #include "../simulation/data.hpp"
+#include "../goals/goal.hpp"
 
 class InputDataLoader
 {
