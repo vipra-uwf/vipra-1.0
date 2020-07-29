@@ -10,7 +10,7 @@ class PedestrianSet
     public:
         //TODO .. may not be necessary but is for now because of reader structure
         virtual void initializeValues() = 0;
-        virtual void pedestrianGoalMet(int pedestrianIndex) = 0;
+        virtual void removePedestrian(int pedestrianIndex) = 0;
 
         virtual int getNumPedestrians() = 0;
         virtual std::vector<Dimensions>* getPedestrianCoordinates() = 0;

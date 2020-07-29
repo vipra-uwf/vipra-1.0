@@ -15,21 +15,22 @@ void CalmPedestrianSet::initializeValues()
     initializeNearestNeighbors();
 }
 
-void CalmPedestrianSet::pedestrianGoalMet(int pedestrianIndex)
+void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 {
-        numPedestrians--;
+    this->numPedestrians--;
     
-        pedestrianCoordinates.erase(pedestrianCoordinates.begin()+pedestrianIndex);
-        goalCoordinates.erase(goalCoordinates.begin()+pedestrianIndex);
-        velocities.erase(velocities.begin()+pedestrianIndex);
-
-        speedsMetersPerSecond.erase(speedsMetersPerSecond.begin()+pedestrianIndex);
-        massesKg.erase(massesKg.begin()+pedestrianIndex);
-        reactionTimes.erase(reactionTimes.begin()+pedestrianIndex);
-        desiredSpeeds.erase(desiredSpeeds.begin()+pedestrianIndex);
-        propulsionForces.erase(propulsionForces.begin()+pedestrianIndex);
-        repulsionForces.erase(repulsionForces.begin()+pedestrianIndex);
-        nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
+    this->pedestrianCoordinates.erase(pedestrianCoordinates.
+        begin()+pedestrianIndex);
+    this->goalCoordinates.erase(goalCoordinates.begin()+pedestrianIndex);
+    this->velocities.erase(velocities.begin()+pedestrianIndex);
+    this->speedsMetersPerSecond.erase(speedsMetersPerSecond.
+        begin()+pedestrianIndex);
+    this->massesKg.erase(massesKg.begin()+pedestrianIndex);
+    this->reactionTimes.erase(reactionTimes.begin()+pedestrianIndex);
+    this->desiredSpeeds.erase(desiredSpeeds.begin()+pedestrianIndex);
+    this->propulsionForces.erase(propulsionForces.begin()+pedestrianIndex);
+    this->repulsionForces.erase(repulsionForces.begin()+pedestrianIndex);
+    this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
 }
 
 void CalmPedestrianSet::initializeGoals()
@@ -136,7 +137,8 @@ void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
    this->numPedestrians = numPedestrians; 
 }
 
-void CalmPedestrianSet::setPedestrianCoordinates(std::vector<Dimensions> coordinates)
+void CalmPedestrianSet::setPedestrianCoordinates(std::vector<Dimensions>
+    coordinates)
 {
     this->pedestrianCoordinates = coordinates;
 }

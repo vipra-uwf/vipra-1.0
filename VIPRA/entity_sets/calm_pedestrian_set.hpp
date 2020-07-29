@@ -34,7 +34,7 @@ class CalmPedestrianSet: public PedestrianSet
         CalmPedestrianSet();
 
         virtual void initializeValues();
-        virtual void pedestrianGoalMet(int pedestrianIndex);
+        virtual void removePedestrian(int pedestrianIndex);
 
         virtual int getNumPedestrians();
         virtual std::vector<Dimensions>* getPedestrianCoordinates();

@@ -8,9 +8,9 @@ class PedestrianDynamicsModel
 {
     public:
         virtual void setData(Data* initialData) = 0;
-        virtual void setGoal(CalmGoal* goal) = 0;
+        virtual void setGoals(Goals* goal) = 0;
         virtual Data* getData() = 0;
-        virtual CalmGoal* getGoal() = 0;
+        virtual Goals* getGoals() = 0;
         virtual void precompute() = 0;
         virtual void update() = 0;
 };

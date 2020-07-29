@@ -12,7 +12,7 @@ int main()
 {
     CalmPedestrianSet calmPedSet;
     Data data;
-    CalmGoal goal;
+    CalmGoals goal;
     data.setPedestrianSet(&calmPedSet);
 	
     XMLReader xmlReader;
@@ -23,7 +23,7 @@ int main()
 
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
-    calmModel.setGoal(&goal);
+    calmModel.setGoals(&goal);
 
     goal.determinePedestrianGoals(&data);
 
