@@ -2,7 +2,7 @@
 #define PEDESTRIAN_DYNAMICS_MODEL_HPP
 
 #include "../simulation/data.hpp"
-#include "../goals/calm_goal.hpp"
+#include "../goals/calm_goals.hpp"
 
 class PedestrianDynamicsModel
 {

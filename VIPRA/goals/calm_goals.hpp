@@ -18,6 +18,7 @@ class CalmGoals: public Goals
     private:
         std::vector<Dimensions> exitGoal;
         std::vector<int> nearestExit;
+        Data* data;
 
 
     public: 

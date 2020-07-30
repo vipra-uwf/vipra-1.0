@@ -63,11 +63,10 @@ void CalmGoals::determinePedestrianGoals(Data* data)
     {
         if(!checkPedestianGoalsMet(data, i))
         {
-            if(data->getPedestrianSet()->getPedestrianCoordinates()->
-                at(i).coordinates[0] 
-                != this->exitGoal.at(nearestExit[i]).coordinates.at(0)
-                && data->getPedestrianSet()->getPedestrianCoordinates()->
-                at(i).coordinates[1] != 0)
+            if((*data->getPedestrianSet()->getPedestrianCoordinates())[i]
+                .coordinates[0] != this->exitGoal[nearestExit[i]].coordinates[0]
+                && ((*data->getPedestrianSet()->getPedestrianCoordinates())[i]
+                .coordinates[1] != 0))
             {
                 newGoal.push_back
                 (
@@ -75,17 +74,17 @@ void CalmGoals::determinePedestrianGoals(Data* data)
                     {
                     std::vector<FLOATING_NUMBER> 
                         {
-                        data->getPedestrianSet()->getPedestrianCoordinates()->
-                        at(i).coordinates[0], 0}
+                        (*data->getPedestrianSet()->getPedestrianCoordinates())[i]
+                        .coordinates[0], 0}
                     }
                 );
             
             }
 
-            else if((data->getPedestrianSet()->getPedestrianCoordinates()->
-                at(i).coordinates[0]!= this->exitGoal.at(nearestExit[i]).
-                coordinates.at(0)) && (data->getPedestrianSet()->
-                getPedestrianCoordinates()->at(i).coordinates[1] = 0))
+            else if((*data->getPedestrianSet()->getPedestrianCoordinates())[i]
+                .coordinates[0]!= this->exitGoal[nearestExit[i]].
+                coordinates[0] && ((*data->getPedestrianSet()->
+                getPedestrianCoordinates())[i].coordinates[1] = 0))
             {
                 newGoal.push_back
                 (
@@ -93,7 +92,7 @@ void CalmGoals::determinePedestrianGoals(Data* data)
                     {
                     std::vector<FLOATING_NUMBER> 
                         {
-                        exitGoal.at(nearestExit[i]).coordinates[0],
+                        exitGoal[nearestExit[i]].coordinates[0],
                         0
                         }
                      }
@@ -108,8 +107,8 @@ void CalmGoals::determinePedestrianGoals(Data* data)
                     {
                     std::vector<FLOATING_NUMBER> 
                         {
-                        exitGoal.at(nearestExit[i]).coordinates[0],
-                        exitGoal.at(nearestExit[i]).coordinates[1]
+                        exitGoal[nearestExit[i]].coordinates[0],
+                        exitGoal[nearestExit[i]].coordinates[1]
                         }
                     }
                 );
@@ -128,12 +127,12 @@ bool CalmGoals::checkPedestianGoalsMet(Data* data, int pedestrianIndex)
 
     bool goalMet = false;
 
-    if(data->getPedestrianSet()->getPedestrianCoordinates()->
-        at(pedestrianIndex).coordinates[0] == this->exitGoal.
-        at(nearestExit[pedestrianIndex]).coordinates[0]
-        && data->getPedestrianSet()->getPedestrianCoordinates()->
-        at(pedestrianIndex).coordinates[1] == this->exitGoal.
-        at(nearestExit[pedestrianIndex]).coordinates[1])
+    if((*data->getPedestrianSet()->getPedestrianCoordinates())[pedestrianIndex]
+        .coordinates[0] == this->exitGoal[nearestExit[pedestrianIndex]]
+        .coordinates[0] && (*data->getPedestrianSet()->
+        getPedestrianCoordinates())[pedestrianIndex]
+        .coordinates[1] == this->exitGoal[nearestExit[pedestrianIndex]]
+        .coordinates[1])
     {
         goalMet = true;
     }
@@ -156,7 +155,7 @@ unsigned int CalmGoals::nearestGoal(Data* data, int pedestrianIndex)
     //index of nearest starts at the first
     unsigned int nearest = 0; 
     //starts at position 1 because there should be at least 2 exit goals
-    for(unsigned int i = 1; i < this->exitGoal.at(0).coordinates.size(); ++i)
+    for(unsigned int i = 1; i < this->exitGoal[0].coordinates.size(); ++i)
     {
         //compares distance between exits and the pedestrian
         if(calculateDistance(data, pedestrianIndex, i) < 
@@ -175,15 +174,15 @@ FLOATING_NUMBER CalmGoals::calculateDistance(Data* data,
 {
     FLOATING_NUMBER xDistance = 
         this->exitGoal[0].coordinates[exitGoalIndex] - 
-        data->getPedestrianSet()->getPedestrianCoordinates()->
-         at(0).coordinates[pedestrianIndex];
+        (*data->getPedestrianSet()->getPedestrianCoordinates())[0]
+        .coordinates[pedestrianIndex];
 
     xDistance = pow(xDistance, 2);
 
 
-    FLOATING_NUMBER yDistance = this->exitGoal[1].coordinates[exitGoalIndex] - 
-        data->getPedestrianSet()->getPedestrianCoordinates()->
-        at(1).coordinates[pedestrianIndex];
+    FLOATING_NUMBER yDistance = this->exitGoal[1].coordinates[exitGoalIndex] -
+        (*data->getPedestrianSet()->getPedestrianCoordinates())[1]
+        .coordinates[pedestrianIndex];
 
     yDistance = pow(yDistance, 2);
 
