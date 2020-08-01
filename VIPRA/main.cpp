@@ -18,21 +18,9 @@ int main()
     XMLReader xmlReader;
     xmlReader.storeData(&data);
 
-    goal.addExitGoal(data.getSimulationParams());
-    goal.calculateNearestExit(&data);
-
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
     calmModel.setGoals(&goal);
-
-    goal.determinePedestrianGoals(&data);
-
-    //DELETE WHEN DONE
-    for(int i = 0; i < calmPedSet.getNumPedestrians(); ++i)
-    {
-        std::cout << "ped: " << i << "goal x:" <<calmPedSet.getGoalCoordinates()->at(i).coordinates[0];
-        std::cout << "  goal y:" << calmPedSet.getGoalCoordinates()->at(i).coordinates[1] << std::endl;
-    }
 
     XMLWriter xmlWriter; 
     xmlWriter.configureXMLDocumentStructure(
@@ -51,6 +39,8 @@ int main()
     timestepOutputHandler.setOutputWritingFrequency(250);
 
     simulation.setSimulationOutputHandler(&timestepOutputHandler);
+
+    simulation.testGoalClassDELETETHIS();
     simulation.run();
 
     xmlWriter.writeDocumentContents();

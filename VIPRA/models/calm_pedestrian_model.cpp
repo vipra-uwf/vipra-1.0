@@ -28,7 +28,7 @@ void CalmPedestrianModel::precompute()
     //result needs to be stored for each passenger
 
     calculateNearestNeighbors();
-    this->goal->determinePedestrianGoals(data);
+    this->goal->determinePedestrianGoals();
     calculatePropulsion();
     calculateRepulsion();
 
