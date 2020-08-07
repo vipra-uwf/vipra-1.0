@@ -13,7 +13,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     private:
         Data* data;
-        Goals* goal;
+        Goals* goals;
         const FLOATING_NUMBER a = -2.111;
         const FLOATING_NUMBER b = 0.366;
         const FLOATING_NUMBER c = 0.966;
