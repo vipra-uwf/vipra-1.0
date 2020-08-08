@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 
 #include "simulation/simulation.hpp"
 #include "readers/xml_reader.hpp"
@@ -11,6 +12,7 @@ int main()
 {
     CalmPedestrianSet calmPedSet;
     Data data;
+    CalmGoals goal;
     data.setPedestrianSet(&calmPedSet);
 	
     XMLReader xmlReader;
@@ -18,6 +20,7 @@ int main()
 
     CalmPedestrianModel calmModel;
     calmModel.setData(&data);
+    calmModel.setGoals(&goal);
 
     XMLWriter xmlWriter; 
     xmlWriter.configureXMLDocumentStructure(
@@ -36,6 +39,8 @@ int main()
     timestepOutputHandler.setOutputWritingFrequency(250);
 
     simulation.setSimulationOutputHandler(&timestepOutputHandler);
+
+    simulation.testGoalClassDELETETHIS();
     simulation.run();
 
     xmlWriter.writeDocumentContents();

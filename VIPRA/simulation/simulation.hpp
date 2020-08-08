@@ -25,6 +25,7 @@ class Simulation
             SimulationOutputHandler* simulationOutputHandler);
         int* getTimestep();
         void printDataDELETETHIS();
+        void testGoalClassDELETETHIS();
 };
 
 #endif

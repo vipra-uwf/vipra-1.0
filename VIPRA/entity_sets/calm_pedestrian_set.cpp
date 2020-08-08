@@ -15,6 +15,24 @@ void CalmPedestrianSet::initializeValues()
     initializeNearestNeighbors();
 }
 
+void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
+{
+    this->numPedestrians--;
+    
+    this->pedestrianCoordinates.erase(pedestrianCoordinates.
+        begin()+pedestrianIndex);
+    this->goalCoordinates.erase(goalCoordinates.begin()+pedestrianIndex);
+    this->velocities.erase(velocities.begin()+pedestrianIndex);
+    this->speedsMetersPerSecond.erase(speedsMetersPerSecond.
+        begin()+pedestrianIndex);
+    this->massesKg.erase(massesKg.begin()+pedestrianIndex);
+    this->reactionTimes.erase(reactionTimes.begin()+pedestrianIndex);
+    this->desiredSpeeds.erase(desiredSpeeds.begin()+pedestrianIndex);
+    this->propulsionForces.erase(propulsionForces.begin()+pedestrianIndex);
+    this->repulsionForces.erase(repulsionForces.begin()+pedestrianIndex);
+    this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
+}
+
 void CalmPedestrianSet::initializeGoals()
 {
     for(int i = 0; i < this->numPedestrians; ++i)
@@ -64,10 +82,6 @@ int CalmPedestrianSet::getNumPedestrians()
     return this->numPedestrians;
 }
 
-int CalmPedestrianSet::getNumDimensions()
-{
-    return this->numDimensions;
-}
 std::vector<Dimensions>* CalmPedestrianSet::getPedestrianCoordinates()
 {
     return &this->pedestrianCoordinates;
@@ -123,13 +137,8 @@ void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
    this->numPedestrians = numPedestrians; 
 }
 
-void CalmPedestrianSet::setNumDimensions(int numDimensions)
-{
-    this->numDimensions = numDimensions;
-}
-
-void CalmPedestrianSet::setPedestrianCoordinates(
-		std::vector<Dimensions> coordinates)
+void CalmPedestrianSet::setPedestrianCoordinates(std::vector<Dimensions>
+    coordinates)
 {
     this->pedestrianCoordinates = coordinates;
 }

@@ -9,11 +9,7 @@ class CalmPedestrianSet: public PedestrianSet
 {
     private:
         int numPedestrians;
-
-        //TODO this should be const then 
-        //delete numPed setter and getter - alex
-        int numDimensions = 2;
-
+    
         std::vector<Dimensions> pedestrianCoordinates;
         std::vector<Dimensions> goalCoordinates;
         std::vector<Dimensions> velocities;
@@ -38,9 +34,9 @@ class CalmPedestrianSet: public PedestrianSet
         CalmPedestrianSet();
 
         virtual void initializeValues();
+        virtual void removePedestrian(int pedestrianIndex);
 
         virtual int getNumPedestrians();
-        virtual int getNumDimensions();
         virtual std::vector<Dimensions>* getPedestrianCoordinates();
         virtual std::vector<Dimensions>* getGoalCoordinates();
         virtual std::vector<Dimensions>* getVelocities();
@@ -55,7 +51,6 @@ class CalmPedestrianSet: public PedestrianSet
         virtual std::vector<int>* getNearestNeighbors();
 
         virtual void setNumPedestrians(int numPedestrians);
-        virtual void setNumDimensions(int numDimensions);
         virtual void setPedestrianCoordinates(
         std::vector<Dimensions> coordinates);
         virtual void setGoalCoordinates(

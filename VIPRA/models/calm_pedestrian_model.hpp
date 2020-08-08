@@ -7,18 +7,22 @@
 
 #include "pedestrian_dynamics_model.hpp"
 #include "../simulation/data.hpp"
+#include "../goals/calm_goals.hpp"
 
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     private:
         Data* data;
+        Goals* goals;
         const FLOATING_NUMBER a = -2.111;
         const FLOATING_NUMBER b = 0.366;
         const FLOATING_NUMBER c = 0.966;
     
     public:
         virtual void setData(Data* initialData);
+        virtual void setGoals(Goals* goal);
         virtual Data* getData();
+        virtual Goals* getGoals();
         virtual void precompute();
         virtual void update();
 
