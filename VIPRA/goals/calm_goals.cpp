@@ -149,15 +149,15 @@ void CalmGoals::determinePedestrianGoals()
     data->getPedestrianSet()->setGoalCoordinates(newGoal);
 }
 
-bool CalmGoals::checkPedestianGoalsMet(int pedestrianIndex)
+bool CalmGoals::checkPedestianGoalsMet(int pedIndex)
 {
 
     bool goalMet = false;
 
-    if(((*this->pedCoordsPtr)[pedestrianIndex].coordinates[0]
-        == this->exitGoal[nearestExit[pedestrianIndex]].coordinates[0])
-        && ((*this->pedCoordsPtr)[pedestrianIndex].coordinates[1]
-        == this->exitGoal[nearestExit[pedestrianIndex]].coordinates[1]))
+    if(((*this->pedCoordsPtr)[pedIndex].coordinates[0]
+        == this->exitGoal[nearestExit[pedIndex]].coordinates[0])
+        && ((*this->pedCoordsPtr)[pedIndex].coordinates[1]
+        == this->exitGoal[nearestExit[pedIndex]].coordinates[1]))
     {
         goalMet = true;
     }
@@ -181,7 +181,7 @@ void CalmGoals::createPedCoordPointer()
         getPedestrianCoordinates();
 }
 
-unsigned int CalmGoals::nearestGoal(int pedestrianIndex)
+unsigned int CalmGoals::nearestGoal(int pedIndex)
 {
     //index of nearest starts at the first
     unsigned int nearest = 0; 
@@ -189,8 +189,8 @@ unsigned int CalmGoals::nearestGoal(int pedestrianIndex)
     for(unsigned int i = 1; i < this->exitGoal[0].coordinates.size(); ++i)
     {
         //compares distance between exits and the pedestrian
-        if(calculateDistance(pedestrianIndex, i) < 
-            calculateDistance(pedestrianIndex, nearest))
+        if(calculateDistance(pedIndex, i) < 
+            calculateDistance(pedIndex, nearest))
         {
             //sets nearest to lower if a different exit is lower.
             nearest = i; 
@@ -200,18 +200,18 @@ unsigned int CalmGoals::nearestGoal(int pedestrianIndex)
 }
 
 //pedestrianIndex and exitGoalIndex should probably be unsigned - V
-FLOATING_NUMBER CalmGoals::calculateDistance(int pedestrianIndex, 
+FLOATING_NUMBER CalmGoals::calculateDistance(int pedIndex, 
     int exitGoalIndex)
 {
     FLOATING_NUMBER xDistance = 
         this->exitGoal[0].coordinates[exitGoalIndex] - 
-        (*this->pedCoordsPtr)[0].coordinates[pedestrianIndex];
+        (*this->pedCoordsPtr)[0].coordinates[pedIndex];
 
     xDistance = pow(xDistance, 2);
 
 
     FLOATING_NUMBER yDistance = this->exitGoal[1].coordinates[exitGoalIndex] -
-        (*this->pedCoordsPtr)[1].coordinates[pedestrianIndex];
+        (*this->pedCoordsPtr)[1].coordinates[pedIndex];
 
     yDistance = pow(yDistance, 2);
 
