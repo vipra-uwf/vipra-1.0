@@ -82,10 +82,10 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
     int nearestNeighhborIndex = (*this->data->getPedestrianSet()->
                                 getNearestNeighbors())[pedIndex];
 
-    FLOATING_NUMBER distance = calculateDistance(
+    FLOATING_NUMBER distance = (calculateDistance(
         pedIndex, 
-        FLOATING_NUMBER(nearestNeighhborIndex) - b
-    );
+        FLOATING_NUMBER(nearestNeighhborIndex)
+    ) - b);
     return (c - exp(a * distance));
 }
 
