@@ -8,6 +8,7 @@
 #include "pedestrian_dynamics_model.hpp"
 #include "../simulation/data.hpp"
 #include "../goals/calm_goals.hpp"
+#include "../entity_sets/calm_pedestrian_set.hpp"
 
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {

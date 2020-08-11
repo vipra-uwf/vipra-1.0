@@ -82,7 +82,7 @@ void Simulation::run()
     }
 
     // TODO this will be removed once our debugger segfault is resolved
-    printDataDELETETHIS();
+    //printDataDELETETHIS();
 
     clock.stop();
     clock.printRealEndTime();
@@ -95,6 +95,7 @@ int* Simulation::getTimestep()
     return &this->timestep;
 }
 
+/*
 void Simulation::printDataDELETETHIS()
 {
     Data* data = this->pedestrianDynamicsModel->getData();
@@ -145,7 +146,7 @@ void Simulation::printDataDELETETHIS()
     //     getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
     // }
 }
-
+*/
 void Simulation::testGoalClassDELETETHIS()
 {
     Goals* goal = this->pedestrianDynamicsModel->getGoals();
