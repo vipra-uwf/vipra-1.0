@@ -9,17 +9,9 @@ XMLReader::XMLReader()
 }
 std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> XMLReader::getInputData()
 {
-	this->rootNode = this->document.first_node();
-	std::cout << rootNode->name() << std::endl;
-	//this->dataNode = this->rootNode->first_node();	
-
-    initializeRootNode();
-    initializeDataNode();
-	
-	std::cout << rootNode->name() << std::endl;
-	std::cout << dataNode->name() << std::endl;
-
-    this->numDataNodes = 0;
+	initializeRootNode();
+	initializeDataNode();
+   
 	std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> inputData;
 	
 	while(this->dataNode != 0)
@@ -30,21 +22,18 @@ std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> XMLReader::getInpu
 		{
 			std::string key = nodeAttribute->name();
 			FLOATING_NUMBER value = std::stod(nodeAttribute->value());	
-
-			//std::cout << key << " " << value << std::endl;
-
 			inputData[key].push_back(value);
+			
 			nodeAttribute = nodeAttribute->next_attribute();
 		}
 
 		this->dataNode = this->dataNode->next_sibling();
-        this->numDataNodes++;
 	}
 
 	return inputData;		
 }
 
-void XMLReader::storeData(Data* data)
+/*void XMLReader::storeData(Data* data)
 {
     extractFileData(
         "./input_data/a320_144_pedestrians.xml", 
@@ -102,14 +91,14 @@ void XMLReader::storeData(Data* data)
 	openFile("./input_data/simulation_params.xml");
 	data->setSimulationParams(getSimulationParams("parameters"));	
 }
-
+*/
 void XMLReader::extractFileData(
-    std::string fileName, std::string rootNodeName, std::string dataNodeName)
+    std::string fileName, std::string rootNodeName)
 {
     openFile(fileName);
     readFile();
     setRootNodeName(rootNodeName);
-    setDataNodeName(dataNodeName);
+    //setDataNodeName(dataNodeName);
     parseXMLDocument();
 }
 
@@ -155,8 +144,9 @@ void XMLReader::initializeRootNode()
 
 void XMLReader::initializeDataNode()
 {
-    this->dataNode = this->rootNode->first_node(
-        this->document.allocate_string(this->dataNodeName.c_str()));
+	this->dataNode = this->rootNode->first_node(0);	
+    //this->dataNode = this->rootNode->first_node(
+        //this->document.allocate_string(this->dataNodeName.c_str()));
 }
 
 FLOATING_NUMBER XMLReader::getFloatValue(

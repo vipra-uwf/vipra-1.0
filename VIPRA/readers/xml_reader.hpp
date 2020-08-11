@@ -45,15 +45,12 @@ class XMLReader: public InputDataLoader
 
     public:
         XMLReader();
-        virtual void storeData(Data* data);
 		virtual std::unordered_map<
 			std::string, std::vector<FLOATING_NUMBER>> getInputData();
 
         void extractFileData(
             std::string fileName, 
-            std::string rootNodeName, 
-            std::string dataNodeName);
-
+            std::string rootNodeName);
 
         std::vector<FLOATING_NUMBER> getFloatDataSet(std::string attribute);
         std::vector<std::string> getStringDataSet(std::string attribute);

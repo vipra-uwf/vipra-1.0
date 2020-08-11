@@ -14,16 +14,35 @@ int main()
     CalmPedestrianSet calmPedSet;
     ObstacleSet obstacleSet;
     Data data;
+	//TODO will need to call setNumPedestrians and setNumObstacles inside factory
 //    DataSetFactory dataSetFactory; 
     XMLReader xmlReader;
-    
+   
+	//rapidxml forces defining of this node .. may be a rapidxml bug -- will look at later
 	xmlReader.extractFileData(
         "./input_data/a320_144_pedestrians.xml", 
-        "pedestrian-set", 
-        "pedestrian");
+        "pedestrian-set");
 
 	//TODO make it so extractFileData doesn't require rootNodeName nor dataNodeName
     std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = xmlReader.getInputData();
+
+	
+
+
+	std::unordered_map<std::string, std::vector<FLOATING_NUMBER>>::iterator it = pedInputFileData.begin();
+    while (it != pedInputFileData.end())
+    {
+        std::cout << "\n" << it->first << std::endl;
+		
+		for(long unsigned int i = 0; i < it->second.size(); ++i)
+		{
+			std::cout << it->second.at(i) << " ";
+		}
+
+		it++;
+    }
+
+	
 
 
 	//   calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
@@ -37,6 +56,8 @@ int main()
     std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = xmlReader.getInputData();
     obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
 
+
+	//TODO USE EXTRACTFILEDATA HERE INSTEAD OF OPEN change simulation params file so attributes arent datanodename
     xmlReader.openFile("./input_data/simulation_params.xml");
     std::unordered_map<std::string, FLOATING_NUMBER> simulationParams = xmlReader.getSimulationParams("parameters");
     

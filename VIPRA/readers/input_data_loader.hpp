@@ -11,8 +11,6 @@ class InputDataLoader
     public:
 		virtual std::unordered_map<
 			std::string, std::vector<FLOATING_NUMBER>> getInputData() = 0;
-		//will be deleted 
-		virtual void storeData(Data* data) = 0;
 };
 
 #endif
