@@ -18,10 +18,13 @@ Vagrant.configure("2") do |config|
 	#only runs the first time the vm boots (will run again after a vagrant destroy)
 	config.vm.provision :shell, inline: <<-SHELL #run: 'always'
 		echo Setting up GUIs
+		set -x #echo on
 		sudo apt-get update
+		#sudo systemctl set-default graphical.target #start kde automatically
 		#dpkg --configure -a #another possible fix?
-		sudo tasksel install desktop kde-desktop #install desktop environment
-		startx
+		sudo sed -i 's/allowed_users=.*$/allowed_users=anybody/' /etc/X11/Xwrapper.config
+		#sudo tasksel install desktop kde-desktop #install desktop environment
+		#startx
 		#sudo apt-get install lightdm -y #install display manager
 		#sudo dpkg-reconfigure lightdm #set default display manager
 		#sudo systemctl start lightdm #start the display manager
