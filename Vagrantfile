@@ -6,22 +6,25 @@ Vagrant.configure("2") do |config|
 	config.vm.box = "generic/debian10"
 	#config.ssh.forward_agent = true #needed for git repo ssh key
 
-	#config.vm.provider "virtualbox" do |vb|
-    # Display the VirtualBox GUI when booting the machine
-	#	vb.gui = true
+	config.vm.provider "virtualbox" do |vb|
+	    # Display the VirtualBox GUI when booting the machine
+	    vb.gui = true
 
-		#vb.customize ["modifyvm", :id, "--vram", "256"]
+	    # Customize the amount of memory on the VM:
+	    # vb.memory = "1024"
+	end
 
-		#vb.memory = "1024"
-	#end
 
 	#only runs the first time the vm boots (will run again after a vagrant destroy)
 	config.vm.provision :shell, inline: <<-SHELL #run: 'always'
 		echo Setting up GUIs
-		sudo apt-get install lightdm -y #install display manager
-		sudo dpkg-reconfigure lightdm #set default display manager
+		sudo apt-get update
+		#dpkg --configure -a #another possible fix?
 		sudo tasksel install desktop kde-desktop #install desktop environment
-		sudo systemctl start lightdm #start the display manager
+		startx
+		#sudo apt-get install lightdm -y #install display manager
+		#sudo dpkg-reconfigure lightdm #set default display manager
+		#sudo systemctl start lightdm #start the display manager
 
 		#INSTALLING VISUAL STUDIO CODE
 #		echo Preparing to install Visual Studio Code
@@ -44,10 +47,11 @@ Vagrant.configure("2") do |config|
 
 		#SETTING UP OPTIONAL START SCRIPT
 #		sudo cp /usr/share/backgrounds/kali-16x9/kali-neon.png /usr/share/backgrounds/kali/kali-mesh-16x9.png
-		sudo touch Desktop/start.sh
-		echo "xrandr --size 1366x768" >> Desktop/start.sh
-		echo "lookandfeeltool -a org.kde.breezedark.desktop" >> Desktop/start.sh
-		chmod +x Desktop/start.sh
+
+		#sudo touch Desktop/start.sh
+		#echo "xrandr --size 1366x768" >> Desktop/start.sh
+		#echo "lookandfeeltool -a org.kde.breezedark.desktop" >> Desktop/start.sh
+		#chmod +x Desktop/start.sh
 		echo Provisioning Completed
 	SHELL
 end
