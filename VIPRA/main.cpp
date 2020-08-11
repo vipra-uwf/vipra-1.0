@@ -9,13 +9,15 @@
 #include "entity_sets/calm_pedestrian_set.hpp"
 #include "writers/timestep_output_handler.hpp"
 
+#include "data_set_factory.hpp"
+
 int main()
 {
     CalmPedestrianSet calmPedSet;
     ObstacleSet obstacleSet;
     Data data;
 	//TODO will need to call setNumPedestrians and setNumObstacles inside factory
-//    DataSetFactory dataSetFactory; 
+    DataSetFactory dataSetFactory; 
     XMLReader xmlReader;
    
 	//rapidxml forces defining of this node .. may be a rapidxml bug -- will look at later
@@ -43,9 +45,8 @@ int main()
     }
 
 	
-
-
-	//   calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
+	calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
+	
 
 	/*
    xmlReader.extractFileData(
