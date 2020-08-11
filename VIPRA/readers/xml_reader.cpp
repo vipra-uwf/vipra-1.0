@@ -3,20 +3,25 @@
 
 XMLReader::XMLReader()
 {
-    this->rootNode = NULL;
-    this->dataNode = NULL;
+    //this->rootNode = NULL;
+    //this->dataNode = NULL;
     this->numDataNodes = 0;
 }
 std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> XMLReader::getInputData()
 {
-	//this->rootNode = this->document.first_node();
+	this->rootNode = this->document.first_node();
+	std::cout << rootNode->name() << std::endl;
 	//this->dataNode = this->rootNode->first_node();	
 
     initializeRootNode();
     initializeDataNode();
+	
+	std::cout << rootNode->name() << std::endl;
+	std::cout << dataNode->name() << std::endl;
 
+    this->numDataNodes = 0;
 	std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> inputData;
-
+	
 	while(this->dataNode != 0)
 	{
 		rapidxml::xml_attribute<>* nodeAttribute = this->dataNode->first_attribute(); 	
@@ -26,25 +31,14 @@ std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> XMLReader::getInpu
 			std::string key = nodeAttribute->name();
 			FLOATING_NUMBER value = std::stod(nodeAttribute->value());	
 
-			std::cout << key << " " << value << std::endl;
+			//std::cout << key << " " << value << std::endl;
 
 			inputData[key].push_back(value);
-
 			nodeAttribute = nodeAttribute->next_attribute();
 		}
 
-//		std::string key = this->dataNode->first_attribute()->name();
-//		FLOATING_NUMBER value = std::stod(
-//				this->dataNode->first_attribute()->value()); 
-
-
-		//while there's still attributes	
-
-		//std::cout << key << " " << value << std::endl;
-
-		//inputData[key].push_back(value);
-
 		this->dataNode = this->dataNode->next_sibling();
+        this->numDataNodes++;
 	}
 
 	return inputData;		

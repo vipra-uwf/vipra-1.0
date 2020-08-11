@@ -22,11 +22,14 @@ int main()
         "pedestrian-set", 
         "pedestrian");
 
+	//TODO make it so extractFileData doesn't require rootNodeName nor dataNodeName
     std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = xmlReader.getInputData();
- //   calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
+
+
+	//   calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
 
 	/*
-    xmlReader.extractFileData(
+   xmlReader.extractFileData(
         "./input_data/a320_144_obstacles.xml",
         "obstacle-set", 
         "obstacle");
