@@ -7,6 +7,48 @@ XMLReader::XMLReader()
     this->dataNode = NULL;
     this->numDataNodes = 0;
 }
+std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> XMLReader::getInputData()
+{
+	//this->rootNode = this->document.first_node();
+	//this->dataNode = this->rootNode->first_node();	
+
+    initializeRootNode();
+    initializeDataNode();
+
+	std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> inputData;
+
+	while(this->dataNode != 0)
+	{
+		rapidxml::xml_attribute<>* nodeAttribute = this->dataNode->first_attribute(); 	
+		
+		while(nodeAttribute != 0)
+		{
+			std::string key = nodeAttribute->name();
+			FLOATING_NUMBER value = std::stod(nodeAttribute->value());	
+
+			std::cout << key << " " << value << std::endl;
+
+			inputData[key].push_back(value);
+
+			nodeAttribute = nodeAttribute->next_attribute();
+		}
+
+//		std::string key = this->dataNode->first_attribute()->name();
+//		FLOATING_NUMBER value = std::stod(
+//				this->dataNode->first_attribute()->value()); 
+
+
+		//while there's still attributes	
+
+		//std::cout << key << " " << value << std::endl;
+
+		//inputData[key].push_back(value);
+
+		this->dataNode = this->dataNode->next_sibling();
+	}
+
+	return inputData;		
+}
 
 void XMLReader::storeData(Data* data)
 {

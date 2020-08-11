@@ -1,6 +1,7 @@
 #ifndef XML_READER_HPP
 #define XML_READER_HPP
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include <fstream>
@@ -45,11 +46,15 @@ class XMLReader: public InputDataLoader
     public:
         XMLReader();
         virtual void storeData(Data* data);
+		virtual std::unordered_map<
+			std::string, std::vector<FLOATING_NUMBER>> getInputData();
 
         void extractFileData(
             std::string fileName, 
             std::string rootNodeName, 
             std::string dataNodeName);
+
+
         std::vector<FLOATING_NUMBER> getFloatDataSet(std::string attribute);
         std::vector<std::string> getStringDataSet(std::string attribute);
 };

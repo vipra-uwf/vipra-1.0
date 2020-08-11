@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 
+#include "entity_sets/obstacle_set.hpp"
 #include "simulation/simulation.hpp"
 #include "readers/xml_reader.hpp"
 #include "writers/xml_writer.hpp"
@@ -11,7 +12,48 @@
 int main()
 {
     CalmPedestrianSet calmPedSet;
+    ObstacleSet obstacleSet;
     Data data;
+//    DataSetFactory dataSetFactory; 
+    XMLReader xmlReader;
+    
+	xmlReader.extractFileData(
+        "./input_data/a320_144_pedestrians.xml", 
+        "pedestrian-set", 
+        "pedestrian");
+
+    std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = xmlReader.getInputData();
+ //   calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
+
+	/*
+    xmlReader.extractFileData(
+        "./input_data/a320_144_obstacles.xml",
+        "obstacle-set", 
+        "obstacle");
+
+    std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = xmlReader.getInputData();
+    obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
+
+    xmlReader.openFile("./input_data/simulation_params.xml");
+    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams = xmlReader.getSimulationParams("parameters");
+    
+    data.setPedestrianSet(&calmPedSet);
+    data.setObstacleSet(&obstacleSet);
+    data.setSimulationParams(&simulationParams);    
+    
+    CalmPedestrianModel calmModel;
+    calmModel.setData(&data);
+
+    Simulation simulation(&calmModel);
+
+    ...etc
+	 */
+
+
+	/*
+    CalmPedestrianSet calmPedSet;
+	ObstacleSet obstacleSet; 
+	Data data;
     CalmGoals goal;
     data.setPedestrianSet(&calmPedSet);
 	
@@ -44,6 +86,8 @@ int main()
     simulation.run();
 
     xmlWriter.writeDocumentContents();
+	*/
+
 
     return 0;
 }
