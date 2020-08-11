@@ -3,11 +3,11 @@
 
 XMLReader::XMLReader()
 {
-    //this->rootNode = NULL;
-    //this->dataNode = NULL;
     this->numDataNodes = 0;
 }
-std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> XMLReader::getInputData()
+
+std::unordered_map<
+	std::string, std::vector<FLOATING_NUMBER>> XMLReader::getInputData()
 {
 	initializeRootNode();
 	initializeDataNode();
@@ -16,7 +16,8 @@ std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> XMLReader::getInpu
 	
 	while(this->dataNode != 0)
 	{
-		rapidxml::xml_attribute<>* nodeAttribute = this->dataNode->first_attribute(); 	
+		rapidxml::xml_attribute<>* nodeAttribute = 
+			this->dataNode->first_attribute(); 	
 		
 		while(nodeAttribute != 0)
 		{
