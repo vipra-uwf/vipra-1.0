@@ -1,5 +1,6 @@
 #include "data_set_factory.hpp"
 #include "dimensions.hpp"
+#include "entity_sets/obstacle_set.hpp"
 		
 CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
 	std::string, std::vector<FLOATING_NUMBER>> inputData)
@@ -22,8 +23,7 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
                 }
             }
         );
-
-		/*
+		
 		goalCoords.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
@@ -41,32 +41,77 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
                 }
             }
         );
-		*/
     }
 
 	calmPedSet.setPedestrianCoordinates(pedCoords);
+	calmPedSet.setGoalCoordinates(goalCoords);
+	calmPedSet.setVelocities(velocities);
 	calmPedSet.setMasses(inputData["mass"]);
 	calmPedSet.setReactionTimes(inputData["reaction_time"]);
 	calmPedSet.setDesiredSpeeds(inputData["desired_speed"]);
-	calmPedSet.setNumPedestrians(numPeds);
-
-	/*
 	calmPedSet.setPropulsionForces(inputData["propulsion_force"]);
 	calmPedSet.setRepulsionForces(inputData["repulsion_force"]);
+	calmPedSet.setNumPedestrians(numPeds);
 
-	std::vector<FLOATING_NUMBER> floatNearestNeighbors;
+	std::vector<FLOATING_NUMBER> floatNearestNeighbors = 
+		inputData["nearest_neighbor"];
+	
 	std::vector<int> intNearestNeighbors(
-			floatNearestNeighbors.begin(), floatNearestNeighbors.end());
+		floatNearestNeighbors.begin(), floatNearestNeighbors.end());
+	
 	calmPedSet.setNearestNeighbors(intNearestNeighbors);
 
-	calmPedSet.setGoalCoordinates(goalCoords);
-	calmPedSet.setVelocities(velocities);
-
-	*/
-
-	//TODO refactor input files so this method isn't needed
-	calmPedSet.initializeValues();
-
 	return calmPedSet;	
+}
+
+ObstacleSet DataSetFactory::createObstacleSet(
+		std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> inputData)
+{
+	ObstacleSet obstacleSet;
+
+	std::vector<Dimensions> obsCoords;
+	
+	int numObs = inputData["x"].size();
+
+	for(int i = 0; i < numObs; ++i)
+    {
+        obsCoords.push_back(
+            Dimensions {
+                std::vector<FLOATING_NUMBER> {
+                    inputData["x"][i], 
+                    inputData["y"][i]
+                }
+            }
+        );
+	}
+
+	obstacleSet.setObstacleCoordinates(obsCoords);
+	obstacleSet.setNumObstacles(numObs);
+
+	return obstacleSet;
+}
+
+std::unordered_map<
+	std::string, FLOATING_NUMBER> DataSetFactory::createSimulationParamsSet(
+			std::unordered_map<
+				std::string, std::vector<FLOATING_NUMBER>> inputData)
+{
+	std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
+
+	simulationParams["luggage"] = inputData["luggage"].at(0);
+	simulationParams["exit_door_x"] = inputData["exit_door_x"].at(0);
+	simulationParams["exit_door_y"] = inputData["exit_door_y"].at(0);
+	simulationParams["time_step"] = inputData["time_step"].at(0);
+	
+	simulationParams["aligning_stop_threshold"] = 
+		inputData["aligning_stop_threshold"].at(0);
+
+	simulationParams["toward_aisle_stop_threshold"] = 
+		inputData["toward_aisle_stop_threshold"].at(0);
+
+	simulationParams["in_aisle_stop_threshold"] = 
+		inputData["in_aisle_stop_threshold"].at(0);
+
+	return simulationParams;
 }
 

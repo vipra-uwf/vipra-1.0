@@ -16,52 +16,80 @@ int main()
     CalmPedestrianSet calmPedSet;
     ObstacleSet obstacleSet;
     Data data;
-	//TODO will need to call setNumPedestrians and setNumObstacles inside factory
     DataSetFactory dataSetFactory; 
     XMLReader xmlReader;
    
-	//rapidxml forces defining of this node .. may be a rapidxml bug -- will look at later
+	//rapidxml forces defining of the first node .. may be a rapidxml bug -- will look at later
 	xmlReader.extractFileData(
         "./input_data/a320_144_pedestrians.xml", 
         "pedestrian-set");
 
 	//TODO make it so extractFileData doesn't require rootNodeName nor dataNodeName
-    std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = xmlReader.getInputData();
-
-	
-
-
-	std::unordered_map<std::string, std::vector<FLOATING_NUMBER>>::iterator it = pedInputFileData.begin();
-    while (it != pedInputFileData.end())
-    {
-        std::cout << "\n" << it->first << std::endl;
-		
-		for(long unsigned int i = 0; i < it->second.size(); ++i)
-		{
-			std::cout << it->second.at(i) << " ";
-		}
-
-		it++;
-    }
-
+    std::unordered_map<std::string, 
+		std::vector<FLOATING_NUMBER>> pedInputFileData = 
+			xmlReader.getInputData();
 	
 	calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
-	
+
+
+    xmlReader.extractFileData(
+        "./input_data/a320_144_obstacles.xml",
+        "obstacle-set");
+
+    std::unordered_map<
+		std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = 
+			xmlReader.getInputData();
+    
+	obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
 
 	/*
-   xmlReader.extractFileData(
-        "./input_data/a320_144_obstacles.xml",
-        "obstacle-set", 
-        "obstacle");
+	for(int i = 0; i < calmPedSet.getNumPedestrians(); ++i)
+	{
+		std::cout << "ped [" << i << "] " 
+			<< "(" << calmPedSet.getPedestrianCoordinates()->at(i).coordinates[0] << ", "
+		    << calmPedSet.getPedestrianCoordinates()->at(i).coordinates[1] << ")"
 
-    std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = xmlReader.getInputData();
-    obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
+			<< " goal (" << calmPedSet.getGoalCoordinates()->at(i).coordinates[0] << ", "
+			<< calmPedSet.getGoalCoordinates()->at(i).coordinates[1] << ")"
+		
+			<< " velocity (" << calmPedSet.getVelocities()->at(i).coordinates[0] << ", "
+			<< calmPedSet.getVelocities()->at(i).coordinates[1] << ")"
+
+			<< " mass=" << calmPedSet.getMasses()->at(i)
+			<< " desired_speed=" << calmPedSet.getDesiredSpeeds()->at(i)
+			<< " reaction_time=" << calmPedSet.getReactionTimes()->at(i)
+			<< " propulsion_force=" << calmPedSet.getPropulsionForces()->at(i)
+			<< " repulsion_force=" << calmPedSet.getRepulsionForces()->at(i)
+			<< " nearest_neighbor=" << calmPedSet.getNearestNeighbors()->at(i)
+
+			<< std::endl;
+	}
+
+	for(int i = 0; i < obstacleSet.getNumObstacles(); ++i)
+	{
+		std::cout << "obs [" << i << "] "
+			<< "(" << obstacleSet.getObstacleCoordinates()->at(i).coordinates[0] << ", "
+	        << obstacleSet.getObstacleCoordinates()->at(i).coordinates[1] << ")"
+
+			<< std::endl;
+	}
+	*/
 
 
-	//TODO USE EXTRACTFILEDATA HERE INSTEAD OF OPEN change simulation params file so attributes arent datanodename
-    xmlReader.openFile("./input_data/simulation_params.xml");
-    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams = xmlReader.getSimulationParams("parameters");
+    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
+   
+    xmlReader.extractFileData(
+        "./input_data/simulation_params.xml",
+        "simulation-parameters");
+
+    std::unordered_map<
+		std::string, std::vector<FLOATING_NUMBER>> simParamsFileData = 
+			xmlReader.getInputData();
     
+	simulationParams = dataSetFactory.createSimulationParamsSet(
+		simParamsFileData);
+
+
     data.setPedestrianSet(&calmPedSet);
     data.setObstacleSet(&obstacleSet);
     data.setSimulationParams(&simulationParams);    
@@ -70,10 +98,6 @@ int main()
     calmModel.setData(&data);
 
     Simulation simulation(&calmModel);
-
-    ...etc
-	 */
-
 
 	/*
     CalmPedestrianSet calmPedSet;
