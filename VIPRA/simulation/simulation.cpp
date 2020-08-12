@@ -41,7 +41,7 @@ void Simulation::run()
     clock.start();
     clock.printRealStartTime();
     
-    //this->pedestrianDynamicsModel->precompute();
+    this->pedestrianDynamicsModel->precompute();
     
     // will become while(goalIsNotMet) -- alex
     while(this->timestep < 5000)
@@ -71,6 +71,7 @@ int* Simulation::getTimestep()
 }
 
 
+
 void Simulation::printDataDELETETHIS()
 {
     Data* data = this->pedestrianDynamicsModel->getData();
@@ -96,6 +97,7 @@ void Simulation::printDataDELETETHIS()
 			<< " propulsion_force=" << calmPedSet->getPropulsionForces()->at(i)
 			<< " repulsion_force=" << calmPedSet->getRepulsionForces()->at(i)
 			<< " nearest_neighbor=" << calmPedSet->getNearestNeighbors()->at(i)
+			<< " speed=" << calmPedSet->getSpeeds()->at(i)
 
 			<< std::endl;
 	}

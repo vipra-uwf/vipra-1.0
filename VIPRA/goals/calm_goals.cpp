@@ -79,6 +79,7 @@ void CalmGoals::calculateNearestExit()
 void CalmGoals::determinePedestrianGoals()
 {
     std::vector<Dimensions> newGoal;
+
     for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians();)
     {
         if(!checkPedestianGoalsMet(i))

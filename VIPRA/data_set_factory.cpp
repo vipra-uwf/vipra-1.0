@@ -48,6 +48,7 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
 	calmPedSet.setVelocities(velocities);
 	calmPedSet.setMasses(inputData["mass"]);
 	calmPedSet.setReactionTimes(inputData["reaction_time"]);
+    calmPedSet.setSpeeds(inputData["speed"]);
 	calmPedSet.setDesiredSpeeds(inputData["desired_speed"]);
 	calmPedSet.setPropulsionForces(inputData["propulsion_force"]);
 	calmPedSet.setRepulsionForces(inputData["repulsion_force"]);

@@ -29,7 +29,6 @@ void CalmPedestrianModel::precompute()
 
     calculateNearestNeighbors();
     this->goals->determinePedestrianGoals();
-    std::cout << "made it here" << std::endl;
     calculatePropulsion();
     calculateRepulsion();
 

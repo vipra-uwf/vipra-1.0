@@ -5,16 +5,6 @@ CalmPedestrianSet::CalmPedestrianSet()
     this->numPedestrians = 0;
 }
 
-void CalmPedestrianSet::initializeValues()
-{
-    initializeSpeeds();
-    initializeGoals();
-    initializeVelocities();
-    initializePropulsionForces();
-    initializeRepulsionForces();
-    initializeNearestNeighbors();
-}
-
 void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 {
     this->numPedestrians--;
@@ -31,50 +21,6 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->propulsionForces.erase(propulsionForces.begin()+pedestrianIndex);
     this->repulsionForces.erase(repulsionForces.begin()+pedestrianIndex);
     this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
-}
-
-void CalmPedestrianSet::initializeGoals()
-{
-    for(int i = 0; i < this->numPedestrians; ++i)
-    {
-        this->goalCoordinates.push_back(
-			Dimensions {
-				std::vector<FLOATING_NUMBER> {0, 0}
-			}
-		);
-    }
-}
-
-void CalmPedestrianSet::initializeVelocities()
-{
-    for(int i = 0; i < this->numPedestrians; ++i)
-    {
-        this->velocities.push_back(
-			Dimensions {
-				std::vector<FLOATING_NUMBER> {0, 0}
-			}
-		);
-    }
-}
-
-void CalmPedestrianSet::initializeSpeeds()
-{
-    this->speedsMetersPerSecond.resize(this->numPedestrians, 0);
-}
-
-void CalmPedestrianSet::initializePropulsionForces()
-{
-    this->propulsionForces.resize(this->numPedestrians, 0);
-}
-
-void CalmPedestrianSet::initializeRepulsionForces()
-{
-    this->repulsionForces.resize(this->numPedestrians, 0);
-}
-
-void CalmPedestrianSet::initializeNearestNeighbors()
-{
-    this->nearestNeighbors.resize(this->numPedestrians, 0);
 }
 
 int CalmPedestrianSet::getNumPedestrians()

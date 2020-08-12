@@ -22,18 +22,9 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER> repulsionForces;
         std::vector<int> nearestNeighbors;
 
-        void initializeSpeeds();
-        void initializeGoals();
-        void initializeVelocities();
-        void initializePropulsionForces();
-        void initializeRepulsionForces();
-        void initializeNearestNeighbors();
-
-
     public:
         CalmPedestrianSet();
-
-        virtual void initializeValues();
+        
         virtual void removePedestrian(int pedestrianIndex);
 
         virtual int getNumPedestrians();
