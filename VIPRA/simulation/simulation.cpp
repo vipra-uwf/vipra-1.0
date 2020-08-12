@@ -58,6 +58,7 @@ void Simulation::run()
 
     // TODO this will be removed once our debugger segfault is resolved
     printDataDELETETHIS();
+    //testGoalClassDELETETHIS();
 
     clock.stop();
     clock.printRealEndTime();
@@ -101,22 +102,24 @@ void Simulation::printDataDELETETHIS()
 
 			<< std::endl;
 	}
-    
+
+   /* 
 	for(auto x: *data->getSimulationParams())
 	{
 		std::cout << x.first << " " << x.second << std::endl;
 	}
-    
 
-    // std::cout <<"\n\nObstacles: " << std::endl;
+    std::cout <<"\n\nObstacles: " << std::endl;
 
-    // for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
-    // {
-    //     std::cout << "[" << (data->getObstacleSet()->
-    ///    getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
-    //     std::cout << (data->getObstacleSet()->
-    //     getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
-    // }
+    for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
+    {
+        std::cout << "[" << (data->getObstacleSet()->
+        getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
+        std::cout << (data->getObstacleSet()->
+        getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
+    }
+
+    */
 }
 
 void Simulation::testGoalClassDELETETHIS()
@@ -124,12 +127,12 @@ void Simulation::testGoalClassDELETETHIS()
     Goals* goal = this->pedestrianDynamicsModel->getGoals();
     Data* data = this->pedestrianDynamicsModel->getData();
 
-    goal->setData(data);
-    goal->addExitGoal(data->getSimulationParams());
+    //goal->setData(data);
+    //goal->addExitGoal(data->getSimulationParams());
 
-    goal->calculateNearestExit();
+    //goal->calculateNearestExit();
 
-    goal->determinePedestrianGoals();
+    //goal->determinePedestrianGoals();
 
     for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
     {

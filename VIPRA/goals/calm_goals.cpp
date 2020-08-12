@@ -8,6 +8,10 @@ void CalmGoals::setData(Data* data)
 {
     this->data = data;
     createPedCoordPointer();
+
+    //TODO this may not be the best place -- maybe an initGoals function-- alex
+    addExitGoal(data->getSimulationParams());
+    calculateNearestExit();
 }
 
 void CalmGoals::addExitGoal(std::unordered_map<std::string,

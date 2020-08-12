@@ -16,7 +16,7 @@ int main()
     CalmPedestrianSet calmPedSet;
     ObstacleSet obstacleSet;
     Data data;
-    CalmGoals goal;
+    CalmGoals goals;
 	DataSetFactory dataSetFactory; 
     XMLReader xmlReader;
    
@@ -73,9 +73,11 @@ int main()
     data.setObstacleSet(&obstacleSet);
     data.setSimulationParams(&simulationParams);    
 
+    goals.setData(&data);
+
 	CalmPedestrianModel calmModel;
 	calmModel.setData(&data);
-    calmModel.setGoals(&goal);
+    calmModel.setGoals(&goals);
 
     XMLWriter xmlWriter; 
     xmlWriter.configureXMLDocumentStructure(
@@ -95,7 +97,6 @@ int main()
 
     simulation.setSimulationOutputHandler(&timestepOutputHandler);
 
-    //simulation.testGoalClassDELETETHIS();
     simulation.run();
 
     xmlWriter.writeDocumentContents();
