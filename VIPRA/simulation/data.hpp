@@ -13,7 +13,7 @@ class Data
         PedestrianSet* pedestrianSet;
         ObstacleSet* obstacleSet;
 		
-        std::unordered_map<std::string, FLOATING_NUMBER> simulationParams; 
+        std::unordered_map<std::string, FLOATING_NUMBER>* simulationParams; 
     
     public:
         Data();
@@ -25,7 +25,7 @@ class Data
 		void setPedestrianSet(PedestrianSet* pedestrianSet);
 		void setObstacleSet(ObstacleSet* obstacleSet);	
 		void setSimulationParams(
-            std::unordered_map<std::string, FLOATING_NUMBER> simulationParams); 
+            std::unordered_map<std::string, FLOATING_NUMBER>* simulationParams); 
 };
 
 #endif

@@ -17,7 +17,7 @@ ObstacleSet* Data::getObstacleSet()
 
 std::unordered_map<std::string, FLOATING_NUMBER>* Data::getSimulationParams()
 {
-	return &this->simulationParams; 
+	return this->simulationParams; 
 }
 
 void Data::setPedestrianSet(PedestrianSet* pedestrianSet)
@@ -31,7 +31,7 @@ void Data::setObstacleSet(ObstacleSet* obstacleSet)
 }
 
 void Data::setSimulationParams(
-    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams)
+    std::unordered_map<std::string, FLOATING_NUMBER>* simulationParams)
 {
 	this->simulationParams = simulationParams;
 }

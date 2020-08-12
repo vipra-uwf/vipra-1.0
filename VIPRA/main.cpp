@@ -16,7 +16,8 @@ int main()
     CalmPedestrianSet calmPedSet;
     ObstacleSet obstacleSet;
     Data data;
-    DataSetFactory dataSetFactory; 
+    CalmGoals goal;
+	DataSetFactory dataSetFactory; 
     XMLReader xmlReader;
    
 	//rapidxml forces defining of the first node .. may be a rapidxml bug -- will look at later
@@ -43,28 +44,6 @@ int main()
 	obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
 
 	/*
-	for(int i = 0; i < calmPedSet.getNumPedestrians(); ++i)
-	{
-		std::cout << "ped [" << i << "] " 
-			<< "(" << calmPedSet.getPedestrianCoordinates()->at(i).coordinates[0] << ", "
-		    << calmPedSet.getPedestrianCoordinates()->at(i).coordinates[1] << ")"
-
-			<< " goal (" << calmPedSet.getGoalCoordinates()->at(i).coordinates[0] << ", "
-			<< calmPedSet.getGoalCoordinates()->at(i).coordinates[1] << ")"
-		
-			<< " velocity (" << calmPedSet.getVelocities()->at(i).coordinates[0] << ", "
-			<< calmPedSet.getVelocities()->at(i).coordinates[1] << ")"
-
-			<< " mass=" << calmPedSet.getMasses()->at(i)
-			<< " desired_speed=" << calmPedSet.getDesiredSpeeds()->at(i)
-			<< " reaction_time=" << calmPedSet.getReactionTimes()->at(i)
-			<< " propulsion_force=" << calmPedSet.getPropulsionForces()->at(i)
-			<< " repulsion_force=" << calmPedSet.getRepulsionForces()->at(i)
-			<< " nearest_neighbor=" << calmPedSet.getNearestNeighbors()->at(i)
-
-			<< std::endl;
-	}
-
 	for(int i = 0; i < obstacleSet.getNumObstacles(); ++i)
 	{
 		std::cout << "obs [" << i << "] "
@@ -93,24 +72,9 @@ int main()
     data.setPedestrianSet(&calmPedSet);
     data.setObstacleSet(&obstacleSet);
     data.setSimulationParams(&simulationParams);    
-    
-    CalmPedestrianModel calmModel;
-    calmModel.setData(&data);
 
-    Simulation simulation(&calmModel);
-
-	/*
-    CalmPedestrianSet calmPedSet;
-	ObstacleSet obstacleSet; 
-	Data data;
-    CalmGoals goal;
-    data.setPedestrianSet(&calmPedSet);
-	
-    XMLReader xmlReader;
-    xmlReader.storeData(&data);
-
-    CalmPedestrianModel calmModel;
-    calmModel.setData(&data);
+	CalmPedestrianModel calmModel;
+	calmModel.setData(&data);
     calmModel.setGoals(&goal);
 
     XMLWriter xmlWriter; 
@@ -131,11 +95,10 @@ int main()
 
     simulation.setSimulationOutputHandler(&timestepOutputHandler);
 
-    simulation.testGoalClassDELETETHIS();
+    //simulation.testGoalClassDELETETHIS();
     simulation.run();
 
     xmlWriter.writeDocumentContents();
-	*/
 
 
     return 0;
