@@ -76,21 +76,28 @@ int* Simulation::getTimestep()
 void Simulation::printDataDELETETHIS()
 {
     Data* data = this->pedestrianDynamicsModel->getData();
-    CalmPedestrianSet* calmPedSet = dynamic_cast<CalmPedestrianSet*>(data->getPedestrianSet()); 
+    CalmPedestrianSet* calmPedSet = dynamic_cast<
+        CalmPedestrianSet*>(data->getPedestrianSet()); 
 	
     std::cout << "Pedestrians: " << std::endl; 
 
 	for(int i = 0; i < calmPedSet->getNumPedestrians(); ++i)
 	{
-		std::cout << "ped [" << i << "] " 
-			<< "(" << calmPedSet->getPedestrianCoordinates()->at(i).coordinates[0] << ", "
-		    << calmPedSet->getPedestrianCoordinates()->at(i).coordinates[1] << ")"
+		std::cout << "ped [" << i << "] ("  
+            << calmPedSet->getPedestrianCoordinates()
+                ->at(i).coordinates[0] << ", "
+		    << calmPedSet->getPedestrianCoordinates()
+                ->at(i).coordinates[1] << ")"
 
-			<< " goal (" << calmPedSet->getGoalCoordinates()->at(i).coordinates[0] << ", "
-			<< calmPedSet->getGoalCoordinates()->at(i).coordinates[1] << ")"
+			<< " goal (" << calmPedSet->getGoalCoordinates()
+                ->at(i).coordinates[0] << ", "
+			<< calmPedSet->getGoalCoordinates()
+                ->at(i).coordinates[1] << ")"
 		
-			<< " velocity (" << calmPedSet->getVelocities()->at(i).coordinates[0] << ", "
-			<< calmPedSet->getVelocities()->at(i).coordinates[1] << ")"
+			<< " velocity (" << calmPedSet->getVelocities()
+                ->at(i).coordinates[0] << ", "
+			<< calmPedSet->getVelocities()
+                ->at(i).coordinates[1] << ")"
 
 			<< " mass=" << calmPedSet->getMasses()->at(i)
 			<< " desired_speed=" << calmPedSet->getDesiredSpeeds()->at(i)

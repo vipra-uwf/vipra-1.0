@@ -31,7 +31,6 @@ void CalmPedestrianModel::precompute()
     this->goals->determinePedestrianGoals();
     calculatePropulsion();
     calculateRepulsion();
-
 }
 
 void CalmPedestrianModel::update()
@@ -42,7 +41,8 @@ void CalmPedestrianModel::update()
 
 void CalmPedestrianModel::calculatePropulsion()
 {
-    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(this->data->getPedestrianSet());
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
 
     for(int i = 0; i < set->getNumPedestrians(); ++i)
     {
@@ -60,7 +60,8 @@ void CalmPedestrianModel::calculatePropulsion()
 
 void CalmPedestrianModel::calculateRepulsion()
 {
-    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(this->data->getPedestrianSet());
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
 
     for(int i = 0; i < set->getNumPedestrians(); ++i)
     {
@@ -80,7 +81,8 @@ void CalmPedestrianModel::calculateRepulsion()
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
 {
 	
-    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(this->data->getPedestrianSet());
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
 
     int nearestNeighhborIndex = (*set->getNearestNeighbors())[pedIndex];
 
@@ -94,7 +96,8 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
     int firstPedIndex, int secondPedIndex)
 {
-    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(this->data->getPedestrianSet());
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
     std::vector<Dimensions>* coords = set->getPedestrianCoordinates();
 
     FLOATING_NUMBER xDistance = pow(
@@ -116,7 +119,8 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
 
 void CalmPedestrianModel::calculateNearestNeighbors()
 {
-    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(this->data->getPedestrianSet());
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
 
     for (int i = 0; i < set->getNumPedestrians(); ++i)
     {

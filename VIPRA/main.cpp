@@ -13,61 +13,44 @@
 
 int main()
 {
+    XMLReader xmlReader;
+    XMLWriter xmlWriter;
+
     CalmPedestrianSet calmPedSet;
     ObstacleSet obstacleSet;
+    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
+	
+    DataSetFactory dataSetFactory; 
     Data data;
+
     CalmGoals goals;
-	DataSetFactory dataSetFactory; 
-    XMLReader xmlReader;
-   
-	//rapidxml forces defining of the first node .. may be a rapidxml bug -- will look at later
-	xmlReader.extractFileData(
+	CalmPedestrianModel calmModel;
+    TimestepOutputHandler timestepOutputHandler;
+	
+    xmlReader.extractFileData(
         "./input_data/a320_144_pedestrians.xml", 
         "pedestrian-set");
-
-	//TODO make it so extractFileData doesn't require rootNodeName nor dataNodeName
-    std::unordered_map<std::string, 
-		std::vector<FLOATING_NUMBER>> pedInputFileData = 
+    std::unordered_map<
+        std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = 
 			xmlReader.getInputData();
-	
 	calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
-
 
     xmlReader.extractFileData(
         "./input_data/a320_144_obstacles.xml",
         "obstacle-set");
-
     std::unordered_map<
 		std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = 
 			xmlReader.getInputData();
-    
 	obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
 
-	/*
-	for(int i = 0; i < obstacleSet.getNumObstacles(); ++i)
-	{
-		std::cout << "obs [" << i << "] "
-			<< "(" << obstacleSet.getObstacleCoordinates()->at(i).coordinates[0] << ", "
-	        << obstacleSet.getObstacleCoordinates()->at(i).coordinates[1] << ")"
-
-			<< std::endl;
-	}
-	*/
-
-
-    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
-   
     xmlReader.extractFileData(
         "./input_data/simulation_params.xml",
         "simulation-parameters");
-
     std::unordered_map<
 		std::string, std::vector<FLOATING_NUMBER>> simParamsFileData = 
 			xmlReader.getInputData();
-    
 	simulationParams = dataSetFactory.createSimulationParamsSet(
 		simParamsFileData);
-
 
     data.setPedestrianSet(&calmPedSet);
     data.setObstacleSet(&obstacleSet);
@@ -75,11 +58,9 @@ int main()
 
     goals.setData(&data);
 
-	CalmPedestrianModel calmModel;
 	calmModel.setData(&data);
     calmModel.setGoals(&goals);
-
-    XMLWriter xmlWriter; 
+    
     xmlWriter.configureXMLDocumentStructure(
 			"./output_data/pedestrian_trajectory.xml", 
 			"pedestrian-set", 
@@ -89,18 +70,15 @@ int main()
     
     Simulation simulation(&calmModel);
     
-    TimestepOutputHandler timestepOutputHandler;
     timestepOutputHandler.setPedestrianSet(&calmPedSet);
     timestepOutputHandler.setOutputDataWriter(&xmlWriter);
     timestepOutputHandler.setTimestep(simulation.getTimestep()); 
     timestepOutputHandler.setOutputWritingFrequency(250);
-
+    
     simulation.setSimulationOutputHandler(&timestepOutputHandler);
-
     simulation.run();
 
     xmlWriter.writeDocumentContents();
-
 
     return 0;
 }
