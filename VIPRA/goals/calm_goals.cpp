@@ -71,12 +71,14 @@ void CalmGoals::calculateNearestExit()
             this->nearestExit.push_back(0);
         }
     }
-    for(int i = 0; i < 5/*this->data->getPedestrianSet()->getNumPedestrians()*/
-        ; ++i)
-    {
-        std::cout << "nearest exit for ped " << i << " :" << nearestExit[i] 
-            << std::endl;
-    }
+    
+    // for(int i = 0; i < 5/*this->data->getPedestrianSet()->getNumPedestrians()*/
+    //     ; ++i)
+    // {
+    //     std::cout << "nearest exit for ped " << i << " :" << nearestExit[i] 
+    //         << std::endl;
+    // }
+    
 
 }
 
