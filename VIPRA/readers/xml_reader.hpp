@@ -17,7 +17,6 @@
 class XMLReader: public InputDataLoader
 {
     private:
-        Data* data;
         std::ifstream fileStream;      
         std::vector<char> fileContents;
         std::string rootNodeName;
