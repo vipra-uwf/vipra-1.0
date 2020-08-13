@@ -32,7 +32,7 @@ int main()
         "pedestrian-set");
     std::unordered_map<
         std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = 
-			xmlReader.getInputData();
+			xmlReader.getFloatInputData();
 	calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
 
     xmlReader.extractFileData(
@@ -40,7 +40,7 @@ int main()
         "obstacle-set");
     std::unordered_map<
 		std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = 
-			xmlReader.getInputData();
+			xmlReader.getFloatInputData();
 	obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
 
     xmlReader.extractFileData(
@@ -48,7 +48,7 @@ int main()
         "simulation-parameters");
     std::unordered_map<
 		std::string, std::vector<FLOATING_NUMBER>> simParamsFileData = 
-			xmlReader.getInputData();
+			xmlReader.getFloatInputData();
 	simulationParams = dataSetFactory.createSimulationParamsSet(
 		simParamsFileData);
 

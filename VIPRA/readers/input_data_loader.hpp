@@ -10,7 +10,7 @@ class InputDataLoader
 {
     public:
 		virtual std::unordered_map<
-			std::string, std::vector<FLOATING_NUMBER>> getInputData() = 0;
+			std::string, std::vector<FLOATING_NUMBER>> getFloatInputData() = 0;
 };
 
 #endif
