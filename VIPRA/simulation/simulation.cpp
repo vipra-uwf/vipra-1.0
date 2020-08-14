@@ -42,38 +42,13 @@ void Simulation::run()
     clock.printRealStartTime();
     
     this->pedestrianDynamicsModel->precompute();
-
+    
     // will become while(goalIsNotMet) -- alex
     while(this->timestep < 5000)
     {
         if(simulationOutputHandler->isOutputCriterionMet())
         {
             simulationOutputHandler->writeData();
-            
-            // -- delete this block once we start getting 
-            // code that changes pedestrian locations -- alex
-            Data* data = this->pedestrianDynamicsModel->getData();
-            int numPedestrians = data->getPedestrianSet()->getNumPedestrians();
-
-            for(int i = 0; i < numPedestrians; i++)
-            {
-                if(this->timestep < 1500)
-                {
-                    (data->getPedestrianSet()->getPedestrianCoordinates()->
-                    at(i)).coordinates[1] *= 0.7;
-                }
-                else
-                {
-                    if((data->getPedestrianSet()->getPedestrianCoordinates()->
-                    at(i)).coordinates[0] * 1.1 < 23.25)
-                    {
-                        (data->getPedestrianSet()->getPedestrianCoordinates()->
-                        at(i)).coordinates[0] *= 1.1;
-                    }
-                }
-            }
-            // -- delete this block once we start getting 
-            // code that changes pedestrian locations -- alex
         }
 
         //150 is arbitrary, use whatever ms is needed
@@ -83,6 +58,7 @@ void Simulation::run()
 
     // TODO this will be removed once our debugger segfault is resolved
     printDataDELETETHIS();
+    //testGoalClassDELETETHIS();
 
     clock.stop();
     clock.printRealEndTime();
@@ -95,55 +71,62 @@ int* Simulation::getTimestep()
     return &this->timestep;
 }
 
+
+
 void Simulation::printDataDELETETHIS()
 {
     Data* data = this->pedestrianDynamicsModel->getData();
-
+    CalmPedestrianSet* calmPedSet = dynamic_cast<
+        CalmPedestrianSet*>(data->getPedestrianSet()); 
 	
     std::cout << "Pedestrians: " << std::endl; 
 
-    for(int i = 0; i < (data->getPedestrianSet()->getNumPedestrians()); i++)
-    {
-        std::cout
-        << i 
-        << " | coordinates = (" 
-        << (data->getPedestrianSet()->getPedestrianCoordinates()->
-        at(i)).coordinates[0] << ", " 
-        << (data->getPedestrianSet()->getPedestrianCoordinates()->
-        at(i)).coordinates[1] << ")"
-        << " | speed = "
-        << (*data->getPedestrianSet()->getSpeeds())[i] 
-        << " | mass = " 
-        << (*data->getPedestrianSet()->getMasses())[i] 
-        << " | reaction_time = " 
-        << (*data->getPedestrianSet()->getReactionTimes())[i] 
-        << " | desired_speed = " 
-        << (*data->getPedestrianSet()->getDesiredSpeeds())[i] 
-        << " | propulsion_force = " 
-        << (*data->getPedestrianSet()->getPropulsionForces())[i] 
-        << " | repulsion_force = " 
-        << (*data->getPedestrianSet()->getRepulsionForces())[i] 
-        << " | nearest_neighbor = " 
-        << (*data->getPedestrianSet()->getNearestNeighbors())[i] 
-        << std::endl;
-    }
-	
-    
+	for(int i = 0; i < calmPedSet->getNumPedestrians(); ++i)
+	{
+		std::cout << "ped [" << i << "] ("  
+            << calmPedSet->getPedestrianCoordinates()
+                ->at(i).coordinates[0] << ", "
+		    << calmPedSet->getPedestrianCoordinates()
+                ->at(i).coordinates[1] << ")"
+
+			<< " goal (" << calmPedSet->getGoalCoordinates()
+                ->at(i).coordinates[0] << ", "
+			<< calmPedSet->getGoalCoordinates()
+                ->at(i).coordinates[1] << ")"
+		
+			<< " velocity (" << calmPedSet->getVelocities()
+                ->at(i).coordinates[0] << ", "
+			<< calmPedSet->getVelocities()
+                ->at(i).coordinates[1] << ")"
+
+			<< " mass=" << calmPedSet->getMasses()->at(i)
+			<< " desired_speed=" << calmPedSet->getDesiredSpeeds()->at(i)
+			<< " reaction_time=" << calmPedSet->getReactionTimes()->at(i)
+			<< " propulsion_force=" << calmPedSet->getPropulsionForces()->at(i)
+			<< " repulsion_force=" << calmPedSet->getRepulsionForces()->at(i)
+			<< " nearest_neighbor=" << calmPedSet->getNearestNeighbors()->at(i)
+			<< " speed=" << calmPedSet->getSpeeds()->at(i)
+
+			<< std::endl;
+	}
+
+   /* 
 	for(auto x: *data->getSimulationParams())
 	{
 		std::cout << x.first << " " << x.second << std::endl;
 	}
-    
 
-    // std::cout <<"\n\nObstacles: " << std::endl;
+    std::cout <<"\n\nObstacles: " << std::endl;
 
-    // for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
-    // {
-    //     std::cout << "[" << (data->getObstacleSet()->
-    ///    getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
-    //     std::cout << (data->getObstacleSet()->
-    //     getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
-    // }
+    for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
+    {
+        std::cout << "[" << (data->getObstacleSet()->
+        getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
+        std::cout << (data->getObstacleSet()->
+        getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
+    }
+
+    */
 }
 
 void Simulation::testGoalClassDELETETHIS()
@@ -151,15 +134,14 @@ void Simulation::testGoalClassDELETETHIS()
     Goals* goal = this->pedestrianDynamicsModel->getGoals();
     Data* data = this->pedestrianDynamicsModel->getData();
 
-    goal->setData(data);
-    goal->addExitGoal(data->getSimulationParams());
+    //goal->setData(data);
+    //goal->addExitGoal(data->getSimulationParams());
 
-    goal->calculateNearestExit();
+    //goal->calculateNearestExit();
 
     //goal->determinePedestrianGoals();
-    
-    /**
-    for(int i = 0; i < 5data->getPedestrianSet()->getNumPedestrians(); ++i)
+
+    for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
     {
         std::cout << "ped: " << i << " goal x:" << data->getPedestrianSet()->
             getGoalCoordinates()->at(i).coordinates[0];
@@ -173,7 +155,7 @@ void Simulation::testGoalClassDELETETHIS()
 
     std::cout << "\n\nGoals after first goal reached: \n";
 
-    for(int i = 0; i < 5data->getPedestrianSet()->getNumPedestrians(); ++i)
+    for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
     {
         std::cout << "ped: " << i << " goal x:" <<data->getPedestrianSet()->
             getGoalCoordinates()->at(i).coordinates[0];
@@ -187,7 +169,7 @@ void Simulation::testGoalClassDELETETHIS()
 
     std::cout << "\n\nGoals after second goal reached: \n";
 
-    for(int i = 0; i < 5data->getPedestrianSet()->getNumPedestrians(); ++i)
+    for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
     {
         std::cout << "ped: " << i << " goal x:" << data->getPedestrianSet()->
             getGoalCoordinates()->at(i).coordinates[0];
@@ -200,7 +182,6 @@ void Simulation::testGoalClassDELETETHIS()
 
     std::cout << "\n\nGoals met, test removal\n";
     goal->determinePedestrianGoals();
-    */
 
 
 
