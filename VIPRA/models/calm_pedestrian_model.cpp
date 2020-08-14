@@ -66,13 +66,18 @@ void CalmPedestrianModel::calculateRepulsion()
     {
         (*set->getRepulsionForces())[i] = 
             (
-                calculateBeta(i) 
-                * (*set->getDesiredSpeeds())[i]
-            ) 
-            - 
-            (
-                (*set->getSpeeds())[i] 
-                / (*set->getReactionTimes())[i]
+                (
+                    (
+                        (
+                            calculateBeta(i) 
+                            * (*set->getDesiredSpeeds())[i]
+                        )
+                        - 
+                        (*set->getSpeeds())[i] 
+                    )
+                    / (*set->getReactionTimes())[i]
+                )
+            * (*set->getMasses())[i]
             );
     }
 }

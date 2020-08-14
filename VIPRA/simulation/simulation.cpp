@@ -156,9 +156,10 @@ void Simulation::testGoalClassDELETETHIS()
 
     goal->calculateNearestExit();
 
-    goal->determinePedestrianGoals();
-
-    for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
+    //goal->determinePedestrianGoals();
+    
+    /**
+    for(int i = 0; i < 5data->getPedestrianSet()->getNumPedestrians(); ++i)
     {
         std::cout << "ped: " << i << " goal x:" << data->getPedestrianSet()->
             getGoalCoordinates()->at(i).coordinates[0];
@@ -172,7 +173,7 @@ void Simulation::testGoalClassDELETETHIS()
 
     std::cout << "\n\nGoals after first goal reached: \n";
 
-    for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
+    for(int i = 0; i < 5data->getPedestrianSet()->getNumPedestrians(); ++i)
     {
         std::cout << "ped: " << i << " goal x:" <<data->getPedestrianSet()->
             getGoalCoordinates()->at(i).coordinates[0];
@@ -186,7 +187,7 @@ void Simulation::testGoalClassDELETETHIS()
 
     std::cout << "\n\nGoals after second goal reached: \n";
 
-    for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
+    for(int i = 0; i < 5data->getPedestrianSet()->getNumPedestrians(); ++i)
     {
         std::cout << "ped: " << i << " goal x:" << data->getPedestrianSet()->
             getGoalCoordinates()->at(i).coordinates[0];
@@ -199,6 +200,7 @@ void Simulation::testGoalClassDELETETHIS()
 
     std::cout << "\n\nGoals met, test removal\n";
     goal->determinePedestrianGoals();
+    */
 
 
 
