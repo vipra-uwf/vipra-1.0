@@ -8,6 +8,10 @@ void CalmGoals::setData(Data* data)
 {
     this->data = data;
     createPedCoordPointer();
+
+    //TODO this may not be the best place -- maybe an initGoals function-- alex
+    addExitGoal(data->getSimulationParams());
+    calculateNearestExit();
 }
 
 void CalmGoals::addExitGoal(std::unordered_map<std::string,
@@ -67,18 +71,21 @@ void CalmGoals::calculateNearestExit()
             this->nearestExit.push_back(0);
         }
     }
-    for(int i = 0; i < 5/*this->data->getPedestrianSet()->getNumPedestrians()*/
-        ; ++i)
-    {
-        std::cout << "nearest exit for ped " << i << " :" << nearestExit[i] 
-            << std::endl;
-    }
+    
+    // for(int i = 0; i < 5/*this->data->getPedestrianSet()->getNumPedestrians()*/
+    //     ; ++i)
+    // {
+    //     std::cout << "nearest exit for ped " << i << " :" << nearestExit[i] 
+    //         << std::endl;
+    // }
+    
 
 }
 
 void CalmGoals::determinePedestrianGoals()
 {
     std::vector<Dimensions> newGoal;
+
     for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians();)
     {
         if(!checkPedestianGoalsMet(i))

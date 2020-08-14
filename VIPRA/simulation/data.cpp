@@ -2,7 +2,7 @@
 
 Data::Data()
 {
-    obstacleSet = ObstacleSet();
+
 }
 
 PedestrianSet* Data::getPedestrianSet()
@@ -12,12 +12,12 @@ PedestrianSet* Data::getPedestrianSet()
 
 ObstacleSet* Data::getObstacleSet()
 {
-    return &this->obstacleSet;
+    return this->obstacleSet;
 }
 
 std::unordered_map<std::string, FLOATING_NUMBER>* Data::getSimulationParams()
 {
-	return &this->simulationParams; 
+	return this->simulationParams; 
 }
 
 void Data::setPedestrianSet(PedestrianSet* pedestrianSet)
@@ -25,8 +25,13 @@ void Data::setPedestrianSet(PedestrianSet* pedestrianSet)
     this->pedestrianSet = pedestrianSet;
 }
 
+void Data::setObstacleSet(ObstacleSet* obstacleSet)
+{
+	this->obstacleSet = obstacleSet;
+}
+
 void Data::setSimulationParams(
-    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams)
+    std::unordered_map<std::string, FLOATING_NUMBER>* simulationParams)
 {
 	this->simulationParams = simulationParams;
 }
