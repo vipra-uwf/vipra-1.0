@@ -31,9 +31,11 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         void calculateRepulsion();
         // TODO the param names for these functions feel inconsistent -- alex
         FLOATING_NUMBER calculateDistance(
-            int firstPedIndex, int secondPedIndex);
+            int firstPedIndex, int secondPedIndex, std::string originSet);
         FLOATING_NUMBER calculateBeta(int pedIndex);
         void calculateNearestNeighbors();
+        bool neighborDirectionTest(
+            int firstPedIndex, int secondPedIndex, std::string originSet);
 };
 
 #endif

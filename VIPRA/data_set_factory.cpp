@@ -10,6 +10,7 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
 	std::vector<Dimensions> pedCoords;
 	std::vector<Dimensions> goalCoords;
 	std::vector<Dimensions> velocities;
+	std::vector<std::pair<std::string, int>> nearestNeighbors;
 
 	int numPeds = inputData["x"].size();
 
@@ -40,7 +41,12 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
                     inputData["velocity_y"][i]
                 }
             }
+
         );
+
+		nearestNeighbors.push_back(
+			std::make_pair("P", inputData["nearest_neighbor"][i])
+		);
     }
 
 	calmPedSet.setPedestrianCoordinates(pedCoords);
@@ -53,14 +59,7 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
 	calmPedSet.setPropulsionForces(inputData["propulsion_force"]);
 	calmPedSet.setRepulsionForces(inputData["repulsion_force"]);
 	calmPedSet.setNumPedestrians(numPeds);
-
-	std::vector<FLOATING_NUMBER> floatNearestNeighbors = 
-		inputData["nearest_neighbor"];
-	
-	std::vector<int> intNearestNeighbors(
-		floatNearestNeighbors.begin(), floatNearestNeighbors.end());
-	
-	calmPedSet.setNearestNeighbors(intNearestNeighbors);
+	calmPedSet.setNearestNeighbors(nearestNeighbors);
 
 	return calmPedSet;	
 }

@@ -1,6 +1,9 @@
 #ifndef CALM_PEDESTRIAN_SET
 #define CALM_PEDESTRIAN_SET
 
+#include <utility>
+#include <string>
+
 #include "pedestrian_set.hpp"
 #include "../type_definitions.hpp"
 #include "../dimensions.hpp"
@@ -20,7 +23,7 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER> desiredSpeeds;
         std::vector<FLOATING_NUMBER> propulsionForces;
         std::vector<FLOATING_NUMBER> repulsionForces;
-        std::vector<int> nearestNeighbors;
+        std::vector<std::pair<std::string, int>> nearestNeighbors;
 
     public:
         CalmPedestrianSet();
@@ -48,14 +51,14 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER>* getDesiredSpeeds();
         std::vector<FLOATING_NUMBER>* getPropulsionForces();
         std::vector<FLOATING_NUMBER>* getRepulsionForces();
-        std::vector<int>* getNearestNeighbors();
+        std::vector<std::pair<std::string, int>>* getNearestNeighbors();
 
         void setMasses(std::vector<FLOATING_NUMBER> massesKg);
         void setReactionTimes(std::vector<FLOATING_NUMBER> reactionTimes);
         void setDesiredSpeeds(std::vector<FLOATING_NUMBER> desiredSpeeds);
         void setPropulsionForces(std::vector<FLOATING_NUMBER> propulsionForces);
         void setRepulsionForces(std::vector<FLOATING_NUMBER> repulsionForces);
-        void setNearestNeighbors(std::vector<int> nearestNeighbors);
+        void setNearestNeighbors(std::vector<std::pair<std::string, int>> nearestNeighbors);
 };
 
 #endif
