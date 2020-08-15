@@ -143,12 +143,7 @@ void CalmPedestrianModel::calculateNearestNeighbors()
 
     for (int i = 0; i < pedSet->getNumPedestrians(); ++i)
     {
-        int nearest;
-
-        if(i == 0)
-            nearest = 1;
-        else
-            nearest = 0;
+        int nearest = -1;
 
         std::string originSet = "P";
 
@@ -157,7 +152,7 @@ void CalmPedestrianModel::calculateNearestNeighbors()
             if (i != j && j < pedSet->getNumPedestrians()
                 && neighborDirectionTest(i, j, originSet))
             {
-                if(calculateDistance(i, j, "P") < 
+                if(nearest == -1 || calculateDistance(i, j, "P") < 
                     calculateDistance(i, nearest, originSet)
                     )
                 {
@@ -165,9 +160,10 @@ void CalmPedestrianModel::calculateNearestNeighbors()
                     originSet = "P";
                 }
             }
+
             if(neighborDirectionTest(i, j, "O"))
             {
-                if(calculateDistance(i, j, "O") < 
+                if(nearest == -1 || calculateDistance(i, j, "O") < 
                     calculateDistance(i, nearest, originSet)
                     )
                 {
@@ -210,7 +206,11 @@ bool CalmPedestrianModel::neighborDirectionTest(
     if(goalXDirection > 0 && goalYDirection == 0)
     {
         if((*secondPedcoords)[secondPedIndex].coordinates[0] 
-            > (*firstPedcoords)[firstPedIndex].coordinates[0])
+            > (*firstPedcoords)[firstPedIndex].coordinates[0]
+            && ((*secondPedcoords)[secondPedIndex].coordinates[1]
+            <= (*firstPedcoords)[firstPedIndex].coordinates[1] + 0.20
+            && (*secondPedcoords)[secondPedIndex].coordinates[1]
+            >= (*firstPedcoords)[firstPedIndex].coordinates[1] - 0.20))
         {
             pass = true;
         }
@@ -218,7 +218,11 @@ bool CalmPedestrianModel::neighborDirectionTest(
     else if (goalXDirection < 0 && goalYDirection == 0)
     {
         if((*secondPedcoords)[secondPedIndex].coordinates[0] 
-            < (*firstPedcoords)[firstPedIndex].coordinates[0])
+            < (*firstPedcoords)[firstPedIndex].coordinates[0]
+            && ((*secondPedcoords)[secondPedIndex].coordinates[1]
+            <= (*firstPedcoords)[firstPedIndex].coordinates[1] + 0.20
+            && (*secondPedcoords)[secondPedIndex].coordinates[1]
+            >= (*firstPedcoords)[firstPedIndex].coordinates[1] - 0.20))
         {
             pass = true;
         }
@@ -226,7 +230,11 @@ bool CalmPedestrianModel::neighborDirectionTest(
     else if (goalXDirection == 0 && goalYDirection > 0)
     {
         if((*secondPedcoords)[secondPedIndex].coordinates[1] 
-            > (*firstPedcoords)[firstPedIndex].coordinates[1])
+            > (*firstPedcoords)[firstPedIndex].coordinates[1]
+            && ((*secondPedcoords)[secondPedIndex].coordinates[0]
+            <= (*firstPedcoords)[firstPedIndex].coordinates[0] + 0.20
+            && (*secondPedcoords)[secondPedIndex].coordinates[0]
+            >= (*firstPedcoords)[firstPedIndex].coordinates[0] - 0.20))
         {
             pass = true;
         }
@@ -234,7 +242,11 @@ bool CalmPedestrianModel::neighborDirectionTest(
     else if (goalXDirection == 0 && goalYDirection < 0)
     {
         if((*secondPedcoords)[secondPedIndex].coordinates[1] 
-            < (*firstPedcoords)[firstPedIndex].coordinates[1])
+            < (*firstPedcoords)[firstPedIndex].coordinates[1]
+            && ((*secondPedcoords)[secondPedIndex].coordinates[0]
+            <= (*firstPedcoords)[firstPedIndex].coordinates[0] + 0.20
+            && (*secondPedcoords)[secondPedIndex].coordinates[0]
+            >= (*firstPedcoords)[firstPedIndex].coordinates[0] - 0.20))
         {
             pass = true;
         }
