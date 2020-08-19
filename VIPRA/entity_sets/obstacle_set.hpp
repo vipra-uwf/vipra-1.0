@@ -11,7 +11,8 @@ class ObstacleSet
 {
     private:
         int numObstacles;
-		//TODO this should be const then delete numPed setter and getter - alex
+		//TODO this should be const in the derived class 
+        //then delete numPed setter and getter - alex
         int numDimensions = 2;
 		//what if the user doesn't want to use single point coordinates?
         std::vector<Dimensions> obstacleCoordinates;
