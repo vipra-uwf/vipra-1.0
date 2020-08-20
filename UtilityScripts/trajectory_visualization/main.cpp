@@ -11,13 +11,27 @@ int main() {
     XMLReader xmlReader;
 
     // xmlReader.extractFileData("../../VIPRA/output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian");
-    xmlReader.extractFileData("../../VIPRA/output_data/pedestrian_animfile.xml", "pedestrian-set", "pedestrian");
-    std::vector<FLOATING_NUMBER> trajectorySetX = xmlReader.getFloatDataSet("x");
-    std::vector<FLOATING_NUMBER> trajectorySetY = xmlReader.getFloatDataSet("y");
+    xmlReader.extractFileData(
+        "../../VIPRA/output_data/pedestrian_animfile.xml", 
+        "pedestrian-set");
 
-    xmlReader.extractFileData("../../VIPRA/input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
-    std::vector<FLOATING_NUMBER> obstacleX = xmlReader.getFloatDataSet("x");
-    std::vector<FLOATING_NUMBER> obstacleY = xmlReader.getFloatDataSet("y");
+    std::unordered_map<
+        std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = 
+			xmlReader.getFloatInputData();
+
+    std::vector<FLOATING_NUMBER> trajectorySetX = pedInputFileData["x"];
+    std::vector<FLOATING_NUMBER> trajectorySetY = pedInputFileData["y"];
+
+    xmlReader.extractFileData(
+        "../../VIPRA/input_data/a320_144_obstacles.xml", 
+        "obstacle-set");
+
+    std::unordered_map<
+		std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = 
+			xmlReader.getFloatInputData();
+
+    std::vector<FLOATING_NUMBER> obstacleX = obsInputFileData["x"];
+    std::vector<FLOATING_NUMBER> obstacleY = obsInputFileData["y"];
 
     int i = 0;
     int numPedestrians = 144;
