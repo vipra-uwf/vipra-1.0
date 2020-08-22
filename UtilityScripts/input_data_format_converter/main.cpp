@@ -19,12 +19,11 @@ int main()
     std::string line;
 
     int i = -2;
+    //int j = 0;
 
     while(std::getline(fileStream, line))
     {
         std::stringstream linestream(line);
-
-        // std::cout << line << std::endl;
 
         if(i >= 0)
         {
@@ -38,13 +37,19 @@ int main()
             xmlWriter.writeFloatData("x", x);
             xmlWriter.writeFloatData("y", y);
         }
-
-        if(i == 143)
+        
+        // if(j < 149)
+        // {
+        //     std::cout << i << " " << line << std::endl;
+        // }
+        
+        i++;
+        //j++;
+        
+        if(i == 144)
         {
             i = -2;
         }
-
-        i++;
     }
 
     xmlWriter.writeDocumentContents();
