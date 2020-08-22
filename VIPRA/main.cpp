@@ -9,7 +9,7 @@
 #include "entity_sets/calm_pedestrian_set.hpp"
 #include "writers/timestep_output_handler.hpp"
 
-#include "data_set_factory.hpp"
+#include "entity_set_factory.hpp"
 
 int main()
 {
@@ -20,7 +20,7 @@ int main()
     ObstacleSet obstacleSet;
     std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
 	
-    DataSetFactory dataSetFactory; 
+    EntitySetFactory entitySetFactory; 
     Data data;
 
     CalmGoals goals;
@@ -31,19 +31,19 @@ int main()
         "./input_data/a320_144_pedestrians.xml", 
         "pedestrian-set");
     ENTITY_SET pedInputFileData = inputXMLReader.getInputEntities();
-	calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
+	calmPedSet = entitySetFactory.createCalmPedSet(pedInputFileData);
 
     inputXMLReader.extractFileData(
         "./input_data/a320_144_obstacles.xml",
         "obstacle-set");
     ENTITY_SET obsInputFileData = inputXMLReader.getInputEntities();
-	obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
+	obstacleSet = entitySetFactory.createObstacleSet(obsInputFileData);
 
     inputXMLReader.extractFileData(
         "./input_data/simulation_params.xml",
         "simulation-parameters");
     ENTITY_SET simParamsFileData = inputXMLReader.getInputEntities();
-	simulationParams = dataSetFactory.createSimulationParamsSet(
+	simulationParams = entitySetFactory.createSimulationParamsSet(
 		simParamsFileData);
 
     data.setPedestrianSet(&calmPedSet);

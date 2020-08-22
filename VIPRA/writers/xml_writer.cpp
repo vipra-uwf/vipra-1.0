@@ -77,8 +77,8 @@ void XMLWriter::writeStringData(std::string key, std::string value)
     }
 }
 
-void XMLWriter::writeFloatDataSet(
-    std::string key, std::vector<FLOATING_NUMBER> dataSet)
+void XMLWriter::writeFloatEntitySet(
+    std::string key, std::vector<FLOATING_NUMBER> entitySet)
 {
     int i = 0;
 
@@ -86,7 +86,7 @@ void XMLWriter::writeFloatDataSet(
     traversalElement; 
     traversalElement = traversalElement->next_sibling())
     {
-        std::string data = std::to_string(dataSet[i]);
+        std::string data = std::to_string(entitySet[i]);
         traversalElement->append_attribute(
             this->document.allocate_attribute(
                 this->document.allocate_string(key.c_str()), 
@@ -95,8 +95,8 @@ void XMLWriter::writeFloatDataSet(
     }
 }
 
-void XMLWriter::writeStringDataSet(
-    std::string key, std::vector<std::string> dataSet)
+void XMLWriter::writeStringEntitySet(
+    std::string key, std::vector<std::string> entitySet)
 {
     int i = 0;
 
@@ -104,7 +104,7 @@ void XMLWriter::writeStringDataSet(
     traversalElement; 
     traversalElement = traversalElement->next_sibling())
     {
-        std::string data = dataSet[i];
+        std::string data = entitySet[i];
         traversalElement->append_attribute(this->document.allocate_attribute(
             this->document.allocate_string(key.c_str()), 
             this->document.allocate_string(data.c_str())));

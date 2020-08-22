@@ -1,8 +1,8 @@
-#include "data_set_factory.hpp"
+#include "entity_set_factory.hpp"
 #include "dimensions.hpp"
 #include "entity_sets/obstacle_set.hpp"
 		
-CalmPedestrianSet DataSetFactory::createCalmPedSet(ENTITY_SET inputData)
+CalmPedestrianSet EntitySetFactory::createCalmPedSet(ENTITY_SET inputData)
 {
 	CalmPedestrianSet calmPedSet;
 
@@ -65,7 +65,7 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(ENTITY_SET inputData)
 	return calmPedSet;	
 }
 
-ObstacleSet DataSetFactory::createObstacleSet(ENTITY_SET inputData)
+ObstacleSet EntitySetFactory::createObstacleSet(ENTITY_SET inputData)
 {
 	ObstacleSet obstacleSet;
 
@@ -93,7 +93,7 @@ ObstacleSet DataSetFactory::createObstacleSet(ENTITY_SET inputData)
 }
 
 std::unordered_map<
-	std::string, FLOATING_NUMBER> DataSetFactory::createSimulationParamsSet(
+	std::string, FLOATING_NUMBER> EntitySetFactory::createSimulationParamsSet(
         ENTITY_SET inputData)
 {
 	std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
@@ -141,7 +141,7 @@ std::unordered_map<
 }
 
 
-std::vector<std::string> DataSetFactory::extractAttribute(
+std::vector<std::string> EntitySetFactory::extractAttribute(
     std::string attributeName, ENTITY_SET inputData)
 {
     std::vector<std::string> attributes;
@@ -154,7 +154,7 @@ std::vector<std::string> DataSetFactory::extractAttribute(
     return attributes;
 }
 
-std::vector<FLOATING_NUMBER> DataSetFactory::vectorStringToDouble(
+std::vector<FLOATING_NUMBER> EntitySetFactory::vectorStringToDouble(
     std::vector<std::string> stringVec)
 {
     std::vector<FLOATING_NUMBER> floatVec;

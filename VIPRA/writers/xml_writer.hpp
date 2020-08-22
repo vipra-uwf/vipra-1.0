@@ -33,10 +33,10 @@ class XMLWriter: public OutputDataWriter
  
         void appendDataNodeAttribute(
             rapidxml::xml_node<>* node, std::string key, std::string value);
-        void writeFloatDataSet(
-            std::string key, std::vector<FLOATING_NUMBER> dataSet);
-        void writeStringDataSet(
-            std::string key, std::vector<std::string> dataSet);
+        void writeFloatEntitySet(
+            std::string key, std::vector<FLOATING_NUMBER> entitySet);
+        void writeStringEntitySet(
+            std::string key, std::vector<std::string> entitySet);
         
         void setRootNodeName(std::string rootElementName);
         void setDataNodeName(std::string dataElementName);

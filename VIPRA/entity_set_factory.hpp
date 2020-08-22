@@ -12,7 +12,7 @@
 
 typedef std::vector<std::unordered_map<std::string, std::string>> ENTITY_SET;
 
-class DataSetFactory
+class EntitySetFactory
 {
     private:
         std::vector<std::string> extractAttribute(
