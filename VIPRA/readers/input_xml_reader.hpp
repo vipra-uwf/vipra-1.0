@@ -19,15 +19,15 @@ class InputXMLReader: public InputDataLoader
     private:
         std::ifstream fileStream;      
         std::vector<char> fileContents;
-        std::string rootNodeName;
-        std::string dataNodeName;
+        std::string rootElementName;
+        std::string dataElementName;
         rapidxml::xml_document<> document;
-        rapidxml::xml_node<>* rootNode;
-        rapidxml::xml_node<>* dataNode;
+        rapidxml::xml_node<>* rootElement;
+        rapidxml::xml_node<>* traversalElement;
 
         void openFile(std::string fileName);
         void readFile();
-        void initializeTraversalNodes();
+        void initializeTraversalElement();
         void parseXMLDocument();
 
     public:
@@ -36,7 +36,7 @@ class InputXMLReader: public InputDataLoader
 
         void extractFileData(
             std::string fileName, 
-            std::string rootNodeName);
+            std::string rootElementName);
 };
 
 #endif

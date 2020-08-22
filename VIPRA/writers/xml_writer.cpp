@@ -6,12 +6,12 @@ XMLWriter::XMLWriter()
 }
 
 void XMLWriter::configureXMLDocumentStructure(
-    std::string fileName, std::string rootNodeName, 
-    std::string dataNodeName, std::string versionNum, std::string encodingType)
+    std::string fileName, std::string rootElementName, 
+    std::string dataElementName, std::string versionNum, std::string encodingType)
 {
     openFile(fileName);
-    setRootNodeName(rootNodeName);
-    setDataNodeName(dataNodeName);
+    setRootNodeName(rootElementName);
+    setDataNodeName(dataElementName);
 
     initializeXMLDeclaration(versionNum, encodingType);
     initializeRootNode();
@@ -39,8 +39,8 @@ void XMLWriter::writeFloatData(std::string key, FLOATING_NUMBER value)
     {
         this->currentNode = this->document.allocate_node(
             rapidxml::node_element, 
-            this->document.allocate_string(this->dataNodeName.c_str()));
-        this->rootNode->append_node(this->currentNode);
+            this->document.allocate_string(this->dataElementName.c_str()));
+        this->rootElement->append_node(this->currentNode);
     }
     
     if(this->currentNode->first_attribute(key.c_str()) == 0)          
@@ -61,8 +61,8 @@ void XMLWriter::writeStringData(std::string key, std::string value)
     {
         this->currentNode = this->document.allocate_node(
             rapidxml::node_element, 
-            this->document.allocate_string(this->dataNodeName.c_str()));
-        this->rootNode->append_node(this->currentNode);
+            this->document.allocate_string(this->dataElementName.c_str()));
+        this->rootElement->append_node(this->currentNode);
     }
     
     if(this->currentNode->first_attribute(key.c_str()) == 0)          
@@ -82,12 +82,12 @@ void XMLWriter::writeFloatDataSet(
 {
     int i = 0;
 
-    for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); 
-    dataNode; 
-    dataNode = dataNode->next_sibling())
+    for(rapidxml::xml_node<>* traversalElement = this->rootElement->first_node(); 
+    traversalElement; 
+    traversalElement = traversalElement->next_sibling())
     {
         std::string data = std::to_string(dataSet[i]);
-        dataNode->append_attribute(
+        traversalElement->append_attribute(
             this->document.allocate_attribute(
                 this->document.allocate_string(key.c_str()), 
                 this->document.allocate_string(data.c_str())));
@@ -100,12 +100,12 @@ void XMLWriter::writeStringDataSet(
 {
     int i = 0;
 
-    for(rapidxml::xml_node<>* dataNode = this->rootNode->first_node(); 
-    dataNode; 
-    dataNode = dataNode->next_sibling())
+    for(rapidxml::xml_node<>* traversalElement = this->rootElement->first_node(); 
+    traversalElement; 
+    traversalElement = traversalElement->next_sibling())
     {
         std::string data = dataSet[i];
-        dataNode->append_attribute(this->document.allocate_attribute(
+        traversalElement->append_attribute(this->document.allocate_attribute(
             this->document.allocate_string(key.c_str()), 
             this->document.allocate_string(data.c_str())));
         i++;
@@ -117,14 +117,14 @@ void XMLWriter::openFile(std::string fileName)
     this->fileStream.open(fileName);
 }
 
-void XMLWriter::setRootNodeName(std::string rootNodeName)
+void XMLWriter::setRootNodeName(std::string rootElementName)
 {
-    this->rootNodeName = rootNodeName;
+    this->rootElementName = rootElementName;
 }
 
-void XMLWriter::setDataNodeName(std::string dataNodeName)
+void XMLWriter::setDataNodeName(std::string dataElementName)
 {
-    this->dataNodeName = dataNodeName;
+    this->dataElementName = dataElementName;
 }
 
 void XMLWriter::setNumDataNodes(int numDataNodes)
@@ -148,18 +148,18 @@ void XMLWriter::initializeXMLDeclaration(
 
 void XMLWriter::initializeRootNode()
 {
-    this->rootNode = this->document.allocate_node(
+    this->rootElement = this->document.allocate_node(
         rapidxml::node_element, 
-        this->document.allocate_string(this->rootNodeName.c_str()));
-    this->document.append_node(rootNode);
+        this->document.allocate_string(this->rootElementName.c_str()));
+    this->document.append_node(rootElement);
 }
 
 void XMLWriter::generateDataNode()
 {
-    rapidxml::xml_node<>* dataNode = this->document.allocate_node(
+    rapidxml::xml_node<>* traversalElement = this->document.allocate_node(
         rapidxml::node_element, 
-        this->document.allocate_string(this->dataNodeName.c_str()));
-    this->rootNode->append_node(dataNode);
+        this->document.allocate_string(this->dataElementName.c_str()));
+    this->rootElement->append_node(traversalElement);
 }
 
 void XMLWriter::appendDataNodeAttribute(

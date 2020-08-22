@@ -2,39 +2,39 @@
 
 ENTITY_SET InputXMLReader::getInputEntities()
 {
-    initializeTraversalNodes();
+    initializeTraversalElement();
    
 	ENTITY_SET inputData;
 	
-	while(this->dataNode != 0)
+	while(this->traversalElement != 0)
 	{
-		rapidxml::xml_attribute<>* nodeAttribute = 
-			this->dataNode->first_attribute(); 	
+		rapidxml::xml_attribute<>* elementAttribute = 
+			this->traversalElement->first_attribute(); 	
 
         inputData.push_back(std::unordered_map<std::string, std::string>());
 		
-        while(nodeAttribute != 0)
+        while(elementAttribute != 0)
 		{
-			std::string key = nodeAttribute->name();
-            std::string value = nodeAttribute->value();
+			std::string key = elementAttribute->name();
+            std::string value = elementAttribute->value();
 
             inputData[inputData.size() - 1][key] = value;
 
-			nodeAttribute = nodeAttribute->next_attribute();
+			elementAttribute = elementAttribute->next_attribute();
 		}
 
-		this->dataNode = this->dataNode->next_sibling();
+		this->traversalElement = this->traversalElement->next_sibling();
 	}
 
 	return inputData;		
 }
 
 void InputXMLReader::extractFileData(
-    std::string fileName, std::string rootNodeName)
+    std::string fileName, std::string rootElementName)
 {
     openFile(fileName);
     readFile();
-    this->rootNodeName = rootNodeName;
+    this->rootElementName = rootElementName;
     parseXMLDocument();
 }
 
@@ -62,10 +62,10 @@ void InputXMLReader::parseXMLDocument()
        &this->fileContents[0]);
 }
 
-void InputXMLReader::initializeTraversalNodes()
+void InputXMLReader::initializeTraversalElement()
 {
-    this->rootNode = this->document.first_node(
-        this->document.allocate_string(this->rootNodeName.c_str()));
+    this->rootElement = this->document.first_node(
+        this->document.allocate_string(this->rootElementName.c_str()));
 
-	this->dataNode = this->rootNode->first_node(0);	
+	this->traversalElement = this->rootElement->first_node(0);	
 }
