@@ -2,33 +2,33 @@
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
 
-#include "../../VIPRA/readers/xml_reader.hpp"
+#include "../../VIPRA/readers/input_xml_reader.hpp"
 #include <iostream>
 
 int main() {
-    // g++ main.cpp ../../VIPRA/readers/xml_reader.cpp ../../VIPRA/simulation/data.cpp ../../VIPRA/entity_sets/obstacle_set.cpp -I/usr/include/python3.8 -lpython3.8
+    // g++ main.cpp ../../VIPRA/readers/input_xml_reader.cpp ../../VIPRA/simulation/data.cpp ../../VIPRA/entity_sets/obstacle_set.cpp -I/usr/include/python3.8 -lpython3.8
 
-    XMLReader xmlReader;
+    InputXMLReader inputXMLReader;
 
-    // xmlReader.extractFileData("../../VIPRA/output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian");
-    xmlReader.extractFileData(
+    // inputXMLReader.extractFileData("../../VIPRA/output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian");
+    inputXMLReader.extractFileData(
         "../../VIPRA/output_data/pedestrian_animfile.xml", 
         "pedestrian-set");
 
     std::unordered_map<
         std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = 
-			xmlReader.getFloatInputData();
+			inputXMLReader.getInputEntities();
 
     std::vector<FLOATING_NUMBER> trajectorySetX = pedInputFileData["x"];
     std::vector<FLOATING_NUMBER> trajectorySetY = pedInputFileData["y"];
 
-    xmlReader.extractFileData(
+    inputXMLReader.extractFileData(
         "../../VIPRA/input_data/a320_144_obstacles.xml", 
         "obstacle-set");
 
     std::unordered_map<
 		std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = 
-			xmlReader.getFloatInputData();
+			inputXMLReader.getInputEntities();
 
     std::vector<FLOATING_NUMBER> obstacleX = obsInputFileData["x"];
     std::vector<FLOATING_NUMBER> obstacleY = obsInputFileData["y"];
