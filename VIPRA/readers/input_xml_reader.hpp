@@ -14,7 +14,7 @@
 #include "../simulation/data.hpp"
 #include "../dimensions.hpp"
 
-class XMLReader: public InputDataLoader
+class InputXMLReader: public InputDataLoader
 {
     private:
         std::ifstream fileStream;      
@@ -27,9 +27,7 @@ class XMLReader: public InputDataLoader
 
         void openFile(std::string fileName);
         void readFile();
-        void setRootNodeName(std::string rootNodeName);
-        void initializeRootNode();
-        void initializeDataNode();
+        void initializeTraversalNodes();
         void parseXMLDocument();
 
     public:

@@ -1,9 +1,8 @@
-#include "xml_reader.hpp"
+#include "input_xml_reader.hpp"
 
-ENTITY_SET XMLReader::getInputEntities()
+ENTITY_SET InputXMLReader::getInputEntities()
 {
-	initializeRootNode();
-	initializeDataNode();
+    initializeTraversalNodes();
    
 	ENTITY_SET inputData;
 	
@@ -18,8 +17,6 @@ ENTITY_SET XMLReader::getInputEntities()
 		{
 			std::string key = nodeAttribute->name();
             std::string value = nodeAttribute->value();
-            // FLOATING_NUMBER value = std::stod(nodeAttribute->value());	
-            // inputData[key].push_back(value);
 
             inputData[inputData.size() - 1][key] = value;
 
@@ -32,21 +29,21 @@ ENTITY_SET XMLReader::getInputEntities()
 	return inputData;		
 }
 
-void XMLReader::extractFileData(
+void InputXMLReader::extractFileData(
     std::string fileName, std::string rootNodeName)
 {
     openFile(fileName);
     readFile();
-    setRootNodeName(rootNodeName);
+    this->rootNodeName = rootNodeName;
     parseXMLDocument();
 }
 
-void XMLReader::openFile(std::string fileName)
+void InputXMLReader::openFile(std::string fileName)
 {
     this->fileStream.open(fileName);
 }
 
-void XMLReader::readFile()
+void InputXMLReader::readFile()
 {
     std::vector<char> buffer(
         (std::istreambuf_iterator<char>(this->fileStream)), 
@@ -57,12 +54,7 @@ void XMLReader::readFile()
     this->fileStream.close();
 }
 
-void XMLReader::setRootNodeName(std::string rootNodeName)
-{
-    this->rootNodeName = rootNodeName;
-}
-
-void XMLReader::parseXMLDocument()
+void InputXMLReader::parseXMLDocument()
 {
    this->document.parse<
    rapidxml::parse_declaration_node | 
@@ -70,13 +62,10 @@ void XMLReader::parseXMLDocument()
        &this->fileContents[0]);
 }
 
-void XMLReader::initializeRootNode()
+void InputXMLReader::initializeTraversalNodes()
 {
     this->rootNode = this->document.first_node(
         this->document.allocate_string(this->rootNodeName.c_str()));
-}
 
-void XMLReader::initializeDataNode()
-{
 	this->dataNode = this->rootNode->first_node(0);	
 }

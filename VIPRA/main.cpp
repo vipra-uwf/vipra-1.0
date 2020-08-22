@@ -3,7 +3,7 @@
 
 #include "entity_sets/obstacle_set.hpp"
 #include "simulation/simulation.hpp"
-#include "readers/xml_reader.hpp"
+#include "readers/input_xml_reader.hpp"
 #include "writers/xml_writer.hpp"
 #include "models/calm_pedestrian_model.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
@@ -13,7 +13,7 @@
 
 int main()
 {
-    XMLReader xmlReader;
+    InputXMLReader inputXMLReader;
     XMLWriter xmlWriter;
 
     CalmPedestrianSet calmPedSet;
@@ -27,22 +27,22 @@ int main()
 	CalmPedestrianModel calmModel;
     TimestepOutputHandler timestepOutputHandler;
 	
-    xmlReader.extractFileData(
+    inputXMLReader.extractFileData(
         "./input_data/a320_144_pedestrians.xml", 
         "pedestrian-set");
-    ENTITY_SET pedInputFileData = xmlReader.getInputEntities();
+    ENTITY_SET pedInputFileData = inputXMLReader.getInputEntities();
 	calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
 
-    xmlReader.extractFileData(
+    inputXMLReader.extractFileData(
         "./input_data/a320_144_obstacles.xml",
         "obstacle-set");
-    ENTITY_SET obsInputFileData = xmlReader.getInputEntities();
+    ENTITY_SET obsInputFileData = inputXMLReader.getInputEntities();
 	obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
 
-    xmlReader.extractFileData(
+    inputXMLReader.extractFileData(
         "./input_data/simulation_params.xml",
         "simulation-parameters");
-    ENTITY_SET simParamsFileData = xmlReader.getInputEntities();
+    ENTITY_SET simParamsFileData = inputXMLReader.getInputEntities();
 	simulationParams = dataSetFactory.createSimulationParamsSet(
 		simParamsFileData);
 
