@@ -2,8 +2,7 @@
 #include "dimensions.hpp"
 #include "entity_sets/obstacle_set.hpp"
 		
-CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
-	std::string, std::vector<FLOATING_NUMBER>> inputData)
+CalmPedestrianSet DataSetFactory::createCalmPedSet(ENTITY_SET inputData)
 {
 	CalmPedestrianSet calmPedSet;
 
@@ -11,15 +10,17 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
 	std::vector<Dimensions> goalCoords;
 	std::vector<Dimensions> velocities;
 
-	int numPeds = inputData["x"].size();
+    std::cout << "create calmpedset" << std::endl;
+
+	int numPeds = inputData.size();
 
 	for(int i = 0; i < numPeds; ++i)
     {
         pedCoords.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    inputData["x"][i], 
-                    inputData["y"][i]
+                    (FLOATING_NUMBER) std::stod(inputData[i]["x"]), 
+                    (FLOATING_NUMBER) std::stod(inputData[i]["y"])
                 }
             }
         );
@@ -27,8 +28,8 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
 		goalCoords.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    inputData["goal_x"][i], 
-                    inputData["goal_y"][i]
+                    (FLOATING_NUMBER) std::stod(inputData[i]["goal_x"]), 
+                    (FLOATING_NUMBER) std::stod(inputData[i]["goal_y"])
                 }
             }
         );
@@ -36,8 +37,8 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
 		velocities.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    inputData["velocity_x"][i], 
-                    inputData["velocity_y"][i]
+                    (FLOATING_NUMBER) std::stod(inputData[i]["velocity_x"]), 
+                    (FLOATING_NUMBER) std::stod(inputData[i]["velocity_y"])
                 }
             }
         );
@@ -46,16 +47,15 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
 	calmPedSet.setPedestrianCoordinates(pedCoords);
 	calmPedSet.setGoalCoordinates(goalCoords);
 	calmPedSet.setVelocities(velocities);
-	calmPedSet.setMasses(inputData["mass"]);
-	calmPedSet.setReactionTimes(inputData["reaction_time"]);
-    calmPedSet.setSpeeds(inputData["speed"]);
-	calmPedSet.setDesiredSpeeds(inputData["desired_speed"]);
-	calmPedSet.setPropulsionForces(inputData["propulsion_force"]);
-	calmPedSet.setRepulsionForces(inputData["repulsion_force"]);
+	calmPedSet.setMasses(vectorStringToDouble(extractAttribute("mass", inputData)));
+	calmPedSet.setReactionTimes(vectorStringToDouble(extractAttribute("reaction_time", inputData)));
+    calmPedSet.setSpeeds(vectorStringToDouble(extractAttribute("speed", inputData)));
+	calmPedSet.setDesiredSpeeds(vectorStringToDouble(extractAttribute("desired_speed", inputData)));
+	calmPedSet.setPropulsionForces(vectorStringToDouble(extractAttribute("propulsion_force", inputData)));
+	calmPedSet.setRepulsionForces(vectorStringToDouble(extractAttribute("repulsion_force", inputData)));
 	calmPedSet.setNumPedestrians(numPeds);
 
-	std::vector<FLOATING_NUMBER> floatNearestNeighbors = 
-		inputData["nearest_neighbor"];
+	std::vector<FLOATING_NUMBER> floatNearestNeighbors = vectorStringToDouble(extractAttribute("nearest_neighbor", inputData));
 	
 	std::vector<int> intNearestNeighbors(
 		floatNearestNeighbors.begin(), floatNearestNeighbors.end());
@@ -65,22 +65,21 @@ CalmPedestrianSet DataSetFactory::createCalmPedSet(std::unordered_map<
 	return calmPedSet;	
 }
 
-ObstacleSet DataSetFactory::createObstacleSet(
-		std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> inputData)
+ObstacleSet DataSetFactory::createObstacleSet(ENTITY_SET inputData)
 {
 	ObstacleSet obstacleSet;
 
 	std::vector<Dimensions> obsCoords;
 	
-	int numObs = inputData["x"].size();
+	int numObs = inputData.size();
 
 	for(int i = 0; i < numObs; ++i)
     {
         obsCoords.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    inputData["x"][i], 
-                    inputData["y"][i]
+                    (FLOATING_NUMBER) std::stod(inputData[i]["x"]), 
+                    (FLOATING_NUMBER) std::stod(inputData[i]["y"])
                 }
             }
         );
@@ -89,30 +88,82 @@ ObstacleSet DataSetFactory::createObstacleSet(
 	obstacleSet.setObstacleCoordinates(obsCoords);
 	obstacleSet.setNumObstacles(numObs);
 
+        std::cout << "return obstacleset" << std::endl;
 	return obstacleSet;
 }
 
 std::unordered_map<
 	std::string, FLOATING_NUMBER> DataSetFactory::createSimulationParamsSet(
-			std::unordered_map<
-				std::string, std::vector<FLOATING_NUMBER>> inputData)
+        ENTITY_SET inputData)
 {
 	std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
 
-	simulationParams["luggage"] = inputData["luggage"].at(0);
-	simulationParams["exit_door_x"] = inputData["exit_door_x"].at(0);
-	simulationParams["exit_door_y"] = inputData["exit_door_y"].at(0);
-	simulationParams["time_step"] = inputData["time_step"].at(0);
+    for(long unsigned int i = 0; i < inputData.size(); ++i)
+    {
+        if(inputData[i].find("luggage") != inputData[i].end())
+        {
+	        simulationParams["luggage"] = 
+                (FLOATING_NUMBER) std::stod(inputData[i]["luggage"]);
+        }
+        else if(inputData[i].find("exit_door_x") != inputData[i].end())
+        {
+            simulationParams["exit_door_x"] = 
+                (FLOATING_NUMBER) std::stod(inputData[i]["exit_door_x"]);
+        }
+        else if(inputData[i].find("exit_door_y") != inputData[i].end())
+        {
+            simulationParams["exit_door_y"] =
+                (FLOATING_NUMBER) std::stod(inputData[i]["exit_door_y"]);
+        }
+        else if(inputData[i].find("time_step") != inputData[i].end())
+        {
+			simulationParams["time_step"] = 
+                (FLOATING_NUMBER) std::stod(inputData[i]["time_step"]);
+        }
+        else if(inputData[i].find("aligning_stop_threshold") != inputData[i].end())
+        {
+	        simulationParams["aligning_stop_threshold"] = 
+		        (FLOATING_NUMBER) std::stod(inputData[i]["aligning_stop_threshold"]);
+        }
+        else if(inputData[i].find("toward_aisle_stop_threshold") != inputData[i].end())
+        {
+	        simulationParams["toward_aisle_stop_threshold"] = 
+		        (FLOATING_NUMBER) std::stod(inputData[i]["toward_aisle_stop_threshold"]);
+        }
+        else if(inputData[i].find("in_aisle_stop_threshold") != inputData[i].end())
+        {
+            simulationParams["in_aisle_stop_threshold"] = 
+		        (FLOATING_NUMBER) std::stod(inputData[i]["in_aisle_stop_threshold"]);
+        }
+    }
 	
-	simulationParams["aligning_stop_threshold"] = 
-		inputData["aligning_stop_threshold"].at(0);
+    return simulationParams;
+}
 
-	simulationParams["toward_aisle_stop_threshold"] = 
-		inputData["toward_aisle_stop_threshold"].at(0);
 
-	simulationParams["in_aisle_stop_threshold"] = 
-		inputData["in_aisle_stop_threshold"].at(0);
+std::vector<std::string> DataSetFactory::extractAttribute(
+    std::string attributeName, ENTITY_SET inputData)
+{
+    std::vector<std::string> attributes;
 
-	return simulationParams;
+    for(long unsigned int i = 0; i < inputData.size(); ++i)
+    {
+        attributes.push_back(inputData[i][attributeName]);
+    }
+
+    return attributes;
+}
+
+std::vector<FLOATING_NUMBER> DataSetFactory::vectorStringToDouble(
+    std::vector<std::string> stringVec)
+{
+    std::vector<FLOATING_NUMBER> floatVec;
+
+    for(long unsigned int i = 0; i < stringVec.size(); ++i)
+    {
+        floatVec.push_back(std::stod(stringVec[i]));
+    }
+
+    return floatVec;
 }
 

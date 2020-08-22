@@ -34,8 +34,7 @@ class XMLReader: public InputDataLoader
 
     public:
 		
-        virtual std::unordered_map<
-			std::string, std::vector<FLOATING_NUMBER>> getFloatInputData();
+        virtual ENTITY_SET getInputEntities();
 
         void extractFileData(
             std::string fileName, 

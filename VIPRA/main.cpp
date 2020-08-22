@@ -30,25 +30,19 @@ int main()
     xmlReader.extractFileData(
         "./input_data/a320_144_pedestrians.xml", 
         "pedestrian-set");
-    std::unordered_map<
-        std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = 
-			xmlReader.getFloatInputData();
+    ENTITY_SET pedInputFileData = xmlReader.getInputEntities();
 	calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
 
     xmlReader.extractFileData(
         "./input_data/a320_144_obstacles.xml",
         "obstacle-set");
-    std::unordered_map<
-		std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = 
-			xmlReader.getFloatInputData();
+    ENTITY_SET obsInputFileData = xmlReader.getInputEntities();
 	obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
 
     xmlReader.extractFileData(
         "./input_data/simulation_params.xml",
         "simulation-parameters");
-    std::unordered_map<
-		std::string, std::vector<FLOATING_NUMBER>> simParamsFileData = 
-			xmlReader.getFloatInputData();
+    ENTITY_SET simParamsFileData = xmlReader.getInputEntities();
 	simulationParams = dataSetFactory.createSimulationParamsSet(
 		simParamsFileData);
 

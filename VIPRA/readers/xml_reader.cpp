@@ -1,24 +1,28 @@
 #include "xml_reader.hpp"
 
-std::unordered_map<
-	std::string, std::vector<FLOATING_NUMBER>> XMLReader::getFloatInputData()
+ENTITY_SET XMLReader::getInputEntities()
 {
 	initializeRootNode();
 	initializeDataNode();
    
-	std::unordered_map<std::string, std::vector<FLOATING_NUMBER>> inputData;
+	ENTITY_SET inputData;
 	
 	while(this->dataNode != 0)
 	{
 		rapidxml::xml_attribute<>* nodeAttribute = 
 			this->dataNode->first_attribute(); 	
+
+        inputData.push_back(std::unordered_map<std::string, std::string>());
 		
-		while(nodeAttribute != 0)
+        while(nodeAttribute != 0)
 		{
 			std::string key = nodeAttribute->name();
-			FLOATING_NUMBER value = std::stod(nodeAttribute->value());	
-			inputData[key].push_back(value);
-			
+            std::string value = nodeAttribute->value();
+            // FLOATING_NUMBER value = std::stod(nodeAttribute->value());	
+            // inputData[key].push_back(value);
+
+            inputData[inputData.size() - 1][key] = value;
+
 			nodeAttribute = nodeAttribute->next_attribute();
 		}
 

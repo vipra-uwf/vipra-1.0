@@ -6,11 +6,12 @@
 #include <unordered_map>
 #include <vector>
 
+typedef std::vector<std::unordered_map<std::string, std::string>> ENTITY_SET;
+
 class InputDataLoader
 {
     public:
-		virtual std::unordered_map<
-			std::string, std::vector<FLOATING_NUMBER>> getFloatInputData() = 0;
+		virtual ENTITY_SET getInputEntities() = 0;
 };
 
 #endif
