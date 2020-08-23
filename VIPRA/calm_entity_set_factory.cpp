@@ -44,22 +44,22 @@ CalmPedestrianSet* CalmEntitySetFactory::createPedestrianSet(
 	calmPedSet->setPedestrianCoordinates(pedCoords);
 	calmPedSet->setGoalCoordinates(goalCoords);
 	calmPedSet->setVelocities(velocities);
-	calmPedSet->setMasses(
-        vectorStringToDouble(extractAttribute("mass", inputData)));
-	calmPedSet->setReactionTimes(
-        vectorStringToDouble(extractAttribute("reaction_time", inputData)));
-    calmPedSet->setSpeeds(
-        vectorStringToDouble(extractAttribute("speed", inputData)));
-	calmPedSet->setDesiredSpeeds(
-        vectorStringToDouble(extractAttribute("desired_speed", inputData)));
-	calmPedSet->setPropulsionForces(
-        vectorStringToDouble(extractAttribute("propulsion_force", inputData)));
-	calmPedSet->setRepulsionForces(
-        vectorStringToDouble(extractAttribute("repulsion_force", inputData)));
+	calmPedSet->setMasses(vectorStringToDouble(
+        accumulateAttribute("mass", inputData)));
+	calmPedSet->setReactionTimes(vectorStringToDouble(
+        accumulateAttribute("reaction_time", inputData)));
+    calmPedSet->setSpeeds(vectorStringToDouble(
+        accumulateAttribute("speed", inputData)));
+	calmPedSet->setDesiredSpeeds(vectorStringToDouble(
+        accumulateAttribute("desired_speed", inputData)));
+	calmPedSet->setPropulsionForces(vectorStringToDouble(
+        accumulateAttribute("propulsion_force", inputData)));
+	calmPedSet->setRepulsionForces(vectorStringToDouble(
+        accumulateAttribute("repulsion_force", inputData)));
 	calmPedSet->setNumPedestrians(numPeds);
 
-	std::vector<FLOATING_NUMBER> floatNearestNeighbors = 
-        vectorStringToDouble(extractAttribute("nearest_neighbor", inputData));
+	std::vector<FLOATING_NUMBER> floatNearestNeighbors = vectorStringToDouble(
+        accumulateAttribute("nearest_neighbor", inputData));
 	
 	std::vector<int> intNearestNeighbors(
 		floatNearestNeighbors.begin(), floatNearestNeighbors.end());
@@ -147,8 +147,7 @@ SIM_PARAMS* CalmEntitySetFactory::createSimulationParams(ENTITY_SET inputData)
     return simulationParams;
 }
 
-
-std::vector<std::string> CalmEntitySetFactory::extractAttribute(
+std::vector<std::string> CalmEntitySetFactory::accumulateAttribute(
     std::string attributeName, ENTITY_SET inputData)
 {
     std::vector<std::string> attributes;

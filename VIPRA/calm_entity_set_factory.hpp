@@ -3,13 +3,12 @@
 
 #include "entity_set_factory.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
-#include "entity_sets/obstacle_set.hpp"
 #include "dimensions.hpp"
 
 class CalmEntitySetFactory : public EntitySetFactory
 {
     private:
-        std::vector<std::string> extractAttribute(
+        std::vector<std::string> accumulateAttribute(
             std::string attributeName, ENTITY_SET inputData);
 
         std::vector<FLOATING_NUMBER> vectorStringToDouble(

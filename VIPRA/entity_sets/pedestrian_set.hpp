@@ -25,6 +25,8 @@ class PedestrianSet
             std::vector<Dimensions> velocities) = 0;
         virtual void setSpeeds(
             std::vector<FLOATING_NUMBER> speedsMetersPerSecond) = 0;
+        
+        // virtual ~PedestrianSet();
 };
 
 #endif

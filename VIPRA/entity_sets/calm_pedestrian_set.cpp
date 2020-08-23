@@ -5,6 +5,11 @@ CalmPedestrianSet::CalmPedestrianSet()
     this->numPedestrians = 0;
 }
 
+// CalmPedestrianSet::~CalmPedestrianSet()
+// {
+
+// }
+
 void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 {
     this->numPedestrians--;
