@@ -1,35 +1,22 @@
-#ifndef DATA_SET_FACTORY_HPP
-#define DATA_SET_FACTORY_HPP
+#ifndef ENTITY_SET_FACTORY_HPP
+#define ENTITY_SET_FACTORY_HPP
 
 #include <unordered_map>
 #include <string>
 #include <vector>
 
-#include <iostream>
-
-#include "entity_sets/calm_pedestrian_set.hpp"
+#include "entity_sets/pedestrian_set.hpp"
 #include "entity_sets/obstacle_set.hpp"
 
 typedef std::vector<std::unordered_map<std::string, std::string>> ENTITY_SET;
+typedef std::unordered_map<std::string, FLOATING_NUMBER> SIM_PARAMS;
 
 class EntitySetFactory
 {
-    private:
-        std::vector<std::string> extractAttribute(
-            std::string attributeName, ENTITY_SET inputData);
-
-        std::vector<FLOATING_NUMBER> vectorStringToDouble(
-            std::vector<std::string> stringVec);
-	
     public:
-		CalmPedestrianSet createCalmPedSet(ENTITY_SET inputData);
-
-		ObstacleSet createObstacleSet(ENTITY_SET inputData);
-
-		std::unordered_map<
-			std::string, FLOATING_NUMBER> createSimulationParamsSet(
-					ENTITY_SET inputData);
-
+		virtual PedestrianSet createPedestrianSet(ENTITY_SET inputData) = 0;
+		virtual ObstacleSet createObstacleSet(ENTITY_SET inputData) = 0;
+		virtual SIM_PARAMS createSimulationParamsSet(ENTITY_SET inputData) = 0;
 };
 
 #endif

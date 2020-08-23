@@ -77,7 +77,7 @@ void XMLWriter::writeStringData(std::string key, std::string value)
     }
 }
 
-void XMLWriter::writeFloatEntitySet(
+void XMLWriter::writeFloatCalmEntitySet(
     std::string key, std::vector<FLOATING_NUMBER> entitySet)
 {
     int i = 0;
@@ -95,7 +95,7 @@ void XMLWriter::writeFloatEntitySet(
     }
 }
 
-void XMLWriter::writeStringEntitySet(
+void XMLWriter::writeStringCalmEntitySet(
     std::string key, std::vector<std::string> entitySet)
 {
     int i = 0;

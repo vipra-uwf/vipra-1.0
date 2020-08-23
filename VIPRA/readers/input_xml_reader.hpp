@@ -1,5 +1,5 @@
-#ifndef XML_READER_HPP
-#define XML_READER_HPP
+#ifndef INPUT_XML_READER_HPP
+#define INPUT_XML_READER_HPP
 
 #include <iostream>
 #include <vector>

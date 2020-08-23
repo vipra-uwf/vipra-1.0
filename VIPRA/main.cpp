@@ -9,7 +9,7 @@
 #include "entity_sets/calm_pedestrian_set.hpp"
 #include "writers/timestep_output_handler.hpp"
 
-#include "entity_set_factory.hpp"
+#include "calm_entity_set_factory.hpp"
 
 int main()
 {
@@ -20,7 +20,7 @@ int main()
     ObstacleSet obstacleSet;
     std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
 	
-    EntitySetFactory entitySetFactory; 
+    CalmEntitySetFactory entitySetFactory; 
     Data data;
 
     CalmGoals goals;
@@ -31,7 +31,7 @@ int main()
         "./input_data/a320_144_pedestrians.xml", 
         "pedestrian-set");
     ENTITY_SET pedInputFileData = inputXMLReader.getInputEntities();
-	calmPedSet = entitySetFactory.createCalmPedSet(pedInputFileData);
+	calmPedSet = entitySetFactory.createPedestrianSet(pedInputFileData);
 
     inputXMLReader.extractFileData(
         "./input_data/a320_144_obstacles.xml",

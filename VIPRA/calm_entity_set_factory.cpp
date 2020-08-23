@@ -1,16 +1,13 @@
-#include "entity_set_factory.hpp"
-#include "dimensions.hpp"
-#include "entity_sets/obstacle_set.hpp"
+#include "calm_entity_set_factory.hpp"
 		
-CalmPedestrianSet EntitySetFactory::createCalmPedSet(ENTITY_SET inputData)
+PedestrianSet CalmEntitySetFactory::createPedestrianSet(
+    ENTITY_SET inputData)
 {
 	CalmPedestrianSet calmPedSet;
 
 	std::vector<Dimensions> pedCoords;
 	std::vector<Dimensions> goalCoords;
 	std::vector<Dimensions> velocities;
-
-    std::cout << "create calmpedset" << std::endl;
 
 	int numPeds = inputData.size();
 
@@ -47,15 +44,22 @@ CalmPedestrianSet EntitySetFactory::createCalmPedSet(ENTITY_SET inputData)
 	calmPedSet.setPedestrianCoordinates(pedCoords);
 	calmPedSet.setGoalCoordinates(goalCoords);
 	calmPedSet.setVelocities(velocities);
-	calmPedSet.setMasses(vectorStringToDouble(extractAttribute("mass", inputData)));
-	calmPedSet.setReactionTimes(vectorStringToDouble(extractAttribute("reaction_time", inputData)));
-    calmPedSet.setSpeeds(vectorStringToDouble(extractAttribute("speed", inputData)));
-	calmPedSet.setDesiredSpeeds(vectorStringToDouble(extractAttribute("desired_speed", inputData)));
-	calmPedSet.setPropulsionForces(vectorStringToDouble(extractAttribute("propulsion_force", inputData)));
-	calmPedSet.setRepulsionForces(vectorStringToDouble(extractAttribute("repulsion_force", inputData)));
+	calmPedSet.setMasses(
+        vectorStringToDouble(extractAttribute("mass", inputData)));
+	calmPedSet.setReactionTimes(
+        vectorStringToDouble(extractAttribute("reaction_time", inputData)));
+    calmPedSet.setSpeeds(
+        vectorStringToDouble(extractAttribute("speed", inputData)));
+	calmPedSet.setDesiredSpeeds(
+        vectorStringToDouble(extractAttribute("desired_speed", inputData)));
+	calmPedSet.setPropulsionForces(
+        vectorStringToDouble(extractAttribute("propulsion_force", inputData)));
+	calmPedSet.setRepulsionForces(
+        vectorStringToDouble(extractAttribute("repulsion_force", inputData)));
 	calmPedSet.setNumPedestrians(numPeds);
 
-	std::vector<FLOATING_NUMBER> floatNearestNeighbors = vectorStringToDouble(extractAttribute("nearest_neighbor", inputData));
+	std::vector<FLOATING_NUMBER> floatNearestNeighbors = 
+        vectorStringToDouble(extractAttribute("nearest_neighbor", inputData));
 	
 	std::vector<int> intNearestNeighbors(
 		floatNearestNeighbors.begin(), floatNearestNeighbors.end());
@@ -65,7 +69,7 @@ CalmPedestrianSet EntitySetFactory::createCalmPedSet(ENTITY_SET inputData)
 	return calmPedSet;	
 }
 
-ObstacleSet EntitySetFactory::createObstacleSet(ENTITY_SET inputData)
+ObstacleSet CalmEntitySetFactory::createObstacleSet(ENTITY_SET inputData)
 {
 	ObstacleSet obstacleSet;
 
@@ -88,13 +92,12 @@ ObstacleSet EntitySetFactory::createObstacleSet(ENTITY_SET inputData)
 	obstacleSet.setObstacleCoordinates(obsCoords);
 	obstacleSet.setNumObstacles(numObs);
 
-        std::cout << "return obstacleset" << std::endl;
 	return obstacleSet;
 }
 
 std::unordered_map<
-	std::string, FLOATING_NUMBER> EntitySetFactory::createSimulationParamsSet(
-        ENTITY_SET inputData)
+	std::string, FLOATING_NUMBER> 
+        CalmEntitySetFactory::createSimulationParamsSet(ENTITY_SET inputData)
 {
 	std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
 
@@ -120,20 +123,26 @@ std::unordered_map<
 			simulationParams["time_step"] = 
                 (FLOATING_NUMBER) std::stod(inputData[i]["time_step"]);
         }
-        else if(inputData[i].find("aligning_stop_threshold") != inputData[i].end())
+        else if(inputData[i].find("aligning_stop_threshold") 
+                != inputData[i].end())
         {
 	        simulationParams["aligning_stop_threshold"] = 
-		        (FLOATING_NUMBER) std::stod(inputData[i]["aligning_stop_threshold"]);
+		        (FLOATING_NUMBER) std::stod(
+                    inputData[i]["aligning_stop_threshold"]);
         }
-        else if(inputData[i].find("toward_aisle_stop_threshold") != inputData[i].end())
+        else if(inputData[i].find("toward_aisle_stop_threshold") 
+                != inputData[i].end())
         {
 	        simulationParams["toward_aisle_stop_threshold"] = 
-		        (FLOATING_NUMBER) std::stod(inputData[i]["toward_aisle_stop_threshold"]);
+		        (FLOATING_NUMBER) std::stod(
+                    inputData[i]["toward_aisle_stop_threshold"]);
         }
-        else if(inputData[i].find("in_aisle_stop_threshold") != inputData[i].end())
+        else if(inputData[i].find("in_aisle_stop_threshold") 
+                != inputData[i].end())
         {
             simulationParams["in_aisle_stop_threshold"] = 
-		        (FLOATING_NUMBER) std::stod(inputData[i]["in_aisle_stop_threshold"]);
+		        (FLOATING_NUMBER) std::stod(
+                    inputData[i]["in_aisle_stop_threshold"]);
         }
     }
 	
@@ -141,7 +150,7 @@ std::unordered_map<
 }
 
 
-std::vector<std::string> EntitySetFactory::extractAttribute(
+std::vector<std::string> CalmEntitySetFactory::extractAttribute(
     std::string attributeName, ENTITY_SET inputData)
 {
     std::vector<std::string> attributes;
@@ -154,7 +163,7 @@ std::vector<std::string> EntitySetFactory::extractAttribute(
     return attributes;
 }
 
-std::vector<FLOATING_NUMBER> EntitySetFactory::vectorStringToDouble(
+std::vector<FLOATING_NUMBER> CalmEntitySetFactory::vectorStringToDouble(
     std::vector<std::string> stringVec)
 {
     std::vector<FLOATING_NUMBER> floatVec;
