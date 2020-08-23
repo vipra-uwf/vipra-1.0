@@ -1,15 +1,14 @@
 #include <string>
 #include <iostream>
 
-#include "entity_sets/obstacle_set.hpp"
-#include "simulation/simulation.hpp"
 #include "readers/input_xml_reader.hpp"
 #include "writers/xml_writer.hpp"
-#include "models/calm_pedestrian_model.hpp"
-#include "entity_sets/calm_pedestrian_set.hpp"
 #include "writers/timestep_output_handler.hpp"
-
-#include "calm_entity_set_factory.hpp"
+#include "entity_sets/calm_pedestrian_set.hpp"
+#include "entity_sets/obstacle_set.hpp"
+#include "entity_sets/calm_entity_set_factory.hpp"
+#include "models/calm_pedestrian_model.hpp"
+#include "simulation/simulation.hpp"
 
 int main()
 {
