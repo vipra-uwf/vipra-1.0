@@ -14,9 +14,9 @@ typedef std::unordered_map<std::string, FLOATING_NUMBER> SIM_PARAMS;
 class EntitySetFactory
 {
     public:
-		virtual PedestrianSet createPedestrianSet(ENTITY_SET inputData) = 0;
-		virtual ObstacleSet createObstacleSet(ENTITY_SET inputData) = 0;
-		virtual SIM_PARAMS createSimulationParamsSet(ENTITY_SET inputData) = 0;
+		virtual PedestrianSet* createPedestrianSet(ENTITY_SET inputData) = 0;
+		virtual ObstacleSet* createObstacleSet(ENTITY_SET inputData) = 0;
+		virtual SIM_PARAMS* createSimulationParams(ENTITY_SET inputData) = 0;
 };
 
 #endif

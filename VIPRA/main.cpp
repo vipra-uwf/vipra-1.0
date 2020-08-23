@@ -16,9 +16,9 @@ int main()
     InputXMLReader inputXMLReader;
     XMLWriter xmlWriter;
 
-    CalmPedestrianSet calmPedSet;
-    ObstacleSet obstacleSet;
-    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
+    CalmPedestrianSet* calmPedSet;
+    ObstacleSet* obstacleSet;
+    SIM_PARAMS* simulationParams;
 	
     CalmEntitySetFactory entitySetFactory; 
     Data data;
@@ -43,12 +43,12 @@ int main()
         "./input_data/simulation_params.xml",
         "simulation-parameters");
     ENTITY_SET simParamsFileData = inputXMLReader.getInputEntities();
-	simulationParams = entitySetFactory.createSimulationParamsSet(
+	simulationParams = entitySetFactory.createSimulationParams(
 		simParamsFileData);
 
-    data.setPedestrianSet(&calmPedSet);
-    data.setObstacleSet(&obstacleSet);
-    data.setSimulationParams(&simulationParams);    
+    data.setPedestrianSet(calmPedSet);
+    data.setObstacleSet(obstacleSet);
+    data.setSimulationParams(simulationParams);    
 
     goals.setData(&data);
 
@@ -64,7 +64,7 @@ int main()
     
     Simulation simulation(&calmModel);
     
-    timestepOutputHandler.setPedestrianSet(&calmPedSet);
+    timestepOutputHandler.setPedestrianSet(calmPedSet);
     timestepOutputHandler.setOutputDataWriter(&xmlWriter);
     timestepOutputHandler.setTimestep(simulation.getTimestep()); 
     timestepOutputHandler.setOutputWritingFrequency(250);
@@ -73,6 +73,10 @@ int main()
     simulation.run();
 
     xmlWriter.writeDocumentContents();
+
+    delete calmPedSet;
+    delete obstacleSet;
+    delete simulationParams;
 
     return 0;
 }

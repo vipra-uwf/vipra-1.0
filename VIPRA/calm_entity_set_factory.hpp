@@ -16,9 +16,9 @@ class CalmEntitySetFactory : public EntitySetFactory
             std::vector<std::string> stringVec);
 	
     public:
-		virtual PedestrianSet createPedestrianSet(ENTITY_SET inputData);
-		virtual ObstacleSet createObstacleSet(ENTITY_SET inputData);
-		virtual SIM_PARAMS createSimulationParamsSet(ENTITY_SET inputData);
+		virtual CalmPedestrianSet* createPedestrianSet(ENTITY_SET inputData);
+		virtual ObstacleSet* createObstacleSet(ENTITY_SET inputData);
+		virtual SIM_PARAMS* createSimulationParams(ENTITY_SET inputData);
 };
 
 #endif

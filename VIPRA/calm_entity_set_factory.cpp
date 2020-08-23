@@ -1,9 +1,9 @@
 #include "calm_entity_set_factory.hpp"
 		
-PedestrianSet CalmEntitySetFactory::createPedestrianSet(
+CalmPedestrianSet* CalmEntitySetFactory::createPedestrianSet(
     ENTITY_SET inputData)
 {
-	CalmPedestrianSet calmPedSet;
+	CalmPedestrianSet* calmPedSet = new CalmPedestrianSet;
 
 	std::vector<Dimensions> pedCoords;
 	std::vector<Dimensions> goalCoords;
@@ -41,22 +41,22 @@ PedestrianSet CalmEntitySetFactory::createPedestrianSet(
         );
     }
 
-	calmPedSet.setPedestrianCoordinates(pedCoords);
-	calmPedSet.setGoalCoordinates(goalCoords);
-	calmPedSet.setVelocities(velocities);
-	calmPedSet.setMasses(
+	calmPedSet->setPedestrianCoordinates(pedCoords);
+	calmPedSet->setGoalCoordinates(goalCoords);
+	calmPedSet->setVelocities(velocities);
+	calmPedSet->setMasses(
         vectorStringToDouble(extractAttribute("mass", inputData)));
-	calmPedSet.setReactionTimes(
+	calmPedSet->setReactionTimes(
         vectorStringToDouble(extractAttribute("reaction_time", inputData)));
-    calmPedSet.setSpeeds(
+    calmPedSet->setSpeeds(
         vectorStringToDouble(extractAttribute("speed", inputData)));
-	calmPedSet.setDesiredSpeeds(
+	calmPedSet->setDesiredSpeeds(
         vectorStringToDouble(extractAttribute("desired_speed", inputData)));
-	calmPedSet.setPropulsionForces(
+	calmPedSet->setPropulsionForces(
         vectorStringToDouble(extractAttribute("propulsion_force", inputData)));
-	calmPedSet.setRepulsionForces(
+	calmPedSet->setRepulsionForces(
         vectorStringToDouble(extractAttribute("repulsion_force", inputData)));
-	calmPedSet.setNumPedestrians(numPeds);
+	calmPedSet->setNumPedestrians(numPeds);
 
 	std::vector<FLOATING_NUMBER> floatNearestNeighbors = 
         vectorStringToDouble(extractAttribute("nearest_neighbor", inputData));
@@ -64,14 +64,14 @@ PedestrianSet CalmEntitySetFactory::createPedestrianSet(
 	std::vector<int> intNearestNeighbors(
 		floatNearestNeighbors.begin(), floatNearestNeighbors.end());
 	
-	calmPedSet.setNearestNeighbors(intNearestNeighbors);
+	calmPedSet->setNearestNeighbors(intNearestNeighbors);
 
 	return calmPedSet;	
 }
 
-ObstacleSet CalmEntitySetFactory::createObstacleSet(ENTITY_SET inputData)
+ObstacleSet* CalmEntitySetFactory::createObstacleSet(ENTITY_SET inputData)
 {
-	ObstacleSet obstacleSet;
+	ObstacleSet* obstacleSet = new ObstacleSet;
 
 	std::vector<Dimensions> obsCoords;
 	
@@ -89,58 +89,56 @@ ObstacleSet CalmEntitySetFactory::createObstacleSet(ENTITY_SET inputData)
         );
 	}
 
-	obstacleSet.setObstacleCoordinates(obsCoords);
-	obstacleSet.setNumObstacles(numObs);
+	obstacleSet->setObstacleCoordinates(obsCoords);
+	obstacleSet->setNumObstacles(numObs);
 
 	return obstacleSet;
 }
 
-std::unordered_map<
-	std::string, FLOATING_NUMBER> 
-        CalmEntitySetFactory::createSimulationParamsSet(ENTITY_SET inputData)
+SIM_PARAMS* CalmEntitySetFactory::createSimulationParams(ENTITY_SET inputData)
 {
-	std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
+	SIM_PARAMS* simulationParams = new SIM_PARAMS;
 
     for(long unsigned int i = 0; i < inputData.size(); ++i)
     {
         if(inputData[i].find("luggage") != inputData[i].end())
         {
-	        simulationParams["luggage"] = 
+	        (*simulationParams)["luggage"] = 
                 (FLOATING_NUMBER) std::stod(inputData[i]["luggage"]);
         }
         else if(inputData[i].find("exit_door_x") != inputData[i].end())
         {
-            simulationParams["exit_door_x"] = 
+            (*simulationParams)["exit_door_x"] = 
                 (FLOATING_NUMBER) std::stod(inputData[i]["exit_door_x"]);
         }
         else if(inputData[i].find("exit_door_y") != inputData[i].end())
         {
-            simulationParams["exit_door_y"] =
+            (*simulationParams)["exit_door_y"] =
                 (FLOATING_NUMBER) std::stod(inputData[i]["exit_door_y"]);
         }
         else if(inputData[i].find("time_step") != inputData[i].end())
         {
-			simulationParams["time_step"] = 
+			(*simulationParams)["time_step"] = 
                 (FLOATING_NUMBER) std::stod(inputData[i]["time_step"]);
         }
         else if(inputData[i].find("aligning_stop_threshold") 
                 != inputData[i].end())
         {
-	        simulationParams["aligning_stop_threshold"] = 
+	        (*simulationParams)["aligning_stop_threshold"] = 
 		        (FLOATING_NUMBER) std::stod(
                     inputData[i]["aligning_stop_threshold"]);
         }
         else if(inputData[i].find("toward_aisle_stop_threshold") 
                 != inputData[i].end())
         {
-	        simulationParams["toward_aisle_stop_threshold"] = 
+	        (*simulationParams)["toward_aisle_stop_threshold"] = 
 		        (FLOATING_NUMBER) std::stod(
                     inputData[i]["toward_aisle_stop_threshold"]);
         }
         else if(inputData[i].find("in_aisle_stop_threshold") 
                 != inputData[i].end())
         {
-            simulationParams["in_aisle_stop_threshold"] = 
+            (*simulationParams)["in_aisle_stop_threshold"] = 
 		        (FLOATING_NUMBER) std::stod(
                     inputData[i]["in_aisle_stop_threshold"]);
         }
