@@ -36,6 +36,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         void calculateNearestNeighbors();
         bool neighborDirectionTest(
             int firstPedIndex, int secondPedIndex, std::string originSet);
+        void calculatePriortiy();
 };
 
 #endif

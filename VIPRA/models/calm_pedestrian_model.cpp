@@ -31,6 +31,7 @@ void CalmPedestrianModel::precompute()
     this->goals->determinePedestrianGoals();
     calculatePropulsion();
     calculateRepulsion();
+    calculatePriortiy();
 }
 
 void CalmPedestrianModel::update()
@@ -253,4 +254,130 @@ bool CalmPedestrianModel::neighborDirectionTest(
     }
 
     return pass;
+}
+
+void CalmPedestrianModel::calculatePriortiy()
+{
+    CalmPedestrianSet* pedSet = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
+    
+    ObstacleSet* obSet = dynamic_cast<ObstacleSet*>(
+        this->data->getObstacleSet());
+    
+    std::vector<Dimensions>* pedCoords = pedSet->getPedestrianCoordinates();
+    std::vector<Dimensions>* obCoords = obSet->getObstacleCoordinates();
+
+    std::vector<FLOATING_NUMBER> Aisles;
+    std::vector<FLOATING_NUMBER> AisleSize;
+    int numAisles = 0;
+
+    for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
+    {
+        bool duplicateCheck = true;
+        if(i == 0)
+        {
+            Aisles.push_back((*pedCoords)[i].coordinates[0]);
+            ++numAisles;
+        }
+
+        else
+        {
+            for(int j = 0; j < numAisles; ++j)
+            {
+                if((*pedCoords)[i].coordinates[0] == Aisles[j])
+                {
+                    duplicateCheck = false;
+                }
+            }
+
+            if(duplicateCheck == true)
+            {
+                Aisles.push_back((*pedCoords)[i].coordinates[0]);
+                ++numAisles;
+            }
+        }
+    }
+
+    for (int i = 0; i < numAisles; ++i)
+    {
+        std::cout << "Aisle " << i << ": " << Aisles[i] << std::endl;
+    }
+
+    for(int i = 0; i < numAisles; ++i)
+    {
+        FLOATING_NUMBER backOfAisle = -1;
+        FLOATING_NUMBER frontOfAisle = -1;
+        for(int j = 0; j < obSet->getNumObstacles(); ++j)
+        {
+            if((*obCoords)[j].coordinates[0] > Aisles[i])
+            {
+                if((*obCoords)[j].coordinates[1] < 1.73 && (*obCoords)[j]
+                    .coordinates[1] > -1.73)                                //TODO fix this so it's not hard coded! - Elizabeth
+                {
+                    if(frontOfAisle == -1)
+                    {
+                        frontOfAisle = (*obCoords)[j].coordinates[0];
+                    }
+
+                    else if(((*obCoords)[j].coordinates[0] - Aisles[i])
+                        < (frontOfAisle - Aisles[i]))
+                    {
+                        frontOfAisle = (*obCoords)[j].coordinates[0];
+                    }
+                }
+
+            }
+
+            else if((*obCoords)[j].coordinates[0] < Aisles[i])
+            {
+                if((*obCoords)[j].coordinates[1] < 1.73 
+                    && (*obCoords)[j].coordinates[1] > -1.73)
+                {
+                    if(backOfAisle == -1)
+                    {
+                        backOfAisle = (*obCoords)[j].coordinates[0];
+                    }
+
+                    else if((Aisles[i] - (*obCoords)[j].coordinates[0]) 
+                        < (Aisles[i] - backOfAisle))
+                    {
+                        backOfAisle = (*obCoords)[j].coordinates[0];
+                    }
+                }
+
+            }
+        }
+        std::cout << "Aisle " << i << " back" << backOfAisle 
+            << ": front " << frontOfAisle << std::endl;
+            
+        AisleSize.push_back(frontOfAisle-backOfAisle);
+    }
+
+    for (int i = 0; i < numAisles; ++i)
+    {
+        std::cout << "Aisle size" << i << ": " << AisleSize[i] << std::endl;
+    }
+
+    std::vector<FLOATING_NUMBER> priority;
+
+     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
+     {
+        bool prioritySet = false;
+        for(int j = 0; prioritySet == false && j < numAisles; ++j)
+        {
+            if((*pedCoords)[i].coordinates[0] < (Aisles[j] + (AisleSize[j]/2))
+            &&(*pedCoords)[i].coordinates[0] > (Aisles[j] - (AisleSize[j]/2)))
+            {
+                priority.push_back(j);
+                break;
+            }
+        }
+     }
+
+     pedSet->setPriority(priority);
+
+     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
+     {
+         std::cout << "Ped " << i << " priority: " << priority[i] << std::endl;
+     }
 }

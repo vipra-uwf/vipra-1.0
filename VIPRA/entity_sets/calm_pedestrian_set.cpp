@@ -78,6 +78,11 @@ std::vector<std::pair<std::string, int>>* CalmPedestrianSet::getNearestNeighbors
     return &this->nearestNeighbors;
 }
 
+std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPriortiy()
+{
+    return &this->priority;
+}
+
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
 {
    this->numPedestrians = numPedestrians; 
@@ -139,4 +144,9 @@ void CalmPedestrianSet::setRepulsionForces(
 void CalmPedestrianSet::setNearestNeighbors(std::vector<std::pair<std::string, int>> nearestNeighbors)
 {
    this->nearestNeighbors = nearestNeighbors; 
+}
+
+void CalmPedestrianSet::setPriority(std::vector<FLOATING_NUMBER> priority)
+{
+    this->priority = priority;
 }
