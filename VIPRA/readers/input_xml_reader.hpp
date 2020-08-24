@@ -1,5 +1,5 @@
-#ifndef XML_READER_HPP
-#define XML_READER_HPP
+#ifndef INPUT_XML_READER_HPP
+#define INPUT_XML_READER_HPP
 
 #include <iostream>
 #include <vector>
@@ -14,32 +14,29 @@
 #include "../simulation/data.hpp"
 #include "../dimensions.hpp"
 
-class XMLReader: public InputDataLoader
+class InputXMLReader: public InputDataLoader
 {
     private:
         std::ifstream fileStream;      
         std::vector<char> fileContents;
-        std::string rootNodeName;
-        std::string dataNodeName;
+        std::string rootElementName;
+        std::string dataElementName;
         rapidxml::xml_document<> document;
-        rapidxml::xml_node<>* rootNode;
-        rapidxml::xml_node<>* dataNode;
+        rapidxml::xml_node<>* rootElement;
+        rapidxml::xml_node<>* traversalElement;
 
         void openFile(std::string fileName);
         void readFile();
-        void setRootNodeName(std::string rootNodeName);
-        void initializeRootNode();
-        void initializeDataNode();
+        void initializeTraversalElement();
         void parseXMLDocument();
 
     public:
 		
-        virtual std::unordered_map<
-			std::string, std::vector<FLOATING_NUMBER>> getFloatInputData();
+        virtual ENTITY_SET getInputEntities();
 
         void extractFileData(
             std::string fileName, 
-            std::string rootNodeName);
+            std::string rootElementName);
 };
 
 #endif

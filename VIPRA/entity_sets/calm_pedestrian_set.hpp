@@ -43,6 +43,8 @@ class CalmPedestrianSet: public PedestrianSet
         virtual void setSpeeds(
 				std::vector<FLOATING_NUMBER> speedsMetersPerSecond);
 
+        // virtual ~CalmPedestrianSet();
+
         std::vector<FLOATING_NUMBER>* getMasses();
         std::vector<FLOATING_NUMBER>* getReactionTimes();
         std::vector<FLOATING_NUMBER>* getDesiredSpeeds();
