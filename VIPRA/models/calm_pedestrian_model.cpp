@@ -347,7 +347,7 @@ void CalmPedestrianModel::calculatePriortiy()
 
             }
         }
-        std::cout << "Aisle " << i << " back" << backOfAisle 
+        std::cout << "Aisle " << i << " back" << backOfAisle
             << ": front " << frontOfAisle << std::endl;
             
         AisleSize.push_back(frontOfAisle-backOfAisle);
