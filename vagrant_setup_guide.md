@@ -6,26 +6,30 @@
 
 3. Restart computer
 
-4. Verify local VIPRA repo is up to date
-
-5. Create and configure VM
+4. Create and configure VM
 `username@hostname:~/vipra$ vagrant up`
 
-6. Log in to VM 
+5. Connect to VM
+`username@hostname:~/vipra$ vagrant ssh`
+
+6. Log in to VM
 `username: vagrant | password : vagrant`
 
 7. Clone VIPRA repository
-`vagrant@kali:~$ git clone https://github.com/vipra-uwf/vipra.git`
+`vagrant@debian10:~$ git clone https://github.com/vipra-uwf/vipra.git`
 
-8. Navigate to VIPRA directory 
-`vagrant@kali:~$ cd vipra/VIPRA`
+8. Navigate to VIPRA directory
+`vagrant@debian10:~$ cd vipra/VIPRA`
 
-9. Compile and execute VIPRA program 
-`vagrant@kali:~/vipra/VIPRA$ make ccr`
+9. Compile and execute VIPRA program
+`vagrant@debian10:~/vipra/VIPRA$ make ccr`
 
 ---
 
 ## Additional commands
+
+Disconnect from VM
+`vagrant@debian10:~/vipra/VIPRA$ exit`
 
 Shutdown VM
 `username@hostname:~/vipra$ vagrant halt`
