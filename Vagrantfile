@@ -18,12 +18,8 @@ Vagrant.configure("2") do |config|
 	#only runs the first time the vm boots (will run again after a vagrant destroy)
 	config.vm.provision :shell, inline: <<-SHELL #run: 'always'
 		#set -x #echo on
-		echo Setting up boost...
-		sudo apt-get install libboost-dev
-
-		echo Setting up VIPRA repo
-		mkdir /home/vagrant/Documents/repos
-		git clone https://github.com/vipra-uwf/vipra.git /home/vagrant/Documents/repos
+		echo "$(tput setaf 6)$(tput bold)Setting up boost... $(tput sgr 0)"
+		sudo apt-get install libboost-dev -y
 
 			#ssh key stuff, not working yet
 		#mkdir -p ~/.ssh
