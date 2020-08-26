@@ -1,18 +1,17 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -g -Wall
+NAME = "main"
 
 BUILD_DIR = build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o) 
 
-#rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
 compile: setup directories main
 
 main: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
-	#$(call rwildcard,src,*.c *.h)
-
+	$(CXX) $(CXXFLAGS) -o $(NAME) $^
+	
 $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -32,17 +31,21 @@ directories:
 	
 .PHONY: directories
 
+run: compile # compile if needed & run
+	./$(NAME)
+
 clean:
-	$(RM) *.o *.exe main
+	$(RM) *.o *.exe $(NAME)
 	$(RM) -rf $(BUILD_DIR)
+
+cc: clean compile # clean compile
+
+ccr: clean run # clean & compile & run
 
 co: #clear output folder
 	$(RM) output_data/*
 
-cc: clean compile # clean compile
 
-cr: compile # compile & run
-	./main
 
-ccr: clean compile # clean compile & run
-	./main
+
+

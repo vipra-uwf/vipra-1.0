@@ -6,12 +6,12 @@ NAME = "RunAnim"
 compile: main.cpp ../../VIPRA/readers/input_xml_reader.cpp ../../VIPRA/simulation/data.cpp ../../VIPRA/entity_sets/obstacle_set.cpp
 	$(CXX) $(CXXFLAGS) -o $(NAME) $^ $(MOREFLAGS)
 
-run: compile
+run: compile # compile if needed & run
 	./$(NAME)
 
 clean:
 	$(RM) $(NAME)
 
-cc: clean compile
+cc: clean compile # clean & compile
 
-ccr: clean compile run
+ccr: clean run # clean & compile & run
