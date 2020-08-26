@@ -2,8 +2,8 @@
 #define CALM_ENTITY_SET_FACTORY_HPP
 
 #include "entity_set_factory.hpp"
-#include "calm_pedestrian_set.hpp"
-#include "../dimensions.hpp"
+#include "../calm_pedestrian_set.hpp"
+#include "../../dimensions.hpp"
 
 class CalmEntitySetFactory : public EntitySetFactory
 {
