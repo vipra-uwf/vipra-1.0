@@ -2,13 +2,16 @@ CXX = g++
 CXXFLAGS = -std=c++11 -g -Wall
 
 BUILD_DIR = build
-SRCS = $(wildcard *.cpp) $(wildcard */*.cpp)
+SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o) 
+
+#rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
 compile: setup directories main
 
 main: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
+	#$(call rwildcard,src,*.c *.h)
 
 $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -20,6 +23,7 @@ setup:
 directories:
 	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(BUILD_DIR)/entity_sets
+	@mkdir -p $(BUILD_DIR)/entity_sets/factory
 	@mkdir -p $(BUILD_DIR)/goals
 	@mkdir -p $(BUILD_DIR)/models
 	@mkdir -p $(BUILD_DIR)/readers
