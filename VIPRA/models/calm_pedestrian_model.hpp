@@ -7,28 +7,28 @@
 
 #include "pedestrian_dynamics_model.hpp"
 #include "../simulation/data.hpp"
-#include "../goals/calm_goal.hpp"
+#include "../goals/calm_goals.hpp"
+#include "../entity_sets/calm_pedestrian_set.hpp"
 
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     private:
         Data* data;
-        CalmGoal* goal;
+        Goals* goals;
         const FLOATING_NUMBER a = -2.111;
         const FLOATING_NUMBER b = 0.366;
         const FLOATING_NUMBER c = 0.966;
     
     public:
         virtual void setData(Data* initialData);
-        virtual void setGoal(CalmGoal* goal);
+        virtual void setGoals(Goals* goal);
         virtual Data* getData();
-        virtual CalmGoal* getGoal();
+        virtual Goals* getGoals();
         virtual void precompute();
         virtual void update();
 
         void calculatePropulsion();
         void calculateRepulsion();
-        // TODO the param names for these functions feel inconsistent -- alex
         FLOATING_NUMBER calculateDistance(
             int firstPedIndex, int secondPedIndex);
         FLOATING_NUMBER calculateBeta(int pedIndex);

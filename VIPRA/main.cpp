@@ -1,40 +1,59 @@
 #include <string>
 #include <iostream>
 
-#include "simulation/simulation.hpp"
-#include "readers/xml_reader.hpp"
+#include "readers/input_xml_reader.hpp"
 #include "writers/xml_writer.hpp"
-#include "models/calm_pedestrian_model.hpp"
-#include "entity_sets/calm_pedestrian_set.hpp"
 #include "writers/timestep_output_handler.hpp"
+#include "entity_sets/calm_pedestrian_set.hpp"
+#include "entity_sets/obstacle_set.hpp"
+#include "entity_sets/calm_entity_set_factory.hpp"
+#include "models/calm_pedestrian_model.hpp"
+#include "simulation/simulation.hpp"
 
 int main()
 {
-    CalmPedestrianSet calmPedSet;
-    Data data;
-    CalmGoal goal;
-    data.setPedestrianSet(&calmPedSet);
+    InputXMLReader inputXMLReader;
+    XMLWriter xmlWriter;
+
+    CalmPedestrianSet* calmPedSet;
+    ObstacleSet* obstacleSet;
+    SIM_PARAMS* simulationParams;
 	
-    XMLReader xmlReader;
-    xmlReader.storeData(&data);
+    CalmEntitySetFactory entitySetFactory; 
+    Data data;
 
-    goal.addExitGoal(data.getSimulationParams());
-    goal.calculateNearestExit(&data);
+    CalmGoals goals;
+	CalmPedestrianModel calmModel;
+    TimestepOutputHandler timestepOutputHandler;
+	
+    inputXMLReader.extractFileData(
+        "./input_data/a320_144_pedestrians.xml", 
+        "pedestrian-set");
+    ENTITY_SET pedInputFileData = inputXMLReader.getInputEntities();
+	calmPedSet = entitySetFactory.createPedestrianSet(pedInputFileData);
 
-    CalmPedestrianModel calmModel;
-    calmModel.setData(&data);
-    calmModel.setGoal(&goal);
+    inputXMLReader.extractFileData(
+        "./input_data/a320_144_obstacles.xml",
+        "obstacle-set");
+    ENTITY_SET obsInputFileData = inputXMLReader.getInputEntities();
+	obstacleSet = entitySetFactory.createObstacleSet(obsInputFileData);
 
-    goal.determinePedestrianGoals(&data);
+    inputXMLReader.extractFileData(
+        "./input_data/simulation_params.xml",
+        "simulation-parameters");
+    ENTITY_SET simParamsFileData = inputXMLReader.getInputEntities();
+	simulationParams = entitySetFactory.createSimulationParams(
+		simParamsFileData);
 
-    //DELETE WHEN DONE
-    for(int i = 0; i < calmPedSet.getNumPedestrians(); ++i)
-    {
-        std::cout << "ped: " << i << "goal x:" <<calmPedSet.getGoalCoordinates()->at(i).coordinates[0];
-        std::cout << "  goal y:" << calmPedSet.getGoalCoordinates()->at(i).coordinates[1] << std::endl;
-    }
+    data.setPedestrianSet(calmPedSet);
+    data.setObstacleSet(obstacleSet);
+    data.setSimulationParams(simulationParams);    
 
-    XMLWriter xmlWriter; 
+    goals.setData(&data);
+
+	calmModel.setData(&data);
+    calmModel.setGoals(&goals);
+    
     xmlWriter.configureXMLDocumentStructure(
 			"./output_data/pedestrian_trajectory.xml", 
 			"pedestrian-set", 
@@ -44,16 +63,20 @@ int main()
     
     Simulation simulation(&calmModel);
     
-    TimestepOutputHandler timestepOutputHandler;
-    timestepOutputHandler.setPedestrianSet(&calmPedSet);
+    timestepOutputHandler.setPedestrianSet(calmPedSet);
     timestepOutputHandler.setOutputDataWriter(&xmlWriter);
     timestepOutputHandler.setTimestep(simulation.getTimestep()); 
     timestepOutputHandler.setOutputWritingFrequency(250);
-
+    
     simulation.setSimulationOutputHandler(&timestepOutputHandler);
     simulation.run();
 
     xmlWriter.writeDocumentContents();
+
+    //deleting polymorphic class which has non-virtual destructor might cause undefined behavior
+    //delete calmPedSet;
+    delete obstacleSet;
+    delete simulationParams;
 
     return 0;
 }
