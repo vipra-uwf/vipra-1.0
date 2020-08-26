@@ -3,8 +3,8 @@
     //time
     //state of the obstacles and pedestrians
 
-#ifndef GOAL_HPP
-#define GOAL_HPP 
+#ifndef GOALS_HPP
+#define GOALS_HPP 
 
 #include <vector>
 #include <algorithm>
@@ -17,17 +17,19 @@
 #include "../dimensions.hpp"
 
 //name change - Goals
-class Goal
+class Goals
 {
 
     public:
-        virtual void addExitGoal(std::unordered_map<std::string, FLOATING_NUMBER>* simulationParams) = 0;
+        virtual void setData(Data* data) = 0;
+        virtual void addExitGoal(std::unordered_map<std::string,
+            FLOATING_NUMBER>* simulationParams) = 0;
         virtual void removeExitGoal(int exitIndex) = 0;
         virtual void clearGoals() = 0;
-        virtual void calculateNearestExit(Data* data) = 0;
-        virtual void determinePedestrianGoals(Data* data) = 0;
-        virtual bool checkPedestianGoalsMet(Data* data, int pedestrianIndex) = 0; // added these two methods 
-        virtual bool isSimulationGoalMet(Data* data) = 0; // added these two methods 
+        virtual void calculateNearestExit() = 0;
+        virtual void determinePedestrianGoals() = 0;
+        virtual bool checkPedestianGoalsMet(int pedestrianIndex) = 0; 
+        virtual bool isSimulationGoalMet() = 0; 
 };
 
 #endif

@@ -2,12 +2,16 @@
 #define INPUT_DATALOADER_HPP
 
 #include "../simulation/data.hpp"
-#include "../goals/goal.hpp"
+#include "../type_definitions.hpp"
+#include <unordered_map>
+#include <vector>
+
+typedef std::vector<std::unordered_map<std::string, std::string>> ENTITY_SET;
 
 class InputDataLoader
 {
     public:
-        virtual void storeData(Data* data) = 0;
+		virtual ENTITY_SET getInputEntities() = 0;
 };
 
 #endif

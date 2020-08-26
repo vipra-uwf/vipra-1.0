@@ -5,9 +5,9 @@ void CalmPedestrianModel::setData(Data* initialData)
     this->data = initialData;
 }
 
-void CalmPedestrianModel::setGoal(CalmGoal* goal)
+void CalmPedestrianModel::setGoals(Goals* goals)
 {
-    this->goal = goal;
+    this->goals = goals;
 }
 
 Data* CalmPedestrianModel::getData()
@@ -15,9 +15,9 @@ Data* CalmPedestrianModel::getData()
     return this->data;
 }
 
-CalmGoal* CalmPedestrianModel::getGoal()
+Goals* CalmPedestrianModel::getGoals()
 {
-    return this->goal;
+    return this->goals;
 }
 
 void CalmPedestrianModel::precompute()
@@ -28,10 +28,9 @@ void CalmPedestrianModel::precompute()
     //result needs to be stored for each passenger
 
     calculateNearestNeighbors();
-    goal->determinePedestrianGoals(data);
+    this->goals->determinePedestrianGoals();
     calculatePropulsion();
     calculateRepulsion();
-
 }
 
 void CalmPedestrianModel::update()
@@ -42,7 +41,8 @@ void CalmPedestrianModel::update()
 
 void CalmPedestrianModel::calculatePropulsion()
 {
-    PedestrianSet* set = this->data->getPedestrianSet();
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
 
     for(int i = 0; i < set->getNumPedestrians(); ++i)
     {
@@ -60,7 +60,8 @@ void CalmPedestrianModel::calculatePropulsion()
 
 void CalmPedestrianModel::calculateRepulsion()
 {
-    PedestrianSet* set = this->data->getPedestrianSet();
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
 
     for(int i = 0; i < set->getNumPedestrians(); ++i)
     {
@@ -79,8 +80,11 @@ void CalmPedestrianModel::calculateRepulsion()
 
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
 {
-    int nearestNeighhborIndex = (*this->data->getPedestrianSet()->
-                                getNearestNeighbors())[pedIndex];
+	
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
+
+    int nearestNeighhborIndex = (*set->getNearestNeighbors())[pedIndex];
 
     FLOATING_NUMBER distance = calculateDistance(
         pedIndex, 
@@ -92,7 +96,8 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
     int firstPedIndex, int secondPedIndex)
 {
-    PedestrianSet* set = this->data->getPedestrianSet();
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
     std::vector<Dimensions>* coords = set->getPedestrianCoordinates();
 
     FLOATING_NUMBER xDistance = pow(
@@ -114,7 +119,8 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
 
 void CalmPedestrianModel::calculateNearestNeighbors()
 {
-    PedestrianSet* set = this->data->getPedestrianSet();
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
 
     for (int i = 0; i < set->getNumPedestrians(); ++i)
     {

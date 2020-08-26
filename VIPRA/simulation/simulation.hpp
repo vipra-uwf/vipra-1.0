@@ -8,6 +8,8 @@
 #include "../models/pedestrian_dynamics_model.hpp"
 #include "clock.hpp"
 
+#include "../entity_sets/calm_pedestrian_set.hpp" // this will be deleted when printDataDELETETHIS is deleted
+
 class Simulation
 {
     private:
@@ -25,6 +27,7 @@ class Simulation
             SimulationOutputHandler* simulationOutputHandler);
         int* getTimestep();
         void printDataDELETETHIS();
+        void testGoalClassDELETETHIS();
 };
 
 #endif
