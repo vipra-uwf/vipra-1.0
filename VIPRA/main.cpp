@@ -1,60 +1,53 @@
 #include <string>
 #include <iostream>
 
-#include "entity_sets/obstacle_set.hpp"
-#include "simulation/simulation.hpp"
-#include "readers/xml_reader.hpp"
+#include "readers/input_xml_reader.hpp"
 #include "writers/xml_writer.hpp"
-#include "models/calm_pedestrian_model.hpp"
-#include "entity_sets/calm_pedestrian_set.hpp"
 #include "writers/timestep_output_handler.hpp"
-
-#include "data_set_factory.hpp"
+#include "entity_sets/calm_pedestrian_set.hpp"
+#include "entity_sets/obstacle_set.hpp"
+#include "entity_sets/calm_entity_set_factory.hpp"
+#include "models/calm_pedestrian_model.hpp"
+#include "simulation/simulation.hpp"
 
 int main()
 {
-    XMLReader xmlReader;
+    InputXMLReader inputXMLReader;
     XMLWriter xmlWriter;
 
-    CalmPedestrianSet calmPedSet;
-    ObstacleSet obstacleSet;
-    std::unordered_map<std::string, FLOATING_NUMBER> simulationParams;
+    CalmPedestrianSet* calmPedSet;
+    ObstacleSet* obstacleSet;
+    SIM_PARAMS* simulationParams;
 	
-    DataSetFactory dataSetFactory; 
+    CalmEntitySetFactory entitySetFactory; 
     Data data;
 
     CalmGoals goals;
 	CalmPedestrianModel calmModel;
     TimestepOutputHandler timestepOutputHandler;
 	
-    xmlReader.extractFileData(
+    inputXMLReader.extractFileData(
         "./input_data/a320_144_pedestrians.xml", 
         "pedestrian-set");
-    std::unordered_map<
-        std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = 
-			xmlReader.getFloatInputData();
-	calmPedSet = dataSetFactory.createCalmPedSet(pedInputFileData);
+    ENTITY_SET pedInputFileData = inputXMLReader.getInputEntities();
+	calmPedSet = entitySetFactory.createPedestrianSet(pedInputFileData);
 
-    xmlReader.extractFileData(
+    inputXMLReader.extractFileData(
         "./input_data/a320_144_obstacles.xml",
         "obstacle-set");
-    std::unordered_map<
-		std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = 
-			xmlReader.getFloatInputData();
-	obstacleSet = dataSetFactory.createObstacleSet(obsInputFileData);
+    ENTITY_SET obsInputFileData = inputXMLReader.getInputEntities();
+	obstacleSet = entitySetFactory.createObstacleSet(obsInputFileData);
 
-    xmlReader.extractFileData(
+    inputXMLReader.extractFileData(
         "./input_data/simulation_params.xml",
         "simulation-parameters");
-    std::unordered_map<
-		std::string, std::vector<FLOATING_NUMBER>> simParamsFileData = 
-			xmlReader.getFloatInputData();
-	simulationParams = dataSetFactory.createSimulationParamsSet(
+    ENTITY_SET simParamsFileData = inputXMLReader.getInputEntities();
+	simulationParams = entitySetFactory.createSimulationParams(
 		simParamsFileData);
 
-    data.setPedestrianSet(&calmPedSet);
-    data.setObstacleSet(&obstacleSet);
-    data.setSimulationParams(&simulationParams);    
+    data.setPedestrianSet(calmPedSet);
+    data.setObstacleSet(obstacleSet);
+    data.setSimulationParams(simulationParams);    
 
     goals.setData(&data);
 
@@ -71,7 +64,7 @@ int main()
     
     Simulation simulation(&calmModel);
     
-    timestepOutputHandler.setPedestrianSet(&calmPedSet);
+    timestepOutputHandler.setPedestrianSet(calmPedSet);
     timestepOutputHandler.setOutputDataWriter(&xmlWriter);
     timestepOutputHandler.setTimestep(simulation.getTimestep()); 
     timestepOutputHandler.setOutputWritingFrequency(250);
@@ -80,6 +73,11 @@ int main()
     simulation.run();
 
     xmlWriter.writeDocumentContents();
+
+    //deleting polymorphic class which has non-virtual destructor might cause undefined behavior
+    //delete calmPedSet;
+    delete obstacleSet;
+    delete simulationParams;
 
     return 0;
 }

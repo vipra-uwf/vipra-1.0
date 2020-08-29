@@ -29,7 +29,6 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 
         void calculatePropulsion();
         void calculateRepulsion();
-        // TODO the param names for these functions feel inconsistent -- alex
         FLOATING_NUMBER calculateDistance(
             int firstPedIndex, int secondPedIndex, std::string originSet);
         FLOATING_NUMBER calculateBeta(int pedIndex);

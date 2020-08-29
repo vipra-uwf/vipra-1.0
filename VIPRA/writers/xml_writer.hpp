@@ -17,11 +17,11 @@ class XMLWriter: public OutputDataWriter
     private:
         Data* data;
         std::ofstream fileStream;
-        std::string rootNodeName;
-        std::string dataNodeName;
+        std::string rootElementName;
+        std::string dataElementName;
         int numDataNodes;
         rapidxml::xml_document<> document;
-        rapidxml::xml_node<>* rootNode;
+        rapidxml::xml_node<>* rootElement;
         rapidxml::xml_node<>* currentNode;
 
         void openFile(std::string fileName);
@@ -33,13 +33,13 @@ class XMLWriter: public OutputDataWriter
  
         void appendDataNodeAttribute(
             rapidxml::xml_node<>* node, std::string key, std::string value);
-        void writeFloatDataSet(
-            std::string key, std::vector<FLOATING_NUMBER> dataSet);
-        void writeStringDataSet(
-            std::string key, std::vector<std::string> dataSet);
+        void writeFloatCalmEntitySet(
+            std::string key, std::vector<FLOATING_NUMBER> entitySet);
+        void writeStringCalmEntitySet(
+            std::string key, std::vector<std::string> entitySet);
         
-        void setRootNodeName(std::string rootNodeName);
-        void setDataNodeName(std::string dataNodeName);
+        void setRootNodeName(std::string rootElementName);
+        void setDataNodeName(std::string dataElementName);
         void setData(Data* initialData);
         void setNumDataNodes(int numDataNodes);
               
@@ -47,7 +47,7 @@ class XMLWriter: public OutputDataWriter
         XMLWriter();
         void configureXMLDocumentStructure(
             std::string fileName, 
-            std::string rootNodeName, std::string dataNodeName, 
+            std::string rootElementName, std::string dataElementName, 
             std::string versionNum, std::string encodingType);
         virtual void writeData(Data* data);
         virtual void writeFloatData(std::string key, FLOATING_NUMBER value);

@@ -2,22 +2,36 @@
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
 
-#include "../../VIPRA/readers/xml_reader.hpp"
+#include "../../VIPRA/readers/input_xml_reader.hpp"
 #include <iostream>
 
 int main() {
-    // g++ main.cpp ../../VIPRA/readers/xml_reader.cpp ../../VIPRA/simulation/data.cpp ../../VIPRA/entity_sets/obstacle_set.cpp -I/usr/include/python3.8 -lpython3.8
+    // g++ main.cpp ../../VIPRA/readers/input_xml_reader.cpp ../../VIPRA/simulation/data.cpp ../../VIPRA/entity_sets/obstacle_set.cpp -I/usr/include/python3.8 -lpython3.8
 
-    XMLReader xmlReader;
+    InputXMLReader inputXMLReader;
 
-    // xmlReader.extractFileData("../../VIPRA/output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian");
-    xmlReader.extractFileData("../../VIPRA/output_data/pedestrian_animfile.xml", "pedestrian-set", "pedestrian");
-    std::vector<FLOATING_NUMBER> trajectorySetX = xmlReader.getFloatDataSet("x");
-    std::vector<FLOATING_NUMBER> trajectorySetY = xmlReader.getFloatDataSet("y");
+    // inputXMLReader.extractFileData("../../VIPRA/output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian");
+    inputXMLReader.extractFileData(
+        "../../VIPRA/output_data/pedestrian_animfile.xml", 
+        "pedestrian-set");
 
-    xmlReader.extractFileData("../../VIPRA/input_data/a320_144_obstacles.xml", "obstacle-set", "obstacle");
-    std::vector<FLOATING_NUMBER> obstacleX = xmlReader.getFloatDataSet("x");
-    std::vector<FLOATING_NUMBER> obstacleY = xmlReader.getFloatDataSet("y");
+    std::unordered_map<
+        std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = 
+			inputXMLReader.getInputEntities();
+
+    std::vector<FLOATING_NUMBER> trajectorySetX = pedInputFileData["x"];
+    std::vector<FLOATING_NUMBER> trajectorySetY = pedInputFileData["y"];
+
+    inputXMLReader.extractFileData(
+        "../../VIPRA/input_data/a320_144_obstacles.xml", 
+        "obstacle-set");
+
+    std::unordered_map<
+		std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = 
+			inputXMLReader.getInputEntities();
+
+    std::vector<FLOATING_NUMBER> obstacleX = obsInputFileData["x"];
+    std::vector<FLOATING_NUMBER> obstacleY = obsInputFileData["y"];
 
     int i = 0;
     int numPedestrians = 144;
