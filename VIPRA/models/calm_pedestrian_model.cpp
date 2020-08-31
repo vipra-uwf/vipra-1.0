@@ -354,27 +354,27 @@ void CalmPedestrianModel::calculatePriortiy()
         std::cout << "Aisle size" << i << ": " << AisleSize[i] << std::endl;
     }
 
-    std::vector<FLOATING_NUMBER> priority;
+    std::vector<FLOATING_NUMBER> priorities;
 
     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
     {
-        bool prioritySet = false;
+        bool prioritiesSet = false;
         
-        for(int j = 0; prioritySet == false && j < numAisles; ++j)
+        for(int j = 0; prioritiesSet == false && j < numAisles; ++j)
         {
             if((*pedCoords)[i].coordinates[0] < (Aisles[j] + (AisleSize[j]/2))
             &&(*pedCoords)[i].coordinates[0] > (Aisles[j] - (AisleSize[j]/2)))
             {
-                priority.push_back(j);
+                priorities.push_back(j);
                 break;
             }
         }
     }
 
-    pedSet->setPriority(priority);
+    pedSet->setPriorities(priorities);
 
     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
     {
-        std::cout << "Ped " << i << " priority: " << priority[i] << std::endl;
+        std::cout << "Ped " << i << " priorities: " << priorities[i] << std::endl;
     }
 }
