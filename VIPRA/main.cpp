@@ -74,7 +74,8 @@ int main()
 
     xmlWriter.writeDocumentContents();
 
-    //deleting polymorphic class which has non-virtual destructor might cause undefined behavior
+    //deleting polymorphic class which has non-virtual destructor 
+    //might cause undefined behavior
     //delete calmPedSet;
     delete obstacleSet;
     delete simulationParams;

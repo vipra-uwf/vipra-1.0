@@ -86,7 +86,6 @@ void CalmPedestrianModel::calculateRepulsion()
 
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
 {
-	
     CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
         this->data->getPedestrianSet());
 
@@ -136,11 +135,9 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
 
 void CalmPedestrianModel::calculateNearestNeighbors()
 {
-
     CalmPedestrianSet* pedSet = dynamic_cast<CalmPedestrianSet*>(
         this->data->getPedestrianSet());
     ObstacleSet* obsSet = this->data->getObstacleSet();
-
 
     for (int i = 0; i < pedSet->getNumPedestrians(); ++i)
     {
@@ -153,8 +150,9 @@ void CalmPedestrianModel::calculateNearestNeighbors()
             if (i != j && j < pedSet->getNumPedestrians()
                 && neighborDirectionTest(i, j, originSet))
             {
-                if(nearest == -1 || calculateDistance(i, j, "P") < 
-                    calculateDistance(i, nearest, originSet)
+                if(nearest == -1 
+                    || calculateDistance(i, j, "P") 
+                    < calculateDistance(i, nearest, originSet)
                     )
                 {
                     nearest = j;
@@ -164,16 +162,17 @@ void CalmPedestrianModel::calculateNearestNeighbors()
 
             if(neighborDirectionTest(i, j, "O"))
             {
-                if(nearest == -1 || calculateDistance(i, j, "O") < 
-                    calculateDistance(i, nearest, originSet)
-                    )
+                if(nearest == -1 
+                    || calculateDistance(i, j, "O") 
+                    < calculateDistance(i, nearest, originSet))
                 {
                     nearest = j;
                     originSet = "O";
                 }
             }
         }
-        std::cout << i << "dist:" << calculateDistance(i, nearest, originSet)
+        std::cout 
+            << i << "dist:" << calculateDistance(i, nearest, originSet) 
             << std::endl;
         
         (*pedSet->getNearestNeighbors())[i] = 
@@ -274,6 +273,7 @@ void CalmPedestrianModel::calculatePriortiy()
     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
     {
         bool duplicateCheck = true;
+
         if(i == 0)
         {
             Aisles.push_back((*pedCoords)[i].coordinates[0]);
@@ -311,23 +311,20 @@ void CalmPedestrianModel::calculatePriortiy()
         {
             if((*obCoords)[j].coordinates[0] > Aisles[i])
             {
+                //TODO fix this so it's not hard coded! - Elizabeth
                 if((*obCoords)[j].coordinates[1] < 1.73 && (*obCoords)[j]
-                    .coordinates[1] > -1.73)                                //TODO fix this so it's not hard coded! - Elizabeth
-                {
+                    .coordinates[1] > -1.73)                                                {
                     if(frontOfAisle == -1)
                     {
                         frontOfAisle = (*obCoords)[j].coordinates[0];
                     }
-
                     else if(((*obCoords)[j].coordinates[0] - Aisles[i])
                         < (frontOfAisle - Aisles[i]))
                     {
                         frontOfAisle = (*obCoords)[j].coordinates[0];
                     }
                 }
-
             }
-
             else if((*obCoords)[j].coordinates[0] < Aisles[i])
             {
                 if((*obCoords)[j].coordinates[1] < 1.73 
@@ -344,7 +341,6 @@ void CalmPedestrianModel::calculatePriortiy()
                         backOfAisle = (*obCoords)[j].coordinates[0];
                     }
                 }
-
             }
         }
         std::cout << "Aisle " << i << " back" << backOfAisle
@@ -360,9 +356,10 @@ void CalmPedestrianModel::calculatePriortiy()
 
     std::vector<FLOATING_NUMBER> priority;
 
-     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
-     {
+    for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
+    {
         bool prioritySet = false;
+        
         for(int j = 0; prioritySet == false && j < numAisles; ++j)
         {
             if((*pedCoords)[i].coordinates[0] < (Aisles[j] + (AisleSize[j]/2))
@@ -372,12 +369,12 @@ void CalmPedestrianModel::calculatePriortiy()
                 break;
             }
         }
-     }
+    }
 
-     pedSet->setPriority(priority);
+    pedSet->setPriority(priority);
 
-     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
-     {
-         std::cout << "Ped " << i << " priority: " << priority[i] << std::endl;
-     }
+    for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
+    {
+        std::cout << "Ped " << i << " priority: " << priority[i] << std::endl;
+    }
 }

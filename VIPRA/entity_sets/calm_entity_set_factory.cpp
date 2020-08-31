@@ -60,13 +60,11 @@ CalmPedestrianSet* CalmEntitySetFactory::createPedestrianSet(
 
 	std::vector<FLOATING_NUMBER> floatNearestNeighbors = vectorStringToDouble(
         accumulateAttribute("nearest_neighbor", inputData));
-	
 	std::vector<int> intNearestNeighbors(
 		floatNearestNeighbors.begin(), floatNearestNeighbors.end());
-
     std::vector<std::pair<std::string, int>> nearestNeighbors;
-    int neighborsSize = intNearestNeighbors.size();
-    for(int i = 0; i < neighborsSize; ++i)
+    
+    for(long unsigned int i = 0; i < intNearestNeighbors.size(); ++i)
     {
         nearestNeighbors.push_back(std::make_pair("P", intNearestNeighbors[i]));
     }

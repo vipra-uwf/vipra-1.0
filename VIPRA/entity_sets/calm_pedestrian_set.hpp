@@ -62,7 +62,8 @@ class CalmPedestrianSet: public PedestrianSet
         void setDesiredSpeeds(std::vector<FLOATING_NUMBER> desiredSpeeds);
         void setPropulsionForces(std::vector<FLOATING_NUMBER> propulsionForces);
         void setRepulsionForces(std::vector<FLOATING_NUMBER> repulsionForces);
-        void setNearestNeighbors(std::vector<std::pair<std::string, int>> nearestNeighbors);
+        void setNearestNeighbors(
+            std::vector<std::pair<std::string, int>> nearestNeighbors);
         void setPriority(std::vector<FLOATING_NUMBER> priority);
 };
 

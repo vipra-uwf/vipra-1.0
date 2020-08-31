@@ -146,7 +146,8 @@ void CalmPedestrianSet::setRepulsionForces(
     this->repulsionForces = repulsionForces;
 }
 
-void CalmPedestrianSet::setNearestNeighbors(std::vector<std::pair<std::string, int>> nearestNeighbors)
+void CalmPedestrianSet::setNearestNeighbors(
+    std::vector<std::pair<std::string, int>> nearestNeighbors)
 {
    this->nearestNeighbors = nearestNeighbors; 
 }
