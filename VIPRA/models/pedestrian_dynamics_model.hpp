@@ -7,6 +7,8 @@
 class PedestrianDynamicsModel
 {
     public:
+        virtual ~PedestrianDynamicsModel() = default;
+
         virtual void setData(Data* initialData) = 0;
         virtual void setGoals(Goals* goal) = 0;
         virtual Data* getData() = 0;

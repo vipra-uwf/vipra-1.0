@@ -78,7 +78,8 @@ std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getRepulsionForces()
     return &this->repulsionForces;
 }
 
-std::vector<std::pair<std::string, int>>* CalmPedestrianSet::getNearestNeighbors()
+std::vector<std::pair<std::string, int>>* 
+    CalmPedestrianSet::getNearestNeighbors()
 {
     return &this->nearestNeighbors;
 }

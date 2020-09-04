@@ -6,13 +6,11 @@
 #include "../type_definitions.hpp"
 #include "../dimensions.hpp"
 
-//TODO this class should probably be derived - alex
 class ObstacleSet
 {
     private:
         int numObstacles;
         int numAisles;
-		//what if the user doesn't want to use single point coordinates?
         std::vector<Dimensions> obstacleCoordinates;
 
     public:

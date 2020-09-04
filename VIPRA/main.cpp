@@ -58,7 +58,8 @@ SimulationOutputHandler* generateOutputHandler(std::string type)
 {
     if(type == "timestep")
     {
-        TimestepOutputHandler* timestepOutputHandler = new TimestepOutputHandler;
+        TimestepOutputHandler* timestepOutputHandler = 
+            new TimestepOutputHandler;
         return timestepOutputHandler;
     }
 
@@ -76,7 +77,8 @@ PedestrianSet* generatePedestrianSet(std::string type)
     return nullptr;
 }
 
-// TODO since this class now includes aisles, we should probably make this derived -- alex
+// TODO since this class now includes aisles, 
+// we should probably make this derived -- alex
 ObstacleSet* generateObstacleSet(std::string type)
 {
     if(type == "calm")
@@ -121,7 +123,6 @@ PedestrianDynamicsModel* generatePedDynamicsModel(std::string type)
     return nullptr;
 }
 
-//this is necessary because of non-virtual method: InputXMLReader::extractFileData
 void populateEntitySets(PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, 
     SIM_PARAMS* simulationParams, InputDataLoader* inputDataLoader, 
     EntitySetFactory* entitySetFactory, std::string type)
@@ -132,7 +133,8 @@ void populateEntitySets(PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet,
             "./input_data/a320_144_pedestrians.xml", 
             "pedestrian-set");
         ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
-        entitySetFactory->populatePedestrianSet(pedInputFileData, pedestrianSet);
+        entitySetFactory->populatePedestrianSet(
+            pedInputFileData, pedestrianSet);
 
         dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
             "./input_data/a320_144_obstacles.xml",
@@ -144,7 +146,23 @@ void populateEntitySets(PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet,
             "./input_data/simulation_params.xml",
             "simulation-parameters");
         ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
-        entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
+        entitySetFactory->populateSimulationParams(
+            simParamsFileData, simulationParams);
+    }
+}
+
+void configureOutputDataWriter(
+    OutputDataWriter* outputDataWriter, std::string type)
+{
+    if(type == "xml")
+    {
+        dynamic_cast<XMLWriter*>(outputDataWriter)->
+            configureXMLDocumentStructure(
+                "./output_data/pedestrian_trajectory.xml", 
+                "pedestrian-set", 
+                "pedestrian", 
+                "1.0", 
+                "utf-8");
     }
 }
 
@@ -154,20 +172,20 @@ void configureOutputHandler(SimulationOutputHandler* outputHandler,
 {
     if(type == "timestep")
     {
-        dynamic_cast<XMLWriter*>(outputDataWriter)->
-            configureXMLDocumentStructure(
-                "./output_data/pedestrian_trajectory.xml", 
-                "pedestrian-set", 
-                "pedestrian", 
-                "1.0", 
-                "utf-8");
-
         outputHandler->setPedestrianSet(pedestrianSet);
         outputHandler->setOutputDataWriter(outputDataWriter);
         dynamic_cast<TimestepOutputHandler*>(outputHandler)->setTimestep(
             simulation->getTimestep());
         dynamic_cast<TimestepOutputHandler*>(outputHandler)->
             setOutputWritingFrequency(250);
+    }
+}
+
+void writeTrajectoryToFile(OutputDataWriter* outputDataWriter, std::string type)
+{
+    if(type == "xml")
+    {
+        dynamic_cast<XMLWriter*>(outputDataWriter)->writeDocumentContents();
     }
 }
 
@@ -210,18 +228,27 @@ int main()
     
     Simulation simulation(pedestrianDynamicsModel);
 
-    configureOutputHandler(outputHandler, pedestrianSet, outputDataWriter, 
+    configureOutputDataWriter(
+        outputDataWriter, (*simConfig)["output_data_writer"]);
+    configureOutputHandler(
+        outputHandler, pedestrianSet, outputDataWriter, 
         &simulation, (*simConfig)["simulation_output_handler"]);
 
     simulation.setSimulationOutputHandler(outputHandler);
     simulation.run();
 
-    //TODO put this in a new method
-    // xmlWriter.writeDocumentContents();
-    dynamic_cast<XMLWriter*>(outputDataWriter)->writeDocumentContents();
+    writeTrajectoryToFile(outputDataWriter, (*simConfig)["output_data_writer"]);
     
-    //TODO DELETE ALL THE CLASSES THAT WERE MADE FROM NEW METHODS
     delete simConfig;
+    delete inputDataLoader;
+    delete outputDataWriter;
+    delete pedestrianSet;
+    delete obstacleSet;
+    delete simulationParams;
+    delete entitySetFactory;
+    delete goals;
+    delete pedestrianDynamicsModel;
+    delete outputHandler;
 
     return 0;
 }

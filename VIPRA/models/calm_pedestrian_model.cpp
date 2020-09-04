@@ -313,7 +313,8 @@ void CalmPedestrianModel::calculatePriortiy()
             {
                 //TODO fix this so it's not hard coded! - Elizabeth
                 if((*obCoords)[j].coordinates[1] < 1.73 && (*obCoords)[j]
-                    .coordinates[1] > -1.73)                                                {
+                    .coordinates[1] > -1.73)                                                
+                {
                     if(frontOfAisle == -1)
                     {
                         frontOfAisle = (*obCoords)[j].coordinates[0];
