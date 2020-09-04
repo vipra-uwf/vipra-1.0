@@ -171,9 +171,9 @@ void CalmPedestrianModel::calculateNearestNeighbors()
                 }
             }
         }
-        std::cout 
-            << i << "dist:" << calculateDistance(i, nearest, originSet) 
-            << std::endl;
+        // std::cout 
+        //     << i << "dist:" << calculateDistance(i, nearest, originSet) 
+        //     << std::endl;
         
         (*pedSet->getNearestNeighbors())[i] = 
             std::make_pair(std::string(originSet), nearest);
@@ -298,10 +298,10 @@ void CalmPedestrianModel::calculatePriortiy()
         }
     }
 
-    for (int i = 0; i < numAisles; ++i)
-    {
-        std::cout << "Aisle " << i << ": " << Aisles[i] << std::endl;
-    }
+    // for (int i = 0; i < numAisles; ++i)
+    // {
+    //     std::cout << "Aisle " << i << ": " << Aisles[i] << std::endl;
+    // }
 
     for(int i = 0; i < numAisles; ++i)
     {
@@ -343,16 +343,16 @@ void CalmPedestrianModel::calculatePriortiy()
                 }
             }
         }
-        std::cout << "Aisle " << i << " back" << backOfAisle
-            << ": front " << frontOfAisle << std::endl;
+        // std::cout << "Aisle " << i << " back" << backOfAisle
+        //     << ": front " << frontOfAisle << std::endl;
             
         AisleSize.push_back(frontOfAisle-backOfAisle);
     }
 
-    for (int i = 0; i < numAisles; ++i)
-    {
-        std::cout << "Aisle size" << i << ": " << AisleSize[i] << std::endl;
-    }
+    // for (int i = 0; i < numAisles; ++i)
+    // {
+    //     std::cout << "Aisle size" << i << ": " << AisleSize[i] << std::endl;
+    // }
 
     std::vector<FLOATING_NUMBER> priorities;
 
@@ -373,8 +373,8 @@ void CalmPedestrianModel::calculatePriortiy()
 
     pedSet->setPriorities(priorities);
 
-    for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
-    {
-        std::cout << "Ped " << i << " priorities: " << priorities[i] << std::endl;
-    }
+    // for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
+    // {
+    //     std::cout << "Ped " << i << " priorities: " << priorities[i] << std::endl;
+    // }
 }

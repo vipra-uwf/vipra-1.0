@@ -42,7 +42,7 @@ void Simulation::run()
     clock.printRealStartTime();
     
     this->pedestrianDynamicsModel->precompute();
-    
+
     // will become while(goalIsNotMet) -- alex
     while(this->timestep < 5000)
     {
@@ -50,7 +50,7 @@ void Simulation::run()
         {
             simulationOutputHandler->writeData();
         }
-
+        
         //150 is arbitrary, use whatever ms is needed
         clock.addSimulationTimeMs(150);
         this->timestep++;

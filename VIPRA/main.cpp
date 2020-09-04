@@ -152,7 +152,7 @@ void configureOutputHandler(SimulationOutputHandler* outputHandler,
     PedestrianSet* pedestrianSet, OutputDataWriter* outputDataWriter, 
     Simulation* simulation, std::string type)
 {
-    if(type == "calm")
+    if(type == "timestep")
     {
         dynamic_cast<XMLWriter*>(outputDataWriter)->
             configureXMLDocumentStructure(
@@ -216,21 +216,12 @@ int main()
     simulation.setSimulationOutputHandler(outputHandler);
     simulation.run();
 
-
-
-
-    dynamic_cast<XMLWriter*>(outputDataWriter)->writeDocumentContents();
-
+    //TODO put this in a new method
     // xmlWriter.writeDocumentContents();
-
-    // //deleting polymorphic class which has non-virtual destructor 
-    // //might cause undefined behavior
-    // //delete calmPedSet;
-    // delete obstacleSet;
-    // delete simulationParams;
+    dynamic_cast<XMLWriter*>(outputDataWriter)->writeDocumentContents();
     
+    //TODO DELETE ALL THE CLASSES THAT WERE MADE FROM NEW METHODS
     delete simConfig;
-    //DELETE ALL THE CLASSES THAT WERE MADE FROM NEW METHODS
 
     return 0;
 }
