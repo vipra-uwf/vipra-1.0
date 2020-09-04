@@ -32,6 +32,79 @@ SIM_CONFIG* extractSimConfig(std::string fileName)
     return simConfig;
 }
 
+InputDataLoader* generateDataLoader(std::string type)
+{
+    if(type == "xml")
+    {
+        InputXMLReader* inputXMLReader = new InputXMLReader;
+        return inputXMLReader;
+    }
+}
+
+OutputDataWriter* generateDataWriter(std::string type)
+{
+    if(type == "xml")
+    {
+        XMLWriter* xmlWriter = new XMLWriter;
+        return xmlWriter;
+    }
+}
+
+SimulationOutputHandler* generateOutputHandler(std::string type)
+{
+    if(type == "timestep")
+    {
+        TimestepOutputHandler* timestepOutputHandler = new TimestepOutputHandler;
+        return timestepOutputHandler;
+    }
+}
+
+PedestrianSet* generatePedestrianSet(std::string type)
+{
+    if(type == "calm")
+    {
+        CalmPedestrianSet* calmPedSet = new CalmPedestrianSet;
+        return calmPedSet;
+    }
+}
+
+// TODO since this class now includes aisles, we should probably make this derived -- alex
+ObstacleSet* generateObstacleSet(std::string type)
+{
+    if(type == "calm")
+    {
+        ObstacleSet* calmObsSet = new ObstacleSet;
+        return calmObsSet;
+    }
+}
+
+EntitySetFactory* generateEntitySetFactory(std::string type)
+{
+    if(type == "calm")
+    {
+        CalmEntitySetFactory* calmSetFactory = new CalmEntitySetFactory;
+        return calmSetFactory;
+    }
+}
+
+Goals* generateGoals(std::string type)
+{
+    if(type == "calm")
+    {
+        CalmGoals* calmGoals = new CalmGoals;
+        return calmGoals;
+    }
+}
+
+PedestrianDynamicsModel* generatePedDynamicsModel(std::string type)
+{
+    if(type == "calm")
+    {
+        CalmPedestrianModel* calmPedModel = new CalmPedestrianModel;
+        return calmPedModel;
+    }
+}
+
 int main()
 {
     /*
@@ -45,26 +118,30 @@ int main()
     pedestrian_dynamics_model=calm
    */ 
     SIM_CONFIG* simConfig = extractSimConfig("sim_config.txt");
-
-    std::cout << (*simConfig)["entity_set_factory"] << std::endl;
-
-
-    delete simConfig;
-
+    
     // InputXMLReader inputXMLReader;
+    InputDataLoader* inputDataLoader = generateDataLoader((*simConfig)["input_data_loader"]); 
     // XMLWriter xmlWriter;
-
+    OutputDataWriter* outputDataWriter = generateDataWriter((*simConfig)["output_data_writer"]);
     // CalmPedestrianSet* calmPedSet;
+    PedestrianSet* pedestrianSet = generatePedestrianSet((*simConfig)["pedestrian_set"]);
     // ObstacleSet* obstacleSet;
-    // SIM_PARAMS* simulationParams;
-	
+    ObstacleSet* obstacleSet = generateObstacleSet((*simConfig)["obstacle_set"]);
     // CalmEntitySetFactory entitySetFactory; 
+    EntitySetFactory* entitySetFactory = generateEntitySetFactory((*simConfig)["entity_set_factory"]); 
+    // CalmGoals goals;
+    Goals* goals = generateGoals((*simConfig)["goals"]);
+    // CalmPedestrianModel calmModel;
+    PedestrianDynamicsModel* PedestrianDynamicsModel = generatePedDynamicsModel((*simConfig)["pedestrian_dynamics_model"]);
+    // TimestepOutputHandler timestepOutputHandler;
+    SimulationOutputHandler* outputHandler = generateOutputHandler((*simConfig)["simulation_output_handler"]);
+
+
+
+    // SIM_PARAMS* simulationParams;
     // Data data;
 
-    // CalmGoals goals;
-	// CalmPedestrianModel calmModel;
-    // TimestepOutputHandler timestepOutputHandler;
-	
+
     // inputXMLReader.extractFileData(
     //     "./input_data/a320_144_pedestrians.xml", 
     //     "pedestrian-set");
@@ -118,6 +195,9 @@ int main()
     // //delete calmPedSet;
     // delete obstacleSet;
     // delete simulationParams;
+    
+    delete simConfig;
+    //DELETE ALL THE CLASSES THAT WERE MADE FROM NEW METHODS
 
     return 0;
 }
