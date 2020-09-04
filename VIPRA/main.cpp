@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <unordered_map>
 #include <fstream>
 
 #include "readers/input_xml_reader.hpp"
@@ -11,23 +12,44 @@
 #include "models/calm_pedestrian_model.hpp"
 #include "simulation/simulation.hpp"
 
+typedef std::unordered_map<std::string, std::string> SIM_CONFIG; 
 
-
-
-int main()
+SIM_CONFIG* extractSimConfig(std::string fileName)
 {
-    std::cout << "test" << std::endl;  
+    SIM_CONFIG* simConfig = new SIM_CONFIG;
 
     std::string line;
     std::string delimiter = "=";
-    std::ifstream simConfig("sim_config.txt"); 
+    std::ifstream inputFile(fileName); 
 
-    while(std::getline(simConfig, line))
+    while(std::getline(inputFile, line))
     {
         std::string parameter = line.substr(0, line.find(delimiter));
         std::string value = line.substr(line.find(delimiter) + 1, line.size());
-        std::cout << parameter << " " << value << std::endl;
+        (*simConfig)[parameter] = value;
     }
+
+    return simConfig;
+}
+
+int main()
+{
+    /*
+    input_data_loader=xml
+    output_data_writer=xml
+    simulation_output_handler=timestep
+    pedestrian_set=calm
+    obstacle_set=calm
+    entity_set_factory=calm
+    goals=calm
+    pedestrian_dynamics_model=calm
+   */ 
+    SIM_CONFIG* simConfig = extractSimConfig("sim_config.txt");
+
+    std::cout << (*simConfig)["entity_set_factory"] << std::endl;
+
+
+    delete simConfig;
 
     // InputXMLReader inputXMLReader;
     // XMLWriter xmlWriter;
