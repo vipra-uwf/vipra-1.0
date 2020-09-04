@@ -148,6 +148,28 @@ void populateEntitySets(PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet,
     }
 }
 
+void configureOutputHandler(SimulationOutputHandler* outputHandler, 
+    PedestrianSet* pedestrianSet, OutputDataWriter* outputDataWriter, 
+    Simulation* simulation, std::string type)
+{
+    if(type == "calm")
+    {
+        dynamic_cast<XMLWriter*>(outputDataWriter)->
+            configureXMLDocumentStructure(
+                "./output_data/pedestrian_trajectory.xml", 
+                "pedestrian-set", 
+                "pedestrian", 
+                "1.0", 
+                "utf-8");
+
+        outputHandler->setPedestrianSet(pedestrianSet);
+        outputHandler->setOutputDataWriter(outputDataWriter);
+        dynamic_cast<TimestepOutputHandler*>(outputHandler)->setTimestep(
+            simulation->getTimestep());
+        dynamic_cast<TimestepOutputHandler*>(outputHandler)->
+            setOutputWritingFrequency(250);
+    }
+}
 
 int main()
 {
@@ -176,35 +198,28 @@ int main()
     populateEntitySets(pedestrianSet, obstacleSet, simulationParams, 
         inputDataLoader, entitySetFactory, (*simConfig)["entity_set_factory"]);
 
-
     Data data;
     data.setPedestrianSet(pedestrianSet);
     data.setObstacleSet(obstacleSet);
     data.setSimulationParams(simulationParams);    
 
     goals->setData(&data);
-
 	pedestrianDynamicsModel->setData(&data);
     pedestrianDynamicsModel->setGoals(goals);
     goals->determinePedestrianGoals();
     
-    // xmlWriter.configureXMLDocumentStructure(
-	// 		"./output_data/pedestrian_trajectory.xml", 
-	// 		"pedestrian-set", 
-	// 		"pedestrian", 
-	// 		"1.0", 
-	// 		"utf-8");
-    
-    // Simulation simulation(&calmModel);
     Simulation simulation(pedestrianDynamicsModel);
-    
-    // timestepOutputHandler.setPedestrianSet(calmPedSet);
-    // timestepOutputHandler.setOutputDataWriter(&xmlWriter);
-    // timestepOutputHandler.setTimestep(simulation.getTimestep()); 
-    // timestepOutputHandler.setOutputWritingFrequency(250);
-    
-    // simulation.setSimulationOutputHandler(&timestepOutputHandler);
-    // simulation.run();
+
+    configureOutputHandler(outputHandler, pedestrianSet, outputDataWriter, 
+        &simulation, (*simConfig)["simulation_output_handler"]);
+
+    simulation.setSimulationOutputHandler(outputHandler);
+    simulation.run();
+
+
+
+
+    dynamic_cast<XMLWriter*>(outputDataWriter)->writeDocumentContents();
 
     // xmlWriter.writeDocumentContents();
 
