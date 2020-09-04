@@ -39,6 +39,8 @@ InputDataLoader* generateDataLoader(std::string type)
         InputXMLReader* inputXMLReader = new InputXMLReader;
         return inputXMLReader;
     }
+
+    return nullptr;
 }
 
 OutputDataWriter* generateDataWriter(std::string type)
@@ -48,6 +50,8 @@ OutputDataWriter* generateDataWriter(std::string type)
         XMLWriter* xmlWriter = new XMLWriter;
         return xmlWriter;
     }
+
+    return nullptr;
 }
 
 SimulationOutputHandler* generateOutputHandler(std::string type)
@@ -57,6 +61,8 @@ SimulationOutputHandler* generateOutputHandler(std::string type)
         TimestepOutputHandler* timestepOutputHandler = new TimestepOutputHandler;
         return timestepOutputHandler;
     }
+
+    return nullptr;
 }
 
 PedestrianSet* generatePedestrianSet(std::string type)
@@ -66,6 +72,8 @@ PedestrianSet* generatePedestrianSet(std::string type)
         CalmPedestrianSet* calmPedSet = new CalmPedestrianSet;
         return calmPedSet;
     }
+
+    return nullptr;
 }
 
 // TODO since this class now includes aisles, we should probably make this derived -- alex
@@ -76,6 +84,8 @@ ObstacleSet* generateObstacleSet(std::string type)
         ObstacleSet* calmObsSet = new ObstacleSet;
         return calmObsSet;
     }
+
+    return nullptr;
 }
 
 EntitySetFactory* generateEntitySetFactory(std::string type)
@@ -85,6 +95,8 @@ EntitySetFactory* generateEntitySetFactory(std::string type)
         CalmEntitySetFactory* calmSetFactory = new CalmEntitySetFactory;
         return calmSetFactory;
     }
+
+    return nullptr;
 }
 
 Goals* generateGoals(std::string type)
@@ -94,6 +106,8 @@ Goals* generateGoals(std::string type)
         CalmGoals* calmGoals = new CalmGoals;
         return calmGoals;
     }
+
+    return nullptr;
 }
 
 PedestrianDynamicsModel* generatePedDynamicsModel(std::string type)
@@ -103,73 +117,76 @@ PedestrianDynamicsModel* generatePedDynamicsModel(std::string type)
         CalmPedestrianModel* calmPedModel = new CalmPedestrianModel;
         return calmPedModel;
     }
+
+    return nullptr;
 }
+
+//this is necessary because of non-virtual method: InputXMLReader::extractFileData
+void populateEntitySets(PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, 
+    SIM_PARAMS* simulationParams, InputDataLoader* inputDataLoader, 
+    EntitySetFactory* entitySetFactory, std::string type)
+{
+    if(type == "calm")
+    {
+        dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
+            "./input_data/a320_144_pedestrians.xml", 
+            "pedestrian-set");
+        ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
+        entitySetFactory->populatePedestrianSet(pedInputFileData, pedestrianSet);
+
+        dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
+            "./input_data/a320_144_obstacles.xml",
+            "obstacle-set");
+        ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
+        entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
+
+        dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
+            "./input_data/simulation_params.xml",
+            "simulation-parameters");
+        ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
+        entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
+    }
+}
+
 
 int main()
 {
-    /*
-    input_data_loader=xml
-    output_data_writer=xml
-    simulation_output_handler=timestep
-    pedestrian_set=calm
-    obstacle_set=calm
-    entity_set_factory=calm
-    goals=calm
-    pedestrian_dynamics_model=calm
-   */ 
+
     SIM_CONFIG* simConfig = extractSimConfig("sim_config.txt");
     
-    // InputXMLReader inputXMLReader;
-    InputDataLoader* inputDataLoader = generateDataLoader((*simConfig)["input_data_loader"]); 
-    // XMLWriter xmlWriter;
-    OutputDataWriter* outputDataWriter = generateDataWriter((*simConfig)["output_data_writer"]);
-    // CalmPedestrianSet* calmPedSet;
-    PedestrianSet* pedestrianSet = generatePedestrianSet((*simConfig)["pedestrian_set"]);
-    // ObstacleSet* obstacleSet;
-    ObstacleSet* obstacleSet = generateObstacleSet((*simConfig)["obstacle_set"]);
-    // CalmEntitySetFactory entitySetFactory; 
-    EntitySetFactory* entitySetFactory = generateEntitySetFactory((*simConfig)["entity_set_factory"]); 
-    // CalmGoals goals;
-    Goals* goals = generateGoals((*simConfig)["goals"]);
-    // CalmPedestrianModel calmModel;
-    PedestrianDynamicsModel* PedestrianDynamicsModel = generatePedDynamicsModel((*simConfig)["pedestrian_dynamics_model"]);
-    // TimestepOutputHandler timestepOutputHandler;
-    SimulationOutputHandler* outputHandler = generateOutputHandler((*simConfig)["simulation_output_handler"]);
+    InputDataLoader* inputDataLoader = generateDataLoader(
+        (*simConfig)["input_data_loader"]); 
+    OutputDataWriter* outputDataWriter = generateDataWriter(
+        (*simConfig)["output_data_writer"]);
+    PedestrianSet* pedestrianSet = generatePedestrianSet(
+        (*simConfig)["pedestrian_set"]);
+    ObstacleSet* obstacleSet = generateObstacleSet(
+        (*simConfig)["obstacle_set"]);
+    EntitySetFactory* entitySetFactory = generateEntitySetFactory(
+        (*simConfig)["entity_set_factory"]); 
+    Goals* goals = generateGoals(
+        (*simConfig)["goals"]);
+    PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedDynamicsModel(
+        (*simConfig)["pedestrian_dynamics_model"]);
+    SimulationOutputHandler* outputHandler = generateOutputHandler(
+        (*simConfig)["simulation_output_handler"]);
+    
+    SIM_PARAMS* simulationParams = new SIM_PARAMS;
+
+    populateEntitySets(pedestrianSet, obstacleSet, simulationParams, 
+        inputDataLoader, entitySetFactory, (*simConfig)["entity_set_factory"]);
 
 
+    Data data;
+    data.setPedestrianSet(pedestrianSet);
+    data.setObstacleSet(obstacleSet);
+    data.setSimulationParams(simulationParams);    
 
-    // SIM_PARAMS* simulationParams;
-    // Data data;
+    goals->setData(&data);
 
-
-    // inputXMLReader.extractFileData(
-    //     "./input_data/a320_144_pedestrians.xml", 
-    //     "pedestrian-set");
-    // ENTITY_SET pedInputFileData = inputXMLReader.getInputEntities();
-	// calmPedSet = entitySetFactory.createPedestrianSet(pedInputFileData);
-
-    // inputXMLReader.extractFileData(
-    //     "./input_data/a320_144_obstacles.xml",
-    //     "obstacle-set");
-    // ENTITY_SET obsInputFileData = inputXMLReader.getInputEntities();
-	// obstacleSet = entitySetFactory.createObstacleSet(obsInputFileData);
-
-    // inputXMLReader.extractFileData(
-    //     "./input_data/simulation_params.xml",
-    //     "simulation-parameters");
-    // ENTITY_SET simParamsFileData = inputXMLReader.getInputEntities();
-	// simulationParams = entitySetFactory.createSimulationParams(
-	// 	simParamsFileData);
-
-    // data.setPedestrianSet(calmPedSet);
-    // data.setObstacleSet(obstacleSet);
-    // data.setSimulationParams(simulationParams);    
-
-    // goals.setData(&data);
-
-	// calmModel.setData(&data);
-    // calmModel.setGoals(&goals);
-    // goals.determinePedestrianGoals();
+	pedestrianDynamicsModel->setData(&data);
+    pedestrianDynamicsModel->setGoals(goals);
+    goals->determinePedestrianGoals();
     
     // xmlWriter.configureXMLDocumentStructure(
 	// 		"./output_data/pedestrian_trajectory.xml", 
@@ -179,6 +196,7 @@ int main()
 	// 		"utf-8");
     
     // Simulation simulation(&calmModel);
+    Simulation simulation(pedestrianDynamicsModel);
     
     // timestepOutputHandler.setPedestrianSet(calmPedSet);
     // timestepOutputHandler.setOutputDataWriter(&xmlWriter);
