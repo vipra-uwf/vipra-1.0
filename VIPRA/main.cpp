@@ -53,6 +53,7 @@ int main()
 
 	calmModel.setData(&data);
     calmModel.setGoals(&goals);
+    goals.determinePedestrianGoals();
     
     xmlWriter.configureXMLDocumentStructure(
 			"./output_data/pedestrian_trajectory.xml", 
@@ -73,7 +74,8 @@ int main()
 
     xmlWriter.writeDocumentContents();
 
-    //deleting polymorphic class which has non-virtual destructor might cause undefined behavior
+    //deleting polymorphic class which has non-virtual destructor 
+    //might cause undefined behavior
     //delete calmPedSet;
     delete obstacleSet;
     delete simulationParams;
