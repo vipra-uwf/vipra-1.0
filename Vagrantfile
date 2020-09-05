@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
 
-	config.vm.box = "generic/debian10"
+	config.vm.box = "debian/jessie64"
 	#config.ssh.forward_agent = true #needed for git repo ssh key
 
 	config.vm.provider "virtualbox" do |vb|
@@ -19,7 +19,8 @@ Vagrant.configure("2") do |config|
 	config.vm.provision :shell, inline: <<-SHELL #run: 'always'
 		#set -x #echo on
 		echo "$(tput setaf 6)$(tput bold)Setting up boost... $(tput sgr 0)"
-		sudo apt-get install libboost-dev -y
+		#sudo apt-get install libboost-dev -y
+		#sudo apt-get install python3
 
 			#ssh key stuff, not working yet
 		#mkdir -p ~/.ssh
