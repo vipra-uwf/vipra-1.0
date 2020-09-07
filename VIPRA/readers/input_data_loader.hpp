@@ -11,7 +11,9 @@ typedef std::vector<std::unordered_map<std::string, std::string>> ENTITY_SET;
 class InputDataLoader
 {
     public:
-		virtual ENTITY_SET getInputEntities() = 0;
+        virtual ~InputDataLoader() = default;
+		
+        virtual ENTITY_SET getInputEntities() = 0;
 };
 
 #endif

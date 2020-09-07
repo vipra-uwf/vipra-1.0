@@ -7,6 +7,8 @@
 class SimulationOutputHandler 
 {
     public:
+        virtual ~SimulationOutputHandler() = default;
+
         virtual void setOutputDataWriter(
             OutputDataWriter* outputDataWriter) = 0;
         virtual void setPedestrianSet(PedestrianSet* pedestrianSet) = 0;
