@@ -25,7 +25,7 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER> repulsionForces;
         std::vector<std::pair<std::string, int>> nearestNeighbors;
         std::vector<int> nearestPedNeighbors;
-        std::vector<FLOATING_NUMBER> priority;
+        std::vector<FLOATING_NUMBER> priorities;
 
     public:
         CalmPedestrianSet();
@@ -57,7 +57,7 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER>* getRepulsionForces();
         std::vector<std::pair<std::string, int>>* getNearestNeighbors();
         std::vector<int>* getNearestPedNeighbors();
-        std::vector<FLOATING_NUMBER>* getPriortiy();
+        std::vector<FLOATING_NUMBER>* getPriorities();
 
         void setMasses(std::vector<FLOATING_NUMBER> massesKg);
         void setReactionTimes(std::vector<FLOATING_NUMBER> reactionTimes);
@@ -66,7 +66,7 @@ class CalmPedestrianSet: public PedestrianSet
         void setRepulsionForces(std::vector<FLOATING_NUMBER> repulsionForces);
         void setNearestNeighbors(std::vector<std::pair<std::string, int>> nearestNeighbors);
         void setNearestPedNeighbors(std::vector<int>);
-        void setPriority(std::vector<FLOATING_NUMBER> priority);
+        void setPriorities(std::vector<FLOATING_NUMBER> priorities);
 };
 
 #endif

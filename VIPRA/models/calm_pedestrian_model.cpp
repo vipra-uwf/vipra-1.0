@@ -144,7 +144,6 @@ void CalmPedestrianModel::calculateRepulsion()
 
 FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
 {
-	
     CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
         this->data->getPedestrianSet());
 
@@ -194,7 +193,6 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
 
 void CalmPedestrianModel::calculateNearestNeighbors()
 {
-
     CalmPedestrianSet* pedSet = dynamic_cast<CalmPedestrianSet*>(
         this->data->getPedestrianSet());
     ObstacleSet* obsSet = this->data->getObstacleSet();
@@ -213,8 +211,9 @@ void CalmPedestrianModel::calculateNearestNeighbors()
             if (i != j && j < pedSet->getNumPedestrians()
                 && neighborDirectionTest(i, j, originSet))
             {
-                if(nearest == -1 || calculateDistance(i, j, "P") < 
-                    calculateDistance(i, nearest, originSet)
+                if(nearest == -1 
+                    || calculateDistance(i, j, "P") 
+                    < calculateDistance(i, nearest, originSet)
                     )
                 {
                     nearest = j;
@@ -224,16 +223,17 @@ void CalmPedestrianModel::calculateNearestNeighbors()
 
             if(neighborDirectionTest(i, j, "O"))
             {
-                if(nearest == -1 || calculateDistance(i, j, "O") < 
-                    calculateDistance(i, nearest, originSet)
-                    )
+                if(nearest == -1 
+                    || calculateDistance(i, j, "O") 
+                    < calculateDistance(i, nearest, originSet))
                 {
                     nearest = j;
                     originSet = "O";
                 }
             }
         }
-        std::cout << i << "dist:" << calculateDistance(i, nearest, originSet)
+        std::cout 
+            << i << "dist:" << calculateDistance(i, nearest, originSet) 
             << std::endl;
         
         (nearestNeighbors.push_back(std::make_pair(
@@ -367,7 +367,7 @@ void CalmPedestrianModel::calculatePriortiy()
 
     std::cout << numAisles;
 
-    std::vector<FLOATING_NUMBER> priority;
+    std::vector<FLOATING_NUMBER> priorities;
 
      for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
      {
@@ -377,16 +377,16 @@ void CalmPedestrianModel::calculatePriortiy()
             if((*pedCoords)[i].coordinates[0] < ((*Aisles)[j] + ((*AislesSize)[j]/2))
             &&(*pedCoords)[i].coordinates[0] > ((*Aisles)[j] - ((*AislesSize)[j]/2)))
             {
-                priority.push_back(j);
+                priorities.push_back(j);
                 break;
             }
         }
      }
-     pedSet->setPriority(priority);
+     pedSet->setPriorities(priorities);
 
      for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
      {
-         std::cout << "Ped " << i << " priority: " << priority[i] << std::endl;
+         std::cout << "Ped " << i << " priority: " << priorities[i] << std::endl;
      }
 }
 
@@ -409,6 +409,7 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
     {
         bool duplicateCheck = true;
+
         if(i == 0)
         {
             Aisles.push_back((*pedCoords)[i].coordinates[0]);
@@ -446,23 +447,20 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
         {
             if((*obCoords)[j].coordinates[0] > Aisles[i])
             {
+                //TODO fix this so it's not hard coded! - Elizabeth
                 if((*obCoords)[j].coordinates[1] < 1.73 && (*obCoords)[j]
-                    .coordinates[1] > -1.73)                                //TODO fix this so it's not hard coded! - Elizabeth
-                {
+                    .coordinates[1] > -1.73)                                                {
                     if(frontOfAisle == -1)
                     {
                         frontOfAisle = (*obCoords)[j].coordinates[0];
                     }
-
                     else if(((*obCoords)[j].coordinates[0] - Aisles[i])
                         < (frontOfAisle - Aisles[i]))
                     {
                         frontOfAisle = (*obCoords)[j].coordinates[0];
                     }
                 }
-
             }
-
             else if((*obCoords)[j].coordinates[0] < Aisles[i])
             {
                 if((*obCoords)[j].coordinates[1] < 1.73 
@@ -479,7 +477,6 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
                         backOfAisle = (*obCoords)[j].coordinates[0];
                     }
                 }
-
             }
         }
         std::cout << "Aisle " << i << " back" << backOfAisle
