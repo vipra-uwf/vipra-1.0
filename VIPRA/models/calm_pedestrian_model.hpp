@@ -25,7 +25,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual Data* getData();
         virtual Goals* getGoals();
         virtual void precompute();
-        virtual void update();
+        virtual void update(unsigned long time);
 
         void calculatePropulsion();
         void calculateRepulsion();
@@ -33,9 +33,11 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
             int firstPedIndex, int secondPedIndex, std::string originSet);
         FLOATING_NUMBER calculateBeta(int pedIndex);
         void calculateNearestNeighbors();
+        void calculateNearestPedNeighbors();
         bool neighborDirectionTest(
             int firstPedIndex, int secondPedIndex, std::string originSet);
         void calculatePriortiy();
+        void createAisles();
 };
 
 #endif

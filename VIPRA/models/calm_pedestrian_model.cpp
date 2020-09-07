@@ -30,14 +30,72 @@ void CalmPedestrianModel::precompute()
     calculateNearestNeighbors();
     this->goals->determinePedestrianGoals();
     calculatePropulsion();
-    calculateRepulsion();
+    calculateRepulsion(); //TODO these need to be moved somewhere where they are only called once - EL
     calculatePriortiy();
 }
 
-void CalmPedestrianModel::update()
+void CalmPedestrianModel::update(unsigned long time)
 {
-    //use clock, calculated force prop and 
-    //calculated force rep to update positions ~Elizabeth
+    CalmPedestrianSet* set = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
+
+
+    FLOATING_NUMBER speed;
+    FLOATING_NUMBER distanceMoved;
+    std::vector<Dimensions> movedCoordinates;
+
+    std::vector<FLOATING_NUMBER> speedMetersPerSecond;
+    
+    for(int i = 0; i < set->getNumPedestrians(); ++i)
+    {
+        if((*set->getGoalCoordinates())[i].coordinates[0] == (*set->getPedestrianCoordinates())[i].coordinates[0] 
+        && (*set->getGoalCoordinates())[i].coordinates[1] == 0)
+        {
+            speed =  ((*set->getPropulsionForces())[i] + (*set->getRepulsionForces())[i]);
+            speedMetersPerSecond.push_back(speed);
+            distanceMoved = speed * time;
+            if((*set->getPedestrianCoordinates())[i].coordinates[1] < 0)
+            {
+                movedCoordinates.push_back
+                (
+                    Dimensions 
+                    {
+                    std::vector<FLOATING_NUMBER> 
+                        {
+                            (*set->getPedestrianCoordinates())[i].coordinates[0] + distanceMoved,
+                            (*set->getPedestrianCoordinates())[i].coordinates[1]
+                        }
+                    }
+                );
+            }
+            else if((*set->getPedestrianCoordinates())[i].coordinates[1] > 0)
+            {
+
+                movedCoordinates.push_back
+                (
+                    Dimensions 
+                    {
+                    std::vector<FLOATING_NUMBER> 
+                        {
+                            (*set->getPedestrianCoordinates())[i].coordinates[0] - distanceMoved,
+                            (*set->getPedestrianCoordinates())[i].coordinates[1]
+                        }
+                    }
+                );
+
+            }
+        }
+
+        /*else if((*set->getGoalCoordinates())[i].coordinates[0])
+        {
+
+        }*/
+
+    }
+
+
+
+
 }
 
 void CalmPedestrianModel::calculatePropulsion()
@@ -141,6 +199,8 @@ void CalmPedestrianModel::calculateNearestNeighbors()
         this->data->getPedestrianSet());
     ObstacleSet* obsSet = this->data->getObstacleSet();
 
+    std::vector<std::pair<std::string, int>> nearestNeighbors;
+
 
     for (int i = 0; i < pedSet->getNumPedestrians(); ++i)
     {
@@ -176,9 +236,45 @@ void CalmPedestrianModel::calculateNearestNeighbors()
         std::cout << i << "dist:" << calculateDistance(i, nearest, originSet)
             << std::endl;
         
-        (*pedSet->getNearestNeighbors())[i] = 
-            std::make_pair(std::string(originSet), nearest);
+        (nearestNeighbors.push_back(std::make_pair(
+            std::string(originSet), nearest)));
     }
+
+    pedSet->setNearestNeighbors(nearestNeighbors);
+}
+
+void CalmPedestrianModel::calculateNearestPedNeighbors()
+{
+
+    CalmPedestrianSet* pedSet = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
+
+    std::vector<int> nearestPedNeighbor;
+
+    for (int i = 0; i < pedSet->getNumPedestrians(); ++i)
+    {
+        int nearest = -1;
+
+        std::string originSet = "P";
+
+        for (int j = 0; j < pedSet->getNumPedestrians(); ++j)
+        {
+            if (i != j && neighborDirectionTest(i, j, originSet))
+            {
+                if(nearest == -1 || calculateDistance(i, j, originSet) < 
+                    calculateDistance(i, nearest, originSet)
+                    )
+                {
+                    nearest = j;
+                }
+            }
+        }
+        std::cout << i << "dist:" << calculateDistance(i, nearest, originSet)
+            << std::endl;
+        
+        nearestPedNeighbor.push_back(nearest);
+    }
+    pedSet->setNearestPedNeighbors(nearestPedNeighbor);
 }
 
 bool CalmPedestrianModel::neighborDirectionTest(
@@ -264,6 +360,45 @@ void CalmPedestrianModel::calculatePriortiy()
     ObstacleSet* obSet = dynamic_cast<ObstacleSet*>(
         this->data->getObstacleSet());
     
+    std::vector<Dimensions>* pedCoords = pedSet->getPedestrianCoordinates();
+    std::vector<FLOATING_NUMBER>* Aisles = obSet->getAisles();
+    std::vector<FLOATING_NUMBER>* AislesSize = obSet->getAislesSize();
+    int numAisles = obSet->getNumAisles();
+
+    std::cout << numAisles;
+
+    std::vector<FLOATING_NUMBER> priority;
+
+     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
+     {
+        bool prioritySet = false;
+        for(int j = 0; prioritySet == false && j < numAisles; ++j)
+        {
+            if((*pedCoords)[i].coordinates[0] < ((*Aisles)[j] + ((*AislesSize)[j]/2))
+            &&(*pedCoords)[i].coordinates[0] > ((*Aisles)[j] - ((*AislesSize)[j]/2)))
+            {
+                priority.push_back(j);
+                break;
+            }
+        }
+     }
+     pedSet->setPriority(priority);
+
+     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
+     {
+         std::cout << "Ped " << i << " priority: " << priority[i] << std::endl;
+     }
+}
+
+void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrpriate -EL
+{
+
+     CalmPedestrianSet* pedSet = dynamic_cast<CalmPedestrianSet*>(
+        this->data->getPedestrianSet());
+    
+    ObstacleSet* obSet = dynamic_cast<ObstacleSet*>(
+        this->data->getObstacleSet());
+
     std::vector<Dimensions>* pedCoords = pedSet->getPedestrianCoordinates();
     std::vector<Dimensions>* obCoords = obSet->getObstacleCoordinates();
 
@@ -358,26 +493,7 @@ void CalmPedestrianModel::calculatePriortiy()
         std::cout << "Aisle size" << i << ": " << AisleSize[i] << std::endl;
     }
 
-    std::vector<FLOATING_NUMBER> priority;
-
-     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
-     {
-        bool prioritySet = false;
-        for(int j = 0; prioritySet == false && j < numAisles; ++j)
-        {
-            if((*pedCoords)[i].coordinates[0] < (Aisles[j] + (AisleSize[j]/2))
-            &&(*pedCoords)[i].coordinates[0] > (Aisles[j] - (AisleSize[j]/2)))
-            {
-                priority.push_back(j);
-                break;
-            }
-        }
-     }
-
-     pedSet->setPriority(priority);
-
-     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
-     {
-         std::cout << "Ped " << i << " priority: " << priority[i] << std::endl;
-     }
+    obSet->setAisles(Aisles);
+    obSet->setAislesSize(AisleSize);
+    obSet->setNumAisles(numAisles);
 }

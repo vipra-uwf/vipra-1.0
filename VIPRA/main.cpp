@@ -54,6 +54,7 @@ int main()
 	calmModel.setData(&data);
     calmModel.setGoals(&goals);
     goals.determinePedestrianGoals();
+    calmModel.createAisles();
     
     xmlWriter.configureXMLDocumentStructure(
 			"./output_data/pedestrian_trajectory.xml", 
