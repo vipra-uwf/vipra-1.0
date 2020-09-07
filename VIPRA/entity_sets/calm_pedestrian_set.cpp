@@ -163,7 +163,7 @@ void CalmPedestrianSet::setNearestPedNeighbors(std::vector<int> nearestPedNeighb
    this->nearestPedNeighbors = nearestPedNeighbors; 
 }
 
-void CalmPedestrianSet::setPriority(std::vector<FLOATING_NUMBER> priorities)
+void CalmPedestrianSet::setPriorities(std::vector<FLOATING_NUMBER> priorities)
 {
     this->priorities = priorities;
 }
