@@ -87,9 +87,6 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                 
                 if((*set->getPedestrianCoordinates())[i].coordinates[1] < 0)
                 {
-                    if(distanceMoved > ((*set->getGoalCoordinates())[i].coordinates[1] 
-                    - (*set->getPedestrianCoordinates())[i].coordinates[1]))
-                    {
                         movedCoordinates.push_back
                         (
                             Dimensions 
@@ -101,62 +98,22 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                                 }
                             }
                         );
-                    }
-
-                    else
-                    {
-                        distanceMoved = ((*set->getGoalCoordinates())[i].coordinates[1] 
-                            - (*set->getPedestrianCoordinates())[i].coordinates[1]);
-                        movedCoordinates.push_back
-                        (
-                            Dimensions 
-                            {
-                                std::vector<FLOATING_NUMBER>
-                                {
-                                    (*set->getPedestrianCoordinates())[i].coordinates[0],
-                                    (*set->getPedestrianCoordinates())[i].coordinates[1] + distanceMoved
-                                }
-                            }
-                        );
-                    }
-                    
                 }
-
+                
                 else if((*set->getPedestrianCoordinates())[i].coordinates[1] > 0)
                 {
 
-                    if(distanceMoved > ((*set->getPedestrianCoordinates())[i].coordinates[1])
-                    - (*set->getGoalCoordinates())[i].coordinates[1])
-                    {
-                        movedCoordinates.push_back
-                        (
-                            Dimensions 
+                    movedCoordinates.push_back
+                    (
+                        Dimensions 
+                        {
+                        std::vector<FLOATING_NUMBER> 
                             {
-                                std::vector<FLOATING_NUMBER>
-                                {
-                                    (*set->getPedestrianCoordinates())[i].coordinates[0],
-                                    (*set->getPedestrianCoordinates())[i].coordinates[1] - distanceMoved
-                                }
+                                (*set->getPedestrianCoordinates())[i].coordinates[0],
+                                (*set->getPedestrianCoordinates())[i].coordinates[1] - distanceMoved
                             }
-                        );
-                    }
-
-                    else
-                    {
-                        distanceMoved = (*set->getPedestrianCoordinates())[i].coordinates[1]
-                            - (*set->getGoalCoordinates())[i].coordinates[1];
-                        movedCoordinates.push_back
-                        (
-                            Dimensions 
-                            {
-                                std::vector<FLOATING_NUMBER>
-                                {
-                                    (*set->getPedestrianCoordinates())[i].coordinates[0],
-                                    (*set->getPedestrianCoordinates())[i].coordinates[1] - distanceMoved
-                                }
-                            }
-                        );
-                    }
+                        }
+                    );
 
                 }
             }
