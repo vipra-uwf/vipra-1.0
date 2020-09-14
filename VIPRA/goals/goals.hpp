@@ -30,6 +30,7 @@ class Goals
         virtual void determinePedestrianGoals() = 0;
         virtual bool checkPedestianGoalsMet(int pedestrianIndex) = 0; 
         virtual bool isSimulationGoalMet() = 0; 
+        virtual Dimensions getPedExitGoal(int pedestrianIndex) = 0;
 };
 
 #endif

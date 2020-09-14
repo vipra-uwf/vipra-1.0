@@ -224,3 +224,8 @@ FLOATING_NUMBER CalmGoals::calculateDistance(int pedIndex,
 
     return (sqrt(xDistance + yDistance));
 }
+
+Dimensions CalmGoals::getPedExitGoal(int pedestrianIndex)
+{
+    return this->exitGoal[this->nearestExit[pedestrianIndex]];
+}

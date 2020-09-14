@@ -1,4 +1,5 @@
 #include "calm_pedestrian_set.hpp"
+#include <iostream>
 
 CalmPedestrianSet::CalmPedestrianSet()
 {
@@ -12,6 +13,7 @@ CalmPedestrianSet::CalmPedestrianSet()
 
 void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 {
+    std::cout << "check removed: " << pedestrianIndex << std::endl;
     this->numPedestrians--;
     
     this->pedestrianCoordinates.erase(pedestrianCoordinates.
@@ -27,6 +29,7 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->repulsionForces.erase(repulsionForces.begin()+pedestrianIndex);
     this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
     this->nearestPedNeighbors.erase(nearestPedNeighbors.begin()+pedestrianIndex);
+    this->movePermissions.erase(movePermissions.begin()+pedestrianIndex);
 }
 
 int CalmPedestrianSet::getNumPedestrians()
@@ -92,6 +95,16 @@ std::vector<int>* CalmPedestrianSet::getNearestPedNeighbors()
 std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPriorities()
 {
     return &this->priorities;
+}
+
+std::vector<bool>* CalmPedestrianSet::getMovePermissions()
+{
+    return &this->movePermissions;
+}
+
+std::vector<int>* CalmPedestrianSet::getStartingAisles()
+{
+    return &this->startingAisles;
 }
 
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
@@ -166,4 +179,14 @@ void CalmPedestrianSet::setNearestPedNeighbors(std::vector<int> nearestPedNeighb
 void CalmPedestrianSet::setPriorities(std::vector<FLOATING_NUMBER> priorities)
 {
     this->priorities = priorities;
+}
+
+void CalmPedestrianSet::setMovePermissions(std::vector<bool> movePermissions)
+{
+    this->movePermissions = movePermissions;
+}
+
+void CalmPedestrianSet::setStartingAisles(std::vector<int> startingAisles)
+{
+    this->startingAisles = startingAisles;
 }

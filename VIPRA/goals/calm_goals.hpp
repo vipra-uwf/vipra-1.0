@@ -35,6 +35,7 @@ class CalmGoals: public Goals
         virtual void determinePedestrianGoals();
         virtual bool checkPedestianGoalsMet(int pedestrianIndex);
         virtual bool isSimulationGoalMet();
+        virtual Dimensions getPedExitGoal(int pedestrianIndex);
 
         void createPedCoordPointer();
         unsigned int nearestGoal(int pedestrianIndex);
