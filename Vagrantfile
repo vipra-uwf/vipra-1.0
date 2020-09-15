@@ -16,7 +16,6 @@ Vagrant.configure("2") do |config|
 		set -x #echo on
 		echo "$(tput setaf 6)$(tput bold)Setting up boost for odeint $(tput sgr 0)"
 		sudo apt-get install libboost-dev -y
-		#sudo apt-get install python3
 
 		echo "$(tput setaf 6)$(tput bold)Setting up Python 3.8 $(tput sgr 0)"
 		sudo apt-get update
