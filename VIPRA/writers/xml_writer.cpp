@@ -7,7 +7,8 @@ XMLWriter::XMLWriter()
 
 void XMLWriter::configureXMLDocumentStructure(
     std::string fileName, std::string rootElementName, 
-    std::string dataElementName, std::string versionNum, std::string encodingType)
+    std::string dataElementName, std::string versionNum, 
+    std::string encodingType)
 {
     openFile(fileName);
     setRootNodeName(rootElementName);
@@ -82,7 +83,8 @@ void XMLWriter::writeFloatCalmEntitySet(
 {
     int i = 0;
 
-    for(rapidxml::xml_node<>* traversalElement = this->rootElement->first_node(); 
+    for(rapidxml::xml_node<>* traversalElement = 
+        this->rootElement->first_node(); 
     traversalElement; 
     traversalElement = traversalElement->next_sibling())
     {
@@ -100,7 +102,8 @@ void XMLWriter::writeStringCalmEntitySet(
 {
     int i = 0;
 
-    for(rapidxml::xml_node<>* traversalElement = this->rootElement->first_node(); 
+    for(rapidxml::xml_node<>* traversalElement = 
+        this->rootElement->first_node(); 
     traversalElement; 
     traversalElement = traversalElement->next_sibling())
     {

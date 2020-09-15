@@ -30,9 +30,12 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         void calculatePropulsion();
         void calculateRepulsion();
         FLOATING_NUMBER calculateDistance(
-            int firstPedIndex, int secondPedIndex);
+            int firstPedIndex, int secondPedIndex, std::string originSet);
         FLOATING_NUMBER calculateBeta(int pedIndex);
         void calculateNearestNeighbors();
+        bool neighborDirectionTest(
+            int firstPedIndex, int secondPedIndex, std::string originSet);
+        void calculatePriortiy();
 };
 
 #endif

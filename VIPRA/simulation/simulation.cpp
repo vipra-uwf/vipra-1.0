@@ -42,7 +42,7 @@ void Simulation::run()
     clock.printRealStartTime();
     
     this->pedestrianDynamicsModel->precompute();
-    
+
     // will become while(goalIsNotMet) -- alex
     while(this->timestep < 5000)
     {
@@ -50,7 +50,7 @@ void Simulation::run()
         {
             simulationOutputHandler->writeData();
         }
-
+        
         //150 is arbitrary, use whatever ms is needed
         clock.addSimulationTimeMs(150);
         this->timestep++;
@@ -104,7 +104,10 @@ void Simulation::printDataDELETETHIS()
 			<< " reaction_time=" << calmPedSet->getReactionTimes()->at(i)
 			<< " propulsion_force=" << calmPedSet->getPropulsionForces()->at(i)
 			<< " repulsion_force=" << calmPedSet->getRepulsionForces()->at(i)
-			<< " nearest_neighbor=" << calmPedSet->getNearestNeighbors()->at(i)
+			<< " nearest_neighbor=" 
+            << calmPedSet->getNearestNeighbors()->at(i).second
+            << " nearest_neighbor_originset=" 
+            << calmPedSet->getNearestNeighbors()->at(i).first
 			<< " speed=" << calmPedSet->getSpeeds()->at(i)
 
 			<< std::endl;
