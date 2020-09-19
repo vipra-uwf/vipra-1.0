@@ -1,28 +1,15 @@
 # VIPRA
 
-- [x] Installation Instructions
-- [x] Execution Instructions
-- [ ] Extension Instructions
-- [ ] Virtual Classes
-- [x] Types
-- [x] Utility Scripts
+### Installation and Execution Instructions
 
----
-
-### Installation Instructions
 [Vagrant Setup Guide](vagrant_setup_guide.md)
 
-
-
-
----
-### Execution Instructions
-
-#### Makefile Commands
+##### Makefile Commands
 - Clean, Compile, and Run: `$ make ccr`
 - Compile and Run: `$ make cr` 
 - Clean and Compile: `$ make cc`
 - Clean: `$ make clean`
+
 
 
 
