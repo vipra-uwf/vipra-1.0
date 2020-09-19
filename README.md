@@ -44,8 +44,8 @@ Stores all simulation parameters.
 ```
 std::unordered_map<std::string, FLOATING_NUMBER>
 ```
-Stores the user-defined simulation configuration preferences.
 #### SIM_CONFIG
+Stores the user-defined simulation configuration preferences.
 ```
 std::unordered_map<std::string, std::string>
 ``` 
