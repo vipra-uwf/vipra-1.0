@@ -7,22 +7,22 @@
 ---
 ### Virtual Classes
 
-##### PedestrianSet
+#### PedestrianSet
 
-##### ObstacleSet (will be virtual soon)
+#### ObstacleSet (will be virtual soon)
 
-##### EntitySetFactory
+#### EntitySetFactory
 convert data types
 
-##### Goals
+#### Goals
 
-##### PedestrianDynamicsModel
+#### PedestrianDynamicsModel
 
-##### InputDataLoader
+#### InputDataLoader
 
-##### OutputDataWriter  
+#### OutputDataWriter  
 
-##### SimulationOutputHandler
+#### SimulationOutputHandler
 
 
 
@@ -32,19 +32,19 @@ convert data types
 ### Types
 When extending VIPRA source code, we encourage usage of our defined types. 
 
-##### ENTITY_SET
-This type is unstructured data read in from a file and is returned from 
+#### ENTITY_SET
+This type is unstructured data that is read in from a file and returned from 
 all derived classes of InputDataLoader. The vector contains a unordered map 
-of attributes for each element 
+of attributes for each element, 
 *e.g.* pedestrian or obstacle data
 ```
 std::vector<std::unordered_map<std::string, std::string>>
 ```
-##### SIM_PARAMS 
+#### SIM_PARAMS 
 ```
 std::unordered_map<std::string, FLOATING_NUMBER>
 ```
-##### SIM_CONFIG
+#### SIM_CONFIG
 ```
 std::unordered_map<std::string, std::string>
 ``` 
