@@ -1,6 +1,27 @@
 # VIPRA
 
-### Extension
+- [ ] Installation Instructions
+- [ ] Execution Instructions
+- [ ] Extension Instructions
+- [ ] Virtual Classes
+- [x] Types
+- [x] Utility Scripts
+
+---
+
+### Installation Instructions
+[Vagrant Setup Guide](vagrant_setup_guide.md)
+
+
+
+
+### Execution Instructions
+
+
+
+
+### Extension Instructions
+
 
 
 
