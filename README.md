@@ -87,7 +87,6 @@ Example usage:
 ```
 int main()
 {
-	
 	std::vector<Dimensions>* pedestrianCoordinates = set->getPedestrianCoordinates();		
 	
 	std::cout << (*pedestrianCoordinates)[0].coordinates[0] << std::endl;
