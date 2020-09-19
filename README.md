@@ -85,7 +85,8 @@ Example usage:
 - dereference pointer to enable bracket accessing notation
 - specify which passenger and then specify which dimension
 ```
-int main() {
+int main()
+{
 	
 	std::vector<Dimensions>* pedestrianCoordinates = set->getPedestrianCoordinates();		
 	
