@@ -30,24 +30,31 @@ convert data types
 
 ---
 ### Types
-When extending VIPRA source code, we encourage usage of our defined types. 
 
 #### ENTITY_SET
-This type is unstructured data that is read in from a file and returned from 
-all derived classes of InputDataLoader. The vector contains a unordered map 
-of attributes for each element, 
-*e.g.* pedestrian or obstacle data
+Stores all entity set data that is read in from a file and 
+is returned from all derived classes of InputDataLoader. 
+The vector contains a unordered map of attributes for each element, 
+*e.g.* pedestrian or obstacle file data.
 ```
 std::vector<std::unordered_map<std::string, std::string>>
 ```
 #### SIM_PARAMS 
+Stores all simulation parameters.
 ```
 std::unordered_map<std::string, FLOATING_NUMBER>
 ```
+Stores the user-defined simulation configuration preferences.
 #### SIM_CONFIG
 ```
 std::unordered_map<std::string, std::string>
 ``` 
+#### FLOATING_NUMBER
+Allows quickly changing precision for the entire
+simulation by altering the typedef.
+```
+float
+```
 
 
 ---
@@ -55,8 +62,10 @@ std::unordered_map<std::string, std::string>
 
 #### Trajectory Visualization
 
-Using the header-only C++ plotting library, [matplotlib-cpp](https://github.com/lava/matplotlib-cpp),
-this script reads from a user-specified trajectory file, stores trajectory coordinates in vectors, 
+Using the header-only C++ plotting library, 
+[matplotlib-cpp](https://github.com/lava/matplotlib-cpp),
+this script reads from a user-specified trajectory file, 
+stores trajectory coordinates in vectors 
 then iterates over to display a 2D visualization (example video below)
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=twemPX9KuGk
