@@ -23,6 +23,8 @@
 ### Virtual Classes
 
 #### PedestrianSet
+- Entity set object used for storing the properties of all pedestrians
+- in the simulation. 
 
 #### ObstacleSet (will be virtual soon)
 
@@ -70,6 +72,33 @@ simulation by altering the typedef.
 ```
 float
 ```
+#### Dimensions
+Stores coordinate data for each dimension 
+```
+struct Dimensions
+{
+    std::vector<FLOATING_NUMBER> coordinates;
+};
+```
+Example usage:
+- retrieve pointer from a pedestrian entity set
+- dereference pointer to enable bracket accessing notation
+- specify which passenger and then specify which dimension
+```
+int main() {
+	
+	std::vector<Dimensions>* pedestrianCoordinates = set->getPedestrianCoordinates();		
+	
+	std::cout << (*pedestrianCoordinates)[0].coordinates[0] << std::endl;
+	std::cout << (*pedestrianCoordinates)[0].coordinates[1] << std::endl;
+
+	// prints the 0th passenger's x coordinate then their y coordinate
+
+	return 0;
+}
+```
+
+
 
 
 ---
@@ -80,8 +109,8 @@ float
 Using the header-only C++ plotting library, 
 [matplotlib-cpp](https://github.com/lava/matplotlib-cpp),
 this script reads from a user-specified trajectory file, 
-stores trajectory coordinates in vectors 
-then iterates over to display a 2D visualization (example video below)
+stores trajectory coordinates in vectors then iterates over
+them to display a 2D visualization (example video below)
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=twemPX9KuGk
 " target="_blank"><img src="http://img.youtube.com/vi/twemPX9KuGk/0.jpg" 
