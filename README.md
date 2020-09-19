@@ -1,7 +1,7 @@
 # VIPRA
 
-- [ ] Installation Instructions
-- [ ] Execution Instructions
+- [x] Installation Instructions
+- [x] Execution Instructions
 - [ ] Extension Instructions
 - [ ] Virtual Classes
 - [x] Types
@@ -21,8 +21,8 @@
 #### Makefile Commands
 - Clean, Compile, and Run: `$ make ccr`
 - Compile and Run: `$ make cr` 
-- Clean and Compile:`$ make cc`
-- Clean:`$ make clean`
+- Clean and Compile: `$ make cc`
+- Clean: `$ make clean`
 
 
 
