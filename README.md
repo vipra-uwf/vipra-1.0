@@ -15,11 +15,18 @@
 
 
 
+---
 ### Execution Instructions
 
+#### Makefile Commands
+- Clean, Compile, and Run: `$ make ccr`
+- Compile and Run: `$ make cr` 
+- Clean and Compile:`$ make cc`
+- Clean:`$ make clean`
 
 
 
+---
 ### Extension Instructions
 
 
