@@ -1,5 +1,6 @@
 # VIPRA
 
+---
 ### Utility Scripts
 #### Trajectory Visualization
 
@@ -7,12 +8,16 @@
 " target="_blank"><img src="http://img.youtube.com/vi/twemPX9KuGk/0.jpg" 
 alt="Trajectory Visualization" width="240" height="180" border="10" /></a>
 
+##### (Click here)
+
+---
 ### Types
 
+---
 ### Extension
 
 
-
+---
 ### Virtual Classes
 
 ##### PedestrianSet
