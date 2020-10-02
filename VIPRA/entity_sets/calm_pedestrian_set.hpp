@@ -7,6 +7,7 @@
 #include "pedestrian_set.hpp"
 #include "../type_definitions.hpp"
 #include "../dimensions.hpp"
+#include "../movement_definitions.hpp"
 
 class CalmPedestrianSet: public PedestrianSet
 {
@@ -26,7 +27,7 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<std::pair<std::string, int>> nearestNeighbors;
         std::vector<int> nearestPedNeighbors;
         std::vector<FLOATING_NUMBER> priorities;
-        std::vector<bool> movePermissions;
+        std::vector<MovementDefinitions> movementStates;
         std::vector<int> startingAisles;
 
     public:
@@ -60,7 +61,7 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<std::pair<std::string, int>>* getNearestNeighbors();
         std::vector<int>* getNearestPedNeighbors();
         std::vector<FLOATING_NUMBER>* getPriorities();
-        std::vector<bool>* getMovePermissions();
+        std::vector<MovementDefinitions>* getMovementStates();
         std::vector<int>* getStartingAisles();
 
         void setMasses(std::vector<FLOATING_NUMBER> massesKg);
@@ -71,7 +72,7 @@ class CalmPedestrianSet: public PedestrianSet
         void setNearestNeighbors(std::vector<std::pair<std::string, int>> nearestNeighbors);
         void setNearestPedNeighbors(std::vector<int>);
         void setPriorities(std::vector<FLOATING_NUMBER> priorities);
-        void setMovePermissions(std::vector<bool> movePermissions);
+        void setMovementStates(std::vector<MovementDefinitions> movementStates);
         void setStartingAisles(std::vector<int> startingAisles);
 };
 

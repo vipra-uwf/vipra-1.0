@@ -31,7 +31,7 @@ void CalmPedestrianModel::precompute()
     calculateNearestPedNeighbors();
     this->goals->determinePedestrianGoals();
     calculatePropulsion();
-    calculateRepulsion(); //TODO these need to be moved somewhere where they are only called once - EL
+    calculateRepulsion();
 }
 
 void CalmPedestrianModel::update(FLOATING_NUMBER time)
@@ -279,6 +279,18 @@ void CalmPedestrianModel::calculatePropulsion()
 
     for(int i = 0; i < set->getNumPedestrians(); ++i)
     {
+        /*std::cout << "ped: " << i << "  Desired speed: " << 
+        (*set->getDesiredSpeeds())[i] << "  current speed: " << 
+        (*set->getSpeeds())[i] << "  reaction time: " << 
+        (*set->getReactionTimes())[i] <<
+        "  mass: " << (*set->getMasses())[i] << std::endl;
+
+        std::cout << "V0i - Vi = " << (*set->getDesiredSpeeds())[i]
+                    - (*set->getSpeeds())[i] << std::endl;
+
+        std::cout << "(V0i - Vi)/reaction time = " << ((*set->getDesiredSpeeds())[i]
+                    - (*set->getSpeeds())[i]) / (*set->getReactionTimes())[i] << std::endl;*/ //testing for Ashok -EL
+
         (*set->getPropulsionForces())[i] = 
             (
                 (
@@ -303,11 +315,9 @@ void CalmPedestrianModel::calculateRepulsion()
                 (
                     (
                         (
-                            calculateBeta(i) 
-                            * (*set->getDesiredSpeeds())[i]
+                            calculateBeta(i) -1
                         )
-                        - 
-                        (*set->getSpeeds())[i] 
+                        * (*set->getDesiredSpeeds())[i]
                     )
                     / (*set->getReactionTimes())[i]
                 )
@@ -330,6 +340,15 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
         FLOATING_NUMBER(nearestNeighhborIndex),
         nearestNeighborOrigin
     ) - b);
+
+    /*std::cout << "ped :" << pedIndex << "  nearest neighbor: " 
+    << nearestNeighhborIndex << "  neighbor type: " 
+    << nearestNeighborOrigin << "  a: " << this->a
+    << "  b:" << this->b << "  c: " << this->c << "  distance between neighbors: " 
+    << distance <<std::endl;
+
+    std::cout << "Beta = " << c - exp(a * distance) << std::endl;*/ //tesing for Dr. s -EL
+
     return (c - exp(a * distance));
 }
 
@@ -539,7 +558,7 @@ void CalmPedestrianModel::calculatePriortiy()
     std::vector<FLOATING_NUMBER>* AislesSize = obSet->getAislesSize();
     int numAisles = obSet->getNumAisles();
 
-    std::cout << numAisles;
+    //std::cout << numAisles; //testing statement -El
 
     std::vector<FLOATING_NUMBER> priorities;
     std::vector<int> startingAisles; //maybe move somewhere else? might not fit into this method - Elizabeth
@@ -565,10 +584,10 @@ void CalmPedestrianModel::calculatePriortiy()
      pedSet->setStartingAisles(startingAisles);
      pedSet->setMovePermissions(movePermissions);
 
-     for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
+    /*for(int i = 0; i < pedSet->getNumPedestrians(); ++i) //testing loop -EL
      {
          std::cout << "Ped " << i << " priority: " << priorities[i] << std::endl;
-     }
+     }*/
 
      this->currentPriority = 0;
 }
@@ -617,10 +636,10 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
         }
     }
 
-    for (int i = 0; i < numAisles; ++i)
+    /*for (int i = 0; i < numAisles; ++i) //testing loop -EL
     {
         std::cout << "Aisle " << i << ": " << Aisles[i] << std::endl;
-    }
+    }*/
 
     for(int i = 0; i < numAisles; ++i)
     {
@@ -662,16 +681,16 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
                 }
             }
         }
-        std::cout << "Aisle " << i << " back" << backOfAisle
-            << ": front " << frontOfAisle << std::endl;
+        /*std::cout << "Aisle " << i << " back" << backOfAisle //testing statement -EL
+            << ": front " << frontOfAisle << std::endl;*/
             
         AisleSize.push_back(frontOfAisle-backOfAisle);
     }
 
-    for (int i = 0; i < numAisles; ++i)
+    /*for (int i = 0; i < numAisles; ++i) //testing loop -EL
     {
         std::cout << "Aisle size" << i << ": " << AisleSize[i] << std::endl;
-    }
+    }*/
 
     obSet->setAisles(Aisles);
     obSet->setAislesSize(AisleSize);

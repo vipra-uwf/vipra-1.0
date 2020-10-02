@@ -43,9 +43,9 @@ void Simulation::run()
     
     this->pedestrianDynamicsModel->precompute();
 
-    int i = 0; //delete this just for testing
+    //int i = 0; //delete this just for testing
     
-    while(i < 100 /*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
+    /*while(i < 100 /*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
         if(simulationOutputHandler->isOutputCriterionMet())
         {
@@ -57,7 +57,7 @@ void Simulation::run()
         this->pedestrianDynamicsModel->update(.01);
         this->timestep++;
         ++i;
-    }
+    }*/
 
     // TODO this will be removed once our debugger segfault is resolved
     printDataDELETETHIS();

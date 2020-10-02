@@ -39,6 +39,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
             int firstPedIndex, int secondPedIndex, std::string originSet);
         void calculatePriortiy();
         void createAisles();
+        void updateMovementState();
 };
 
 #endif
