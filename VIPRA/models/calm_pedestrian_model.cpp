@@ -51,7 +51,8 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
     
     for(int i = 0; i < set->getNumPedestrians(); ++i)
     {
-        if((*set->getGoalCoordinates())[i].coordinates[0] == (*set->getPedestrianCoordinates())[i].coordinates[0]
+        if((*set->getGoalCoordinates())[i].coordinates[0] 
+        == (*set->getPedestrianCoordinates())[i].coordinates[0]
         && (*set->getGoalCoordinates())[i].coordinates[1] == 0)
         {
             if((*set->getMovementStates())[
@@ -69,8 +70,10 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                         {
                             std::vector<FLOATING_NUMBER>
                             {
-                                (*set->getPedestrianCoordinates())[i].coordinates[0],
-                                (*set->getPedestrianCoordinates())[i].coordinates[1] + distanceMoved
+                                (*set->getPedestrianCoordinates())[i]
+                                .coordinates[0],
+                                (*set->getPedestrianCoordinates())[i]
+                                .coordinates[1] + distanceMoved
                             }
                         }
                     );
@@ -78,7 +81,8 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
 
             else
             {
-                speed =  ((*set->getPropulsionForces())[i] + (*set->getRepulsionForces())[i]);
+                speed =  ((*set->getPropulsionForces())[i] 
+                    + (*set->getRepulsionForces())[i]);
                 speedMetersPerSecond.push_back(speed);
                 distanceMoved = speed * time;
                 
@@ -90,14 +94,17 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                             {
                                 std::vector<FLOATING_NUMBER>
                                 {
-                                    (*set->getPedestrianCoordinates())[i].coordinates[0],
-                                    (*set->getPedestrianCoordinates())[i].coordinates[1] + distanceMoved
+                                    (*set->getPedestrianCoordinates())[i]
+                                    .coordinates[0],
+                                    (*set->getPedestrianCoordinates())[i]
+                                    .coordinates[1] + distanceMoved
                                 }
                             }
                         );
                 }
                 
-                else if((*set->getPedestrianCoordinates())[i].coordinates[1] > 0)
+                else if((*set->getPedestrianCoordinates())[i]
+                    .coordinates[1] > 0)
                 {
 
                     movedCoordinates.push_back
@@ -106,8 +113,10 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                         {
                         std::vector<FLOATING_NUMBER> 
                             {
-                                (*set->getPedestrianCoordinates())[i].coordinates[0],
-                                (*set->getPedestrianCoordinates())[i].coordinates[1] - distanceMoved
+                                (*set->getPedestrianCoordinates())[i]
+                                .coordinates[0],
+                                (*set->getPedestrianCoordinates())[i]
+                                .coordinates[1] - distanceMoved
                             }
                         }
                     );
@@ -116,7 +125,8 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
             }
         }
 
-        else if((*set->getGoalCoordinates())[i].coordinates[0] == (this->getGoals()->getPedExitGoal(i)).coordinates[0]
+        else if((*set->getGoalCoordinates())[i].coordinates[0]
+         == (this->getGoals()->getPedExitGoal(i)).coordinates[0]
         && (*set->getGoalCoordinates())[i].coordinates[1] == 0)
         {
             if((*set->getPriorities())[i] > currentPriority)
@@ -127,7 +137,8 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                 {
                     if((*set->getMovementStates())[
                         (*set->getNearestPedNeighbors())[i]]
-                        == MovementDefinitions::STOP && this->calculateDistance(i,
+                        == MovementDefinitions::STOP 
+                        && this->calculateDistance(i,
                         (*set->getNearestPedNeighbors())[i], "P") < 0.2)
                     {
                         speed = 0;
@@ -140,8 +151,10 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                             {
                                 std::vector<FLOATING_NUMBER>
                                 {
-                                    (*set->getPedestrianCoordinates())[i].coordinates[0] + distanceMoved,
-                                    (*set->getPedestrianCoordinates())[i].coordinates[1]
+                                    (*set->getPedestrianCoordinates())[i]
+                                    .coordinates[0] + distanceMoved,
+                                    (*set->getPedestrianCoordinates())[i]
+                                    .coordinates[1]
                                 }
                             }
                         );
@@ -149,7 +162,8 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
 
                     else
                     {
-                        speed =  ((*set->getPropulsionForces())[i] + (*set->getRepulsionForces())[i]);
+                        speed =  ((*set->getPropulsionForces())[i]
+                         + (*set->getRepulsionForces())[i]);
                         speedMetersPerSecond.push_back(speed);
                         distanceMoved = speed * time;
                         movedCoordinates.push_back
@@ -158,8 +172,10 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                             {
                                 std::vector<FLOATING_NUMBER>
                                 {
-                                    (*set->getPedestrianCoordinates())[i].coordinates[0] + distanceMoved,
-                                    (*set->getPedestrianCoordinates())[i].coordinates[1]
+                                    (*set->getPedestrianCoordinates())[i]
+                                    .coordinates[0] + distanceMoved,
+                                    (*set->getPedestrianCoordinates())[i]
+                                    .coordinates[1]
                                 }
                             }
                         );
@@ -178,8 +194,10 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                         {
                             std::vector<FLOATING_NUMBER>
                             {
-                                (*set->getPedestrianCoordinates())[i].coordinates[0] + distanceMoved,
-                                (*set->getPedestrianCoordinates())[i].coordinates[1]
+                                (*set->getPedestrianCoordinates())[i]
+                                .coordinates[0] + distanceMoved,
+                                (*set->getPedestrianCoordinates())[i]
+                                .coordinates[1]
                             }
                         }
                     );
@@ -188,7 +206,8 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
             }
             else
             {
-                speed =  ((*set->getPropulsionForces())[i] + (*set->getRepulsionForces())[i]);
+                speed =  ((*set->getPropulsionForces())[i]
+                + (*set->getRepulsionForces())[i]);
                 speedMetersPerSecond.push_back(speed);
                 distanceMoved = speed * time;
                 movedCoordinates.push_back
@@ -197,16 +216,20 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                     {
                         std::vector<FLOATING_NUMBER>
                         {
-                            (*set->getPedestrianCoordinates())[i].coordinates[0] + distanceMoved,
-                            (*set->getPedestrianCoordinates())[i].coordinates[1]
+                            (*set->getPedestrianCoordinates())[i]
+                            .coordinates[0] + distanceMoved,
+                            (*set->getPedestrianCoordinates())[i]
+                            .coordinates[1]
                         }
                     }
                 );
             }
             
         }
-        else if((*set->getGoalCoordinates())[i].coordinates[0] == (this->getGoals()->getPedExitGoal(i)).coordinates[0]
-        && (*set->getGoalCoordinates())[i].coordinates[1] == (this->getGoals()->getPedExitGoal(i)).coordinates[1])
+        else if((*set->getGoalCoordinates())[i].coordinates[0]
+        == (this->getGoals()->getPedExitGoal(i)).coordinates[0]
+        && (*set->getGoalCoordinates())[i].coordinates[1]
+        == (this->getGoals()->getPedExitGoal(i)).coordinates[1])
         {
 
             if((*set->getMovementStates())[
@@ -224,8 +247,10 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                     {
                         std::vector<FLOATING_NUMBER>
                         {
-                            (*set->getPedestrianCoordinates())[i].coordinates[0],
-                            (*set->getPedestrianCoordinates())[i].coordinates[1] + distanceMoved
+                            (*set->getPedestrianCoordinates())[i]
+                            .coordinates[0],
+                            (*set->getPedestrianCoordinates())[i]
+                            .coordinates[1] + distanceMoved
                         }
                     }
                 );
@@ -233,7 +258,8 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
 
             else
             {
-                speed =  ((*set->getPropulsionForces())[i] + (*set->getRepulsionForces())[i]);
+                speed =  ((*set->getPropulsionForces())[i]
+                + (*set->getRepulsionForces())[i]);
                 speedMetersPerSecond.push_back(speed);
                 distanceMoved = speed * time;
                 movedCoordinates.push_back
@@ -242,8 +268,10 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                     {
                         std::vector<FLOATING_NUMBER>
                         {
-                            (*set->getPedestrianCoordinates())[i].coordinates[0],
-                            (*set->getPedestrianCoordinates())[i].coordinates[1] + distanceMoved
+                            (*set->getPedestrianCoordinates())[i]
+                            .coordinates[0],
+                            (*set->getPedestrianCoordinates())[i]
+                            .coordinates[1] + distanceMoved
                         }
                     }
                 );
@@ -558,8 +586,9 @@ void CalmPedestrianModel::calculatePriortiy()
         bool prioritySet = false;
         for(int j = 0; prioritySet == false && j < numAisles; ++j)
         {
-            if((*pedCoords)[i].coordinates[0] < ((*Aisles)[j] + ((*AislesSize)[j]/2))
-            &&(*pedCoords)[i].coordinates[0] > ((*Aisles)[j] - ((*AislesSize)[j]/2)))
+            if((*pedCoords)[i].coordinates[0] < ((*Aisles)[j] 
+            + ((*AislesSize)[j]/2)) && (*pedCoords)[i].coordinates[0]
+            > ((*Aisles)[j] - ((*AislesSize)[j]/2)))
             {
                 priorities.push_back(j);
                 startingAisles.push_back(j);
