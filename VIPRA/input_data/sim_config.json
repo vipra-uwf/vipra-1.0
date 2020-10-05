@@ -1,0 +1,9 @@
+{
+    "input_data_loader" : "xml",
+    "output_data_writer" : "xml",
+    "simulation_output_handler" : "timestep",
+    "pedestrian_set" : "calm",
+    "obstacle_set" : "calm", 
+    "goals" : "calm",
+    "pedestrian_dynamics_model" : "calm"
+}
