@@ -1,9 +1,85 @@
 {
-    "input_data_loader" : ["xml", "json"],
-    "output_data_writer" : ["xml", "a", "b", "c"],
-    "simulation_output_handler" : ["timestep"],
-    "pedestrian_set" : ["calm", "sped (not really)"],
-    "obstacle_set" : ["calm"],
-    "goals" : ["calm", "squad (lol)"],
-    "pedestrian_dynamics_model" : ["calm"]
+    "input_data_loader" : [
+        {
+            "objectName" : "inputXMLReader",
+            "className" : "InputDataLoader",
+            "includePath" : "readers/input_xml_reader.hpp",
+            "type" : "xml"
+        }, 
+        {
+            "objectName": "inputJSONReader",
+            "className": "InputJSONReader",
+            "includePath" : "readers/FAKE_INCLUDE.hpp",
+            "type" : "json"
+        },
+        {
+            "objectName": "plainTextReader",
+            "className": "InputPlainTextReader",
+            "includePath" : "readers/FAKE_INCLUDE.hpp",
+            "type" : "plaintext"
+        }
+    ],
+    
+    "output_data_writer" : [
+        {
+            "objectName": "xmlWriter",
+            "className": "XMLWriter",
+            "includePath" : "writers/xml_writer.hpp",
+            "type" : "xml"
+        }
+    ],
+
+    "simulation_output_handler" : [
+        {
+            "objectName": "timestepOutputHandler",
+            "className": "TimestepOutputHandler",
+            "includePath" : "writers/timestep_output_handler.hpp",
+            "type" : "timestep"
+        }
+    ],
+
+    "pedestrian_set" : [
+        {
+            "objectName": "calmPedSet",
+            "className": "CalmPedestrianSet",
+            "includePath" : "entity_sets/calm_pedestrian_set.hpp",
+            "type" : "calm"
+        }
+    ],
+
+    "obstacle_set" : [
+        {
+            "objectName": "calmObsSet",
+            "className": "ObstacleSet",
+            "includePath" : "entity_sets/obstacle_set.hpp",
+            "type" : "calm"
+        }
+    ],
+
+    "entity_set_factory" : [
+        {
+            "objectName": "calmSetFactory",
+            "className": "CalmEntitySetFactory",
+            "includePath" : "entity_sets/calm_entity_set_factory.hpp",
+            "type" : "calm"
+        }
+    ],
+
+    "goals" : [
+        {
+            "objectName": "calmGoals",
+            "className": "CalmGoals",
+            "includePath" : "goals/calm_goals.hpp",
+            "type" : "calm"
+        }
+    ],
+
+    "pedestrian_dynamics_model" : [
+        {
+            "objectName": "calmPedModel",
+            "className": "CalmPedestrianModel",
+            "includePath" : "models/calm_pedestrian_model.hpp",
+            "type" : "calm"
+        }
+    ]
 }
