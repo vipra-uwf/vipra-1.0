@@ -7,6 +7,9 @@
 #include "goals/calm_goals.hpp"
 #include "models/calm_pedestrian_model.hpp"
 
+// g++ code_generator.cpp readers/jsoncpp.cpp
+// ./a.out
+
 InputDataLoader* generateDataLoader(std::string type)
 {
 	if(type == "xml")
