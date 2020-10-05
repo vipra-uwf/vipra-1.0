@@ -11,7 +11,7 @@ InputDataLoader* generateDataLoader(std::string type)
 {
 	if(type == "xml")
 	{
-		InputDataLoader* inputXMLReader = new InputDataLoader;
+		InputXMLReader* inputXMLReader = new InputXMLReader;
 		return inputXMLReader;
 	}
 
@@ -95,4 +95,4 @@ PedestrianDynamicsModel* generatePedDynamicsModel(std::string type)
 	return nullptr;
 }
 
-int main() {  return 0; }
+int main() { return 0; }

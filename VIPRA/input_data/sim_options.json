@@ -2,7 +2,7 @@
     "input_data_loader" : [
         {
             "objectName" : "inputXMLReader",
-            "className" : "InputDataLoader",
+            "className" : "InputXMLReader",
             "includePath" : "readers/input_xml_reader.hpp",
             "type" : "xml"
         }

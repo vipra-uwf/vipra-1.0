@@ -180,8 +180,7 @@ int main()
         << goalsFunction
         << pedestrianDynamicsModel
     
-        << "\nint main() { " 
-        << " return 0; }";
+        << "\nint main() { return 0; }";
 
     mainFile.close();
     jsonFile.close();
