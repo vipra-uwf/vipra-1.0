@@ -82,6 +82,72 @@ std::string generateOutputDataWriter()
     return generatedFunction;
 }
 
+std::string generateSimulationOutputHandler() 
+{
+    std::string generatedFunction = 
+        "\nSimulationOutputHandler* generateOutputHandler(std::string type)\n"
+        "{\n";
+
+    generatedFunction += generateFunctionOptions("simulation_output_handler");
+    
+    return generatedFunction;
+}
+
+std::string generatePedestrianSet() 
+{
+    std::string generatedFunction = 
+        "\nPedestrianSet* generatePedestrianSet(std::string type)\n"
+        "{\n";
+
+    generatedFunction += generateFunctionOptions("pedestrian_set");
+    
+    return generatedFunction;
+}
+
+std::string generateObstacleSet() 
+{
+    std::string generatedFunction = 
+        "\nObstacleSet* generateObstacleSet(std::string type)\n"
+        "{\n";
+
+    generatedFunction += generateFunctionOptions("obstacle_set");
+    
+    return generatedFunction;
+}
+
+std::string generateEntitySetFactory() 
+{
+    std::string generatedFunction = 
+        "\nEntitySetFactory* generateEntitySetFactory(std::string type)\n"
+        "{\n";
+
+    generatedFunction += generateFunctionOptions("entity_set_factory");
+    
+    return generatedFunction;
+}
+
+std::string generateGoals() 
+{
+    std::string generatedFunction = 
+        "\nGoals* generateGoals(std::string type)\n"
+        "{\n";
+
+    generatedFunction += generateFunctionOptions("goals");
+    
+    return generatedFunction;
+}
+
+std::string generatePedestrianDynamicsModel() 
+{
+    std::string generatedFunction = 
+        "\nPedestrianDynamicsModel* generatePedDynamicsModel(std::string type)\n"
+        "{\n";
+
+    generatedFunction += generateFunctionOptions("pedestrian_dynamics_model");
+    
+    return generatedFunction;
+}
+
 int main() 
 {
     Json::Reader reader;
@@ -91,6 +157,12 @@ int main()
 
     std::string inputDataLoaderFunction = generateInputDataLoader();
     std::string outputDataWriterFunction = generateOutputDataWriter();
+    std::string simulationOutputHandlerFunction = generateSimulationOutputHandler();
+    std::string pedestrianSetFunction = generatePedestrianSet();
+    std::string obstacleSetFunction = generateObstacleSet();
+    std::string entitySetFactoryFunction = generateEntitySetFactory();
+    std::string goalsFunction = generateGoals();
+    std::string pedestrianDynamicsModel = generatePedestrianDynamicsModel();
 
     std::string includes = generateIncludes();
 
@@ -101,6 +173,12 @@ int main()
         << includes
         << inputDataLoaderFunction 
         << outputDataWriterFunction
+        << simulationOutputHandlerFunction
+        << pedestrianSetFunction
+        << obstacleSetFunction
+        << entitySetFactoryFunction
+        << goalsFunction
+        << pedestrianDynamicsModel
     
         << "\nint main() { " 
         << " return 0; }";
