@@ -1,6 +1,4 @@
 #include "readers/input_xml_reader.hpp"
-#include "readers/FAKE_INCLUDE.hpp"
-#include "readers/FAKE_INCLUDE.hpp"
 #include "writers/xml_writer.hpp"
 #include "writers/timestep_output_handler.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
@@ -15,16 +13,6 @@ InputDataLoader* generateDataLoader(std::string type)
 	{
 		InputDataLoader* inputXMLReader = new InputDataLoader;
 		return inputXMLReader;
-	}
-	else if(type == "json")
-	{
-		InputJSONReader* inputJSONReader = new InputJSONReader;
-		return inputJSONReader;
-	}
-	else if(type == "plaintext")
-	{
-		InputPlainTextReader* plainTextReader = new InputPlainTextReader;
-		return plainTextReader;
 	}
 
 	return nullptr;
