@@ -13,6 +13,9 @@ class InputDataLoader
     public:
         virtual ~InputDataLoader() = default;
 		
+        virtual void extractFileData(
+            std::string fileName, 
+            std::string rootElementName) = 0;
         virtual ENTITY_SET getInputEntities() = 0;
 };
 

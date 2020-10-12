@@ -5,6 +5,9 @@
 
 #include "readers/json/json.h"
 
+// g++ code_generator.cpp readers/jsoncpp.cpp
+// ./a.out
+
 std::vector<std::string> includes;
 Json::Value jsonObj;
 
@@ -148,6 +151,40 @@ std::string generatePedestrianDynamicsModel()
     return generatedFunction;
 }
 
+// TODO is this fine to be hardcoded? or should we make another json / add to json?
+// if type == calmxml  ??
+// will need to concat pedestrian_set with input_data_loader from sim_config.json
+std::string generatePopulateEntitySets() 
+{
+    std::string generatedFunction = 
+    "\nvoid populateEntitySets(PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet,"
+    "\n\tSIM_PARAMS* simulationParams, InputDataLoader* inputDataLoader,"
+    "\n\tEntitySetFactory* entitySetFactory, std::string type) \n{";
+    "\n\t{"
+        "\n\t\tinputDataLoader->extractFileData("
+            "\n\t\t\t\"./input_data/a320_144_pedestrians.xml\","
+            "\n\t\t\t\"pedestrian-set\");"
+        "\n\t\tENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();"
+        "\n\t\tentitySetFactory->populatePedestrianSet("
+            "\n\t\t\tpedInputFileData, pedestrianSet);\n"
+
+        "\n\t\tinputDataLoader->extractFileData("
+            "\n\t\t\t\"./input_data/a320_144_obstacles.xml\","
+            "\n\t\t\t\"obstacle-set\");"
+        "\n\t\tENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();"
+        "\n\t\tentitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);\n"
+
+        "\n\t\tinputDataLoader->extractFileData("
+            "\n\t\t\t\"./input_data/simulation_params.xml\","
+            "\n\t\t\t\"simulation-parameters\");"
+        "\n\t\tENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();"
+        "\n\t\tentitySetFactory->populateSimulationParams("
+            "\n\t\t\tsimParamsFileData, simulationParams);"
+    "\n\t}\n}";
+
+    return generatedFunction;
+}
+
 int main() 
 {
     Json::Reader reader;
@@ -164,6 +201,8 @@ int main()
     std::string goalsFunction = generateGoals();
     std::string pedestrianDynamicsModel = generatePedestrianDynamicsModel();
 
+    std::string populateEntitySets = generatePopulateEntitySets();
+
     std::string includes = generateIncludes();
 
 
@@ -179,6 +218,8 @@ int main()
         << entitySetFactoryFunction
         << goalsFunction
         << pedestrianDynamicsModel
+
+        << populateEntitySets
     
         << "\nint main() { return 0; }";
 
