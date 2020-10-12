@@ -157,74 +157,70 @@ std::string generatePedestrianDynamicsModel()
 std::string generatePopulateEntitySets() 
 {
     std::string generatedFunction = 
-    "\nvoid populateEntitySets(PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet,"
-    "\n\tSIM_PARAMS* simulationParams, InputDataLoader* inputDataLoader,"
-    "\n\tEntitySetFactory* entitySetFactory, std::string type) \n{";
-    "\n\t{"
-        "\n\t\tinputDataLoader->extractFileData("
-            "\n\t\t\t\"./input_data/a320_144_pedestrians.xml\","
-            "\n\t\t\t\"pedestrian-set\");"
-        "\n\t\tENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();"
-        "\n\t\tentitySetFactory->populatePedestrianSet("
-            "\n\t\t\tpedInputFileData, pedestrianSet);\n"
+    "\nvoid populateEntitySets("
+    "\n\tPedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParams,"
+    "\n\tInputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,"
+    "\n\tstd::string pedSetFile, std::string obsSetFile, std::string simParamsFile,"
+    "\n\tstd::string pedFileRootKey, std::string obsFileRootKey, std::string simParamsFileRootKey"
+    ")"
+    
+    "\n{"
+        "\n\tinputDataLoader->extractFileData(pedSetFile, pedFileRootKey);"
+        "\n\tENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();"
+        "\n\tentitySetFactory->populatePedestrianSet(pedInputFileData, pedestrianSet);\n"
 
-        "\n\t\tinputDataLoader->extractFileData("
-            "\n\t\t\t\"./input_data/a320_144_obstacles.xml\","
-            "\n\t\t\t\"obstacle-set\");"
-        "\n\t\tENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();"
-        "\n\t\tentitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);\n"
+        "\n\tinputDataLoader->extractFileData(obsSetFile, obsFileRootKey);"
+        "\n\tENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();"
+        "\n\tentitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);\n"
 
-        "\n\t\tinputDataLoader->extractFileData("
-            "\n\t\t\t\"./input_data/simulation_params.xml\","
-            "\n\t\t\t\"simulation-parameters\");"
-        "\n\t\tENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();"
-        "\n\t\tentitySetFactory->populateSimulationParams("
-            "\n\t\t\tsimParamsFileData, simulationParams);"
-    "\n\t}\n}";
+        "\n\tinputDataLoader->extractFileData(simParamsFile, simParamsFileRootKey);"
+        "\n\tENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();"
+        "\n\tentitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);"
+    "\n}\n";
 
     return generatedFunction;
 }
 
-int main() 
-{
-    Json::Reader reader;
-    std::ifstream jsonFile("input_data/sim_options.json");
+// int main() 
+// {
+//     Json::Reader reader;
+//     std::ifstream jsonFile("input_data/sim_options.json");
 
-    reader.parse(jsonFile, jsonObj);
+//     reader.parse(jsonFile, jsonObj);
 
-    std::string inputDataLoaderFunction = generateInputDataLoader();
-    std::string outputDataWriterFunction = generateOutputDataWriter();
-    std::string simulationOutputHandlerFunction = generateSimulationOutputHandler();
-    std::string pedestrianSetFunction = generatePedestrianSet();
-    std::string obstacleSetFunction = generateObstacleSet();
-    std::string entitySetFactoryFunction = generateEntitySetFactory();
-    std::string goalsFunction = generateGoals();
-    std::string pedestrianDynamicsModel = generatePedestrianDynamicsModel();
+//     std::string inputDataLoaderFunction = generateInputDataLoader();
+//     std::string outputDataWriterFunction = generateOutputDataWriter();
+//     std::string simulationOutputHandlerFunction = generateSimulationOutputHandler();
+//     std::string pedestrianSetFunction = generatePedestrianSet();
+//     std::string obstacleSetFunction = generateObstacleSet();
+//     std::string entitySetFactoryFunction = generateEntitySetFactory();
+//     std::string goalsFunction = generateGoals();
+//     std::string pedestrianDynamicsModel = generatePedestrianDynamicsModel();
 
-    std::string populateEntitySets = generatePopulateEntitySets();
+//     std::string populateEntitySets = generatePopulateEntitySets();
 
-    std::string includes = generateIncludes();
+//     std::string includes = generateIncludes();
 
 
-    std::ofstream mainFile;
-    mainFile.open("generated_main.cpp");
-    mainFile 
-        << includes
-        << inputDataLoaderFunction 
-        << outputDataWriterFunction
-        << simulationOutputHandlerFunction
-        << pedestrianSetFunction
-        << obstacleSetFunction
-        << entitySetFactoryFunction
-        << goalsFunction
-        << pedestrianDynamicsModel
+//     std::ofstream mainFile;
+//     mainFile.open("generated_main.cpp");
+//     mainFile 
+//         << includes
+//         << inputDataLoaderFunction 
+//         << outputDataWriterFunction
+//         << simulationOutputHandlerFunction
+//         << pedestrianSetFunction
+//         << obstacleSetFunction
+//         << entitySetFactoryFunction
+//         << goalsFunction
+//         << pedestrianDynamicsModel
 
-        << populateEntitySets
+//         << populateEntitySets
     
-        << "\nint main() { return 0; }";
+//         << "\nint main() { return 0; }";
 
-    mainFile.close();
-    jsonFile.close();
+//     mainFile.close();
+//     jsonFile.close();
 
-    return 0;
-}
+//     return 0;
+// }

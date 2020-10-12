@@ -95,31 +95,23 @@
 // 	return nullptr;
 // }
 
-// void populateEntitySets(PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet,
-// 	SIM_PARAMS* simulationParams, InputDataLoader* inputDataLoader,
-// 	EntitySetFactory* entitySetFactory, std::string type) 
+// void populateEntitySets(
+// 	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParams,
+// 	InputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,
+// 	std::string pedSetFile, std::string obsSetFile, std::string simParamsFile,
+// 	std::string pedFileRootKey, std::string obsFileRootKey, std::string simParamsFileRootKey)
 // {
-// 	if(type == "calmxml")
-// 	{
-// 		dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
-// 			"./input_data/a320_144_pedestrians.xml",
-// 			"pedestrian-set");
-// 		ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
-// 		entitySetFactory->populatePedestrianSet(
-// 			pedInputFileData, pedestrianSet);
+// 	inputDataLoader->extractFileData(pedSetFile, pedFileRootKey);
+// 	ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
+// 	entitySetFactory->populatePedestrianSet(pedInputFileData, pedestrianSet);
 
-// 		dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
-// 			"./input_data/a320_144_obstacles.xml",
-// 			"obstacle-set");
-// 		ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
-// 		entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
+// 	inputDataLoader->extractFileData(obsSetFile, obsFileRootKey);
+// 	ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
+// 	entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
 
-// 		dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
-// 			"./input_data/simulation_params.xml",
-// 			"simulation-parameters");
-// 		ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
-// 		entitySetFactory->populateSimulationParams(
-// 			simParamsFileData, simulationParams);
-// 	}
+// 	inputDataLoader->extractFileData(simParamsFile, simParamsFileRootKey);
+// 	ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
+// 	entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
 // }
+
 // int main() { return 0; }

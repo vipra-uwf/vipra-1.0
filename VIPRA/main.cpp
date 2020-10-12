@@ -123,53 +123,23 @@ PedestrianDynamicsModel* generatePedDynamicsModel(std::string type)
     return nullptr;
 }
 
-void populateEntitySets(PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, 
-    SIM_PARAMS* simulationParams, InputDataLoader* inputDataLoader, 
-    EntitySetFactory* entitySetFactory, std::string type)
+void populateEntitySets(
+	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParams,
+	InputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,
+	std::string pedSetFile, std::string obsSetFile, std::string simParamsFile,
+	std::string pedFileRootKey, std::string obsFileRootKey, std::string simParamsFileRootKey)
 {
-    if(type == "calm")
-    {
-        inputDataLoader->extractFileData(
-            "./input_data/a320_144_pedestrians.xml", 
-            "pedestrian-set");
-        ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
-        entitySetFactory->populatePedestrianSet(
-            pedInputFileData, pedestrianSet);
+	inputDataLoader->extractFileData(pedSetFile, pedFileRootKey);
+	ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
+	entitySetFactory->populatePedestrianSet(pedInputFileData, pedestrianSet);
 
-        inputDataLoader->extractFileData(
-            "./input_data/a320_144_obstacles.xml",
-            "obstacle-set");
-        ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
-        entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
+	inputDataLoader->extractFileData(obsSetFile, obsFileRootKey);
+	ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
+	entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
 
-        inputDataLoader->extractFileData(
-            "./input_data/simulation_params.xml",
-            "simulation-parameters");
-        ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
-        entitySetFactory->populateSimulationParams(
-            simParamsFileData, simulationParams);
-       
-       
-        // dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
-        //     "./input_data/a320_144_pedestrians.xml", 
-        //     "pedestrian-set");
-        // ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
-        // entitySetFactory->populatePedestrianSet(
-        //     pedInputFileData, pedestrianSet);
-
-        // dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
-        //     "./input_data/a320_144_obstacles.xml",
-        //     "obstacle-set");
-        // ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
-        // entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
-
-        // dynamic_cast<InputXMLReader*>(inputDataLoader)->extractFileData(
-        //     "./input_data/simulation_params.xml",
-        //     "simulation-parameters");
-        // ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
-        // entitySetFactory->populateSimulationParams(
-        //     simParamsFileData, simulationParams);
-    }
+	inputDataLoader->extractFileData(simParamsFile, simParamsFileRootKey);
+	ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
+	entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
 }
 
 void configureOutputDataWriter(
@@ -216,38 +186,37 @@ void writeTrajectoryToFile(OutputDataWriter* outputDataWriter, std::string type)
 
 int main()
 {
-    // Json::Value root;
+    Json::Reader reader;
+    std::ifstream jsonFile("input_data/sim_config.json");
+    Json::Value jsonObj;
+    reader.parse(jsonFile, jsonObj);
 
-    // std::ifstream file("input_data/sim_options.json");
-    // file >> root;
-
-    // std::cout << root["goals"][0] << std::endl;
-    // std::cout << root["goals"][1] << std::endl;
-    // std::cout << root["goals"].size() << std::endl;
-
-    SIM_CONFIG* simConfig = extractSimConfig("sim_config.txt");
+    // SIM_CONFIG* simConfig = extractSimConfig("sim_config.txt");
     
     InputDataLoader* inputDataLoader = generateDataLoader(
-        (*simConfig)["input_data_loader"]); 
+        jsonObj["input_data_loader"].asString()); 
     OutputDataWriter* outputDataWriter = generateDataWriter(
-        (*simConfig)["output_data_writer"]);
+        jsonObj["output_data_writer"].asString());
     PedestrianSet* pedestrianSet = generatePedestrianSet(
-        (*simConfig)["pedestrian_set"]);
+        jsonObj["pedestrian_set"]["type"].asString());
     ObstacleSet* obstacleSet = generateObstacleSet(
-        (*simConfig)["obstacle_set"]);
+        jsonObj["obstacle_set"]["type"].asString());
     EntitySetFactory* entitySetFactory = generateEntitySetFactory(
-        (*simConfig)["entity_set_factory"]); 
+        jsonObj["entity_set_factory"].asString()); 
     Goals* goals = generateGoals(
-        (*simConfig)["goals"]);
+        jsonObj["goals"].asString());
     PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedDynamicsModel(
-        (*simConfig)["pedestrian_dynamics_model"]);
+        jsonObj["pedestrian_dynamics_model"].asString());
     SimulationOutputHandler* outputHandler = generateOutputHandler(
-        (*simConfig)["simulation_output_handler"]);
+        jsonObj["simulation_output_handler"].asString());
     
     SIM_PARAMS* simulationParams = new SIM_PARAMS;
 
-    populateEntitySets(pedestrianSet, obstacleSet, simulationParams, 
-        inputDataLoader, entitySetFactory, (*simConfig)["entity_set_factory"]);
+    populateEntitySets(
+        pedestrianSet, obstacleSet, simulationParams, 
+        inputDataLoader, entitySetFactory, 
+        jsonObj["pedestrian_set"]["inputFile"].asString(), jsonObj["obstacle_set"]["inputFile"].asString(), jsonObj["sim_params"]["inputFile"].asString(),
+        jsonObj["pedestrian_set"]["fileRootKey"].asString(), jsonObj["obstacle_set"]["fileRootKey"].asString(), jsonObj["sim_params"]["fileRootKey"].asString());
 
     Data data;
     data.setPedestrianSet(pedestrianSet);
@@ -262,17 +231,17 @@ int main()
     Simulation simulation(pedestrianDynamicsModel);
 
     configureOutputDataWriter(
-        outputDataWriter, (*simConfig)["output_data_writer"]);
+        outputDataWriter, jsonObj["output_data_writer"].asString());
     configureOutputHandler(
         outputHandler, pedestrianSet, outputDataWriter, 
-        &simulation, (*simConfig)["simulation_output_handler"]);
+        &simulation, jsonObj["simulation_output_handler"].asString());
 
     simulation.setSimulationOutputHandler(outputHandler);
     simulation.run();
 
-    writeTrajectoryToFile(outputDataWriter, (*simConfig)["output_data_writer"]);
+    writeTrajectoryToFile(outputDataWriter, jsonObj["output_data_writer"].asString());
     
-    delete simConfig;
+    // delete simConfig;
     delete inputDataLoader;
     delete outputDataWriter;
     delete pedestrianSet;
