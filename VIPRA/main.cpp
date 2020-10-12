@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <fstream>
 
+#include "readers/json/json.h"
 #include "readers/input_xml_reader.hpp"
 #include "writers/xml_writer.hpp"
 #include "writers/timestep_output_handler.hpp"
@@ -11,26 +12,6 @@
 #include "entity_sets/calm_entity_set_factory.hpp"
 #include "models/calm_pedestrian_model.hpp"
 #include "simulation/simulation.hpp"
-
-typedef std::unordered_map<std::string, std::string> SIM_CONFIG; 
-
-SIM_CONFIG* extractSimConfig(std::string fileName)
-{
-    SIM_CONFIG* simConfig = new SIM_CONFIG;
-
-    std::string line;
-    std::string delimiter = "=";
-    std::ifstream inputFile(fileName); 
-
-    while(std::getline(inputFile, line))
-    {
-        std::string parameter = line.substr(0, line.find(delimiter));
-        std::string value = line.substr(line.find(delimiter) + 1, line.size());
-        (*simConfig)[parameter] = value;
-    }
-
-    return simConfig;
-}
 
 InputDataLoader* generateDataLoader(std::string type)
 {
@@ -182,7 +163,6 @@ void writeTrajectoryToFile(OutputDataWriter* outputDataWriter, std::string type)
 
 
 
-#include "readers/json/json.h"
 
 int main()
 {
@@ -190,8 +170,6 @@ int main()
     std::ifstream jsonFile("input_data/sim_config.json");
     Json::Value jsonObj;
     reader.parse(jsonFile, jsonObj);
-
-    // SIM_CONFIG* simConfig = extractSimConfig("sim_config.txt");
     
     InputDataLoader* inputDataLoader = generateDataLoader(
         jsonObj["input_data_loader"].asString()); 
@@ -241,7 +219,6 @@ int main()
 
     writeTrajectoryToFile(outputDataWriter, jsonObj["output_data_writer"].asString());
     
-    // delete simConfig;
     delete inputDataLoader;
     delete outputDataWriter;
     delete pedestrianSet;
