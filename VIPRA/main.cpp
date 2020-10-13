@@ -146,6 +146,8 @@ void configureOutputHandler(SimulationOutputHandler* outputHandler,
     {
         outputHandler->setPedestrianSet(pedestrianSet);
         outputHandler->setOutputDataWriter(outputDataWriter);
+        // TODO outputHandler->setSimulation(simulation) // gives access to both simulation and ped dynaimcs model through new sim getter
+        // TODO outputHandler->configureOutputHandler(hashmap)
         dynamic_cast<TimestepOutputHandler*>(outputHandler)->setTimestep(
             simulation->getTimestep());
         dynamic_cast<TimestepOutputHandler*>(outputHandler)->
@@ -157,6 +159,7 @@ void writeTrajectoryToFile(OutputDataWriter* outputDataWriter, std::string type)
 {
     if(type == "xml")
     {
+        // TODO make writeDocumentContents into virtual method
         dynamic_cast<XMLWriter*>(outputDataWriter)->writeDocumentContents();
     }
 }

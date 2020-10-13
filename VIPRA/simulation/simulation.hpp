@@ -8,7 +8,7 @@
 #include "../models/pedestrian_dynamics_model.hpp"
 #include "clock.hpp"
 
-#include "../entity_sets/calm_pedestrian_set.hpp" // this will be deleted when printDataDELETETHIS is deleted
+#include "../entity_sets/calm_pedestrian_set.hpp" // TODO when printDataDELETETHIS is deleted
 
 class Simulation
 {
@@ -26,6 +26,7 @@ class Simulation
         void setSimulationOutputHandler(
             SimulationOutputHandler* simulationOutputHandler);
         int* getTimestep();
+        // TODO getter for ped dynamics model
         void printDataDELETETHIS();
         void testGoalClassDELETETHIS();
 };

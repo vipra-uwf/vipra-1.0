@@ -151,9 +151,6 @@ std::string generatePedestrianDynamicsModel()
     return generatedFunction;
 }
 
-// TODO is this fine to be hardcoded? or should we make another json / add to json?
-// if type == calmxml  ??
-// will need to concat pedestrian_set with input_data_loader from sim_config.json
 std::string generatePopulateEntitySets() 
 {
     std::string generatedFunction = 
@@ -181,46 +178,46 @@ std::string generatePopulateEntitySets()
     return generatedFunction;
 }
 
-// int main() 
-// {
-//     Json::Reader reader;
-//     std::ifstream jsonFile("input_data/sim_options.json");
+int main() 
+{
+    Json::Reader reader;
+    std::ifstream jsonFile("input_data/sim_options.json");
 
-//     reader.parse(jsonFile, jsonObj);
+    reader.parse(jsonFile, jsonObj);
 
-//     std::string inputDataLoaderFunction = generateInputDataLoader();
-//     std::string outputDataWriterFunction = generateOutputDataWriter();
-//     std::string simulationOutputHandlerFunction = generateSimulationOutputHandler();
-//     std::string pedestrianSetFunction = generatePedestrianSet();
-//     std::string obstacleSetFunction = generateObstacleSet();
-//     std::string entitySetFactoryFunction = generateEntitySetFactory();
-//     std::string goalsFunction = generateGoals();
-//     std::string pedestrianDynamicsModel = generatePedestrianDynamicsModel();
+    std::string inputDataLoaderFunction = generateInputDataLoader();
+    std::string outputDataWriterFunction = generateOutputDataWriter();
+    std::string simulationOutputHandlerFunction = generateSimulationOutputHandler();
+    std::string pedestrianSetFunction = generatePedestrianSet();
+    std::string obstacleSetFunction = generateObstacleSet();
+    std::string entitySetFactoryFunction = generateEntitySetFactory();
+    std::string goalsFunction = generateGoals();
+    std::string pedestrianDynamicsModel = generatePedestrianDynamicsModel();
 
-//     std::string populateEntitySets = generatePopulateEntitySets();
+    std::string populateEntitySets = generatePopulateEntitySets();
 
-//     std::string includes = generateIncludes();
+    std::string includes = generateIncludes();
 
 
-//     std::ofstream mainFile;
-//     mainFile.open("generated_main.cpp");
-//     mainFile 
-//         << includes
-//         << inputDataLoaderFunction 
-//         << outputDataWriterFunction
-//         << simulationOutputHandlerFunction
-//         << pedestrianSetFunction
-//         << obstacleSetFunction
-//         << entitySetFactoryFunction
-//         << goalsFunction
-//         << pedestrianDynamicsModel
+    std::ofstream mainFile;
+    mainFile.open("generated_main.cpp");
+    mainFile 
+        << includes
+        << inputDataLoaderFunction 
+        << outputDataWriterFunction
+        << simulationOutputHandlerFunction
+        << pedestrianSetFunction
+        << obstacleSetFunction
+        << entitySetFactoryFunction
+        << goalsFunction
+        << pedestrianDynamicsModel
 
-//         << populateEntitySets
+        << populateEntitySets
     
-//         << "\nint main() { return 0; }";
+        << "\nint main() { return 0; }";
 
-//     mainFile.close();
-//     jsonFile.close();
+    mainFile.close();
+    jsonFile.close();
 
-//     return 0;
-// }
+    return 0;
+}

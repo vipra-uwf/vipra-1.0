@@ -12,7 +12,8 @@ class InputDataLoader
 {
     public:
         virtual ~InputDataLoader() = default;
-		
+
+        // TODO create hashmap setter methods just outputDataWriter
         virtual void extractFileData(
             std::string fileName, 
             std::string rootElementName) = 0;

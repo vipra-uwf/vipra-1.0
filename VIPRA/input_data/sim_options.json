@@ -5,6 +5,18 @@
             "className" : "InputXMLReader",
             "includePath" : "readers/input_xml_reader.hpp",
             "type" : "xml"
+        },
+        {
+            "objectName": "inputJSONReader",
+            "className": "InputJSONReader",
+            "includePath" : "readers/FAKE_INCLUDE.hpp",
+            "type" : "json"
+        },
+        {
+            "objectName": "plainTextReader",
+            "className": "InputPlainTextReader",
+            "includePath" : "readers/FAKE_INCLUDE.hpp",
+            "type" : "plaintext"
         }
     ],
     
