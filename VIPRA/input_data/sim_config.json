@@ -1,7 +1,24 @@
 {
-    "input_data_loader" : "xml",
-    "output_data_writer" : "xml",
-    "simulation_output_handler" : "timestep",
+    "input_data_loader" : {
+        "type" : "xml",
+        "configuration" : {
+
+        }
+    },
+    "output_data_writer" : {
+        "type" : "xml",
+        "configuration" : {
+            "outputFilePath" : "./output_data/pedestrian_trajectory.xml",
+            "rootElementName" : "pedestrian-set",
+            "childElementName" : "pedestrian"
+        }
+    },
+    "simulation_output_handler" : {
+        "type" : "timestep",
+        "configuration" : {
+
+        }
+    },
     "pedestrian_set" : {
     	"type" : "calm",
     	"inputFile" : "./input_data/a320_144_pedestrians.xml",
@@ -16,7 +33,22 @@
     	"inputFile" : "./input_data/simulation_params.xml",
     	"fileRootKey" : "simulation-parameters"
     },
-    "entity_set_factory" : "calm",
-    "goals" : "calm",
-    "pedestrian_dynamics_model" : "calm"
+    "entity_set_factory" : {
+        "type" : "calm",
+        "configuration" : {
+
+        }
+    },
+    "goals" : {
+        "type" : "calm",
+        "configuration" : {
+
+        }
+    },
+    "pedestrian_dynamics_model" : {
+        "type" : "calm",
+        "configuration" : {
+
+        }
+    }
 }

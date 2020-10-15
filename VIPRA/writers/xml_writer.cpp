@@ -5,18 +5,28 @@ XMLWriter::XMLWriter()
    this->currentNode = NULL; 
 }
 
-void XMLWriter::configureXMLDocumentStructure(
-    std::string fileName, std::string rootElementName, 
-    std::string dataElementName, std::string versionNum, 
-    std::string encodingType)
+void XMLWriter::configure(CONFIG_MAP* configMap) 
 {
-    openFile(fileName);
-    setRootNodeName(rootElementName);
-    setDataNodeName(dataElementName);
-
-    initializeXMLDeclaration(versionNum, encodingType);
+    openFile((*configMap)["outputFilePath"]);
+    setRootNodeName((*configMap)["rootElementName"]);
+    // TODO change DataNodeName to ChildNodeName
+    setDataNodeName((*configMap)["childElementName"]);
+    initializeXMLDeclaration("1.0", "utf-8");
     initializeRootNode();
 }
+
+// void XMLWriter::configureXMLDocumentStructure(
+//     std::string fileName, std::string rootElementName, 
+//     std::string dataElementName, std::string versionNum, 
+//     std::string encodingType)
+// {
+//     openFile(fileName);
+//     setRootNodeName(rootElementName);
+//     setDataNodeName(dataElementName);
+
+//     initializeXMLDeclaration(versionNum, encodingType);
+//     initializeRootNode();
+// }
 
 void XMLWriter::writeData(Data* data)
 {

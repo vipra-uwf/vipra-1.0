@@ -14,6 +14,8 @@ class OutputDataWriter
         virtual void writeData(Data* data) = 0;
         virtual void writeFloatData(std::string key, FLOATING_NUMBER value) = 0;
         virtual void writeStringData(std::string key, std::string value) = 0;
+        virtual void configure(CONFIG_MAP* configMap) = 0; 
+
         // TODO virtual method that allows the user to send in the hashmap of initial values
         // TODO name of file, root attribute name, etc.. hashmap string to string
         // TODO hashmap configuration (in sim_config.json)

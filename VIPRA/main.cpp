@@ -124,19 +124,26 @@ void populateEntitySets(
 }
 
 void configureOutputDataWriter(
-    OutputDataWriter* outputDataWriter, std::string type)
+    OutputDataWriter* outputDataWriter, CONFIG_MAP* configMap)
 {
-    if(type == "xml")
-    {
-        dynamic_cast<XMLWriter*>(outputDataWriter)->
-            configureXMLDocumentStructure(
-                "./output_data/pedestrian_trajectory.xml", 
-                "pedestrian-set", 
-                "pedestrian", 
-                "1.0", 
-                "utf-8");
-    }
+    outputDataWriter->configure(configMap);
 }
+
+// void configureOutputDataWriter(
+//     OutputDataWriter* outputDataWriter, std::string type)
+// {
+//     if(type == "xml")
+//     {
+//         // TODO, just default to 1.0 and utf-8
+//         dynamic_cast<XMLWriter*>(outputDataWriter)->
+//             configureXMLDocumentStructure(
+//                 "./output_data/pedestrian_trajectory.xml", 
+//                 "pedestrian-set", 
+//                 "pedestrian", 
+//                 "1.0", 
+//                 "utf-8");
+//     }
+// }
 
 void configureOutputHandler(SimulationOutputHandler* outputHandler, 
     PedestrianSet* pedestrianSet, OutputDataWriter* outputDataWriter, 
@@ -165,31 +172,55 @@ void writeTrajectoryToFile(OutputDataWriter* outputDataWriter, std::string type)
 }
 
 
+Json::Value jsonObj;
+typedef std::unordered_map<std::string, std::string> CONFIG_MAP; 
+
+CONFIG_MAP* extractConfigMap(std::string objectName)
+{
+    CONFIG_MAP* configMap = new CONFIG_MAP;
+
+    for(int i = 0; i < jsonObj[objectName]["configuration"].size(); i++) 
+    {
+        std::string attribute = jsonObj[objectName]["configuration"].getMemberNames()[i];
+        std::string value = jsonObj[objectName]["configuration"][attribute].asString();
+        (*configMap)[attribute] = value;
+    }
+
+    return configMap;
+}
 
 
 int main()
 {
+    // TODO dont make jsonObj a global variable
+    // TODO deallocate all the CONFIG_MAPs
+
     Json::Reader reader;
     std::ifstream jsonFile("input_data/sim_config.json");
-    Json::Value jsonObj;
     reader.parse(jsonFile, jsonObj);
-    
+
+    CONFIG_MAP* outputDataWriterConfig = extractConfigMap("output_data_writer"); 
+    // std::cout << (*outputDataWriterConfig)["outputFilePath"] << std::endl;
+
+
+
+
     InputDataLoader* inputDataLoader = generateDataLoader(
-        jsonObj["input_data_loader"].asString()); 
+        jsonObj["input_data_loader"]["type"].asString()); 
     OutputDataWriter* outputDataWriter = generateDataWriter(
-        jsonObj["output_data_writer"].asString());
+        jsonObj["output_data_writer"]["type"].asString());
     PedestrianSet* pedestrianSet = generatePedestrianSet(
         jsonObj["pedestrian_set"]["type"].asString());
     ObstacleSet* obstacleSet = generateObstacleSet(
         jsonObj["obstacle_set"]["type"].asString());
     EntitySetFactory* entitySetFactory = generateEntitySetFactory(
-        jsonObj["entity_set_factory"].asString()); 
+        jsonObj["entity_set_factory"]["type"].asString()); 
     Goals* goals = generateGoals(
-        jsonObj["goals"].asString());
+        jsonObj["goals"]["type"].asString());
     PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedDynamicsModel(
-        jsonObj["pedestrian_dynamics_model"].asString());
+        jsonObj["pedestrian_dynamics_model"]["type"].asString());
     SimulationOutputHandler* outputHandler = generateOutputHandler(
-        jsonObj["simulation_output_handler"].asString());
+        jsonObj["simulation_output_handler"]["type"].asString());
     
     SIM_PARAMS* simulationParams = new SIM_PARAMS;
 
@@ -211,16 +242,15 @@ int main()
     
     Simulation simulation(pedestrianDynamicsModel);
 
-    configureOutputDataWriter(
-        outputDataWriter, jsonObj["output_data_writer"].asString());
+    configureOutputDataWriter(outputDataWriter, outputDataWriterConfig);
     configureOutputHandler(
         outputHandler, pedestrianSet, outputDataWriter, 
-        &simulation, jsonObj["simulation_output_handler"].asString());
+        &simulation, jsonObj["simulation_output_handler"]["type"].asString());
 
     simulation.setSimulationOutputHandler(outputHandler);
     simulation.run();
 
-    writeTrajectoryToFile(outputDataWriter, jsonObj["output_data_writer"].asString());
+    writeTrajectoryToFile(outputDataWriter, jsonObj["output_data_writer"]["type"].asString());
     
     delete inputDataLoader;
     delete outputDataWriter;
