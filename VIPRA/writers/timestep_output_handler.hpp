@@ -8,14 +8,17 @@ class TimestepOutputHandler: public SimulationOutputHandler
     private: 
         int frequency;
         int* timestep;
-        PedestrianSet* pedestrianSet;
         OutputDataWriter* outputDataWriter;
-
-    public:
+        PedestrianSet* pedestrianSet;
+        Simulation* simulation;
         void setTimestep(int*);
         void setOutputWritingFrequency(int frequency);
+
+    public:
+        virtual void configure(CONFIG_MAP* configMap);
         virtual void setOutputDataWriter(OutputDataWriter* outputDataWriter);
         virtual void setPedestrianSet(PedestrianSet* pedestrianSet);
+        virtual void setSimulation(Simulation* simulation);
         virtual bool isOutputCriterionMet();
         virtual void writeData();
 };

@@ -37,12 +37,13 @@ OutputDataWriter* generateDataWriter(std::string type, CONFIG_MAP* configMap)
     return nullptr;
 }
 
-SimulationOutputHandler* generateOutputHandler(std::string type)
+SimulationOutputHandler* generateOutputHandler(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "timestep")
     {
         TimestepOutputHandler* timestepOutputHandler = 
             new TimestepOutputHandler;
+        timestepOutputHandler->configure(configMap);
         return timestepOutputHandler;
     }
 
@@ -131,17 +132,16 @@ void configureOutputHandler(SimulationOutputHandler* outputHandler,
     PedestrianSet* pedestrianSet, OutputDataWriter* outputDataWriter, 
     Simulation* simulation, std::string type)
 {
-    if(type == "timestep")
-    {
-        outputHandler->setPedestrianSet(pedestrianSet);
+    // if(type == "timestep")
+    // {
         outputHandler->setOutputDataWriter(outputDataWriter);
-        // TODO outputHandler->setSimulation(simulation) // gives access to both simulation and ped dynaimcs model through new sim getter
-        // TODO outputHandler->configureOutputHandler(hashmap)
-        dynamic_cast<TimestepOutputHandler*>(outputHandler)->setTimestep(
-            simulation->getTimestep());
-        dynamic_cast<TimestepOutputHandler*>(outputHandler)->
-            setOutputWritingFrequency(250);
-    }
+        outputHandler->setPedestrianSet(pedestrianSet);
+        outputHandler->setSimulation(simulation);
+        // dynamic_cast<TimestepOutputHandler*>(outputHandler)->setTimestep(
+        //     simulation->getTimestep());
+        // dynamic_cast<TimestepOutputHandler*>(outputHandler)->
+        //     setOutputWritingFrequency(250);
+    // }
 }
 
 void writeTrajectoryToFile(OutputDataWriter* outputDataWriter, std::string type)
@@ -212,8 +212,11 @@ int main()
         jsonObj["goals"]["type"].asString());
     PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedDynamicsModel(
         jsonObj["pedestrian_dynamics_model"]["type"].asString());
+
     SimulationOutputHandler* outputHandler = generateOutputHandler(
-        jsonObj["simulation_output_handler"]["type"].asString());
+        jsonObj["simulation_output_handler"]["type"].asString(),
+        simulationOutputHandlerConfig
+    );
     
     SIM_PARAMS* simulationParams = new SIM_PARAMS;
 

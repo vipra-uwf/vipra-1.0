@@ -1,5 +1,7 @@
 #include "timestep_output_handler.hpp"
 
+#include <iostream> // TODO delete when done debugging
+
 void TimestepOutputHandler::setOutputWritingFrequency(int frequency)
 {
     this->frequency = frequency;
@@ -8,6 +10,11 @@ void TimestepOutputHandler::setOutputWritingFrequency(int frequency)
 void TimestepOutputHandler::setTimestep(int* timestep)
 {
     this->timestep = timestep;
+}
+
+void TimestepOutputHandler::configure(CONFIG_MAP* configMap)
+{
+    setOutputWritingFrequency(std::stoi((*configMap)["outputFrequency"]));
 }
 
 void TimestepOutputHandler::setOutputDataWriter(
@@ -19,6 +26,12 @@ void TimestepOutputHandler::setOutputDataWriter(
 void TimestepOutputHandler::setPedestrianSet(PedestrianSet* pedestrianSet)
 {
     this->pedestrianSet = pedestrianSet;
+}
+
+void TimestepOutputHandler::setSimulation(Simulation* simulation)
+{
+    this->simulation = simulation;
+    setTimestep(this->simulation->getTimestep());
 }
 
 bool TimestepOutputHandler::isOutputCriterionMet()

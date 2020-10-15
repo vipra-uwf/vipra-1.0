@@ -16,7 +16,7 @@
     "simulation_output_handler" : {
         "type" : "timestep",
         "configuration" : {
-
+            "outputFrequency" : 250
         }
     },
     "pedestrian_set" : {
