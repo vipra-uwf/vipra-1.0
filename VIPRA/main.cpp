@@ -13,22 +13,24 @@
 #include "models/calm_pedestrian_model.hpp"
 #include "simulation/simulation.hpp"
 
-InputDataLoader* generateDataLoader(std::string type)
+InputDataLoader* generateDataLoader(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "xml")
     {
         InputXMLReader* inputXMLReader = new InputXMLReader;
+        inputXMLReader->configure(configMap);
         return inputXMLReader;
     }
 
     return nullptr;
 }
 
-OutputDataWriter* generateDataWriter(std::string type)
+OutputDataWriter* generateDataWriter(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "xml")
     {
         XMLWriter* xmlWriter = new XMLWriter;
+        xmlWriter->configure(configMap);
         return xmlWriter;
     }
 
@@ -123,27 +125,7 @@ void populateEntitySets(
 	entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
 }
 
-void configureOutputDataWriter(
-    OutputDataWriter* outputDataWriter, CONFIG_MAP* configMap)
-{
-    outputDataWriter->configure(configMap);
-}
-
-// void configureOutputDataWriter(
-//     OutputDataWriter* outputDataWriter, std::string type)
-// {
-//     if(type == "xml")
-//     {
-//         // TODO, just default to 1.0 and utf-8
-//         dynamic_cast<XMLWriter*>(outputDataWriter)->
-//             configureXMLDocumentStructure(
-//                 "./output_data/pedestrian_trajectory.xml", 
-//                 "pedestrian-set", 
-//                 "pedestrian", 
-//                 "1.0", 
-//                 "utf-8");
-//     }
-// }
+// TODO this method may be unnecessary, probably should create a configure() virtual method for all virtual classes
 
 void configureOutputHandler(SimulationOutputHandler* outputHandler, 
     PedestrianSet* pedestrianSet, OutputDataWriter* outputDataWriter, 
@@ -194,21 +176,32 @@ int main()
 {
     // TODO dont make jsonObj a global variable
     // TODO deallocate all the CONFIG_MAPs
+    // TODO should probably put sim_params.xml in sim_config.json
 
     Json::Reader reader;
     std::ifstream jsonFile("input_data/sim_config.json");
     reader.parse(jsonFile, jsonObj);
 
+    CONFIG_MAP* inputDataLoaderConfig = extractConfigMap("input_data_loader");
     CONFIG_MAP* outputDataWriterConfig = extractConfigMap("output_data_writer"); 
-    // std::cout << (*outputDataWriterConfig)["outputFilePath"] << std::endl;
-
-
-
+    CONFIG_MAP* simulationOutputHandlerConfig = extractConfigMap("simulation_output_handler"); 
+    CONFIG_MAP* pedestrianSetConfig = extractConfigMap("pedestrian_set"); 
+    CONFIG_MAP* obstacleSetConfig = extractConfigMap("obstacle_set"); 
+    CONFIG_MAP* simulationParametersConfig = extractConfigMap("sim_params"); 
+    CONFIG_MAP* entitySetFactoryConfig = extractConfigMap("entity_set_factory"); 
+    CONFIG_MAP* goalsConfig = extractConfigMap("goals"); 
+    CONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap("pedestrian_dynamics_model"); 
 
     InputDataLoader* inputDataLoader = generateDataLoader(
-        jsonObj["input_data_loader"]["type"].asString()); 
+        jsonObj["input_data_loader"]["type"].asString(),
+        inputDataLoaderConfig
+    );
+
     OutputDataWriter* outputDataWriter = generateDataWriter(
-        jsonObj["output_data_writer"]["type"].asString());
+        jsonObj["output_data_writer"]["type"].asString(),
+        outputDataWriterConfig
+    );
+
     PedestrianSet* pedestrianSet = generatePedestrianSet(
         jsonObj["pedestrian_set"]["type"].asString());
     ObstacleSet* obstacleSet = generateObstacleSet(
@@ -242,7 +235,6 @@ int main()
     
     Simulation simulation(pedestrianDynamicsModel);
 
-    configureOutputDataWriter(outputDataWriter, outputDataWriterConfig);
     configureOutputHandler(
         outputHandler, pedestrianSet, outputDataWriter, 
         &simulation, jsonObj["simulation_output_handler"]["type"].asString());

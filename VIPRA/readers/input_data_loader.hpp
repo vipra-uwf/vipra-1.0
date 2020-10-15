@@ -14,9 +14,12 @@ class InputDataLoader
         virtual ~InputDataLoader() = default;
 
         // TODO create hashmap setter methods just outputDataWriter
+        // TODO fileName shouldnt be optional is json but rootElementName should be
+        // TODO therefore it should go into the configuartion section
         virtual void extractFileData(
             std::string fileName, 
             std::string rootElementName) = 0;
+        virtual void configure(CONFIG_MAP* configMap) = 0; 
         virtual ENTITY_SET getInputEntities() = 0;
 };
 

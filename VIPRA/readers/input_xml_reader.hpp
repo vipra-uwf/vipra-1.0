@@ -33,7 +33,7 @@ class InputXMLReader: public InputDataLoader
     public:
 		
         virtual ENTITY_SET getInputEntities();
-
+        virtual void configure(CONFIG_MAP* configMap);
         virtual void extractFileData(
             std::string fileName, 
             std::string rootElementName);

@@ -29,6 +29,11 @@ ENTITY_SET InputXMLReader::getInputEntities()
 	return inputData;		
 }
 
+void InputXMLReader::configure(CONFIG_MAP* configMap)
+{
+
+}
+
 void InputXMLReader::extractFileData(
     std::string fileName, std::string rootElementName)
 {
