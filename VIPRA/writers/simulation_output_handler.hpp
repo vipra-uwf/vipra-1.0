@@ -1,11 +1,12 @@
 #ifndef SIMULATION_OUTPUT_HANDLER_HPP
 #define SIMULATION_OUTPUT_HANDLER_HPP
+
 #include "output_data_writer.hpp"
 #include "../simulation/simulation.hpp"
 #include "../entity_sets/pedestrian_set.hpp"
 #include "../type_definitions.hpp"
 
-class Simulation;
+class Simulation; // forward declaring
 
 class SimulationOutputHandler 
 {

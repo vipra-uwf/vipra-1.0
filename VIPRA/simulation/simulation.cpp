@@ -71,6 +71,11 @@ int* Simulation::getTimestep()
     return &this->timestep;
 }
 
+PedestrianDynamicsModel* Simulation::getPedestrianDynamicsModel()
+{
+    return this->pedestrianDynamicsModel;
+}
+
 
 
 void Simulation::printDataDELETETHIS()

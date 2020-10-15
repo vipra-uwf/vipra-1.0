@@ -1,7 +1,5 @@
 #include "timestep_output_handler.hpp"
 
-#include <iostream> // TODO delete when done debugging
-
 void TimestepOutputHandler::setOutputWritingFrequency(int frequency)
 {
     this->frequency = frequency;

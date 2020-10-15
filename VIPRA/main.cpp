@@ -126,22 +126,13 @@ void populateEntitySets(
 	entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
 }
 
-// TODO this method may be unnecessary, probably should create a configure() virtual method for all virtual classes
-
-void configureOutputHandler(SimulationOutputHandler* outputHandler, 
-    PedestrianSet* pedestrianSet, OutputDataWriter* outputDataWriter, 
-    Simulation* simulation, std::string type)
+void configureOutputHandler(
+    SimulationOutputHandler* outputHandler, PedestrianSet* pedestrianSet, 
+    OutputDataWriter* outputDataWriter, Simulation* simulation)
 {
-    // if(type == "timestep")
-    // {
-        outputHandler->setOutputDataWriter(outputDataWriter);
-        outputHandler->setPedestrianSet(pedestrianSet);
-        outputHandler->setSimulation(simulation);
-        // dynamic_cast<TimestepOutputHandler*>(outputHandler)->setTimestep(
-        //     simulation->getTimestep());
-        // dynamic_cast<TimestepOutputHandler*>(outputHandler)->
-        //     setOutputWritingFrequency(250);
-    // }
+    outputHandler->setOutputDataWriter(outputDataWriter);
+    outputHandler->setPedestrianSet(pedestrianSet);
+    outputHandler->setSimulation(simulation);
 }
 
 void writeTrajectoryToFile(OutputDataWriter* outputDataWriter, std::string type)
@@ -239,8 +230,8 @@ int main()
     Simulation simulation(pedestrianDynamicsModel);
 
     configureOutputHandler(
-        outputHandler, pedestrianSet, outputDataWriter, 
-        &simulation, jsonObj["simulation_output_handler"]["type"].asString());
+        outputHandler, pedestrianSet, 
+        outputDataWriter, &simulation);
 
     simulation.setSimulationOutputHandler(outputHandler);
     simulation.run();

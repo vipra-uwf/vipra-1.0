@@ -10,7 +10,7 @@
 
 #include "../entity_sets/calm_pedestrian_set.hpp" // TODO when printDataDELETETHIS is deleted
 
-class SimulationOutputHandler; // TODO forward declaring to resolve bug. remove comment if this is expected
+class SimulationOutputHandler; // forward declaring 
 
 class Simulation
 {
@@ -28,7 +28,7 @@ class Simulation
         void setSimulationOutputHandler(
             SimulationOutputHandler* simulationOutputHandler);
         int* getTimestep();
-        // TODO getter for ped dynamics model
+        PedestrianDynamicsModel* getPedestrianDynamicsModel();
         void printDataDELETETHIS();
         void testGoalClassDELETETHIS();
 };
