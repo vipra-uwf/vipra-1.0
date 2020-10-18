@@ -50,11 +50,13 @@ SimulationOutputHandler* generateOutputHandler(std::string type, CONFIG_MAP* con
     return nullptr;
 }
 
-PedestrianSet* generatePedestrianSet(std::string type)
+// TODO add CONFIG_MAP* parameter to the remaining generator methods
+PedestrianSet* generatePedestrianSet(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "calm")
     {
         CalmPedestrianSet* calmPedSet = new CalmPedestrianSet;
+        calmPedSet->configure(configMap);
         return calmPedSet;
     }
 
@@ -111,17 +113,20 @@ void populateEntitySets(
 	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParams,
 	InputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,
 	std::string pedSetFile, std::string obsSetFile, std::string simParamsFile,
-	std::string pedFileRootKey, std::string obsFileRootKey, std::string simParamsFileRootKey)
+	CONFIG_MAP* pedConfigMap, CONFIG_MAP* obsConfigMap, CONFIG_MAP* simParamsConfigMap)
 {
-	inputDataLoader->extractFileData(pedSetFile, pedFileRootKey);
+	inputDataLoader->extractFileData(pedSetFile, pedConfigMap);
 	ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
 	entitySetFactory->populatePedestrianSet(pedInputFileData, pedestrianSet);
+    std::cout << "populated ped set" << std::endl;
 
-	inputDataLoader->extractFileData(obsSetFile, obsFileRootKey);
+
+	inputDataLoader->extractFileData(obsSetFile, obsConfigMap);
 	ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
 	entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
+    std::cout << "populated obs set" << std::endl;
 
-	inputDataLoader->extractFileData(simParamsFile, simParamsFileRootKey);
+	inputDataLoader->extractFileData(simParamsFile, simParamsConfigMap);
 	ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
 	entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
 }
@@ -194,7 +199,7 @@ int main()
     );
 
     PedestrianSet* pedestrianSet = generatePedestrianSet(
-        jsonObj["pedestrian_set"]["type"].asString());
+        jsonObj["pedestrian_set"]["type"].asString(), pedestrianSetConfig);
     ObstacleSet* obstacleSet = generateObstacleSet(
         jsonObj["obstacle_set"]["type"].asString());
     EntitySetFactory* entitySetFactory = generateEntitySetFactory(
@@ -214,8 +219,10 @@ int main()
     populateEntitySets(
         pedestrianSet, obstacleSet, simulationParams, 
         inputDataLoader, entitySetFactory, 
-        jsonObj["pedestrian_set"]["inputFile"].asString(), jsonObj["obstacle_set"]["inputFile"].asString(), jsonObj["sim_params"]["inputFile"].asString(),
-        jsonObj["pedestrian_set"]["fileRootKey"].asString(), jsonObj["obstacle_set"]["fileRootKey"].asString(), jsonObj["sim_params"]["fileRootKey"].asString());
+        jsonObj["pedestrian_set"]["inputFilePath"].asString(), 
+        jsonObj["obstacle_set"]["inputFilePath"].asString(), 
+        jsonObj["sim_params"]["inputFilePath"].asString(),
+        pedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);
 
     Data data;
     data.setPedestrianSet(pedestrianSet);

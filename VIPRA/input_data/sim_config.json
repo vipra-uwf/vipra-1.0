@@ -20,18 +20,24 @@
         }
     },
     "pedestrian_set" : {
-    	"type" : "calm",
-    	"inputFile" : "./input_data/a320_144_pedestrians.xml",
-    	"fileRootKey" : "pedestrian-set"
+        "type" : "calm",
+    	"inputFilePath" : "./input_data/a320_144_pedestrians.xml",
+        "configuration" : {
+    	    "rootElementName" : "pedestrian-set"
+        }
     },
     "obstacle_set" : { 
     	"type" : "calm", 
-    	"inputFile" : "./input_data/a320_144_obstacles.xml",
-    	"fileRootKey" : "obstacle-set"
+        "inputFilePath" : "./input_data/a320_144_obstacles.xml",
+        "configuration" : {
+    	    "rootElementName" : "obstacle-set"
+        }
     },
     "sim_params" : {
-    	"inputFile" : "./input_data/simulation_params.xml",
-    	"fileRootKey" : "simulation-parameters"
+        "inputFilePath" : "./input_data/simulation_params.xml",
+        "configuration" : {
+    	    "rootElementName" : "simulation-parameters"
+        }
     },
     "entity_set_factory" : {
         "type" : "calm",

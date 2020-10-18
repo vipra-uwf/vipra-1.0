@@ -28,6 +28,8 @@ class CalmPedestrianSet: public PedestrianSet
 
     public:
         CalmPedestrianSet();
+
+        virtual void configure(CONFIG_MAP* configMap);
         
         virtual void removePedestrian(int pedestrianIndex);
 

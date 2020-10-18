@@ -7,6 +7,7 @@
 
 #include "pedestrian_set.hpp"
 #include "obstacle_set.hpp"
+#include "../type_definitions.hpp"
 
 typedef std::vector<std::unordered_map<std::string, std::string>> ENTITY_SET;
 typedef std::unordered_map<std::string, FLOATING_NUMBER> SIM_PARAMS;
@@ -15,6 +16,8 @@ class EntitySetFactory
 {
     public:
         virtual ~EntitySetFactory() = default;
+
+        virtual void configure(CONFIG_MAP* configMap) = 0;
 
 		virtual void populatePedestrianSet(
             ENTITY_SET inputData, PedestrianSet* pedestrianSet) = 0;

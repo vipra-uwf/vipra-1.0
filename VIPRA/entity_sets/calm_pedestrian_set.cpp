@@ -9,6 +9,10 @@ CalmPedestrianSet::CalmPedestrianSet()
 // {
 
 // }
+void CalmPedestrianSet::configure(CONFIG_MAP* configMap)
+{
+
+}
 
 void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 {

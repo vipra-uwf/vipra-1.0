@@ -19,7 +19,7 @@ class InputDataLoader
         // TODO extractFileData should take no params, just re call configure and pass a new map to it
         virtual void extractFileData(
             std::string fileName, 
-            std::string rootElementName) = 0;
+            CONFIG_MAP* configMap) = 0;
         virtual void configure(CONFIG_MAP* configMap) = 0; 
         // virtual void configueExtraction(CONFIG_MAP* configMap) = 0;
         virtual ENTITY_SET getInputEntities() = 0;

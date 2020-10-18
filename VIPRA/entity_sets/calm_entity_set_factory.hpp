@@ -15,6 +15,7 @@ class CalmEntitySetFactory : public EntitySetFactory
             std::vector<std::string> stringVec);
 	
     public:
+        virtual void configure(CONFIG_MAP* configMap);
 		virtual void populatePedestrianSet(
             ENTITY_SET inputData, PedestrianSet* calmPedSet);
 		virtual void populateObstacleSet(

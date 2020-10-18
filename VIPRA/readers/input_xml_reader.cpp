@@ -35,11 +35,11 @@ void InputXMLReader::configure(CONFIG_MAP* configMap)
 }
 
 void InputXMLReader::extractFileData(
-    std::string fileName, std::string rootElementName)
+    std::string fileName, CONFIG_MAP* configMap)
 {
     openFile(fileName);
     readFile();
-    this->rootElementName = rootElementName;
+    this->rootElementName = (*configMap)["rootElementName"];
     parseXMLDocument();
 }
 

@@ -36,7 +36,7 @@ class InputXMLReader: public InputDataLoader
         virtual void configure(CONFIG_MAP* configMap);
         virtual void extractFileData(
             std::string fileName, 
-            std::string rootElementName);
+            CONFIG_MAP* configMap);
 };
 
 #endif
