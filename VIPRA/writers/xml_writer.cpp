@@ -7,9 +7,8 @@ XMLWriter::XMLWriter()
 
 void XMLWriter::configure(CONFIG_MAP* configMap) 
 {
-    setRootNodeName((*configMap)["rootElementName"]);
-    // TODO change DataNodeName to ChildNodeName
-    setDataNodeName((*configMap)["childElementName"]);
+    setRootElementName((*configMap)["rootElementName"]);
+    setChildElementName((*configMap)["childElementName"]);
 }
 
 void XMLWriter::initializeOutputFile(std::string outputFilePath)
@@ -55,7 +54,7 @@ void XMLWriter::writeFloatData(std::string key, FLOATING_NUMBER value)
     {
         this->currentNode = this->document.allocate_node(
             rapidxml::node_element, 
-            this->document.allocate_string(this->dataElementName.c_str()));
+            this->document.allocate_string(this->childElementName.c_str()));
         this->rootElement->append_node(this->currentNode);
     }
     
@@ -77,7 +76,7 @@ void XMLWriter::writeStringData(std::string key, std::string value)
     {
         this->currentNode = this->document.allocate_node(
             rapidxml::node_element, 
-            this->document.allocate_string(this->dataElementName.c_str()));
+            this->document.allocate_string(this->childElementName.c_str()));
         this->rootElement->append_node(this->currentNode);
     }
     
@@ -135,14 +134,14 @@ void XMLWriter::openFile(std::string fileName)
     this->fileStream.open(fileName);
 }
 
-void XMLWriter::setRootNodeName(std::string rootElementName)
+void XMLWriter::setRootElementName(std::string rootElementName)
 {
     this->rootElementName = rootElementName;
 }
 
-void XMLWriter::setDataNodeName(std::string dataElementName)
+void XMLWriter::setChildElementName(std::string childElementName)
 {
-    this->dataElementName = dataElementName;
+    this->childElementName = childElementName;
 }
 
 void XMLWriter::setNumDataNodes(int numDataNodes)
@@ -176,7 +175,7 @@ void XMLWriter::generateDataNode()
 {
     rapidxml::xml_node<>* traversalElement = this->document.allocate_node(
         rapidxml::node_element, 
-        this->document.allocate_string(this->dataElementName.c_str()));
+        this->document.allocate_string(this->childElementName.c_str()));
     this->rootElement->append_node(traversalElement);
 }
 

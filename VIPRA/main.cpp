@@ -226,8 +226,6 @@ int main()
     
     SIM_PARAMS* simulationParams = new SIM_PARAMS;
 
-    configureOutputDataWriter(outputDataWriter, jsonObj["output_data_writer"]["outputFilePath"].asString());
-
     populateEntitySets(
         inputDataLoader, entitySetFactory, 
         pedestrianSet, obstacleSet, simulationParams, 
@@ -247,6 +245,10 @@ int main()
     goals->determinePedestrianGoals();
     
     Simulation simulation(pedestrianDynamicsModel);
+    
+    configureOutputDataWriter(
+        outputDataWriter, 
+        jsonObj["output_data_writer"]["outputFilePath"].asString());
 
     configureOutputHandler(
         outputHandler, pedestrianSet, 

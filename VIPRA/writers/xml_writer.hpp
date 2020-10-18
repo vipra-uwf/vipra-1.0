@@ -18,7 +18,7 @@ class XMLWriter: public OutputDataWriter
         Data* data;
         std::ofstream fileStream;
         std::string rootElementName;
-        std::string dataElementName;
+        std::string childElementName;
         int numDataNodes;
         rapidxml::xml_document<> document;
         rapidxml::xml_node<>* rootElement;
@@ -38,8 +38,8 @@ class XMLWriter: public OutputDataWriter
         void writeStringCalmEntitySet(
             std::string key, std::vector<std::string> entitySet);
         
-        void setRootNodeName(std::string rootElementName);
-        void setDataNodeName(std::string dataElementName);
+        void setRootElementName(std::string rootElementName);
+        void setChildElementName(std::string dataElementName);
         void setData(Data* initialData);
         void setNumDataNodes(int numDataNodes);
               
