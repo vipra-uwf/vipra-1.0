@@ -5,6 +5,11 @@ ObstacleSet::ObstacleSet()
     this->numObstacles = 0;
 }
 
+void ObstacleSet::configure(CONFIG_MAP* configMap)
+{
+
+}
+
 int ObstacleSet::getNumObstacles()
 {
     return this->numObstacles;

@@ -4,6 +4,11 @@ CalmGoals::CalmGoals()
 {
 }
 
+void CalmGoals::configure(CONFIG_MAP* configMap)
+{
+    
+}
+
 void CalmGoals::setData(Data* data)
 {
     this->data = data;

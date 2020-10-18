@@ -41,8 +41,7 @@ SimulationOutputHandler* generateOutputHandler(std::string type, CONFIG_MAP* con
 {
     if(type == "timestep")
     {
-        TimestepOutputHandler* timestepOutputHandler = 
-            new TimestepOutputHandler;
+        TimestepOutputHandler* timestepOutputHandler = new TimestepOutputHandler;
         timestepOutputHandler->configure(configMap);
         return timestepOutputHandler;
     }
@@ -50,7 +49,6 @@ SimulationOutputHandler* generateOutputHandler(std::string type, CONFIG_MAP* con
     return nullptr;
 }
 
-// TODO add CONFIG_MAP* parameter to the remaining generator methods
 PedestrianSet* generatePedestrianSet(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "calm")
@@ -63,46 +61,51 @@ PedestrianSet* generatePedestrianSet(std::string type, CONFIG_MAP* configMap)
     return nullptr;
 }
 
+// TODO add CONFIG_MAP* parameter to the remaining generator methods
 // TODO since this class now includes aisles, 
 // we should probably make this derived -- alex
-ObstacleSet* generateObstacleSet(std::string type)
+ObstacleSet* generateObstacleSet(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "calm")
     {
         ObstacleSet* calmObsSet = new ObstacleSet;
+        calmObsSet->configure(configMap);
         return calmObsSet;
     }
 
     return nullptr;
 }
 
-EntitySetFactory* generateEntitySetFactory(std::string type)
+EntitySetFactory* generateEntitySetFactory(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "calm")
     {
         CalmEntitySetFactory* calmSetFactory = new CalmEntitySetFactory;
+        calmSetFactory->configure(configMap);
         return calmSetFactory;
     }
 
     return nullptr;
 }
 
-Goals* generateGoals(std::string type)
+Goals* generateGoals(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "calm")
     {
         CalmGoals* calmGoals = new CalmGoals;
+        calmGoals->configure(configMap);
         return calmGoals;
     }
 
     return nullptr;
 }
 
-PedestrianDynamicsModel* generatePedDynamicsModel(std::string type)
+PedestrianDynamicsModel* generatePedDynamicsModel(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "calm")
     {
         CalmPedestrianModel* calmPedModel = new CalmPedestrianModel;
+        calmPedModel->configure(configMap);
         return calmPedModel;
     }
 
@@ -110,21 +113,18 @@ PedestrianDynamicsModel* generatePedDynamicsModel(std::string type)
 }
 
 void populateEntitySets(
-	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParams,
 	InputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,
+	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParams,
 	std::string pedSetFile, std::string obsSetFile, std::string simParamsFile,
 	CONFIG_MAP* pedConfigMap, CONFIG_MAP* obsConfigMap, CONFIG_MAP* simParamsConfigMap)
 {
 	inputDataLoader->extractFileData(pedSetFile, pedConfigMap);
 	ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
 	entitySetFactory->populatePedestrianSet(pedInputFileData, pedestrianSet);
-    std::cout << "populated ped set" << std::endl;
-
 
 	inputDataLoader->extractFileData(obsSetFile, obsConfigMap);
 	ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
 	entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
-    std::cout << "populated obs set" << std::endl;
 
 	inputDataLoader->extractFileData(simParamsFile, simParamsConfigMap);
 	ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
@@ -190,35 +190,41 @@ int main()
 
     InputDataLoader* inputDataLoader = generateDataLoader(
         jsonObj["input_data_loader"]["type"].asString(),
-        inputDataLoaderConfig
-    );
+        inputDataLoaderConfig);
 
     OutputDataWriter* outputDataWriter = generateDataWriter(
         jsonObj["output_data_writer"]["type"].asString(),
-        outputDataWriterConfig
-    );
+        outputDataWriterConfig);
 
     PedestrianSet* pedestrianSet = generatePedestrianSet(
-        jsonObj["pedestrian_set"]["type"].asString(), pedestrianSetConfig);
+        jsonObj["pedestrian_set"]["type"].asString(), 
+        pedestrianSetConfig);
+
     ObstacleSet* obstacleSet = generateObstacleSet(
-        jsonObj["obstacle_set"]["type"].asString());
+        jsonObj["obstacle_set"]["type"].asString(), 
+        obstacleSetConfig);
+
     EntitySetFactory* entitySetFactory = generateEntitySetFactory(
-        jsonObj["entity_set_factory"]["type"].asString()); 
+        jsonObj["entity_set_factory"]["type"].asString(), 
+        entitySetFactoryConfig); 
+
     Goals* goals = generateGoals(
-        jsonObj["goals"]["type"].asString());
+        jsonObj["goals"]["type"].asString(), 
+        goalsConfig);
+
     PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedDynamicsModel(
-        jsonObj["pedestrian_dynamics_model"]["type"].asString());
+        jsonObj["pedestrian_dynamics_model"]["type"].asString(), 
+        pedestrianDynamicsModelConfig);
 
     SimulationOutputHandler* outputHandler = generateOutputHandler(
         jsonObj["simulation_output_handler"]["type"].asString(),
-        simulationOutputHandlerConfig
-    );
+        simulationOutputHandlerConfig);
     
     SIM_PARAMS* simulationParams = new SIM_PARAMS;
 
     populateEntitySets(
-        pedestrianSet, obstacleSet, simulationParams, 
         inputDataLoader, entitySetFactory, 
+        pedestrianSet, obstacleSet, simulationParams, 
         jsonObj["pedestrian_set"]["inputFilePath"].asString(), 
         jsonObj["obstacle_set"]["inputFilePath"].asString(), 
         jsonObj["sim_params"]["inputFilePath"].asString(),
