@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <fstream>
 
+#include "type_definitions.hpp"
 #include "readers/json/json.h"
 #include "readers/input_xml_reader.hpp"
 #include "writers/xml_writer.hpp"
@@ -61,7 +62,6 @@ PedestrianSet* generatePedestrianSet(std::string type, CONFIG_MAP* configMap)
     return nullptr;
 }
 
-// TODO add CONFIG_MAP* parameter to the remaining generator methods
 // TODO since this class now includes aisles, 
 // we should probably make this derived -- alex
 ObstacleSet* generateObstacleSet(std::string type, CONFIG_MAP* configMap)
@@ -131,6 +131,11 @@ void populateEntitySets(
 	entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
 }
 
+void configureOutputDataWriter(OutputDataWriter* outputDataWriter, std::string outputFilePath)
+{
+    outputDataWriter->initializeOutputFile(outputFilePath);
+}
+
 void configureOutputHandler(
     SimulationOutputHandler* outputHandler, PedestrianSet* pedestrianSet, 
     OutputDataWriter* outputDataWriter, Simulation* simulation)
@@ -151,7 +156,6 @@ void writeTrajectoryToFile(OutputDataWriter* outputDataWriter, std::string type)
 
 
 Json::Value jsonObj;
-typedef std::unordered_map<std::string, std::string> CONFIG_MAP; 
 
 CONFIG_MAP* extractConfigMap(std::string objectName)
 {
@@ -183,7 +187,7 @@ int main()
     CONFIG_MAP* simulationOutputHandlerConfig = extractConfigMap("simulation_output_handler"); 
     CONFIG_MAP* pedestrianSetConfig = extractConfigMap("pedestrian_set"); 
     CONFIG_MAP* obstacleSetConfig = extractConfigMap("obstacle_set"); 
-    CONFIG_MAP* simulationParametersConfig = extractConfigMap("sim_params"); 
+    CONFIG_MAP* simulationParametersConfig = extractConfigMap("simulation_parameters"); 
     CONFIG_MAP* entitySetFactoryConfig = extractConfigMap("entity_set_factory"); 
     CONFIG_MAP* goalsConfig = extractConfigMap("goals"); 
     CONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap("pedestrian_dynamics_model"); 
@@ -222,12 +226,14 @@ int main()
     
     SIM_PARAMS* simulationParams = new SIM_PARAMS;
 
+    configureOutputDataWriter(outputDataWriter, jsonObj["output_data_writer"]["outputFilePath"].asString());
+
     populateEntitySets(
         inputDataLoader, entitySetFactory, 
         pedestrianSet, obstacleSet, simulationParams, 
         jsonObj["pedestrian_set"]["inputFilePath"].asString(), 
         jsonObj["obstacle_set"]["inputFilePath"].asString(), 
-        jsonObj["sim_params"]["inputFilePath"].asString(),
+        jsonObj["simulation_parameters"]["inputFilePath"].asString(),
         pedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);
 
     Data data;

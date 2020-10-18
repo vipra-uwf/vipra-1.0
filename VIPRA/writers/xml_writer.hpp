@@ -49,10 +49,11 @@ class XMLWriter: public OutputDataWriter
         //     std::string fileName, 
         //     std::string rootElementName, std::string dataElementName, 
         //     std::string versionNum, std::string encodingType);
+        virtual void initializeOutputFile(std::string outputFilePath);
+        virtual void configure(CONFIG_MAP* configMap);
         virtual void writeData(Data* data);
         virtual void writeFloatData(std::string key, FLOATING_NUMBER value);
         virtual void writeStringData(std::string key, std::string value);
-        virtual void configure(CONFIG_MAP* configMap);
         void writeDocumentContents();
 };
 

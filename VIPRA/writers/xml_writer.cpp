@@ -7,13 +7,18 @@ XMLWriter::XMLWriter()
 
 void XMLWriter::configure(CONFIG_MAP* configMap) 
 {
-    openFile((*configMap)["outputFilePath"]);
     setRootNodeName((*configMap)["rootElementName"]);
     // TODO change DataNodeName to ChildNodeName
     setDataNodeName((*configMap)["childElementName"]);
+}
+
+void XMLWriter::initializeOutputFile(std::string outputFilePath)
+{
+    openFile(outputFilePath);
     initializeXMLDeclaration("1.0", "utf-8");
     initializeRootNode();
 }
+
 
 // void XMLWriter::configureXMLDocumentStructure(
 //     std::string fileName, std::string rootElementName, 
