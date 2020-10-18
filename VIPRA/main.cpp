@@ -131,30 +131,6 @@ void populateEntitySets(
 	entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
 }
 
-void configureOutputDataWriter(OutputDataWriter* outputDataWriter, std::string outputFilePath)
-{
-    outputDataWriter->initializeOutputFile(outputFilePath);
-}
-
-void configureOutputHandler(
-    SimulationOutputHandler* outputHandler, PedestrianSet* pedestrianSet, 
-    OutputDataWriter* outputDataWriter, Simulation* simulation)
-{
-    outputHandler->setOutputDataWriter(outputDataWriter);
-    outputHandler->setPedestrianSet(pedestrianSet);
-    outputHandler->setSimulation(simulation);
-}
-
-void writeTrajectoryToFile(OutputDataWriter* outputDataWriter, std::string type)
-{
-    if(type == "xml")
-    {
-        // TODO make writeDocumentContents into virtual method
-        dynamic_cast<XMLWriter*>(outputDataWriter)->writeDocumentContents();
-    }
-}
-
-
 Json::Value jsonObj;
 
 CONFIG_MAP* extractConfigMap(std::string objectName)
@@ -170,7 +146,6 @@ CONFIG_MAP* extractConfigMap(std::string objectName)
 
     return configMap;
 }
-
 
 int main()
 {
@@ -246,18 +221,17 @@ int main()
     
     Simulation simulation(pedestrianDynamicsModel);
     
-    configureOutputDataWriter(
-        outputDataWriter, 
+    outputDataWriter->initializeOutputFile(
         jsonObj["output_data_writer"]["outputFilePath"].asString());
-
-    configureOutputHandler(
-        outputHandler, pedestrianSet, 
-        outputDataWriter, &simulation);
+    
+    outputHandler->setOutputDataWriter(outputDataWriter);
+    outputHandler->setPedestrianSet(pedestrianSet);
+    outputHandler->setSimulation(&simulation);
 
     simulation.setSimulationOutputHandler(outputHandler);
     simulation.run();
 
-    writeTrajectoryToFile(outputDataWriter, jsonObj["output_data_writer"]["type"].asString());
+    outputDataWriter->writeDocumentContentsToFile();
     
     delete inputDataLoader;
     delete outputDataWriter;
@@ -268,6 +242,16 @@ int main()
     delete goals;
     delete pedestrianDynamicsModel;
     delete outputHandler;
+
+    delete inputDataLoaderConfig;
+    delete outputDataWriterConfig;
+    delete simulationOutputHandlerConfig;
+    delete pedestrianSetConfig;
+    delete obstacleSetConfig;
+    delete simulationParametersConfig;
+    delete entitySetFactoryConfig;
+    delete goalsConfig;
+    delete pedestrianDynamicsModelConfig;
 
     return 0;
 }

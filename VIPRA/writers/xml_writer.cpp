@@ -41,12 +41,19 @@ void XMLWriter::writeData(Data* data)
     this->document.clear();
 }
 
-void XMLWriter::writeDocumentContents()
+void XMLWriter::writeDocumentContentsToFile()
 {
     this->fileStream << this->document;
     this->fileStream.close();
     this->document.clear();
 }
+
+// void XMLWriter::writeDocumentContents()
+// {
+//     this->fileStream << this->document;
+//     this->fileStream.close();
+//     this->document.clear();
+// }
 
 void XMLWriter::writeFloatData(std::string key, FLOATING_NUMBER value)
 {
