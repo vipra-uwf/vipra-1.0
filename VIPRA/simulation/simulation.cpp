@@ -48,7 +48,7 @@ void Simulation::run()
     {
         if(simulationOutputHandler->isOutputCriterionMet())
         {
-            simulationOutputHandler->writeData();
+            simulationOutputHandler->writeToDocument();
         }
         
         //150 is arbitrary, use whatever ms is needed

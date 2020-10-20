@@ -20,7 +20,7 @@ class TimestepOutputHandler: public SimulationOutputHandler
         virtual void setPedestrianSet(PedestrianSet* pedestrianSet);
         virtual void setSimulation(Simulation* simulation);
         virtual bool isOutputCriterionMet();
-        virtual void writeData();
+        virtual void writeToDocument();
 };
 
 #endif

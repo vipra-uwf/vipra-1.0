@@ -19,7 +19,7 @@ class SimulationOutputHandler
         virtual void setPedestrianSet(PedestrianSet* pedestrianSet) = 0;
         virtual void setSimulation(Simulation* simulation) = 0;
         virtual bool isOutputCriterionMet() = 0;
-        virtual void writeData() = 0;
+        virtual void writeToDocument() = 0;
 };
 
 #endif

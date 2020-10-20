@@ -37,14 +37,14 @@ bool TimestepOutputHandler::isOutputCriterionMet()
     return *this->timestep % this->frequency == 0;
 }
 
-void TimestepOutputHandler::writeData()
+void TimestepOutputHandler::writeToDocument()
 {
     for(int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
     {
-        this->outputDataWriter->writeFloatData(
+        this->outputDataWriter->appendFloatAttributeToCurrentElement(
             "x", (*this->pedestrianSet->getPedestrianCoordinates()).
             at(i).coordinates[0]);
-        this->outputDataWriter->writeFloatData(
+        this->outputDataWriter->appendFloatAttributeToCurrentElement(
             "y", (*this->pedestrianSet->getPedestrianCoordinates()).
             at(i).coordinates[1]);
     }

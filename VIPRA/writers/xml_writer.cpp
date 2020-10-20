@@ -18,7 +18,55 @@ void XMLWriter::initializeOutputFile(std::string outputFilePath)
     initializeParentElement();
 }
 
-void XMLWriter::writeData(Data* data)
+void XMLWriter::appendFloatAttributeToCurrentElement(
+    std::string key, FLOATING_NUMBER value)
+{
+    if(this->currentElement == NULL)
+    {
+        this->currentElement = this->document.allocate_node(
+            rapidxml::node_element, 
+            this->document.allocate_string(this->childElementName.c_str()));
+        this->parentElement->append_node(this->currentElement);
+    }
+    
+    if(this->currentElement->first_attribute(key.c_str()) == 0)          
+    {
+        appendChildElementAttribute(
+            this->currentElement, key, std::to_string(value));
+    }
+    else                                            
+    {
+        generateChildElement(); 
+        currentElement = currentElement->next_sibling();
+        appendChildElementAttribute(
+            this->currentElement, key, std::to_string(value));
+    }
+}
+
+void XMLWriter::appendStringAttributeToCurrentElement(
+    std::string key, std::string value)
+{
+    if(this->currentElement == NULL)
+    {
+        this->currentElement = this->document.allocate_node(
+            rapidxml::node_element, 
+            this->document.allocate_string(this->childElementName.c_str()));
+        this->parentElement->append_node(this->currentElement);
+    }
+    
+    if(this->currentElement->first_attribute(key.c_str()) == 0)          
+    {
+        appendChildElementAttribute(this->currentElement, key, value);
+    }
+    else                                            
+    {
+        generateChildElement(); 
+        currentElement = currentElement->next_sibling();
+        appendChildElementAttribute(this->currentElement, key, value);
+    }
+}
+
+void XMLWriter::writeToDocument(Data* data)
 {
     setNumChildElements(data->getPedestrianSet()->getNumPedestrians());
     initializeChildElements();
@@ -32,50 +80,6 @@ void XMLWriter::writeDocumentContentsToFile()
     this->fileStream << this->document;
     this->fileStream.close();
     this->document.clear();
-}
-
-void XMLWriter::writeFloatData(std::string key, FLOATING_NUMBER value)
-{
-    if(this->currentElement == NULL)
-    {
-        this->currentElement = this->document.allocate_node(
-            rapidxml::node_element, 
-            this->document.allocate_string(this->childElementName.c_str()));
-        this->parentElement->append_node(this->currentElement);
-    }
-    
-    if(this->currentElement->first_attribute(key.c_str()) == 0)          
-    {
-        appendChildElementAttribute(this->currentElement, key, std::to_string(value));
-    }
-    else                                            
-    {
-        generateChildElement(); 
-        currentElement = currentElement->next_sibling();
-        appendChildElementAttribute(this->currentElement, key, std::to_string(value));
-    }
-}
-
-void XMLWriter::writeStringData(std::string key, std::string value)
-{
-    if(this->currentElement == NULL)
-    {
-        this->currentElement = this->document.allocate_node(
-            rapidxml::node_element, 
-            this->document.allocate_string(this->childElementName.c_str()));
-        this->parentElement->append_node(this->currentElement);
-    }
-    
-    if(this->currentElement->first_attribute(key.c_str()) == 0)          
-    {
-        appendChildElementAttribute(this->currentElement, key, value);
-    }
-    else                                            
-    {
-        generateChildElement(); 
-        currentElement = currentElement->next_sibling();
-        appendChildElementAttribute(this->currentElement, key, value);
-    }
 }
 
 void XMLWriter::openFile(std::string fileName)
@@ -143,9 +147,3 @@ void XMLWriter::initializeChildElements()
         generateChildElement();
     }
 }
-
-
-
-
-
-
