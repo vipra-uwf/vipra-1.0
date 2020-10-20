@@ -24,15 +24,15 @@ PedestrianSet* generatePedestrianSet(std::string type, CONFIG_MAP* configMap);
 ObstacleSet* generateObstacleSet(std::string type, CONFIG_MAP* configMap);
 EntitySetFactory* generateEntitySetFactory(std::string type, CONFIG_MAP* configMap);
 Goals* generateGoals(std::string type, CONFIG_MAP* configMap);
-PedestrianDynamicsModel* generatePedDynamicsModel(std::string type, CONFIG_MAP* configMap);
+PedestrianDynamicsModel* generatePedestrianDynamicsModel(std::string type, CONFIG_MAP* configMap);
 
 void populateEntitySets(
 	InputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,
-	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParams,
-	std::string pedSetFile, std::string obsSetFile, std::string simParamsFile,
-	CONFIG_MAP* pedConfigMap, CONFIG_MAP* obsConfigMap, CONFIG_MAP* simParamsConfigMap);
+	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParameters,
+	std::string pedestrianSetFilePath, std::string obstacleSetFilePath, std::string simulationParametersFilePath,
+	CONFIG_MAP* pedestrianConfigMap, CONFIG_MAP* obstacleConfigMap, CONFIG_MAP* simulationParametersConfigMap);
 
-Json::Value jsonObj;
+Json::Value simulationJsonConfig;
 
 int main()
 {
@@ -40,7 +40,7 @@ int main()
     std::ifstream jsonFile("input_data/sim_config.json");
     std::string errors;
 
-    if(Json::parseFromStream(jsonReader, jsonFile, &jsonObj, &errors))
+    if(Json::parseFromStream(jsonReader, jsonFile, &simulationJsonConfig, &errors))
     {
         CONFIG_MAP* inputDataLoaderConfig = extractConfigMap("input_data_loader");
         CONFIG_MAP* outputDataWriterConfig = extractConfigMap("output_data_writer"); 
@@ -53,51 +53,51 @@ int main()
         CONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap("pedestrian_dynamics_model"); 
 
         InputDataLoader* inputDataLoader = generateDataLoader(
-            jsonObj["input_data_loader"]["type"].asString(),
+            simulationJsonConfig["input_data_loader"]["type"].asString(),
             inputDataLoaderConfig);
 
         OutputDataWriter* outputDataWriter = generateDataWriter(
-            jsonObj["output_data_writer"]["type"].asString(),
+            simulationJsonConfig["output_data_writer"]["type"].asString(),
             outputDataWriterConfig);
 
         PedestrianSet* pedestrianSet = generatePedestrianSet(
-            jsonObj["pedestrian_set"]["type"].asString(), 
+            simulationJsonConfig["pedestrian_set"]["type"].asString(), 
             pedestrianSetConfig);
 
         ObstacleSet* obstacleSet = generateObstacleSet(
-            jsonObj["obstacle_set"]["type"].asString(), 
+            simulationJsonConfig["obstacle_set"]["type"].asString(), 
             obstacleSetConfig);
 
         EntitySetFactory* entitySetFactory = generateEntitySetFactory(
-            jsonObj["entity_set_factory"]["type"].asString(), 
+            simulationJsonConfig["entity_set_factory"]["type"].asString(), 
             entitySetFactoryConfig); 
 
         Goals* goals = generateGoals(
-            jsonObj["goals"]["type"].asString(), 
+            simulationJsonConfig["goals"]["type"].asString(), 
             goalsConfig);
 
-        PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedDynamicsModel(
-            jsonObj["pedestrian_dynamics_model"]["type"].asString(), 
+        PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedestrianDynamicsModel(
+            simulationJsonConfig["pedestrian_dynamics_model"]["type"].asString(), 
             pedestrianDynamicsModelConfig);
 
         SimulationOutputHandler* outputHandler = generateOutputHandler(
-            jsonObj["simulation_output_handler"]["type"].asString(),
+            simulationJsonConfig["simulation_output_handler"]["type"].asString(),
             simulationOutputHandlerConfig);
         
-        SIM_PARAMS* simulationParams = new SIM_PARAMS;
+        SIM_PARAMS* simulationParameters = new SIM_PARAMS;
 
         populateEntitySets(
             inputDataLoader, entitySetFactory, 
-            pedestrianSet, obstacleSet, simulationParams, 
-            jsonObj["pedestrian_set"]["inputFilePath"].asString(), 
-            jsonObj["obstacle_set"]["inputFilePath"].asString(), 
-            jsonObj["simulation_parameters"]["inputFilePath"].asString(),
+            pedestrianSet, obstacleSet, simulationParameters, 
+            simulationJsonConfig["pedestrian_set"]["inputFilePath"].asString(), 
+            simulationJsonConfig["obstacle_set"]["inputFilePath"].asString(), 
+            simulationJsonConfig["simulation_parameters"]["inputFilePath"].asString(),
             pedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);
 
         Data data;
         data.setPedestrianSet(pedestrianSet);
         data.setObstacleSet(obstacleSet);
-        data.setSimulationParams(simulationParams);    
+        data.setSimulationParams(simulationParameters);    
 
         goals->setData(&data);
         pedestrianDynamicsModel->setData(&data);
@@ -107,7 +107,7 @@ int main()
         Simulation simulation(pedestrianDynamicsModel);
         
         outputDataWriter->initializeOutputFile(
-            jsonObj["output_data_writer"]["outputFilePath"].asString());
+            simulationJsonConfig["output_data_writer"]["outputFilePath"].asString());
         
         outputHandler->setOutputDataWriter(outputDataWriter);
         outputHandler->setPedestrianSet(pedestrianSet);
@@ -122,7 +122,7 @@ int main()
         delete outputDataWriter;
         delete pedestrianSet;
         delete obstacleSet;
-        delete simulationParams;
+        delete simulationParameters;
         delete entitySetFactory;
         delete goals;
         delete pedestrianDynamicsModel;
@@ -232,7 +232,7 @@ Goals* generateGoals(std::string type, CONFIG_MAP* configMap)
     return nullptr;
 }
 
-PedestrianDynamicsModel* generatePedDynamicsModel(std::string type, CONFIG_MAP* configMap)
+PedestrianDynamicsModel* generatePedestrianDynamicsModel(std::string type, CONFIG_MAP* configMap)
 {
     if(type == "calm")
     {
@@ -246,31 +246,31 @@ PedestrianDynamicsModel* generatePedDynamicsModel(std::string type, CONFIG_MAP* 
 
 void populateEntitySets(
 	InputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,
-	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParams,
-	std::string pedSetFile, std::string obsSetFile, std::string simParamsFile,
-	CONFIG_MAP* pedConfigMap, CONFIG_MAP* obsConfigMap, CONFIG_MAP* simParamsConfigMap)
+	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParameters,
+	std::string pedestrianSetFilePath, std::string obstacleSetFilePath, std::string simulationParametersFilePath,
+	CONFIG_MAP* pedestrianConfigMap, CONFIG_MAP* obstacleConfigMap, CONFIG_MAP* simulationParametersConfigMap)
 {
-	inputDataLoader->extractFileData(pedSetFile, pedConfigMap);
+	inputDataLoader->extractFileData(pedestrianSetFilePath, pedestrianConfigMap);
 	ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
 	entitySetFactory->populatePedestrianSet(pedInputFileData, pedestrianSet);
 
-	inputDataLoader->extractFileData(obsSetFile, obsConfigMap);
+	inputDataLoader->extractFileData(obstacleSetFilePath, obstacleConfigMap);
 	ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
 	entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
 
-	inputDataLoader->extractFileData(simParamsFile, simParamsConfigMap);
-	ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
-	entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
+	inputDataLoader->extractFileData(simulationParametersFilePath, simulationParametersConfigMap);
+	ENTITY_SET simulationParametersFilePathData = inputDataLoader->getInputEntities();
+	entitySetFactory->populateSimulationParams(simulationParametersFilePathData, simulationParameters);
 }
 
 CONFIG_MAP* extractConfigMap(std::string objectName)
 {
     CONFIG_MAP* configMap = new CONFIG_MAP;
 
-    for(unsigned int i = 0; i < jsonObj[objectName]["configuration"].size(); i++) 
+    for(unsigned int i = 0; i < simulationJsonConfig[objectName]["configuration"].size(); i++) 
     {
-        std::string attribute = jsonObj[objectName]["configuration"].getMemberNames()[i];
-        std::string value = jsonObj[objectName]["configuration"][attribute].asString();
+        std::string attribute = simulationJsonConfig[objectName]["configuration"].getMemberNames()[i];
+        std::string value = simulationJsonConfig[objectName]["configuration"][attribute].asString();
         (*configMap)[attribute] = value;
     }
 
