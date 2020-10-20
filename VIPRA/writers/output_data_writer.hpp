@@ -12,7 +12,7 @@ class OutputDataWriter
         virtual ~OutputDataWriter() = default;
 
         // TODO reconsider these method names .. writeData is vague.. why float and string write methods?
-        virtual void writeData(Data* data) = 0;
+        virtual void writeData(Data* data) = 0; // writeToDocument
         virtual void writeFloatData(std::string key, FLOATING_NUMBER value) = 0;
         virtual void writeStringData(std::string key, std::string value) = 0;
         virtual void configure(CONFIG_MAP* configMap) = 0; 

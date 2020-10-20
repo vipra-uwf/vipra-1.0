@@ -39,7 +39,7 @@ void InputXMLReader::extractFileData(
 {
     openFile(fileName);
     readFile();
-    this->rootElementName = (*configMap)["rootElementName"];
+    this->parentElementName = (*configMap)["parentElementName"];
     parseXMLDocument();
 }
 
@@ -69,8 +69,8 @@ void InputXMLReader::parseXMLDocument()
 
 void InputXMLReader::initializeTraversalElement()
 {
-    this->rootElement = this->document.first_node(
-        this->document.allocate_string(this->rootElementName.c_str()));
+    this->parentElement = this->document.first_node(
+        this->document.allocate_string(this->parentElementName.c_str()));
 
-	this->traversalElement = this->rootElement->first_node(0);	
+	this->traversalElement = this->parentElement->first_node(0);	
 }

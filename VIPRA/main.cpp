@@ -36,9 +36,6 @@ Json::Value jsonObj;
 
 int main()
 {
-    // Json::Reader reader;
-    // reader.parse(jsonFile, jsonObj);
-
     Json::CharReaderBuilder jsonReader;
     std::ifstream jsonFile("input_data/sim_config.json");
     std::string errors;

@@ -14,7 +14,7 @@ class InputDataLoader
         virtual ~InputDataLoader() = default;
 
         // TODO create hashmap setter methods just outputDataWriter
-        // TODO fileName shouldnt be optional is json but rootElementName should be
+        // TODO fileName shouldnt be optional is json but parentElementName should be
         // TODO therefore it should go into the configuartion section
         // TODO extractFileData should take no params, just re call configure and pass a new map to it
         virtual void extractFileData(

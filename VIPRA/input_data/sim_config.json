@@ -9,7 +9,7 @@
         "type" : "xml",
         "outputFilePath" : "./output_data/pedestrian_trajectory.xml",
         "configuration" : {
-            "rootElementName" : "pedestrian-set",
+            "parentElementName" : "pedestrian-set",
             "childElementName" : "pedestrian"
         }
     },
@@ -23,20 +23,20 @@
         "type" : "calm",
     	"inputFilePath" : "./input_data/a320_144_pedestrians.xml",
         "configuration" : {
-    	    "rootElementName" : "pedestrian-set"
+    	    "parentElementName" : "pedestrian-set"
         }
     },
     "obstacle_set" : { 
     	"type" : "calm", 
         "inputFilePath" : "./input_data/a320_144_obstacles.xml",
         "configuration" : {
-    	    "rootElementName" : "obstacle-set"
+    	    "parentElementName" : "obstacle-set"
         }
     },
     "simulation_parameters" : {
         "inputFilePath" : "./input_data/simulation_params.xml",
         "configuration" : {
-    	    "rootElementName" : "simulation-parameters"
+    	    "parentElementName" : "simulation-parameters"
         }
     },
     "entity_set_factory" : {
