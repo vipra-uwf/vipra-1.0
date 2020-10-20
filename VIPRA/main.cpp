@@ -36,111 +36,118 @@ Json::Value jsonObj;
 
 int main()
 {
-    // TODO should probably put sim_params.xml in sim_config.json
+    // Json::Reader reader;
+    // reader.parse(jsonFile, jsonObj);
 
-    Json::Reader reader;
+    Json::CharReaderBuilder jsonReader;
     std::ifstream jsonFile("input_data/sim_config.json");
-    reader.parse(jsonFile, jsonObj);
+    std::string errors;
 
-    CONFIG_MAP* inputDataLoaderConfig = extractConfigMap("input_data_loader");
-    CONFIG_MAP* outputDataWriterConfig = extractConfigMap("output_data_writer"); 
-    CONFIG_MAP* simulationOutputHandlerConfig = extractConfigMap("simulation_output_handler"); 
-    CONFIG_MAP* pedestrianSetConfig = extractConfigMap("pedestrian_set"); 
-    CONFIG_MAP* obstacleSetConfig = extractConfigMap("obstacle_set"); 
-    CONFIG_MAP* simulationParametersConfig = extractConfigMap("simulation_parameters"); 
-    CONFIG_MAP* entitySetFactoryConfig = extractConfigMap("entity_set_factory"); 
-    CONFIG_MAP* goalsConfig = extractConfigMap("goals"); 
-    CONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap("pedestrian_dynamics_model"); 
+    if(Json::parseFromStream(jsonReader, jsonFile, &jsonObj, &errors))
+    {
+        CONFIG_MAP* inputDataLoaderConfig = extractConfigMap("input_data_loader");
+        CONFIG_MAP* outputDataWriterConfig = extractConfigMap("output_data_writer"); 
+        CONFIG_MAP* simulationOutputHandlerConfig = extractConfigMap("simulation_output_handler"); 
+        CONFIG_MAP* pedestrianSetConfig = extractConfigMap("pedestrian_set"); 
+        CONFIG_MAP* obstacleSetConfig = extractConfigMap("obstacle_set"); 
+        CONFIG_MAP* simulationParametersConfig = extractConfigMap("simulation_parameters"); 
+        CONFIG_MAP* entitySetFactoryConfig = extractConfigMap("entity_set_factory"); 
+        CONFIG_MAP* goalsConfig = extractConfigMap("goals"); 
+        CONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap("pedestrian_dynamics_model"); 
 
-    InputDataLoader* inputDataLoader = generateDataLoader(
-        jsonObj["input_data_loader"]["type"].asString(),
-        inputDataLoaderConfig);
+        InputDataLoader* inputDataLoader = generateDataLoader(
+            jsonObj["input_data_loader"]["type"].asString(),
+            inputDataLoaderConfig);
 
-    OutputDataWriter* outputDataWriter = generateDataWriter(
-        jsonObj["output_data_writer"]["type"].asString(),
-        outputDataWriterConfig);
+        OutputDataWriter* outputDataWriter = generateDataWriter(
+            jsonObj["output_data_writer"]["type"].asString(),
+            outputDataWriterConfig);
 
-    PedestrianSet* pedestrianSet = generatePedestrianSet(
-        jsonObj["pedestrian_set"]["type"].asString(), 
-        pedestrianSetConfig);
+        PedestrianSet* pedestrianSet = generatePedestrianSet(
+            jsonObj["pedestrian_set"]["type"].asString(), 
+            pedestrianSetConfig);
 
-    ObstacleSet* obstacleSet = generateObstacleSet(
-        jsonObj["obstacle_set"]["type"].asString(), 
-        obstacleSetConfig);
+        ObstacleSet* obstacleSet = generateObstacleSet(
+            jsonObj["obstacle_set"]["type"].asString(), 
+            obstacleSetConfig);
 
-    EntitySetFactory* entitySetFactory = generateEntitySetFactory(
-        jsonObj["entity_set_factory"]["type"].asString(), 
-        entitySetFactoryConfig); 
+        EntitySetFactory* entitySetFactory = generateEntitySetFactory(
+            jsonObj["entity_set_factory"]["type"].asString(), 
+            entitySetFactoryConfig); 
 
-    Goals* goals = generateGoals(
-        jsonObj["goals"]["type"].asString(), 
-        goalsConfig);
+        Goals* goals = generateGoals(
+            jsonObj["goals"]["type"].asString(), 
+            goalsConfig);
 
-    PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedDynamicsModel(
-        jsonObj["pedestrian_dynamics_model"]["type"].asString(), 
-        pedestrianDynamicsModelConfig);
+        PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedDynamicsModel(
+            jsonObj["pedestrian_dynamics_model"]["type"].asString(), 
+            pedestrianDynamicsModelConfig);
 
-    SimulationOutputHandler* outputHandler = generateOutputHandler(
-        jsonObj["simulation_output_handler"]["type"].asString(),
-        simulationOutputHandlerConfig);
-    
-    SIM_PARAMS* simulationParams = new SIM_PARAMS;
+        SimulationOutputHandler* outputHandler = generateOutputHandler(
+            jsonObj["simulation_output_handler"]["type"].asString(),
+            simulationOutputHandlerConfig);
+        
+        SIM_PARAMS* simulationParams = new SIM_PARAMS;
 
-    populateEntitySets(
-        inputDataLoader, entitySetFactory, 
-        pedestrianSet, obstacleSet, simulationParams, 
-        jsonObj["pedestrian_set"]["inputFilePath"].asString(), 
-        jsonObj["obstacle_set"]["inputFilePath"].asString(), 
-        jsonObj["simulation_parameters"]["inputFilePath"].asString(),
-        pedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);
+        populateEntitySets(
+            inputDataLoader, entitySetFactory, 
+            pedestrianSet, obstacleSet, simulationParams, 
+            jsonObj["pedestrian_set"]["inputFilePath"].asString(), 
+            jsonObj["obstacle_set"]["inputFilePath"].asString(), 
+            jsonObj["simulation_parameters"]["inputFilePath"].asString(),
+            pedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);
 
-    Data data;
-    data.setPedestrianSet(pedestrianSet);
-    data.setObstacleSet(obstacleSet);
-    data.setSimulationParams(simulationParams);    
+        Data data;
+        data.setPedestrianSet(pedestrianSet);
+        data.setObstacleSet(obstacleSet);
+        data.setSimulationParams(simulationParams);    
 
-    goals->setData(&data);
-	pedestrianDynamicsModel->setData(&data);
-    pedestrianDynamicsModel->setGoals(goals);
-    goals->determinePedestrianGoals();
-    
-    Simulation simulation(pedestrianDynamicsModel);
-    
-    outputDataWriter->initializeOutputFile(
-        jsonObj["output_data_writer"]["outputFilePath"].asString());
-    
-    outputHandler->setOutputDataWriter(outputDataWriter);
-    outputHandler->setPedestrianSet(pedestrianSet);
-    outputHandler->setSimulation(&simulation);
+        goals->setData(&data);
+        pedestrianDynamicsModel->setData(&data);
+        pedestrianDynamicsModel->setGoals(goals);
+        goals->determinePedestrianGoals();
+        
+        Simulation simulation(pedestrianDynamicsModel);
+        
+        outputDataWriter->initializeOutputFile(
+            jsonObj["output_data_writer"]["outputFilePath"].asString());
+        
+        outputHandler->setOutputDataWriter(outputDataWriter);
+        outputHandler->setPedestrianSet(pedestrianSet);
+        outputHandler->setSimulation(&simulation);
 
-    simulation.setSimulationOutputHandler(outputHandler);
-    simulation.run();
+        simulation.setSimulationOutputHandler(outputHandler);
+        simulation.run();
 
-    outputDataWriter->writeDocumentContentsToFile();
-    
-    delete inputDataLoader;
-    delete outputDataWriter;
-    delete pedestrianSet;
-    delete obstacleSet;
-    delete simulationParams;
-    delete entitySetFactory;
-    delete goals;
-    delete pedestrianDynamicsModel;
-    delete outputHandler;
+        outputDataWriter->writeDocumentContentsToFile();
+        
+        delete inputDataLoader;
+        delete outputDataWriter;
+        delete pedestrianSet;
+        delete obstacleSet;
+        delete simulationParams;
+        delete entitySetFactory;
+        delete goals;
+        delete pedestrianDynamicsModel;
+        delete outputHandler;
 
-    delete inputDataLoaderConfig;
-    delete outputDataWriterConfig;
-    delete simulationOutputHandlerConfig;
-    delete pedestrianSetConfig;
-    delete obstacleSetConfig;
-    delete simulationParametersConfig;
-    delete entitySetFactoryConfig;
-    delete goalsConfig;
-    delete pedestrianDynamicsModelConfig;
+        delete inputDataLoaderConfig;
+        delete outputDataWriterConfig;
+        delete simulationOutputHandlerConfig;
+        delete pedestrianSetConfig;
+        delete obstacleSetConfig;
+        delete simulationParametersConfig;
+        delete entitySetFactoryConfig;
+        delete goalsConfig;
+        delete pedestrianDynamicsModelConfig;
+    }
+    else
+    {
+        std::cout << "Error parsing JSON: " << errors << std::endl;
+    }
 
     return 0;
 }
-
 
 InputDataLoader* generateDataLoader(std::string type, CONFIG_MAP* configMap)
 {
