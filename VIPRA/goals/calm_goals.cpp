@@ -92,7 +92,8 @@ void CalmGoals::determinePedestrianGoals()
         {
             if((*this->pedCoordsPtr)[i].coordinates[0]
                 != this->exitGoal[nearestExit[i]].coordinates[0]
-                && (*this->pedCoordsPtr)[i].coordinates[1] != 0)
+                && !((*this->pedCoordsPtr)[i].coordinates[1] < 0.011
+                && (*this->pedCoordsPtr)[i].coordinates[1] > -0.011))
             {
                 newGoal.push_back
                 (
@@ -110,7 +111,8 @@ void CalmGoals::determinePedestrianGoals()
 
             else if((*this->pedCoordsPtr)[i].coordinates[0]
                 != this->exitGoal[nearestExit[i]].coordinates[0]
-                && (*this->pedCoordsPtr)[i].coordinates[1] == 0)
+                && ((*this->pedCoordsPtr)[i].coordinates[1] < 0.011
+                && (*this->pedCoordsPtr)[i].coordinates[1] > -0.011))
             {
                 newGoal.push_back
                 (

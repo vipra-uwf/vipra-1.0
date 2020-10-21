@@ -43,10 +43,11 @@ void Simulation::run()
     
     this->pedestrianDynamicsModel->precompute();
 
-    //int i = 0; //delete this just for testing
+    int i = 0; //delete this just for testing
     
-    /*while(i < 100 /*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
+    while(i < 45 /*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
     {
+
         if(simulationOutputHandler->isOutputCriterionMet())
         {
             simulationOutputHandler->writeData();
@@ -57,7 +58,8 @@ void Simulation::run()
         this->pedestrianDynamicsModel->update(.01);
         this->timestep++;
         ++i;
-    }*/
+        this->pedestrianDynamicsModel->precompute();
+    }
 
     // TODO this will be removed once our debugger segfault is resolved
     printDataDELETETHIS();
@@ -81,6 +83,8 @@ void Simulation::printDataDELETETHIS()
     Data* data = this->pedestrianDynamicsModel->getData();
     CalmPedestrianSet* calmPedSet = dynamic_cast<
         CalmPedestrianSet*>(data->getPedestrianSet()); 
+
+    MovementDefinitions state;
 	
     std::cout << "Pedestrians: " << std::endl; 
 
@@ -111,9 +115,23 @@ void Simulation::printDataDELETETHIS()
             << calmPedSet->getNearestNeighbors()->at(i).second
             << " nearest_neighbor_originset=" 
             << calmPedSet->getNearestNeighbors()->at(i).first
+            << " nearest_ped_neighbor="
+            << calmPedSet->getNearestPedNeighbors()->at(i)
 			<< " speed=" << calmPedSet->getSpeeds()->at(i)
+            << " priority=" 
+            << calmPedSet->getPriorities()->at(i)
+            << " Move_state=";
 
-			<< std::endl;
+            state = calmPedSet->getMovementStates()->at(i);
+            switch(state)
+            {
+                case MovementDefinitions::PED_DYNAM : std::cout << "PED_DYNAM"; break; 
+                case MovementDefinitions::HUMAN : std::cout << "HUMAN"; break;
+                case MovementDefinitions::POLICY : std::cout << "POLICY"; break;
+                case MovementDefinitions::STOP : std::cout << "STOP"; break;
+            }
+
+			std::cout << std::endl;
 	}
 
    /* 
