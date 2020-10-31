@@ -31,8 +31,8 @@ void CalmPedestrianModel::precompute()
     calculateNearestPedNeighbors();
     updateMovementState();
     this->goals->determinePedestrianGoals();
-    calculatePropulsion();
-    calculateRepulsion();
+    //calculatePropulsion();
+    //calculateRepulsion();
 }
 
 void CalmPedestrianModel::update(FLOATING_NUMBER time)
@@ -180,7 +180,6 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
         }
 
     }
-
     set->setPedestrianCoordinates(movedCoordinates);
     set->setSpeeds(speedMetersPerSecond);
 
@@ -623,10 +622,6 @@ void CalmPedestrianModel::updateMovementState()
 
     for (int i = 0; i < set->getNumPedestrians(); ++i)
     {
-        std::cout << "current prior " << this->currentPriority <<std::endl;
-        std::cout << "i pro" << (*set->getPriorities())[i] << std::endl;
-        std::cout << i << ((*set->getPriorities())[i] < this->currentPriority) << std::endl;
-
         /*std::cout << (((*set->getPedestrianCoordinates())[i].coordinates[0] >= 
             ((*obSet->getAisles())[(*set->getStartingAisles())[i]] 
             + (*obSet->getAislesSize())[(*set->getStartingAisles())[i]]) - 0.1)
@@ -634,12 +629,14 @@ void CalmPedestrianModel::updateMovementState()
             (((*obSet->getAisles())[(*set->getStartingAisles())[i]] 
             + (*obSet->getAislesSize())[(*set->getStartingAisles())[i]]) + 0.1))) << std::endl;*/
 
-        if((this->calculateDistance( i , (*set->getNearestPedNeighbors())[i]
-            , "P") < 0.2) || (*set->getPriorities())[i] < this->currentPriority 
-            /* && (*set->getPedestrianCoordinates())[i].coordinates[0] == 
+        if(/*(this->calculateDistance( i , (*set->getNearestPedNeighbors())[i]
+            , "P") < 0.1) ||*/ (*set->getPriorities())[i] < this->currentPriority 
+             && (*set->getPedestrianCoordinates())[i].coordinates[0] >= 
             ((*obSet->getAisles())[(*set->getStartingAisles())[i]] 
-            + (*obSet->getAislesSize())[(*set->getStartingAisles())[i]])*/)
+            + ((*obSet->getAislesSize())[(*set->getStartingAisles())[i]] / 2) - 0.1))
         {
+            std::cout << "#:" << i << "\n sep: " << (this->calculateDistance( i , (*set->getNearestPedNeighbors())[i]
+            , "P"));
             updatedMoveStates.push_back(MovementDefinitions::STOP);
         }
         else

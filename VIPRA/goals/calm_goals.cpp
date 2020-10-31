@@ -153,6 +153,8 @@ void CalmGoals::determinePedestrianGoals()
                 getPedestrianSet()->getPedestrianCoordinates()->size() 
                     << std::endl;
         }
+
+        
         
     }
     data->getPedestrianSet()->setGoalCoordinates(newGoal);
