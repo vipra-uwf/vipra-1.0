@@ -6,26 +6,27 @@
 
 3. Restart computer
 
-4. Verify local VIPRA repo is up to date
-
-5. Create and configure VM
+4. Create and configure VM
 `username@hostname:~/vipra$ vagrant up`
 
-6. Log in to VM 
-`username: vagrant | password : vagrant`
+5. Connect to VM
+`username@hostname:~/vipra$ vagrant ssh`
 
-7. Clone VIPRA repository
-`vagrant@kali:~$ git clone https://github.com/vipra-uwf/vipra.git`
+6. Navigate to vipra directory
+`vagrant@ubuntu1804:~$ cd vipra`
 
-8. Navigate to VIPRA directory 
-`vagrant@kali:~$ cd vipra/VIPRA`
+7. Pull vipra repo
+`vagrant@ubuntu1804:~$ sudo git pull origin master`
 
-9. Compile and execute VIPRA program 
-`vagrant@kali:~/vipra/VIPRA$ make ccr`
+8. Compile and execute VIPRA program
+`vagrant@ubuntu1804:~$ ./VIPRA$ sudo make ccr`
 
 ---
 
 ## Additional commands
+
+Disconnect from VM
+`vagrant@ubuntu1804:~/vipra/VIPRA$ exit`
 
 Shutdown VM
 `username@hostname:~/vipra$ vagrant halt`
