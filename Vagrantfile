@@ -4,8 +4,6 @@
 Vagrant.configure("2") do |config|
 
 	config.vm.box = "generic/ubuntu1804"
-	#TODO remove this line, no longer attempting to use ssh
-	config.ssh.forward_agent = true #needed for git repo ssh key
 
 	config.vm.provider "virtualbox" do |vb|
 
@@ -48,7 +46,7 @@ Vagrant.configure("2") do |config|
 		mkdir VIPRA
 		#use `sudo git pull origin master` and login once you're in the box
 
-		#setup rapidxml (not tested)
+		#setup rapidxml
 		echo "$(tput setaf 6)$(tput bold)Setting up rapidxml $(tput sgr 0)"
 		test -e rapidxml || sudo git clone --depth=1 --branch=master https://github.com/dwd/rapidxml.git ./VIPRA/rapidxml
 		rm -rf ./vipra/rapidxml/.git
