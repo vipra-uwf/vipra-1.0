@@ -20,6 +20,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         const FLOATING_NUMBER c = 0.966;
     
     public:
+        virtual void configure(CONFIG_MAP* configMap);
         virtual void setData(Data* initialData);
         virtual void setGoals(Goals* goal);
         virtual Data* getData();

@@ -1,5 +1,10 @@
 #include "calm_pedestrian_model.hpp"
 
+void CalmPedestrianModel::configure(CONFIG_MAP* configMap)
+{
+
+}
+
 void CalmPedestrianModel::setData(Data* initialData)
 {
     this->data = initialData;

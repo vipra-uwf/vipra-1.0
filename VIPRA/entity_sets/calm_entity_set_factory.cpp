@@ -1,5 +1,10 @@
 #include "calm_entity_set_factory.hpp"
-		
+
+void CalmEntitySetFactory::configure(CONFIG_MAP* configMap)
+{
+
+}
+
 void CalmEntitySetFactory::populatePedestrianSet(
     ENTITY_SET inputData, PedestrianSet* calmPedSet)
 {

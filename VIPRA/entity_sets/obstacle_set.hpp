@@ -16,6 +16,7 @@ class ObstacleSet
     public:
         ObstacleSet();
         
+        void configure(CONFIG_MAP* configMap);
         int getNumObstacles();
         std::vector<Dimensions>* getObstacleCoordinates();
         

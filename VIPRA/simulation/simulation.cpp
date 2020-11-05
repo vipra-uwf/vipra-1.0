@@ -48,7 +48,7 @@ void Simulation::run()
     {
         if(simulationOutputHandler->isOutputCriterionMet())
         {
-            simulationOutputHandler->writeData();
+            simulationOutputHandler->writeToDocument();
         }
         
         //150 is arbitrary, use whatever ms is needed
@@ -69,6 +69,11 @@ void Simulation::run()
 int* Simulation::getTimestep()
 {
     return &this->timestep;
+}
+
+PedestrianDynamicsModel* Simulation::getPedestrianDynamicsModel()
+{
+    return this->pedestrianDynamicsModel;
 }
 
 
