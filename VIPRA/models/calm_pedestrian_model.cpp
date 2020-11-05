@@ -156,7 +156,6 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
         if(this->goals->checkPedestianGoalsMet(i))
         {
             set->removePedestrian(i);
-            std::cout << "check removed\n";
         }
 
     }
@@ -170,18 +169,7 @@ void CalmPedestrianModel::calculatePropulsion()
 
     for(int i = 0; i < set->getNumPedestrians(); ++i)
     {
-        /*std::cout << "ped: " << i << "  Desired speed: " << 
-        (*set->getDesiredSpeeds())[i] << "  current speed: " << 
-        (*set->getSpeeds())[i] << "  reaction time: " << 
-        (*set->getReactionTimes())[i] <<
-        "  mass: " << (*set->getMasses())[i] << std::endl;
-
-        std::cout << "V0i - Vi = " << (*set->getDesiredSpeeds())[i]
-                    - (*set->getSpeeds())[i] << std::endl;
-
-        std::cout << "(V0i - Vi)/reaction time = " << ((*set->getDesiredSpeeds())[i]
-                    - (*set->getSpeeds())[i]) / (*set->getReactionTimes())[i] << std::endl;*/ //testing for Ashok -EL
-
+        
         (*set->getPropulsionForces())[i] = 
             (
                 (
@@ -231,14 +219,6 @@ FLOATING_NUMBER CalmPedestrianModel::calculateBeta(int pedIndex)
         FLOATING_NUMBER(nearestNeighhborIndex),
         nearestNeighborOrigin
     ) - b);
-
-    /*std::cout << "ped :" << pedIndex << "  nearest neighbor: " 
-    << nearestNeighhborIndex << "  neighbor type: " 
-    << nearestNeighborOrigin << "  a: " << this->a
-    << "  b:" << this->b << "  c: " << this->c << "  distance between neighbors: " 
-    << distance <<std::endl;
-
-    std::cout << "Beta = " << c - exp(a * distance) << std::endl;*/ //tesing for Dr. s -EL
 
     return (c - exp(a * distance));
 }
@@ -381,10 +361,12 @@ bool CalmPedestrianModel::neighborDirectionTest(
             getObstacleCoordinates();
     }
 
-    FLOATING_NUMBER goalXDirection = (*set->getGoalCoordinates())[firstPedIndex]
-        .coordinates[0] - (*firstPedcoords)[firstPedIndex].coordinates[0];
-    FLOATING_NUMBER goalYDirection = (*set->getGoalCoordinates())[firstPedIndex]
-        .coordinates[1] - (*firstPedcoords)[firstPedIndex].coordinates[1];
+    FLOATING_NUMBER goalXDirection = 
+        (*set->getGoalCoordinates())[firstPedIndex].coordinates[0]
+        - (*firstPedcoords)[firstPedIndex].coordinates[0];
+    FLOATING_NUMBER goalYDirection = 
+        (*set->getGoalCoordinates())[firstPedIndex].coordinates[1]
+        - (*firstPedcoords)[firstPedIndex].coordinates[1];
 
     if(goalXDirection > 0 && goalYDirection == 0)
     {
@@ -454,7 +436,8 @@ void CalmPedestrianModel::calculatePriortiy()
     //std::cout << numAisles; //testing statement -El
 
     std::vector<FLOATING_NUMBER> priorities;
-    std::vector<int> startingAisles; //maybe move somewhere else? might not fit into this method - Elizabeth
+    std::vector<int> startingAisles; //maybe move somewhere else? 
+                                    //might not fit into this method - EL
      for(int i = 0; i < pedSet->getNumPedestrians(); ++i)
      {
         bool prioritySet = false;
@@ -542,7 +525,8 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
             {
                 //TODO fix this so it's not hard coded! - Elizabeth
                 if((*obCoords)[j].coordinates[1] < 1.73 && (*obCoords)[j]
-                    .coordinates[1] > -1.73)                                                {
+                    .coordinates[1] > -1.73)
+                {
                     if(frontOfAisle == -1)
                     {
                         frontOfAisle = (*obCoords)[j].coordinates[0];
@@ -600,18 +584,13 @@ void CalmPedestrianModel::updateMovementState()
 
     for (int i = 0; i < set->getNumPedestrians(); ++i)
     {
-        /*std::cout << (((*set->getPedestrianCoordinates())[i].coordinates[0] >= 
-            ((*obSet->getAisles())[(*set->getStartingAisles())[i]] 
-            + (*obSet->getAislesSize())[(*set->getStartingAisles())[i]]) - 0.1)
-            && ((*set->getPedestrianCoordinates())[i].coordinates[0] <= 
-            (((*obSet->getAisles())[(*set->getStartingAisles())[i]] 
-            + (*obSet->getAislesSize())[(*set->getStartingAisles())[i]]) + 0.1))) << std::endl;*/
 
         if(/*(this->calculateDistance( i , (*set->getNearestPedNeighbors())[i]
             , "P") < 0.1) ||*/ (*set->getPriorities())[i] < this->currentPriority 
              && (*set->getPedestrianCoordinates())[i].coordinates[0] >= 
             ((*obSet->getAisles())[(*set->getStartingAisles())[i]] 
-            + ((*obSet->getAislesSize())[(*set->getStartingAisles())[i]] / 2) - 0.1))
+            + ((*obSet->getAislesSize())[(*set->getStartingAisles())[i]] / 2)
+            - 0.1))
         {
             updatedMoveStates.push_back(MovementDefinitions::STOP);
         }

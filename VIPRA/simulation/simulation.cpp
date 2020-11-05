@@ -45,7 +45,7 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     
-    while(i < 3000 /*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
+    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
