@@ -432,7 +432,7 @@ bool CalmPedestrianModel::neighborDirectionTest(
     return pass;
 }
 
-void CalmPedestrianModel::calculatePriortiy()
+void CalmPedestrianModel::calculatePriority()
 {
     CalmPedestrianSet* pedSet = dynamic_cast<CalmPedestrianSet*>(
         this->data->getPedestrianSet());

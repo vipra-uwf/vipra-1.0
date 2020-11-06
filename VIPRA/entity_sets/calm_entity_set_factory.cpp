@@ -70,21 +70,21 @@ void CalmEntitySetFactory::populatePedestrianSet(
 	std::vector<int> intNearestNeighbors(
 		floatNearestNeighbors.begin(), floatNearestNeighbors.end());
 
-  std::vector<std::pair<std::string, int>> nearestNeighbors;
-  std::vector<MovementDefinitions> startingMovement;
-    
-  for(long unsigned int i = 0; i < intNearestNeighbors.size(); ++i)
-  {
-      nearestNeighbors.push_back(std::make_pair("P", intNearestNeighbors[i]));
-  }
+    std::vector<std::pair<std::string, int>> nearestNeighbors;
+    std::vector<MovementDefinitions> startingMovement;
+        
+    for(long unsigned int i = 0; i < intNearestNeighbors.size(); ++i)
+    {
+        nearestNeighbors.push_back(std::make_pair("P", intNearestNeighbors[i]));
+    }
 
-  for(int i = 0; i < numPeds; ++i)
-  {
-      startingMovement.push_back(MovementDefinitions::PED_DYNAM);
-  }
-	
-	calmPedSet->setNearestNeighbors(nearestNeighbors);
-  calmPedSet->setMovementStates(startingMovement);
+    for(int i = 0; i < numPeds; ++i)
+    {
+        startingMovement.push_back(MovementDefinitions::PED_DYNAM);
+    }
+        
+    dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setNearestNeighbors(nearestNeighbors);
+    dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setMovementStates(startingMovement);
 }
 
 void CalmEntitySetFactory::populateObstacleSet(
