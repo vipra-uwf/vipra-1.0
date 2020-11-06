@@ -1,9 +1,13 @@
 #include "calm_entity_set_factory.hpp"
-		
-CalmPedestrianSet* CalmEntitySetFactory::createPedestrianSet(
-    ENTITY_SET inputData)
+
+void CalmEntitySetFactory::configure(CONFIG_MAP* configMap)
 {
-	CalmPedestrianSet* calmPedSet = new CalmPedestrianSet;
+
+}
+
+void CalmEntitySetFactory::populatePedestrianSet(
+    ENTITY_SET inputData, PedestrianSet* calmPedSet)
+{
 
 	std::vector<Dimensions> pedCoords;
 	std::vector<Dimensions> goalCoords;
@@ -44,18 +48,21 @@ CalmPedestrianSet* CalmEntitySetFactory::createPedestrianSet(
 	calmPedSet->setPedestrianCoordinates(pedCoords);
 	calmPedSet->setGoalCoordinates(goalCoords);
 	calmPedSet->setVelocities(velocities);
-	calmPedSet->setMasses(vectorStringToDouble(
-        accumulateAttribute("mass", inputData)));
-	calmPedSet->setReactionTimes(vectorStringToDouble(
-        accumulateAttribute("reaction_time", inputData)));
-    calmPedSet->setSpeeds(vectorStringToDouble(
-        accumulateAttribute("speed", inputData)));
-	calmPedSet->setDesiredSpeeds(vectorStringToDouble(
-        accumulateAttribute("desired_speed", inputData)));
-	calmPedSet->setPropulsionForces(vectorStringToDouble(
-        accumulateAttribute("propulsion_force", inputData)));
-	calmPedSet->setRepulsionForces(vectorStringToDouble(
-        accumulateAttribute("repulsion_force", inputData)));
+	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setMasses(
+        vectorStringToDouble(accumulateAttribute("mass", inputData)));
+	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setReactionTimes(
+        vectorStringToDouble(accumulateAttribute("reaction_time", inputData)));
+    calmPedSet->setSpeeds(
+        vectorStringToDouble(accumulateAttribute("speed", inputData)));
+	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setDesiredSpeeds(
+        vectorStringToDouble(
+            accumulateAttribute("desired_speed", inputData)));
+	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setPropulsionForces(
+        vectorStringToDouble(
+            accumulateAttribute("propulsion_force", inputData)));
+	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setRepulsionForces(
+        vectorStringToDouble(
+            accumulateAttribute("repulsion_force", inputData)));
 	calmPedSet->setNumPedestrians(numPeds);
 
 	std::vector<FLOATING_NUMBER> floatNearestNeighbors = vectorStringToDouble(
@@ -63,29 +70,26 @@ CalmPedestrianSet* CalmEntitySetFactory::createPedestrianSet(
 	std::vector<int> intNearestNeighbors(
 		floatNearestNeighbors.begin(), floatNearestNeighbors.end());
 
-    std::vector<std::pair<std::string, int>> nearestNeighbors;
-    std::vector<MovementDefinitions> startingMovement;
+  std::vector<std::pair<std::string, int>> nearestNeighbors;
+  std::vector<MovementDefinitions> startingMovement;
     
-    for(long unsigned int i = 0; i < intNearestNeighbors.size(); ++i)
-    {
-        nearestNeighbors.push_back(std::make_pair("P", intNearestNeighbors[i]));
-    }
+  for(long unsigned int i = 0; i < intNearestNeighbors.size(); ++i)
+  {
+      nearestNeighbors.push_back(std::make_pair("P", intNearestNeighbors[i]));
+  }
 
-    for(int i = 0; i < numPeds; ++i)
-    {
-        startingMovement.push_back(MovementDefinitions::PED_DYNAM);
-    }
+  for(int i = 0; i < numPeds; ++i)
+  {
+      startingMovement.push_back(MovementDefinitions::PED_DYNAM);
+  }
 	
 	calmPedSet->setNearestNeighbors(nearestNeighbors);
-    calmPedSet->setMovementStates(startingMovement);
-
-	return calmPedSet;	
+  calmPedSet->setMovementStates(startingMovement);
 }
 
-ObstacleSet* CalmEntitySetFactory::createObstacleSet(ENTITY_SET inputData)
+void CalmEntitySetFactory::populateObstacleSet(
+    ENTITY_SET inputData, ObstacleSet* obstacleSet)
 {
-	ObstacleSet* obstacleSet = new ObstacleSet;
-
 	std::vector<Dimensions> obsCoords;
 	
 	int numObs = inputData.size();
@@ -104,13 +108,11 @@ ObstacleSet* CalmEntitySetFactory::createObstacleSet(ENTITY_SET inputData)
 
 	obstacleSet->setObstacleCoordinates(obsCoords);
 	obstacleSet->setNumObstacles(numObs);
-
-	return obstacleSet;
 }
 
-SIM_PARAMS* CalmEntitySetFactory::createSimulationParams(ENTITY_SET inputData)
+void CalmEntitySetFactory::populateSimulationParams(
+    ENTITY_SET inputData, SIM_PARAMS* simulationParams)
 {
-	SIM_PARAMS* simulationParams = new SIM_PARAMS;
 
     for(long unsigned int i = 0; i < inputData.size(); ++i)
     {
@@ -156,8 +158,6 @@ SIM_PARAMS* CalmEntitySetFactory::createSimulationParams(ENTITY_SET inputData)
                     inputData[i]["in_aisle_stop_threshold"]);
         }
     }
-	
-    return simulationParams;
 }
 
 std::vector<std::string> CalmEntitySetFactory::accumulateAttribute(
@@ -185,4 +185,3 @@ std::vector<FLOATING_NUMBER> CalmEntitySetFactory::vectorStringToDouble(
 
     return floatVec;
 }
-

@@ -4,6 +4,11 @@ CalmGoals::CalmGoals()
 {
 }
 
+void CalmGoals::configure(CONFIG_MAP* configMap)
+{
+    
+}
+
 void CalmGoals::setData(Data* data)
 {
     this->data = data;
@@ -17,7 +22,8 @@ void CalmGoals::setData(Data* data)
 void CalmGoals::addExitGoal(std::unordered_map<std::string,
     FLOATING_NUMBER>* simulationParams)
 {
-    //TODO fix this method so that exits are read in a different way so that i can read in multiple exits
+    //TODO fix this method so that exits are read 
+    // in a different way so that i can read in multiple exits - elisabeth
     FLOATING_NUMBER x;
     FLOATING_NUMBER y;
 

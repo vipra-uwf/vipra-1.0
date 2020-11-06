@@ -50,12 +50,13 @@ void Simulation::run()
 
         if(simulationOutputHandler->isOutputCriterionMet())
         {
-            simulationOutputHandler->writeData();
+            simulationOutputHandler->writeToDocument();
         }
         
         //.01 is arbitrary, use whatever ms is needed
         clock.addSimulationTimeMs(.01);
         this->pedestrianDynamicsModel->update(.01);
+
         this->timestep++;
         ++i;
         this->pedestrianDynamicsModel->precompute();
@@ -74,6 +75,11 @@ void Simulation::run()
 int* Simulation::getTimestep()
 {
     return &this->timestep;
+}
+
+PedestrianDynamicsModel* Simulation::getPedestrianDynamicsModel()
+{
+    return this->pedestrianDynamicsModel;
 }
 
 

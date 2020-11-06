@@ -17,42 +17,39 @@ class XMLWriter: public OutputDataWriter
     private:
         Data* data;
         std::ofstream fileStream;
-        std::string rootElementName;
-        std::string dataElementName;
-        int numDataNodes;
+        std::string parentElementName;
+        std::string childElementName;
+        int numChildElements;
         rapidxml::xml_document<> document;
-        rapidxml::xml_node<>* rootElement;
-        rapidxml::xml_node<>* currentNode;
+        rapidxml::xml_node<>* parentElement;
+        rapidxml::xml_node<>* currentElement;
 
         void openFile(std::string fileName);
+
         void initializeXMLDeclaration(
             std::string versionNum, std::string encodingType);
-        void initializeRootNode();
-        void initializeDataNodes();
-        void generateDataNode();
- 
-        void appendDataNodeAttribute(
-            rapidxml::xml_node<>* node, std::string key, std::string value);
-        void writeFloatCalmEntitySet(
-            std::string key, std::vector<FLOATING_NUMBER> entitySet);
-        void writeStringCalmEntitySet(
-            std::string key, std::vector<std::string> entitySet);
+        void initializeParentElement();
+        void initializeChildElements();
+
+        void generateChildElement();
+        void appendChildElementAttribute(
+            rapidxml::xml_node<>* element, std::string key, std::string value);
         
-        void setRootNodeName(std::string rootElementName);
-        void setDataNodeName(std::string dataElementName);
         void setData(Data* initialData);
-        void setNumDataNodes(int numDataNodes);
+        void setParentElementName(std::string parentElementName);
+        void setChildElementName(std::string dataElementName);
+        void setNumChildElements(int numChildElements);
               
     public:
         XMLWriter();
-        void configureXMLDocumentStructure(
-            std::string fileName, 
-            std::string rootElementName, std::string dataElementName, 
-            std::string versionNum, std::string encodingType);
-        virtual void writeData(Data* data);
-        virtual void writeFloatData(std::string key, FLOATING_NUMBER value);
-        virtual void writeStringData(std::string key, std::string value);
-        void writeDocumentContents();
+        virtual void initializeOutputFile(std::string outputFilePath);
+        virtual void writeDocumentContentsToFile();
+        virtual void configure(CONFIG_MAP* configMap);
+        virtual void writeToDocument(Data* data);
+        virtual void appendFloatAttributeToCurrentElement(
+            std::string key, FLOATING_NUMBER value);
+        virtual void appendStringAttributeToCurrentElement(
+            std::string key, std::string value);
 };
 
 #endif

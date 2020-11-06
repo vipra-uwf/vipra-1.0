@@ -1,5 +1,16 @@
 #include "calm_pedestrian_model.hpp"
 
+void CalmPedestrianModel::configure(CONFIG_MAP* configMap)
+{
+
+}
+
+void CalmPedestrianModel::initialize()
+{
+    createAisles();
+    calculatePriority();
+}
+
 void CalmPedestrianModel::setData(Data* initialData)
 {
     this->data = initialData;
@@ -296,6 +307,7 @@ void CalmPedestrianModel::calculateNearestNeighbors()
                 }
             }
         }
+
         /*std::cout 
             << i << "dist:" << calculateDistance(i, nearest, originSet) 
             << std::endl;*/
@@ -336,7 +348,7 @@ void CalmPedestrianModel::calculateNearestPedNeighbors()
         }
         /*std::cout << i << "dist:" << calculateDistance(i, nearest, originSet)
             << std::endl;*/
-        
+      
         nearestPedNeighbor.push_back(nearest);
     }
     pedSet->setNearestPedNeighbors(nearestPedNeighbor);
@@ -525,7 +537,7 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
             {
                 //TODO fix this so it's not hard coded! - Elizabeth
                 if((*obCoords)[j].coordinates[1] < 1.73 && (*obCoords)[j]
-                    .coordinates[1] > -1.73)
+                   .coordinates[1] > -1.73)
                 {
                     if(frontOfAisle == -1)
                     {
@@ -556,9 +568,9 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
                 }
             }
         }
+
         /*std::cout << "Aisle " << i << " back" << backOfAisle //testing statement -EL
-            << ": front " << frontOfAisle << std::endl;*/
-            
+            << ": front " << frontOfAisle << std::endl;*/ 
         AisleSize.push_back(frontOfAisle-backOfAisle);
     }
 
@@ -602,5 +614,4 @@ void CalmPedestrianModel::updateMovementState()
     }
 
     set->setMovementStates(updatedMoveStates);
-
 }

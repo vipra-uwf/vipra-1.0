@@ -26,6 +26,7 @@ class CalmGoals: public Goals
 
         CalmGoals();
 
+        virtual void configure(CONFIG_MAP* configMap);
         virtual void setData(Data* data);
         virtual void addExitGoal(std::unordered_map<std::string,
             FLOATING_NUMBER>* simulationParams);

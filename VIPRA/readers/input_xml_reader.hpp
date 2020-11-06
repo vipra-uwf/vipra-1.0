@@ -19,10 +19,10 @@ class InputXMLReader: public InputDataLoader
     private:
         std::ifstream fileStream;      
         std::vector<char> fileContents;
-        std::string rootElementName;
+        std::string parentElementName;
         std::string dataElementName;
         rapidxml::xml_document<> document;
-        rapidxml::xml_node<>* rootElement;
+        rapidxml::xml_node<>* parentElement;
         rapidxml::xml_node<>* traversalElement;
 
         void openFile(std::string fileName);
@@ -33,10 +33,10 @@ class InputXMLReader: public InputDataLoader
     public:
 		
         virtual ENTITY_SET getInputEntities();
-
-        void extractFileData(
+        virtual void configure(CONFIG_MAP* configMap);
+        virtual void extractFileData(
             std::string fileName, 
-            std::string rootElementName);
+            CONFIG_MAP* configMap);
 };
 
 #endif

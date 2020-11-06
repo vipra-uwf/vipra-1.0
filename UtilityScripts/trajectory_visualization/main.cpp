@@ -15,23 +15,35 @@ int main() {
         "../../VIPRA/output_data/pedestrian_animfile.xml", 
         "pedestrian-set");
 
-    std::unordered_map<
-        std::string, std::vector<FLOATING_NUMBER>> pedInputFileData = 
-			inputXMLReader.getInputEntities();
+    ENTITY_SET pedInputFileData = inputXMLReader.getInputEntities();
 
-    std::vector<FLOATING_NUMBER> trajectorySetX = pedInputFileData["x"];
-    std::vector<FLOATING_NUMBER> trajectorySetY = pedInputFileData["y"];
+    std::vector<FLOATING_NUMBER> trajectorySetX;
+    std::vector<FLOATING_NUMBER> trajectorySetY;
+
+    for(long unsigned int i = 0; i < pedInputFileData.size(); ++i)
+    {
+        trajectorySetX.push_back(
+            (FLOATING_NUMBER) std::stod(pedInputFileData[i]["x"]));
+        trajectorySetY.push_back(
+            (FLOATING_NUMBER) std::stod(pedInputFileData[i]["y"]));
+    }
 
     inputXMLReader.extractFileData(
         "../../VIPRA/input_data/a320_144_obstacles.xml", 
         "obstacle-set");
 
-    std::unordered_map<
-		std::string, std::vector<FLOATING_NUMBER>> obsInputFileData = 
-			inputXMLReader.getInputEntities();
+    ENTITY_SET obsInputFileData = inputXMLReader.getInputEntities();
 
-    std::vector<FLOATING_NUMBER> obstacleX = obsInputFileData["x"];
-    std::vector<FLOATING_NUMBER> obstacleY = obsInputFileData["y"];
+    std::vector<FLOATING_NUMBER> obstacleX;
+    std::vector<FLOATING_NUMBER> obstacleY;
+    
+    for(long unsigned int i = 0; i < obsInputFileData.size(); ++i)
+    {
+        obstacleX.push_back(
+            (FLOATING_NUMBER) std::stod(obsInputFileData[i]["x"]));
+        obstacleY.push_back(
+            (FLOATING_NUMBER) std::stod(obsInputFileData[i]["y"]));
+    }
 
     int i = 0;
     int numPedestrians = 144;
@@ -43,7 +55,6 @@ int main() {
     plt::scatter(obstacleX, obstacleY, 1);
     plt::pause(2);
 
-
     while(i < numberOfSnapshots)
     {
         std::cout << "Displaying trajectory snapshot: " << i << std::endl;
@@ -51,8 +62,10 @@ int main() {
         auto firstX = trajectorySetX.begin();
         auto firstY = trajectorySetY.begin();  
 
-        std::vector<FLOATING_NUMBER> pedestrianX(firstX + (i * 144), firstX + ((i + 1) * 144));
-        std::vector<FLOATING_NUMBER> pedestrianY(firstY + (i * 144), firstY + ((i + 1) * 144));
+        std::vector<FLOATING_NUMBER> pedestrianX(
+            firstX + (i * 144), firstX + ((i + 1) * 144));
+        std::vector<FLOATING_NUMBER> pedestrianY(
+            firstY + (i * 144), firstY + ((i + 1) * 144));
 
         plt::clf();
         plt::xlim(-5, 30);

@@ -15,9 +15,13 @@ class CalmEntitySetFactory : public EntitySetFactory
             std::vector<std::string> stringVec);
 	
     public:
-		virtual CalmPedestrianSet* createPedestrianSet(ENTITY_SET inputData);
-		virtual ObstacleSet* createObstacleSet(ENTITY_SET inputData);
-		virtual SIM_PARAMS* createSimulationParams(ENTITY_SET inputData);
+        virtual void configure(CONFIG_MAP* configMap);
+		virtual void populatePedestrianSet(
+            ENTITY_SET inputData, PedestrianSet* calmPedSet);
+		virtual void populateObstacleSet(
+            ENTITY_SET inputData, ObstacleSet* obstacleSet);
+		virtual void populateSimulationParams(
+            ENTITY_SET inputData, SIM_PARAMS* simulationParams);
 };
 
 #endif

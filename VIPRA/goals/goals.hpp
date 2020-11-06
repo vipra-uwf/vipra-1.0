@@ -21,6 +21,9 @@ class Goals
 {
 
     public:
+        virtual ~Goals() = default;
+
+        virtual void configure(CONFIG_MAP* configMap) = 0;
         virtual void setData(Data* data) = 0;
         virtual void addExitGoal(std::unordered_map<std::string,
             FLOATING_NUMBER>* simulationParams) = 0;

@@ -8,8 +8,10 @@
 class PedestrianSet
 {
     public:
+        virtual ~PedestrianSet() = default;
+        
+        virtual void configure(CONFIG_MAP* configMap) = 0;
         virtual void removePedestrian(int pedestrianIndex) = 0;
-
         virtual int getNumPedestrians() = 0;
         virtual std::vector<Dimensions>* getPedestrianCoordinates() = 0;
         virtual std::vector<Dimensions>* getGoalCoordinates() = 0;
