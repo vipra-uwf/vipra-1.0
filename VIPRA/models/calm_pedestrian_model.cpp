@@ -5,6 +5,12 @@ void CalmPedestrianModel::configure(CONFIG_MAP* configMap)
 
 }
 
+void CalmPedestrianModel::initialize()
+{
+    //createAisles();
+    //calculatePriority();
+}
+
 void CalmPedestrianModel::setData(Data* initialData)
 {
     this->data = initialData;

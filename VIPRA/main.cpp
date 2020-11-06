@@ -103,6 +103,7 @@ int main()
         pedestrianDynamicsModel->setData(&data);
         pedestrianDynamicsModel->setGoals(goals);
         goals->determinePedestrianGoals();
+        pedestrianDynamicsModel->initialize();
         
         Simulation simulation(pedestrianDynamicsModel);
         
