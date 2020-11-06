@@ -1,4 +1,5 @@
 #include "calm_pedestrian_set.hpp"
+#include <iostream>
 
 CalmPedestrianSet::CalmPedestrianSet()
 {
@@ -16,6 +17,7 @@ void CalmPedestrianSet::configure(CONFIG_MAP* configMap)
 
 void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 {
+    std::cout << "check removed: " << pedestrianIndex << std::endl;
     this->numPedestrians--;
     
     this->pedestrianCoordinates.erase(pedestrianCoordinates.
@@ -30,6 +32,8 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->propulsionForces.erase(propulsionForces.begin()+pedestrianIndex);
     this->repulsionForces.erase(repulsionForces.begin()+pedestrianIndex);
     this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
+    this->nearestPedNeighbors.erase(nearestPedNeighbors.begin()+pedestrianIndex);
+    this->movementStates.erase(movementStates.begin()+pedestrianIndex);
 }
 
 int CalmPedestrianSet::getNumPedestrians()
@@ -88,9 +92,24 @@ std::vector<std::pair<std::string, int>>*
     return &this->nearestNeighbors;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPriortiy()
+std::vector<int>* CalmPedestrianSet::getNearestPedNeighbors()
+{
+    return &this->nearestPedNeighbors;
+}
+
+std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPriorities()
 {
     return &this->priorities;
+}
+
+std::vector<MovementDefinitions>* CalmPedestrianSet::getMovementStates()
+{
+    return &this->movementStates;
+}
+
+std::vector<int>* CalmPedestrianSet::getStartingAisles()
+{
+    return &this->startingAisles;
 }
 
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
@@ -157,7 +176,22 @@ void CalmPedestrianSet::setNearestNeighbors(
    this->nearestNeighbors = nearestNeighbors; 
 }
 
+void CalmPedestrianSet::setNearestPedNeighbors(std::vector<int> nearestPedNeighbors)
+{
+   this->nearestPedNeighbors = nearestPedNeighbors; 
+}
+
 void CalmPedestrianSet::setPriorities(std::vector<FLOATING_NUMBER> priorities)
 {
     this->priorities = priorities;
+}
+
+void CalmPedestrianSet::setMovementStates(std::vector<MovementDefinitions> movementStates)
+{
+    this->movementStates = movementStates;
+}
+
+void CalmPedestrianSet::setStartingAisles(std::vector<int> startingAisles)
+{
+    this->startingAisles = startingAisles;
 }

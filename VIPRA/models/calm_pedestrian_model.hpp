@@ -15,6 +15,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
     private:
         Data* data;
         Goals* goals;
+        int currentPriority;
         const FLOATING_NUMBER a = -2.111;
         const FLOATING_NUMBER b = 0.366;
         const FLOATING_NUMBER c = 0.966;
@@ -27,7 +28,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual Data* getData();
         virtual Goals* getGoals();
         virtual void precompute();
-        virtual void update();
+        virtual void update(FLOATING_NUMBER time);
 
         void calculatePropulsion();
         void calculateRepulsion();
@@ -35,9 +36,12 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
             int firstPedIndex, int secondPedIndex, std::string originSet);
         FLOATING_NUMBER calculateBeta(int pedIndex);
         void calculateNearestNeighbors();
+        void calculateNearestPedNeighbors();
         bool neighborDirectionTest(
             int firstPedIndex, int secondPedIndex, std::string originSet);
         void calculatePriortiy();
+        void createAisles();
+        void updateMovementState();
 };
 
 #endif

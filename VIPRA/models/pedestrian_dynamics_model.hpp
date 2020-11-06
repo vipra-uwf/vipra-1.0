@@ -17,7 +17,7 @@ class PedestrianDynamicsModel
         virtual Data* getData() = 0;
         virtual Goals* getGoals() = 0;
         virtual void precompute() = 0;
-        virtual void update() = 0;
+        virtual void update(FLOATING_NUMBER time) = 0;
 };
 
 #endif

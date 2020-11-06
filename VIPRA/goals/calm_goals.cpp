@@ -96,9 +96,10 @@ void CalmGoals::determinePedestrianGoals()
     {
         if(!checkPedestianGoalsMet(i))
         {
-            if((*this->pedCoordsPtr)[i].coordinates[0]
-                != this->exitGoal[nearestExit[i]].coordinates[0]
-                && (*this->pedCoordsPtr)[i].coordinates[1] != 0)
+            if(((*this->pedCoordsPtr)[i].coordinates[0]
+                < this->exitGoal[nearestExit[i]].coordinates[0] - 0.011)
+                && !((*this->pedCoordsPtr)[i].coordinates[1] < 0.011
+                && (*this->pedCoordsPtr)[i].coordinates[1] > -0.011))
             {
                 newGoal.push_back
                 (
@@ -114,9 +115,10 @@ void CalmGoals::determinePedestrianGoals()
             
             }
 
-            else if((*this->pedCoordsPtr)[i].coordinates[0]
-                != this->exitGoal[nearestExit[i]].coordinates[0]
-                && (*this->pedCoordsPtr)[i].coordinates[1] == 0)
+            else if(((*this->pedCoordsPtr)[i].coordinates[0]
+                < this->exitGoal[nearestExit[i]].coordinates[0] - 0.011)
+                && ((*this->pedCoordsPtr)[i].coordinates[1] < 0.011
+                && (*this->pedCoordsPtr)[i].coordinates[1] > -0.011))
             {
                 newGoal.push_back
                 (
@@ -157,6 +159,8 @@ void CalmGoals::determinePedestrianGoals()
                 getPedestrianSet()->getPedestrianCoordinates()->size() 
                     << std::endl;
         }
+
+        
         
     }
     data->getPedestrianSet()->setGoalCoordinates(newGoal);
@@ -168,9 +172,13 @@ bool CalmGoals::checkPedestianGoalsMet(int pedIndex)
     bool goalMet = false;
 
     if(((*this->pedCoordsPtr)[pedIndex].coordinates[0]
-        == this->exitGoal[nearestExit[pedIndex]].coordinates[0])
+        >= this->exitGoal[nearestExit[pedIndex]].coordinates[0] - 0.011 
+        && (*this->pedCoordsPtr)[pedIndex].coordinates[0]
+        <= this->exitGoal[nearestExit[pedIndex]].coordinates[0] + 0.011)
         && ((*this->pedCoordsPtr)[pedIndex].coordinates[1]
-        == this->exitGoal[nearestExit[pedIndex]].coordinates[1]))
+        >= this->exitGoal[nearestExit[pedIndex]].coordinates[1] - 0.011
+        && (*this->pedCoordsPtr)[pedIndex].coordinates[1]
+        <= this->exitGoal[nearestExit[pedIndex]].coordinates[1] + 0.011))
     {
         goalMet = true;
     }
@@ -229,4 +237,9 @@ FLOATING_NUMBER CalmGoals::calculateDistance(int pedIndex,
     yDistance = pow(yDistance, 2);
 
     return (sqrt(xDistance + yDistance));
+}
+
+Dimensions CalmGoals::getPedExitGoal(int pedestrianIndex)
+{
+    return this->exitGoal[this->nearestExit[pedestrianIndex]];
 }
