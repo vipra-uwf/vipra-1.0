@@ -10,7 +10,7 @@
 #include "writers/timestep_output_handler.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
 #include "entity_sets/obstacle_set.hpp"
-#include "entity_sets/calm_entity_set_factory.hpp"
+#include "entity_sets/factory/calm_entity_set_factory.hpp"
 #include "models/calm_pedestrian_model.hpp"
 #include "simulation/simulation.hpp"
 
