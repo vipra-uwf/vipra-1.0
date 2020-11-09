@@ -34,6 +34,7 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
     this->nearestPedNeighbors.erase(nearestPedNeighbors.begin()+pedestrianIndex);
     this->movementStates.erase(movementStates.begin()+pedestrianIndex);
+    this->priorities.erase(priorities.begin()+pedestrianIndex);
 }
 
 int CalmPedestrianSet::getNumPedestrians()
