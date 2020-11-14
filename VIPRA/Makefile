@@ -4,6 +4,7 @@ NAME = "main"
 
 BUILD_DIR = build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
+SRCS := $(filter-out src/generated_main.cpp, $(SRCS))
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o) 
 
 
