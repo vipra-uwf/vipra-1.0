@@ -5,18 +5,6 @@
             "className" : "InputXMLReader",
             "includePath" : "readers/input_xml_reader.hpp",
             "type" : "xml"
-        },
-        {
-            "objectName": "inputJSONReader",
-            "className": "InputJSONReader",
-            "includePath" : "readers/FAKE_INCLUDE.hpp",
-            "type" : "json"
-        },
-        {
-            "objectName": "plainTextReader",
-            "className": "InputPlainTextReader",
-            "includePath" : "readers/FAKE_INCLUDE.hpp",
-            "type" : "plaintext"
         }
     ],
     
@@ -40,7 +28,7 @@
 
     "pedestrian_set" : [
         {
-            "objectName": "calmPedSet",
+            "objectName": "calmPedestrianSet",
             "className": "CalmPedestrianSet",
             "includePath" : "entity_sets/calm_pedestrian_set.hpp",
             "type" : "calm"
@@ -49,7 +37,7 @@
 
     "obstacle_set" : [
         {
-            "objectName": "calmObsSet",
+            "objectName": "calmObstacleSet",
             "className": "ObstacleSet",
             "includePath" : "entity_sets/obstacle_set.hpp",
             "type" : "calm"
@@ -58,9 +46,9 @@
 
     "entity_set_factory" : [
         {
-            "objectName": "calmSetFactory",
+            "objectName": "calmEntitySetFactory",
             "className": "CalmEntitySetFactory",
-            "includePath" : "entity_sets/calm_entity_set_factory.hpp",
+            "includePath" : "entity_sets/factory/calm_entity_set_factory.hpp",
             "type" : "calm"
         }
     ],
@@ -76,7 +64,7 @@
 
     "pedestrian_dynamics_model" : [
         {
-            "objectName": "calmPedModel",
+            "objectName": "calmPedestrianModel",
             "className": "CalmPedestrianModel",
             "includePath" : "models/calm_pedestrian_model.hpp",
             "type" : "calm"
