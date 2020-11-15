@@ -13,8 +13,8 @@
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     private:
-        CalmPedestrianSet* pedSet;
-        ObstacleSet* obSet;
+        CalmPedestrianSet* pedestrianSet;
+        ObstacleSet* obstacleSet;
         Data* data;
         Goals* goals;
         int currentPriority;
@@ -32,19 +32,19 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void precompute();
         virtual void update(FLOATING_NUMBER time);
 
-        void calculatePropulsion(int pedIndex);
-        void calculateRepulsion(int pedIndex);
+        void calculatePropulsion(int pedestrianIndex);
+        void calculateRepulsion(int pedestrianIndex);
         FLOATING_NUMBER calculateDistance(
-            int firstPedIndex, int secondPedIndex, std::string originSet);
-        FLOATING_NUMBER calculateBeta(int pedIndex);
-        std::pair<std::string, int> calculateNearestNeighbors(int pedIndex);
-        int calculateNearestPedNeighbors(int pedIndex);
+            int firstPedIndex, int secondPedestrianIndex, std::string originSet);
+        FLOATING_NUMBER calculateBeta(int pedestrianIndex);
+        std::pair<std::string, int> calculateNearestNeighbors(int pedestrianIndex);
+        int calculateNearestPedNeighbors(int pedestrianIndex);
         bool neighborDirectionTest(
-            int firstPedIndex, int secondPedIndex, std::string originSet);
+            int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet);
         void calculatePriority();
         void createAisles();
-        MovementDefinitions updateMovementState(int pedIndex);
-        bool updatePriority(int pedIndex);
+        MovementDefinitions updateMovementState(int pedestrianIndex);
+        bool updatePriority(int pedestrianIndex);
 };
 
 #endif
