@@ -3,7 +3,7 @@
 
 enum struct MovementDefinitions
 {
-    PED_DYNAM, HUMAN, POLICY, STOP
+    PED_DYNAM, HUMAN, POLICY, STOP, PAUSE
 };
 
 #endif

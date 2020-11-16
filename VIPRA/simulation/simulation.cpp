@@ -135,6 +135,7 @@ void Simulation::printDataDELETETHIS()
                 case MovementDefinitions::HUMAN : std::cout << "HUMAN"; break;
                 case MovementDefinitions::POLICY : std::cout << "POLICY"; break;
                 case MovementDefinitions::STOP : std::cout << "STOP"; break;
+                case MovementDefinitions::PAUSE : std::cout << "PAUSE"; break;
             }
 
 			std::cout << std::endl;
