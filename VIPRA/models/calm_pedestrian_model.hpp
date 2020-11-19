@@ -13,6 +13,8 @@
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     private:
+        CalmPedestrianSet* pedestrianSet;
+        ObstacleSet* obstacleSet;
         Data* data;
         Goals* goals;
         int currentPriority;
@@ -30,18 +32,19 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void precompute();
         virtual void update(FLOATING_NUMBER time);
 
-        void calculatePropulsion();
-        void calculateRepulsion();
+        void calculatePropulsion(int pedestrianIndex);
+        void calculateRepulsion(int pedestrianIndex);
         FLOATING_NUMBER calculateDistance(
-            int firstPedIndex, int secondPedIndex, std::string originSet);
-        FLOATING_NUMBER calculateBeta(int pedIndex);
-        void calculateNearestNeighbors();
-        void calculateNearestPedNeighbors();
+            int firstPedIndex, int secondPedestrianIndex, std::string originSet);
+        FLOATING_NUMBER calculateBeta(int pedestrianIndex);
+        std::pair<std::string, int> calculateNearestNeighbors(int pedestrianIndex);
+        int calculateNearestPedNeighbors(int pedestrianIndex);
         bool neighborDirectionTest(
-            int firstPedIndex, int secondPedIndex, std::string originSet);
+            int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet);
         void calculatePriority();
         void createAisles();
-        void updateMovementState();
+        MovementDefinitions updateMovementState(int pedestrianIndex);
+        bool updatePriority(int pedestrianIndex);
 };
 
 #endif
