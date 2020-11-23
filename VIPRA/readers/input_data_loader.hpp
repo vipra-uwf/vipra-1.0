@@ -6,8 +6,6 @@
 #include <unordered_map>
 #include <vector>
 
-typedef std::vector<std::unordered_map<std::string, std::string>> ENTITY_SET;
-
 class InputDataLoader
 {
     public:
