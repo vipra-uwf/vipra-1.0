@@ -45,7 +45,7 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     
-    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
+    while(i < 5000/*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
@@ -55,11 +55,11 @@ void Simulation::run()
         
         //.01 is arbitrary, use whatever ms is needed
         clock.addSimulationTimeMs(.01);
-        this->pedestrianDynamicsModel->update(.01);
+        // this->pedestrianDynamicsModel->update(.01);
 
         this->timestep++;
         ++i;
-        this->pedestrianDynamicsModel->precompute();
+        // this->pedestrianDynamicsModel->precompute();
     }
 
     // TODO this will be removed once our debugger segfault is resolved
