@@ -9,7 +9,7 @@ void CalmEntitySetFactory::populatePedestrianSet(
     ENTITY_SET inputData, PedestrianSet* calmPedSet)
 {
 
-	std::vector<Dimensions> pedCoords;
+	std::vector<Dimensions> pedestrianCoordinates;
 	std::vector<Dimensions> goalCoords;
 	std::vector<Dimensions> velocities;
 
@@ -17,7 +17,7 @@ void CalmEntitySetFactory::populatePedestrianSet(
 
 	for(int i = 0; i < numPeds; ++i)
     {
-        pedCoords.push_back(
+        pedestrianCoordinates.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
                     (FLOATING_NUMBER) std::stod(inputData[i]["x"]), 
@@ -45,7 +45,7 @@ void CalmEntitySetFactory::populatePedestrianSet(
         );
     }
 
-	calmPedSet->setPedestrianCoordinates(pedCoords);
+	calmPedSet->setPedestrianCoordinates(pedestrianCoordinates);
 	calmPedSet->setGoalCoordinates(goalCoords);
 	calmPedSet->setVelocities(velocities);
 	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setMasses(
@@ -90,13 +90,13 @@ void CalmEntitySetFactory::populatePedestrianSet(
 void CalmEntitySetFactory::populateObstacleSet(
     ENTITY_SET inputData, ObstacleSet* obstacleSet)
 {
-	std::vector<Dimensions> obsCoords;
+	std::vector<Dimensions> obstacleCoordinates;
 	
-	int numObs = inputData.size();
+	int numObstacles = inputData.size();
 
-	for(int i = 0; i < numObs; ++i)
+	for(int i = 0; i < numObstacles; ++i)
     {
-        obsCoords.push_back(
+        obstacleCoordinates.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
                     (FLOATING_NUMBER) std::stod(inputData[i]["x"]), 
@@ -106,8 +106,8 @@ void CalmEntitySetFactory::populateObstacleSet(
         );
 	}
 
-	obstacleSet->setObstacleCoordinates(obsCoords);
-	obstacleSet->setNumObstacles(numObs);
+	obstacleSet->setObstacleCoordinates(obstacleCoordinates);
+	obstacleSet->setNumObstacles(numObstacles);
 }
 
 void CalmEntitySetFactory::populateSimulationParams(

@@ -19,7 +19,7 @@ class CalmGoals: public Goals
         std::vector<Dimensions> exitGoal;
         std::vector<int> nearestExit;
         Data* data;
-        std::vector<Dimensions>* pedCoordsPtr;
+        std::vector<Dimensions>* pedestrianCoordinatesPtr;
 
 
     public: 
