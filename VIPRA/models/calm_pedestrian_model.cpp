@@ -149,13 +149,14 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                 }
             }
 
-            else if((*this->pedestrianSet->getGoalCoordinates())[i].coordinates[0]
+            else if((*this->pedestrianSet->
+                getGoalCoordinates())[i].coordinates[0]
             == (this->getGoals()->getPedestrianExitGoal(i)).coordinates[0]
-            && (*this->pedestrianSet->getGoalCoordinates())[i].coordinates[1] == 0)
+            && (*this->pedestrianSet->getGoalCoordinates())[i].coordinates[1]
+                == 0)
             {
 
-                movedCoordinates.push_back
-                (
+                movedCoordinates.push_back(
                     Dimensions 
                     {
                         std::vector<FLOATING_NUMBER>
@@ -446,10 +447,12 @@ void CalmPedestrianModel::calculatePriority()
     
     std::vector<Dimensions>* pedestrianCoordinates 
         = this->pedestrianSet->getPedestrianCoordinates();
-    std::vector<FLOATING_NUMBER>* aisles = dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAisles();
+    std::vector<FLOATING_NUMBER>* aisles
+        = dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAisles();
     std::vector<FLOATING_NUMBER>* aislesSize 
         = dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAislesSize();
-    int numAisles = dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getNumAisles();
+    int numAisles 
+        = dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getNumAisles();
 
     //std::cout << numAisles; //testing statement -El
 
@@ -581,9 +584,12 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
         std::cout << "Aisle size" << i << ": " << AisleSize[i] << std::endl;
     }*/
 
-    dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->setAisles(aisles);
-    dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->setAislesSize(aisleSize);
-    dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->setNumAisles(numAisles);
+    dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
+        ->setAisles(aisles);
+    dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
+        ->setAislesSize(aisleSize);
+    dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
+        ->setNumAisles(numAisles);
 }
 
 MovementDefinitions CalmPedestrianModel::updateMovementState
@@ -594,9 +600,11 @@ MovementDefinitions CalmPedestrianModel::updateMovementState
         < this->currentPriority 
         && ((*this->pedestrianSet->getPedestrianCoordinates())
         [pedestrianIndex].coordinates[0]
-        >= ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAisles())
+        >= ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
+            ->getAisles())
         [(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]]
-        + ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAislesSize())
+        + ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
+            ->getAislesSize())
         [(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]] / 2)
         - 0.1)))
         {

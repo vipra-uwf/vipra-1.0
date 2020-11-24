@@ -36,12 +36,15 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         void calculatePropulsion(int pedestrianIndex);
         void calculateRepulsion(int pedestrianIndex);
         FLOATING_NUMBER calculateDistance(
-            int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet);
+            int firstPedestrianIndex, int secondPedestrianIndex, 
+            std::string originSet);
         FLOATING_NUMBER calculateBeta(int pedestrianIndex);
-        std::pair<std::string, int> calculateNearestNeighbors(int pedestrianIndex);
+        std::pair<std::string, int> calculateNearestNeighbors(
+            int pedestrianIndex);
         int calculateNearestPedNeighbors(int pedestrianIndex);
         bool neighborDirectionTest(
-            int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet);
+            int firstPedestrianIndex, int secondPedestrianIndex, 
+            std::string originSet);
         void calculatePriority();
         void createAisles();
         MovementDefinitions updateMovementState(int pedestrianIndex);

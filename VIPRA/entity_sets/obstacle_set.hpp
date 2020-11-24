@@ -14,7 +14,8 @@ class ObstacleSet
         virtual int getNumObstacles() = 0;
         virtual std::vector<Dimensions>* getObstacleCoordinates() = 0;
         virtual void setNumObstacles(int numObstacles) = 0;
-        virtual void setObstacleCoordinates(std::vector<Dimensions> coordinates) = 0;
+        virtual void setObstacleCoordinates(
+            std::vector<Dimensions> coordinates) = 0;
 };
 
 #endif

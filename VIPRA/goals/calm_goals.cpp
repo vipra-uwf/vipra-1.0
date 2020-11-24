@@ -98,36 +98,37 @@ void CalmGoals::determinePedestrianGoals()
         {
             if(((*this->pedestrianCoordinatesPointer)[i].coordinates[0]
                 < this->exitGoal[nearestExit[i]].coordinates[0] - 0.011)
-                && !((*this->pedestrianCoordinatesPointer)[i].coordinates[1] < 0.011
-                && (*this->pedestrianCoordinatesPointer)[i].coordinates[1] > -0.011))
+                && !((*this->pedestrianCoordinatesPointer)[i].coordinates[1]
+                    < 0.011
+                && (*this->pedestrianCoordinatesPointer)[i].coordinates[1]
+                    > -0.011))
             {
-                newGoal.push_back
-                (
+                newGoal.push_back(
                     Dimensions 
                     {
-                    std::vector<FLOATING_NUMBER> 
+                        std::vector<FLOATING_NUMBER> 
                         {
-                            (*this->pedestrianCoordinatesPointer)[i].coordinates[0], 0
+                            (*this->pedestrianCoordinatesPointer)[i]
+                                .coordinates[0], 0
                         }
                     }
                 );
                 ++i;
-            
             }
 
             else if(((*this->pedestrianCoordinatesPointer)[i].coordinates[0]
                 < this->exitGoal[nearestExit[i]].coordinates[0] - 0.011)
-                && ((*this->pedestrianCoordinatesPointer)[i].coordinates[1] < 0.011
-                && (*this->pedestrianCoordinatesPointer)[i].coordinates[1] > -0.011))
+                && ((*this->pedestrianCoordinatesPointer)[i].coordinates[1]
+                    < 0.011
+                && (*this->pedestrianCoordinatesPointer)[i].coordinates[1]
+                    > -0.011))
             {
-                newGoal.push_back
-                (
+                newGoal.push_back(
                     Dimensions 
                     {
-                    std::vector<FLOATING_NUMBER> 
+                        std::vector<FLOATING_NUMBER> 
                         {
-                            this->exitGoal[nearestExit[i]].coordinates[0],
-                            0
+                            this->exitGoal[nearestExit[i]].coordinates[0], 0
                         }
                      }
                 );
@@ -136,11 +137,10 @@ void CalmGoals::determinePedestrianGoals()
 
             else
             {
-                newGoal.push_back
-                (
+                newGoal.push_back(
                     Dimensions 
                     {
-                    std::vector<FLOATING_NUMBER> 
+                        std::vector<FLOATING_NUMBER> 
                         {
                             this->exitGoal[nearestExit[i]].coordinates[0],
                             this->exitGoal[nearestExit[i]].coordinates[1]

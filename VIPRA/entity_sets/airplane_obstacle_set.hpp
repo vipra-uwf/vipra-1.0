@@ -19,7 +19,8 @@ class AirplaneObstacleSet: public ObstacleSet
         virtual int getNumObstacles();
         virtual std::vector<Dimensions>* getObstacleCoordinates();
         virtual void setNumObstacles(int numObstacles);
-        virtual void setObstacleCoordinates(std::vector<Dimensions> coordinates);
+        virtual void setObstacleCoordinates(
+            std::vector<Dimensions> coordinates);
 
         int getNumAisles();
         std::vector<FLOATING_NUMBER>* getAisles();

@@ -83,8 +83,10 @@ void CalmEntitySetFactory::populatePedestrianSet(
         startingMovement.push_back(MovementDefinitions::PED_DYNAM);
     }
         
-    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setNearestNeighbors(nearestNeighbors);
-    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setMovementStates(startingMovement);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
+        setNearestNeighbors(nearestNeighbors);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
+        setMovementStates(startingMovement);
 }
 
 void CalmEntitySetFactory::populateObstacleSet(

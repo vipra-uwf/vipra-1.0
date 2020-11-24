@@ -45,7 +45,8 @@ void AirplaneObstacleSet::setNumAisles(int numAisles)
     this->numAisles = numAisles;
 }
 
-void AirplaneObstacleSet::setObstacleCoordinates(std::vector<Dimensions> coordinates)
+void AirplaneObstacleSet::setObstacleCoordinates(
+    std::vector<Dimensions> coordinates)
 {
     this->obstacleCoordinates = coordinates;
 }
