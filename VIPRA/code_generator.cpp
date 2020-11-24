@@ -50,7 +50,6 @@ int main()
 
     std::ofstream mainFile;
     mainFile.open("generated_main.cpp");
-    // TODO need to make it so functions are declared before main for readability
     mainFile 
         << includes
         << functionDeclarations 

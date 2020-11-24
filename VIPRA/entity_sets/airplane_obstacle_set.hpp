@@ -9,6 +9,7 @@ class AirplaneObstacleSet: public ObstacleSet
         int numObstacles;
         int numAisles;
         std::vector<Dimensions> obstacleCoordinates;
+        // TODO fields should be camelCase -- Alex
         std::vector<FLOATING_NUMBER> Aisles; //should i make these two one vector of pairs? or a vector of dimensions? -EL
         std::vector<FLOATING_NUMBER> AislesSize;
 
@@ -21,7 +22,6 @@ class AirplaneObstacleSet: public ObstacleSet
         virtual void setNumObstacles(int numObstacles);
         virtual void setObstacleCoordinates(std::vector<Dimensions> coordinates);
 
-        // TODO delete this comment - functions unique to airplanes
         int getNumAisles();
         std::vector<FLOATING_NUMBER>* getAisles();
         std::vector<FLOATING_NUMBER>* getAislesSize();
