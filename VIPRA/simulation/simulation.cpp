@@ -55,7 +55,7 @@ void Simulation::run()
         
         //.01 is arbitrary, use whatever ms is needed
         clock.addSimulationTimeMs(.01);
-        // this->pedestrianDynamicsModel->update(.01);
+        this->pedestrianDynamicsModel->update(.01);
 
         this->timestep++;
         ++i;

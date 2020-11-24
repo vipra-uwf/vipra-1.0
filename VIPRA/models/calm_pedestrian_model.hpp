@@ -8,15 +8,16 @@
 #include "pedestrian_dynamics_model.hpp"
 #include "../simulation/data.hpp"
 #include "../goals/calm_goals.hpp"
+#include "../entity_sets/airplane_obstacle_set.hpp"
 #include "../entity_sets/calm_pedestrian_set.hpp"
 
 class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     private:
         CalmPedestrianSet* pedestrianSet;
-        ObstacleSet* obstacleSet;
+        ObstacleSet* obstacleSet; // TODO will a CALM pedestrian model only ever be used in an airplane? -- Alex 
         Data* data;
-        Goals* goals;
+        Goals* goals; // TODO i think this should be of type CalmGoals -- Alex
         int currentPriority;
         const FLOATING_NUMBER a = -2.111;
         const FLOATING_NUMBER b = 0.366;

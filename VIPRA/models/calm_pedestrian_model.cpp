@@ -446,10 +446,11 @@ void CalmPedestrianModel::calculatePriority()
     
     std::vector<Dimensions>* pedestrianCoordinates 
         = this->pedestrianSet->getPedestrianCoordinates();
-    std::vector<FLOATING_NUMBER>* Aisles = this->obstacleSet->getAisles();
+    // TODO Aisles should be camelCased -- Alex
+    std::vector<FLOATING_NUMBER>* Aisles = dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAisles();
     std::vector<FLOATING_NUMBER>* AislesSize 
-        = this->obstacleSet->getAislesSize();
-    int numAisles = this->obstacleSet->getNumAisles();
+        = dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAislesSize();
+    int numAisles = dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getNumAisles();
 
     //std::cout << numAisles; //testing statement -El
 
@@ -581,9 +582,9 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
         std::cout << "Aisle size" << i << ": " << AisleSize[i] << std::endl;
     }*/
 
-    this->obstacleSet->setAisles(Aisles);
-    this->obstacleSet->setAislesSize(AisleSize);
-    this->obstacleSet->setNumAisles(numAisles);
+    dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->setAisles(Aisles);
+    dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->setAislesSize(AisleSize);
+    dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->setNumAisles(numAisles);
 }
 
 MovementDefinitions CalmPedestrianModel::updateMovementState
@@ -594,9 +595,9 @@ MovementDefinitions CalmPedestrianModel::updateMovementState
         < this->currentPriority 
         && ((*this->pedestrianSet->getPedestrianCoordinates())
         [pedestrianIndex].coordinates[0]
-        >= ((*this->obstacleSet->getAisles())
+        >= ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAisles())
         [(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]]
-        + ((*this->obstacleSet->getAislesSize())
+        + ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAislesSize())
         [(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]] / 2)
         - 0.1)))
         {

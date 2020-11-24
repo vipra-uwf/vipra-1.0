@@ -16,10 +16,8 @@
 #include "../type_definitions.hpp"
 #include "../dimensions.hpp"
 
-//name change - Goals
 class Goals
 {
-
     public:
         virtual ~Goals() = default;
 

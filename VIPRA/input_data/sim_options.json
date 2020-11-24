@@ -37,10 +37,10 @@
 
     "obstacle_set" : [
         {
-            "objectName": "calmObstacleSet",
-            "className": "ObstacleSet",
-            "includePath" : "entity_sets/obstacle_set.hpp",
-            "type" : "calm"
+            "objectName": "airplaneObstacleSet",
+            "className": "AirplaneObstacleSet",
+            "includePath" : "entity_sets/airplane_obstacle_set.hpp",
+            "type" : "airplane"
         }
     ],
 

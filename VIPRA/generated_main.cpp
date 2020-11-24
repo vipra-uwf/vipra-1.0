@@ -2,7 +2,7 @@
 #include "writers/xml_writer.hpp"
 #include "writers/timestep_output_handler.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
-#include "entity_sets/obstacle_set.hpp"
+#include "entity_sets/airplane_obstacle_set.hpp"
 #include "entity_sets/factory/calm_entity_set_factory.hpp"
 #include "goals/calm_goals.hpp"
 #include "models/calm_pedestrian_model.hpp"
@@ -189,11 +189,11 @@ PedestrianSet* generatePedestrianSet(std::string type, CONFIG_MAP* configMap)
 
 ObstacleSet* generateObstacleSet(std::string type, CONFIG_MAP* configMap)
 {
-	if(type == "calm")
+	if(type == "airplane")
 	{
-		ObstacleSet* calmObstacleSet = new ObstacleSet;
-		calmObstacleSet->configure(configMap);
-		return calmObstacleSet;
+		AirplaneObstacleSet* airplaneObstacleSet = new AirplaneObstacleSet;
+		airplaneObstacleSet->configure(configMap);
+		return airplaneObstacleSet;
 	}
 
 	return nullptr;
