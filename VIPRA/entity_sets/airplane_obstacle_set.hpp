@@ -9,9 +9,8 @@ class AirplaneObstacleSet: public ObstacleSet
         int numObstacles;
         int numAisles;
         std::vector<Dimensions> obstacleCoordinates;
-        // TODO fields should be camelCase -- Alex
-        std::vector<FLOATING_NUMBER> Aisles; //should i make these two one vector of pairs? or a vector of dimensions? -EL
-        std::vector<FLOATING_NUMBER> AislesSize;
+        std::vector<FLOATING_NUMBER> aisles; //should i make these two one vector of pairs? or a vector of dimensions? -EL
+        std::vector<FLOATING_NUMBER> aislesSize;
 
     public:
         AirplaneObstacleSet();

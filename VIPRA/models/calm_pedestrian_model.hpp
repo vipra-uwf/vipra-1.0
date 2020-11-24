@@ -36,7 +36,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         void calculatePropulsion(int pedestrianIndex);
         void calculateRepulsion(int pedestrianIndex);
         FLOATING_NUMBER calculateDistance(
-            int firstPedIndex, int secondPedestrianIndex, std::string originSet);
+            int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet);
         FLOATING_NUMBER calculateBeta(int pedestrianIndex);
         std::pair<std::string, int> calculateNearestNeighbors(int pedestrianIndex);
         int calculateNearestPedNeighbors(int pedestrianIndex);

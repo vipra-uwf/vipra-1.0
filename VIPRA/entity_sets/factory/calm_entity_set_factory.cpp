@@ -6,7 +6,7 @@ void CalmEntitySetFactory::configure(CONFIG_MAP* configMap)
 }
 
 void CalmEntitySetFactory::populatePedestrianSet(
-    ENTITY_SET inputData, PedestrianSet* calmPedSet)
+    ENTITY_SET inputData, PedestrianSet* calmPedestrianSet)
 {
 
 	std::vector<Dimensions> pedestrianCoordinates;
@@ -45,25 +45,25 @@ void CalmEntitySetFactory::populatePedestrianSet(
         );
     }
 
-	calmPedSet->setPedestrianCoordinates(pedestrianCoordinates);
-	calmPedSet->setGoalCoordinates(goalCoords);
-	calmPedSet->setVelocities(velocities);
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setMasses(
+	calmPedestrianSet->setPedestrianCoordinates(pedestrianCoordinates);
+	calmPedestrianSet->setGoalCoordinates(goalCoords);
+	calmPedestrianSet->setVelocities(velocities);
+	dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setMasses(
         vectorStringToDouble(accumulateAttribute("mass", inputData)));
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setReactionTimes(
+	dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setReactionTimes(
         vectorStringToDouble(accumulateAttribute("reaction_time", inputData)));
-    calmPedSet->setSpeeds(
+    calmPedestrianSet->setSpeeds(
         vectorStringToDouble(accumulateAttribute("speed", inputData)));
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setDesiredSpeeds(
+	dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setDesiredSpeeds(
         vectorStringToDouble(
             accumulateAttribute("desired_speed", inputData)));
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setPropulsionForces(
+	dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setPropulsionForces(
         vectorStringToDouble(
             accumulateAttribute("propulsion_force", inputData)));
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setRepulsionForces(
+	dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setRepulsionForces(
         vectorStringToDouble(
             accumulateAttribute("repulsion_force", inputData)));
-	calmPedSet->setNumPedestrians(numPeds);
+	calmPedestrianSet->setNumPedestrians(numPeds);
 
 	std::vector<FLOATING_NUMBER> floatNearestNeighbors = vectorStringToDouble(
         accumulateAttribute("nearest_neighbor", inputData));
@@ -83,8 +83,8 @@ void CalmEntitySetFactory::populatePedestrianSet(
         startingMovement.push_back(MovementDefinitions::PED_DYNAM);
     }
         
-    dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setNearestNeighbors(nearestNeighbors);
-    dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setMovementStates(startingMovement);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setNearestNeighbors(nearestNeighbors);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setMovementStates(startingMovement);
 }
 
 void CalmEntitySetFactory::populateObstacleSet(

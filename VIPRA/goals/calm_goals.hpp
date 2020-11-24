@@ -19,7 +19,7 @@ class CalmGoals: public Goals
         std::vector<Dimensions> exitGoal;
         std::vector<int> nearestExit;
         Data* data;
-        std::vector<Dimensions>* pedestrianCoordinatesPtr;
+        std::vector<Dimensions>* pedestrianCoordinatesPointer;
 
 
     public: 
@@ -36,9 +36,9 @@ class CalmGoals: public Goals
         virtual void determinePedestrianGoals();
         virtual bool checkPedestianGoalsMet(int pedestrianIndex);
         virtual bool isSimulationGoalMet();
-        virtual Dimensions getPedExitGoal(int pedestrianIndex);
+        virtual Dimensions getPedestrianExitGoal(int pedestrianIndex);
 
-        void createPedCoordPointer();
+        void createPedestrianCoordinatesPointer();
         unsigned int nearestGoal(int pedestrianIndex);
         FLOATING_NUMBER calculateDistance(int pedestrianIndex, 
             int exitGoalIndex);

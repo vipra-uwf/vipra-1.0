@@ -27,12 +27,12 @@ std::vector<Dimensions>* AirplaneObstacleSet::getObstacleCoordinates()
 
 std::vector<FLOATING_NUMBER>* AirplaneObstacleSet::getAisles()
 {
-    return &this->Aisles;
+    return &this->aisles;
 }
 
 std::vector<FLOATING_NUMBER>* AirplaneObstacleSet::getAislesSize()
 {
-    return &this->AislesSize;
+    return &this->aislesSize;
 }
 
 void AirplaneObstacleSet::setNumObstacles(int numObstacles)
@@ -52,10 +52,10 @@ void AirplaneObstacleSet::setObstacleCoordinates(std::vector<Dimensions> coordin
 
 void AirplaneObstacleSet::setAisles(std::vector<FLOATING_NUMBER> Aisles)
 {
-    this->Aisles = Aisles;
+    this->aisles = Aisles;
 }
 
 void AirplaneObstacleSet::setAislesSize(std::vector<FLOATING_NUMBER> AislesSize)
 {
-    this->AislesSize = AislesSize;
+    this->aislesSize = AislesSize;
 }

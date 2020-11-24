@@ -87,48 +87,48 @@ PedestrianDynamicsModel* Simulation::getPedestrianDynamicsModel()
 void Simulation::printDataDELETETHIS()
 {
     Data* data = this->pedestrianDynamicsModel->getData();
-    CalmPedestrianSet* calmPedSet = dynamic_cast<
+    CalmPedestrianSet* calmPedestrianSet = dynamic_cast<
         CalmPedestrianSet*>(data->getPedestrianSet()); 
 
     MovementDefinitions state;
 	
     std::cout << "Pedestrians: " << std::endl; 
 
-	for(int i = 0; i < calmPedSet->getNumPedestrians(); ++i)
+	for(int i = 0; i < calmPedestrianSet->getNumPedestrians(); ++i)
 	{
 		std::cout << "ped [" << i << "] ("  
-            << calmPedSet->getPedestrianCoordinates()
+            << calmPedestrianSet->getPedestrianCoordinates()
                 ->at(i).coordinates[0] << ", "
-		    << calmPedSet->getPedestrianCoordinates()
+		    << calmPedestrianSet->getPedestrianCoordinates()
                 ->at(i).coordinates[1] << ")"
 
-			<< " goal (" << calmPedSet->getGoalCoordinates()
+			<< " goal (" << calmPedestrianSet->getGoalCoordinates()
                 ->at(i).coordinates[0] << ", "
-			<< calmPedSet->getGoalCoordinates()
+			<< calmPedestrianSet->getGoalCoordinates()
                 ->at(i).coordinates[1] << ")"
 		
-			<< " velocity (" << calmPedSet->getVelocities()
+			<< " velocity (" << calmPedestrianSet->getVelocities()
                 ->at(i).coordinates[0] << ", "
-			<< calmPedSet->getVelocities()
+			<< calmPedestrianSet->getVelocities()
                 ->at(i).coordinates[1] << ")"
 
-			<< " mass=" << calmPedSet->getMasses()->at(i)
-			<< " desired_speed=" << calmPedSet->getDesiredSpeeds()->at(i)
-			<< " reaction_time=" << calmPedSet->getReactionTimes()->at(i)
-			<< " propulsion_force=" << calmPedSet->getPropulsionForces()->at(i)
-			<< " repulsion_force=" << calmPedSet->getRepulsionForces()->at(i)
+			<< " mass=" << calmPedestrianSet->getMasses()->at(i)
+			<< " desired_speed=" << calmPedestrianSet->getDesiredSpeeds()->at(i)
+			<< " reaction_time=" << calmPedestrianSet->getReactionTimes()->at(i)
+			<< " propulsion_force=" << calmPedestrianSet->getPropulsionForces()->at(i)
+			<< " repulsion_force=" << calmPedestrianSet->getRepulsionForces()->at(i)
 			<< " nearest_neighbor=" 
-            << calmPedSet->getNearestNeighbors()->at(i).second
+            << calmPedestrianSet->getNearestNeighbors()->at(i).second
             << " nearest_neighbor_originset=" 
-            << calmPedSet->getNearestNeighbors()->at(i).first
+            << calmPedestrianSet->getNearestNeighbors()->at(i).first
             << " nearest_ped_neighbor="
-            << calmPedSet->getNearestPedNeighbors()->at(i)
-			<< " speed=" << calmPedSet->getSpeeds()->at(i)
+            << calmPedestrianSet->getNearestPedNeighbors()->at(i)
+			<< " speed=" << calmPedestrianSet->getSpeeds()->at(i)
             << " priority=" 
-            << calmPedSet->getPriorities()->at(i)
+            << calmPedestrianSet->getPriorities()->at(i)
             << " Move_state=";
 
-            state = calmPedSet->getMovementStates()->at(i);
+            state = calmPedestrianSet->getMovementStates()->at(i);
             switch(state)
             {
                 case MovementDefinitions::PED_DYNAM : std::cout << "PED_DYNAM"; break; 
