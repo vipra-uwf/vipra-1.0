@@ -19,6 +19,9 @@ class InputDataLoader
         virtual void configure(CONFIG_MAP* configMap) = 0; 
         
         virtual ENTITY_SET getInputEntities() = 0;
+
+        // TODO make a type definiton for reading in sim_config.json and sim_options.json
+        // TODO virtual NEW_CONFIG/OPTIONS_TYPE getConfigEntities()  
 };
 
 #endif
