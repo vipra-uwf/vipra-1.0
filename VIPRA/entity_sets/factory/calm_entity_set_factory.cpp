@@ -57,12 +57,12 @@ void CalmEntitySetFactory::populatePedestrianSet(
 	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setDesiredSpeeds(
         vectorStringToDouble(
             accumulateAttribute("desired_speed", inputData)));
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setPropulsionForces(
+	/*dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setPropulsionForces(
         vectorStringToDouble(
             accumulateAttribute("propulsion_force", inputData)));
 	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setRepulsionForces(
         vectorStringToDouble(
-            accumulateAttribute("repulsion_force", inputData)));
+            accumulateAttribute("repulsion_force", inputData)));*/
 	calmPedSet->setNumPedestrians(numPeds);
 
 	std::vector<FLOATING_NUMBER> floatNearestNeighbors = vectorStringToDouble(

@@ -45,7 +45,7 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     
-    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
+    while(i < 1/*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
@@ -54,8 +54,8 @@ void Simulation::run()
         }
         
         //.01 is arbitrary, use whatever ms is needed
-        clock.addSimulationTimeMs(.01);
-        this->pedestrianDynamicsModel->update(.01);
+        clock.addSimulationTimeMs(1);
+        this->pedestrianDynamicsModel->update(1);
 
         this->timestep++;
         ++i;
@@ -115,8 +115,10 @@ void Simulation::printDataDELETETHIS()
 			<< " mass=" << calmPedSet->getMasses()->at(i)
 			<< " desired_speed=" << calmPedSet->getDesiredSpeeds()->at(i)
 			<< " reaction_time=" << calmPedSet->getReactionTimes()->at(i)
-			<< " propulsion_force=" << calmPedSet->getPropulsionForces()->at(i)
-			<< " repulsion_force=" << calmPedSet->getRepulsionForces()->at(i)
+			<< " propulsion_forcex=" << calmPedSet->getPropulsionForces()
+                ->at(i).coordinates[0]
+            << " propulsion_forcey=" << calmPedSet->getPropulsionForces()
+                ->at(i).coordinates[1]
 			<< " nearest_neighbor=" 
             << calmPedSet->getNearestNeighbors()->at(i).second
             << " nearest_neighbor_originset=" 
