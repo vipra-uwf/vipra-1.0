@@ -4,34 +4,19 @@ ENTITY_SET InputJSONReader::getInputEntities()
 {
     ENTITY_SET inputData;
 
-    /*
-        convert this->jsonDocument to ENTITY_SET
-    *
-    */
-
-//    Json::Value root = this->jsonDocument;
-    
     for(int i = 0; i < this->jsonDocument.size(); i++)
     {
-        std::cout << this->jsonDocument[i]["x"] << std::endl;
+        inputData.push_back(std::unordered_map<std::string, std::string>());
+
+        for(int j = 0; j < this->jsonDocument[i].size(); j++)
+        {
+            std::string key = this->jsonDocument[i].getMemberNames()[j];
+            std::string value = this->jsonDocument[i][this->jsonDocument[i].getMemberNames()[j]].asString();
+
+            inputData[i][key] = value;
+        } 
     }
-
-//    for(Json::Value::const_iterator itr = root.begin(); itr != root.end(); itr++)
-//    {
-//     //    Json::Value value = *itr;
-
-//        std::cout << itr.key() << std::endl;
-
-
-//    }
-
-    // for(int i = 0; i < this->jsonDocument.size(); ++i)
-    // {
-    //     std::cout << this->jsonDocument.getMemberNames()[i] << std::endl;
-
-    //     std::cout << std::endl;
-    // }
-
+    
     return inputData;
 }
 

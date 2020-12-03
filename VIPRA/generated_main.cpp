@@ -23,7 +23,7 @@ void populateEntitySets(
 	std::string pedestrianSetFilePath, std::string obstacleSetFilePath, std::string simulationParametersFilePath,
 	CONFIG_MAP* pedestrianConfigMap, CONFIG_MAP* obstacleConfigMap, CONFIG_MAP* simulationParametersConfigMap);
 
-//TODO this will change when the InputJSONReader is finished -- Alex
+//TODO this will change when the config reader is finished -- Alex
 #include "readers/json/json.h"
 Json::Value simulationJsonConfig;
 

@@ -12,14 +12,17 @@ int main()
     inputJSONReader.extractFileData("input_data/TEST_entity_set.json", &configMap);
     ENTITY_SET jsonEntitySet = inputJSONReader.getInputEntities();
 
-    std::cout << "finished" << std::endl;
-
-    // std::cout << jsonEntitySet[0]["type"] << std::endl;
-
-    // for(int i = 0; jsonEntitySet.size(); ++i) 
-    // {
-    //     std::cout << jsonEntitySet[i]
-    // }
+    for(int i = 0; i < jsonEntitySet.size(); i++) 
+    {
+        std::cout 
+        << jsonEntitySet[i]["x"] << "\n"
+        << jsonEntitySet[i]["y"] << "\n"
+        << jsonEntitySet[i]["mass"] << "\n"
+        << jsonEntitySet[i]["reaction_time"] << "\n" 
+        << jsonEntitySet[i]["desired_speed"] << "\n"
+        << "\n"
+        << std::endl;
+    } 
 
     return 0;
 }

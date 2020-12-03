@@ -11,7 +11,7 @@ class InputDataLoader
     public:
         virtual ~InputDataLoader() = default;
 
-        // TODO extractFileData should take params, just re call configure and pass a new map to it
+        // TODO extractFileData should('nt?) take params, just re call configure and pass a new map to it
 
         virtual void extractFileData(
             std::string fileName, 
