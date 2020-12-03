@@ -75,7 +75,7 @@ std::string generateIncludes()
 {
     std::string generatedIncludes = "";
 
-    for(int i = 0; i < includes.size(); ++i) 
+    for(long unsigned int i = 0; i < includes.size(); ++i) 
     {
         generatedIncludes += "#include \"" + includes[i] + "\"\n"; 
     }
@@ -111,7 +111,7 @@ std::string generateFunctionOptions(std::string optionsKey)
 {
     std::string generatedFunction = "";
 
-    for(int i = 0; i < jsonObj[optionsKey].size(); ++i) 
+    for(unsigned int i = 0; i < jsonObj[optionsKey].size(); ++i) 
     {
         if(i == 0) 
         {

@@ -1,4 +1,5 @@
 #include "readers/input_xml_reader.hpp"
+#include "readers/input_json_reader.hpp"
 #include "writers/xml_writer.hpp"
 #include "writers/timestep_output_handler.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
@@ -23,7 +24,7 @@ void populateEntitySets(
 	std::string pedestrianSetFilePath, std::string obstacleSetFilePath, std::string simulationParametersFilePath,
 	CONFIG_MAP* pedestrianConfigMap, CONFIG_MAP* obstacleConfigMap, CONFIG_MAP* simulationParametersConfigMap);
 
-//TODO this will change when the config reader is finished -- Alex
+//TODO this will change when the InputJSONReader is finished -- Alex
 #include "readers/json/json.h"
 Json::Value simulationJsonConfig;
 
@@ -146,6 +147,12 @@ InputDataLoader* generateDataLoader(std::string type, CONFIG_MAP* configMap)
 		InputXMLReader* inputXMLReader = new InputXMLReader;
 		inputXMLReader->configure(configMap);
 		return inputXMLReader;
+	}
+	else if(type == "json")
+	{
+		InputJSONReader* inputJSONReader = new InputJSONReader;
+		inputJSONReader->configure(configMap);
+		return inputJSONReader;
 	}
 
 	return nullptr;
