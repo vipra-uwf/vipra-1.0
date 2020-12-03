@@ -4,6 +4,7 @@ void ConfigurationReader::readJsonConfiguration(std::string fileName)
 {
     openFile(fileName);
     parseFile();
+    this->fileStream.close();
 }
 
 Json::Value ConfigurationReader::getJsonObject()

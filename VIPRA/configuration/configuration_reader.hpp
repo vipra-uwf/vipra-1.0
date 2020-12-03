@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "json/json.h"
+#include "../readers/json/json.h"
 
 class ConfigurationReader
 {

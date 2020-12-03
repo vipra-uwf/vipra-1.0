@@ -31,6 +31,7 @@ void InputJSONReader::extractFileData(std::string fileName, CONFIG_MAP* configMa
     //TODO but fileName isnt a part of config maps -- Alex
     openFile(fileName);
     parseFile();
+    this->fileStream.close();
 }
 
 void InputJSONReader::openFile(std::string fileName)
