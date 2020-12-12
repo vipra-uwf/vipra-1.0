@@ -1,6 +1,6 @@
 {
     "input_data_loader" : {
-        "type" : "xml",
+        "type" : "json",
         "configuration" : {
 
         }
@@ -21,20 +21,20 @@
     },
     "pedestrian_set" : {
         "type" : "calm",
-    	"inputFilePath" : "./input_data/a320_144_pedestrians.xml",
+    	"inputFilePath" : "./input_data/json/a320_144_pedestrians.json",
         "configuration" : {
     	    "parentElementName" : "pedestrian-set"
         }
     },
     "obstacle_set" : { 
     	"type" : "airplane", 
-        "inputFilePath" : "./input_data/a320_144_obstacles.xml",
+        "inputFilePath" : "./input_data/json/a320_144_obstacles.json",
         "configuration" : {
     	    "parentElementName" : "obstacle-set"
         }
     },
     "simulation_parameters" : {
-        "inputFilePath" : "./input_data/simulation_params.xml",
+        "inputFilePath" : "./input_data/json/simulation_params.json",
         "configuration" : {
     	    "parentElementName" : "simulation-parameters"
         }
