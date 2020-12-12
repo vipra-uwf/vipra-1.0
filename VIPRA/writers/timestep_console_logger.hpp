@@ -14,6 +14,7 @@ class TimestepConsoleLogger: public SimulationOutputHandler
         void setTimestep(int* timestep);
         void setOutputWritingFrequency(int frequency);
         void printPedestrianData();
+        void printAndTestGoals();
 
     public:
         virtual void configure(CONFIG_MAP* configMap);
