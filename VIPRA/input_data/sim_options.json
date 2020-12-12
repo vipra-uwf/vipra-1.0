@@ -1,10 +1,16 @@
 {
     "input_data_loader" : [
         {
-            "objectName" : "inputXMLReader",
-            "className" : "InputXMLReader",
-            "includePath" : "readers/input_xml_reader.hpp",
-            "type" : "xml"
+            "objectName": "inputXMLReader",
+            "className": "InputXMLReader",
+            "includePath": "readers/input_xml_reader.hpp",
+            "type": "xml"
+        },
+        {
+            "objectName": "inputJSONReader",
+            "className": "InputJSONReader",
+            "includePath": "readers/input_json_reader.hpp",
+            "type": "json"
         }
     ],
     
@@ -43,10 +49,10 @@
 
     "obstacle_set" : [
         {
-            "objectName": "calmObstacleSet",
-            "className": "ObstacleSet",
-            "includePath" : "entity_sets/obstacle_set.hpp",
-            "type" : "calm"
+            "objectName": "airplaneObstacleSet",
+            "className": "AirplaneObstacleSet",
+            "includePath" : "entity_sets/airplane_obstacle_set.hpp",
+            "type" : "airplane"
         }
     ],
 

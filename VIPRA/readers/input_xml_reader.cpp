@@ -37,6 +37,7 @@ void InputXMLReader::configure(CONFIG_MAP* configMap)
 void InputXMLReader::extractFileData(
     std::string fileName, CONFIG_MAP* configMap)
 {
+    // TODO openFile and readFile should be in configure. probably make a field for current configMap
     openFile(fileName);
     readFile();
     this->parentElementName = (*configMap)["parentElementName"];

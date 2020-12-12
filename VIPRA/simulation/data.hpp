@@ -13,19 +13,18 @@ class Data
         PedestrianSet* pedestrianSet;
         ObstacleSet* obstacleSet;
 		
-        std::unordered_map<std::string, FLOATING_NUMBER>* simulationParams; 
+        SIM_PARAMS* simulationParams; 
     
     public:
         Data();
 
         PedestrianSet* getPedestrianSet();
         ObstacleSet* getObstacleSet();
-		std::unordered_map<std::string, FLOATING_NUMBER>* getSimulationParams();
+		SIM_PARAMS* getSimulationParams();
         
 		void setPedestrianSet(PedestrianSet* pedestrianSet);
 		void setObstacleSet(ObstacleSet* obstacleSet);	
-		void setSimulationParams(
-            std::unordered_map<std::string, FLOATING_NUMBER>* simulationParams); 
+		void setSimulationParams(SIM_PARAMS* simulationParams); 
 };
 
 #endif

@@ -27,7 +27,7 @@
         }
     },
     "obstacle_set" : { 
-    	"type" : "calm", 
+    	"type" : "airplane", 
         "inputFilePath" : "./input_data/a320_144_obstacles.xml",
         "configuration" : {
     	    "parentElementName" : "obstacle-set"

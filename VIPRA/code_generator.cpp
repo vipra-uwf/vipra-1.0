@@ -3,10 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "readers/json/json.h"
-
-// g++ code_generator.cpp readers/jsoncpp.cpp
-// ./a.out
+#include "configuration/configuration_reader.hpp"
 
 std::vector<std::string> includes;
 Json::Value jsonObj;
@@ -28,11 +25,9 @@ std::string generateMain();
 
 int main() 
 {
-    // TODO to get rid of warnings, use CharReaderBuilder instead -- Alex (though this will change when InputJSONReader is finished)
-    Json::Reader reader;
-    std::ifstream jsonFile("input_data/sim_options.json");
-
-    reader.parse(jsonFile, jsonObj);
+    ConfigurationReader configurationReader;
+	configurationReader.readJsonConfiguration("input_data/sim_options.json");
+	jsonObj = configurationReader.getJsonObject();
 
     std::string functionDeclarations = generateFunctionDeclarations();
     std::string inputDataLoaderFunction = generateInputDataLoader();
@@ -50,7 +45,6 @@ int main()
 
     std::ofstream mainFile;
     mainFile.open("generated_main.cpp");
-    // TODO need to make it so functions are declared before main for readability
     mainFile 
         << includes
         << functionDeclarations 
@@ -67,7 +61,6 @@ int main()
         << extractConfigMapFunction;
 
     mainFile.close();
-    jsonFile.close();
 
     return 0;
 }
@@ -76,7 +69,9 @@ std::string generateIncludes()
 {
     std::string generatedIncludes = "";
 
-    for(int i = 0; i < includes.size(); ++i) 
+    includes.push_back("configuration/configuration_reader.hpp");
+
+    for(long unsigned int i = 0; i < includes.size(); ++i) 
     {
         generatedIncludes += "#include \"" + includes[i] + "\"\n"; 
     }
@@ -112,7 +107,7 @@ std::string generateFunctionOptions(std::string optionsKey)
 {
     std::string generatedFunction = "";
 
-    for(int i = 0; i < jsonObj[optionsKey].size(); ++i) 
+    for(unsigned int i = 0; i < jsonObj[optionsKey].size(); ++i) 
     {
         if(i == 0) 
         {
@@ -286,127 +281,117 @@ std::string generateExtractConfigMap()
     return generatedFunction;
 }
 
-// TODO this will change when the InputJSONReader is finished -- Alex
 std::string generateMain() 
 {
     std::string generatedFunction = 
 
-    "\n//TODO this will change when the InputJSONReader is finished -- Alex"
-    "\n#include \"readers/json/json.h\""
     "\nJson::Value simulationJsonConfig;\n"
     "\nint main()"
     "\n{"
-        "\n\tJson::CharReaderBuilder jsonReader;"
-        "\n\tstd::ifstream jsonFile(\"input_data/sim_config.json\");"
-        "\n\tstd::string errors;"
+        "\n\tConfigurationReader configurationReader;"
+        "\n\tconfigurationReader.readJsonConfiguration(\"input_data/sim_config.json\");"
+        "\n\tsimulationJsonConfig = configurationReader.getJsonObject();"
         "\n"
-        "\n\tif(Json::parseFromStream(jsonReader, jsonFile, &simulationJsonConfig, &errors))"
-        "\n\t{"
-            "\n\t\tCONFIG_MAP* inputDataLoaderConfig = extractConfigMap(\"input_data_loader\");"
-            "\n\t\tCONFIG_MAP* outputDataWriterConfig = extractConfigMap(\"output_data_writer\");"
-            "\n\t\tCONFIG_MAP* simulationOutputHandlerConfig = extractConfigMap(\"simulation_output_handler\");"
-            "\n\t\tCONFIG_MAP* pedestrianSetConfig = extractConfigMap(\"pedestrian_set\");" 
-            "\n\t\tCONFIG_MAP* obstacleSetConfig = extractConfigMap(\"obstacle_set\");" 
-            "\n\t\tCONFIG_MAP* simulationParametersConfig = extractConfigMap(\"simulation_parameters\");"
-            "\n\t\tCONFIG_MAP* entitySetFactoryConfig = extractConfigMap(\"entity_set_factory\");" 
-            "\n\t\tCONFIG_MAP* goalsConfig = extractConfigMap(\"goals\");" 
-            "\n\t\tCONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap(\"pedestrian_dynamics_model\");"
+            "\n\tCONFIG_MAP* inputDataLoaderConfig = extractConfigMap(\"input_data_loader\");"
+            "\n\tCONFIG_MAP* outputDataWriterConfig = extractConfigMap(\"output_data_writer\");"
+            "\n\tCONFIG_MAP* simulationOutputHandlerConfig = extractConfigMap(\"simulation_output_handler\");"
+            "\n\tCONFIG_MAP* pedestrianSetConfig = extractConfigMap(\"pedestrian_set\");" 
+            "\n\tCONFIG_MAP* obstacleSetConfig = extractConfigMap(\"obstacle_set\");" 
+            "\n\tCONFIG_MAP* simulationParametersConfig = extractConfigMap(\"simulation_parameters\");"
+            "\n\tCONFIG_MAP* entitySetFactoryConfig = extractConfigMap(\"entity_set_factory\");" 
+            "\n\tCONFIG_MAP* goalsConfig = extractConfigMap(\"goals\");" 
+            "\n\tCONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap(\"pedestrian_dynamics_model\");"
             "\n"
-            "\n\t\tInputDataLoader* inputDataLoader = generateDataLoader("
-                "\n\t\t\tsimulationJsonConfig[\"input_data_loader\"][\"type\"].asString(),"
-                "\n\t\t\tinputDataLoaderConfig);"
+            "\n\tInputDataLoader* inputDataLoader = generateDataLoader("
+                "\n\t\tsimulationJsonConfig[\"input_data_loader\"][\"type\"].asString(),"
+                "\n\t\tinputDataLoaderConfig);"
             "\n"
-            "\n\t\tOutputDataWriter* outputDataWriter = generateDataWriter("
-                "\n\t\t\tsimulationJsonConfig[\"output_data_writer\"][\"type\"].asString(),"
-                "\n\t\t\toutputDataWriterConfig);"
+            "\n\tOutputDataWriter* outputDataWriter = generateDataWriter("
+                "\n\t\tsimulationJsonConfig[\"output_data_writer\"][\"type\"].asString(),"
+                "\n\t\toutputDataWriterConfig);"
             "\n"
-            "\n\t\tPedestrianSet* pedestrianSet = generatePedestrianSet("
-                "\n\t\t\tsimulationJsonConfig[\"pedestrian_set\"][\"type\"].asString(),"
-                "\n\t\t\tpedestrianSetConfig);"
+            "\n\tPedestrianSet* pedestrianSet = generatePedestrianSet("
+                "\n\t\tsimulationJsonConfig[\"pedestrian_set\"][\"type\"].asString(),"
+                "\n\t\tpedestrianSetConfig);"
             "\n"
-            "\n\t\tObstacleSet* obstacleSet = generateObstacleSet("
-                "\n\t\t\tsimulationJsonConfig[\"obstacle_set\"][\"type\"].asString(),"
-                "\n\t\t\tobstacleSetConfig);"
+            "\n\tObstacleSet* obstacleSet = generateObstacleSet("
+                "\n\t\tsimulationJsonConfig[\"obstacle_set\"][\"type\"].asString(),"
+                "\n\t\tobstacleSetConfig);"
             "\n"
-            "\n\t\tEntitySetFactory* entitySetFactory = generateEntitySetFactory("
-                "\n\t\t\tsimulationJsonConfig[\"entity_set_factory\"][\"type\"].asString(),"
-                "\n\t\t\tentitySetFactoryConfig);"
+            "\n\tEntitySetFactory* entitySetFactory = generateEntitySetFactory("
+                "\n\t\tsimulationJsonConfig[\"entity_set_factory\"][\"type\"].asString(),"
+                "\n\t\tentitySetFactoryConfig);"
             "\n"
-            "\n\t\tGoals* goals = generateGoals("
-                "\n\t\t\tsimulationJsonConfig[\"goals\"][\"type\"].asString(),"
-                "\n\t\t\tgoalsConfig);"
+            "\n\tGoals* goals = generateGoals("
+                "\n\t\tsimulationJsonConfig[\"goals\"][\"type\"].asString(),"
+                "\n\t\tgoalsConfig);"
             "\n"
-            "\n\t\tPedestrianDynamicsModel* pedestrianDynamicsModel = generatePedestrianDynamicsModel("
-                "\n\t\t\tsimulationJsonConfig[\"pedestrian_dynamics_model\"][\"type\"].asString()," 
-                "\n\t\t\tpedestrianDynamicsModelConfig);"
+            "\n\tPedestrianDynamicsModel* pedestrianDynamicsModel = generatePedestrianDynamicsModel("
+                "\n\t\tsimulationJsonConfig[\"pedestrian_dynamics_model\"][\"type\"].asString()," 
+                "\n\t\tpedestrianDynamicsModelConfig);"
             "\n"
-            "\n\t\tSimulationOutputHandler* outputHandler = generateOutputHandler("
-                "\n\t\t\tsimulationJsonConfig[\"simulation_output_handler\"][\"type\"].asString(),"
-                "\n\t\t\tsimulationOutputHandlerConfig);"
+            "\n\tSimulationOutputHandler* outputHandler = generateOutputHandler("
+                "\n\t\tsimulationJsonConfig[\"simulation_output_handler\"][\"type\"].asString(),"
+                "\n\t\tsimulationOutputHandlerConfig);"
             
             "\n"
-            "\n\t\tSIM_PARAMS* simulationParameters = new SIM_PARAMS;"
+            "\n\tSIM_PARAMS* simulationParameters = new SIM_PARAMS;"
             "\n"
-            "\n\t\tpopulateEntitySets("
-                "\n\t\t\tinputDataLoader, entitySetFactory,"
-                "\n\t\t\tpedestrianSet, obstacleSet, simulationParameters,"
-                "\n\t\t\tsimulationJsonConfig[\"pedestrian_set\"][\"inputFilePath\"].asString(),"
-                "\n\t\t\tsimulationJsonConfig[\"obstacle_set\"][\"inputFilePath\"].asString()," 
-                "\n\t\t\tsimulationJsonConfig[\"simulation_parameters\"][\"inputFilePath\"].asString(),"
-                "\n\t\t\tpedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);"
+            "\n\tpopulateEntitySets("
+                "\n\t\tinputDataLoader, entitySetFactory,"
+                "\n\t\tpedestrianSet, obstacleSet, simulationParameters,"
+                "\n\t\tsimulationJsonConfig[\"pedestrian_set\"][\"inputFilePath\"].asString(),"
+                "\n\t\tsimulationJsonConfig[\"obstacle_set\"][\"inputFilePath\"].asString()," 
+                "\n\t\tsimulationJsonConfig[\"simulation_parameters\"][\"inputFilePath\"].asString(),"
+                "\n\t\tpedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);"
             "\n"
-            "\n\t\tData data;"
-            "\n\t\tdata.setPedestrianSet(pedestrianSet);"
-            "\n\t\tdata.setObstacleSet(obstacleSet);"
-            "\n\t\tdata.setSimulationParams(simulationParameters);"
+            "\n\tData data;"
+            "\n\tdata.setPedestrianSet(pedestrianSet);"
+            "\n\tdata.setObstacleSet(obstacleSet);"
+            "\n\tdata.setSimulationParams(simulationParameters);"
             "\n"
-            "\n\t\tgoals->setData(&data);"
-            "\n\t\tpedestrianDynamicsModel->setData(&data);"
-            "\n\t\tpedestrianDynamicsModel->setGoals(goals);"
-            "\n\t\tgoals->determinePedestrianGoals();"
-            "\n\t\tpedestrianDynamicsModel->initialize();"
+            "\n\tgoals->setData(&data);"
+            "\n\tpedestrianDynamicsModel->setData(&data);"
+            "\n\tpedestrianDynamicsModel->setGoals(goals);"
+            "\n\tgoals->determinePedestrianGoals();"
+            "\n\tpedestrianDynamicsModel->initialize();"
             
             "\n"
-            "\n\t\tSimulation simulation(pedestrianDynamicsModel);"
+            "\n\tSimulation simulation(pedestrianDynamicsModel);"
             
             "\n"
-            "\n\t\toutputDataWriter->initializeOutputFile("
-                "\n\t\t\tsimulationJsonConfig[\"output_data_writer\"][\"outputFilePath\"].asString());"
+            "\n\toutputDataWriter->initializeOutputFile("
+                "\n\t\tsimulationJsonConfig[\"output_data_writer\"][\"outputFilePath\"].asString());"
             
             "\n"
-            "\n\t\toutputHandler->setOutputDataWriter(outputDataWriter);"
-            "\n\t\toutputHandler->setPedestrianSet(pedestrianSet);"
-            "\n\t\toutputHandler->setSimulation(&simulation);"
+            "\n\toutputHandler->setOutputDataWriter(outputDataWriter);"
+            "\n\toutputHandler->setPedestrianSet(pedestrianSet);"
+            "\n\toutputHandler->setSimulation(&simulation);"
             "\n"
-            "\n\t\tsimulation.setSimulationOutputHandler(outputHandler);"
-            "\n\t\tsimulation.run();"
+            "\n\tsimulation.setSimulationOutputHandler(outputHandler);"
+            "\n\tsimulation.run();"
             "\n"
-            "\n\t\toutputDataWriter->writeDocumentContentsToFile();"
+            "\n\toutputDataWriter->writeDocumentContentsToFile();"
             "\n"
-            "\n\t\tdelete inputDataLoader;"
-            "\n\t\tdelete outputDataWriter;"
-            "\n\t\tdelete pedestrianSet;"
-            "\n\t\tdelete obstacleSet;"
-            "\n\t\tdelete simulationParameters;"
-            "\n\t\tdelete entitySetFactory;"
-            "\n\t\tdelete goals;"
-            "\n\t\tdelete pedestrianDynamicsModel;"
-            "\n\t\tdelete outputHandler;"
+            "\n\tdelete inputDataLoader;"
+            "\n\tdelete outputDataWriter;"
+            "\n\tdelete pedestrianSet;"
+            "\n\tdelete obstacleSet;"
+            "\n\tdelete simulationParameters;"
+            "\n\tdelete entitySetFactory;"
+            "\n\tdelete goals;"
+            "\n\tdelete pedestrianDynamicsModel;"
+            "\n\tdelete outputHandler;"
             "\n"
-            "\n\t\tdelete inputDataLoaderConfig;"
-            "\n\t\tdelete outputDataWriterConfig;"
-            "\n\t\tdelete simulationOutputHandlerConfig;"
-            "\n\t\tdelete pedestrianSetConfig;"
-            "\n\t\tdelete obstacleSetConfig;"
-            "\n\t\tdelete simulationParametersConfig;"
-            "\n\t\tdelete entitySetFactoryConfig;"
-            "\n\t\tdelete goalsConfig;"
-            "\n\t\tdelete pedestrianDynamicsModelConfig;"
-        "\n\t}"
-        "\n\telse"
-        "\n\t{"
-            "\n\t\tstd::cout << \"Error parsing JSON: \" << errors << std::endl;"
-        "\n\t}"
+            "\n\tdelete inputDataLoaderConfig;"
+            "\n\tdelete outputDataWriterConfig;"
+            "\n\tdelete simulationOutputHandlerConfig;"
+            "\n\tdelete pedestrianSetConfig;"
+            "\n\tdelete obstacleSetConfig;"
+            "\n\tdelete simulationParametersConfig;"
+            "\n\tdelete entitySetFactoryConfig;"
+            "\n\tdelete goalsConfig;"
+            "\n\tdelete pedestrianDynamicsModelConfig;"
         "\n"
         "\n\treturn 0;"
     "\n}";
