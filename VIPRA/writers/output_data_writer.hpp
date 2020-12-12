@@ -4,7 +4,7 @@
 #include <string>
 
 #include "../simulation/data.hpp"
-#include "../type_definitions.hpp"
+#include "../definitions/type_definitions.hpp"
 
 class OutputDataWriter
 {

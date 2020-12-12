@@ -5,9 +5,9 @@
 #include <string>
 
 #include "pedestrian_set.hpp"
-// #include "../type_definitions.hpp"
-// #include "../dimensions.hpp"
-#include "../movement_definitions.hpp"
+// #include "../definitions/type_definitions.hpp"
+// #include "../definitions/dimensions.hpp"
+#include "../definitions/movement_definitions.hpp"
 
 class CalmPedestrianSet: public PedestrianSet
 {

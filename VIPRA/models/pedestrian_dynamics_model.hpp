@@ -3,7 +3,7 @@
 
 #include "../simulation/data.hpp"
 #include "../goals/goals.hpp"
-#include "../type_definitions.hpp"
+#include "../definitions/type_definitions.hpp"
 
 class PedestrianDynamicsModel
 {

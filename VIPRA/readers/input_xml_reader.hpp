@@ -9,10 +9,10 @@
 #include <unordered_map>
 
 #include "input_data_loader.hpp"
-#include "../type_definitions.hpp"
+#include "../definitions/type_definitions.hpp"
 #include "../rapidxml/rapidxml.hpp"
 #include "../simulation/data.hpp"
-#include "../dimensions.hpp"
+#include "../definitions/dimensions.hpp"
 
 class InputXMLReader: public InputDataLoader
 {

@@ -2,7 +2,7 @@
 #define INPUT_DATALOADER_HPP
 
 #include "../simulation/data.hpp"
-#include "../type_definitions.hpp"
+#include "../definitions/type_definitions.hpp"
 #include <unordered_map>
 #include <vector>
 
