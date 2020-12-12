@@ -2,7 +2,6 @@
 #define XML_WRITER_HPP
 
 #include <vector>
-#include <string>
 #include <fstream>
 #include <sstream>
 #include <cstring>
@@ -10,7 +9,6 @@
 #include "output_data_writer.hpp"
 #include "../rapidxml/rapidxml.hpp"
 #include "../rapidxml/rapidxml_print.hpp"
-#include "../simulation/data.hpp"
 
 class XMLWriter: public OutputDataWriter
 {

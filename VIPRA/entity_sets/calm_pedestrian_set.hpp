@@ -3,10 +3,7 @@
 
 #include <utility>
 #include <string>
-
 #include "pedestrian_set.hpp"
-// #include "../definitions/type_definitions.hpp"
-// #include "../definitions/dimensions.hpp"
 #include "../definitions/movement_definitions.hpp"
 
 class CalmPedestrianSet: public PedestrianSet

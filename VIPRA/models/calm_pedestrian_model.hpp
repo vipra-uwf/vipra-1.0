@@ -6,8 +6,6 @@
 #include <math.h>
 
 #include "pedestrian_dynamics_model.hpp"
-#include "../simulation/data.hpp"
-#include "../goals/calm_goals.hpp"
 #include "../entity_sets/airplane_obstacle_set.hpp"
 #include "../entity_sets/calm_pedestrian_set.hpp"
 

@@ -4,14 +4,14 @@ NAME = "generated_main"
 
 BUILD_DIR = build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
-SRCS := $(filter-out code_generator.cpp, $(SRCS)) #this gets compiled separately
+SRCS := $(filter-out code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o) 
 
 
 compile: setup generate_main make_directories main
 
 generate_main:
-	$(CXX) $(CXXFLAGS) code_generator.cpp readers/jsoncpp.cpp configuration/configuration_reader.cpp -o $@
+	$(CXX) $(CXXFLAGS) code_generation/code_generator.cpp readers/jsoncpp.cpp configuration/configuration_reader.cpp -o $@
 	./$@
 	rm ./$@
 	$(eval SRCS := $(NAME).cpp)
@@ -31,6 +31,7 @@ setup:
 make_directories:
 	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(BUILD_DIR)/configuration
+	@mkdir -p $(BUILD_DIR)/code_generation
 	@mkdir -p $(BUILD_DIR)/definitions
 	@mkdir -p $(BUILD_DIR)/entity_sets
 	@mkdir -p $(BUILD_DIR)/entity_sets/factory
