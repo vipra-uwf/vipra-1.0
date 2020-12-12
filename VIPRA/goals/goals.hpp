@@ -16,10 +16,8 @@
 #include "../type_definitions.hpp"
 #include "../dimensions.hpp"
 
-//name change - Goals
 class Goals
 {
-
     public:
         virtual ~Goals() = default;
 
@@ -33,7 +31,7 @@ class Goals
         virtual void determinePedestrianGoals() = 0;
         virtual bool checkPedestianGoalsMet(int pedestrianIndex) = 0; 
         virtual bool isSimulationGoalMet() = 0; 
-        virtual Dimensions getPedExitGoal(int pedestrianIndex) = 0;
+        virtual Dimensions getPedestrianExitGoal(int pedestrianIndex) = 0;
 };
 
 #endif

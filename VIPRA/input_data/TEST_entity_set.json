@@ -1,0 +1,23 @@
+[
+    {
+        "x": "-1.4",
+        "y": "7.3",
+        "mass": "1",
+        "reaction_time": "0.4",
+        "desired_speed": "1"
+    },
+    {
+        "x": "-1.7",
+        "y": "4.3",
+        "mass": "1",
+        "reaction_time": "0.4",
+        "desired_speed": "1"
+    },
+    {
+        "x": "5",
+        "y": "8",
+        "mass": "1",
+        "reaction_time": "0.4",
+        "desired_speed": "1"
+    }
+]

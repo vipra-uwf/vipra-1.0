@@ -21,6 +21,7 @@ class OutputDataWriter
         virtual void writeDocumentContentsToFile() = 0;
         
         // TODO virtual method for starting new element
+        // TODO create hashmap setter methods just outputDataWriter
         // virtual void createNewElement(std::string elementName);
         // TODO virtual method for closing the current element
         // virtual void closeCurrentElement();
