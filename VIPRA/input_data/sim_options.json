@@ -23,6 +23,12 @@
             "className": "TimestepOutputHandler",
             "includePath" : "writers/timestep_output_handler.hpp",
             "type" : "timestep"
+        },
+        {
+            "objectName": "timestepConsoleLogger",
+            "className": "TimestepConsoleLogger",
+            "includePath": "writers/timestep_console_logger.hpp",
+            "type" : "timestep_logger"
         }
     ],
 

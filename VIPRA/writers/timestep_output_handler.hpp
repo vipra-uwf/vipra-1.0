@@ -11,7 +11,7 @@ class TimestepOutputHandler: public SimulationOutputHandler
         OutputDataWriter* outputDataWriter;
         PedestrianSet* pedestrianSet;
         Simulation* simulation;
-        void setTimestep(int*);
+        void setTimestep(int* timestep);
         void setOutputWritingFrequency(int frequency);
 
     public:

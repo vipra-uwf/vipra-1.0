@@ -1,15 +1,5 @@
 #include "timestep_output_handler.hpp"
 
-void TimestepOutputHandler::setOutputWritingFrequency(int frequency)
-{
-    this->frequency = frequency;
-}
-
-void TimestepOutputHandler::setTimestep(int* timestep)
-{
-    this->timestep = timestep;
-}
-
 void TimestepOutputHandler::configure(CONFIG_MAP* configMap)
 {
     setOutputWritingFrequency(std::stoi((*configMap)["outputFrequency"]));
@@ -48,4 +38,14 @@ void TimestepOutputHandler::writeToDocument()
             "y", (*this->pedestrianSet->getPedestrianCoordinates()).
             at(i).coordinates[1]);
     }
+}
+
+void TimestepOutputHandler::setTimestep(int* timestep)
+{
+    this->timestep = timestep;
+}
+
+void TimestepOutputHandler::setOutputWritingFrequency(int frequency)
+{
+    this->frequency = frequency;
 }
