@@ -2,17 +2,13 @@
 #define INPUT_XML_READER_HPP
 
 #include <iostream>
-#include <vector>
 #include <string>
 #include <fstream>
 #include <cstring>
-#include <unordered_map>
 
 #include "input_data_loader.hpp"
-#include "../type_definitions.hpp"
 #include "../rapidxml/rapidxml.hpp"
-#include "../simulation/data.hpp"
-#include "../dimensions.hpp"
+#include "../definitions/dimensions.hpp"
 
 class InputXMLReader: public InputDataLoader
 {

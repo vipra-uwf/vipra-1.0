@@ -3,7 +3,7 @@
 
 #include "entity_set_factory.hpp"
 #include "../calm_pedestrian_set.hpp"
-#include "../../dimensions.hpp"
+#include "../../definitions/dimensions.hpp"
 
 class CalmEntitySetFactory : public EntitySetFactory
 {

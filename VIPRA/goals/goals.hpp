@@ -13,8 +13,8 @@
 #include <iostream>
 
 #include "../simulation/data.hpp"
-#include "../type_definitions.hpp"
-#include "../dimensions.hpp"
+#include "../definitions/type_definitions.hpp"
+#include "../definitions/dimensions.hpp"
 
 class Goals
 {

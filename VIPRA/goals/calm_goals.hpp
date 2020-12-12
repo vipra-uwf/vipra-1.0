@@ -1,16 +1,7 @@
 #ifndef CALM_GOALS
 #define CALM_GOALS
 
-#include <vector>
-#include <algorithm>
-#include <math.h>
-#include <string>
-#include <iostream>
-
 #include "goals.hpp"
-#include "../simulation/data.hpp"
-#include "../type_definitions.hpp"
-#include "../dimensions.hpp"
 
 class CalmGoals: public Goals
 {
