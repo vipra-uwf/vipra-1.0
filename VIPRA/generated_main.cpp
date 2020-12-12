@@ -2,6 +2,7 @@
 #include "readers/input_json_reader.hpp"
 #include "writers/xml_writer.hpp"
 #include "writers/timestep_output_handler.hpp"
+#include "writers/timestep_console_logger.hpp"
 #include "entity_sets/calm_pedestrian_set.hpp"
 #include "entity_sets/airplane_obstacle_set.hpp"
 #include "entity_sets/factory/calm_entity_set_factory.hpp"
@@ -169,6 +170,12 @@ SimulationOutputHandler* generateOutputHandler(std::string type, CONFIG_MAP* con
 		TimestepOutputHandler* timestepOutputHandler = new TimestepOutputHandler;
 		timestepOutputHandler->configure(configMap);
 		return timestepOutputHandler;
+	}
+	else if(type == "timestep_logger")
+	{
+		TimestepConsoleLogger* timestepConsoleLogger = new TimestepConsoleLogger;
+		timestepConsoleLogger->configure(configMap);
+		return timestepConsoleLogger;
 	}
 
 	return nullptr;

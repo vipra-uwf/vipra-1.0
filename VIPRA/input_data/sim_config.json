@@ -14,9 +14,9 @@
         }
     },
     "simulation_output_handler" : {
-        "type" : "timestep",
+        "type" : "timestep_logger",
         "configuration" : {
-            "outputFrequency" : 250
+            "outputFrequency" : 1000
         }
     },
     "pedestrian_set" : {
