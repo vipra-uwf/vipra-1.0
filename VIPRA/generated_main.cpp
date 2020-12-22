@@ -165,13 +165,13 @@ OutputDataWriter* generateDataWriter(std::string type, CONFIG_MAP* configMap)
 
 SimulationOutputHandler* generateOutputHandler(std::string type, CONFIG_MAP* configMap)
 {
-	if(type == "timestep")
+	if(type == "timestep_output_handler")
 	{
 		TimestepOutputHandler* timestepOutputHandler = new TimestepOutputHandler;
 		timestepOutputHandler->configure(configMap);
 		return timestepOutputHandler;
 	}
-	else if(type == "timestep_logger")
+	else if(type == "timestep_console_logger")
 	{
 		TimestepConsoleLogger* timestepConsoleLogger = new TimestepConsoleLogger;
 		timestepConsoleLogger->configure(configMap);

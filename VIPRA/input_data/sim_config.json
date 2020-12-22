@@ -14,7 +14,7 @@
         }
     },
     "simulation_output_handler" : {
-        "type" : "timestep_logger",
+        "type" : "timestep_console_logger",
         "configuration" : {
             "outputFrequency" : 1000
         }
