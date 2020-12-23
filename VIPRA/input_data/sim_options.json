@@ -20,6 +20,12 @@
             "className": "XMLWriter",
             "includePath" : "writers/xml_writer.hpp",
             "type" : "xml"
+        },
+        {
+            "objectName": "jsonWriter",
+            "className": "JSONWriter",
+            "includePath" : "writers/json_writer.hpp",
+            "type" : "json"
         }
     ],
 
