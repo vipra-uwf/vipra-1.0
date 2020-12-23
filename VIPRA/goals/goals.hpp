@@ -23,8 +23,7 @@ class Goals
 
         virtual void configure(CONFIG_MAP* configMap) = 0;
         virtual void setData(Data* data) = 0;
-        virtual void addExitGoal(std::unordered_map<std::string,
-            FLOATING_NUMBER>* simulationParams) = 0;
+        virtual void addExitGoal(SIM_PARAMS* simulationParams) = 0;
         virtual void removeExitGoal(int exitIndex) = 0;
         virtual void clearGoals() = 0;
         virtual void calculateNearestExit() = 0;
