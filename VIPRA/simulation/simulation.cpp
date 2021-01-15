@@ -45,7 +45,7 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     
-    while(i < 1/*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
+    while(i < 1 && !this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
@@ -53,9 +53,8 @@ void Simulation::run()
             simulationOutputHandler->writeToDocument();
         }
         
-        //.01 is arbitrary, use whatever ms is needed
-        clock.addSimulationTimeMs(1);
-        this->pedestrianDynamicsModel->update(1);
+        clock.addSimulationTimeMs(0.005);
+        this->pedestrianDynamicsModel->update(0.005);
 
         this->timestep++;
         ++i;

@@ -64,10 +64,10 @@ void CalmPedestrianModel::precompute()
     bool currentPriorityActive = false;
     bool priorityActiveFlag = false;
     std::vector<MovementDefinitions> updatedMoveStates;
+    this->goals->determinePedestrianGoals();
 
     for (int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
     {
-        this->goals->determinePedestrianGoals();
         nearestNeighbors.push_back(calculateNearestNeighbors(i));
         nearestPedestrianNeighbor.push_back(calculateNearestPedNeighbors(i));
         currentPriorityActive = updatePriority(i);
@@ -77,7 +77,9 @@ void CalmPedestrianModel::precompute()
         }
         updatedMoveStates.push_back(updateMovementState(i));
     }
+
     this->pedestrianSet->setNearestNeighbors(nearestNeighbors);
+
     this->pedestrianSet->setNearestPedNeighbors(nearestPedestrianNeighbor);
     if(priorityActiveFlag == false)
     {
@@ -120,6 +122,7 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
                          + (*this->pedestrianSet->getVelocities())
                          [i].coordinates[1]
                     }
+
                 }
             );
 
@@ -321,7 +324,15 @@ void CalmPedestrianModel::calculateBeta()
     std::vector<FLOATING_NUMBER> newDesiredSpeeds;
     for (int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
     {
-    
+        //std::cout << "check beta: " << i << std::endl;
+        /*if(i == 140)
+        {
+            std::cout << "140 check: ";
+            std::cout << (*this->pedestrianSet->getNearestNeighbors())[i]
+                .second << "+" << (*this->pedestrianSet->getNearestNeighbors())[i].first << std::endl;
+            std::cout << (*this->pedestrianSet->getGoalCoordinates())[i].coordinates[0] << "x+" <<
+                (*this->pedestrianSet->getGoalCoordinates())[i].coordinates[1] << std::endl;
+        }*/
         int nearestNeighhborIndex 
             = (*this->pedestrianSet->getNearestNeighbors())[i]
                 .second;
@@ -333,6 +344,7 @@ void CalmPedestrianModel::calculateBeta()
             FLOATING_NUMBER(nearestNeighhborIndex),
             nearestNeighborOrigin
             ) - b);
+        
 
     newDesiredSpeeds.push_back(0.4 * (c - exp(a * distanceMinusB))); //TODO - fix the coeff to change depending on goal -EL
     }
@@ -378,6 +390,7 @@ std::pair<std::string, int>
     int nearest = -1;
 
     std::string originSet = "P";
+    std::pair<std::string, int> newNearestNeighbor;
 
     for (int j = 0; j < this->obstacleSet->getNumObstacles(); ++j)
     {
@@ -410,8 +423,20 @@ std::pair<std::string, int>
         /*std::cout 
             << pedIndex << "dist:" << calculateDistance(pedIndex, nearest, originSet)
             << std::endl;*/
+
+    if(nearest == -1)
+    {
+        newNearestNeighbor = std::make_pair((*this->pedestrianSet->getNearestNeighbors())
+            [pedestrianIndex].first, (*this->pedestrianSet->
+            getNearestNeighbors())[pedestrianIndex].second);
+    }
+    else
+    {
+         newNearestNeighbor = std::make_pair(std::string(originSet), nearest);
+    }
+    
         
-    return std::make_pair(std::string(originSet), nearest);
+    return newNearestNeighbor;
 
 }
 

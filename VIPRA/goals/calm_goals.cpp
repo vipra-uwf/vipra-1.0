@@ -150,7 +150,7 @@ void CalmGoals::determinePedestrianGoals()
                 ++i;
             }
         }
-        else
+        else if (checkPedestianGoalsMet(i))
         {
             this->data->getPedestrianSet()->removePedestrian(i);
             std::cout << "check removed\nnumpeds: " << this->data->
@@ -176,9 +176,7 @@ bool CalmGoals::checkPedestianGoalsMet(int pedIndex)
         && (*this->pedCoordsPtr)[pedIndex].coordinates[0]
         <= this->exitGoal[nearestExit[pedIndex]].coordinates[0] + 0.011)
         && ((*this->pedCoordsPtr)[pedIndex].coordinates[1]
-        >= this->exitGoal[nearestExit[pedIndex]].coordinates[1] - 0.011
-        && (*this->pedCoordsPtr)[pedIndex].coordinates[1]
-        <= this->exitGoal[nearestExit[pedIndex]].coordinates[1] + 0.011))
+        >= this->exitGoal[nearestExit[pedIndex]].coordinates[1]))
     {
         goalMet = true;
     }
