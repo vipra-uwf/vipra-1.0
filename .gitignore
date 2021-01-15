@@ -1,3 +1,5 @@
+generated_main
+generated_main.cpp
 main
 *.exe
 *.out

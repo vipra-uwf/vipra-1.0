@@ -45,7 +45,7 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     
-    while(i < 1 && !this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
+    while(i < 355/*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
@@ -62,7 +62,7 @@ void Simulation::run()
     }
 
     // TODO this will be removed once our debugger segfault is resolved
-    printDataDELETETHIS();
+     printDataDELETETHIS();
     //testGoalClassDELETETHIS();
 
     clock.stop();
@@ -80,8 +80,6 @@ PedestrianDynamicsModel* Simulation::getPedestrianDynamicsModel()
 {
     return this->pedestrianDynamicsModel;
 }
-
-
 
 void Simulation::printDataDELETETHIS()
 {
@@ -141,83 +139,4 @@ void Simulation::printDataDELETETHIS()
 
 			std::cout << std::endl;
 	}
-
-   /* 
-	for(auto x: *data->getSimulationParams())
-	{
-		std::cout << x.first << " " << x.second << std::endl;
-	}
-
-    std::cout <<"\n\nObstacles: " << std::endl;
-
-    for(int i = 0; i < (data->getObstacleSet()->getNumObstacles()); i++)
-    {
-        std::cout << "[" << (data->getObstacleSet()->
-        getObstacleCoordinates()->at(i)).coordinates[0] << ", ";
-        std::cout << (data->getObstacleSet()->
-        getObstacleCoordinates()->at(1)).coordinates[1] << "],  ";
-    }
-
-    */
-}
-
-void Simulation::testGoalClassDELETETHIS()
-{
-    Goals* goal = this->pedestrianDynamicsModel->getGoals();
-    Data* data = this->pedestrianDynamicsModel->getData();
-
-    //goal->setData(data);
-    //goal->addExitGoal(data->getSimulationParams());
-
-    //goal->calculateNearestExit();
-
-    //goal->determinePedestrianGoals();
-
-    for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
-    {
-        std::cout << "ped: " << i << " goal x:" << data->getPedestrianSet()->
-            getGoalCoordinates()->at(i).coordinates[0];
-        std::cout << " goal y:" << data->getPedestrianSet()->
-            getGoalCoordinates()->at(i).coordinates[1] << std::endl;
-    }
-
-    data->getPedestrianSet()->setPedestrianCoordinates
-        (*data->getPedestrianSet()->getGoalCoordinates());
-    goal->determinePedestrianGoals();
-
-    std::cout << "\n\nGoals after first goal reached: \n";
-
-    for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
-    {
-        std::cout << "ped: " << i << " goal x:" <<data->getPedestrianSet()->
-            getGoalCoordinates()->at(i).coordinates[0];
-        std::cout << " goal y:" << data->getPedestrianSet()->
-            getGoalCoordinates()->at(i).coordinates[1] << std::endl;
-    }
-
-    data->getPedestrianSet()->setPedestrianCoordinates
-        (*data->getPedestrianSet()->getGoalCoordinates());
-    goal->determinePedestrianGoals();
-
-    std::cout << "\n\nGoals after second goal reached: \n";
-
-    for(int i = 0; i < 5/*data->getPedestrianSet()->getNumPedestrians()*/; ++i)
-    {
-        std::cout << "ped: " << i << " goal x:" << data->getPedestrianSet()->
-            getGoalCoordinates()->at(i).coordinates[0];
-        std::cout << " goal y:" << data->getPedestrianSet()->
-            getGoalCoordinates()->at(i).coordinates[1] << std::endl;
-    }
-
-    data->getPedestrianSet()->setPedestrianCoordinates
-        (*data->getPedestrianSet()->getGoalCoordinates());
-
-    std::cout << "\n\nGoals met, test removal\n";
-    goal->determinePedestrianGoals();
-
-
-
-    //goal->removeExitGoal(0); //uncomment to test
-    //goal->clearGoals(); //uncomment to test
-
 }

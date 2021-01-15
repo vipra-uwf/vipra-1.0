@@ -4,7 +4,7 @@
 #include "output_data_writer.hpp"
 #include "../simulation/simulation.hpp"
 #include "../entity_sets/pedestrian_set.hpp"
-#include "../type_definitions.hpp"
+#include "../definitions/type_definitions.hpp"
 
 class Simulation; // forward declaring
 

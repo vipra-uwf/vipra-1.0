@@ -2,8 +2,8 @@
 #define PEDESTRIAN_SET_HPP
 
 #include <vector>
-#include "../type_definitions.hpp"
-#include "../dimensions.hpp"
+#include "../definitions/type_definitions.hpp"
+#include "../definitions/dimensions.hpp"
 
 class PedestrianSet
 {
@@ -27,8 +27,6 @@ class PedestrianSet
             std::vector<Dimensions> velocities) = 0;
         virtual void setSpeeds(
             std::vector<FLOATING_NUMBER> speedsMetersPerSecond) = 0;
-        
-        // virtual ~PedestrianSet();
 };
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "entity_set_factory.hpp"
 #include "../calm_pedestrian_set.hpp"
-#include "../../dimensions.hpp"
+#include "../../definitions/dimensions.hpp"
 
 class CalmEntitySetFactory : public EntitySetFactory
 {
@@ -17,7 +17,7 @@ class CalmEntitySetFactory : public EntitySetFactory
     public:
         virtual void configure(CONFIG_MAP* configMap);
 		virtual void populatePedestrianSet(
-            ENTITY_SET inputData, PedestrianSet* calmPedSet);
+            ENTITY_SET inputData, PedestrianSet* calmPedestrianSet);
 		virtual void populateObstacleSet(
             ENTITY_SET inputData, ObstacleSet* obstacleSet);
 		virtual void populateSimulationParams(

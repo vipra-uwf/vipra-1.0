@@ -31,7 +31,8 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->desiredSpeeds.erase(desiredSpeeds.begin()+pedestrianIndex);
     this->propulsionForces.erase(propulsionForces.begin()+pedestrianIndex);
     this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
-    this->nearestPedNeighbors.erase(nearestPedNeighbors.begin()+pedestrianIndex);
+    this->nearestPedNeighbors.erase(
+        nearestPedNeighbors.begin()+pedestrianIndex);
     this->movementStates.erase(movementStates.begin()+pedestrianIndex);
     this->priorities.erase(priorities.begin()+pedestrianIndex);
 }
@@ -166,7 +167,8 @@ void CalmPedestrianSet::setNearestNeighbors(
    this->nearestNeighbors = nearestNeighbors; 
 }
 
-void CalmPedestrianSet::setNearestPedNeighbors(std::vector<int> nearestPedNeighbors)
+void CalmPedestrianSet::setNearestPedNeighbors(
+    std::vector<int> nearestPedNeighbors)
 {
    this->nearestPedNeighbors = nearestPedNeighbors; 
 }
@@ -176,7 +178,8 @@ void CalmPedestrianSet::setPriorities(std::vector<FLOATING_NUMBER> priorities)
     this->priorities = priorities;
 }
 
-void CalmPedestrianSet::setMovementStates(std::vector<MovementDefinitions> movementStates)
+void CalmPedestrianSet::setMovementStates(
+    std::vector<MovementDefinitions> movementStates)
 {
     this->movementStates = movementStates;
 }

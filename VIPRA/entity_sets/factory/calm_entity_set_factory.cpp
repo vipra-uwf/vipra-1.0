@@ -6,10 +6,10 @@ void CalmEntitySetFactory::configure(CONFIG_MAP* configMap)
 }
 
 void CalmEntitySetFactory::populatePedestrianSet(
-    ENTITY_SET inputData, PedestrianSet* calmPedSet)
+    ENTITY_SET inputData, PedestrianSet* calmPedestrianSet)
 {
 
-	std::vector<Dimensions> pedCoords;
+	std::vector<Dimensions> pedestrianCoordinates;
 	std::vector<Dimensions> goalCoords;
 	std::vector<Dimensions> velocities;
 
@@ -17,7 +17,7 @@ void CalmEntitySetFactory::populatePedestrianSet(
 
 	for(int i = 0; i < numPeds; ++i)
     {
-        pedCoords.push_back(
+        pedestrianCoordinates.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
                     (FLOATING_NUMBER) std::stod(inputData[i]["x"]), 
@@ -45,25 +45,19 @@ void CalmEntitySetFactory::populatePedestrianSet(
         );
     }
 
-	calmPedSet->setPedestrianCoordinates(pedCoords);
-	calmPedSet->setGoalCoordinates(goalCoords);
-	calmPedSet->setVelocities(velocities);
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setMasses(
+	calmPedestrianSet->setPedestrianCoordinates(pedestrianCoordinates);
+	calmPedestrianSet->setGoalCoordinates(goalCoords);
+	calmPedestrianSet->setVelocities(velocities);
+	dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setMasses(
         vectorStringToDouble(accumulateAttribute("mass", inputData)));
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setReactionTimes(
+	dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setReactionTimes(
         vectorStringToDouble(accumulateAttribute("reaction_time", inputData)));
-    calmPedSet->setSpeeds(
+    calmPedestrianSet->setSpeeds(
         vectorStringToDouble(accumulateAttribute("speed", inputData)));
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setDesiredSpeeds(
+	dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->setDesiredSpeeds(
         vectorStringToDouble(
             accumulateAttribute("desired_speed", inputData)));
-	/*dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setPropulsionForces(
-        vectorStringToDouble(
-            accumulateAttribute("propulsion_force", inputData)));
-	dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setRepulsionForces(
-        vectorStringToDouble(
-            accumulateAttribute("repulsion_force", inputData)));*/
-	calmPedSet->setNumPedestrians(numPeds);
+	calmPedestrianSet->setNumPedestrians(numPeds);
 
 	std::vector<FLOATING_NUMBER> floatNearestNeighbors = vectorStringToDouble(
         accumulateAttribute("nearest_neighbor", inputData));
@@ -72,6 +66,7 @@ void CalmEntitySetFactory::populatePedestrianSet(
 
     std::vector<std::pair<std::string, int>> nearestNeighbors;
     std::vector<MovementDefinitions> startingMovement;
+    std::vector<Dimensions> startingPropulsiveForces;
         
     for(long unsigned int i = 0; i < intNearestNeighbors.size(); ++i)
     {
@@ -82,21 +77,37 @@ void CalmEntitySetFactory::populatePedestrianSet(
     {
         startingMovement.push_back(MovementDefinitions::PED_DYNAM);
     }
+
+    for(int i = 0; i < numPeds; ++i)
+    {
+        startingPropulsiveForces.push_back(
+            Dimensions 
+                    {
+                        std::vector<FLOATING_NUMBER> 
+                        {
+                            0,
+                            0
+                        }
+                    }
+        );
+    }
         
-    dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setNearestNeighbors(nearestNeighbors);
-    dynamic_cast<CalmPedestrianSet*>(calmPedSet)->setMovementStates(startingMovement);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
+        setNearestNeighbors(nearestNeighbors);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
+        setMovementStates(startingMovement);
 }
 
 void CalmEntitySetFactory::populateObstacleSet(
     ENTITY_SET inputData, ObstacleSet* obstacleSet)
 {
-	std::vector<Dimensions> obsCoords;
+	std::vector<Dimensions> obstacleCoordinates;
 	
-	int numObs = inputData.size();
+	int numObstacles = inputData.size();
 
-	for(int i = 0; i < numObs; ++i)
+	for(int i = 0; i < numObstacles; ++i)
     {
-        obsCoords.push_back(
+        obstacleCoordinates.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
                     (FLOATING_NUMBER) std::stod(inputData[i]["x"]), 
@@ -106,8 +117,8 @@ void CalmEntitySetFactory::populateObstacleSet(
         );
 	}
 
-	obstacleSet->setObstacleCoordinates(obsCoords);
-	obstacleSet->setNumObstacles(numObs);
+	obstacleSet->setObstacleCoordinates(obstacleCoordinates);
+	obstacleSet->setNumObstacles(numObstacles);
 }
 
 void CalmEntitySetFactory::populateSimulationParams(

@@ -1,129 +1,275 @@
-// #include "readers/input_xml_reader.hpp"
-// #include "readers/FAKE_INCLUDE.hpp"
-// #include "readers/FAKE_INCLUDE.hpp"
-// #include "writers/xml_writer.hpp"
-// #include "writers/timestep_output_handler.hpp"
-// #include "entity_sets/calm_pedestrian_set.hpp"
-// #include "entity_sets/obstacle_set.hpp"
-// #include "entity_sets/calm_entity_set_factory.hpp"
-// #include "goals/calm_goals.hpp"
-// #include "models/calm_pedestrian_model.hpp"
+#include "readers/input_xml_reader.hpp"
+#include "readers/input_json_reader.hpp"
+#include "writers/xml_writer.hpp"
+#include "writers/timestep_output_handler.hpp"
+#include "writers/timestep_console_logger.hpp"
+#include "entity_sets/calm_pedestrian_set.hpp"
+#include "entity_sets/airplane_obstacle_set.hpp"
+#include "entity_sets/factory/calm_entity_set_factory.hpp"
+#include "goals/calm_goals.hpp"
+#include "models/calm_pedestrian_model.hpp"
+#include "configuration/configuration_reader.hpp"
 
-// InputDataLoader* generateDataLoader(std::string type)
-// {
-// 	if(type == "xml")
-// 	{
-// 		InputXMLReader* inputXMLReader = new InputXMLReader;
-// 		return inputXMLReader;
-// 	}
-// 	else if(type == "json")
-// 	{
-// 		InputJSONReader* inputJSONReader = new InputJSONReader;
-// 		return inputJSONReader;
-// 	}
-// 	else if(type == "plaintext")
-// 	{
-// 		InputPlainTextReader* plainTextReader = new InputPlainTextReader;
-// 		return plainTextReader;
-// 	}
+CONFIG_MAP* extractConfigMap(std::string objectName);
+InputDataLoader* generateDataLoader(std::string type, CONFIG_MAP* configMap);
+OutputDataWriter* generateDataWriter(std::string type, CONFIG_MAP* configMap);
+SimulationOutputHandler* generateOutputHandler(std::string type, CONFIG_MAP* configMap);
+PedestrianSet* generatePedestrianSet(std::string type, CONFIG_MAP* configMap);
+ObstacleSet* generateObstacleSet(std::string type, CONFIG_MAP* configMap);
+EntitySetFactory* generateEntitySetFactory(std::string type, CONFIG_MAP* configMap);
+Goals* generateGoals(std::string type, CONFIG_MAP* configMap);
+PedestrianDynamicsModel* generatePedestrianDynamicsModel(std::string type, CONFIG_MAP* configMap);
 
-// 	return nullptr;
-// }
+void populateEntitySets(
+	InputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,
+	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParameters,
+	std::string pedestrianSetFilePath, std::string obstacleSetFilePath, std::string simulationParametersFilePath,
+	CONFIG_MAP* pedestrianConfigMap, CONFIG_MAP* obstacleConfigMap, CONFIG_MAP* simulationParametersConfigMap);
 
-// OutputDataWriter* generateDataWriter(std::string type)
-// {
-// 	if(type == "xml")
-// 	{
-// 		XMLWriter* xmlWriter = new XMLWriter;
-// 		return xmlWriter;
-// 	}
+Json::Value simulationJsonConfig;
 
-// 	return nullptr;
-// }
+int main()
+{
+	ConfigurationReader configurationReader;
+	configurationReader.readJsonConfiguration("input_data/sim_config.json");
+	simulationJsonConfig = configurationReader.getJsonObject();
 
-// SimulationOutputHandler* generateOutputHandler(std::string type)
-// {
-// 	if(type == "timestep")
-// 	{
-// 		TimestepOutputHandler* timestepOutputHandler = new TimestepOutputHandler;
-// 		return timestepOutputHandler;
-// 	}
+	CONFIG_MAP* inputDataLoaderConfig = extractConfigMap("input_data_loader");
+	CONFIG_MAP* outputDataWriterConfig = extractConfigMap("output_data_writer");
+	CONFIG_MAP* simulationOutputHandlerConfig = extractConfigMap("simulation_output_handler");
+	CONFIG_MAP* pedestrianSetConfig = extractConfigMap("pedestrian_set");
+	CONFIG_MAP* obstacleSetConfig = extractConfigMap("obstacle_set");
+	CONFIG_MAP* simulationParametersConfig = extractConfigMap("simulation_parameters");
+	CONFIG_MAP* entitySetFactoryConfig = extractConfigMap("entity_set_factory");
+	CONFIG_MAP* goalsConfig = extractConfigMap("goals");
+	CONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap("pedestrian_dynamics_model");
 
-// 	return nullptr;
-// }
+	InputDataLoader* inputDataLoader = generateDataLoader(
+		simulationJsonConfig["input_data_loader"]["type"].asString(),
+		inputDataLoaderConfig);
 
-// PedestrianSet* generatePedestrianSet(std::string type)
-// {
-// 	if(type == "calm")
-// 	{
-// 		CalmPedestrianSet* calmPedSet = new CalmPedestrianSet;
-// 		return calmPedSet;
-// 	}
+	OutputDataWriter* outputDataWriter = generateDataWriter(
+		simulationJsonConfig["output_data_writer"]["type"].asString(),
+		outputDataWriterConfig);
 
-// 	return nullptr;
-// }
+	PedestrianSet* pedestrianSet = generatePedestrianSet(
+		simulationJsonConfig["pedestrian_set"]["type"].asString(),
+		pedestrianSetConfig);
 
-// ObstacleSet* generateObstacleSet(std::string type)
-// {
-// 	if(type == "calm")
-// 	{
-// 		ObstacleSet* calmObsSet = new ObstacleSet;
-// 		return calmObsSet;
-// 	}
+	ObstacleSet* obstacleSet = generateObstacleSet(
+		simulationJsonConfig["obstacle_set"]["type"].asString(),
+		obstacleSetConfig);
 
-// 	return nullptr;
-// }
+	EntitySetFactory* entitySetFactory = generateEntitySetFactory(
+		simulationJsonConfig["entity_set_factory"]["type"].asString(),
+		entitySetFactoryConfig);
 
-// EntitySetFactory* generateEntitySetFactory(std::string type)
-// {
-// 	if(type == "calm")
-// 	{
-// 		CalmEntitySetFactory* calmSetFactory = new CalmEntitySetFactory;
-// 		return calmSetFactory;
-// 	}
+	Goals* goals = generateGoals(
+		simulationJsonConfig["goals"]["type"].asString(),
+		goalsConfig);
 
-// 	return nullptr;
-// }
+	PedestrianDynamicsModel* pedestrianDynamicsModel = generatePedestrianDynamicsModel(
+		simulationJsonConfig["pedestrian_dynamics_model"]["type"].asString(),
+		pedestrianDynamicsModelConfig);
 
-// Goals* generateGoals(std::string type)
-// {
-// 	if(type == "calm")
-// 	{
-// 		CalmGoals* calmGoals = new CalmGoals;
-// 		return calmGoals;
-// 	}
+	SimulationOutputHandler* outputHandler = generateOutputHandler(
+		simulationJsonConfig["simulation_output_handler"]["type"].asString(),
+		simulationOutputHandlerConfig);
 
-// 	return nullptr;
-// }
+	SIM_PARAMS* simulationParameters = new SIM_PARAMS;
 
-// PedestrianDynamicsModel* generatePedDynamicsModel(std::string type)
-// {
-// 	if(type == "calm")
-// 	{
-// 		CalmPedestrianModel* calmPedModel = new CalmPedestrianModel;
-// 		return calmPedModel;
-// 	}
+	populateEntitySets(
+		inputDataLoader, entitySetFactory,
+		pedestrianSet, obstacleSet, simulationParameters,
+		simulationJsonConfig["pedestrian_set"]["inputFilePath"].asString(),
+		simulationJsonConfig["obstacle_set"]["inputFilePath"].asString(),
+		simulationJsonConfig["simulation_parameters"]["inputFilePath"].asString(),
+		pedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);
 
-// 	return nullptr;
-// }
+	Data data;
+	data.setPedestrianSet(pedestrianSet);
+	data.setObstacleSet(obstacleSet);
+	data.setSimulationParams(simulationParameters);
 
-// void populateEntitySets(
-// 	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParams,
-// 	InputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,
-// 	std::string pedSetFile, std::string obsSetFile, std::string simParamsFile,
-// 	std::string pedFileRootKey, std::string obsFileRootKey, std::string simParamsFileRootKey)
-// {
-// 	inputDataLoader->extractFileData(pedSetFile, pedFileRootKey);
-// 	ENTITY_SET pedInputFileData = inputDataLoader->getInputEntities();
-// 	entitySetFactory->populatePedestrianSet(pedInputFileData, pedestrianSet);
+	goals->setData(&data);
+	pedestrianDynamicsModel->setData(&data);
+	pedestrianDynamicsModel->setGoals(goals);
+	goals->determinePedestrianGoals();
+	pedestrianDynamicsModel->initialize();
 
-// 	inputDataLoader->extractFileData(obsSetFile, obsFileRootKey);
-// 	ENTITY_SET obsInputFileData = inputDataLoader->getInputEntities();
-// 	entitySetFactory->populateObstacleSet(obsInputFileData, obstacleSet);
+	Simulation simulation(pedestrianDynamicsModel);
 
-// 	inputDataLoader->extractFileData(simParamsFile, simParamsFileRootKey);
-// 	ENTITY_SET simParamsFileData = inputDataLoader->getInputEntities();
-// 	entitySetFactory->populateSimulationParams(simParamsFileData, simulationParams);
-// }
+	outputDataWriter->initializeOutputFile(
+		simulationJsonConfig["output_data_writer"]["outputFilePath"].asString());
 
-// int main() { return 0; }
+	outputHandler->setOutputDataWriter(outputDataWriter);
+	outputHandler->setPedestrianSet(pedestrianSet);
+	outputHandler->setSimulation(&simulation);
+
+	simulation.setSimulationOutputHandler(outputHandler);
+	simulation.run();
+
+	outputDataWriter->writeDocumentContentsToFile();
+
+	delete inputDataLoader;
+	delete outputDataWriter;
+	delete pedestrianSet;
+	delete obstacleSet;
+	delete simulationParameters;
+	delete entitySetFactory;
+	delete goals;
+	delete pedestrianDynamicsModel;
+	delete outputHandler;
+
+	delete inputDataLoaderConfig;
+	delete outputDataWriterConfig;
+	delete simulationOutputHandlerConfig;
+	delete pedestrianSetConfig;
+	delete obstacleSetConfig;
+	delete simulationParametersConfig;
+	delete entitySetFactoryConfig;
+	delete goalsConfig;
+	delete pedestrianDynamicsModelConfig;
+
+	return 0;
+}
+InputDataLoader* generateDataLoader(std::string type, CONFIG_MAP* configMap)
+{
+	if(type == "xml")
+	{
+		InputXMLReader* inputXMLReader = new InputXMLReader;
+		inputXMLReader->configure(configMap);
+		return inputXMLReader;
+	}
+	else if(type == "json")
+	{
+		InputJSONReader* inputJSONReader = new InputJSONReader;
+		inputJSONReader->configure(configMap);
+		return inputJSONReader;
+	}
+
+	return nullptr;
+}
+
+OutputDataWriter* generateDataWriter(std::string type, CONFIG_MAP* configMap)
+{
+	if(type == "xml")
+	{
+		XMLWriter* xmlWriter = new XMLWriter;
+		xmlWriter->configure(configMap);
+		return xmlWriter;
+	}
+
+	return nullptr;
+}
+
+SimulationOutputHandler* generateOutputHandler(std::string type, CONFIG_MAP* configMap)
+{
+	if(type == "timestep")
+	{
+		TimestepOutputHandler* timestepOutputHandler = new TimestepOutputHandler;
+		timestepOutputHandler->configure(configMap);
+		return timestepOutputHandler;
+	}
+	else if(type == "timestep_logger")
+	{
+		TimestepConsoleLogger* timestepConsoleLogger = new TimestepConsoleLogger;
+		timestepConsoleLogger->configure(configMap);
+		return timestepConsoleLogger;
+	}
+
+	return nullptr;
+}
+
+PedestrianSet* generatePedestrianSet(std::string type, CONFIG_MAP* configMap)
+{
+	if(type == "calm")
+	{
+		CalmPedestrianSet* calmPedestrianSet = new CalmPedestrianSet;
+		calmPedestrianSet->configure(configMap);
+		return calmPedestrianSet;
+	}
+
+	return nullptr;
+}
+
+ObstacleSet* generateObstacleSet(std::string type, CONFIG_MAP* configMap)
+{
+	if(type == "airplane")
+	{
+		AirplaneObstacleSet* airplaneObstacleSet = new AirplaneObstacleSet;
+		airplaneObstacleSet->configure(configMap);
+		return airplaneObstacleSet;
+	}
+
+	return nullptr;
+}
+
+EntitySetFactory* generateEntitySetFactory(std::string type, CONFIG_MAP* configMap)
+{
+	if(type == "calm")
+	{
+		CalmEntitySetFactory* calmEntitySetFactory = new CalmEntitySetFactory;
+		calmEntitySetFactory->configure(configMap);
+		return calmEntitySetFactory;
+	}
+
+	return nullptr;
+}
+
+Goals* generateGoals(std::string type, CONFIG_MAP* configMap)
+{
+	if(type == "calm")
+	{
+		CalmGoals* calmGoals = new CalmGoals;
+		calmGoals->configure(configMap);
+		return calmGoals;
+	}
+
+	return nullptr;
+}
+
+PedestrianDynamicsModel* generatePedestrianDynamicsModel(std::string type, CONFIG_MAP* configMap)
+{
+	if(type == "calm")
+	{
+		CalmPedestrianModel* calmPedestrianModel = new CalmPedestrianModel;
+		calmPedestrianModel->configure(configMap);
+		return calmPedestrianModel;
+	}
+
+	return nullptr;
+}
+
+void populateEntitySets(
+	InputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,
+	PedestrianSet* pedestrianSet, ObstacleSet* obstacleSet, SIM_PARAMS* simulationParameters,
+	std::string pedestrianSetFilePath, std::string obstacleSetFilePath, std::string simulationParametersFilePath,
+	CONFIG_MAP* pedestrianConfigMap, CONFIG_MAP* obstacleConfigMap, CONFIG_MAP* simulationParametersConfigMap)
+{
+	inputDataLoader->extractFileData(pedestrianSetFilePath, pedestrianConfigMap);
+	ENTITY_SET pedestrianInputFileData = inputDataLoader->getInputEntities();
+	entitySetFactory->populatePedestrianSet(pedestrianInputFileData, pedestrianSet);
+
+	inputDataLoader->extractFileData(obstacleSetFilePath, obstacleConfigMap);
+	ENTITY_SET obstacleInputFileData = inputDataLoader->getInputEntities();
+	entitySetFactory->populateObstacleSet(obstacleInputFileData, obstacleSet);
+
+	inputDataLoader->extractFileData(simulationParametersFilePath, simulationParametersConfigMap);
+	ENTITY_SET simulationParametersFilePathData = inputDataLoader->getInputEntities();
+	entitySetFactory->populateSimulationParams(simulationParametersFilePathData, simulationParameters);
+}
+
+CONFIG_MAP* extractConfigMap(std::string objectName)
+{
+	CONFIG_MAP* configMap = new CONFIG_MAP;
+
+	for(unsigned int i = 0; i < simulationJsonConfig[objectName]["configuration"].size(); i++)
+	{
+		std::string attribute = simulationJsonConfig[objectName]["configuration"].getMemberNames()[i];
+		std::string value = simulationJsonConfig[objectName]["configuration"][attribute].asString();
+		(*configMap)[attribute] = value;
+	}
+
+	return configMap;
+}
