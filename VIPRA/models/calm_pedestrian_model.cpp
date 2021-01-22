@@ -108,7 +108,24 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
 
     for (int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
     {
-        newVelocities.push_back
+        if((*this->pedestrianSet->getMovementStates())[i] == MovementDefinitions::STOP)
+        {
+            newVelocities.push_back
+            (
+                Dimensions 
+                {
+                    std::vector<FLOATING_NUMBER>
+                    {
+                        0,
+                        0
+                    }
+
+                }
+            );
+        }
+        else
+        {
+            newVelocities.push_back
             (
                 Dimensions 
                 {
@@ -128,6 +145,7 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
 
                 }
             );
+        }
 
         newSpeeds.push_back((newVelocities[i].coordinates[0]
             * newVelocities[i].coordinates[0]) 
@@ -193,9 +211,7 @@ void CalmPedestrianModel::calculatePropulsion()
     {
 
         if((*this->pedestrianSet->getMovementStates())[i]
-                == MovementDefinitions::STOP 
-                || (*this->pedestrianSet->getMovementStates())[i]
-                == MovementDefinitions::PAUSE)
+                == MovementDefinitions::STOP)
         {
 
             newVelocities.push_back
@@ -261,7 +277,7 @@ void CalmPedestrianModel::calculatePropulsion()
                 == 0)
             {
 
-                newPropulsiveForces.push_back(
+                newVelocities.push_back(
                     Dimensions 
                     {
                         std::vector<FLOATING_NUMBER>
@@ -298,28 +314,6 @@ void CalmPedestrianModel::calculatePropulsion()
             this->pedestrianSet->removePedestrian(i);
         }
 
-        if(i==45)
-        {
-            std::cout << "goalx " << (*this->pedestrianSet->
-                    getGoalCoordinates())[i].coordinates[0] <<std::endl;
-            std::cout << "goaly " << (*this->pedestrianSet->
-                    getGoalCoordinates())[i].coordinates[1] <<std::endl;
-
-
-            std::cout << (*this->pedestrianSet->getGoalCoordinates())[i].coordinates[0] << std::endl;
-            std::cout << (this->getGoals()->getPedestrianExitGoal(i)).coordinates[0] << std::endl;
-
-            FLOATING_NUMBER var1 = (*this->pedestrianSet->getGoalCoordinates())[i].coordinates[0];
-            FLOATING_NUMBER var2 = (this->getGoals()->getPedestrianExitGoal(i)).coordinates[0];
-
-            std::cout << var1 << std::endl;
-            std::cout << var2 << std::endl;
-
-            bool check1 = var1 == var2;
-            std::cout << check1;
-            bool check2 = ((*this->pedestrianSet->getGoalCoordinates())[i].coordinates[1] == 0);
-            std::cout << check2;
-        }
         newPropulsiveForces.push_back
         (
             Dimensions
@@ -341,7 +335,6 @@ void CalmPedestrianModel::calculatePropulsion()
         
 
     }
-    std::cout << "propend\n";
 
     this->pedestrianSet->setPropulsionForces(newPropulsiveForces);
 }
@@ -752,31 +745,16 @@ MovementDefinitions CalmPedestrianModel::updateMovementState
 
     else
     {
-        if(calculateDistance(pedestrianIndex, 
+        /*if(calculateDistance(pedestrianIndex, 
         (*this->pedestrianSet->getNearestPedNeighbors())[pedestrianIndex],
         "P") < 0.2)
         {
-            if(((*this->pedestrianSet->getMovementStates())
-                [(*this->pedestrianSet->getNearestPedNeighbors())[pedestrianIndex]]
-                == MovementDefinitions::STOP))
-            {
-                newDefinition = MovementDefinitions::STOP;
-            }
-            /*else if(((*this->pedestrianSet->getMovementStates())
-                [(*this->pedestrianSet->getNearestPedNeighbors())[pedestrianIndex]]
-                == MovementDefinitions::PAUSE))
-            {
-                newDefinition = MovementDefinitions::PED_DYNAM;
-            }
-            else
-            {
-                newDefinition = MovementDefinitions::PAUSE;
-            }*/
+            newDefinition = MovementDefinitions::STOP;
         }
         else
-        {
+        {*/
             newDefinition = MovementDefinitions::PED_DYNAM;
-        }
+        //}
     }
 
     return newDefinition;

@@ -45,7 +45,7 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     
-    while(i < 355/*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
+    while(i < 1/*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
@@ -134,7 +134,6 @@ void Simulation::printDataDELETETHIS()
                 case MovementDefinitions::HUMAN : std::cout << "HUMAN"; break;
                 case MovementDefinitions::POLICY : std::cout << "POLICY"; break;
                 case MovementDefinitions::STOP : std::cout << "STOP"; break;
-                case MovementDefinitions::PAUSE : std::cout << "PAUSE"; break;
             }
 
 			std::cout << std::endl;
