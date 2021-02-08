@@ -45,7 +45,7 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     
-    while(i < 1/*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
+    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
@@ -120,8 +120,6 @@ void Simulation::printDataDELETETHIS()
             << calmPedSet->getNearestNeighbors()->at(i).second
             << " nearest_neighbor_originset=" 
             << calmPedSet->getNearestNeighbors()->at(i).first
-            << " nearest_ped_neighbor="
-            << calmPedSet->getNearestPedNeighbors()->at(i)
 			<< " speed=" << calmPedSet->getSpeeds()->at(i)
             << " priority=" 
             << calmPedSet->getPriorities()->at(i)
@@ -130,7 +128,8 @@ void Simulation::printDataDELETETHIS()
             state = calmPedSet->getMovementStates()->at(i);
             switch(state)
             {
-                case MovementDefinitions::PED_DYNAM : std::cout << "PED_DYNAM"; break; 
+                case MovementDefinitions::PED_DYNAM : std::cout 
+                    << "PED_DYNAM"; break; 
                 case MovementDefinitions::HUMAN : std::cout << "HUMAN"; break;
                 case MovementDefinitions::POLICY : std::cout << "POLICY"; break;
                 case MovementDefinitions::STOP : std::cout << "STOP"; break;
