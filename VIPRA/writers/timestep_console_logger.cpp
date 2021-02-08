@@ -85,8 +85,6 @@ void TimestepConsoleLogger::printPedestrianData()
              << calmPedSet->getNearestNeighbors()->at(i).second
              << " | nearest_neighbor_originset = " 
              << calmPedSet->getNearestNeighbors()->at(i).first
-             << " | nearest_ped_neighbor = "
-             << calmPedSet->getNearestPedNeighbors()->at(i)
 			 << " | speed = " << calmPedSet->getSpeeds()->at(i)
              << " | priority = " 
              << calmPedSet->getPriorities()->at(i)
@@ -100,7 +98,6 @@ void TimestepConsoleLogger::printPedestrianData()
                 case MovementDefinitions::HUMAN : std::cout << "HUMAN"; break;
                 case MovementDefinitions::POLICY : std::cout << "POLICY"; break;
                 case MovementDefinitions::STOP : std::cout << "STOP"; break;
-                case MovementDefinitions::PAUSE : std::cout << "PAUSE"; break;
             }
 
 			std::cout << std::endl;

@@ -62,7 +62,8 @@ void CalmGoals::calculateNearestExit()
 
     if(this->exitGoal.size() > 1)
     {
-        for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); 
+        for (int i = 0; i < this->data->getPedestrianSet()
+            ->getNumPedestrians(); 
             ++i)
         {
             this->nearestExit.push_back(nearestGoal(i));
@@ -71,7 +72,8 @@ void CalmGoals::calculateNearestExit()
 
     else
     {
-        for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians(); 
+        for (int i = 0; i < this->data->getPedestrianSet()
+            ->getNumPedestrians();
             ++i)
         {
             this->nearestExit.push_back(0);
@@ -94,75 +96,60 @@ void CalmGoals::determinePedestrianGoals()
 
     for (int i = 0; i < this->data->getPedestrianSet()->getNumPedestrians();)
     {
-        if(!checkPedestianGoalsMet(i))
+        if(((*this->pedestrianCoordinatesPointer)[i].coordinates[0]
+            < this->exitGoal[nearestExit[i]].coordinates[0] - 0.1)
+            && !((*this->pedestrianCoordinatesPointer)[i].coordinates[1]
+                < 0.4
+            && (*this->pedestrianCoordinatesPointer)[i].coordinates[1]
+                > -0.4))
         {
-            if(((*this->pedestrianCoordinatesPointer)[i].coordinates[0]
-                < this->exitGoal[nearestExit[i]].coordinates[0] - 0.1)
-                && !((*this->pedestrianCoordinatesPointer)[i].coordinates[1]
-                    < 0.1
-                && (*this->pedestrianCoordinatesPointer)[i].coordinates[1]
-                    > -0.1))
-            {
-                newGoal.push_back(
-                    Dimensions 
+            newGoal.push_back(
+                Dimensions 
+                {
+                    std::vector<FLOATING_NUMBER> 
                     {
-                        std::vector<FLOATING_NUMBER> 
-                        {
-                            (*this->pedestrianCoordinatesPointer)[i]
-                                .coordinates[0], 0
-                        }
+                        (*this->pedestrianCoordinatesPointer)[i]
+                            .coordinates[0], 0
                     }
-                );
-                ++i;
-            }
-
-            else if(((*this->pedestrianCoordinatesPointer)[i].coordinates[0]
-                < this->exitGoal[nearestExit[i]].coordinates[0] - 0.1)
-                && ((*this->pedestrianCoordinatesPointer)[i].coordinates[1]
-                    < 0.1
-                && (*this->pedestrianCoordinatesPointer)[i].coordinates[1]
-                    > -0.1))
-            {
-                newGoal.push_back(
-                    Dimensions 
-                    {
-                        std::vector<FLOATING_NUMBER> 
-                        {
-                            this->exitGoal[nearestExit[i]].coordinates[0], 0
-                        }
-                     }
-                );
-                ++i;
-            }
-
-            else
-            {
-                newGoal.push_back(
-                    Dimensions 
-                    {
-                        std::vector<FLOATING_NUMBER> 
-                        {
-                            this->exitGoal[nearestExit[i]].coordinates[0],
-                            this->exitGoal[nearestExit[i]].coordinates[1]
-                        }
-                    }
-                );
-                ++i;
-            }
-        }
-        else if (checkPedestianGoalsMet(i))
-        {
-            this->data->getPedestrianSet()->removePedestrian(i);
-            std::cout << "check removed\nnumpeds: " << this->data->
-                getPedestrianSet()->getNumPedestrians() << std::endl;
-            std::cout << "check vectors size: " << this->data->
-                getPedestrianSet()->getPedestrianCoordinates()->size() 
-                    << std::endl;
+                }
+            );
+            ++i;
         }
 
-        
-        
-    }
+        else if(((*this->pedestrianCoordinatesPointer)[i].coordinates[0]
+            < this->exitGoal[nearestExit[i]].coordinates[0] - 0.1)
+            && ((*this->pedestrianCoordinatesPointer)[i].coordinates[1]
+                < 0.4
+            && (*this->pedestrianCoordinatesPointer)[i].coordinates[1]
+                > -0.4))
+        {
+            newGoal.push_back(
+                Dimensions 
+                {
+                    std::vector<FLOATING_NUMBER> 
+                    {
+                        this->exitGoal[nearestExit[i]].coordinates[0], 0
+                    }
+                }
+            );
+            ++i;
+        }
+
+        else
+        {
+            newGoal.push_back(
+                Dimensions 
+                {
+                    std::vector<FLOATING_NUMBER> 
+                    {
+                        this->exitGoal[nearestExit[i]].coordinates[0],
+                        this->exitGoal[nearestExit[i]].coordinates[1]
+                    }
+                }
+            );
+            ++i;
+        }
+    }    
     data->getPedestrianSet()->setGoalCoordinates(newGoal);
 }
 
