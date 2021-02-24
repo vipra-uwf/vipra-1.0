@@ -73,20 +73,21 @@ void TimestepConsoleLogger::printPedestrianData()
 			<< calmPedSet->getVelocities()
                 ->at(i).coordinates[1] << ")"
 
-			// << " | mass = " << calmPedSet->getMasses()->at(i)
-			// << " | desired_speed = " << calmPedSet->getDesiredSpeeds()->at(i)
+			 << " | mass = " << calmPedSet->getMasses()->at(i)
+			 << " | desired_speed = " << calmPedSet->getDesiredSpeeds()->at(i)
 			// << " | reaction_time = " << calmPedSet->getReactionTimes()->at(i)
-			// << " | propulsion_force = " << calmPedSet->getPropulsionForces()->at(i)
+			 << " | propulsion_force x = " << calmPedSet->getPropulsionForces()->at(i)
+                .coordinates[0]
+            << " | propulsion_force y = " << calmPedSet->getPropulsionForces()->at(i)
+                .coordinates[1]
 			// << " | repulsion_force = " << calmPedSet->getRepulsionForces()->at(i)
-			// << " | nearest_neighbor = " 
-            // << calmPedSet->getNearestNeighbors()->at(i).second
-            // << " | nearest_neighbor_originset = " 
-            // << calmPedSet->getNearestNeighbors()->at(i).first
-            // << " | nearest_ped_neighbor = "
-            // << calmPedSet->getNearestPedNeighbors()->at(i)
-			// << " | speed = " << calmPedSet->getSpeeds()->at(i)
-            // << " | priority = " 
-            // << calmPedSet->getPriorities()->at(i)
+			 << " | nearest_neighbor = " 
+             << calmPedSet->getNearestNeighbors()->at(i).second
+             << " | nearest_neighbor_originset = " 
+             << calmPedSet->getNearestNeighbors()->at(i).first
+			 << " | speed = " << calmPedSet->getSpeeds()->at(i)
+             << " | priority = " 
+             << calmPedSet->getPriorities()->at(i)
 
             << " | move_state = ";
 
