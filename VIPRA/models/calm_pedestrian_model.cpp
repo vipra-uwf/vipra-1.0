@@ -87,7 +87,7 @@ void CalmPedestrianModel::precompute()
     if(priorityActiveFlag == false)
     {
         this->currentPriority--;
-        std::cout << currentPriority << std::endl;
+        std::cout << "current priority: " << currentPriority << std::endl;
     }
 
     this->pedestrianSet->setMovementStates(updatedMoveStates);
