@@ -12,22 +12,7 @@
 
 class JSONWriter: public OutputDataWriter {
     private:
-        // Data* data;
-        std::ofstream fileStream;
-        std::string parentElementName;
-        std::string childElementName;
-        // int numChildElements;
-        Json::Value* parentElement;
-        Json::Value* currentElement;
-        Json::Value* defaultElement;
-
-        void openFile(std::string fileName);
-        void initializeParentElement();
-        // void initializeChildElements();
-        // void setData(Data* initialData);
-        void setParentElementName(std::string parentElementName);
-        void setChildElementName(std::string dataElementName);
-        // void setNumChildElements(int numChildElements);
+        
 
     public:
         JSONWriter();
