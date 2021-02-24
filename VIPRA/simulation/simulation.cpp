@@ -45,7 +45,7 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     
-    while(i < 5000/*!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet()*/)
+    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
@@ -53,17 +53,16 @@ void Simulation::run()
             simulationOutputHandler->writeToDocument();
         }
         
-        //.01 is arbitrary, use whatever ms is needed
-        clock.addSimulationTimeMs(.01);
-        this->pedestrianDynamicsModel->update(.01);
+        clock.addSimulationTimeMs(0.005);
+        this->pedestrianDynamicsModel->update(0.005);
 
         this->timestep++;
         ++i;
-        // this->pedestrianDynamicsModel->precompute();
+        this->pedestrianDynamicsModel->precompute();
     }
 
     // TODO this will be removed once our debugger segfault is resolved
-    // printDataDELETETHIS();
+     printDataDELETETHIS();
     //testGoalClassDELETETHIS();
 
     clock.stop();
@@ -80,4 +79,62 @@ int* Simulation::getTimestep()
 PedestrianDynamicsModel* Simulation::getPedestrianDynamicsModel()
 {
     return this->pedestrianDynamicsModel;
+}
+
+void Simulation::printDataDELETETHIS()
+{
+    Data* data = this->pedestrianDynamicsModel->getData();
+    CalmPedestrianSet* calmPedSet = dynamic_cast<
+        CalmPedestrianSet*>(data->getPedestrianSet()); 
+
+    MovementDefinitions state;
+	
+    std::cout << "Pedestrians: " << std::endl; 
+
+	for(int i = 0; i < calmPedSet->getNumPedestrians(); ++i)
+	{
+		std::cout << "ped [" << i << "] ("  
+            << calmPedSet->getPedestrianCoordinates()
+                ->at(i).coordinates[0] << ", "
+		    << calmPedSet->getPedestrianCoordinates()
+                ->at(i).coordinates[1] << ")"
+
+			<< " goal (" << calmPedSet->getGoalCoordinates()
+                ->at(i).coordinates[0] << ", "
+			<< calmPedSet->getGoalCoordinates()
+                ->at(i).coordinates[1] << ")"
+		
+			<< " velocity (" << calmPedSet->getVelocities()
+                ->at(i).coordinates[0] << ", "
+			<< calmPedSet->getVelocities()
+                ->at(i).coordinates[1] << ")"
+
+			<< " mass=" << calmPedSet->getMasses()->at(i)
+			<< " desired_speed=" << calmPedSet->getDesiredSpeeds()->at(i)
+			<< " reaction_time=" << calmPedSet->getReactionTimes()->at(i)
+			<< " propulsion_forcex=" << calmPedSet->getPropulsionForces()
+                ->at(i).coordinates[0]
+            << " propulsion_forcey=" << calmPedSet->getPropulsionForces()
+                ->at(i).coordinates[1]
+			<< " nearest_neighbor=" 
+            << calmPedSet->getNearestNeighbors()->at(i).second
+            << " nearest_neighbor_originset=" 
+            << calmPedSet->getNearestNeighbors()->at(i).first
+			<< " speed=" << calmPedSet->getSpeeds()->at(i)
+            << " priority=" 
+            << calmPedSet->getPriorities()->at(i)
+            << " Move_state=";
+
+            state = calmPedSet->getMovementStates()->at(i);
+            switch(state)
+            {
+                case MovementDefinitions::PED_DYNAM : std::cout 
+                    << "PED_DYNAM"; break; 
+                case MovementDefinitions::HUMAN : std::cout << "HUMAN"; break;
+                case MovementDefinitions::POLICY : std::cout << "POLICY"; break;
+                case MovementDefinitions::STOP : std::cout << "STOP"; break;
+            }
+
+			std::cout << std::endl;
+	}
 }

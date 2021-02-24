@@ -30,10 +30,7 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->reactionTimes.erase(reactionTimes.begin()+pedestrianIndex);
     this->desiredSpeeds.erase(desiredSpeeds.begin()+pedestrianIndex);
     this->propulsionForces.erase(propulsionForces.begin()+pedestrianIndex);
-    this->repulsionForces.erase(repulsionForces.begin()+pedestrianIndex);
     this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
-    this->nearestPedNeighbors.erase(
-        nearestPedNeighbors.begin()+pedestrianIndex);
     this->movementStates.erase(movementStates.begin()+pedestrianIndex);
     this->priorities.erase(priorities.begin()+pedestrianIndex);
 }
@@ -78,25 +75,16 @@ std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getDesiredSpeeds()
     return &this->desiredSpeeds;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPropulsionForces()
+std::vector<Dimensions>* CalmPedestrianSet::getPropulsionForces()
 {
     return &this->propulsionForces;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getRepulsionForces()
-{
-    return &this->repulsionForces;
-}
 
 std::vector<std::pair<std::string, int>>* 
     CalmPedestrianSet::getNearestNeighbors()
 {
     return &this->nearestNeighbors;
-}
-
-std::vector<int>* CalmPedestrianSet::getNearestPedNeighbors()
-{
-    return &this->nearestPedNeighbors;
 }
 
 std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPriorities()
@@ -161,27 +149,15 @@ void CalmPedestrianSet::setDesiredSpeeds(
 }
 
 void CalmPedestrianSet::setPropulsionForces(
-		std::vector<FLOATING_NUMBER> propulsionForces)
+		std::vector<Dimensions> propulsionForces)
 {
     this->propulsionForces = propulsionForces;
-}
-
-void CalmPedestrianSet::setRepulsionForces(
-		std::vector<FLOATING_NUMBER> repulsionForces)
-{
-    this->repulsionForces = repulsionForces;
 }
 
 void CalmPedestrianSet::setNearestNeighbors(
     std::vector<std::pair<std::string, int>> nearestNeighbors)
 {
    this->nearestNeighbors = nearestNeighbors; 
-}
-
-void CalmPedestrianSet::setNearestPedNeighbors(
-    std::vector<int> nearestPedNeighbors)
-{
-   this->nearestPedNeighbors = nearestPedNeighbors; 
 }
 
 void CalmPedestrianSet::setPriorities(std::vector<FLOATING_NUMBER> priorities)

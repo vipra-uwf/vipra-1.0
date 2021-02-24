@@ -17,9 +17,9 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         Data* data;
         Goals* goals; // TODO i think this should be of type CalmGoals -- Alex
         int currentPriority;
-        const FLOATING_NUMBER a = -2.111;
-        const FLOATING_NUMBER b = 0.366;
-        const FLOATING_NUMBER c = 0.966;
+        const FLOATING_NUMBER a = -2.4532;
+        const FLOATING_NUMBER b = 0.138412;
+        const FLOATING_NUMBER c = 0.87436;
     
     public:
         virtual void configure(CONFIG_MAP* configMap);
@@ -31,15 +31,13 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void precompute();
         virtual void update(FLOATING_NUMBER time);
 
-        void calculatePropulsion(int pedestrianIndex);
-        void calculateRepulsion(int pedestrianIndex);
+        void calculatePropulsion();
         FLOATING_NUMBER calculateDistance(
             int firstPedestrianIndex, int secondPedestrianIndex, 
             std::string originSet);
-        FLOATING_NUMBER calculateBeta(int pedestrianIndex);
+        void calculateBeta();
         std::pair<std::string, int> calculateNearestNeighbors(
             int pedestrianIndex);
-        int calculateNearestPedNeighbors(int pedestrianIndex);
         bool neighborDirectionTest(
             int firstPedestrianIndex, int secondPedestrianIndex, 
             std::string originSet);
