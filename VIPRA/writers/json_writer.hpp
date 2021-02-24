@@ -12,7 +12,13 @@
 
 class JSONWriter: public OutputDataWriter {
     private:
-        
+        Data* data;
+        std::ofstream fileStream;
+        int numChildElements;
+        Json::Value document;
+        Json::Value currentElement;
+
+        void openFile(std::string fileName);
 
     public:
         JSONWriter();
