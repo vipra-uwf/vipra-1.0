@@ -5,7 +5,6 @@
 #include <fstream>
 #include <sstream>
 #include <cstring>
-// #include <json/writer.h>
 
 #include "output_data_writer.hpp"
 #include "../readers/json/json.h"
@@ -14,11 +13,15 @@ class JSONWriter: public OutputDataWriter {
     private:
         Data* data;
         std::ofstream fileStream;
-        int numChildElements;
+        std::string parentElementName;
+        std::string childElementName;
         Json::Value document;
-        Json::Value currentElement;
+        Json::Value elementArray;
+        int index;
 
         void openFile(std::string fileName);
+        void setParentElementName(std::string parentElementName);
+        void setChildElementName(std::string dataElementName);
 
     public:
         JSONWriter();
