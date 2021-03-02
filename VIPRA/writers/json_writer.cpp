@@ -40,14 +40,14 @@ void JSONWriter::appendStringAttributeToCurrentElement(
     }
 }
 
-// void JSONWriter::writeToDocument(Data *data)
-// {
-
-//     //Why do we need these? We do these in the next function -Liam    
-//     // this->fileStream << this->document;
-//     // this->fileStream.close();
-//     this->currentElement.clear();
-// }
+void JSONWriter::writeToDocument(Data *data)
+{
+    this->document[this->parentElementName] = this->elementArray;
+    
+    this->fileStream << this->document;
+    this->fileStream.close();
+    this->document.clear();
+}
 
 void JSONWriter::writeDocumentContentsToFile()
 {
