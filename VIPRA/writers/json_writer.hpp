@@ -8,6 +8,7 @@
 
 #include "output_data_writer.hpp"
 #include "../readers/json/json.h"
+// #include "json/json.h"
 
 class JSONWriter: public OutputDataWriter {
     private:
@@ -16,6 +17,7 @@ class JSONWriter: public OutputDataWriter {
         std::string parentElementName;
         std::string childElementName;
         Json::Value document;
+        
         Json::Value elementArray;
         int index;
 
