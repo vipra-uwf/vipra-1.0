@@ -7,8 +7,7 @@
 #include <cstring>
 
 #include "output_data_writer.hpp"
-#include "../readers/json/json.h"
-// #include "json/json.h"
+#include "../jsoncpp/json/json.h"
 
 class JSONWriter: public OutputDataWriter {
     private:

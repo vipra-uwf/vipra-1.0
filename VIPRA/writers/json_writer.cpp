@@ -3,8 +3,6 @@
 JSONWriter::JSONWriter()
 {
     this->index = 0;
-    // setParentElementName("pedestrian-set");
-    // setChildElementName("pedestrian");
 }
 
 void JSONWriter::configure(CONFIG_MAP *configMap)

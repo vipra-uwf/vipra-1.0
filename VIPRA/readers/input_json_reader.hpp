@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "input_data_loader.hpp"
-#include "json/json.h"
+#include "../jsoncpp/json/json.h"
 
 class InputJSONReader: public InputDataLoader
 {
