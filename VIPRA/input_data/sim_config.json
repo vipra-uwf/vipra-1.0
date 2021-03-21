@@ -6,8 +6,8 @@
         }
     },
     "output_data_writer" : {
-        "type" : "xml",
-        "outputFilePath" : "./output_data/pedestrian_trajectory.xml",
+        "type" : "json",
+        "outputFilePath" : "./output_data/pedestrian_trajectory.json",
         "configuration" : {
             "parentElementName" : "pedestrian-set",
             "childElementName" : "pedestrian"

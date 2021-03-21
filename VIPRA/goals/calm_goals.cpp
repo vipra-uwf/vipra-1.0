@@ -19,8 +19,7 @@ void CalmGoals::setData(Data* data)
     calculateNearestExit();
 }
 
-void CalmGoals::addExitGoal(std::unordered_map<std::string,
-    FLOATING_NUMBER>* simulationParams)
+void CalmGoals::addExitGoal(SIM_PARAMS* simulationParams)
 {
     //TODO fix this method so that exits are read 
     // in a different way so that i can read in multiple exits - elisabeth

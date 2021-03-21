@@ -11,7 +11,7 @@ OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 compile: setup generate_main make_directories main
 
 generate_main:
-	$(CXX) $(CXXFLAGS) code_generation/code_generator.cpp readers/jsoncpp.cpp configuration/configuration_reader.cpp -o $@
+	$(CXX) $(CXXFLAGS) code_generation/code_generator.cpp jsoncpp/jsoncpp.cpp configuration/configuration_reader.cpp -o $@
 	./$@
 	rm ./$@
 	$(eval SRCS := $(NAME).cpp)
@@ -36,6 +36,7 @@ make_directories:
 	@mkdir -p $(BUILD_DIR)/entity_sets
 	@mkdir -p $(BUILD_DIR)/entity_sets/factory
 	@mkdir -p $(BUILD_DIR)/goals
+	@mkdir -p $(BUILD_DIR)/jsoncpp
 	@mkdir -p $(BUILD_DIR)/models
 	@mkdir -p $(BUILD_DIR)/readers
 	@mkdir -p $(BUILD_DIR)/writers
