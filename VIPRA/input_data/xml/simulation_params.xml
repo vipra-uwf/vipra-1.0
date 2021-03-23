@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<simulation-parameters>  
+	<parameter luggage="0.46"/>
+	<parameter exit_door_x="23.25"/>
+	<parameter exit_door_y="1.73"/>
+	<parameter aligning_stop_threshold="0.2"/>
+	<parameter toward_aisle_stop_threshold="0.4"/>
+	<parameter in_aisle_stop_threshold="0.42"/>
+	<parameter time_step="0.005"/>
+</simulation-parameters>

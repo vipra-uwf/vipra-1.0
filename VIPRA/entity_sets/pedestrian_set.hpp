@@ -2,14 +2,15 @@
 #define PEDESTRIAN_SET_HPP
 
 #include <vector>
-#include "../type_definitions.hpp"
-#include "../dimensions.hpp"
+#include "../definitions/type_definitions.hpp"
+#include "../definitions/dimensions.hpp"
 
 class PedestrianSet
 {
     public:
         virtual ~PedestrianSet() = default;
         
+        virtual void configure(CONFIG_MAP* configMap) = 0;
         virtual void removePedestrian(int pedestrianIndex) = 0;
         virtual int getNumPedestrians() = 0;
         virtual std::vector<Dimensions>* getPedestrianCoordinates() = 0;
@@ -26,8 +27,6 @@ class PedestrianSet
             std::vector<Dimensions> velocities) = 0;
         virtual void setSpeeds(
             std::vector<FLOATING_NUMBER> speedsMetersPerSecond) = 0;
-        
-        // virtual ~PedestrianSet();
 };
 
 #endif

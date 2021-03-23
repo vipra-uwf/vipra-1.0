@@ -2,40 +2,55 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-		
-	config.vm.box = "kalilinux/rolling"
-	config.ssh.forward_agent = true #needed for git repo ssh key
- 
-	
+
+	config.vm.box = "generic/ubuntu1804"
+
+	config.vm.provider "virtualbox" do |vb|
+
+	end
+
 	#only runs the first time the vm boots (will run again after a vagrant destroy)
-	config.vm.provision :shell, inline: <<-SHELL #run: 'always' 
-		#INSTALLING VISUAL STUDIO CODE
-		echo Preparing to install Visual Studio Code
-		apt-get update
-		sudo apt install curl gpg software-properties-common apt-transport-https
-		curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-		echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
-		sudo apt update
-		sudo apt install code
-		
-		#SETTING UP REPO
-		mkdir /home/vagrant/Documents/repos
-		#sudo apt-get update
-		#sudo apt-get install -y git
-		mkdir -p ~/.ssh
-		chmod 700 ~/.ssh
-		ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-		ssh -T git@github.com
-		git clone git@github.com:vipra-uwf/vipra# /home/vagrant/Documents/repos
-		
-		#SETTING UP OPTIONAL START SCRIPT
-		sudo cp /usr/share/backgrounds/kali-16x9/kali-neon.png /usr/share/backgrounds/kali/kali-mesh-16x9.png
-		sudo touch Desktop/start.sh
-		echo "xrandr --output Virtual1 --mode 1680x1050" >> Desktop/start.sh
-		chmod +x Desktop/start.sh
+	config.vm.provision :shell, inline: <<-SHELL #run: 'always'
+		set -x #echo on
+		echo "$(tput setaf 6)$(tput bold)Setting up boost for odeint $(tput sgr 0)"
+		sudo apt-get install libboost-dev -y
+
+		echo "$(tput setaf 6)$(tput bold)Setting up Python 3.8 $(tput sgr 0)"
+		sudo apt-get update
+		sudo apt-get install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev -y
+		wget https://www.python.org/ftp/python/3.8.5/Python-3.8.5.tgz
+		tar -xf Python-3.8.5.tgz
+		cd Python-3.8.5
+		./configure --enable-optimizations
+		sudo make altinstall
+		sudo apt-get install -y python3.8-dev
+		cd ..
+		rm Python-3.8.5.tgz #cleanup
+
+		sudo apt-get install make
+		sudo apt-get install build-essential -y #installs g++
+
+			#does not work
+		#echo "$(tput setaf 6)$(tput bold)Setting up VIPRA $(tput sgr 0)"
+		#mkdir -p ~/.ssh
+		#chmod 700 ~/.ssh
+		#ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+		#ssh -T git@github.com
+		#git clone git@github.com:vipra-uwf/vipra.git # /home/vagrant/Documents/repos
+
+			#setup git repo
+		mkdir vipra
+		cd ./vipra
+		git init
+		git remote add origin https://github.com/vipra-uwf/vipra.git
+		mkdir VIPRA
+		#use `sudo git pull origin master` and login once you're in the box
+
+		#setup rapidxml
+		echo "$(tput setaf 6)$(tput bold)Setting up rapidxml $(tput sgr 0)"
+		test -e rapidxml || sudo git clone --depth=1 --branch=master https://github.com/dwd/rapidxml.git ./VIPRA/rapidxml
+		rm -rf ./vipra/rapidxml/.git
+
 		echo Provisioning Completed
 	SHELL
 end
-
-
-

@@ -34,8 +34,8 @@ int main()
 
             linestream >> letter >> x >> y >> z;
 
-            xmlWriter.writeFloatData("x", x);
-            xmlWriter.writeFloatData("y", y);
+            xmlWriter.appendFloatAttributeToCurrentElement("x", x);
+            xmlWriter.appendFloatAttributeToCurrentElement("y", y);
         }
         
         // if(j < 149)

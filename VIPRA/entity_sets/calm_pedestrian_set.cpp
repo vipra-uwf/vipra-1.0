@@ -1,4 +1,5 @@
 #include "calm_pedestrian_set.hpp"
+#include <iostream>
 
 CalmPedestrianSet::CalmPedestrianSet()
 {
@@ -9,9 +10,14 @@ CalmPedestrianSet::CalmPedestrianSet()
 // {
 
 // }
+void CalmPedestrianSet::configure(CONFIG_MAP* configMap)
+{
+
+}
 
 void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 {
+    std::cout << "check removed: " << pedestrianIndex << std::endl;
     this->numPedestrians--;
     
     this->pedestrianCoordinates.erase(pedestrianCoordinates.
@@ -24,8 +30,9 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->reactionTimes.erase(reactionTimes.begin()+pedestrianIndex);
     this->desiredSpeeds.erase(desiredSpeeds.begin()+pedestrianIndex);
     this->propulsionForces.erase(propulsionForces.begin()+pedestrianIndex);
-    this->repulsionForces.erase(repulsionForces.begin()+pedestrianIndex);
     this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
+    this->movementStates.erase(movementStates.begin()+pedestrianIndex);
+    this->priorities.erase(priorities.begin()+pedestrianIndex);
 }
 
 int CalmPedestrianSet::getNumPedestrians()
@@ -68,15 +75,11 @@ std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getDesiredSpeeds()
     return &this->desiredSpeeds;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPropulsionForces()
+std::vector<Dimensions>* CalmPedestrianSet::getPropulsionForces()
 {
     return &this->propulsionForces;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getRepulsionForces()
-{
-    return &this->repulsionForces;
-}
 
 std::vector<std::pair<std::string, int>>* 
     CalmPedestrianSet::getNearestNeighbors()
@@ -84,9 +87,19 @@ std::vector<std::pair<std::string, int>>*
     return &this->nearestNeighbors;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPriortiy()
+std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPriorities()
 {
     return &this->priorities;
+}
+
+std::vector<MovementDefinitions>* CalmPedestrianSet::getMovementStates()
+{
+    return &this->movementStates;
+}
+
+std::vector<int>* CalmPedestrianSet::getStartingAisles()
+{
+    return &this->startingAisles;
 }
 
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
@@ -136,15 +149,9 @@ void CalmPedestrianSet::setDesiredSpeeds(
 }
 
 void CalmPedestrianSet::setPropulsionForces(
-		std::vector<FLOATING_NUMBER> propulsionForces)
+		std::vector<Dimensions> propulsionForces)
 {
     this->propulsionForces = propulsionForces;
-}
-
-void CalmPedestrianSet::setRepulsionForces(
-		std::vector<FLOATING_NUMBER> repulsionForces)
-{
-    this->repulsionForces = repulsionForces;
 }
 
 void CalmPedestrianSet::setNearestNeighbors(
@@ -156,4 +163,15 @@ void CalmPedestrianSet::setNearestNeighbors(
 void CalmPedestrianSet::setPriorities(std::vector<FLOATING_NUMBER> priorities)
 {
     this->priorities = priorities;
+}
+
+void CalmPedestrianSet::setMovementStates(
+    std::vector<MovementDefinitions> movementStates)
+{
+    this->movementStates = movementStates;
+}
+
+void CalmPedestrianSet::setStartingAisles(std::vector<int> startingAisles)
+{
+    this->startingAisles = startingAisles;
 }

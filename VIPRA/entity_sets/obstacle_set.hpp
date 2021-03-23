@@ -2,25 +2,20 @@
 #define OBSTACLE_SET_HPP
 
 #include <vector>
-
-#include "../type_definitions.hpp"
-#include "../dimensions.hpp"
+#include "../definitions/type_definitions.hpp"
+#include "../definitions/dimensions.hpp"
 
 class ObstacleSet
 {
-    private:
-        int numObstacles;
-        int numAisles;
-        std::vector<Dimensions> obstacleCoordinates;
-
     public:
-        ObstacleSet();
+        virtual ~ObstacleSet() = default;
         
-        int getNumObstacles();
-        std::vector<Dimensions>* getObstacleCoordinates();
-        
-        void setNumObstacles(int numObstacles);
-        void setObstacleCoordinates(std::vector<Dimensions> coordinates);
+        virtual void configure(CONFIG_MAP* configMap) = 0;
+        virtual int getNumObstacles() = 0;
+        virtual std::vector<Dimensions>* getObstacleCoordinates() = 0;
+        virtual void setNumObstacles(int numObstacles) = 0;
+        virtual void setObstacleCoordinates(
+            std::vector<Dimensions> coordinates) = 0;
 };
 
 #endif

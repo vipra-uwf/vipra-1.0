@@ -3,10 +3,8 @@
 
 #include <utility>
 #include <string>
-
 #include "pedestrian_set.hpp"
-#include "../type_definitions.hpp"
-#include "../dimensions.hpp"
+#include "../definitions/movement_definitions.hpp"
 
 class CalmPedestrianSet: public PedestrianSet
 {
@@ -21,13 +19,16 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER> massesKg;
         std::vector<FLOATING_NUMBER> reactionTimes;
         std::vector<FLOATING_NUMBER> desiredSpeeds;
-        std::vector<FLOATING_NUMBER> propulsionForces;
-        std::vector<FLOATING_NUMBER> repulsionForces;
+        std::vector<Dimensions> propulsionForces;
         std::vector<std::pair<std::string, int>> nearestNeighbors;
         std::vector<FLOATING_NUMBER> priorities;
+        std::vector<MovementDefinitions> movementStates;
+        std::vector<int> startingAisles;
 
     public:
         CalmPedestrianSet();
+
+        virtual void configure(CONFIG_MAP* configMap);
         
         virtual void removePedestrian(int pedestrianIndex);
 
@@ -52,19 +53,23 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER>* getMasses();
         std::vector<FLOATING_NUMBER>* getReactionTimes();
         std::vector<FLOATING_NUMBER>* getDesiredSpeeds();
-        std::vector<FLOATING_NUMBER>* getPropulsionForces();
+        std::vector<Dimensions>* getPropulsionForces();
         std::vector<FLOATING_NUMBER>* getRepulsionForces();
         std::vector<std::pair<std::string, int>>* getNearestNeighbors();
-        std::vector<FLOATING_NUMBER>* getPriortiy();
+        std::vector<FLOATING_NUMBER>* getPriorities();
+        std::vector<MovementDefinitions>* getMovementStates();
+        std::vector<int>* getStartingAisles();
 
         void setMasses(std::vector<FLOATING_NUMBER> massesKg);
         void setReactionTimes(std::vector<FLOATING_NUMBER> reactionTimes);
         void setDesiredSpeeds(std::vector<FLOATING_NUMBER> desiredSpeeds);
-        void setPropulsionForces(std::vector<FLOATING_NUMBER> propulsionForces);
+        void setPropulsionForces(std::vector<Dimensions> propulsionForces);
         void setRepulsionForces(std::vector<FLOATING_NUMBER> repulsionForces);
         void setNearestNeighbors(
-            std::vector<std::pair<std::string, int>> nearestNeighbors);
+          std::vector<std::pair<std::string, int>> nearestNeighbors);
         void setPriorities(std::vector<FLOATING_NUMBER> priorities);
+        void setMovementStates(std::vector<MovementDefinitions> movementStates);
+        void setStartingAisles(std::vector<int> startingAisles);
 };
 
 #endif
