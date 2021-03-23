@@ -5,10 +5,12 @@
 [Vagrant Setup Guide](vagrant_setup_guide.md)
 
 ##### Makefile Commands
-- Clean, Compile, and Run: `$ make ccr`
-- Compile and Run: `$ make cr` 
-- Clean and Compile: `$ make cc`
+- Compile: `$ make compile` or `$ make`
+- Run (Compiles if needed): `$ make run`
 - Clean: `$ make clean`
+- Clean, Compile, and Run: `$ make ccr`
+- Clean and Compile: `$ make cc`
+- Clear Output Folder: `$ make co`
 
 
 ---
