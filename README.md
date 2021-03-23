@@ -36,12 +36,16 @@
 - Specifies functionality for determining whether goals are met 
 
 #### PedestrianDynamicsModel
+- Contains logic for calculating how pedestrians will react in simulation
 
 #### InputDataLoader
+- Reads input data for pedestrians and objects
 
-#### OutputDataWriter  
+#### OutputDataWriter
+- Writes the results of the simulation to an output file
 
 #### SimulationOutputHandler
+- Determines the way the output data will be written (to file or console)
 
 
 
