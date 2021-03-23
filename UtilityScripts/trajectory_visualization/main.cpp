@@ -1,21 +1,28 @@
-
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
 
 #include "../../VIPRA/readers/input_xml_reader.hpp"
+#include "../../VIPRA/readers/input_json_reader.hpp"
 #include <iostream>
 
 int main() {
-    // g++ main.cpp ../../VIPRA/readers/input_xml_reader.cpp ../../VIPRA/simulation/data.cpp ../../VIPRA/entity_sets/obstacle_set.cpp -I/usr/include/python3.8 -lpython3.8
-
     InputXMLReader inputXMLReader;
+    CONFIG_MAP* pedestrianConfigMap = new CONFIG_MAP;
 
-    // inputXMLReader.extractFileData("../../VIPRA/output_data/pedestrian_trajectory.xml", "pedestrian-set", "pedestrian");
+    pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
     inputXMLReader.extractFileData(
-        "../../VIPRA/output_data/pedestrian_animfile.xml", 
-        "pedestrian-set");
+        "../../VIPRA/output_data/pedestrian_trajectory.xml", 
+        pedestrianConfigMap);
 
     ENTITY_SET pedInputFileData = inputXMLReader.getInputEntities();
+
+    // InputJSONReader inputJSONReader;
+    // CONFIG_MAP* pedestrianConfigMap = new CONFIG_MAP;
+
+    // inputJSONReader.extractFileData(
+    //     "../../VIPRA/output_data/pedestrian_trajectory.json",
+    //     pedestrianConfigMap);
+    // ENTITY_SET pedInputFileData = inputJSONReader.getInputEntities();
 
     std::vector<FLOATING_NUMBER> trajectorySetX;
     std::vector<FLOATING_NUMBER> trajectorySetY;
@@ -28,9 +35,16 @@ int main() {
             (FLOATING_NUMBER) std::stod(pedInputFileData[i]["y"]));
     }
 
+    CONFIG_MAP* obstacleConfigMap = new CONFIG_MAP;
+    obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
+    
     inputXMLReader.extractFileData(
-        "../../VIPRA/input_data/a320_144_obstacles.xml", 
-        "obstacle-set");
+        "../../VIPRA/input_data/xml/a320_144_obstacles.xml", 
+        obstacleConfigMap);
+
+    // inputJSOReader.extractFileData(
+    //     "../../VIPRA/input_data/json/a320_144_obstacles.json", 
+    //     obstacleConfigMap);
 
     ENTITY_SET obsInputFileData = inputXMLReader.getInputEntities();
 
@@ -78,7 +92,7 @@ int main() {
     }
 
     plt::pause(2);
-    //plt::save("output.png");
+    plt::save("output.png");
     plt::show();
 }
 
