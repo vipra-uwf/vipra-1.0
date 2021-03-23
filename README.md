@@ -11,27 +11,27 @@
 - Clean: `$ make clean`
 
 
-
+---
+### Configuration Files
+- Stores the user-defined simulation configuration preferences.
+- (not finished)
 
 ---
-### Extension Instructions
+### Virtual Class Extension Instructions
 
 
-
-
----
-### Virtual Classes
 
 #### PedestrianSet
 - Entity set object used for storing the properties of all pedestrians
-- in the simulation. 
 
-#### ObstacleSet (will be virtual soon)
+#### ObstacleSet
+- Entity set object used for storing the properties of all obstacles
 
 #### EntitySetFactory
-convert data types
+- Convert data types
 
 #### Goals
+- Specifies functionality for determining whether goals are met 
 
 #### PedestrianDynamicsModel
 
@@ -46,7 +46,7 @@ convert data types
 
 
 ---
-### Types
+### [Type Definitions](type_definitions.hpp)
 
 #### ENTITY_SET
 Stores all entity set data that is read in from a file and 
@@ -61,11 +61,6 @@ Stores all simulation parameters.
 ```
 std::unordered_map<std::string, FLOATING_NUMBER>
 ```
-#### SIM_CONFIG
-Stores the user-defined simulation configuration preferences.
-```
-std::unordered_map<std::string, std::string>
-``` 
 #### FLOATING_NUMBER
 Allows quickly changing precision for the entire
 simulation by altering the typedef.
