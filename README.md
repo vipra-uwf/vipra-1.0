@@ -46,7 +46,7 @@
 
 
 ---
-### [Type Definitions](type_definitions.hpp)
+### [Type Definitions](VIPRA/type_definitions.hpp)
 
 #### ENTITY_SET
 Stores all entity set data that is read in from a file and 
