@@ -5,8 +5,8 @@ namespace plt = matplotlibcpp;
 #include <iostream>
 
 int main() {
-    InputXMLReader inputXMLReader;
-    // InputJSONReader inputJSONReader;
+    // InputXMLReader inputXMLReader;
+    InputJSONReader inputJSONReader;
     CONFIG_MAP* pedestrianConfigMap = new CONFIG_MAP;
     ENTITY_SET pedInputFileData;
     CONFIG_MAP* obstacleConfigMap = new CONFIG_MAP;
@@ -19,17 +19,17 @@ int main() {
     int numPedestrians;
     int numberOfSnapshots;
 
-    pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
-    inputXMLReader.extractFileData(
-        "../../VIPRA/output_data/pedestrian_trajectory.xml", 
-        pedestrianConfigMap);
-    pedInputFileData = inputXMLReader.getInputEntities();
+    // pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
+    // inputXMLReader.extractFileData(
+    //     "../../VIPRA/output_data/pedestrian_trajectory.xml", 
+    //     pedestrianConfigMap);
+    // pedInputFileData = inputXMLReader.getInputEntities();
 
     // pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
-    // inputJSONReader.extractFileData(
-    //     "../../VIPRA/output_data/pedestrian_trajectory.json",
-    //     pedestrianConfigMap);
-    // pedInputFileData = inputJSONReader.getInputEntities();
+    inputJSONReader.extractFileData(
+        "../../VIPRA/output_data/pedestrian_trajectory.json",
+        pedestrianConfigMap);
+    pedInputFileData = inputJSONReader.getInputEntities();
 
     for(long unsigned int i = 0; i < pedInputFileData.size(); ++i)
     {
@@ -39,17 +39,17 @@ int main() {
             (FLOATING_NUMBER) std::stod(pedInputFileData[i]["y"]));
     }
 
-    obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
-    inputXMLReader.extractFileData(
-        "../../VIPRA/input_data/xml/a320_144_obstacles.xml", 
-        obstacleConfigMap);
-    obsInputFileData = inputXMLReader.getInputEntities();
-
     // obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
-    // inputJSONReader.extractFileData(
-    //     "../../VIPRA/input_data/json/a320_144_obstacles.json", 
+    // inputXMLReader.extractFileData(
+    //     "../../VIPRA/input_data/xml/a320_144_obstacles.xml", 
     //     obstacleConfigMap);
-    // obsInputFileData = inputJSONReader.getInputEntities();
+    // obsInputFileData = inputXMLReader.getInputEntities();
+
+    obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
+    inputJSONReader.extractFileData(
+        "../../VIPRA/input_data/json/a320_144_obstacles.json", 
+        obstacleConfigMap);
+    obsInputFileData = inputJSONReader.getInputEntities();
     
     for(long unsigned int i = 0; i < obsInputFileData.size(); ++i)
     {
