@@ -121,6 +121,7 @@ alt="Trajectory Visualization" width="580" height="360" border="15" /></a>
 - Linux
 - Python 3.8.x
 ###### Limitations: 
+- **You must be using a Linux system or VM to see the visualization**
 - only supports 2D visualization 
 - visualization preferences are currently "hard-coded"
 ###### Installation:
