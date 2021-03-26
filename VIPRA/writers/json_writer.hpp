@@ -16,8 +16,6 @@ class JSONWriter: public OutputDataWriter {
         std::string parentElementName;
         std::string childElementName;
         Json::Value document;
-        
-        Json::Value elementArray;
         int index;
 
         void openFile(std::string fileName);
