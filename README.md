@@ -122,4 +122,10 @@ alt="Trajectory Visualization" width="580" height="360" border="15" /></a>
 - Python 3.8.x
 ###### Limitations: 
 - only supports 2D visualization 
-- visualization preferences are currently "hard-coded" 
+- visualization preferences are currently "hard-coded"
+###### Installation:
+1. sudo apt-get install python3-dev
+2. sudo apt-get install python3-matplotlib
+###### Compiling and Running:
+1. cd to UtilityScripts/trajectory_visualization directory
+2. make ccr

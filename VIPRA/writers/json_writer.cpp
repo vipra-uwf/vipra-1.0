@@ -19,31 +19,29 @@ void JSONWriter::initializeOutputFile(std::string outputFilePath)
 void JSONWriter::appendFloatAttributeToCurrentElement(
     std::string key, FLOATING_NUMBER value)
 {
-    if (this->elementArray[this->index][this->childElementName][key].isNull()) {
-        this->elementArray[this->index][this->childElementName][key] = value;
+    if (this->document[this->index][key].isNull()) {
+        this->document[this->index][key] = value;
     }
     else {
         this->index++;
-        this->elementArray[this->index][this->childElementName][key] = value;
+        this->document[this->index][key] = value;
     }
 }
 
 void JSONWriter::appendStringAttributeToCurrentElement(
     std::string key, std::string value)
 {
-    if (this->elementArray[this->index][this->childElementName][key].isNull()) {
-        this->elementArray[this->index][this->childElementName][key] = value;
+    if (this->document[this->index][key].isNull()) {
+        this->document[this->index][key] = value;
     }
     else {
         this->index++;
-        this->elementArray[this->index][this->childElementName][key] = value;
+        this->document[this->index][key] = value;
     }
 }
 
 void JSONWriter::writeToDocument(Data *data)
 {
-    this->document[this->parentElementName] = this->elementArray;
-    
     this->fileStream << this->document;
     this->fileStream.close();
     this->document.clear();
@@ -51,8 +49,6 @@ void JSONWriter::writeToDocument(Data *data)
 
 void JSONWriter::writeDocumentContentsToFile()
 {
-    this->document[this->parentElementName] = this->elementArray;
-    
     this->fileStream << this->document;
     this->fileStream.close();
     this->document.clear();
