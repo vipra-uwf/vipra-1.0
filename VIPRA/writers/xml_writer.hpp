@@ -43,9 +43,9 @@ class XMLWriter: public OutputDataWriter
         virtual void configure(CONFIG_MAP* configMap);
         virtual void initializeOutputFile(std::string outputFilePath);
         virtual void appendFloatAttributeToCurrentElement(
-            std::string key, FLOATING_NUMBER value, int* timestep);
+            std::string key, FLOATING_NUMBER value, int timestepID);
         virtual void appendStringAttributeToCurrentElement(
-            std::string key, std::string value, int* timestep);
+            std::string key, std::string value, int timestepID);
         virtual void writeDocumentContentsToFile();
         virtual void writeToDocument(Data* data);
 };
