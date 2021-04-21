@@ -17,26 +17,26 @@ void JSONWriter::initializeOutputFile(std::string outputFilePath)
 }
 
 void JSONWriter::appendFloatAttributeToCurrentElement(
-    std::string key, FLOATING_NUMBER value)
+    std::string key, FLOATING_NUMBER value, int* timestep)
 {
-    if (this->document[this->index][key].isNull()) {
-        this->document[this->index][key] = value;
+    if (this->document[*timestep][this->index][key].isNull()) {
+        this->document[*timestep][this->index][key] = value;
     }
     else {
         this->index++;
-        this->document[this->index][key] = value;
+        this->document[*timestep][this->index][key] = value;
     }
 }
 
 void JSONWriter::appendStringAttributeToCurrentElement(
-    std::string key, std::string value)
+    std::string key, std::string value, int* timestep)
 {
-    if (this->document[this->index][key].isNull()) {
-        this->document[this->index][key] = value;
+    if (this->document[*timestep][this->index][key].isNull()) {
+        this->document[*timestep][this->index][key] = value;
     }
     else {
         this->index++;
-        this->document[this->index][key] = value;
+        this->document[*timestep][this->index][key] = value;
     }
 }
 

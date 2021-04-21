@@ -33,10 +33,10 @@ void TimestepOutputHandler::writeToDocument()
     {
         this->outputDataWriter->appendFloatAttributeToCurrentElement(
             "x", (*this->pedestrianSet->getPedestrianCoordinates()).
-            at(i).coordinates[0]);
+            at(i).coordinates[0], this->timestep);
         this->outputDataWriter->appendFloatAttributeToCurrentElement(
             "y", (*this->pedestrianSet->getPedestrianCoordinates()).
-            at(i).coordinates[1]);
+            at(i).coordinates[1], this->timestep);
     }
 }
 

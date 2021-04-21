@@ -27,9 +27,9 @@ class JSONWriter: public OutputDataWriter {
         virtual void configure(CONFIG_MAP* configMap);
         virtual void initializeOutputFile(std::string outputFilePath);
         virtual void appendFloatAttributeToCurrentElement(
-            std::string key, FLOATING_NUMBER value);
+            std::string key, FLOATING_NUMBER value, int* timestep);
         virtual void appendStringAttributeToCurrentElement(
-            std::string key, std::string value);
+            std::string key, std::string value, int* timestep);
         virtual void writeToDocument(Data* data);
         virtual void writeDocumentContentsToFile();
 };
