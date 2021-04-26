@@ -1,11 +1,9 @@
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
-#include "../../VIPRA/readers/input_xml_reader.hpp"
 #include "../../VIPRA/readers/input_json_reader.hpp"
 #include <iostream>
 
 int main() {
-    // InputXMLReader inputXMLReader;
     InputJSONReader inputJSONReader;
     CONFIG_MAP* pedestrianConfigMap = new CONFIG_MAP;
     ENTITY_SET pedInputFileData;
@@ -19,13 +17,7 @@ int main() {
     int numPedestrians;
     int numberOfSnapshots;
 
-    // pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
-    // inputXMLReader.extractFileData(
-    //     "../../VIPRA/output_data/pedestrian_trajectory.xml", 
-    //     pedestrianConfigMap);
-    // pedInputFileData = inputXMLReader.getInputEntities();
-
-    // pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
+    pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
     inputJSONReader.extractFileData(
         "../../VIPRA/output_data/pedestrian_trajectory.json",
         pedestrianConfigMap);
@@ -38,12 +30,6 @@ int main() {
         trajectorySetY.push_back(
             (FLOATING_NUMBER) std::stod(pedInputFileData[i]["y"]));
     }
-
-    // obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
-    // inputXMLReader.extractFileData(
-    //     "../../VIPRA/input_data/xml/a320_144_obstacles.xml", 
-    //     obstacleConfigMap);
-    // obsInputFileData = inputXMLReader.getInputEntities();
 
     obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
     inputJSONReader.extractFileData(
