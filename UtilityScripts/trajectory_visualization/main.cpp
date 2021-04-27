@@ -4,7 +4,7 @@ namespace plt = matplotlibcpp;
 #include <iostream>
 
 int main() {
-    InputJSONReader inputJSONReader;
+    VisualizationInputJSONReader visualizationInputJSONReader;
     CONFIG_MAP* pedestrianConfigMap = new CONFIG_MAP;
     ENTITY_SET pedInputFileData;
     CONFIG_MAP* obstacleConfigMap = new CONFIG_MAP;
@@ -18,10 +18,10 @@ int main() {
     int numberOfSnapshots;
 
     pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
-    inputJSONReader.extractFileData(
+    visualizationInputJSONReader.extractFileData(
         "../../VIPRA/output_data/pedestrian_trajectory.json",
         pedestrianConfigMap);
-    pedInputFileData = inputJSONReader.getInputEntities();
+    pedInputFileData = visualizationInputJSONReader.getInputEntities();
 
     for(long unsigned int i = 0; i < pedInputFileData.size(); ++i)
     {
@@ -32,10 +32,10 @@ int main() {
     }
 
     obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
-    inputJSONReader.extractFileData(
+    visualizationInputJSONReader.extractFileData(
         "../../VIPRA/input_data/json/a320_144_obstacles.json", 
         obstacleConfigMap);
-    obsInputFileData = inputJSONReader.getInputEntities();
+    obsInputFileData = visualizationInputJSONReader.getInputEntities();
     
     for(long unsigned int i = 0; i < obsInputFileData.size(); ++i)
     {
