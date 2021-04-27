@@ -1,6 +1,6 @@
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
-#include "../../VIPRA/readers/input_json_reader.hpp"
+#include "trajectory_visualization/visualization_readers/visualization_input_json_reader.hpp"
 #include <iostream>
 
 int main() {
