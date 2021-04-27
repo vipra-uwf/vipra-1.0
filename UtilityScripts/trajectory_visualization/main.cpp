@@ -1,12 +1,12 @@
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
-#include "trajectory_visualization/visualization_readers/visualization_input_json_reader.hpp"
+#include "./visualization_readers/visualization_input_json_reader.hpp"
 #include <iostream>
 
 int main() {
     VisualizationInputJSONReader visualizationInputJSONReader;
     CONFIG_MAP* pedestrianConfigMap = new CONFIG_MAP;
-    ENTITY_SET pedInputFileData;
+    std::vector<ENTITY_SET> pedInputFileData;
     CONFIG_MAP* obstacleConfigMap = new CONFIG_MAP;
     ENTITY_SET obsInputFileData;
     std::vector<FLOATING_NUMBER> trajectorySetX;
@@ -22,62 +22,63 @@ int main() {
         "../../VIPRA/output_data/pedestrian_trajectory.json",
         pedestrianConfigMap);
     pedInputFileData = visualizationInputJSONReader.getInputEntities();
+    std::cout << pedInputFileData[25][0]["x"];
 
-    for(long unsigned int i = 0; i < pedInputFileData.size(); ++i)
-    {
-        trajectorySetX.push_back(
-            (FLOATING_NUMBER) std::stod(pedInputFileData[i]["x"]));
-        trajectorySetY.push_back(
-            (FLOATING_NUMBER) std::stod(pedInputFileData[i]["y"]));
-    }
+    // for(long unsigned int i = 0; i < pedInputFileData.size(); ++i)
+    // {
+    //     trajectorySetX.push_back(
+    //         (FLOATING_NUMBER) std::stod(pedInputFileData[i]["x"]));
+    //     trajectorySetY.push_back(
+    //         (FLOATING_NUMBER) std::stod(pedInputFileData[i]["y"]));
+    // }
 
-    obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
-    visualizationInputJSONReader.extractFileData(
-        "../../VIPRA/input_data/json/a320_144_obstacles.json", 
-        obstacleConfigMap);
-    obsInputFileData = visualizationInputJSONReader.getInputEntities();
+    // obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
+    // visualizationInputJSONReader.extractFileData(
+    //     "../../VIPRA/input_data/json/a320_144_obstacles.json", 
+    //     obstacleConfigMap);
+    // obsInputFileData = visualizationInputJSONReader.getInputEntities();
     
-    for(long unsigned int i = 0; i < obsInputFileData.size(); ++i)
-    {
-        obstacleX.push_back(
-            (FLOATING_NUMBER) std::stod(obsInputFileData[i]["x"]));
-        obstacleY.push_back(
-            (FLOATING_NUMBER) std::stod(obsInputFileData[i]["y"]));
-    }
+    // for(long unsigned int i = 0; i < obsInputFileData.size(); ++i)
+    // {
+    //     obstacleX.push_back(
+    //         (FLOATING_NUMBER) std::stod(obsInputFileData[i]["x"]));
+    //     obstacleY.push_back(
+    //         (FLOATING_NUMBER) std::stod(obsInputFileData[i]["y"]));
+    // }
 
-    i = 0;
-    numPedestrians = 144;
-    numberOfSnapshots = trajectorySetX.size() / numPedestrians;
+    // i = 0;
+    // numPedestrians = 144;
+    // numberOfSnapshots = trajectorySetX.size() / numPedestrians;
 
-    plt::clf();
-    plt::xlim(-5, 30);
-    plt::ylim(-5, 20); 
-    plt::scatter(obstacleX, obstacleY, 1);
-    plt::pause(2);
+    // plt::clf();
+    // plt::xlim(-5, 30);
+    // plt::ylim(-5, 20); 
+    // plt::scatter(obstacleX, obstacleY, 1);
+    // plt::pause(2);
 
-    while(i < numberOfSnapshots)
-    {
-        std::cout << "Displaying trajectory snapshot: " << i << std::endl;
+    // while(i < numberOfSnapshots)
+    // {
+    //     std::cout << "Displaying trajectory snapshot: " << i << std::endl;
 
-        auto firstX = trajectorySetX.begin();
-        auto firstY = trajectorySetY.begin();  
+    //     auto firstX = trajectorySetX.begin();
+    //     auto firstY = trajectorySetY.begin();  
 
-        std::vector<FLOATING_NUMBER> pedestrianX(
-            firstX + (i * 144), firstX + ((i + 1) * 144));
-        std::vector<FLOATING_NUMBER> pedestrianY(
-            firstY + (i * 144), firstY + ((i + 1) * 144));
+    //     std::vector<FLOATING_NUMBER> pedestrianX(
+    //         firstX + (i * 144), firstX + ((i + 1) * 144));
+    //     std::vector<FLOATING_NUMBER> pedestrianY(
+    //         firstY + (i * 144), firstY + ((i + 1) * 144));
 
-        plt::clf();
-        plt::xlim(-5, 30);
-        plt::ylim(-5, 20); 
-        plt::plot(pedestrianX, pedestrianY, "r.");
-        plt::scatter(obstacleX, obstacleY, 1);
+    //     plt::clf();
+    //     plt::xlim(-5, 30);
+    //     plt::ylim(-5, 20); 
+    //     plt::plot(pedestrianX, pedestrianY, "r.");
+    //     plt::scatter(obstacleX, obstacleY, 1);
 
-        plt::pause(.15);
-        i++;
-    }
+    //     plt::pause(.15);
+    //     i++;
+    // }
 
-    plt::pause(2);
-    plt::save("output.png");
-    plt::show();
+    // plt::pause(2);
+    // plt::save("output.png");
+    // plt::show();
 }

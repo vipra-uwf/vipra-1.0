@@ -1,19 +1,30 @@
 #include "visualization_input_json_reader.hpp"
 
-ENTITY_SET VisualizationInputJSONReader::getInputEntities()
+std::vector<ENTITY_SET> VisualizationInputJSONReader::getInputEntities()
 {
-    ENTITY_SET inputData;
-
+    std::vector<ENTITY_SET> inputData;
+    std::string currentTimestepID;
+    Json::Value currentTimestep;
+    Json::Value currentPedestrian;
+    std::string key;
+    std::string value;
+    
     for(unsigned int i = 0; i < this->jsonDocument.size(); i++)
-    {
-        inputData.push_back(std::unordered_map<std::string, std::string>());
-
-        for(unsigned int j = 0; j < this->jsonDocument[i].size(); j++)
+    {   
+        currentTimestepID = std::to_string(i);
+        currentTimestep = this->jsonDocument.get(currentTimestepID, 0);
+        inputData.push_back(std::vector<std::unordered_map<std::string, std::string>>(currentTimestep.size()));
+        
+        for(unsigned int j = 0; j < currentTimestep.size(); j++)
         {
-            std::string key = this->jsonDocument[i].getMemberNames()[j];
-            std::string value = this->jsonDocument[i][this->jsonDocument[i].getMemberNames()[j]].asString();
+            currentPedestrian = currentTimestep[j];
+            inputData[i].push_back(std::unordered_map<std::string, std::string>(currentPedestrian.size()));
 
-            inputData[i][key] = value;
+            for (unsigned int k = 0; k < currentPedestrian.size(); k++) {
+                key = currentPedestrian.getMemberNames()[k];
+                value = currentPedestrian.get(key, 0).asString();
+                inputData[i][j][key] = value;
+            }
         } 
     }
     

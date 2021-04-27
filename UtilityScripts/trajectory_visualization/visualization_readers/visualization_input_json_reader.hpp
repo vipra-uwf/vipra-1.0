@@ -19,7 +19,7 @@ class VisualizationInputJSONReader: public VisualizationInputDataLoader
         void parseFile();
 
     public:
-        virtual ENTITY_SET getInputEntities();
+        virtual std::vector<ENTITY_SET> getInputEntities();
         virtual void configure(CONFIG_MAP* configMap);
         virtual void extractFileData(
             std::string fileName, 

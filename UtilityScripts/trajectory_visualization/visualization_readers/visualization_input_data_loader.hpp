@@ -16,7 +16,7 @@ class VisualizationInputDataLoader
             CONFIG_MAP* configMap) = 0;
         virtual void configure(CONFIG_MAP* configMap) = 0; 
         
-        virtual ENTITY_SET getInputEntities() = 0; 
+        virtual std::vector<ENTITY_SET> getInputEntities() = 0; 
 };
 
 #endif
