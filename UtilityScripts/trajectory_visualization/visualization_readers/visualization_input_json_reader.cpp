@@ -27,8 +27,6 @@ void VisualizationInputJSONReader::configure(CONFIG_MAP* configMap)
 
 void VisualizationInputJSONReader::extractFileData(std::string fileName, CONFIG_MAP* configMap)
 {
-    //TODO dr eddy thinks openFile and parseFile should be in configure
-    //TODO but fileName isnt a part of config maps -- Alex
     openFile(fileName);
     parseFile();
     this->fileStream.close();
