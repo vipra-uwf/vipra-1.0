@@ -1,12 +1,14 @@
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
 #include "./visualization_readers/visualization_input_json_reader.hpp"
+#include "../../VIPRA/readers/input_json_reader.hpp"
 #include <iostream>
 
 int main()
 {
     //REFACTOR VARIABLE NAMES
     VisualizationInputJSONReader visualizationInputJSONReader;
+    InputJSONReader inputJSONReader;
     CONFIG_MAP *pedestrianConfigMap = new CONFIG_MAP;
     std::vector<ENTITY_SET> pedestrianInputFileData;
     CONFIG_MAP *obstacleConfigMap = new CONFIG_MAP;
@@ -42,11 +44,11 @@ int main()
         currentTimestepSetY.clear();
     }
 
-    // obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
-    // visualizationInputJSONReader.extractFileData(
-    //     "../../VIPRA/input_data/json/a320_144_obstacles.json",
-    //     obstacleConfigMap);
-    // obstacleInputFileData = visualizationInputJSONReader.getInputEntities();
+    obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
+    inputJSONReader.extractFileData(
+        "../../VIPRA/input_data/json/a320_144_obstacles.json",
+        obstacleConfigMap);
+    obstacleInputFileData = inputJSONReader.getInputEntities();
 
     // for(long unsigned int i = 0; i < obstacleInputFileData.size(); ++i)
     // {
