@@ -6,7 +6,6 @@ namespace plt = matplotlibcpp;
 
 int main()
 {
-    //REFACTOR VARIABLE NAMES
     VisualizationInputJSONReader visualizationInputJSONReader;
     InputJSONReader inputJSONReader;
     CONFIG_MAP *pedestrianConfigMap = new CONFIG_MAP;
@@ -19,7 +18,6 @@ int main()
     std::vector<FLOATING_NUMBER> currentTimestepSetY;
     std::vector<FLOATING_NUMBER> obstacleLocationsX;
     std::vector<FLOATING_NUMBER> obstacleLocationsY;
-    int numberOfPedestrians;
     int numberOfSnapshots;
 
     pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
@@ -58,7 +56,6 @@ int main()
             (FLOATING_NUMBER) std::stod(obstacleInputFileData[i]["y"]));
     }
 
-    // numberOfSnapshots = pedestrianLocationsX.size() / numberOfPedestrians;
     numberOfSnapshots = pedestrianLocationsX.size();
 
     plt::clf();
@@ -68,23 +65,13 @@ int main()
     plt::pause(2);
 
     for (int i = 0; i < numberOfSnapshots; i++)
-    {
-        numberOfPedestrians = pedestrianLocationsX[i].size();
-        
+    {        
         std::cout << "Displaying trajectory snapshot: " << i << std::endl;
-
-        auto firstX = pedestrianLocationsX[i].begin();
-        auto firstY = pedestrianLocationsY[i].begin();
-
-        std::vector<FLOATING_NUMBER> pedestrianX(
-            firstX + (i * numberOfPedestrians), firstX + ((i + 1) * numberOfPedestrians));
-        std::vector<FLOATING_NUMBER> pedestrianY(
-            firstY + (i * numberOfPedestrians), firstY + ((i + 1) * numberOfPedestrians));
 
         plt::clf();
         plt::xlim(-5, 30);
         plt::ylim(-5, 20);
-        plt::plot(pedestrianX, pedestrianY, "r.");
+        plt::plot(pedestrianLocationsX[i], pedestrianLocationsY[i], "r.");
         plt::scatter(obstacleLocationsX, obstacleLocationsY, 1);
 
         plt::pause(.15);
