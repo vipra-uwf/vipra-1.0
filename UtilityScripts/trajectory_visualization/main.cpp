@@ -5,73 +5,73 @@ namespace plt = matplotlibcpp;
 
 int main()
 {
+    //REFACTOR VARIABLE NAMES
     VisualizationInputJSONReader visualizationInputJSONReader;
     CONFIG_MAP *pedestrianConfigMap = new CONFIG_MAP;
-    std::vector<ENTITY_SET> pedInputFileData;
+    std::vector<ENTITY_SET> pedestrianInputFileData;
     CONFIG_MAP *obstacleConfigMap = new CONFIG_MAP;
-    ENTITY_SET obsInputFileData;
-    std::vector<std::vector<FLOATING_NUMBER>> trajectorySetX;
-    std::vector<FLOATING_NUMBER> currentTimestepX;
-    std::vector<FLOATING_NUMBER> currentTimestepY;
-    std::vector<std::vector<FLOATING_NUMBER>> trajectorySetY;
-    std::vector<FLOATING_NUMBER> obstacleX;
-    std::vector<FLOATING_NUMBER> obstacleY;
-    int i;
-    int numPedestrians;
+    ENTITY_SET obstacleInputFileData;
+    std::vector<std::vector<FLOATING_NUMBER>> pedestrianLocationsX;
+    std::vector<std::vector<FLOATING_NUMBER>> pedestrianLocationsY;
+    std::vector<FLOATING_NUMBER> currentTimestepSetX;
+    std::vector<FLOATING_NUMBER> currentTimestepSetY;
+    std::vector<FLOATING_NUMBER> obstacleLocationsX;
+    std::vector<FLOATING_NUMBER> obstacleLocationsY;
+    int numberOfPedestrians;
     int numberOfSnapshots;
 
     pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
     visualizationInputJSONReader.extractFileData(
         "../../VIPRA/output_data/pedestrian_trajectory.json",
         pedestrianConfigMap);
-    pedInputFileData = visualizationInputJSONReader.getInputEntities();
+    pedestrianInputFileData = visualizationInputJSONReader.getInputEntities();
 
-    for (long unsigned int i = 0; i < pedInputFileData.size(); ++i)
+    for (long unsigned int i = 0; i < pedestrianInputFileData.size(); ++i)
     {
-        for (long unsigned int j = 0; j < (pedInputFileData[i].size() / 2); ++j)
+        for (long unsigned int j = 0; j < (pedestrianInputFileData[i].size() / 2); ++j)
         {
-            currentTimestepX.push_back(
-                (FLOATING_NUMBER)std::stod(pedInputFileData[i][j]["x"]));
-            currentTimestepY.push_back(
-                (FLOATING_NUMBER)std::stod(pedInputFileData[i][j]["y"]));
+            currentTimestepSetX.push_back(
+                (FLOATING_NUMBER)std::stod(pedestrianInputFileData[i][j]["x"]));
+            currentTimestepSetY.push_back(
+                (FLOATING_NUMBER)std::stod(pedestrianInputFileData[i][j]["y"]));
         }
-        trajectorySetX.push_back(currentTimestepX);
-        trajectorySetY.push_back(currentTimestepY);
+        pedestrianLocationsX.push_back(currentTimestepSetX);
+        pedestrianLocationsY.push_back(currentTimestepSetY);
 
-        currentTimestepX.clear();
-        currentTimestepY.clear();
+        currentTimestepSetX.clear();
+        currentTimestepSetY.clear();
     }
 
     // obstacleConfigMap->insert({"parentElementName", "obstacle-set"});
     // visualizationInputJSONReader.extractFileData(
     //     "../../VIPRA/input_data/json/a320_144_obstacles.json",
     //     obstacleConfigMap);
-    // obsInputFileData = visualizationInputJSONReader.getInputEntities();
+    // obstacleInputFileData = visualizationInputJSONReader.getInputEntities();
 
-    // for(long unsigned int i = 0; i < obsInputFileData.size(); ++i)
+    // for(long unsigned int i = 0; i < obstacleInputFileData.size(); ++i)
     // {
-    //     obstacleX.push_back(
-    //         (FLOATING_NUMBER) std::stod(obsInputFileData[i]["x"]));
-    //     obstacleY.push_back(
-    //         (FLOATING_NUMBER) std::stod(obsInputFileData[i]["y"]));
+    //     obstacleLocationsX.push_back(
+    //         (FLOATING_NUMBER) std::stod(obstacleInputFileData[i]["x"]));
+    //     obstacleLocationsY.push_back(
+    //         (FLOATING_NUMBER) std::stod(obstacleInputFileData[i]["y"]));
     // }
 
     // i = 0;
-    // numPedestrians = 144;
-    // numberOfSnapshots = trajectorySetX.size() / numPedestrians;
+    // numberOfPedestrians = 144;
+    // numberOfSnapshots = pedestrianLocationsX.size() / numberOfPedestrians;
 
     // plt::clf();
     // plt::xlim(-5, 30);
     // plt::ylim(-5, 20);
-    // plt::scatter(obstacleX, obstacleY, 1);
+    // plt::scatter(obstacleLocationsX, obstacleLocationsY, 1);
     // plt::pause(2);
 
     // while(i < numberOfSnapshots)
     // {
     //     std::cout << "Displaying trajectory snapshot: " << i << std::endl;
 
-    //     auto firstX = trajectorySetX.begin();
-    //     auto firstY = trajectorySetY.begin();
+    //     auto firstX = pedestrianLocationsX.begin();
+    //     auto firstY = pedestrianLocationsY.begin();
 
     //     std::vector<FLOATING_NUMBER> pedestrianX(
     //         firstX + (i * 144), firstX + ((i + 1) * 144));
@@ -82,7 +82,7 @@ int main()
     //     plt::xlim(-5, 30);
     //     plt::ylim(-5, 20);
     //     plt::plot(pedestrianX, pedestrianY, "r.");
-    //     plt::scatter(obstacleX, obstacleY, 1);
+    //     plt::scatter(obstacleLocationsX, obstacleLocationsY, 1);
 
     //     plt::pause(.15);
     //     i++;
