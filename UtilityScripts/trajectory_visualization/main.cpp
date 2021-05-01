@@ -21,6 +21,7 @@ int main()
     std::vector<FLOATING_NUMBER> obstacleLocationsY;
     int numberOfPedestrians;
     int numberOfSnapshots;
+    int currentNumberOfP
 
     pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
     visualizationInputJSONReader.extractFileData(
@@ -50,47 +51,47 @@ int main()
         obstacleConfigMap);
     obstacleInputFileData = inputJSONReader.getInputEntities();
 
-    // for(long unsigned int i = 0; i < obstacleInputFileData.size(); ++i)
-    // {
-    //     obstacleLocationsX.push_back(
-    //         (FLOATING_NUMBER) std::stod(obstacleInputFileData[i]["x"]));
-    //     obstacleLocationsY.push_back(
-    //         (FLOATING_NUMBER) std::stod(obstacleInputFileData[i]["y"]));
-    // }
+    for(long unsigned int i = 0; i < obstacleInputFileData.size(); ++i)
+    {
+        obstacleLocationsX.push_back(
+            (FLOATING_NUMBER) std::stod(obstacleInputFileData[i]["x"]));
+        obstacleLocationsY.push_back(
+            (FLOATING_NUMBER) std::stod(obstacleInputFileData[i]["y"]));
+    }
 
-    // i = 0;
-    // numberOfPedestrians = 144;
     // numberOfSnapshots = pedestrianLocationsX.size() / numberOfPedestrians;
+    numberOfSnapshots = pedestrianLocationsX.size();
 
-    // plt::clf();
-    // plt::xlim(-5, 30);
-    // plt::ylim(-5, 20);
-    // plt::scatter(obstacleLocationsX, obstacleLocationsY, 1);
-    // plt::pause(2);
+    plt::clf();
+    plt::xlim(-5, 30);
+    plt::ylim(-5, 20);
+    plt::scatter(obstacleLocationsX, obstacleLocationsY, 1);
+    plt::pause(2);
 
-    // while(i < numberOfSnapshots)
-    // {
-    //     std::cout << "Displaying trajectory snapshot: " << i << std::endl;
+    for (int i = 0; i < numberOfSnapshots; i++)
+    {
+        numberOfPedestrians = pedestrianLocationsX[i].size();
+        
+        std::cout << "Displaying trajectory snapshot: " << i << std::endl;
 
-    //     auto firstX = pedestrianLocationsX.begin();
-    //     auto firstY = pedestrianLocationsY.begin();
+        auto firstX = pedestrianLocationsX[i].begin();
+        auto firstY = pedestrianLocationsY[i].begin();
 
-    //     std::vector<FLOATING_NUMBER> pedestrianX(
-    //         firstX + (i * 144), firstX + ((i + 1) * 144));
-    //     std::vector<FLOATING_NUMBER> pedestrianY(
-    //         firstY + (i * 144), firstY + ((i + 1) * 144));
+        std::vector<FLOATING_NUMBER> pedestrianX(
+            firstX + (i * numberOfPedestrians), firstX + ((i + 1) * numberOfPedestrians));
+        std::vector<FLOATING_NUMBER> pedestrianY(
+            firstY + (i * numberOfPedestrians), firstY + ((i + 1) * numberOfPedestrians));
 
-    //     plt::clf();
-    //     plt::xlim(-5, 30);
-    //     plt::ylim(-5, 20);
-    //     plt::plot(pedestrianX, pedestrianY, "r.");
-    //     plt::scatter(obstacleLocationsX, obstacleLocationsY, 1);
+        plt::clf();
+        plt::xlim(-5, 30);
+        plt::ylim(-5, 20);
+        plt::plot(pedestrianX, pedestrianY, "r.");
+        plt::scatter(obstacleLocationsX, obstacleLocationsY, 1);
 
-    //     plt::pause(.15);
-    //     i++;
-    // }
+        plt::pause(.15);
+    }
 
-    // plt::pause(2);
-    // plt::save("output.png");
-    // plt::show();
+    plt::pause(2);
+    plt::save("output.png");
+    plt::show();
 }
