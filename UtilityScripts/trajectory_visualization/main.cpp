@@ -21,7 +21,6 @@ int main()
     std::vector<FLOATING_NUMBER> obstacleLocationsY;
     int numberOfPedestrians;
     int numberOfSnapshots;
-    int currentNumberOfP
 
     pedestrianConfigMap->insert({"parentElementName", "pedestrian-set"});
     visualizationInputJSONReader.extractFileData(
