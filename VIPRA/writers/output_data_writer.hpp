@@ -13,9 +13,9 @@ class OutputDataWriter
 
         virtual void configure(CONFIG_MAP* configMap) = 0; 
         virtual void initializeOutputFile(std::string outputFilePath) = 0;
-        virtual void appendFloatAttributeToCurrentElement(
+        virtual void addFloatValue(
             std::string key, FLOATING_NUMBER value) = 0;
-        virtual void appendStringAttributeToCurrentElement(
+        virtual void addStringValue(
             std::string key, std::string value) = 0;
         virtual void writeToDocument(Data* data) = 0;
         virtual void writeDocumentContentsToFile() = 0;

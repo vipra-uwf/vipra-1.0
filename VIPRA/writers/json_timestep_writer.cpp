@@ -17,7 +17,7 @@ void JSONTimestepWriter::initializeOutputFile(std::string outputFilePath)
     openFile(outputFilePath);
 }
 
-void JSONTimestepWriter::appendFloatAttributeToCurrentElement(
+void JSONTimestepWriter::addFloatValue(
     std::string key, FLOATING_NUMBER value)
 { 
     if (key == "NEW_TIMESTEP") {
@@ -38,7 +38,7 @@ void JSONTimestepWriter::appendFloatAttributeToCurrentElement(
     }
 }
 
-void JSONTimestepWriter::appendStringAttributeToCurrentElement(
+void JSONTimestepWriter::addStringValue(
     std::string key, std::string value)
 {
     if (this->document[std::to_string(timestepID)].isNull()) {
