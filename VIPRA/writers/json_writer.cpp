@@ -17,26 +17,34 @@ void JSONWriter::initializeOutputFile(std::string outputFilePath)
 }
 
 void JSONWriter::appendFloatAttributeToCurrentElement(
-    std::string key, FLOATING_NUMBER value)
-{
-    if (this->document[this->index][key].isNull()) {
-        this->document[this->index][key] = value;
+    std::string key, FLOATING_NUMBER value, int timestepID)
+{ 
+    if (this->document[std::to_string(timestepID)].isNull()) {
+        this->index = 0;
+        this->document[std::to_string(timestepID)][this->index][key] = value;
+    }
+    else if (this->document[std::to_string(timestepID)][this->index][key].isNull()) {
+        this->document[std::to_string(timestepID)][this->index][key] = value;
     }
     else {
         this->index++;
-        this->document[this->index][key] = value;
+        this->document[std::to_string(timestepID)][this->index][key] = value;
     }
 }
 
 void JSONWriter::appendStringAttributeToCurrentElement(
-    std::string key, std::string value)
+    std::string key, std::string value, int timestepID)
 {
-    if (this->document[this->index][key].isNull()) {
-        this->document[this->index][key] = value;
+    if (this->document[std::to_string(timestepID)].isNull()) {
+        this->index = 0;
+        this->document[std::to_string(timestepID)][this->index][key] = value;
+    }
+    else if (this->document[std::to_string(timestepID)][this->index][key].isNull()) {
+        this->document[std::to_string(timestepID)][this->index][key] = value;
     }
     else {
         this->index++;
-        this->document[this->index][key] = value;
+        this->document[std::to_string(timestepID)][this->index][key] = value;
     }
 }
 

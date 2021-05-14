@@ -8,6 +8,7 @@ class TimestepOutputHandler: public SimulationOutputHandler
     private: 
         int frequency;
         int* timestep;
+        int timestepID;
         OutputDataWriter* outputDataWriter;
         PedestrianSet* pedestrianSet;
         Simulation* simulation;
