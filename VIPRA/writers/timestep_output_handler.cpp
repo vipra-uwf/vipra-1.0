@@ -33,14 +33,17 @@ bool TimestepOutputHandler::isOutputCriterionMet()
 
 void TimestepOutputHandler::writeToDocument()
 {
+    this->outputDataWriter->appendFloatAttributeToCurrentElement(
+        "NEW_TIMESTEP", this->timestepID);
+    
     for(int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
     {
         this->outputDataWriter->appendFloatAttributeToCurrentElement(
             "x", (*this->pedestrianSet->getPedestrianCoordinates()).
-            at(i).coordinates[0], this->timestepID);
+            at(i).coordinates[0]);
         this->outputDataWriter->appendFloatAttributeToCurrentElement(
             "y", (*this->pedestrianSet->getPedestrianCoordinates()).
-            at(i).coordinates[1], this->timestepID);
+            at(i).coordinates[1]);
     }
 }
 
