@@ -77,6 +77,10 @@ int main()
         plt::pause(.15);
     }
 
+    plt::clf();
+    plt::xlim(-5, 30);
+    plt::ylim(-5, 20);
+    plt::scatter(obstacleLocationsX, obstacleLocationsY, 1);
     plt::pause(2);
     plt::save("output.png");
     plt::show();

@@ -18,8 +18,8 @@ void XMLWriter::initializeOutputFile(std::string outputFilePath)
     initializeParentElement();
 }
 
-void XMLWriter::appendFloatAttributeToCurrentElement(
-    std::string key, FLOATING_NUMBER value, int timestepID)
+void XMLWriter::addFloatValue(
+    std::string key, FLOATING_NUMBER value)
 {
     if(this->currentElement == NULL)
     {
@@ -43,8 +43,8 @@ void XMLWriter::appendFloatAttributeToCurrentElement(
     }
 }
 
-void XMLWriter::appendStringAttributeToCurrentElement(
-    std::string key, std::string value, int timestepID)
+void XMLWriter::addStringValue(
+    std::string key, std::string value)
 {
     if(this->currentElement == NULL)
     {

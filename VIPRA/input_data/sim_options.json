@@ -26,6 +26,12 @@
             "className": "JSONWriter",
             "includePath" : "writers/json_writer.hpp",
             "type" : "json"
+        },
+        {
+            "objectName": "jsonTimestepWriter",
+            "className": "JSONTimestepWriter",
+            "includePath": "writers/json_timestep_writer.hpp",
+            "type": "json_timestep"
         }
     ],
 
