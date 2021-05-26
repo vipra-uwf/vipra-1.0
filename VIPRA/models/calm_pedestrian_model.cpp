@@ -396,6 +396,8 @@ void CalmPedestrianModel::calculateBeta()
     this->pedestrianSet->setDesiredSpeeds(newDesiredSpeeds);
 }
 
+
+
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
     int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet)
 {
@@ -489,6 +491,59 @@ bool CalmPedestrianModel::neighborDirectionTest(
 
     bool pass = false;
 
+    FLOATING_NUMBER displacementX;
+    FLOATING_NUMBER displacementY;
+    FLOATING_NUMBER directionX;
+    FLOATING_NUMBER directionY;
+
+    FLOATING_NUMBER dotProduct;
+
+    std::vector<Dimensions>* firstPedestriancoords 
+        = this->pedestrianSet->getPedestrianCoordinates();
+    std::vector<Dimensions>* secondPedestriancoords //TODO:fix name -EL
+        = this->pedestrianSet->getPedestrianCoordinates();
+
+    if(originSet == "O")
+    {
+        secondPedestriancoords = this->data->getObstacleSet()->
+            getObstacleCoordinates();
+    }
+
+    displacementX = (*firstPedestriancoords)[firstPedestrianIndex]
+        .coordinates[0] - (*secondPedestriancoords)[secondPedestrianIndex]
+        .coordinates[0];
+    displacementY = (*firstPedestriancoords)[firstPedestrianIndex]
+        .coordinates[1] - (*secondPedestriancoords)[secondPedestrianIndex]
+        .coordinates[1];
+
+    directionX = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
+    / sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
+    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) * 
+    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] * 
+    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1])); 
+
+    directionY = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] 
+    / sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
+    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) * 
+    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] * 
+    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]));
+
+    dotProduct = (displacementX * directionX) + (displacementY * directionY);
+
+    if(dotProduct > 0)
+    {
+        pass = true;
+    }
+
+
+    return pass;
+
+
+
+
+
+    /*bool pass = false;
+
     std::vector<Dimensions>* firstPedestriancoords 
         = this->pedestrianSet->getPedestrianCoordinates();
     std::vector<Dimensions>* secondPedestriancoords //TODO:fix name -EL
@@ -552,7 +607,7 @@ bool CalmPedestrianModel::neighborDirectionTest(
         }
     }
 
-    return pass;
+    return pass;*/
 }
 
 void CalmPedestrianModel::calculatePriority()

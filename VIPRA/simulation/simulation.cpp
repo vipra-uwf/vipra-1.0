@@ -3,14 +3,25 @@
 
 Simulation::Simulation()
 {
-    this->timestep = 0;
+
 }
 
 Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
 {
-    this->timestep = 0;
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
 }
+
+void Simulation::setData(Data* data)
+ {
+    this->data = data;
+ }
+
+ void Simulation::initialize()
+ {
+    SIM_PARAMS* simParams = data->getSimulationParams();
+    this->timestep = (*simParams)["time_step"];
+    this->timestep_size = (*simParams)["time_step_size"];
+ }
 
 void Simulation::setSimulationOutputHandler(
     SimulationOutputHandler* simulationOutputHandler)
@@ -44,8 +55,8 @@ void Simulation::run()
     this->pedestrianDynamicsModel->precompute();
 
     int i = 0; //delete this just for testing
-    
-    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
+   
+    while(i < 100)//!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
@@ -53,8 +64,9 @@ void Simulation::run()
             simulationOutputHandler->writeToDocument();
         }
         
-        clock.addSimulationTimeMs(0.005);
-        this->pedestrianDynamicsModel->update(0.005);
+        
+        clock.addSimulationTimeMs(this->timestep_size);
+        this->pedestrianDynamicsModel->update(this->timestep_size);
 
         this->timestep++;
         ++i;
