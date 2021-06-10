@@ -1,3 +1,4 @@
+#include <omp.h>
 #include "calm_pedestrian_model.hpp"
 
 void CalmPedestrianModel::configure(CONFIG_MAP* configMap)
@@ -428,8 +429,8 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
     return (sqrt(xDistance + yDistance));
 }
 
-std::pair<std::string, int> 
-    CalmPedestrianModel::calculateNearestNeighbors(int pedestrianIndex)
+std::pair<std::string, int>
+        CalmPedestrianModel::oldCalculateNearestNeighbor(int pedestrianIndex)
 {
 
     int nearest = -1;
@@ -440,13 +441,13 @@ std::pair<std::string, int>
     for (int j = 0; j < this->obstacleSet->getNumObstacles(); ++j)
     {
         if (pedestrianIndex != j && j < this->pedestrianSet->
-            getNumPedestrians() && neighborDirectionTest
-            (pedestrianIndex, j, originSet))
+                getNumPedestrians() && neighborDirectionTest
+                    (pedestrianIndex, j, originSet))
         {
-            if(nearest == -1 
-                || calculateDistance(pedestrianIndex, j, "P") 
-                < calculateDistance(pedestrianIndex, nearest, originSet)
-                )
+            if(nearest == -1
+               || calculateDistance(pedestrianIndex, j, "P")
+                  < calculateDistance(pedestrianIndex, nearest, originSet)
+                    )
             {
                 nearest = j;
                 originSet = "P";
@@ -455,9 +456,9 @@ std::pair<std::string, int>
 
         if(neighborDirectionTest(pedestrianIndex, j, "O"))
         {
-            if(nearest == -1 
-                || calculateDistance(pedestrianIndex, j, "O") 
-                < calculateDistance(pedestrianIndex, nearest, originSet))
+            if(nearest == -1
+               || calculateDistance(pedestrianIndex, j, "O")
+                  < calculateDistance(pedestrianIndex, nearest, originSet))
             {
                 nearest = j;
                 originSet = "O";
@@ -468,18 +469,187 @@ std::pair<std::string, int>
     if(nearest == -1)
     {
         newNearestNeighbor = std::make_pair(
-            (*this->pedestrianSet->getNearestNeighbors())
-            [pedestrianIndex].first, (*this->pedestrianSet->
-            getNearestNeighbors())[pedestrianIndex].second);
+                (*this->pedestrianSet->getNearestNeighbors())
+                [pedestrianIndex].first, (*this->pedestrianSet->
+                        getNearestNeighbors())[pedestrianIndex].second);
     }
     else
     {
-         newNearestNeighbor = std::make_pair(std::string(originSet), nearest);
+        newNearestNeighbor = std::make_pair(std::string(originSet), nearest);
     }
-    
-        
+
+
     return newNearestNeighbor;
 
+}
+
+std::pair<std::string, int> 
+    CalmPedestrianModel::calculateNearestNeighbors(int pedestrianIndex)
+{
+//    return oldCalculateNearestNeighbor(pedestrianIndex);
+    return ompCalculateNearestNeighbor(pedestrianIndex);
+
+}
+
+std::pair<std::string, int>
+        CalmPedestrianModel::ompCalculateNearestNeighbor(int pedestrianIndex)
+{
+    // Interesting note: the "check removed" is printing the same index multiple times.
+
+    const int NOT_FOUND = -1;
+    int globalNearestObstacle = NOT_FOUND;
+    int globalNearestPedestrian = NOT_FOUND;
+
+    std::string originSet = "P";
+    std::pair<std::string, int> newNearestNeighbor;
+
+    int numObstacles = this->obstacleSet->getNumObstacles();
+    int numPedestrians = this->pedestrianSet->getNumPedestrians();
+
+    #pragma omp parallel shared(globalNearestObstacle, \
+        globalNearestPedestrian, \
+        pedestrianIndex, \
+        numObstacles, \
+        numPedestrians) \
+        default(none)
+    {
+
+        // The local according to this specific thread. We will combine this
+        // in the below atomic section.
+        int localNearestObstacle = NOT_FOUND;
+
+        #pragma omp for nowait
+        for (int j = 0; j < numObstacles; ++j) {
+
+            if (neighborDirectionTest(pedestrianIndex, j, "O")) {
+                if (localNearestObstacle == NOT_FOUND
+                    || calculateDistance(pedestrianIndex, j, "O") <
+                       calculateDistance(pedestrianIndex, localNearestObstacle,
+                                         "O")) {
+                    localNearestObstacle = j;
+                }
+            }
+        }
+
+        #pragma omp critical
+        {
+            if (globalNearestObstacle == NOT_FOUND)
+            {
+                // we haven't found the nearest obstacle from another thread
+                // yet, so initialize it to the first nearest obstacle found
+                // here.
+                globalNearestObstacle = localNearestObstacle;
+            }
+            else if (localNearestObstacle != NOT_FOUND)
+            {
+                if (calculateDistance(pedestrianIndex, localNearestObstacle,
+                                      "O") <
+                    calculateDistance(pedestrianIndex, globalNearestObstacle,
+                                      "O"))
+                {
+                    // The nearest obstacle found by this thread is closer than
+                    // the current one, so make that the new nearest
+                    globalNearestObstacle = localNearestObstacle;
+                }
+            }
+        }
+
+        int localNearestPedestrian = NOT_FOUND;
+
+        #pragma omp for nowait
+        for (int j = 0; j < numPedestrians; ++j) {
+            if (pedestrianIndex != j &&
+                neighborDirectionTest(pedestrianIndex, j, "P")) {
+                if (localNearestPedestrian == NOT_FOUND
+                    || calculateDistance(pedestrianIndex, j, "P") <
+                       calculateDistance(pedestrianIndex, localNearestPedestrian,
+                                         "P")
+                        ) {
+                    localNearestPedestrian = j;
+                }
+            }
+        }
+
+        #pragma omp critical
+        {
+            if (globalNearestPedestrian == NOT_FOUND)
+            {
+                // we haven't found the nearest obstacle from another thread
+                // yet, so initialize it to the first nearest obstacle found
+                // here.
+                globalNearestPedestrian = localNearestPedestrian;
+            }
+            else if (localNearestPedestrian != NOT_FOUND)
+            {
+                if (calculateDistance(pedestrianIndex, localNearestPedestrian,
+                                      "P") <
+                    calculateDistance(pedestrianIndex, globalNearestPedestrian,
+                                      "P"))
+                {
+                    // The nearest obstacle found by this thread is closer than
+                    // the current one, so make that the new nearest
+                    globalNearestPedestrian = localNearestPedestrian;
+                }
+            }
+
+        }
+    }
+
+//    std::cout << "Nearest pedestrian: " << globalNearestPedestrian << std::endl;
+//    std::cout << "Nearest obstacle: " << globalNearestObstacle << std::endl;
+
+    int nearest = NOT_FOUND;
+    if (globalNearestPedestrian != NOT_FOUND && globalNearestObstacle == NOT_FOUND)
+    {
+        nearest = globalNearestPedestrian;
+        originSet = "P";
+    }
+    else if (globalNearestPedestrian == NOT_FOUND && globalNearestObstacle != NOT_FOUND)
+    {
+        nearest = globalNearestObstacle;
+        originSet = "O";
+    }
+    else if (globalNearestObstacle != NOT_FOUND &&
+             globalNearestPedestrian != NOT_FOUND)
+    {
+        FLOATING_NUMBER distanceToObstacle =
+                calculateDistance(pedestrianIndex,
+                                  globalNearestObstacle,
+                                  "O");
+        FLOATING_NUMBER distanceToPedestrian =
+                calculateDistance(pedestrianIndex,
+                                  globalNearestPedestrian,
+                                  "P");
+
+        if (distanceToObstacle < distanceToPedestrian)
+        {
+            nearest = globalNearestObstacle;
+            originSet = "O";
+        }
+        else
+        {
+            nearest = globalNearestPedestrian;
+            originSet = "P";
+        }
+    }
+
+    if(nearest == NOT_FOUND)
+    {
+        std::pair<std::string, int> const &oldNearestNeighbor =
+                (*this->pedestrianSet->getNearestNeighbors())[pedestrianIndex];
+        newNearestNeighbor = std::make_pair(
+                oldNearestNeighbor.first,
+                oldNearestNeighbor.second);
+    }
+    else
+    {
+
+//        std::cout << "Found nearest " << originSet << "(" << nearest << ")" << std::endl;
+         newNearestNeighbor = std::make_pair(std::string(originSet), nearest);
+    }
+
+
+    return newNearestNeighbor;
 }
 
 

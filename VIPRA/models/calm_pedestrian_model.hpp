@@ -38,6 +38,10 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         void calculateBeta();
         std::pair<std::string, int> calculateNearestNeighbors(
             int pedestrianIndex);
+        std::pair<std::string, int> oldCalculateNearestNeighbor(
+                int pedestrianIndex);
+        std::pair<std::string, int> ompCalculateNearestNeighbor(
+                int pedestrianIndex);
         bool neighborDirectionTest(
             int firstPedestrianIndex, int secondPedestrianIndex, 
             std::string originSet);
