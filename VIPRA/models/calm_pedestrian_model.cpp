@@ -430,60 +430,6 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
     return (sqrt(xDistance + yDistance));
 }
 
-std::pair<std::string, int>
-        CalmPedestrianModel::oldCalculateNearestNeighbor(int pedestrianIndex)
-{
-
-    int nearest = -1;
-
-    std::string originSet = "P";
-    std::pair<std::string, int> newNearestNeighbor;
-
-    for (int j = 0; j < this->obstacleSet->getNumObstacles(); ++j)
-    {
-        if (pedestrianIndex != j && j < this->pedestrianSet->
-                getNumPedestrians() && neighborDirectionTest
-                    (pedestrianIndex, j, originSet))
-        {
-            if(nearest == -1
-               || calculateDistance(pedestrianIndex, j, "P")
-                  < calculateDistance(pedestrianIndex, nearest, originSet)
-                    )
-            {
-                nearest = j;
-                originSet = "P";
-            }
-        }
-
-        if(neighborDirectionTest(pedestrianIndex, j, "O"))
-        {
-            if(nearest == -1
-               || calculateDistance(pedestrianIndex, j, "O")
-                  < calculateDistance(pedestrianIndex, nearest, originSet))
-            {
-                nearest = j;
-                originSet = "O";
-            }
-        }
-    }
-
-    if(nearest == -1)
-    {
-        newNearestNeighbor = std::make_pair(
-                (*this->pedestrianSet->getNearestNeighbors())
-                [pedestrianIndex].first, (*this->pedestrianSet->
-                        getNearestNeighbors())[pedestrianIndex].second);
-    }
-    else
-    {
-        newNearestNeighbor = std::make_pair(std::string(originSet), nearest);
-    }
-
-
-    return newNearestNeighbor;
-
-}
-
 std::pair<std::string, int> 
     CalmPedestrianModel::calculateNearestNeighbors(int pedestrianIndex)
 {
