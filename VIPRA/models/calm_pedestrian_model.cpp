@@ -433,14 +433,6 @@ FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
 std::pair<std::string, int> 
     CalmPedestrianModel::calculateNearestNeighbors(int pedestrianIndex)
 {
-//    return oldCalculateNearestNeighbor(pedestrianIndex);
-    return ompCalculateNearestNeighbor(pedestrianIndex);
-
-}
-
-std::pair<std::string, int>
-        CalmPedestrianModel::ompCalculateNearestNeighbor(int pedestrianIndex)
-{
     // Interesting note: the "check removed" is printing the same index multiple times.
 
     const int NOT_FOUND = -1;
