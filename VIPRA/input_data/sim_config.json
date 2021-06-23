@@ -6,7 +6,7 @@
         }
     },
     "output_data_writer" : {
-        "type" : "json",
+        "type" : "json_timestep",
         "outputFilePath" : "./output_data/pedestrian_trajectory.json",
         "configuration" : {
             "parentElementName" : "pedestrian-set",
