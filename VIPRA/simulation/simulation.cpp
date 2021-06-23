@@ -55,8 +55,9 @@ void Simulation::run()
     this->pedestrianDynamicsModel->precompute();
 
     int i = 0; //delete this just for testing
+    printDataDELETETHIS();
    
-    while(i < 100)//!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
+    while( i < 8000)//!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())

@@ -287,13 +287,13 @@ void CalmPedestrianModel::calculatePropulsion()
             && (*this->pedestrianSet->getGoalCoordinates())[i].coordinates[1]
                 == 0)
                 if(((*this->pedestrianSet->
-                getGoalCoordinates())[i].coordinates[1] 
+                getPedestrianCoordinates())[i].coordinates[1] 
                 >= ((*this->pedestrianSet->getGoalCoordinates())
-                [i].coordinates[1]) + 0.4)
+                [i].coordinates[1]) + 0.2)
                 || ((*this->pedestrianSet->
-                getGoalCoordinates())[i].coordinates[1] 
+                getPedestrianCoordinates())[i].coordinates[1] 
                 <= ((*this->pedestrianSet->getGoalCoordinates())
-                [i].coordinates[1]) - 0.4))
+                [i].coordinates[1]) - 0.2))
                 {
                     newVelocities.push_back(
                     Dimensions 
@@ -310,7 +310,6 @@ void CalmPedestrianModel::calculatePropulsion()
                 }
                 else
                 {
-
                     newVelocities.push_back(
                         Dimensions 
                         {
@@ -495,6 +494,8 @@ bool CalmPedestrianModel::neighborDirectionTest(
     FLOATING_NUMBER displacementY;
     FLOATING_NUMBER directionX;
     FLOATING_NUMBER directionY;
+    FLOATING_NUMBER normalization;
+
 
     FLOATING_NUMBER dotProduct;
 
@@ -509,6 +510,16 @@ bool CalmPedestrianModel::neighborDirectionTest(
             getObstacleCoordinates();
     }
 
+    normalization = sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
+    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) * 
+    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] * 
+    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]));
+
+    if(normalization == 0)
+    {
+        normalization = 1;
+    }
+
     displacementX = (*firstPedestriancoords)[firstPedestrianIndex]
         .coordinates[0] - (*secondPedestriancoords)[secondPedestrianIndex]
         .coordinates[0];
@@ -517,20 +528,14 @@ bool CalmPedestrianModel::neighborDirectionTest(
         .coordinates[1];
 
     directionX = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
-    / sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
-    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) * 
-    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] * 
-    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1])); 
+    / normalization; 
 
     directionY = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] 
-    / sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
-    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) * 
-    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] * 
-    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]));
+    / normalization;
 
     dotProduct = (displacementX * directionX) + (displacementY * directionY);
 
-    if(dotProduct > 0)
+    if(dotProduct < 0)
     {
         pass = true;
     }
