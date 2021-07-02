@@ -16,13 +16,17 @@ class Simulation
 {
     private:
         int timestep;
+        FLOATING_NUMBER timestep_size;
         PedestrianDynamicsModel* pedestrianDynamicsModel;
         SimulationOutputHandler* simulationOutputHandler;
         Clock clock;
+        Data* data;
         
     public:
         Simulation();
         Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel);
+        void setData(Data* data);
+        void initialize();
         void run();
 
         void setSimulationOutputHandler(

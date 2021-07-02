@@ -147,6 +147,11 @@ void CalmEntitySetFactory::populateSimulationParams(
 			(*simulationParams)["time_step"] = 
                 (FLOATING_NUMBER) std::stod(inputData[i]["time_step"]);
         }
+        else if(inputData[i].find("time_step_size") != inputData[i].end())
+        {
+			(*simulationParams)["time_step_size"] = 
+                (FLOATING_NUMBER) std::stod(inputData[i]["time_step_size"]);
+        }
         else if(inputData[i].find("aligning_stop_threshold") 
                 != inputData[i].end())
         {

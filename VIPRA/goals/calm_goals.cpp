@@ -118,9 +118,9 @@ void CalmGoals::determinePedestrianGoals()
         else if(((*this->pedestrianCoordinatesPointer)[i].coordinates[0]
             < this->exitGoal[nearestExit[i]].coordinates[0] - 0.1)
             && ((*this->pedestrianCoordinatesPointer)[i].coordinates[1]
-                < 0.4
+                < 0.3
             && (*this->pedestrianCoordinatesPointer)[i].coordinates[1]
-                > -0.4))
+                > -0.3))
         {
             newGoal.push_back(
                 Dimensions 

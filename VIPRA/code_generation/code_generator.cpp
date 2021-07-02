@@ -358,6 +358,8 @@ std::string generateMain()
             
             "\n"
             "\n\tSimulation simulation(pedestrianDynamicsModel);"
+            "\n\tsimulation.setData(&data);"
+            "\n\tsimulation.initialize();"
             
             "\n"
             "\n\toutputDataWriter->initializeOutputFile("
