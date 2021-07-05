@@ -11,12 +11,19 @@ void CalmPedestrianModel::initialize()
         this->data->getPedestrianSet());
     this->obstacleSet = dynamic_cast<ObstacleSet*>(
         this->data->getObstacleSet());
+
+    this->numPedestrians = this->data->getPedestrianSet()->getNumPedestrians();
+    this->numObstacles = this->data->getObstacleSet()->getNumObstacles();
+    this->pedestrianDistanceMatrix = new FLOATING_NUMBER[numPedestrians * numPedestrians];
+    this->obstacleDistanceMatrix = new FLOATING_NUMBER[numPedestrians * numObstacles];
+    this->calculateDistanceMatrices();
+
     createAisles();
     calculatePriority();
 
     std::vector<std::pair<std::string, int>> nearestNeighbors;
 
-    for (int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
+    for (int i = 0; i < numPedestrians; ++i)
     {
         this->goals->determinePedestrianGoals();
         nearestNeighbors.push_back(calculateNearestNeighbors(i));
@@ -60,9 +67,10 @@ void CalmPedestrianModel::precompute()
     bool currentPriorityActive = false;
     bool priorityActiveFlag = false;
     std::vector<MovementDefinitions> updatedMoveStates;
+    this->calculateDistanceMatrices();
     this->goals->determinePedestrianGoals();
 
-    for(int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
+    for(int i = 0; i < this->numPedestrians; ++i)
     {
         if(this->goals->checkPedestianGoalsMet(i))
         {
@@ -70,7 +78,7 @@ void CalmPedestrianModel::precompute()
         }
     }
 
-    for (int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
+    for (int i = 0; i < this->numPedestrians; ++i)
     {
         nearestNeighbors.push_back(calculateNearestNeighbors(i));
         currentPriorityActive = updatePriority(i);
@@ -108,7 +116,7 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
     std::vector<FLOATING_NUMBER> newSpeeds;
     std::vector<Dimensions> newPositions;
 
-    for (int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
+    for (int i = 0; i < this->numPedestrians; ++i)
     {
         if((*this->pedestrianSet->getMovementStates())[i] 
             == MovementDefinitions::STOP)
@@ -215,7 +223,7 @@ void CalmPedestrianModel::calculatePropulsion()
     FLOATING_NUMBER yAisleCoefficent = 0.9;
     FLOATING_NUMBER stagger_fix = 1.0;
     
-    for(int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
+    for(int i = 0; i < this->numPedestrians; ++i)
     {
 
         if((*this->pedestrianSet->getMovementStates())[i]
@@ -374,7 +382,7 @@ void CalmPedestrianModel::calculateBeta()
 {
     std::vector<FLOATING_NUMBER> newDesiredSpeeds;
 
-    for (int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
+    for (int i = 0; i < this->numPedestrians; ++i)
     {
 
         int nearestNeighhborIndex 
@@ -396,37 +404,74 @@ void CalmPedestrianModel::calculateBeta()
 }
 
 
+void CalmPedestrianModel::calculateDistanceMatrices()
+{
+    std::vector<Dimensions>* pedestrianCoordinates
+            = this->pedestrianSet->getPedestrianCoordinates();
+    std::vector<Dimensions>* obstacleCoordinates =
+            this->obstacleSet->getObstacleCoordinates();
+    for (int i = 0; i < this->numPedestrians; ++i)
+    {
+        for (int j = 0; j < i; ++j)
+        {
+            FLOATING_NUMBER xDistance = pow(
+                    pedestrianCoordinates->at(i).coordinates[0] -
+                    pedestrianCoordinates->at(j).coordinates[0], 2);
+            FLOATING_NUMBER yDistance = pow(
+                    pedestrianCoordinates->at(i).coordinates[1] -
+                    pedestrianCoordinates->at(j).coordinates[1], 2);
+            FLOATING_NUMBER distance = sqrt(xDistance + yDistance);
+            this->pedestrianDistanceMatrix[i * this->numPedestrians + j] =
+                    distance;
+        }
+
+        for (int j = 0; j < this->numObstacles; ++j)
+        {
+            FLOATING_NUMBER xDistance = pow(
+                    pedestrianCoordinates->at(i).coordinates[0] -
+                    obstacleCoordinates->at(j).coordinates[0], 2);
+            FLOATING_NUMBER yDistance = pow(
+                    pedestrianCoordinates->at(i).coordinates[1] -
+                    obstacleCoordinates->at(j).coordinates[1], 2);
+            FLOATING_NUMBER distance = sqrt(xDistance + yDistance);
+            this->pedestrianDistanceMatrix[i * this->numPedestrians + j] =
+                    distance;
+        }
+    }
+
+}
+
+FLOATING_NUMBER CalmPedestrianModel::getPedestrianDistance(int first, int second)
+{
+    if (first == second)
+    {
+        return 0;
+    }
+
+    if (first > second)
+    {
+        return this->pedestrianDistanceMatrix[first * this->numPedestrians + second];
+    }
+
+    return this->pedestrianDistanceMatrix[second * this->numPedestrians + first];
+}
+
+FLOATING_NUMBER CalmPedestrianModel::getObstacleDistance(int pedestrianIndex, int obstacleIndex)
+{
+    return this->obstacleDistanceMatrix[pedestrianIndex * this->numPedestrians + obstacleIndex];
+}
 
 FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
     int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet)
 {
-
-    std::vector<Dimensions>* firstPedestriancoords 
-        = this->pedestrianSet->getPedestrianCoordinates();
-    std::vector<Dimensions>* secondPedestriancoords 
-        = this->pedestrianSet->getPedestrianCoordinates();
-
-    if(originSet == "O")
+    if (originSet == "P")
     {
-        secondPedestriancoords = this->data->getObstacleSet()->
-            getObstacleCoordinates();
+        return getPedestrianDistance(firstPedestrianIndex, secondPedestrianIndex);
     }
-
-    FLOATING_NUMBER xDistance = pow(
-        (
-            firstPedestriancoords->at(firstPedestrianIndex).coordinates[0]
-            - secondPedestriancoords->at(secondPedestrianIndex).coordinates[0]
-        ), 
-        2
-    );
-    FLOATING_NUMBER yDistance = pow(
-        (
-            firstPedestriancoords->at(firstPedestrianIndex).coordinates[1]
-            - secondPedestriancoords->at(secondPedestrianIndex).coordinates[1]
-        ), 
-        2
-    );
-    return (sqrt(xDistance + yDistance));
+    else
+    {
+        return getObstacleDistance(firstPedestrianIndex, secondPedestrianIndex);
+    }
 }
 
 std::pair<std::string, int> 
