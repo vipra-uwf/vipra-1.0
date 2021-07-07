@@ -412,6 +412,9 @@ void CalmPedestrianModel::calculateDistanceMatrices()
             this->obstacleSet->getObstacleCoordinates();
     for (int i = 0; i < this->numPedestrians; ++i)
     {
+        // Only compute up to i since we only need to compute the distances
+        // between a and b, not b and a. The retrieval method takes care of the
+        // look-up logic. Here we strictly perform the necessary computations.
         for (int j = 0; j < i; ++j)
         {
             FLOATING_NUMBER xDistance = pow(
@@ -425,6 +428,8 @@ void CalmPedestrianModel::calculateDistanceMatrices()
                     distance;
         }
 
+        // Unlike pedestrians-to-pedestrians, we actually want to fill this
+        // entire matrix with values.
         for (int j = 0; j < this->numObstacles; ++j)
         {
             FLOATING_NUMBER xDistance = pow(
@@ -445,15 +450,21 @@ FLOATING_NUMBER CalmPedestrianModel::getPedestrianDistance(int first, int second
 {
     if (first == second)
     {
+        // The distance between the pedestrian and itself is always 0
         return 0;
     }
 
+    // Exploit the fact that the distance between a to b is identical to the
+    // distance between b to a
     if (first > second)
     {
-        return this->pedestrianDistanceMatrix[first * this->numPedestrians + second];
+        return this->pedestrianDistanceMatrix[first * this->numPedestrians +
+                                              second];
     }
-
-    return this->pedestrianDistanceMatrix[second * this->numPedestrians + first];
+    else {
+        return this->pedestrianDistanceMatrix[second * this->numPedestrians +
+                                              first];
+    }
 }
 
 FLOATING_NUMBER CalmPedestrianModel::getObstacleDistance(int pedestrianIndex, int obstacleIndex)
