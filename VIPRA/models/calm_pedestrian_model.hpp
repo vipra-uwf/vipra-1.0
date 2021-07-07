@@ -41,7 +41,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void update(FLOATING_NUMBER time);
 
         void calculatePropulsion();
-        FLOATING_NUMBER calculateDistance(
+        FLOATING_NUMBER getDistance(
             int firstPedestrianIndex, int secondPedestrianIndex, 
             std::string originSet);
         void calculateBeta();

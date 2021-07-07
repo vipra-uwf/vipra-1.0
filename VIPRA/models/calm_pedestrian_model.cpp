@@ -391,11 +391,11 @@ void CalmPedestrianModel::calculateBeta()
         std::string nearestNeighborOrigin = 
             (*this->pedestrianSet->getNearestNeighbors())[i].first;
 
-        FLOATING_NUMBER distanceMinusB = (calculateDistance(
-            i, 
-            FLOATING_NUMBER(nearestNeighhborIndex),
-            nearestNeighborOrigin
-            ) - b);
+        FLOATING_NUMBER distanceMinusB = (getDistance(
+                i,
+                FLOATING_NUMBER(nearestNeighhborIndex),
+                nearestNeighborOrigin
+        ) - b);
         
 
     newDesiredSpeeds.push_back(0.3 * (c - exp(a * distanceMinusB))); //TODO - fix the coeff to change depending on goal -EL
@@ -461,7 +461,7 @@ FLOATING_NUMBER CalmPedestrianModel::getObstacleDistance(int pedestrianIndex, in
     return this->obstacleDistanceMatrix[pedestrianIndex * this->numPedestrians + obstacleIndex];
 }
 
-FLOATING_NUMBER CalmPedestrianModel::calculateDistance(
+FLOATING_NUMBER CalmPedestrianModel::getDistance(
     int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet)
 {
     if (originSet == "P")
@@ -489,9 +489,9 @@ std::pair<std::string, int>
             getNumPedestrians() && neighborDirectionTest
             (pedestrianIndex, j, originSet))
         {
-            if(nearest == -1 
-                || calculateDistance(pedestrianIndex, j, "P") 
-                < calculateDistance(pedestrianIndex, nearest, originSet)
+            if(nearest == -1
+               || getDistance(pedestrianIndex, j, "P")
+                  < getDistance(pedestrianIndex, nearest, originSet)
                 )
             {
                 nearest = j;
@@ -501,9 +501,9 @@ std::pair<std::string, int>
 
         if(neighborDirectionTest(pedestrianIndex, j, "O"))
         {
-            if(nearest == -1 
-                || calculateDistance(pedestrianIndex, j, "O") 
-                < calculateDistance(pedestrianIndex, nearest, originSet))
+            if(nearest == -1
+               || getDistance(pedestrianIndex, j, "O")
+                  < getDistance(pedestrianIndex, nearest, originSet))
             {
                 nearest = j;
                 originSet = "O";
