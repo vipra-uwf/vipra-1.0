@@ -420,6 +420,13 @@ void CalmPedestrianModel::calculateDistanceMatrices()
     this->numPedestrians = this->data->getPedestrianSet()->getNumPedestrians();
     this->numObstacles = this->data->getObstacleSet()->getNumObstacles();
 
+    // Parallelize this loop using the guided scheduling, since the initial
+    // workloads will complete faster than subsequent ones, and we want openmp
+    // to front-load the work across cores.
+    #pragma omp parallel for \
+        shared(pedestrianCoordinates, obstacleCoordinates) \
+        default(none) \
+        schedule(guided)
     for (int i = 0; i < this->numPedestrians; ++i)
     {
         // Only compute up to i since we only need to compute the distances
@@ -496,10 +503,9 @@ FLOATING_NUMBER CalmPedestrianModel::getDistance(
     }
 }
 
-std::pair<std::string, int> 
-    CalmPedestrianModel::calculateNearestNeighbors(int pedestrianIndex)
+std::pair<std::string, int> CalmPedestrianModel::calculateNearestNeighbors(
+        int pedestrianIndex)
 {
-    // Interesting note: the "check removed" is printing the same index multiple times.
 
     const int NOT_FOUND = -1;
 
@@ -507,15 +513,10 @@ std::pair<std::string, int>
     FLOATING_NUMBER distanceToNearest = FLT_MAX;
     std::string originSet = "O";
 
-    int numObstacles = this->obstacleSet->getNumObstacles();
-    int numPedestrians = this->pedestrianSet->getNumPedestrians();
-
     #pragma omp parallel shared(nearest, \
         distanceToNearest, \
         originSet, \
-        pedestrianIndex, \
-        numObstacles, \
-        numPedestrians) \
+        pedestrianIndex) \
         default(none)
     {
 
@@ -595,7 +596,6 @@ std::pair<std::string, int>
     return newNearestNeighbor;
 }
 
-
 bool CalmPedestrianModel::neighborDirectionTest(
     int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet)
 {
@@ -611,7 +611,7 @@ bool CalmPedestrianModel::neighborDirectionTest(
 
     FLOATING_NUMBER dotProduct;
 
-    std::vector<Dimensions>* firstPedestriancoords 
+    std::vector<Dimensions>* firstPedestriancoords
         = this->pedestrianSet->getPedestrianCoordinates();
     std::vector<Dimensions>* secondPedestriancoords //TODO:fix name -EL
         = this->pedestrianSet->getPedestrianCoordinates();
@@ -622,9 +622,9 @@ bool CalmPedestrianModel::neighborDirectionTest(
             getObstacleCoordinates();
     }
 
-    normalization = sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
-    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) * 
-    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] * 
+    normalization = sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]
+    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) *
+    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] *
     (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]));
 
     if(normalization == 0)
@@ -639,10 +639,10 @@ bool CalmPedestrianModel::neighborDirectionTest(
         .coordinates[1] - (*secondPedestriancoords)[secondPedestrianIndex]
         .coordinates[1];
 
-    directionX = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
-    / normalization; 
+    directionX = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]
+    / normalization;
 
-    directionY = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] 
+    directionY = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]
     / normalization;
 
     dotProduct = (displacementX * directionX) + (displacementY * directionY);
