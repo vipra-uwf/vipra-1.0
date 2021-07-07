@@ -439,7 +439,7 @@ void CalmPedestrianModel::calculateDistanceMatrices()
                     pedestrianCoordinates->at(i).coordinates[1] -
                     obstacleCoordinates->at(j).coordinates[1], 2);
             FLOATING_NUMBER distance = sqrt(xDistance + yDistance);
-            this->pedestrianDistanceMatrix[i * this->numPedestrians + j] =
+            this->obstacleDistanceMatrix[i * this->numPedestrians + j] =
                     distance;
         }
     }
