@@ -1,5 +1,4 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -g -Wall
 NAME = "generated_main"
 CXXFLAGS = -std=c++11 -g -Wall -O3 -fopenmp -fPIE
 

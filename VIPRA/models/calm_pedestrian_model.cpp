@@ -503,8 +503,8 @@ FLOATING_NUMBER CalmPedestrianModel::getDistance(
     }
 }
 
-std::pair<std::string, int> CalmPedestrianModel::calculateNearestNeighbors(
-        int pedestrianIndex)
+std::pair<std::string, int>
+    CalmPedestrianModel::calculateNearestNeighbors(int pedestrianIndex)
 {
 
     const int NOT_FOUND = -1;
