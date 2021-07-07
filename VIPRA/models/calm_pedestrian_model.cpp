@@ -67,7 +67,6 @@ void CalmPedestrianModel::precompute()
     bool currentPriorityActive = false;
     bool priorityActiveFlag = false;
     std::vector<MovementDefinitions> updatedMoveStates;
-    this->calculateDistanceMatrices();
     this->goals->determinePedestrianGoals();
 
     for(int i = 0; i < this->numPedestrians; ++i)
@@ -77,6 +76,8 @@ void CalmPedestrianModel::precompute()
             this->pedestrianSet->removePedestrian(i);
         }
     }
+
+    calculateDistanceMatrices();
 
     for (int i = 0; i < this->numPedestrians; ++i)
     {
@@ -410,6 +411,13 @@ void CalmPedestrianModel::calculateDistanceMatrices()
             = this->pedestrianSet->getPedestrianCoordinates();
     std::vector<Dimensions>* obstacleCoordinates =
             this->obstacleSet->getObstacleCoordinates();
+
+    // Update the pedestrians since they could have been removed from the
+    // simulation at this point. Also update the obstacles just in case they
+    // can be removed in the future.
+    this->numPedestrians = this->data->getPedestrianSet()->getNumPedestrians();
+    this->numObstacles = this->data->getObstacleSet()->getNumObstacles();
+
     for (int i = 0; i < this->numPedestrians; ++i)
     {
         // Only compute up to i since we only need to compute the distances
