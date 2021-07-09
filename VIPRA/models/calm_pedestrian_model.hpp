@@ -13,13 +13,22 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 {
     private:
         CalmPedestrianSet* pedestrianSet;
-        ObstacleSet* obstacleSet; // TODO will a CALM pedestrian model only ever be used in an airplane? -- Alex 
+        ObstacleSet* obstacleSet; // TODO will a CALM pedestrian model only ever be used in an airplane? -- Alex
         Data* data;
         Goals* goals; // TODO i think this should be of type CalmGoals -- Alex
         int currentPriority;
         const FLOATING_NUMBER a = -2.4532;
         const FLOATING_NUMBER b = 0.138412;
         const FLOATING_NUMBER c = 0.87436;
+
+        FLOATING_NUMBER *pedestrianDistanceMatrix;
+        FLOATING_NUMBER *obstacleDistanceMatrix;
+        int numPedestrians;
+        int numObstacles;
+
+        void calculateDistanceMatrices();
+        FLOATING_NUMBER getPedestrianDistance(int first, int second);
+        FLOATING_NUMBER getObstacleDistance(int pedestrianIndex, int obstacleIndex);
     
     public:
         virtual void configure(CONFIG_MAP* configMap);
@@ -32,7 +41,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         virtual void update(FLOATING_NUMBER time);
 
         void calculatePropulsion();
-        FLOATING_NUMBER calculateDistance(
+        FLOATING_NUMBER getDistance(
             int firstPedestrianIndex, int secondPedestrianIndex, 
             std::string originSet);
         void calculateBeta();
@@ -46,6 +55,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         void createAisles();
         MovementDefinitions updateMovementState(int pedestrianIndex);
         bool updatePriority(int pedestrianIndex);
+
 };
 
 #endif
