@@ -1,3 +1,5 @@
+#include <cfloat>
+#include <omp.h>
 #include "calm_pedestrian_model.hpp"
 
 void CalmPedestrianModel::configure(CONFIG_MAP* configMap)
@@ -418,6 +420,13 @@ void CalmPedestrianModel::calculateDistanceMatrices()
     this->numPedestrians = this->data->getPedestrianSet()->getNumPedestrians();
     this->numObstacles = this->data->getObstacleSet()->getNumObstacles();
 
+    // Parallelize this loop using the guided scheduling, since the initial
+    // workloads will complete faster than subsequent ones, and we want openmp
+    // to front-load the work across cores.
+    #pragma omp parallel for \
+        shared(pedestrianCoordinates, obstacleCoordinates) \
+        default(none) \
+        schedule(guided)
     for (int i = 0; i < this->numPedestrians; ++i)
     {
         // Only compute up to i since we only need to compute the distances
@@ -494,60 +503,82 @@ FLOATING_NUMBER CalmPedestrianModel::getDistance(
     }
 }
 
-std::pair<std::string, int> 
-    CalmPedestrianModel::calculateNearestNeighbors(int pedestrianIndex)
+std::pair<std::string, int>
+        CalmPedestrianModel::calculateNearestNeighbors(int pedestrianIndex)
 {
+    const int NOT_FOUND = -1;
 
-    int nearest = -1;
-
+    int nearest = NOT_FOUND;
     std::string originSet = "P";
+    FLOATING_NUMBER nearestDistance = FLT_MAX;
+
     std::pair<std::string, int> newNearestNeighbor;
 
-    for (int j = 0; j < this->obstacleSet->getNumObstacles(); ++j)
+    #pragma omp parallel shared(nearest, \
+            originSet, \
+            nearestDistance, \
+            pedestrianIndex) \
+            default(none)
     {
-        if (pedestrianIndex != j && j < this->pedestrianSet->
-            getNumPedestrians() && neighborDirectionTest
-            (pedestrianIndex, j, originSet))
+        int localNearest = NOT_FOUND;
+        std::string localOriginSet = "P";
+        FLOATING_NUMBER localNearestDistance = FLT_MAX;
+
+        #pragma omp for nowait
+        for (int j = 0; j < numObstacles; ++j)
         {
-            if(nearest == -1
-               || getDistance(pedestrianIndex, j, "P")
-                  < getDistance(pedestrianIndex, nearest, originSet)
-                )
+            if (pedestrianIndex != j && j < numPedestrians &&
+                neighborDirectionTest(pedestrianIndex, j, "P"))
             {
-                nearest = j;
-                originSet = "P";
+                FLOATING_NUMBER distance = getDistance(pedestrianIndex, j, "P");
+                if (localNearest == NOT_FOUND
+                    || distance < localNearestDistance)
+                {
+                    localNearest = j;
+                    localOriginSet = "P";
+                    localNearestDistance = distance;
+                }
+            }
+
+            if (neighborDirectionTest(pedestrianIndex, j, "O"))
+            {
+                FLOATING_NUMBER distance = getDistance(pedestrianIndex, j, "O");
+                if (localNearest == NOT_FOUND
+                    || distance < localNearestDistance)
+                {
+                    localNearest = j;
+                    localOriginSet = "O";
+                    localNearestDistance = distance;
+                }
             }
         }
 
-        if(neighborDirectionTest(pedestrianIndex, j, "O"))
+        #pragma omp critical
         {
-            if(nearest == -1
-               || getDistance(pedestrianIndex, j, "O")
-                  < getDistance(pedestrianIndex, nearest, originSet))
+            if (localNearestDistance < nearestDistance)
             {
-                nearest = j;
-                originSet = "O";
+                nearest = localNearest;
+                originSet = localOriginSet;
+                nearestDistance = localNearestDistance;
             }
         }
     }
 
-    if(nearest == -1)
+    if(nearest == NOT_FOUND)
     {
         newNearestNeighbor = std::make_pair(
-            (*this->pedestrianSet->getNearestNeighbors())
-            [pedestrianIndex].first, (*this->pedestrianSet->
-            getNearestNeighbors())[pedestrianIndex].second);
+                (*this->pedestrianSet->getNearestNeighbors())
+                [pedestrianIndex].first, (*this->pedestrianSet->
+                        getNearestNeighbors())[pedestrianIndex].second);
     }
     else
     {
-         newNearestNeighbor = std::make_pair(std::string(originSet), nearest);
+        newNearestNeighbor = std::make_pair(std::string(originSet), nearest);
     }
-    
-        
+
+
     return newNearestNeighbor;
-
 }
-
 
 bool CalmPedestrianModel::neighborDirectionTest(
     int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet)
@@ -564,7 +595,7 @@ bool CalmPedestrianModel::neighborDirectionTest(
 
     FLOATING_NUMBER dotProduct;
 
-    std::vector<Dimensions>* firstPedestriancoords 
+    std::vector<Dimensions>* firstPedestriancoords
         = this->pedestrianSet->getPedestrianCoordinates();
     std::vector<Dimensions>* secondPedestriancoords //TODO:fix name -EL
         = this->pedestrianSet->getPedestrianCoordinates();
@@ -575,9 +606,9 @@ bool CalmPedestrianModel::neighborDirectionTest(
             getObstacleCoordinates();
     }
 
-    normalization = sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
-    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) * 
-    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] * 
+    normalization = sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]
+    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) *
+    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] *
     (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]));
 
     if(normalization == 0)
@@ -592,10 +623,10 @@ bool CalmPedestrianModel::neighborDirectionTest(
         .coordinates[1] - (*secondPedestriancoords)[secondPedestrianIndex]
         .coordinates[1];
 
-    directionX = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0] 
-    / normalization; 
+    directionX = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]
+    / normalization;
 
-    directionY = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] 
+    directionY = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]
     / normalization;
 
     dotProduct = (displacementX * directionX) + (displacementY * directionY);
