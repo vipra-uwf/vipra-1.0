@@ -24,17 +24,24 @@ void TimestepOutputHandler::setSimulation(Simulation* simulation)
 
 bool TimestepOutputHandler::isOutputCriterionMet()
 {
-    return *this->timestep % this->frequency == 0;
+    if (*this->timestep % this->frequency == 0) {
+        this->timestepID = *this->timestep / this->frequency;
+        return true;
+    }
+    return false;
 }
 
 void TimestepOutputHandler::writeToDocument()
 {
+    this->outputDataWriter->addFloatValue(
+        "NEW_TIMESTEP", this->timestepID);
+    
     for(int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
     {
-        this->outputDataWriter->appendFloatAttributeToCurrentElement(
+        this->outputDataWriter->addFloatValue(
             "x", (*this->pedestrianSet->getPedestrianCoordinates()).
             at(i).coordinates[0]);
-        this->outputDataWriter->appendFloatAttributeToCurrentElement(
+        this->outputDataWriter->addFloatValue(
             "y", (*this->pedestrianSet->getPedestrianCoordinates()).
             at(i).coordinates[1]);
     }

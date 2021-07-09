@@ -16,9 +16,9 @@ void JSONWriter::initializeOutputFile(std::string outputFilePath)
     openFile(outputFilePath);
 }
 
-void JSONWriter::appendFloatAttributeToCurrentElement(
+void JSONWriter::addFloatValue(
     std::string key, FLOATING_NUMBER value)
-{
+{ 
     if (this->document[this->index][key].isNull()) {
         this->document[this->index][key] = value;
     }
@@ -28,7 +28,7 @@ void JSONWriter::appendFloatAttributeToCurrentElement(
     }
 }
 
-void JSONWriter::appendStringAttributeToCurrentElement(
+void JSONWriter::addStringValue(
     std::string key, std::string value)
 {
     if (this->document[this->index][key].isNull()) {

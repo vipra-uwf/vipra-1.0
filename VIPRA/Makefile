@@ -1,12 +1,11 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -g -Wall
 NAME = "generated_main"
+CXXFLAGS = -std=c++11 -g -Wall -O3 -fopenmp -fPIE
 
 BUILD_DIR = build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 SRCS := $(filter-out code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
-OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o) 
-
+OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
 compile: setup generate_main make_directories main
 

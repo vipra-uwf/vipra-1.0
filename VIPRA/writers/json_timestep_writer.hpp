@@ -1,5 +1,5 @@
-#ifndef JSON_WRITER_HPP
-#define JSON_WRITER_HPP
+#ifndef JSON_TIMESTEP_WRITER_HPP
+#define JSON_TIMESTEP_WRITER_HPP
 
 #include <vector>
 #include <fstream>
@@ -9,7 +9,7 @@
 #include "output_data_writer.hpp"
 #include "../jsoncpp/json/json.h"
 
-class JSONWriter: public OutputDataWriter {
+class JSONTimestepWriter: public OutputDataWriter {
     private:
         Data* data;
         std::ofstream fileStream;
@@ -17,13 +17,14 @@ class JSONWriter: public OutputDataWriter {
         std::string childElementName;
         Json::Value document;
         int index;
+        int timestepID;
 
         void openFile(std::string fileName);
         void setParentElementName(std::string parentElementName);
         void setChildElementName(std::string dataElementName);
 
     public:
-        JSONWriter();
+        JSONTimestepWriter();
         virtual void configure(CONFIG_MAP* configMap);
         virtual void initializeOutputFile(std::string outputFilePath);
         virtual void addFloatValue(

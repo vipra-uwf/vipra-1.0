@@ -39,11 +39,11 @@ void XMLConverter::convertCoordFileToXML(std::string fileName, int flag)
 
             if(indicator == flag)
             {
-                this->xmlWriter.appendFloatAttributeToCurrentElement("x", x);
-                this->xmlWriter.appendFloatAttributeToCurrentElement("y", y);
-                this->xmlWriter.appendFloatAttributeToCurrentElement("mass", 1);
-                this->xmlWriter.appendFloatAttributeToCurrentElement("reaction_time", 0.4);
-                this->xmlWriter.appendFloatAttributeToCurrentElement("desired_speed", 1);
+                this->xmlWriter.addFloatValue("x", x);
+                this->xmlWriter.addFloatValue("y", y);
+                this->xmlWriter.addFloatValue("mass", 1);
+                this->xmlWriter.addFloatValue("reaction_time", 0.4);
+                this->xmlWriter.addFloatValue("desired_speed", 1);
             }
         }
         i++;
