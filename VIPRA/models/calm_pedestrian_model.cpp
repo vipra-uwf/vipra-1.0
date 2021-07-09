@@ -213,7 +213,6 @@ void CalmPedestrianModel::calculatePropulsion()
     std::vector<Dimensions> newPropulsiveForces;
     FLOATING_NUMBER xAisleCoefficent = 0.5;
     FLOATING_NUMBER yAisleCoefficent = 0.9;
-    FLOATING_NUMBER stagger_fix = 1.0;
     
     for(int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
     {
@@ -254,7 +253,6 @@ void CalmPedestrianModel::calculatePropulsion()
                             std::vector<FLOATING_NUMBER>
                             {
                                 0 * (*this->pedestrianSet->getDesiredSpeeds())[i],
-                                stagger_fix * 
                                 (*this->pedestrianSet->getDesiredSpeeds())[i]
                             }
                         }
@@ -286,6 +284,7 @@ void CalmPedestrianModel::calculatePropulsion()
             == (this->getGoals()->getPedestrianExitGoal(i)).coordinates[0]
             && (*this->pedestrianSet->getGoalCoordinates())[i].coordinates[1]
                 == 0)
+                {
                 if(((*this->pedestrianSet->
                 getPedestrianCoordinates())[i].coordinates[1] 
                 >= ((*this->pedestrianSet->getGoalCoordinates())
@@ -323,6 +322,7 @@ void CalmPedestrianModel::calculatePropulsion()
                         }
                     );
                 }
+            }
 
             else if((*this->pedestrianSet->getGoalCoordinates())[i]
             .coordinates[0] == (this->getGoals()->getPedestrianExitGoal(i))
