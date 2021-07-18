@@ -32,11 +32,11 @@ void Simulation::setSimulationOutputHandler(
 /*
 - pedestrian dynamics model
     - input to model - pedestrians, layout, goal for each pedestrian
-        - goals will likely need to be defined as 
+        - goals will likely need to be defined as
         a template class or function pointer
             - two goals - one for simulation, one for each pedestrian
     - how each pedestrian will move
-    - output - positions of the pedestrians, velocity, 
+    - output - positions of the pedestrians, velocity,
     - additional movement characteristics
         - define an output format similar to our input format
 - human behavior model
@@ -48,26 +48,27 @@ void Simulation::run()
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
-    
+
     clock.start();
     clock.printRealStartTime();
-    
+
     this->pedestrianDynamicsModel->precompute();
 
     int i = 0; //delete this just for testing
     printDataDELETETHIS();
-   
-    while( i < 6000)//!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
+
+    while(i < 4077)//!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
         {
             simulationOutputHandler->writeToDocument();
         }
-        
-        
+
+
         clock.addSimulationTimeMs(this->timestep_size);
         this->pedestrianDynamicsModel->update(this->timestep_size);
+
 
         this->timestep++;
         ++i;
@@ -98,15 +99,15 @@ void Simulation::printDataDELETETHIS()
 {
     Data* data = this->pedestrianDynamicsModel->getData();
     CalmPedestrianSet* calmPedSet = dynamic_cast<
-        CalmPedestrianSet*>(data->getPedestrianSet()); 
+        CalmPedestrianSet*>(data->getPedestrianSet());
 
     MovementDefinitions state;
-	
-    std::cout << "Pedestrians: " << std::endl; 
+
+    std::cout << "Pedestrians: " << std::endl;
 
 	for(int i = 0; i < calmPedSet->getNumPedestrians(); ++i)
 	{
-		std::cout << "ped [" << i << "] ("  
+		std::cout << "ped [" << i << "] ("
             << calmPedSet->getPedestrianCoordinates()
                 ->at(i).coordinates[0] << ", "
 		    << calmPedSet->getPedestrianCoordinates()
@@ -116,7 +117,7 @@ void Simulation::printDataDELETETHIS()
                 ->at(i).coordinates[0] << ", "
 			<< calmPedSet->getGoalCoordinates()
                 ->at(i).coordinates[1] << ")"
-		
+
 			<< " velocity (" << calmPedSet->getVelocities()
                 ->at(i).coordinates[0] << ", "
 			<< calmPedSet->getVelocities()
@@ -129,20 +130,20 @@ void Simulation::printDataDELETETHIS()
                 ->at(i).coordinates[0]
             << " propulsion_forcey=" << calmPedSet->getPropulsionForces()
                 ->at(i).coordinates[1]
-			<< " nearest_neighbor=" 
+			<< " nearest_neighbor="
             << calmPedSet->getNearestNeighbors()->at(i).second
-            << " nearest_neighbor_originset=" 
+            << " nearest_neighbor_originset="
             << calmPedSet->getNearestNeighbors()->at(i).first
 			<< " speed=" << calmPedSet->getSpeeds()->at(i)
-            << " priority=" 
+            << " priority="
             << calmPedSet->getPriorities()->at(i)
             << " Move_state=";
 
             state = calmPedSet->getMovementStates()->at(i);
             switch(state)
             {
-                case MovementDefinitions::PED_DYNAM : std::cout 
-                    << "PED_DYNAM"; break; 
+                case MovementDefinitions::PED_DYNAM : std::cout
+                    << "PED_DYNAM"; break;
                 case MovementDefinitions::HUMAN : std::cout << "HUMAN"; break;
                 case MovementDefinitions::POLICY : std::cout << "POLICY"; break;
                 case MovementDefinitions::STOP : std::cout << "STOP"; break;
