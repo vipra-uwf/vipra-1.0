@@ -71,14 +71,25 @@ void CalmPedestrianModel::precompute()
     std::vector<MovementDefinitions> updatedMoveStates;
     this->goals->determinePedestrianGoals();
 
-    for(int i = 0; i < this->numPedestrians; ++i)
-    {
-        if(this->goals->checkPedestianGoalsMet(i))
+    std::vector<int> pedestriansToRemove;
+
+        for(int i = 0; i < this->numPedestrians; ++i)
         {
-            this->pedestrianSet->removePedestrian(i);
+            if(this->goals->checkPedestianGoalsMet(i))
+            {
+                pedestriansToRemove.push_back(i);
+            }
+
         }
 
-    }
+        for(auto iter = pedestriansToRemove.begin();
+                 iter != pedestriansToRemove.end();
+                 iter++)
+        {
+                this->pedestrianSet->removePedestrian(*iter);
+        }
+
+        this->numPedestrians -= pedestriansToRemove.size();
 
     calculateDistanceMatrices();
 
