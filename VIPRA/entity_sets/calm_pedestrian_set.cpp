@@ -19,7 +19,7 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 {
     std::cout << "check removed: " << pedestrianIndex << std::endl;
     this->numPedestrians--;
-    
+
     this->pedestrianCoordinates.erase(pedestrianCoordinates.
         begin()+pedestrianIndex);
     this->goalCoordinates.erase(goalCoordinates.begin()+pedestrianIndex);
@@ -33,6 +33,7 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
     this->movementStates.erase(movementStates.begin()+pedestrianIndex);
     this->priorities.erase(priorities.begin()+pedestrianIndex);
+
 }
 
 int CalmPedestrianSet::getNumPedestrians()
@@ -57,7 +58,7 @@ std::vector<Dimensions>* CalmPedestrianSet::getVelocities()
 
 std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getSpeeds()
 {
-    return &this->speedsMetersPerSecond;    
+    return &this->speedsMetersPerSecond;
 }
 
 std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getMasses()
@@ -81,7 +82,7 @@ std::vector<Dimensions>* CalmPedestrianSet::getPropulsionForces()
 }
 
 
-std::vector<std::pair<std::string, int>>* 
+std::vector<std::pair<std::string, int>>*
     CalmPedestrianSet::getNearestNeighbors()
 {
     return &this->nearestNeighbors;
@@ -104,7 +105,7 @@ std::vector<int>* CalmPedestrianSet::getStartingAisles()
 
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
 {
-   this->numPedestrians = numPedestrians; 
+   this->numPedestrians = numPedestrians;
 }
 
 void CalmPedestrianSet::setPedestrianCoordinates(std::vector<Dimensions>
@@ -157,7 +158,7 @@ void CalmPedestrianSet::setPropulsionForces(
 void CalmPedestrianSet::setNearestNeighbors(
     std::vector<std::pair<std::string, int>> nearestNeighbors)
 {
-   this->nearestNeighbors = nearestNeighbors; 
+   this->nearestNeighbors = nearestNeighbors;
 }
 
 void CalmPedestrianSet::setPriorities(std::vector<FLOATING_NUMBER> priorities)
