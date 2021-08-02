@@ -7,6 +7,11 @@ SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 SRCS := $(filter-out code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
+all: compile
+
+grammar: Behaviors.g4
+	antlr4 -Dlanguage=Cpp -o dsl Behaviors.g4
+
 compile: setup generate_main make_directories main
 
 generate_main:

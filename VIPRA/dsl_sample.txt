@@ -1,0 +1,67 @@
+// Example DSLs (non-functional)
+// Consider + a(n) + person_type - registers a new type of person
+Consider a "Shy person".
+
+// A(n) person_type "wants to" registers a non-critical preference for that person
+// "be 10 meters away from" indicates a preferred distance between two points
+// "other people" indicates the target for the previous preference. In this case, other pedestrians
+A "Shy person" wants to be 10 meters away from other people.
+
+If a "Shy person" finds themselves within 10 meters of another person,
+Then they will move 1 meter opposite of that person.
+
+// "10% of the population" - indicates the slice size
+// "identify as a(n)" - what follows is a person_type
+// person_type - the aforementioned person_type
+10% of the population identify as a "Shy person".
+
+
+// Travelling party of size X.
+Consider a "Traveling Party".
+
+A "Traveling Party" consists of N people.
+
+A member of a "Traveling Party" wants to be at most 2 meters away from other members of the same "Traveling Party".
+
+30% of the population form a "Traveling Party" of 2 people.
+10% of the population form a "Traveling Party" of 3 people.
+ 5% of the population form a "Traveling Party" of 4 people.
+
+
+// At this point the rules-engine can parse this file, and add "forces" on each pedestrian position _after_ it has been made.
+// For example, if the new position of a "Shy person" brings them in conflict with one of the rules, the remediation actions can be taken.
+
+// Model Input
+// - Time
+// - Positions, relative to each other
+// - What they are doing?? i.e., their movement state. Are they stopped? Moving slowly?
+// - What is their speed?
+// Model Output
+// - Pedestrian data (positions)
+// - modifies internal state?
+
+// NOTE: We should allow for a stateful-model - store arbitrary information for
+// each person.
+
+// From Dr. Eddy:
+// If a passenger is unloading luggage, a "shy person" will wait. If a passenger is unloading baggage, a "rude person" will push behind.
+
+A person that is stopped 1 meter in front of an obstacle is unloading luggage.
+
+// From Dr. Srinivasan:
+// reactions of sudden speed changes could be important to model
+
+// We should add contextual information to the obstacle JSON that can assist with
+// modelling human behaviors.
+
+// Features that are needed to be captured
+// Goals
+// Other concepts
+// Anything the user can add through the DSL
+
+// Make it extensible
+
+// In the context of _human_ behaviors, the exact speed may not be our starting
+// point. We could go with the state of "moving" or "not moving".
+// We want the researchers to define these states in the DSL, and describe the
+// transitions in the DSL too. Researchers can define more complex options.
