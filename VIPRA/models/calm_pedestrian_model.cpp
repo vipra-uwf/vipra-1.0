@@ -580,7 +580,7 @@ std::pair<std::string, int>
                 }
             }
 
-            /*if (neighborDirectionTest(pedestrianIndex, j, "O"))
+            if (neighborDirectionTest(pedestrianIndex, j, "O"))
             {
                 FLOATING_NUMBER distance = getDistance(pedestrianIndex, j, "O");
                 if (localNearest == NOT_FOUND
@@ -590,7 +590,7 @@ std::pair<std::string, int>
                     localOriginSet = "O";
                     localNearestDistance = distance;
                 }
-            }*/
+            }
         }
 
         #ifndef _WIN32
@@ -625,7 +625,7 @@ std::pair<std::string, int>
 bool CalmPedestrianModel::neighborDirectionTest(
     int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet)
 {
-
+/*
     bool pass = false;
 
     FLOATING_NUMBER displacementX;
@@ -680,12 +680,12 @@ bool CalmPedestrianModel::neighborDirectionTest(
 
 
     return pass;
+//*/
 
 
 
 
-
-    /*bool pass = false;
+    bool pass = false;
 
     std::vector<Dimensions>* firstPedestriancoords
         = this->pedestrianSet->getPedestrianCoordinates();
@@ -750,7 +750,7 @@ bool CalmPedestrianModel::neighborDirectionTest(
         }
     }
 
-    return pass;*/
+    return pass;
 }
 
 void CalmPedestrianModel::calculatePriority()
