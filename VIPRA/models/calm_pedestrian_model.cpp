@@ -294,7 +294,7 @@ void CalmPedestrianModel::calculatePropulsion()
                             {
                                 0 *
                                 (*this->pedestrianSet->getDesiredSpeeds())[i],
-                                -1.1 *
+                                -1.1f *
                                 (*this->pedestrianSet->getDesiredSpeeds())[i]
                             }
                         }
