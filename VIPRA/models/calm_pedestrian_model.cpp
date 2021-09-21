@@ -591,7 +591,7 @@ std::pair<std::string, int>
                 }
             }
 
-            /*if (neighborDirectionTest(pedestrianIndex, j, "O")
+            if (neighborDirectionTest(pedestrianIndex, j, "O")
                 && neighborSpacialTest(pedestrianIndex, j, "O"))
             {
                 FLOATING_NUMBER distance = getDistance(pedestrianIndex, j, "O");
@@ -602,7 +602,7 @@ std::pair<std::string, int>
                     localOriginSet = "O";
                     localNearestDistance = distance;
                 }
-            }*/
+            }
         }
 
         #ifndef _WIN32
@@ -652,10 +652,14 @@ bool CalmPedestrianModel::neighborDirectionTest(
             getObstacleCoordinates();
     }
 
-    normalization = sqrt(((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]
-    * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]) *
-    ((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1] *
-    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]));
+    normalization = sqrt(((*this->pedestrianSet->getVelocities())
+      [firstPedestrianIndex].coordinates[0]
+      * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
+      .coordinates[0])
+      * ((*this->pedestrianSet->getVelocities())
+      [firstPedestrianIndex].coordinates[1]
+      * (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
+      .coordinates[1]));
 
     if(normalization == 0)
     {
@@ -669,11 +673,11 @@ bool CalmPedestrianModel::neighborDirectionTest(
         .coordinates[1] - (*secondPedestriancoords)[secondPedestrianIndex]
         .coordinates[1];
 
-    directionX = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]
-    / normalization;
+    directionX = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
+    .coordinates[0] / normalization;
 
-    directionY = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]
-    / normalization;
+    directionY = (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
+    .coordinates[1] / normalization;
 
     dotProduct = (displacementX * directionX) + (displacementY * directionY);
 
@@ -687,14 +691,18 @@ bool CalmPedestrianModel::neighborDirectionTest(
     return pass;
 }
 
-bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet)
+bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex,
+  int secondPedestrianIndex, std::string originSet)
 {
   bool pass = false;
 
-  FLOATING_NUMBER directionX;
-  FLOATING_NUMBER directionY;
+  FLOATING_NUMBER firstPedestrianDirectionX;
+  FLOATING_NUMBER firstPedestrianDirectionY;
 
-  FLOATING_NUMBER shoulderLength = 0.05;
+  FLOATING_NUMBER secondPedestrianDirectionX;
+  FLOATING_NUMBER secondPedestrianDirectionY;
+
+  FLOATING_NUMBER shoulderLength = 0.1;
 
 
   std::vector<Dimensions>* firstPedestriancoords
@@ -710,19 +718,34 @@ bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex, int seco
           getObstacleCoordinates();
   }
 
-  directionX = std::abs((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[0]);
-  directionY = std::abs((*this->pedestrianSet->getVelocities())[firstPedestrianIndex].coordinates[1]);
+  else if(originSet == "P")
+  {
+    secondPedestrianDirectionX = std::abs(
+      (*this->pedestrianSet->getVelocities())[secondPedestrianIndex]
+      .coordinates[0]);
+    secondPedestrianDirectionY = std::abs(
+      (*this->pedestrianSet->getVelocities())[secondPedestrianIndex]
+      .coordinates[1]);
+  }
+
+  firstPedestrianDirectionX = std::abs(
+    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
+    .coordinates[0]);
+  firstPedestrianDirectionY = std::abs(
+    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
+    .coordinates[1]);
 
 
   if(originSet == "O")
   {
-    if(directionX > directionY)
+    if(firstPedestrianDirectionX > firstPedestrianDirectionY)
     {
       if((*secondPedestriancoords)[secondPedestrianIndex]
           .coordinates[1] <= ((*firstPedestriancoords)[firstPedestrianIndex]
-              .coordinates[1] + shoulderLength) && (*secondPedestriancoords)[secondPedestrianIndex]
-                  .coordinates[1] >= ((*firstPedestriancoords)[firstPedestrianIndex]
-                      .coordinates[1] - shoulderLength))
+          .coordinates[1] + shoulderLength)
+          && (*secondPedestriancoords)[secondPedestrianIndex].coordinates[1]
+          >= ((*firstPedestriancoords)[firstPedestrianIndex].coordinates[1]
+          - shoulderLength))
       {
           pass = true;
       }
@@ -733,9 +756,10 @@ bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex, int seco
     {
       if((*secondPedestriancoords)[secondPedestrianIndex]
           .coordinates[0] <= ((*firstPedestriancoords)[firstPedestrianIndex]
-              .coordinates[0] + shoulderLength) && (*secondPedestriancoords)[secondPedestrianIndex]
-                  .coordinates[0] >= ((*firstPedestriancoords)[firstPedestrianIndex]
-                      .coordinates[0] - shoulderLength))
+          .coordinates[0] + shoulderLength)
+          && (*secondPedestriancoords)[secondPedestrianIndex]
+          .coordinates[0] >= ((*firstPedestriancoords)[firstPedestrianIndex]
+          .coordinates[0] - shoulderLength))
         {
           pass = true;
         }
@@ -744,46 +768,71 @@ bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex, int seco
 
   else
   {
-    if(directionX > directionY)
+    if(firstPedestrianDirectionX > firstPedestrianDirectionY)
     {
-      if((((*secondPedestriancoords)[secondPedestrianIndex]
-          .coordinates[1] - shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-              .coordinates[1] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
-                  .coordinates[1] - shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
-                      .coordinates[1] - shoulderLength)) || (((*secondPedestriancoords)[secondPedestrianIndex]
-                          .coordinates[1]) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-                              .coordinates[1] + shoulderLength) && (*secondPedestriancoords)[secondPedestrianIndex]
-                                  .coordinates[1] >= ((*firstPedestriancoords)[firstPedestrianIndex]
-                                      .coordinates[1] - shoulderLength)) || (((*secondPedestriancoords)[secondPedestrianIndex]
-                                          .coordinates[1] + shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-                                              .coordinates[1] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
-                                                  .coordinates[1] + shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
-                                                      .coordinates[1] - shoulderLength)) )
+      if(secondPedestrianDirectionX > secondPedestrianDirectionY)
       {
-          pass = true;
+        if((((*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[1] - shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[1] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[1] - shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[1] - shoulderLength)) || (((*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[1] + shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[1] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[1] + shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[1] - shoulderLength)) )
+            {
+              pass = true;
+            }
+
+      }
+
+      else
+      {
+        if((*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[1] <= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[1] + shoulderLength) && (*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[1] >= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[1] - shoulderLength))
+        {
+            pass = true;
+        }
+
       }
 
     }
 
     else
     {
-      if((((*secondPedestriancoords)[secondPedestrianIndex]
-          .coordinates[0] - shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-              .coordinates[0] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
-                  .coordinates[0] - shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
-                      .coordinates[0] - shoulderLength)) || (((*secondPedestriancoords)[secondPedestrianIndex]
-                          .coordinates[0]) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-                              .coordinates[0] + shoulderLength) && (*secondPedestriancoords)[secondPedestrianIndex]
-                                  .coordinates[0] >= ((*firstPedestriancoords)[firstPedestrianIndex]
-                                      .coordinates[0] - shoulderLength)) || (((*secondPedestriancoords)[secondPedestrianIndex]
-                                          .coordinates[0] + shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-                                              .coordinates[0] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
-                                                  .coordinates[0] + shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
-                                                      .coordinates[0] - shoulderLength)) )
+      if(secondPedestrianDirectionY > secondPedestrianDirectionX)
       {
-          pass = true;
-      }
+        if((((*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[0] - shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[0] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[0] - shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[0] - shoulderLength)) || (((*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[0] + shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[0] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
+            .coordinates[0] + shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
+            .coordinates[0] - shoulderLength)) )
+            {
+              pass = true;
+            }
     }
+    else
+    {
+
+      if((*secondPedestriancoords)[secondPedestrianIndex]
+          .coordinates[0] <= ((*firstPedestriancoords)[firstPedestrianIndex]
+          .coordinates[0] + shoulderLength) && (*secondPedestriancoords)[secondPedestrianIndex]
+          .coordinates[0] >= ((*firstPedestriancoords)[firstPedestrianIndex]
+          .coordinates[0] - shoulderLength))
+        {
+          pass = true;
+        }
+
+    }
+  }
 
   }
 
