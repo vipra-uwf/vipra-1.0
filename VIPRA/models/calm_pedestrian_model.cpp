@@ -578,9 +578,10 @@ std::pair<std::string, int>
         for (int j = 0; j < numObstacles; ++j)
         {
             if (pedestrianIndex != j && j < numPedestrians &&
-                neighborDirectionTest(pedestrianIndex, j, "P") &&
-                neighborSpacialTest(pedestrianIndex, j, "P"))
+                neighborDirectionTest(pedestrianIndex, j, "P"))
             {
+              if(neighborSpacialTest(pedestrianIndex, j, "P"))
+              {
                 FLOATING_NUMBER distance = getDistance(pedestrianIndex, j, "P");
                 if (localNearest == NOT_FOUND
                     || distance < localNearestDistance)
@@ -589,11 +590,13 @@ std::pair<std::string, int>
                     localOriginSet = "P";
                     localNearestDistance = distance;
                 }
+              }
             }
 
-            if (neighborDirectionTest(pedestrianIndex, j, "O")
-                && neighborSpacialTest(pedestrianIndex, j, "O"))
+            if (neighborDirectionTest(pedestrianIndex, j, "O"))
             {
+              if(neighborSpacialTest(pedestrianIndex, j, "O"))
+              {
                 FLOATING_NUMBER distance = getDistance(pedestrianIndex, j, "O");
                 if (localNearest == NOT_FOUND
                     || distance < localNearestDistance)
@@ -602,6 +605,7 @@ std::pair<std::string, int>
                     localOriginSet = "O";
                     localNearestDistance = distance;
                 }
+              }
             }
         }
 
