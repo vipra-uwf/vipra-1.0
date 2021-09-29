@@ -20,16 +20,16 @@ void CalmEntitySetFactory::populatePedestrianSet(
         pedestrianCoordinates.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    (FLOATING_NUMBER) std::stod(inputData[i]["x"]), 
+                    (FLOATING_NUMBER) std::stod(inputData[i]["x"]),
                     (FLOATING_NUMBER) std::stod(inputData[i]["y"])
                 }
             }
         );
-		
+
 		goalCoords.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    (FLOATING_NUMBER) std::stod(inputData[i]["goal_x"]), 
+                    (FLOATING_NUMBER) std::stod(inputData[i]["goal_x"]),
                     (FLOATING_NUMBER) std::stod(inputData[i]["goal_y"])
                 }
             }
@@ -38,7 +38,7 @@ void CalmEntitySetFactory::populatePedestrianSet(
 		velocities.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    (FLOATING_NUMBER) std::stod(inputData[i]["velocity_x"]), 
+                    (FLOATING_NUMBER) std::stod(inputData[i]["velocity_x"]),
                     (FLOATING_NUMBER) std::stod(inputData[i]["velocity_y"])
                 }
             }
@@ -67,7 +67,10 @@ void CalmEntitySetFactory::populatePedestrianSet(
     std::vector<std::pair<std::string, int>> nearestNeighbors;
     std::vector<MovementDefinitions> startingMovement;
     std::vector<Dimensions> startingPropulsiveForces;
-        
+    std::vector<FLOATING_NUMBER> shoulderLengths;
+
+    FLOATING_NUMBER startingShoulderLength = .1;
+
     for(long unsigned int i = 0; i < intNearestNeighbors.size(); ++i)
     {
         nearestNeighbors.push_back(std::make_pair("P", intNearestNeighbors[i]));
@@ -80,10 +83,15 @@ void CalmEntitySetFactory::populatePedestrianSet(
 
     for(int i = 0; i < numPeds; ++i)
     {
+      shoulderLengths.push_back(startingShoulderLength);
+    }
+
+    for(int i = 0; i < numPeds; ++i)
+    {
         startingPropulsiveForces.push_back(
-            Dimensions 
+            Dimensions
                     {
-                        std::vector<FLOATING_NUMBER> 
+                        std::vector<FLOATING_NUMBER>
                         {
                             0,
                             0
@@ -91,18 +99,20 @@ void CalmEntitySetFactory::populatePedestrianSet(
                     }
         );
     }
-        
+
     dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
         setNearestNeighbors(nearestNeighbors);
     dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
         setMovementStates(startingMovement);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
+        setShoulderLengths(shoulderLengths);
 }
 
 void CalmEntitySetFactory::populateObstacleSet(
     ENTITY_SET inputData, ObstacleSet* obstacleSet)
 {
 	std::vector<Dimensions> obstacleCoordinates;
-	
+
 	int numObstacles = inputData.size();
 
 	for(int i = 0; i < numObstacles; ++i)
@@ -110,7 +120,7 @@ void CalmEntitySetFactory::populateObstacleSet(
         obstacleCoordinates.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
-                    (FLOATING_NUMBER) std::stod(inputData[i]["x"]), 
+                    (FLOATING_NUMBER) std::stod(inputData[i]["x"]),
                     (FLOATING_NUMBER) std::stod(inputData[i]["y"])
                 }
             }
@@ -129,12 +139,12 @@ void CalmEntitySetFactory::populateSimulationParams(
     {
         if(inputData[i].find("luggage") != inputData[i].end())
         {
-	        (*simulationParams)["luggage"] = 
+	        (*simulationParams)["luggage"] =
                 (FLOATING_NUMBER) std::stod(inputData[i]["luggage"]);
         }
         else if(inputData[i].find("exit_door_x") != inputData[i].end())
         {
-            (*simulationParams)["exit_door_x"] = 
+            (*simulationParams)["exit_door_x"] =
                 (FLOATING_NUMBER) std::stod(inputData[i]["exit_door_x"]);
         }
         else if(inputData[i].find("exit_door_y") != inputData[i].end())
@@ -144,32 +154,32 @@ void CalmEntitySetFactory::populateSimulationParams(
         }
         else if(inputData[i].find("time_step") != inputData[i].end())
         {
-			(*simulationParams)["time_step"] = 
+			(*simulationParams)["time_step"] =
                 (FLOATING_NUMBER) std::stod(inputData[i]["time_step"]);
         }
         else if(inputData[i].find("time_step_size") != inputData[i].end())
         {
-			(*simulationParams)["time_step_size"] = 
+			(*simulationParams)["time_step_size"] =
                 (FLOATING_NUMBER) std::stod(inputData[i]["time_step_size"]);
         }
-        else if(inputData[i].find("aligning_stop_threshold") 
+        else if(inputData[i].find("aligning_stop_threshold")
                 != inputData[i].end())
         {
-	        (*simulationParams)["aligning_stop_threshold"] = 
+	        (*simulationParams)["aligning_stop_threshold"] =
 		        (FLOATING_NUMBER) std::stod(
                     inputData[i]["aligning_stop_threshold"]);
         }
-        else if(inputData[i].find("toward_aisle_stop_threshold") 
+        else if(inputData[i].find("toward_aisle_stop_threshold")
                 != inputData[i].end())
         {
-	        (*simulationParams)["toward_aisle_stop_threshold"] = 
+	        (*simulationParams)["toward_aisle_stop_threshold"] =
 		        (FLOATING_NUMBER) std::stod(
                     inputData[i]["toward_aisle_stop_threshold"]);
         }
-        else if(inputData[i].find("in_aisle_stop_threshold") 
+        else if(inputData[i].find("in_aisle_stop_threshold")
                 != inputData[i].end())
         {
-            (*simulationParams)["in_aisle_stop_threshold"] = 
+            (*simulationParams)["in_aisle_stop_threshold"] =
 		        (FLOATING_NUMBER) std::stod(
                     inputData[i]["in_aisle_stop_threshold"]);
         }

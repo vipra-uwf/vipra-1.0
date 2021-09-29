@@ -52,7 +52,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
             int firstPedestrianIndex, int secondPedestrianIndex,
             std::string originSet);
         bool neighborSpacialTest(int firstPedestrianIndex, int secondPedestrianIndex,
-        std::string originSet);
+        std::string originSet, FLOATING_NUMBER firstShoulderLength);
 
         void calculatePriority();
         void createAisles();
