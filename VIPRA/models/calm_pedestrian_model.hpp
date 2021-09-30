@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
+#include <cmath>
 
 #include "pedestrian_dynamics_model.hpp"
 #include "../entity_sets/airplane_obstacle_set.hpp"
@@ -29,7 +30,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
         void calculateDistanceMatrices();
         FLOATING_NUMBER getPedestrianDistance(int first, int second);
         FLOATING_NUMBER getObstacleDistance(int pedestrianIndex, int obstacleIndex);
-    
+
     public:
         virtual void configure(CONFIG_MAP* configMap);
         virtual void initialize();
@@ -42,15 +43,17 @@ class CalmPedestrianModel : public PedestrianDynamicsModel
 
         void calculatePropulsion();
         FLOATING_NUMBER getDistance(
-            int firstPedestrianIndex, int secondPedestrianIndex, 
+            int firstPedestrianIndex, int secondPedestrianIndex,
             std::string originSet);
         void calculateBeta();
         std::pair<std::string, int> calculateNearestNeighbors(
             int pedestrianIndex);
         bool neighborDirectionTest(
-            int firstPedestrianIndex, int secondPedestrianIndex, 
+            int firstPedestrianIndex, int secondPedestrianIndex,
             std::string originSet);
-        
+        bool neighborSpacialTest(int firstPedestrianIndex, int secondPedestrianIndex,
+        std::string originSet);
+
         void calculatePriority();
         void createAisles();
         MovementDefinitions updateMovementState(int pedestrianIndex);

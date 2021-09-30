@@ -64,8 +64,7 @@ void Simulation::run()
     printDataDELETETHIS();
     // std::cout << "Adding " << this->timestep_size << " msec to the simulation." << std::endl;
 
-//    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
-    while(i < 200000)//!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
+    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
