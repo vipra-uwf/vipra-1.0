@@ -17,6 +17,7 @@ class PedestrianSet
         virtual std::vector<Dimensions>* getGoalCoordinates() = 0;
         virtual std::vector<Dimensions>* getVelocities() = 0;
         virtual std::vector<FLOATING_NUMBER>* getSpeeds() = 0;
+        virtual std::vector<int>* getIds() = 0;
 
         virtual void setNumPedestrians(int numPedestrians) = 0;
         virtual void setPedestrianCoordinates(
@@ -27,6 +28,8 @@ class PedestrianSet
             std::vector<Dimensions> velocities) = 0;
         virtual void setSpeeds(
             std::vector<FLOATING_NUMBER> speedsMetersPerSecond) = 0;
+        virtual void setIds(
+            std::vector<int> ids) = 0;
 };
 
 #endif
