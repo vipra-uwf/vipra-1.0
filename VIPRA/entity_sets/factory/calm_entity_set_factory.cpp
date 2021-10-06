@@ -100,6 +100,8 @@ void CalmEntitySetFactory::populatePedestrianSet(
         setNearestNeighbors(nearestNeighbors);
     dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
         setMovementStates(startingMovement);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
+        setPropulsionForces(startingPropulsiveForces);
 }
 
 void CalmEntitySetFactory::populateObstacleSet(
