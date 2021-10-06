@@ -17,9 +17,10 @@ void CalmPedestrianSet::configure(CONFIG_MAP* configMap)
 
 void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 {
-    std::cout << "check removed: " << pedestrianIndex << std::endl;
+    std::cout << "check removed: " << this->ids.at(pedestrianIndex) << std::endl;
     this->numPedestrians--;
 
+    this->ids.erase(ids.begin()+pedestrianIndex);
     this->pedestrianCoordinates.erase(pedestrianCoordinates.
         begin()+pedestrianIndex);
     this->goalCoordinates.erase(goalCoordinates.begin()+pedestrianIndex);
@@ -39,6 +40,11 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 int CalmPedestrianSet::getNumPedestrians()
 {
     return this->numPedestrians;
+}
+
+std::vector<int>* CalmPedestrianSet::getIds()
+{
+    return &this->ids;
 }
 
 std::vector<Dimensions>* CalmPedestrianSet::getPedestrianCoordinates()
@@ -106,6 +112,11 @@ std::vector<int>* CalmPedestrianSet::getStartingAisles()
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
 {
    this->numPedestrians = numPedestrians;
+}
+
+void CalmPedestrianSet::setIds(std::vector<int> ids)
+{
+    this->ids = ids;
 }
 
 void CalmPedestrianSet::setPedestrianCoordinates(std::vector<Dimensions>
