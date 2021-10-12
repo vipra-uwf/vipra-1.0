@@ -59,6 +59,7 @@ void Simulation::run()
     clock.printRealStartTime();
 
     this->pedestrianDynamicsModel->precompute();
+    this->humanBehaviorModel->initialize();
 
     int i = 0; //delete this just for testing
     printDataDELETETHIS();
@@ -74,9 +75,10 @@ void Simulation::run()
 
 
         clock.addSimulationTimeMs(this->timestep_size);
-        this->pedestrianDynamicsModel->update(this->timestep_size);
-        this->humanBehaviorModel->update(this->timestep_size);
 
+        this->humanBehaviorModel->update(this->timestep_size);
+        this->pedestrianDynamicsModel->update(this->timestep_size);
+        // this->policyModel->update(this->timestep_size); // Reserved for future use
 
         this->timestep++;
         ++i;
