@@ -47,10 +47,6 @@ void Simulation::setSimulationOutputHandler(
 void Simulation::run()
 {
 
-    // TODO:
-    // * Add GNU Autotools to assert dependencies (Revisit maybe?)
-    // * Add human behavioral model. We have an explicit human behavior model object for now.
-
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
