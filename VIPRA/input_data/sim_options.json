@@ -93,5 +93,14 @@
             "includePath" : "models/calm_pedestrian_model.hpp",
             "type" : "calm"
         }
+    ],
+
+    "human_behavior_model" : [
+        {
+            "objectName": "humanBehaviorModel",
+            "className": "HumanBehaviorModel",
+            "includePath" : "models/human_behavior_model.hpp",
+            "type" : "human"
+        }
     ]
 }

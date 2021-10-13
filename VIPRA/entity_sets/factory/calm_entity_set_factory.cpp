@@ -9,6 +9,7 @@ void CalmEntitySetFactory::populatePedestrianSet(
     ENTITY_SET inputData, PedestrianSet* calmPedestrianSet)
 {
 
+    std::vector<int> ids;
 	std::vector<Dimensions> pedestrianCoordinates;
 	std::vector<Dimensions> goalCoords;
 	std::vector<Dimensions> velocities;
@@ -17,6 +18,8 @@ void CalmEntitySetFactory::populatePedestrianSet(
 
 	for(int i = 0; i < numPeds; ++i)
     {
+        ids.push_back(i);
+
         pedestrianCoordinates.push_back(
             Dimensions {
                 std::vector<FLOATING_NUMBER> {
@@ -45,6 +48,7 @@ void CalmEntitySetFactory::populatePedestrianSet(
         );
     }
 
+    calmPedestrianSet->setIds(ids);
 	calmPedestrianSet->setPedestrianCoordinates(pedestrianCoordinates);
 	calmPedestrianSet->setGoalCoordinates(goalCoords);
 	calmPedestrianSet->setVelocities(velocities);
@@ -96,6 +100,8 @@ void CalmEntitySetFactory::populatePedestrianSet(
         setNearestNeighbors(nearestNeighbors);
     dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
         setMovementStates(startingMovement);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
+        setPropulsionForces(startingPropulsiveForces);
 }
 
 void CalmEntitySetFactory::populateObstacleSet(

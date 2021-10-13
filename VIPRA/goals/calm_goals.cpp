@@ -193,10 +193,10 @@ unsigned int CalmGoals::nearestGoal(int pedestrianIndex)
     //index of nearest starts at the first
     unsigned int nearest = 0;
     //starts at position 1 because there should be at least 2 exit goals
-    for(unsigned int i = 1; i < this->exitGoal[0].coordinates.size(); ++i)
+    for (unsigned int i = 1; i < this->exitGoal.size(); ++i)
     {
         //compares distance between exits and the pedestrian
-        if(calculateDistance(pedestrianIndex, i) <
+        if (calculateDistance(pedestrianIndex, i) <
             calculateDistance(pedestrianIndex, nearest))
         {
             //sets nearest to lower if a different exit is lower.
@@ -211,14 +211,14 @@ FLOATING_NUMBER CalmGoals::calculateDistance(int pedestrianIndex,
     int exitGoalIndex)
 {
     FLOATING_NUMBER xDistance =
-        this->exitGoal[0].coordinates[exitGoalIndex] -
-        (*this->pedestrianCoordinatesPointer)[0].coordinates[pedestrianIndex];
+        this->exitGoal[exitGoalIndex].coordinates[0] -
+        (*this->pedestrianCoordinatesPointer)[pedestrianIndex].coordinates[0];
 
     xDistance = pow(xDistance, 2);
 
 
-    FLOATING_NUMBER yDistance = this->exitGoal[1].coordinates[exitGoalIndex] -
-        (*this->pedestrianCoordinatesPointer)[1].coordinates[pedestrianIndex];
+    FLOATING_NUMBER yDistance = this->exitGoal[exitGoalIndex].coordinates[1] -
+        (*this->pedestrianCoordinatesPointer)[pedestrianIndex].coordinates[1];
 
     yDistance = pow(yDistance, 2);
 

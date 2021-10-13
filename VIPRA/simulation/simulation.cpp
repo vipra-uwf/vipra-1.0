@@ -6,9 +6,10 @@ Simulation::Simulation()
 
 }
 
-Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel)
+Simulation::Simulation(PedestrianDynamicsModel* pedestrianDynamicsModel, HumanBehaviorModel *humanBehaviorModel)
 {
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
+    this->humanBehaviorModel = humanBehaviorModel;
 }
 
 void Simulation::setData(Data* data)
@@ -45,6 +46,7 @@ void Simulation::setSimulationOutputHandler(
 */
 void Simulation::run()
 {
+
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
@@ -53,9 +55,11 @@ void Simulation::run()
     clock.printRealStartTime();
 
     this->pedestrianDynamicsModel->precompute();
+    this->humanBehaviorModel->initialize();
 
     int i = 0; //delete this just for testing
     printDataDELETETHIS();
+    // std::cout << "Adding " << this->timestep_size << " msec to the simulation." << std::endl;
 
     while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
@@ -67,8 +71,10 @@ void Simulation::run()
 
 
         clock.addSimulationTimeMs(this->timestep_size);
-        this->pedestrianDynamicsModel->update(this->timestep_size);
 
+        this->humanBehaviorModel->update(this->timestep_size);
+        this->pedestrianDynamicsModel->update(this->timestep_size);
+        // this->policyModel->update(this->timestep_size); // Reserved for future use
 
         this->timestep++;
         ++i;
