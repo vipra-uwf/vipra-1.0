@@ -378,7 +378,6 @@ std::string generateMain()
 
             "\n"
             "\n\thumanBehaviorModel->setData(&data);"
-            "\n\thumanBehaviorModel->setGoals(goals);"
             "\n"
 
             "\n"
