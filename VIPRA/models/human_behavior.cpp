@@ -26,3 +26,8 @@ void HumanBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOAT
 {
 
 }
+
+void HumanBehavior::addStateDefinition(std::string const &stateDefinition)
+{
+    this->stateDefinitions.push_back(stateDefinition);
+}

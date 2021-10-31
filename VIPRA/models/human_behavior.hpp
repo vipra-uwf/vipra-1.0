@@ -26,6 +26,12 @@ class HumanBehavior
 
         // Perform the action associated with this behavior
         virtual void act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
+
+        // Add a state definition
+        virtual void addStateDefinition(std::string const &state);
+    
+    private:
+        std::vector<std::string> stateDefinitions;
 };
 
 #endif

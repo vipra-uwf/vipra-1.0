@@ -27,7 +27,7 @@ class RandomSleepBehavior: public HumanBehavior
 
         // These states are defined by the this behavior. Currently they are a hard-coded enumeration but future 
         // iterations will have these defined directly in the DSL.
-        std::vector<BehaviorDefinitions> states;
+        std::vector<int> states;
 
         // The timestamps for each person that transitions. This is used in the DSL state machine to define when a
         // person first entered the previous state, in case the rule is time-dependent (e.g., 30 minute nap).
