@@ -5,6 +5,20 @@
 #include "../definitions/behavior_definitions.hpp"
 
 /**
+ * Strategy ideas:
+ * The goal is to have the behaviors described/defined in a DSL. We need to specify the following:
+ * - The states of SLEEPING/AWAKE
+ * - The effect on the person's speed for each state
+ *   - An AWAKE person does not change their speed
+ *   - A SLEEPING person stops moving
+ * - The transition rules for each state
+ *   - A person will transition from AWAKE to SLEEPING after 3600 seconds
+ *   - A person will transition from SLEEPING to AWAKE after 120 seconds
+ * - How to decide if a person a subject to this behavior
+ *   - 2% of pedestrians are subject to this behaivor
+ **/
+
+/**
  * Hard-coded behavior to describe someone randomly falling asleep for a fixed amount of time during the simulation.
  */
 class RandomSleepBehavior: public HumanBehavior
