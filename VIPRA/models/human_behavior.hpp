@@ -28,10 +28,23 @@ class HumanBehavior
         virtual void act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
 
         // Add a state definition
-        virtual void addStateDefinition(std::string const &state);
+        void addStateDefinition(std::string const &state);
+
+        // Get the state definitions
+        std::vector<std::string> getStateDefinitions();
+
+        // Set the percent selected
+        void setRatioSelected(float ratioSelected);
+
+        // Get the percent selected
+        float getRatioSelected();
     
     private:
+        // The definitions of the states as read in by the behavior file.
         std::vector<std::string> stateDefinitions;
+
+        // Hard-coded concept of selector here. We consistently select this percent of pedestrians to be subject to the given behavior.
+        float ratioSelected;
 };
 
 #endif

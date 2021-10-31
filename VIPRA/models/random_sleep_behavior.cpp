@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #include "random_sleep_behavior.hpp"
 #include "../definitions/movement_definitions.hpp"
@@ -15,6 +16,12 @@ RandomSleepBehavior::RandomSleepBehavior()
     // Simulate states being added programmatically here. These calls will be made as the DSL file is parsed.
     this->addStateDefinition("AWAKE");    // INDEX 0
     this->addStateDefinition("SLEEPING"); // INDEX 1
+
+    // Simulate selector rules being added programmatically here. These will be done by the DSL.
+    // e.g., "x% of people are subject to randomly falling asleep"
+    // This selector is one of many possibilities that we can add. For example, we can add a 
+    // RandomSelector implementation that will select the percentage of the population at random.
+    this->setRatioSelected(2.0 / 100.0);
 }
 
 void RandomSleepBehavior::initialize(PedestrianSet *pedestrianSet)
@@ -33,8 +40,11 @@ bool RandomSleepBehavior::decide(PedestrianSet *pedestrianSet, int pedestrianInd
 {
     int pedestrianId = pedestrianSet->getIds()->at(pedestrianIndex);
 
-    // This is an example of the condition that would be provided by the HBM DSL. Hard-coded here for now.
-    bool condition = pedestrianId % 50 == 0;
+    // For this behavior we're given a percent selected. We multiply this by the precision we want to support,
+    // and use modulos to determine if the given pedestrian is affected.
+    static const int divisor = static_cast<int>((100.0 / this->getRatioSelected()) / 100.0);
+
+    bool condition = pedestrianId % divisor == 0;
 
     return condition;
 }
