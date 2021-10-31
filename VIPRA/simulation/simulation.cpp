@@ -47,10 +47,6 @@ void Simulation::setSimulationOutputHandler(
 void Simulation::run()
 {
 
-    // TODO:
-    // * Add GNU Autotools to assert dependencies (Revisit maybe?)
-    // * Add human behavioral model. We have an explicit human behavior model object for now.
-
     //until goal is met
         //on pedestrian dynamics model, do precompute
         //on pedestrian dynamics model, do update
@@ -59,6 +55,7 @@ void Simulation::run()
     clock.printRealStartTime();
 
     this->pedestrianDynamicsModel->precompute();
+    this->humanBehaviorModel->initialize();
 
     int i = 0; //delete this just for testing
     printDataDELETETHIS();
@@ -74,9 +71,10 @@ void Simulation::run()
 
 
         clock.addSimulationTimeMs(this->timestep_size);
-        this->pedestrianDynamicsModel->update(this->timestep_size);
-        this->humanBehaviorModel->update(this->timestep_size);
 
+        this->humanBehaviorModel->update(this->timestep_size);
+        this->pedestrianDynamicsModel->update(this->timestep_size);
+        // this->policyModel->update(this->timestep_size); // Reserved for future use
 
         this->timestep++;
         ++i;
