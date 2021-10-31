@@ -2,7 +2,6 @@
 #define RANDOM_SLEEP_BEHAVIOR_HPP
 
 #include "human_behavior.hpp"
-#include "../definitions/behavior_definitions.hpp"
 
 /**
  * Strategy ideas:
