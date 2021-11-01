@@ -17,7 +17,7 @@ void HumanBehavior::update(FLOATING_NUMBER timestep)
 
 }
 
-bool HumanBehavior::select(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep)
+bool HumanBehavior::select(PedestrianSet *pedestrianSet, int pedestrianIndex)
 {
     return false;
 }
@@ -40,14 +40,4 @@ void HumanBehavior::addStateDefinition(std::string const &stateDefinition)
 std::vector<std::string> HumanBehavior::getStateDefinitions() 
 {
     return this->stateDefinitions;
-}
-
-void HumanBehavior::setRatioSelected(float ratioSelected)
-{
-    this->ratioSelected = ratioSelected;
-}
-
-float HumanBehavior::getRatioSelected()
-{
-    return this->ratioSelected;
 }

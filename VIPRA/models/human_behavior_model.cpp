@@ -36,7 +36,7 @@ void HumanBehaviorModel::update(FLOATING_NUMBER timestep)
     CalmPedestrianSet *calmPedestrianSet = dynamic_cast<CalmPedestrianSet *>(this->getData()->getPedestrianSet());
     for (int i = 0; i < calmPedestrianSet->getNumPedestrians(); ++i)
     {
-        if (this->humanBehavior->select(calmPedestrianSet, i, timestep))
+        if (this->humanBehavior->select(calmPedestrianSet, i))
         {
             this->humanBehavior->act(calmPedestrianSet, i, timestep);
 

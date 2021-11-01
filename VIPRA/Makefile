@@ -37,6 +37,7 @@ make_directories:
 	@mkdir -p $(BUILD_DIR)/configuration
 	@mkdir -p $(BUILD_DIR)/code_generation
 	@mkdir -p $(BUILD_DIR)/definitions
+	@mkdir -p $(BUILD_DIR)/dsl/selectors
 	@mkdir -p $(BUILD_DIR)/entity_sets
 	@mkdir -p $(BUILD_DIR)/entity_sets/factory
 	@mkdir -p $(BUILD_DIR)/goals

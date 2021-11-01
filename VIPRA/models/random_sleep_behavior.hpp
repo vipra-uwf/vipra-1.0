@@ -2,6 +2,7 @@
 #define RANDOM_SLEEP_BEHAVIOR_HPP
 
 #include "human_behavior.hpp"
+#include "../dsl/selectors/selector.hpp"
 
 /**
  * Strategy ideas:
@@ -28,6 +29,8 @@ class RandomSleepBehavior: public HumanBehavior
         // iterations will have these defined directly in the DSL.
         std::vector<int> states;
 
+        std::vector<Selector *> selectors;
+
         // The timestamps for each person that transitions. This is used in the DSL state machine to define when a
         // person first entered the previous state, in case the rule is time-dependent (e.g., 30 minute nap).
         std::vector<FLOATING_NUMBER> transitionPointSeconds;
@@ -50,9 +53,11 @@ class RandomSleepBehavior: public HumanBehavior
 
         void initialize(PedestrianSet *pedestrianSet);
         void update(FLOATING_NUMBER timestep);
-        bool select(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
+        bool select(PedestrianSet *pedestrianSet, int pedestrianIndex);
         bool decide(PedestrianSet *pedestrianSet, int pedestrianIndex);
         void act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
+
+        void addSelector(Selector *selector);
 };
 
 #endif

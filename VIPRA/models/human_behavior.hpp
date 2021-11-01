@@ -22,7 +22,7 @@ class HumanBehavior
         virtual void update(FLOATING_NUMBER timestep);
 
         // Select a specific pedestrian for this behavior
-        virtual bool select(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
+        virtual bool select(PedestrianSet *pedestrianSet, int pedestrianIndex);
 
         // Tell the simulation whether or not this behavior will decide their speed (or anything else for that matter).
         virtual bool decide(PedestrianSet *pedestrianSet, int pedestrianIndex);
@@ -35,19 +35,10 @@ class HumanBehavior
 
         // Get the state definitions
         std::vector<std::string> getStateDefinitions();
-
-        // Set the percent selected
-        void setRatioSelected(float ratioSelected);
-
-        // Get the percent selected
-        float getRatioSelected();
     
     private:
         // The definitions of the states as read in by the behavior file.
         std::vector<std::string> stateDefinitions;
-
-        // Hard-coded concept of selector here. We consistently select this percent of pedestrians to be subject to the given behavior.
-        float ratioSelected;
 };
 
 #endif

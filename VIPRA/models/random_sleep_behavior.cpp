@@ -3,6 +3,7 @@
 #include "random_sleep_behavior.hpp"
 #include "../definitions/movement_definitions.hpp"
 #include "../entity_sets/calm_pedestrian_set.hpp"
+#include "../dsl/selectors/id_ratio_selector.hpp"
 
 static const int AWAKE = 0;
 static const int SLEEPING = 1;
@@ -21,14 +22,12 @@ RandomSleepBehavior::RandomSleepBehavior()
     // e.g., "x% of people are subject to randomly falling asleep"
     // This selector is one of many possibilities that we can add. For example, we can add a 
     // RandomSelector implementation that will select the percentage of the population at random.
-    this->setRatioSelected(2.0 / 100.0);
+    this->addSelector(new IdRatioSelector(2.0 / 100.0));
 
     /*
     Here's an example of what I'm thinking:
     this->addStateDefinition("AWAKE");
     this->addStateDefinition("SLEEPING");
-
-    this->addSelector(new PersonIdRatioCondition(2.0 / 100.0));
 
     this->addTransition(new AndCondition(new StateCondition("AWAKE"), new ElapsedTimeCondition(3600)), "SLEEPING");
     this->addTransition(new AndCondition(new StateCondition("SLEEPING"), new ElapsedTimeCondition(120)), "AWAKE");
@@ -55,17 +54,18 @@ void RandomSleepBehavior::update(FLOATING_NUMBER timestep)
     this->elapsedSeconds += timestep;
 }
 
-bool RandomSleepBehavior::select(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep)
+bool RandomSleepBehavior::select(PedestrianSet *pedestrianSet, int pedestrianIndex)
 {
-    int pedestrianId = pedestrianSet->getIds()->at(pedestrianIndex);
 
-    // For this behavior we're given a percent selected. We multiply this by the precision we want to support,
-    // and use modulos to determine if the given pedestrian is affected.
-    static const int divisor = static_cast<int>((100.0 / this->getRatioSelected()) / 100.0);
+    bool selected = false;
+    for (auto selector = this->selectors.begin();
+         !selected && selector != this->selectors.end();
+         selector++)
+    {
+        selected = (*selector)->select(pedestrianSet, pedestrianIndex);
+    }
 
-    bool condition = pedestrianId % divisor == 0;
-
-    return condition;
+    return selected;
 }
 
 bool RandomSleepBehavior::decide(PedestrianSet *pedestrianSet, int pedestrianIndex)
@@ -122,4 +122,9 @@ void RandomSleepBehavior::transitionState(int pedestrianId, int newState)
 {
     this->states.at(pedestrianId) = newState;
     this->transitionPointSeconds.at(pedestrianId) = this->elapsedSeconds;
+}
+
+void RandomSleepBehavior::addSelector(Selector *selector)
+{
+    this->selectors.push_back(selector);
 }
