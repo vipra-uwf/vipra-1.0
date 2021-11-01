@@ -17,7 +17,12 @@ void HumanBehavior::update(FLOATING_NUMBER timestep)
 
 }
 
-bool HumanBehavior::decide(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep)
+bool HumanBehavior::select(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep)
+{
+    return false;
+}
+
+bool HumanBehavior::decide(PedestrianSet *pedestrianSet, int pedestrianIndex)
 {
     return false;
 }

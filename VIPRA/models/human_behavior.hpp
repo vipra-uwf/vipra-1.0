@@ -21,8 +21,11 @@ class HumanBehavior
         // Track any internal state if it exists
         virtual void update(FLOATING_NUMBER timestep);
 
-        // Decide if this behavior is applicable to this person
-        virtual bool decide(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
+        // Select a specific pedestrian for this behavior
+        virtual bool select(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
+
+        // Tell the simulation whether or not this behavior will decide their speed (or anything else for that matter).
+        virtual bool decide(PedestrianSet *pedestrianSet, int pedestrianIndex);
 
         // Perform the action associated with this behavior
         virtual void act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);

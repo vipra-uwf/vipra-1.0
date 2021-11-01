@@ -5,6 +5,8 @@
 #include "human_behavior_model.hpp"
 #include "human_behavior.hpp"
 #include "random_sleep_behavior.hpp"
+#include "calm_pedestrian_model.hpp"
+#include "../definitions/movement_definitions.hpp"
 
 HumanBehaviorModel::HumanBehaviorModel()
 {
@@ -31,12 +33,28 @@ void HumanBehaviorModel::update(FLOATING_NUMBER timestep)
     this->humanBehavior->update(timestep);
 
     // Iterate through the pedestrian list and apply our behavior to it.
-    PedestrianSet *pedestrianSet = this->getData()->getPedestrianSet();
-    for (int i = 0; i < pedestrianSet->getNumPedestrians(); ++i)
+    CalmPedestrianSet *calmPedestrianSet = dynamic_cast<CalmPedestrianSet *>(this->getData()->getPedestrianSet());
+    for (int i = 0; i < calmPedestrianSet->getNumPedestrians(); ++i)
     {
-        if (this->humanBehavior->decide(pedestrianSet, i, timestep))
+        if (this->humanBehavior->select(calmPedestrianSet, i, timestep))
         {
-            this->humanBehavior->act(pedestrianSet, i, timestep);
+            this->humanBehavior->act(calmPedestrianSet, i, timestep);
+
+            // If this behavior has decided that it will override the default, set the movement state.
+            // Note that this will look different once the HBM has its own copy of the data.
+            if (this->humanBehavior->decide(calmPedestrianSet, i))
+            {
+                // Set the movement state to HUMAN to avoid the PDM overwriting our states
+                calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::HUMAN;
+            }
+            else
+            {
+                // Only set the movement state back to stop if it doesn't have something already.
+                if (calmPedestrianSet->getMovementStates()->at(i) == MovementDefinitions::HUMAN)
+                {
+                    calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::STOP;
+                }
+            }
         }
     }
 }

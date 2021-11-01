@@ -40,6 +40,9 @@ class RandomSleepBehavior: public HumanBehavior
         int timeBetweenNapsSeconds;
         int lengthOfNapSeconds;
 
+        // Convenience method to transition the state and track the transition points.
+        void transitionState(int pedestrianId, int newState);
+
 
     public:
         RandomSleepBehavior();
@@ -47,7 +50,8 @@ class RandomSleepBehavior: public HumanBehavior
 
         void initialize(PedestrianSet *pedestrianSet);
         void update(FLOATING_NUMBER timestep);
-        bool decide(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
+        bool select(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
+        bool decide(PedestrianSet *pedestrianSet, int pedestrianIndex);
         void act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
 };
 
