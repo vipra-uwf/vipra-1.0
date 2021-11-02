@@ -25,6 +25,8 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<MovementDefinitions> movementStates;
         std::vector<int> startingAisles;
         std::vector<FLOATING_NUMBER> shoulderLengths;
+        std::vector<int> ids;
+
 
     public:
         CalmPedestrianSet();
@@ -34,12 +36,15 @@ class CalmPedestrianSet: public PedestrianSet
         virtual void removePedestrian(int pedestrianIndex);
 
         virtual int getNumPedestrians();
+        virtual std::vector<int>* getIds();
         virtual std::vector<Dimensions>* getPedestrianCoordinates();
         virtual std::vector<Dimensions>* getGoalCoordinates();
         virtual std::vector<Dimensions>* getVelocities();
         virtual std::vector<FLOATING_NUMBER>* getSpeeds();
 
         virtual void setNumPedestrians(int numPedestrians);
+        virtual void setIds(
+                std::vector<int> ids);
         virtual void setPedestrianCoordinates(
 				std::vector<Dimensions> coordinates);
         virtual void setGoalCoordinates(

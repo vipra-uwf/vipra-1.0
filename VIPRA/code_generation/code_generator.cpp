@@ -19,6 +19,7 @@ std::string generateObstacleSet();
 std::string generateEntitySetFactory();
 std::string generateGoals();
 std::string generatePedestrianDynamicsModel();
+std::string generateHumanBehaviorModel();
 std::string generatePopulateEntitySets();
 std::string generateExtractConfigMap();
 std::string generateMain();
@@ -38,6 +39,7 @@ int main()
     std::string entitySetFactoryFunction = generateEntitySetFactory();
     std::string goalsFunction = generateGoals();
     std::string pedestrianDynamicsModelFunction = generatePedestrianDynamicsModel();
+    std::string humanBehaviorModelFunction = generateHumanBehaviorModel();
     std::string populateEntitySetsFunction = generatePopulateEntitySets();
     std::string extractConfigMapFunction = generateExtractConfigMap();
     std::string includes = generateIncludes();
@@ -57,6 +59,7 @@ int main()
         << entitySetFactoryFunction
         << goalsFunction
         << pedestrianDynamicsModelFunction
+        << humanBehaviorModelFunction
         << populateEntitySetsFunction
         << extractConfigMapFunction;
 
@@ -92,6 +95,7 @@ std::string generateFunctionDeclarations()
     "\nEntitySetFactory* generateEntitySetFactory(std::string type, CONFIG_MAP* configMap);"
     "\nGoals* generateGoals(std::string type, CONFIG_MAP* configMap);"
     "\nPedestrianDynamicsModel* generatePedestrianDynamicsModel(std::string type, CONFIG_MAP* configMap);"
+    "\nHumanBehaviorModel* generateHumanBehaviorModel(std::string type, CONFIG_MAP* configMap);"
     "\n"
     "\nvoid populateEntitySets("
         "\n\tInputDataLoader* inputDataLoader, EntitySetFactory* entitySetFactory,"
@@ -233,6 +237,17 @@ std::string generatePedestrianDynamicsModel()
     return generatedFunction;
 }
 
+std::string generateHumanBehaviorModel()
+{
+    std::string generatedFunction =
+        "\nHumanBehaviorModel* generateHumanBehaviorModel(std::string type, CONFIG_MAP* configMap)\n"
+        "{\n";
+
+    generatedFunction += generateFunctionOptions("human_behavior_model");
+
+    return generatedFunction;
+}
+
 std::string generatePopulateEntitySets() 
 {
     std::string generatedFunction = 
@@ -301,6 +316,7 @@ std::string generateMain()
             "\n\tCONFIG_MAP* entitySetFactoryConfig = extractConfigMap(\"entity_set_factory\");" 
             "\n\tCONFIG_MAP* goalsConfig = extractConfigMap(\"goals\");" 
             "\n\tCONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap(\"pedestrian_dynamics_model\");"
+            "\n\tCONFIG_MAP* humanBehaviorModelConfig = extractConfigMap(\"human_behavior_model\");"
             "\n"
             "\n\tInputDataLoader* inputDataLoader = generateDataLoader("
                 "\n\t\tsimulationJsonConfig[\"input_data_loader\"][\"type\"].asString(),"
@@ -330,6 +346,10 @@ std::string generateMain()
                 "\n\t\tsimulationJsonConfig[\"pedestrian_dynamics_model\"][\"type\"].asString()," 
                 "\n\t\tpedestrianDynamicsModelConfig);"
             "\n"
+            "\n\tHumanBehaviorModel* humanBehaviorModel = generateHumanBehaviorModel("
+                "\n\t\tsimulationJsonConfig[\"human_behavior_model\"][\"type\"].asString(),"
+                "\n\t\thumanBehaviorModelConfig);"
+            "\n"
             "\n\tSimulationOutputHandler* outputHandler = generateOutputHandler("
                 "\n\t\tsimulationJsonConfig[\"simulation_output_handler\"][\"type\"].asString(),"
                 "\n\t\tsimulationOutputHandlerConfig);"
@@ -355,9 +375,14 @@ std::string generateMain()
             "\n\tpedestrianDynamicsModel->setGoals(goals);"
             "\n\tgoals->determinePedestrianGoals();"
             "\n\tpedestrianDynamicsModel->initialize();"
-            
+
             "\n"
-            "\n\tSimulation simulation(pedestrianDynamicsModel);"
+            "\n\thumanBehaviorModel->setData(&data);"
+            "\n\thumanBehaviorModel->setGoals(goals);"
+            "\n"
+
+            "\n"
+            "\n\tSimulation simulation(pedestrianDynamicsModel, humanBehaviorModel);"
             "\n\tsimulation.setData(&data);"
             "\n\tsimulation.initialize();"
             
@@ -383,6 +408,7 @@ std::string generateMain()
             "\n\tdelete entitySetFactory;"
             "\n\tdelete goals;"
             "\n\tdelete pedestrianDynamicsModel;"
+            "\n\tdelete humanBehaviorModel;"
             "\n\tdelete outputHandler;"
             "\n"
             "\n\tdelete inputDataLoaderConfig;"
@@ -394,6 +420,7 @@ std::string generateMain()
             "\n\tdelete entitySetFactoryConfig;"
             "\n\tdelete goalsConfig;"
             "\n\tdelete pedestrianDynamicsModelConfig;"
+            "\n\tdelete humanBehaviorModelConfig;"
         "\n"
         "\n\treturn 0;"
     "\n}";
