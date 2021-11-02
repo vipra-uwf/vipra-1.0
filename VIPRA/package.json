@@ -1,0 +1,24 @@
+{
+  "name": "vipra",
+  "version": "1.0.0",
+  "description": "### Installation and Execution Instructions",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vipra-uwf/vipra.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vipra-uwf/vipra/issues"
+  },
+  "homepage": "https://github.com/vipra-uwf/vipra#readme",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "express": "^4.17.1"
+  }
+}
