@@ -7,6 +7,7 @@
 
 
 #include "../simulation/data.hpp"
+#include "../definitions/behavior_definitions.hpp"
 #include "pedestrian_dynamics_model.hpp"
 #include "human_behavior.hpp"
 

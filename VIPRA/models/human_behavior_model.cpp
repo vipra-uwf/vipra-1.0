@@ -2,6 +2,7 @@
 // Created by joe on 8/3/21.
 //
 
+#include "../entity_sets/calm_pedestrian_set.hpp" // TODO not very cleanly separated
 #include "human_behavior_model.hpp"
 #include "human_behavior.hpp"
 #include "random_sleep_behavior.hpp"
