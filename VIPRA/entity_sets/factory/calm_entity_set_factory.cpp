@@ -110,6 +110,7 @@ void CalmEntitySetFactory::populatePedestrianSet(
         setMovementStates(startingMovement);
     dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
         setShoulderLengths(shoulderLengths);
+    dynamic_cast<CalmPedestrianSet*>(calmPedestrianSet)->
         setPropulsionForces(startingPropulsiveForces);
 
 }
