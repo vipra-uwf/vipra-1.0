@@ -10,7 +10,7 @@ static const int SLEEPING = 1;
 
 RandomSleepBehavior::RandomSleepBehavior()
 {
-    this->elapsedSeconds = 0.0f;
+    this->simulationContext.elapsedSeconds = 0.0f;
     this->timeBetweenNapsSeconds = 120;
     this->lengthOfNapSeconds = 120;
 
@@ -46,14 +46,14 @@ void RandomSleepBehavior::initialize(PedestrianSet *pedestrianSet)
 {
     int numPedestrians = pedestrianSet->getNumPedestrians();
     this->states.resize(numPedestrians, 0);
-    this->transitionPointSeconds.resize(numPedestrians, 0);
+    this->simulationContext.transitionPointSeconds.resize(numPedestrians, 0);
 
     this->simulationContext.pedestrianSet = pedestrianSet;
 }
 
 void RandomSleepBehavior::update(FLOATING_NUMBER timestep)
 {
-    this->elapsedSeconds += timestep;
+    this->simulationContext.elapsedSeconds += timestep;
 }
 
 bool RandomSleepBehavior::select(PedestrianSet *pedestrianSet, int pedestrianIndex)
@@ -86,7 +86,7 @@ void RandomSleepBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex,
     int pedestrianId = pedestrianSet->getIds()->at(pedestrianIndex);
 
     // This person is subject to human behaviors for this cycle.
-    FLOATING_NUMBER lastTransitionMs = this->elapsedSeconds - this->transitionPointSeconds.at(pedestrianId);
+    FLOATING_NUMBER lastTransitionMs = this->simulationContext.elapsedSeconds - this->simulationContext.transitionPointSeconds.at(pedestrianId);
 
     CalmPedestrianSet *calmPedestrianSet = dynamic_cast<CalmPedestrianSet *>(pedestrianSet);
 
@@ -123,7 +123,7 @@ void RandomSleepBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex,
 void RandomSleepBehavior::transitionState(int pedestrianId, int newState)
 {
     this->states.at(pedestrianId) = newState;
-    this->transitionPointSeconds.at(pedestrianId) = this->elapsedSeconds;
+    this->simulationContext.transitionPointSeconds.at(pedestrianId) = this->simulationContext.elapsedSeconds;
 }
 
 void RandomSleepBehavior::addSelector(Selector *selector)
