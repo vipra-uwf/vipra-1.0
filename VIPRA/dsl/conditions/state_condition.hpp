@@ -4,7 +4,7 @@
 #include "condition.hpp"
 #include "../simulation_context.hpp"
 
-class StateCondition: protected Condition
+class StateCondition: public Condition
 {
     public:
         StateCondition(SimulationContext *simulationContext, int desiredState);

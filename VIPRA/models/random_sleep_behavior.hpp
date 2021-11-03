@@ -3,6 +3,7 @@
 
 #include "human_behavior.hpp"
 #include "../dsl/selectors/selector.hpp"
+#include "../dsl/transitions/transition.hpp"
 #include "../dsl/simulation_context.hpp"
 
 /**
@@ -31,13 +32,14 @@ class RandomSleepBehavior: public HumanBehavior
         std::vector<int> states;
 
         std::vector<Selector *> selectors;
+        std::vector<Transition *> transitions;
 
         // Configuration parameters for this behavior specifically. Defaults are set in this behavior's constructor.
         int timeBetweenNapsSeconds;
         int lengthOfNapSeconds;
 
         // Convenience method to transition the state and track the transition points.
-        void transitionState(int pedestrianId, int newState);
+        // void transitionState(int pedestrianId, int newState);
 
         // Track the simulation context for use with the behavior
         // TODO move this to the HBM
@@ -55,6 +57,7 @@ class RandomSleepBehavior: public HumanBehavior
         void act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
 
         void addSelector(Selector *selector);
+        void addTransition(Transition *transition);
 };
 
 #endif

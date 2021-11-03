@@ -9,7 +9,8 @@ AndCondition::AndCondition(SimulationContext *simulationContext, Condition *lhs,
 
 bool AndCondition::evaluate(int pedestrianIndex)
 {
-    return 
-        this->lhs->evaluate(pedestrianIndex) && 
+    bool evaluation = this->lhs->evaluate(pedestrianIndex) && 
         this->rhs->evaluate(pedestrianIndex);
+
+    return evaluation;
 }

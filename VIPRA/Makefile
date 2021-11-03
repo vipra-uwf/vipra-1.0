@@ -40,6 +40,7 @@ make_directories:
 	@mkdir -p $(BUILD_DIR)/dsl/conditions
 	@mkdir -p $(BUILD_DIR)/dsl/generated
 	@mkdir -p $(BUILD_DIR)/dsl/selectors
+	@mkdir -p $(BUILD_DIR)/dsl/transitions
 	@mkdir -p $(BUILD_DIR)/entity_sets
 	@mkdir -p $(BUILD_DIR)/entity_sets/factory
 	@mkdir -p $(BUILD_DIR)/goals

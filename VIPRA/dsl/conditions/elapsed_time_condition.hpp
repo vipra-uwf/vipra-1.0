@@ -3,7 +3,7 @@
 
 #include "condition.hpp"
 
-class ElapsedTimeCondition: protected Condition
+class ElapsedTimeCondition: public Condition
 {
     public:
         ElapsedTimeCondition(SimulationContext *simulationContext, FLOATING_NUMBER desiredElapsedTime);

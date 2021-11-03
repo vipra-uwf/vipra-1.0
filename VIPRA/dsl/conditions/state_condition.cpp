@@ -14,8 +14,10 @@ bool StateCondition::evaluate(int pedestrianIndex)
         ->getIds()
         ->at(pedestrianIndex);
 
-    return this
+    int currentState = this
         ->getSimulationContext()
         ->states
-        ->at(pedestrianId) == this->desiredState;
+        ->at(pedestrianId);
+    
+    return  currentState == this->desiredState;
 }
