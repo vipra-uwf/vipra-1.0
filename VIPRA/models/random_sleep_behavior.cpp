@@ -11,8 +11,10 @@ static const int SLEEPING = 1;
 RandomSleepBehavior::RandomSleepBehavior()
 {
     this->elapsedSeconds = 0.0f;
-    this->timeBetweenNapsSeconds = 3600;
+    this->timeBetweenNapsSeconds = 120;
     this->lengthOfNapSeconds = 120;
+
+    this->simulationContext.states = &(this->states);
 
     // Simulate states being added programmatically here. These calls will be made as the DSL file is parsed.
     this->addStateDefinition("AWAKE");    // INDEX 0
@@ -22,13 +24,11 @@ RandomSleepBehavior::RandomSleepBehavior()
     // e.g., "x% of people are subject to randomly falling asleep"
     // This selector is one of many possibilities that we can add. For example, we can add a 
     // RandomSelector implementation that will select the percentage of the population at random.
-    this->addSelector(new IdRatioSelector(2.0 / 100.0));
+
+    // TODO Add sim context on the HBM and track lifecycle
+    this->addSelector(new IdRatioSelector(&(this->simulationContext), 2.0 / 100.0));
 
     /*
-    Here's an example of what I'm thinking:
-    this->addStateDefinition("AWAKE");
-    this->addStateDefinition("SLEEPING");
-
     this->addTransition(new AndCondition(new StateCondition("AWAKE"), new ElapsedTimeCondition(3600)), "SLEEPING");
     this->addTransition(new AndCondition(new StateCondition("SLEEPING"), new ElapsedTimeCondition(120)), "AWAKE");
 
@@ -47,6 +47,8 @@ void RandomSleepBehavior::initialize(PedestrianSet *pedestrianSet)
     int numPedestrians = pedestrianSet->getNumPedestrians();
     this->states.resize(numPedestrians, 0);
     this->transitionPointSeconds.resize(numPedestrians, 0);
+
+    this->simulationContext.pedestrianSet = pedestrianSet;
 }
 
 void RandomSleepBehavior::update(FLOATING_NUMBER timestep)
@@ -62,7 +64,7 @@ bool RandomSleepBehavior::select(PedestrianSet *pedestrianSet, int pedestrianInd
          !selected && selector != this->selectors.end();
          selector++)
     {
-        selected = (*selector)->select(pedestrianSet, pedestrianIndex);
+        selected = (*selector)->select(pedestrianIndex);
     }
 
     return selected;
@@ -92,7 +94,7 @@ void RandomSleepBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex,
 
     // First phase: set the state transition
     if (this->states.at(pedestrianId) == AWAKE &&
-        (lastTransitionMs == timestep || lastTransitionMs > timeBetweenNapsSeconds))
+        lastTransitionMs > timeBetweenNapsSeconds)
     {
         // Set their state
         transitionState(pedestrianId, SLEEPING);

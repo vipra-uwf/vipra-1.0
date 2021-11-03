@@ -1,13 +1,16 @@
 #include "id_ratio_selector.hpp"
+#include <iostream>
 
-IdRatioSelector::IdRatioSelector(FLOATING_NUMBER ratio)
+IdRatioSelector::IdRatioSelector(
+    SimulationContext *simulationContext, 
+    FLOATING_NUMBER ratio) : Selector(simulationContext)
 {
     this->ratio = ratio;
 }
 
-bool IdRatioSelector::select(PedestrianSet *pedestrianSet, int pedestrianIndex)
+bool IdRatioSelector::select(int pedestrianIndex)
 {
-    int pedestrianId = pedestrianSet->getIds()->at(pedestrianIndex);
+    int pedestrianId = this->getSimulationContext()->pedestrianSet->getIds()->at(pedestrianIndex);
     
     static const int divisor = static_cast<int>(1.0 / this->ratio);
 

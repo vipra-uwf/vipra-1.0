@@ -11,8 +11,8 @@
 class IdRatioSelector: public Selector
 {
     public:
-        IdRatioSelector(FLOATING_NUMBER ratio);
-        bool select(PedestrianSet *pedestrianSet, int pedestrianIndex);
+        IdRatioSelector(SimulationContext *simulationContext, FLOATING_NUMBER ratio);
+        bool select(int pedestrianIndex);
 
     private:
         FLOATING_NUMBER ratio;

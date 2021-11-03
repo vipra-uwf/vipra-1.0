@@ -10,7 +10,7 @@ OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 all: compile
 
 grammar: Behaviors.g4
-	antlr4 -Dlanguage=Cpp -o dsl -no-listener -visitor Behaviors.g4
+	antlr4 -Dlanguage=Cpp -o dsl/generated -Dlanguage=Cpp -no-listener -visitor Behaviors.g4 
 
 compile: setup generate_main make_directories main
 
@@ -38,6 +38,7 @@ make_directories:
 	@mkdir -p $(BUILD_DIR)/code_generation
 	@mkdir -p $(BUILD_DIR)/definitions
 	@mkdir -p $(BUILD_DIR)/dsl/selectors
+	@mkdir -p $(BUILD_DIR)/dsl/generated
 	@mkdir -p $(BUILD_DIR)/entity_sets
 	@mkdir -p $(BUILD_DIR)/entity_sets/factory
 	@mkdir -p $(BUILD_DIR)/goals

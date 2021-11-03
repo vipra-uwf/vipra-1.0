@@ -1,7 +1,7 @@
 #ifndef SELECTOR_HPP
 #define SELECTOR_HPP
 
-#include "../../entity_sets/pedestrian_set.hpp"
+#include "../simulation_context.hpp"
 
 /**
  * A selector is used to decide if a pedestrian should be evaluated for a 
@@ -11,7 +11,14 @@
 class Selector
 {
     public:
-        virtual bool select(PedestrianSet *pedestrianSet, int pedestrianIndex) = 0;
+        Selector(SimulationContext *simulationContext);
+        virtual bool select(int pedestrianIndex) = 0;
+
+    protected:
+        SimulationContext *getSimulationContext();
+    
+    private:
+        SimulationContext *simulationContext;
 };
 
 #endif

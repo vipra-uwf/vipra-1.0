@@ -3,6 +3,7 @@
 
 #include "human_behavior.hpp"
 #include "../dsl/selectors/selector.hpp"
+#include "../dsl/simulation_context.hpp"
 
 /**
  * Strategy ideas:
@@ -45,6 +46,8 @@ class RandomSleepBehavior: public HumanBehavior
 
         // Convenience method to transition the state and track the transition points.
         void transitionState(int pedestrianId, int newState);
+
+        SimulationContext simulationContext;
 
 
     public:
