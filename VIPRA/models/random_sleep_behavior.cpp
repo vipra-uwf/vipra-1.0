@@ -67,14 +67,9 @@ RandomSleepBehavior::RandomSleepBehavior()
 
     this->addStateAction(1, new StopMovementAction(&(this->simulationContext)));
 
-    /*
-
     // Signify that this HBM should override the fields for a specific pedestrian if they are in a sleeping state.
-    this->addDecider(new StateCondition("SLEEPING"));
-
-    // So a selector tells the Behavioral model to evaluate this person. A decider indicates that this person is 
-    // deciding to be subject to this specific behavior.
-    */
+    this->addDecider(new StateCondition(&(this->simulationContext), SLEEPING));
+    
 }
 
 void RandomSleepBehavior::initialize(PedestrianSet *pedestrianSet)
@@ -107,10 +102,15 @@ bool RandomSleepBehavior::select(PedestrianSet *pedestrianSet, int pedestrianInd
 
 bool RandomSleepBehavior::decide(PedestrianSet *pedestrianSet, int pedestrianIndex)
 {
-    int pedestrianId = pedestrianSet->getIds()->at(pedestrianIndex);
+    bool decided = false;
+    for (auto decider = this->deciders.begin();
+         !decided && decider != this->deciders.end();
+         ++decider)
+    {
+        decided = (*decider)->evaluate(pedestrianIndex);
+    }
 
-    // We only overwrite the speed/velocity when this pedestrian is sleeping
-    return this->states.at(pedestrianId) == SLEEPING;
+    return decided;
 }
 
 void RandomSleepBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep)
@@ -167,4 +167,9 @@ void RandomSleepBehavior::addTransition(Transition *transition)
 void RandomSleepBehavior::addStateAction(int state, Action *action)
 {
     this->stateActions.at(state) = action;
+}
+
+void RandomSleepBehavior::addDecider(Condition *decider)
+{
+    this->deciders.push_back(decider);
 }

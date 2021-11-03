@@ -35,6 +35,7 @@ class RandomSleepBehavior: public HumanBehavior
         std::vector<Selector *> selectors;
         std::vector<Transition *> transitions;
         std::vector<Action *> stateActions;
+        std::vector<Condition *> deciders;
 
         // Configuration parameters for this behavior specifically. Defaults are set in this behavior's constructor.
         int timeBetweenNapsSeconds;
@@ -61,6 +62,7 @@ class RandomSleepBehavior: public HumanBehavior
         void addSelector(Selector *selector);
         void addTransition(Transition *transition);
         void addStateAction(int state, Action *action);
+        void addDecider(Condition *decider);
 };
 
 #endif
