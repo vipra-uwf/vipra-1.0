@@ -37,6 +37,7 @@ make_directories:
 	@mkdir -p $(BUILD_DIR)/configuration
 	@mkdir -p $(BUILD_DIR)/code_generation
 	@mkdir -p $(BUILD_DIR)/definitions
+	@mkdir -p $(BUILD_DIR)/dsl/actions
 	@mkdir -p $(BUILD_DIR)/dsl/conditions
 	@mkdir -p $(BUILD_DIR)/dsl/generated
 	@mkdir -p $(BUILD_DIR)/dsl/selectors

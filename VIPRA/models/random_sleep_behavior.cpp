@@ -3,6 +3,7 @@
 #include "random_sleep_behavior.hpp"
 #include "../definitions/movement_definitions.hpp"
 #include "../entity_sets/calm_pedestrian_set.hpp"
+#include "../dsl/actions/stop_movement_action.hpp"
 #include "../dsl/selectors/id_ratio_selector.hpp"
 #include "../dsl/transitions/transition.hpp"
 #include "../dsl/conditions/and_condition.hpp"
@@ -29,7 +30,9 @@ RandomSleepBehavior::RandomSleepBehavior()
     // This selector is one of many possibilities that we can add. For example, we can add a 
     // RandomSelector implementation that will select the percentage of the population at random.
 
-    // TODO Add sim context on the HBM and track lifecycle
+    // Initialize the state actions with null pointers to begin with
+    this->stateActions.resize(this->getStateDefinitions().size(), nullptr);
+
     this->addSelector(new IdRatioSelector(&(this->simulationContext), 2.0 / 100.0));
 
     this->addTransition
@@ -62,9 +65,9 @@ RandomSleepBehavior::RandomSleepBehavior()
         )
     );
 
-    /*
+    this->addStateAction(1, new StopMovementAction(&(this->simulationContext)));
 
-    this->addStateAction("SLEEPING", new StopMovementAction());
+    /*
 
     // Signify that this HBM should override the fields for a specific pedestrian if they are in a sleeping state.
     this->addDecider(new StateCondition("SLEEPING"));
@@ -132,46 +135,24 @@ void RandomSleepBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex,
     {
         if ((*transition)->evaluateTransition(pedestrianIndex))
         {
+            int newState = this->states.at(pedestrianId);
             std::cout 
                 << "Person with id " << pedestrianId 
-                << " has transitioned to " << this->states.at(pedestrianId) 
+                << " has transitioned to " << this->getStateDefinitions().at(newState)
                 << std::endl;
             transitioned = true;
         }
     }
 
-    // if (this->states.at(pedestrianId) == AWAKE &&
-    //     lastTransitionMs > timeBetweenNapsSeconds)
-    // {
-    //     // Set their state
-    //     transitionState(pedestrianId, SLEEPING);
-
-    //     std::cout << "Person with id " << pedestrianId << " has transitioned to SLEEPING" << std::endl;
-
-    // }
-    // else if (this->states.at(pedestrianId) == SLEEPING &&
-    //     lastTransitionMs > lengthOfNapSeconds)
-    // {
-    //     // They are done with their 120 second nap, so wake them up. They will begin walking again next simulation cycle.
-    //     transitionState(pedestrianId, AWAKE);
-
-    //     std::cout << "Person with id " << pedestrianId << " has transitioned to AWAKE" << std::endl;
-    // }
-
-    // Second phase: perform the actions
-    if (this->states.at(pedestrianId) == SLEEPING)
+    for (int state = 0; state < stateActions.size(); ++state)
     {
-        // Stop their speed
-        pedestrianSet->getVelocities()->at(pedestrianIndex) = STOPPED;
-        pedestrianSet->getSpeeds()->at(pedestrianIndex) = 0;
+        if (this->states.at(pedestrianId) == state && 
+            stateActions.at(state) != nullptr)
+        {
+            stateActions.at(state)->performAction(pedestrianIndex);
+        }
     }
 }
-
-// void RandomSleepBehavior::transitionState(int pedestrianId, int newState)
-// {
-//     this->states.at(pedestrianId) = newState;
-//     this->simulationContext.transitionPointSeconds.at(pedestrianId) = this->simulationContext.elapsedSeconds;
-// }
 
 void RandomSleepBehavior::addSelector(Selector *selector)
 {
@@ -181,4 +162,9 @@ void RandomSleepBehavior::addSelector(Selector *selector)
 void RandomSleepBehavior::addTransition(Transition *transition)
 {
     this->transitions.push_back(transition);
+}
+
+void RandomSleepBehavior::addStateAction(int state, Action *action)
+{
+    this->stateActions.at(state) = action;
 }

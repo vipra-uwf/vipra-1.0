@@ -2,6 +2,7 @@
 #define RANDOM_SLEEP_BEHAVIOR_HPP
 
 #include "human_behavior.hpp"
+#include "../dsl/actions/action.hpp"
 #include "../dsl/selectors/selector.hpp"
 #include "../dsl/transitions/transition.hpp"
 #include "../dsl/simulation_context.hpp"
@@ -33,6 +34,7 @@ class RandomSleepBehavior: public HumanBehavior
 
         std::vector<Selector *> selectors;
         std::vector<Transition *> transitions;
+        std::vector<Action *> stateActions;
 
         // Configuration parameters for this behavior specifically. Defaults are set in this behavior's constructor.
         int timeBetweenNapsSeconds;
@@ -58,6 +60,7 @@ class RandomSleepBehavior: public HumanBehavior
 
         void addSelector(Selector *selector);
         void addTransition(Transition *transition);
+        void addStateAction(int state, Action *action);
 };
 
 #endif
