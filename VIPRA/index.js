@@ -1,28 +1,22 @@
-const port = 3000
-const express = require("express")
-//const { exec } = require("child_process")
+const port = 3000;
+const express = require("express");
+const { exec } = require("child_process");
 
-const app = express()
+const app = express();
 
-let allOutput = "Hello"
+exec("./run.sh", (stdout) => {
+  console.log(`stdout: ${stdout}`);
+});
 
-// exec("make ccr", (error, stdout, stderr) => {
-//   if (error) {
-//       console.log(`error: ${error.message}`);
-//       return;
-//   }
-//   if (stderr) {
-//       console.log(`stderr: ${stderr}`);
-//       return;
-//   }
-//   console.log(`stdout: ${stdout}`);
-// });
+//Or exec("make", ...)
+//exec("make generated_main", ...)
+//exec("./generated_main", ...)
 
 app.get("/", (req, res) => {
-    res.send(allOutput)
+    res.send("Hello");
 })
 
 
-app.listen(port)
-console.log(`The server has started and is listening on port number:${port}`)
+app.listen(port);
+console.log(`The server has started and is listening on port number:${port}`);
 
