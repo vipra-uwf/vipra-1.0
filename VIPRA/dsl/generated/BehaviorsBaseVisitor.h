@@ -27,19 +27,19 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCount(BehaviorsParser::CountContext *ctx) override {
+  virtual antlrcpp::Any visitStateSelector(BehaviorsParser::StateSelectorContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDescription(BehaviorsParser::DescriptionContext *ctx) override {
+  virtual antlrcpp::Any visitStateDeclaration(BehaviorsParser::StateDeclarationContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAwake(BehaviorsParser::AwakeContext *ctx) override {
+  virtual antlrcpp::Any visitStateTransition(BehaviorsParser::StateTransitionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSleeping(BehaviorsParser::SleepingContext *ctx) override {
+  virtual antlrcpp::Any visitStateAction(BehaviorsParser::StateActionContext *ctx) override {
     return visitChildren(ctx);
   }
 

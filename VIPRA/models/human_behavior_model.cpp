@@ -2,16 +2,13 @@
 // Created by joe on 8/3/21.
 //
 
-#include "../entity_sets/calm_pedestrian_set.hpp" // TODO not very cleanly separated
+#include "../entity_sets/calm_pedestrian_set.hpp"
 #include "human_behavior_model.hpp"
-#include "human_behavior.hpp"
-#include "random_sleep_behavior.hpp"
-#include "calm_pedestrian_model.hpp"
-#include "../definitions/movement_definitions.hpp"
+#include "dsl_human_behavior.hpp"
 
 HumanBehaviorModel::HumanBehaviorModel()
 {
-    this->humanBehavior = new RandomSleepBehavior();
+    this->humanBehavior = new DslHumanBehavior();
 }
 
 HumanBehaviorModel::~HumanBehaviorModel()

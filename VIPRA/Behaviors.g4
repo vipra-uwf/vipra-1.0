@@ -8,33 +8,45 @@ grammar Behaviors;
 program: statement+;
 
 // A statement is a consideration, count, and description (for now)
-statement: consideration count description ;
+statement: consideration | stateSelector | stateDeclaration | stateTransition | stateAction ;
 
-consideration: 'Consider a ' PERSON_TYPE '.' NEWLINE
-    | 'Consider an ' PERSON_TYPE '.' NEWLINE ;
-count : NUMBER '% of the population are a ' PERSON_TYPE '.' NEWLINE
-    | NUMBER '% of the population are an ' PERSON_TYPE '.' NEWLINE;
-/* This is just for testing for now. We will define this behavior more generically later on */
-description: 'A ' PERSON_TYPE ' pauses movement randomly for 1 minute.';
+consideration: 'Consider a ' ID '.' NEWLINE
+    | 'Consider an ' ID '.' NEWLINE ;
+stateSelector : NUMBER '% of the population are a ' ID '.' NEWLINE
+    | NUMBER '% of the population are an ' ID '.' NEWLINE;
 
-/* A narcoleptic who is AWAKE will transition to ASLEEP randomly */
-/* A narcoleptic who is SLEEPING will transition to AWAKE after 1 minute */
-/* A narcoleptic who is SLEEPING is stopped */
-/* A narcoleptic who is AWAKE moves normally */
+// A narcoleptic can be SLEEPING.
+// A narcoleptic can be AWAKE.
+stateDeclaration: 'A ' ID ' can be ' ID '.' NEWLINE;
+
+// A narcoleptic who is SLEEPING will be AWAKE after 120 seconds.
+// A narcoleptic who is AWAKE will be SLEEPING after 120 seconds.
+stateTransition: 'A ' ID ' who is ' ID ' will be ' ID ' after ' NUMBER ' seconds.' NEWLINE;
+
+// A narcoleptic who is SLEEPING is STOPPED.
+stateAction: 'A ' ID ' who is ' ID ' is ' ID '.' NEWLINE;
 
 
-state: 'AWAKE' #awake
-    | 'SLEEPING' #sleeping;
+// state: 'AWAKE' #awake
+//     | 'SLEEPING' #sleeping;
 
-/* TODO */
-/* Define states and transitions _somehow_. */
-/* Define what should happen in those states. */
-/* Define a way to supply comments. */
+// action: 'STOPPED' #stopped;
 
 /*
  * Lexer Rules
+ * These are only used for tokenizing. Use the parser rules above to combine these.
  */
-PERSON_TYPE : [a-zA-Z]+ ;
+ID: [a-zA-Z]+ ;
 NUMBER : [0-9]+ ;
 NEWLINE : '\r'? '\n' ; // Return newlines to parser (is end-statement signal)
 WHITESPACE : ' ' -> skip ;
+
+/**
+A random 1 out of 10 people is a shy
+A shy person who is WALKING will SLOW DOWN when they are 3 feet away from the nearest person.
+
+// Conditions:
+// Put people in groups
+// Environmental changes - obstacle avoidance?
+// Events - environment state (like announcements)
+**/

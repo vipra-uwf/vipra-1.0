@@ -1,0 +1,7 @@
+Consider a sleeper.
+2% of the population are a sleeper.
+A sleeper can be SLEEPING.
+A sleeper can be AWAKE.
+A sleeper who is SLEEPING will be AWAKE after 10 seconds.
+A sleeper who is AWAKE will be SLEEPING after 10 seconds.
+A sleeper who is SLEEPING is STOPPED.

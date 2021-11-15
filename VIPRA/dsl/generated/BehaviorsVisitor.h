@@ -25,13 +25,13 @@ public:
 
     virtual antlrcpp::Any visitConsideration(BehaviorsParser::ConsiderationContext *context) = 0;
 
-    virtual antlrcpp::Any visitCount(BehaviorsParser::CountContext *context) = 0;
+    virtual antlrcpp::Any visitStateSelector(BehaviorsParser::StateSelectorContext *context) = 0;
 
-    virtual antlrcpp::Any visitDescription(BehaviorsParser::DescriptionContext *context) = 0;
+    virtual antlrcpp::Any visitStateDeclaration(BehaviorsParser::StateDeclarationContext *context) = 0;
 
-    virtual antlrcpp::Any visitAwake(BehaviorsParser::AwakeContext *context) = 0;
+    virtual antlrcpp::Any visitStateTransition(BehaviorsParser::StateTransitionContext *context) = 0;
 
-    virtual antlrcpp::Any visitSleeping(BehaviorsParser::SleepingContext *context) = 0;
+    virtual antlrcpp::Any visitStateAction(BehaviorsParser::StateActionContext *context) = 0;
 
 
 };
