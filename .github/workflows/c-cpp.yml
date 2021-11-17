@@ -12,6 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install required components
-      run: apt-get update && apt-get install -y libantlr4-runtime-dev libstdc++-10-dev
+      run: sudo apt-get update && sudo apt-get install -y libantlr4-runtime-dev libstdc++-10-dev
     - name: run make in the VIPRA directory
       run: cd VIPRA && make generate_main && make compile
