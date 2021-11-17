@@ -21,8 +21,7 @@ class HumanBehaviorModel
     private:
         Data *data;
 
-        // Single behavior for now, but I would envision multiple behaviors can be modeled here.
-        HumanBehavior *humanBehavior;
+        std::vector <HumanBehavior *> humanBehaviors;
 
     public:
         HumanBehaviorModel();
