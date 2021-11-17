@@ -1,6 +1,11 @@
 CXX = g++
 NAME = "generated_main"
-CXXFLAGS = -std=c++11 -g -Wall -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime -lantlr4-runtime
+
+# For Fedora 35, run dnf install antlr4-cpp-runtime-devel
+# For Ubuntu 20.04, run apt install libantlr4-runtime-dev libstdc++-10-dev
+# The include paths are the same for both platforms
+CXXFLAGS = -std=c++11 -g -Wall -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
+LDLIBS = -lantlr4-runtime
 
 BUILD_DIR = build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
@@ -22,7 +27,7 @@ generate_main:
 	echo $(OBJECTS)
 	
 main: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(NAME) $^
+	$(CXX) $(CXXFLAGS) -o $(NAME) $^ $(LDLIBS)
 	
 $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
