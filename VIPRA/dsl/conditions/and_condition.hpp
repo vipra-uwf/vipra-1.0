@@ -3,6 +3,9 @@
 
 #include "condition.hpp"
 
+/**
+ * Combine two different conditions together using AND
+ */
 class AndCondition: public Condition
 {
     public:

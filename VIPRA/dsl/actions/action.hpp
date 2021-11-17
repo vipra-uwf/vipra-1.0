@@ -3,6 +3,9 @@
 
 #include "../simulation_context.hpp"
 
+/**
+ * An action is something the pedestrian does, such as stopping movement.
+ */
 class Action
 {
     public:

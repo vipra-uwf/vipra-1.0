@@ -3,6 +3,11 @@
 
 #include "condition.hpp"
 
+/**
+ * A condition that checks to see if a certain amount of time has elapsed since
+ * the previous transition. It only performs the check based on the shared data
+ * in the simulation context.
+ */
 class ElapsedTimeCondition: public Condition
 {
     public:

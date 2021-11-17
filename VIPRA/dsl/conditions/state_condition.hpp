@@ -4,6 +4,10 @@
 #include "condition.hpp"
 #include "../simulation_context.hpp"
 
+/**
+ * A condition that evaluates whether or not the pedestrian at the current
+ * index is at a particular state (as defined by the behavior file).
+ */
 class StateCondition: public Condition
 {
     public:

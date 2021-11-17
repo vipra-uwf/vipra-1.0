@@ -3,6 +3,10 @@
 
 #include "../simulation_context.hpp"
 
+/**
+ * A condition gets evaluated as a part of a selector or transition. It
+ * evaluates to true or false for a particular pedestrian index.
+ */
 class Condition
 {
     public:

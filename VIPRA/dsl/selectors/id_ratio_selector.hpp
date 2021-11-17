@@ -6,7 +6,8 @@
 
 /**
  * Select the pedestrian based on a specified ratio. Useful for behaviors that 
- * are selected by a certain percent of the population.
+ * are selected by a certain percent of the population. This uses an algorithm
+ * that is deterministic, so every run of the selector is identical.
  */ 
 class IdRatioSelector: public Selector
 {

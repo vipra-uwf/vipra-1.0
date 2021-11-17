@@ -4,6 +4,10 @@
 #include "../simulation_context.hpp"
 #include "../conditions/condition.hpp"
 
+/**
+ * A transition pairs a condition with a new state. If the condition evaluates
+ * to true, the state is changed to the new value.
+ */
 class Transition
 {
     public:
