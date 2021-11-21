@@ -43,9 +43,9 @@ stateAction: 'A ' ID ' who is ' ID ' is ' ID '.';
  */
 ID: [a-zA-Z]+ ;
 NUMBER : [0-9]+ ;
-INLINE_COMMENT : '/*' .*? '*/' -> skip;
-BLOCK_COMMENT : '//' .*? '\r'?'\n' -> skip;
-WHITESPACE : [ \t\r\n]+ -> skip ;
+COMMENT:            '/*' .*? '*/'    -> channel(HIDDEN);
+LINE_COMMENT:       '//' ~[\r\n]*    -> channel(HIDDEN);
+WHITESPACE : [ \t\r\n]+ -> channel(HIDDEN) ;
 
 /**
 Other selectors could include:

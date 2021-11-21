@@ -1,3 +1,6 @@
+/**
+  * RANDOM SLEEP
+  */
 // This is a random sleep behavior. It models the scenario of a certain percent
 // of the population that suffers from narcolepsy. Specifically, someone
 // subject to this behavior will stop movement to take a nap for the specified

@@ -575,8 +575,8 @@ std::vector<std::string> BehaviorsParser::_literalNames = {
 };
 
 std::vector<std::string> BehaviorsParser::_symbolicNames = {
-  "", "", "", "", "", "", "", "", "", "", "", "", "", "ID", "NUMBER", "INLINE_COMMENT", 
-  "BLOCK_COMMENT", "WHITESPACE"
+  "", "", "", "", "", "", "", "", "", "", "", "", "", "ID", "NUMBER", "COMMENT", 
+  "LINE_COMMENT", "WHITESPACE"
 };
 
 dfa::Vocabulary BehaviorsParser::_vocabulary(_literalNames, _symbolicNames);
