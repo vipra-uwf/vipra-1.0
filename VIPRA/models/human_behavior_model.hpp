@@ -9,7 +9,7 @@
 #include "../simulation/data.hpp"
 #include "../definitions/behavior_definitions.hpp"
 #include "pedestrian_dynamics_model.hpp"
-#include "human_behavior.hpp"
+#include "../dsl/human_behavior.hpp"
 
 /**
  * We define the Human Behavior Model to hold a pointer to the shared data object and wrap a single human behavior.
@@ -26,7 +26,6 @@ class HumanBehaviorModel
     public:
         HumanBehaviorModel();
         virtual ~HumanBehaviorModel();
-        explicit HumanBehaviorModel(Data *data);
         virtual void configure(CONFIG_MAP* configMap);
 
         void setData(Data *initialData);

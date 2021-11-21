@@ -4,7 +4,7 @@
 
 #include "../entity_sets/calm_pedestrian_set.hpp"
 #include "human_behavior_model.hpp"
-#include "dsl_human_behavior.hpp"
+#include "../dsl/dsl_human_behavior.hpp"
 
 HumanBehaviorModel::HumanBehaviorModel()
 {

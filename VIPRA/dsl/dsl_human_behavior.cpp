@@ -1,15 +1,15 @@
 #include "dsl_human_behavior.hpp"
-#include "../dsl/generated/BehaviorsLexer.h"
-#include "../dsl/generated/BehaviorsParser.h"
-#include "../dsl/selectors/id_ratio_selector.hpp"
-#include "../dsl/actions/stop_movement_action.hpp"
-#include "../dsl/conditions/and_condition.hpp"
-#include "../dsl/conditions/state_condition.hpp"
-#include "../dsl/conditions/elapsed_time_condition.hpp"
+#include "generated/BehaviorsLexer.h"
+#include "generated/BehaviorsParser.h"
+#include "selectors/id_ratio_selector.hpp"
+#include "actions/stop_movement_action.hpp"
+#include "conditions/and_condition.hpp"
+#include "conditions/state_condition.hpp"
+#include "conditions/elapsed_time_condition.hpp"
 #include <iostream>
 #include <fstream>
 
-int findState(std::vector<std::string> states, std::string stateName)
+int findState(std::vector<std::string> states, const std::string& stateName)
 {
     for (int i = 0; i < states.size(); ++i)
     {
@@ -25,6 +25,9 @@ int findState(std::vector<std::string> states, std::string stateName)
 DslHumanBehavior::DslHumanBehavior(const std::string& fileName)
     : HumanBehavior()
 {
+    supportedActions.push_back(
+            new StopMovementAction(this->getSimulationContext()));
+
     std::ifstream dslFile(fileName);
     std::string line;
 
@@ -36,6 +39,14 @@ DslHumanBehavior::DslHumanBehavior(const std::string& fileName)
     BehaviorsParser::ProgramContext *tree = parser.program();
 
     this->visitProgram(tree);
+}
+
+DslHumanBehavior::~DslHumanBehavior()
+{
+    for (auto action: supportedActions)
+    {
+        delete action;
+    }
 }
 
 antlrcpp::Any DslHumanBehavior::visitConsideration(BehaviorsParser::ConsiderationContext *ctx)
@@ -97,11 +108,15 @@ antlrcpp::Any DslHumanBehavior::visitStateAction(BehaviorsParser::StateActionCon
     int state = findState(this->getStateDefinitions(), stateName);
 
     std::string stateAction = ctx->ID(2)->getText();
-    // only STOPPED Supported for now
-    if (stateAction == "STOPPED")
+
+
+    for (auto action: supportedActions)
     {
-        this->addStateAction(state, new StopMovementAction(this->getSimulationContext()));
-        std::cout << "Added stopped action for state " << stateName << std::endl;
+        if (stateAction == action->getActionName())
+        {
+            this->addStateAction(state, action);
+            std::cout << "Added " << action->getActionName() << " action for state " << stateName << std::endl;
+        }
     }
 
     return 0;

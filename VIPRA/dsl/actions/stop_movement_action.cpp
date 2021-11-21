@@ -1,7 +1,7 @@
 #include "stop_movement_action.hpp"
 
 StopMovementAction::StopMovementAction(SimulationContext *simulationContext)
-    : Action(simulationContext)
+    : Action(simulationContext, "STOPPED")
 {
 
 }
