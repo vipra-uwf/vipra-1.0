@@ -22,11 +22,10 @@ int findState(std::vector<std::string> states, std::string stateName)
     return -1;
 }
 
-DslHumanBehavior::DslHumanBehavior()
+DslHumanBehavior::DslHumanBehavior(const std::string& fileName)
     : HumanBehavior()
 {
-    // Read in the hard-coded file
-    std::ifstream dslFile("random_sleep.behavior");
+    std::ifstream dslFile(fileName);
     std::string line;
 
     antlr4::ANTLRInputStream input(dslFile);

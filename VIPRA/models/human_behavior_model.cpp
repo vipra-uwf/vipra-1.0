@@ -8,7 +8,6 @@
 
 HumanBehaviorModel::HumanBehaviorModel()
 {
-    this->humanBehaviors.push_back(new DslHumanBehavior());
 }
 
 HumanBehaviorModel::~HumanBehaviorModel()
@@ -74,7 +73,13 @@ void HumanBehaviorModel::update(FLOATING_NUMBER timestep)
 
 void HumanBehaviorModel::configure(CONFIG_MAP *configMap)
 {
-    // Add the behaviors here.
+    // Add the behaviors here. The key for each behavior doesn't matter...
+    // it's just there for documentation purposes. The value is the filename
+    // that we're reading in for the DSL human behavior.
+    for (const auto& behavior: (*configMap))
+    {
+        this->humanBehaviors.push_back(new DslHumanBehavior(behavior.second));
+    }
 }
 
 /**

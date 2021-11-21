@@ -12,7 +12,8 @@
 class DslHumanBehavior : public HumanBehavior, public BehaviorsBaseVisitor
 {
     public:
-        DslHumanBehavior();
+        DslHumanBehavior(const std::string& fileName);
+
         virtual ~DslHumanBehavior() = default;
 
         antlrcpp::Any visitStateSelector(BehaviorsParser::StateSelectorContext *ctx);
