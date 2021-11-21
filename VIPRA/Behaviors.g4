@@ -8,28 +8,28 @@ grammar Behaviors;
 program: statement+;
 
 // A statement is a consideration, count, and description
-statement: consideration | stateSelector | stateDeclaration | stateTransition | stateAction ;
+statement: consideration | stateSelector | stateDeclaration | stateTransition | stateAction;
 
 // Example: Consider a narcoleptic
-consideration: 'Consider a ' ID '.' NEWLINE
-    | 'Consider an ' ID '.' NEWLINE ;
+consideration: 'Consider a ' ID '.'
+    | 'Consider an ' ID '.' ;
 
 // Example: 2% of the population are a narcoleptic
-stateSelector : NUMBER '% of the population are a ' ID '.' NEWLINE
-    | NUMBER '% of the population are an ' ID '.' NEWLINE;
+stateSelector : NUMBER '% of the population are a ' ID '.'
+    | NUMBER '% of the population are an ' ID '.';
 
 // Examples:
 // A narcoleptic can be SLEEPING.
 // A narcoleptic can be AWAKE.
-stateDeclaration: 'A ' ID ' can be ' ID '.' NEWLINE;
+stateDeclaration: 'A ' ID ' can be ' ID '.';
 
 // Examples:
 // A narcoleptic who is SLEEPING will be AWAKE after 120 seconds.
 // A narcoleptic who is AWAKE will be SLEEPING after 120 seconds.
-stateTransition: 'A ' ID ' who is ' ID ' will be ' ID ' after ' NUMBER ' seconds.' NEWLINE;
+stateTransition: 'A ' ID ' who is ' ID ' will be ' ID ' after ' NUMBER ' seconds.';
 
 // A narcoleptic who is SLEEPING is STOPPED.
-stateAction: 'A ' ID ' who is ' ID ' is ' ID '.' NEWLINE;
+stateAction: 'A ' ID ' who is ' ID ' is ' ID '.';
 
 
 // state: 'AWAKE' #awake
@@ -43,8 +43,9 @@ stateAction: 'A ' ID ' who is ' ID ' is ' ID '.' NEWLINE;
  */
 ID: [a-zA-Z]+ ;
 NUMBER : [0-9]+ ;
-NEWLINE : '\r'? '\n' ; // Return newlines to parser (is end-statement signal)
-WHITESPACE : ' ' -> skip ;
+INLINE_COMMENT : '/*' .*? '*/' -> skip;
+BLOCK_COMMENT : '//' .*? '\r'?'\n' -> skip;
+WHITESPACE : [ \t\r\n]+ -> skip ;
 
 /**
 Other selectors could include:
