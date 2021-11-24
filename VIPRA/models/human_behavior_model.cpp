@@ -6,7 +6,9 @@
 #include "human_behavior_model.hpp"
 #include "../dsl/dsl_human_behavior.hpp"
 
-HumanBehaviorModel::HumanBehaviorModel()
+HumanBehaviorModel::HumanBehaviorModel():
+    data(nullptr),
+    seed(time(nullptr))
 {
 }
 
@@ -73,12 +75,19 @@ void HumanBehaviorModel::update(FLOATING_NUMBER timestep)
 
 void HumanBehaviorModel::configure(CONFIG_MAP *configMap)
 {
-    // Add the behaviors here. The key for each behavior doesn't matter...
-    // it's just there for documentation purposes. The value is the filename
-    // that we're reading in for the DSL human behavior.
-    for (const auto& behavior: (*configMap))
+    for (const auto& config: (*configMap))
     {
-        this->humanBehaviors.push_back(new DslHumanBehavior(behavior.second));
+        if (config.first.find("behavior#") != std::string::npos)
+        {
+            // This is a behavior, so add it to the human behaviors. The value is the filename.
+            this->humanBehaviors.push_back(new DslHumanBehavior(config.second, this->seed));
+        }
+
+        if (config.first == "random_seed")
+        {
+            // Override the seed value for deterministic runs.
+            this->seed = atoi(config.second.c_str());
+        }
     }
 }
 

@@ -27,6 +27,10 @@ public:
 
     virtual antlrcpp::Any visitStateSelector(BehaviorsParser::StateSelectorContext *context) = 0;
 
+    virtual antlrcpp::Any visitIdRatioSelector(BehaviorsParser::IdRatioSelectorContext *context) = 0;
+
+    virtual antlrcpp::Any visitRandomIdRatioSelector(BehaviorsParser::RandomIdRatioSelectorContext *context) = 0;
+
     virtual antlrcpp::Any visitStateDeclaration(BehaviorsParser::StateDeclarationContext *context) = 0;
 
     virtual antlrcpp::Any visitStateTransition(BehaviorsParser::StateTransitionContext *context) = 0;

@@ -8,15 +8,28 @@ grammar Behaviors;
 program: statement+;
 
 // A statement is a consideration, count, and description
-statement: consideration | stateSelector | stateDeclaration | stateTransition | stateAction;
+statement: consideration
+    | stateSelector
+    | stateDeclaration
+    | stateTransition
+    | stateAction;
 
 // Example: Consider a narcoleptic
 consideration: 'Consider a ' ID '.'
     | 'Consider an ' ID '.' ;
 
+stateSelector: idRatioSelector
+    | randomIdRatioSelector
+    ;
+
 // Example: 2% of the population are a narcoleptic
-stateSelector : NUMBER '% of the population are a ' ID '.'
-    | NUMBER '% of the population are an ' ID '.';
+idRatioSelector : NUMBER '% of the population are a ' ID '.'
+    | NUMBER '% of the population are an ' ID '.'
+    ;
+
+// Example: A random 1 out of every 50 pedestrians is a narcoleptic
+randomIdRatioSelector : 'A random ' NUMBER ' out of every ' NUMBER ' pedestrians is a ' ID '.'
+    | 'A random ' NUMBER ' out of every ' NUMBER ' pedestrians is an ' ID '.';
 
 // Examples:
 // A narcoleptic can be SLEEPING.

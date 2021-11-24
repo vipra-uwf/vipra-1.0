@@ -23,6 +23,9 @@ class HumanBehaviorModel
 
         std::vector <HumanBehavior *> humanBehaviors;
 
+    protected:
+        unsigned int seed;
+
     public:
         HumanBehaviorModel();
         virtual ~HumanBehaviorModel();

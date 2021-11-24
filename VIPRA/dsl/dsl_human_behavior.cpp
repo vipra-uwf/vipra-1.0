@@ -2,12 +2,14 @@
 #include "generated/BehaviorsLexer.h"
 #include "generated/BehaviorsParser.h"
 #include "selectors/id_ratio_selector.hpp"
+#include "selectors/id_random_selector.hpp"
 #include "actions/stop_movement_action.hpp"
 #include "conditions/and_condition.hpp"
 #include "conditions/state_condition.hpp"
 #include "conditions/elapsed_time_condition.hpp"
 #include <iostream>
 #include <fstream>
+#include <antlr4-runtime/support/Any.h>
 
 int findState(std::vector<std::string> states, const std::string& stateName)
 {
@@ -22,8 +24,8 @@ int findState(std::vector<std::string> states, const std::string& stateName)
     return -1;
 }
 
-DslHumanBehavior::DslHumanBehavior(const std::string& fileName)
-    : HumanBehavior()
+DslHumanBehavior::DslHumanBehavior(const std::string &fileName, unsigned int seed)
+    : HumanBehavior(), seed(seed)
 {
     supportedActions.push_back(
             new StopMovementAction(this->getSimulationContext()));
@@ -41,6 +43,11 @@ DslHumanBehavior::DslHumanBehavior(const std::string& fileName)
     this->visitProgram(tree);
 }
 
+DslHumanBehavior::DslHumanBehavior(const std::string& fileName)
+        : DslHumanBehavior(fileName, time(nullptr))
+{
+}
+
 DslHumanBehavior::~DslHumanBehavior()
 {
     for (auto action: supportedActions)
@@ -55,12 +62,26 @@ antlrcpp::Any DslHumanBehavior::visitConsideration(BehaviorsParser::Consideratio
     return BehaviorsBaseVisitor::visitConsideration(ctx);
 }
 
-antlrcpp::Any DslHumanBehavior::visitStateSelector(BehaviorsParser::StateSelectorContext *ctx)
+antlrcpp::Any DslHumanBehavior::visitIdRatioSelector(BehaviorsParser::IdRatioSelectorContext *ctx)
 {
     float percent = std::atof(ctx->NUMBER()->getText().c_str());
     this->addSelector(new IdRatioSelector(this->getSimulationContext(), percent / 100.0));
     std::cout << "Added selector for " << percent << " percent of the population" << std::endl;
-    return 0;
+    return BehaviorsBaseVisitor::visitIdRatioSelector(ctx);
+}
+
+antlrcpp::Any DslHumanBehavior::visitRandomIdRatioSelector(BehaviorsParser::RandomIdRatioSelectorContext *ctx)
+{
+    float numerator = std::atof(ctx->NUMBER(0)->getText().c_str());
+    float denominator = std::atof(ctx->NUMBER(1)->getText().c_str());
+    this->addSelector(new IdRandomSelector(
+            this->getSimulationContext(),
+            numerator / denominator,
+            seed));
+    std::cout << "Added selector for a random " << numerator
+              << " out of " << denominator
+              << " pedestrians with a seed of " << seed << std::endl;
+    return BehaviorsBaseVisitor::visitRandomIdRatioSelector(ctx);
 }
 
 antlrcpp::Any DslHumanBehavior::visitStateDeclaration(BehaviorsParser::StateDeclarationContext *ctx)

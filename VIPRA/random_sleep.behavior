@@ -9,7 +9,9 @@ Consider a sleeper.
 
 // This indicates that precisely persons 0, 50, and 100 are going to be subject
 // to this behavior.
-2% of the population are a sleeper.
+// 2% of the population are a sleeper.
+
+A random 1 out of every 50 pedestrians is a sleeper.
 
 // These are two states that the sleeper can be in. They can be named
 // anything, but it must be consistent throughout the entire file.

@@ -9,3 +9,8 @@ SimulationContext *Selector::getSimulationContext()
 {
     return this->simulationContext;
 }
+
+void Selector::initialize()
+{
+
+}

@@ -31,6 +31,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitIdRatioSelector(BehaviorsParser::IdRatioSelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitRandomIdRatioSelector(BehaviorsParser::RandomIdRatioSelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitStateDeclaration(BehaviorsParser::StateDeclarationContext *ctx) override {
     return visitChildren(ctx);
   }
