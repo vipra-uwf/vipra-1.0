@@ -10,7 +10,7 @@ class CalmPedestrianSet: public PedestrianSet
 {
     private:
         int numPedestrians;
-    
+
         std::vector<Dimensions> pedestrianCoordinates;
         std::vector<Dimensions> goalCoordinates;
         std::vector<Dimensions> velocities;
@@ -24,13 +24,15 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER> priorities;
         std::vector<MovementDefinitions> movementStates;
         std::vector<int> startingAisles;
+        std::vector<FLOATING_NUMBER> shoulderLengths;
         std::vector<int> ids;
+
 
     public:
         CalmPedestrianSet();
 
         virtual void configure(CONFIG_MAP* configMap);
-        
+
         virtual void removePedestrian(int pedestrianIndex);
 
         virtual int getNumPedestrians();
@@ -63,6 +65,7 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<FLOATING_NUMBER>* getPriorities();
         std::vector<MovementDefinitions>* getMovementStates();
         std::vector<int>* getStartingAisles();
+        std::vector<FLOATING_NUMBER>* getShoulderLengths();
 
         void setMasses(std::vector<FLOATING_NUMBER> massesKg);
         void setReactionTimes(std::vector<FLOATING_NUMBER> reactionTimes);
@@ -74,6 +77,7 @@ class CalmPedestrianSet: public PedestrianSet
         void setPriorities(std::vector<FLOATING_NUMBER> priorities);
         void setMovementStates(std::vector<MovementDefinitions> movementStates);
         void setStartingAisles(std::vector<int> startingAisles);
+        void setShoulderLengths(std::vector<FLOATING_NUMBER> shoulderLengths);
 };
 
 #endif

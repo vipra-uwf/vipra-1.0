@@ -582,7 +582,9 @@ std::pair<std::string, int>
         {
             if (pedestrianIndex != j && j < numPedestrians &&
                 neighborDirectionTest(pedestrianIndex, j, "P") &&
-                neighborSpacialTest(pedestrianIndex, j, "P"))
+                neighborSpacialTest(pedestrianIndex, j, "P",
+                this->pedestrianSet->getShoulderLengths()->
+                at(pedestrianIndex)))
             {
                 FLOATING_NUMBER distance = getDistance(pedestrianIndex, j, "P");
                 if (localNearest == NOT_FOUND
@@ -595,7 +597,7 @@ std::pair<std::string, int>
             }
 
             if (neighborDirectionTest(pedestrianIndex, j, "O")
-                && neighborSpacialTest(pedestrianIndex, j, "O"))
+                && neighborSpacialTest(pedestrianIndex, j, "O", 0))
             {
                 FLOATING_NUMBER distance = getDistance(pedestrianIndex, j, "O");
                 if (localNearest == NOT_FOUND
@@ -694,8 +696,9 @@ bool CalmPedestrianModel::neighborDirectionTest(
 }
 
 bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex,
-  int secondPedestrianIndex, std::string originSet)
+  int secondPedestrianIndex, std::string originSet, FLOATING_NUMBER firstShoulderLength)
 {
+
   bool pass = false;
 
   FLOATING_NUMBER firstPedestrianDirectionX;
@@ -704,14 +707,24 @@ bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex,
   FLOATING_NUMBER secondPedestrianDirectionX;
   FLOATING_NUMBER secondPedestrianDirectionY;
 
-  FLOATING_NUMBER shoulderLength = 0.1;
+  FLOATING_NUMBER secondShoulderLength = 0;
+  FLOATING_NUMBER L;
+  FLOATING_NUMBER R;
 
+  int coordinateIndex;
 
   std::vector<Dimensions>* firstPedestriancoords
       = this->pedestrianSet->getPedestrianCoordinates();
   std::vector<Dimensions>* secondPedestriancoords //TODO:fix name -EL
       = this->pedestrianSet->getPedestrianCoordinates();
 
+
+  firstPedestrianDirectionX = std::fabs(
+      (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
+      .coordinates[0]);
+  firstPedestrianDirectionY = std::fabs(
+      (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
+      .coordinates[1]);
 
 
   if(originSet == "O")
@@ -722,122 +735,46 @@ bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex,
 
   else if(originSet == "P")
   {
-    secondPedestrianDirectionX = std::abs(
+    secondPedestrianDirectionX = std::fabs(
       (*this->pedestrianSet->getVelocities())[secondPedestrianIndex]
       .coordinates[0]);
-    secondPedestrianDirectionY = std::abs(
+    secondPedestrianDirectionY = std::fabs(
       (*this->pedestrianSet->getVelocities())[secondPedestrianIndex]
       .coordinates[1]);
+
+    if(firstPedestrianDirectionX > firstPedestrianDirectionY
+        && secondPedestrianDirectionX > secondPedestrianDirectionY
+        || firstPedestrianDirectionY > firstPedestrianDirectionX
+        && secondPedestrianDirectionY > secondPedestrianDirectionX)
+    {
+      secondShoulderLength = this->pedestrianSet->getShoulderLengths()->
+      at(secondPedestrianIndex);
+    }
+
   }
 
-  firstPedestrianDirectionX = std::abs(
-    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
-    .coordinates[0]);
-  firstPedestrianDirectionY = std::abs(
-    (*this->pedestrianSet->getVelocities())[firstPedestrianIndex]
-    .coordinates[1]);
-
-
-  if(originSet == "O")
-  {
     if(firstPedestrianDirectionX > firstPedestrianDirectionY)
     {
-      if((*secondPedestriancoords)[secondPedestrianIndex]
-          .coordinates[1] <= ((*firstPedestriancoords)[firstPedestrianIndex]
-          .coordinates[1] + shoulderLength)
-          && (*secondPedestriancoords)[secondPedestrianIndex].coordinates[1]
-          >= ((*firstPedestriancoords)[firstPedestrianIndex].coordinates[1]
-          - shoulderLength))
-      {
-          pass = true;
-      }
-
+      coordinateIndex = 1;
     }
-
+    
     else
     {
-      if((*secondPedestriancoords)[secondPedestrianIndex]
-          .coordinates[0] <= ((*firstPedestriancoords)[firstPedestrianIndex]
-          .coordinates[0] + shoulderLength)
-          && (*secondPedestriancoords)[secondPedestrianIndex]
-          .coordinates[0] >= ((*firstPedestriancoords)[firstPedestrianIndex]
-          .coordinates[0] - shoulderLength))
-        {
-          pass = true;
-        }
+      coordinateIndex = 0;
     }
-  }
 
-  else
+    L = std::max( (((*firstPedestriancoords)[firstPedestrianIndex]
+    .coordinates[coordinateIndex]) - (firstShoulderLength)),  (((*secondPedestriancoords)[secondPedestrianIndex]
+    .coordinates[coordinateIndex]) - (secondShoulderLength)));
+
+    R = std::min( (((*firstPedestriancoords)[firstPedestrianIndex]
+    .coordinates[coordinateIndex]) + (firstShoulderLength)),  (((*secondPedestriancoords)[secondPedestrianIndex]
+    .coordinates[coordinateIndex]) + (secondShoulderLength)));
+
+  if( L <= R)
   {
-    if(firstPedestrianDirectionX > firstPedestrianDirectionY)
-    {
-      if(secondPedestrianDirectionX > secondPedestrianDirectionY)
-      {
-        if((((*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[1] - shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[1] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[1] - shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[1] - shoulderLength)) || (((*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[1] + shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[1] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[1] + shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[1] - shoulderLength)) )
-            {
-              pass = true;
-            }
-
-      }
-
-      else
-      {
-        if((*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[1] <= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[1] + shoulderLength) && (*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[1] >= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[1] - shoulderLength))
-        {
-            pass = true;
-        }
-
-      }
-
-    }
-
-    else
-    {
-      if(secondPedestrianDirectionY > secondPedestrianDirectionX)
-      {
-        if((((*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[0] - shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[0] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[0] - shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[0] - shoulderLength)) || (((*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[0] + shoulderLength) <= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[0] + shoulderLength) && ((*secondPedestriancoords)[secondPedestrianIndex]
-            .coordinates[0] + shoulderLength) >= ((*firstPedestriancoords)[firstPedestrianIndex]
-            .coordinates[0] - shoulderLength)) )
-            {
-              pass = true;
-            }
-    }
-    else
-    {
-
-      if((*secondPedestriancoords)[secondPedestrianIndex]
-          .coordinates[0] <= ((*firstPedestriancoords)[firstPedestrianIndex]
-          .coordinates[0] + shoulderLength) && (*secondPedestriancoords)[secondPedestrianIndex]
-          .coordinates[0] >= ((*firstPedestriancoords)[firstPedestrianIndex]
-          .coordinates[0] - shoulderLength))
-        {
-          pass = true;
-        }
-
-    }
+    pass = true;
   }
-
-  }
-
 
 
   return pass;
@@ -997,6 +934,7 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
 MovementDefinitions CalmPedestrianModel::updateMovementState
     (int pedestrianIndex)
 {
+
 
     MovementDefinitions newDefinition = this->pedestrianSet->getMovementStates()->at(pedestrianIndex);
     if (newDefinition != MovementDefinitions::HUMAN)
