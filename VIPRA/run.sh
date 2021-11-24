@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "COMPILING PROGRAM...\n"
 sudo make cc
-sudo make
+sudo make 
 echo "COMPILATION COMPLETE.\n\nRUNNING PROGRAM..."
-./generated_main
+sudo sh -c './generated_main input_data/sim_options.json > output.txt 2>&1'
 echo "PROGRAM COMPLETE."

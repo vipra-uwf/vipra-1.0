@@ -24,10 +24,17 @@ std::string generatePopulateEntitySets();
 std::string generateExtractConfigMap();
 std::string generateMain();
 
-int main() 
+int main(int argc, char* argv[]) 
 {
-    ConfigurationReader configurationReader;
-	configurationReader.readJsonConfiguration("input_data/sim_options.json");
+	ConfigurationReader configurationReader;
+	if(argc == 2)
+	{
+		configurationReader.readJsonConfiguration(argv[1]);
+	}
+	else //default config file if one was not entered in command line. Allows for make commands to still work -kenya
+	{
+		configurationReader.readJsonConfiguration("input_data/sim_options.json");
+	}
 	jsonObj = configurationReader.getJsonObject();
 
     std::string functionDeclarations = generateFunctionDeclarations();
