@@ -72,7 +72,7 @@ void Simulation::run()
 
         clock.addSimulationTimeMs(this->timestep_size);
 
-        this->humanBehaviorModel->update(this->timestep_size);
+        //this->humanBehaviorModel->update(this->timestep_size);
         this->pedestrianDynamicsModel->update(this->timestep_size);
         // this->policyModel->update(this->timestep_size); // Reserved for future use
 

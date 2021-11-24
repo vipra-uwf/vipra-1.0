@@ -757,7 +757,7 @@ bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex,
     {
       coordinateIndex = 1;
     }
-    
+
     else
     {
       coordinateIndex = 0;
@@ -941,15 +941,15 @@ MovementDefinitions CalmPedestrianModel::updateMovementState
     {
         if((*this->pedestrianSet->getPriorities())[pedestrianIndex]
             < this->currentPriority
-            /*&& ((*this->pedestrianSet->getPedestrianCoordinates())
+            && ((*this->pedestrianSet->getPedestrianCoordinates())
             [pedestrianIndex].coordinates[0]
             >= ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
                 ->getAisles())
             [(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]]
             + ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
                 ->getAislesSize())
-            [(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]] / 2)
-            - 0.1))*/)
+            [(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]] * 0.5)
+            - 0.1)))
         {
             newDefinition = MovementDefinitions::STOP;
         }

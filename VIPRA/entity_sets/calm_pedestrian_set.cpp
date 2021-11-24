@@ -35,6 +35,7 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->movementStates.erase(movementStates.begin()+pedestrianIndex);
     this->priorities.erase(priorities.begin()+pedestrianIndex);
     this->shoulderLengths.erase(shoulderLengths.begin()+pedestrianIndex);
+    this->startingAisles.erase(startingAisles.begin()+pedestrianIndex);
 
 }
 
