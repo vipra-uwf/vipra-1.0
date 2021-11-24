@@ -9,8 +9,9 @@
 class StopMovementAction : public Action
 {
     public:
-        StopMovementAction(SimulationContext *simulationContext);
-        void performAction(int pedestrianIndex);
+        explicit StopMovementAction(SimulationContext *simulationContext);
+        ~StopMovementAction() override = default;
+        void performAction(int pedestrianIndex) override;
 };
 
 #endif

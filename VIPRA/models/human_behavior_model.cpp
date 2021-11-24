@@ -4,16 +4,20 @@
 
 #include "../entity_sets/calm_pedestrian_set.hpp"
 #include "human_behavior_model.hpp"
-#include "dsl_human_behavior.hpp"
+#include "../dsl/dsl_human_behavior.hpp"
 
-HumanBehaviorModel::HumanBehaviorModel()
+HumanBehaviorModel::HumanBehaviorModel():
+    data(nullptr),
+    seed(time(nullptr))
 {
-    this->humanBehavior = new DslHumanBehavior();
 }
 
 HumanBehaviorModel::~HumanBehaviorModel()
 {
-    delete this->humanBehavior;
+    for (auto hb: this->humanBehaviors)
+    {
+        delete hb;
+    }
 }
 
 void HumanBehaviorModel::setData(Data *initialData)
@@ -28,30 +32,42 @@ Data *HumanBehaviorModel::getData()
 
 void HumanBehaviorModel::update(FLOATING_NUMBER timestep)
 {
-    this->humanBehavior->update(timestep);
+    for (auto humanBehavior: this->humanBehaviors)
+    {
+        humanBehavior->update(timestep);
+    }
 
     // Iterate through the pedestrian list and apply our behavior to it.
-    CalmPedestrianSet *calmPedestrianSet = dynamic_cast<CalmPedestrianSet *>(this->getData()->getPedestrianSet());
+    auto *calmPedestrianSet = dynamic_cast<CalmPedestrianSet *>(this->getData()->getPedestrianSet());
     for (int i = 0; i < calmPedestrianSet->getNumPedestrians(); ++i)
     {
-        if (this->humanBehavior->select(calmPedestrianSet, i))
+        bool behaviorDecided = false;
+        for (auto humanBehavior: this->humanBehaviors)
         {
-            this->humanBehavior->act(calmPedestrianSet, i, timestep);
+            if (humanBehavior->select(calmPedestrianSet, i))
+            {
+                humanBehavior->act(calmPedestrianSet, i, timestep);
 
-            // If this behavior has decided that it will override the default, set the movement state.
-            // Note that this will look different once the HBM has its own copy of the data.
-            if (this->humanBehavior->decide(calmPedestrianSet, i))
-            {
-                // Set the movement state to HUMAN to avoid the PDM overwriting our states
-                calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::HUMAN;
-            }
-            else
-            {
-                // Only set the movement state back to stop if it doesn't have something already.
-                if (calmPedestrianSet->getMovementStates()->at(i) == MovementDefinitions::HUMAN)
+                // If this behavior has decided that it will override the default, set the movement state.
+                // Note that this will look different once the HBM has its own copy of the data.
+                if (humanBehavior->decide(calmPedestrianSet, i))
                 {
-                    calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::STOP;
+                    behaviorDecided = true;
                 }
+            }
+        }
+
+        if (behaviorDecided)
+        {
+            // Set the movement state to HUMAN to avoid the PDM overwriting our states
+            calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::HUMAN;
+        }
+        else
+        {
+            // Only set the movement state back to stop if it doesn't have something already.
+            if (calmPedestrianSet->getMovementStates()->at(i) == MovementDefinitions::HUMAN)
+            {
+                calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::STOP;
             }
         }
     }
@@ -59,7 +75,20 @@ void HumanBehaviorModel::update(FLOATING_NUMBER timestep)
 
 void HumanBehaviorModel::configure(CONFIG_MAP *configMap)
 {
-    // Nothing to configure, but needs to be defined anyway
+    for (const auto& config: (*configMap))
+    {
+        if (config.first.find("behavior#") != std::string::npos)
+        {
+            // This is a behavior, so add it to the human behaviors. The value is the filename.
+            this->humanBehaviors.push_back(new DslHumanBehavior(config.second, this->seed));
+        }
+
+        if (config.first == "random_seed")
+        {
+            // Override the seed value for deterministic runs.
+            this->seed = atoi(config.second.c_str());
+        }
+    }
 }
 
 /**
@@ -67,5 +96,8 @@ void HumanBehaviorModel::configure(CONFIG_MAP *configMap)
  */
 void HumanBehaviorModel::initialize()
 {
-    this->humanBehavior->initialize(this->getData()->getPedestrianSet());
+    for (auto humanBehavior: this->humanBehaviors)
+    {
+        humanBehavior->initialize(this->getData()->getPedestrianSet());
+    }
 }

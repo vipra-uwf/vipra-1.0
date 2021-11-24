@@ -1,5 +1,5 @@
 
-// Generated from Behaviors.g4 by ANTLR 4.9.2
+// Generated from Behaviors.g4 by ANTLR 4.9.3
 
 #pragma once
 
@@ -26,6 +26,10 @@ public:
     virtual antlrcpp::Any visitConsideration(BehaviorsParser::ConsiderationContext *context) = 0;
 
     virtual antlrcpp::Any visitStateSelector(BehaviorsParser::StateSelectorContext *context) = 0;
+
+    virtual antlrcpp::Any visitIdRatioSelector(BehaviorsParser::IdRatioSelectorContext *context) = 0;
+
+    virtual antlrcpp::Any visitRandomIdRatioSelector(BehaviorsParser::RandomIdRatioSelectorContext *context) = 0;
 
     virtual antlrcpp::Any visitStateDeclaration(BehaviorsParser::StateDeclarationContext *context) = 0;
 

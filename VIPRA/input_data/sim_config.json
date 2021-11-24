@@ -60,7 +60,8 @@
     "human_behavior_model" : {
         "type" : "human",
         "configuration" : {
-
+            "random_seed": "1637762023",
+            "behavior#random_sleep": "./random_sleep.behavior"
         }
     }
 }

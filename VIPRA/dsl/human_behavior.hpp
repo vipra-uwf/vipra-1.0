@@ -1,11 +1,11 @@
 #ifndef VIPRA_HUMAN_BEHAVIOR_HPP
 #define VIPRA_HUMAN_BEHAVIOR_HPP
 
-#include "../dsl/actions/action.hpp"
-#include "../dsl/transitions/transition.hpp"
-#include "../dsl/conditions/condition.hpp"
-#include "../dsl/selectors/selector.hpp"
-#include "../dsl/simulation_context.hpp"
+#include "actions/action.hpp"
+#include "transitions/transition.hpp"
+#include "conditions/condition.hpp"
+#include "selectors/selector.hpp"
+#include "simulation_context.hpp"
 #include "../definitions/type_definitions.hpp"
 #include "../entity_sets/pedestrian_set.hpp"
 

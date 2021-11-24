@@ -1,5 +1,5 @@
 
-// Generated from Behaviors.g4 by ANTLR 4.9.2
+// Generated from Behaviors.g4 by ANTLR 4.9.3
 
 #pragma once
 
@@ -13,13 +13,15 @@ class  BehaviorsParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, ID = 13, NUMBER = 14, 
-    NEWLINE = 15, WHITESPACE = 16
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
+    T__14 = 15, T__15 = 16, ID = 17, NUMBER = 18, COMMENT = 19, LINE_COMMENT = 20, 
+    WHITESPACE = 21
   };
 
   enum {
     RuleProgram = 0, RuleStatement = 1, RuleConsideration = 2, RuleStateSelector = 3, 
-    RuleStateDeclaration = 4, RuleStateTransition = 5, RuleStateAction = 6
+    RuleIdRatioSelector = 4, RuleRandomIdRatioSelector = 5, RuleStateDeclaration = 6, 
+    RuleStateTransition = 7, RuleStateAction = 8
   };
 
   explicit BehaviorsParser(antlr4::TokenStream *input);
@@ -36,6 +38,8 @@ public:
   class StatementContext;
   class ConsiderationContext;
   class StateSelectorContext;
+  class IdRatioSelectorContext;
+  class RandomIdRatioSelectorContext;
   class StateDeclarationContext;
   class StateTransitionContext;
   class StateActionContext; 
@@ -76,7 +80,6 @@ public:
     ConsiderationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *NEWLINE();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -89,9 +92,8 @@ public:
   public:
     StateSelectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *NUMBER();
-    antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *NEWLINE();
+    IdRatioSelectorContext *idRatioSelector();
+    RandomIdRatioSelectorContext *randomIdRatioSelector();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -100,13 +102,41 @@ public:
 
   StateSelectorContext* stateSelector();
 
+  class  IdRatioSelectorContext : public antlr4::ParserRuleContext {
+  public:
+    IdRatioSelectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NUMBER();
+    antlr4::tree::TerminalNode *ID();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  IdRatioSelectorContext* idRatioSelector();
+
+  class  RandomIdRatioSelectorContext : public antlr4::ParserRuleContext {
+  public:
+    RandomIdRatioSelectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> NUMBER();
+    antlr4::tree::TerminalNode* NUMBER(size_t i);
+    antlr4::tree::TerminalNode *ID();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  RandomIdRatioSelectorContext* randomIdRatioSelector();
+
   class  StateDeclarationContext : public antlr4::ParserRuleContext {
   public:
     StateDeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     std::vector<antlr4::tree::TerminalNode *> ID();
     antlr4::tree::TerminalNode* ID(size_t i);
-    antlr4::tree::TerminalNode *NEWLINE();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -122,7 +152,6 @@ public:
     std::vector<antlr4::tree::TerminalNode *> ID();
     antlr4::tree::TerminalNode* ID(size_t i);
     antlr4::tree::TerminalNode *NUMBER();
-    antlr4::tree::TerminalNode *NEWLINE();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -137,7 +166,6 @@ public:
     virtual size_t getRuleIndex() const override;
     std::vector<antlr4::tree::TerminalNode *> ID();
     antlr4::tree::TerminalNode* ID(size_t i);
-    antlr4::tree::TerminalNode *NEWLINE();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

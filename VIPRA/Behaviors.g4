@@ -8,28 +8,41 @@ grammar Behaviors;
 program: statement+;
 
 // A statement is a consideration, count, and description
-statement: consideration | stateSelector | stateDeclaration | stateTransition | stateAction ;
+statement: consideration
+    | stateSelector
+    | stateDeclaration
+    | stateTransition
+    | stateAction;
 
 // Example: Consider a narcoleptic
-consideration: 'Consider a ' ID '.' NEWLINE
-    | 'Consider an ' ID '.' NEWLINE ;
+consideration: 'Consider a ' ID '.'
+    | 'Consider an ' ID '.' ;
+
+stateSelector: idRatioSelector
+    | randomIdRatioSelector
+    ;
 
 // Example: 2% of the population are a narcoleptic
-stateSelector : NUMBER '% of the population are a ' ID '.' NEWLINE
-    | NUMBER '% of the population are an ' ID '.' NEWLINE;
+idRatioSelector : NUMBER '% of the population are a ' ID '.'
+    | NUMBER '% of the population are an ' ID '.'
+    ;
+
+// Example: A random 1 out of every 50 pedestrians is a narcoleptic
+randomIdRatioSelector : 'A random ' NUMBER ' out of every ' NUMBER ' pedestrians is a ' ID '.'
+    | 'A random ' NUMBER ' out of every ' NUMBER ' pedestrians is an ' ID '.';
 
 // Examples:
 // A narcoleptic can be SLEEPING.
 // A narcoleptic can be AWAKE.
-stateDeclaration: 'A ' ID ' can be ' ID '.' NEWLINE;
+stateDeclaration: 'A ' ID ' can be ' ID '.';
 
 // Examples:
 // A narcoleptic who is SLEEPING will be AWAKE after 120 seconds.
 // A narcoleptic who is AWAKE will be SLEEPING after 120 seconds.
-stateTransition: 'A ' ID ' who is ' ID ' will be ' ID ' after ' NUMBER ' seconds.' NEWLINE;
+stateTransition: 'A ' ID ' who is ' ID ' will be ' ID ' after ' NUMBER ' seconds.';
 
 // A narcoleptic who is SLEEPING is STOPPED.
-stateAction: 'A ' ID ' who is ' ID ' is ' ID '.' NEWLINE;
+stateAction: 'A ' ID ' who is ' ID ' is ' ID '.';
 
 
 // state: 'AWAKE' #awake
@@ -43,8 +56,9 @@ stateAction: 'A ' ID ' who is ' ID ' is ' ID '.' NEWLINE;
  */
 ID: [a-zA-Z]+ ;
 NUMBER : [0-9]+ ;
-NEWLINE : '\r'? '\n' ; // Return newlines to parser (is end-statement signal)
-WHITESPACE : ' ' -> skip ;
+COMMENT:            '/*' .*? '*/'    -> channel(HIDDEN);
+LINE_COMMENT:       '//' ~[\r\n]*    -> channel(HIDDEN);
+WHITESPACE : [ \t\r\n]+ -> channel(HIDDEN) ;
 
 /**
 Other selectors could include:

@@ -13,6 +13,7 @@ class Selector
     public:
         Selector(SimulationContext *simulationContext);
         virtual bool select(int pedestrianIndex) = 0;
+        virtual void initialize();
 
     protected:
         SimulationContext *getSimulationContext();

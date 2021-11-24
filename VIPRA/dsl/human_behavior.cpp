@@ -21,6 +21,11 @@ void HumanBehavior::initialize(PedestrianSet *pedestrianSet)
     this->simulationContext.transitionPointSeconds.resize(numPedestrians, 0);
 
     this->simulationContext.pedestrianSet = pedestrianSet;
+
+    // Initialize the selectors. These get their pedestrian set from the simulation context.
+    for (auto selector: this->selectors) {
+        selector->initialize();
+    }
 }
 
 void HumanBehavior::update(FLOATING_NUMBER timestep)

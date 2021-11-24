@@ -1,5 +1,5 @@
 
-// Generated from Behaviors.g4 by ANTLR 4.9.2
+// Generated from Behaviors.g4 by ANTLR 4.9.3
 
 #pragma once
 
@@ -28,6 +28,14 @@ public:
   }
 
   virtual antlrcpp::Any visitStateSelector(BehaviorsParser::StateSelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitIdRatioSelector(BehaviorsParser::IdRatioSelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitRandomIdRatioSelector(BehaviorsParser::RandomIdRatioSelectorContext *ctx) override {
     return visitChildren(ctx);
   }
 
