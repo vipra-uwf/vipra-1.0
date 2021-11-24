@@ -2,16 +2,28 @@
 
 ### Installation and Execution Instructions
 
-[Vagrant Setup Guide](vagrant_setup_guide.md)
+#### Requirements
 
-##### Makefile Commands
-- Compile: `$ make compile` or `$ make`
-- Run (Compiles if needed): `$ make run`
-- Clean: `$ make clean`
-- Clean, Compile, and Run: `$ make ccr`
-- Clean and Compile: `$ make cc`
-- Clear Output Folder: `$ make co`
+These steps were tested on Ubuntu 20.04 and Fedora 35. You will need the ANTLR4
+development files to compile the program and the ANTLR4 runtime to run the
+simulation.
 
+#### Fedora Setup
+
+```
+dnf install --refresh gcc-g++ make antlr4-cpp-runtime-devel
+```
+
+#### Ubuntu 20.04 Setup
+
+```
+apt update && apt install g++ make libantlr4-runtime-dev libstdc++-10-dev
+```
+
+#### Vagrant Setup
+
+You can also use Vagrant to manage an Ubuntu-based virtual machine. See the
+[Vagrant Setup Guide](vagrant_setup_guide.md).
 
 ---
 ### Configuration Files
