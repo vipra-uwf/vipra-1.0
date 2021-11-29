@@ -15,20 +15,22 @@ class DslHumanBehavior : public HumanBehavior, public BehaviorsBaseVisitor
         explicit DslHumanBehavior(const std::string& fileName);
         explicit DslHumanBehavior(const std::string& fileName, unsigned int seed);
 
-        ~DslHumanBehavior() override;
+        ~DslHumanBehavior() override = default;
 
         antlrcpp::Any visitStateDeclaration(BehaviorsParser::StateDeclarationContext *ctx) override;
         antlrcpp::Any visitStateTransition(BehaviorsParser::StateTransitionContext *ctx) override;
-        antlrcpp::Any visitStateAction(BehaviorsParser::StateActionContext *ctx) override;
         antlrcpp::Any visitConsideration(BehaviorsParser::ConsiderationContext *ctx) override;
         antlrcpp::Any visitIdRatioSelector(BehaviorsParser::IdRatioSelectorContext *ctx) override;
-        antlrcpp::Any visitRandomIdRatioSelector(BehaviorsParser::RandomIdRatioSelectorContext *ctx) override;
+        antlrcpp::Any visitNoGroupRandomIdSelector(BehaviorsParser::NoGroupRandomIdSelectorContext *ctx) override;
+        antlrcpp::Any visitStateActionStopped(BehaviorsParser::StateActionStoppedContext *ctx) override;
+        antlrcpp::Any visitEveryoneSelector(BehaviorsParser::EveryoneSelectorContext *ctx) override;
+
 
     protected:
         unsigned int seed;
 
     private:
-        std::vector<Action *> supportedActions;
+        std::string behavior;
 };
 
 #endif

@@ -35,7 +35,23 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitRandomIdRatioSelector(BehaviorsParser::RandomIdRatioSelectorContext *ctx) override {
+  virtual antlrcpp::Any visitRandomIdRatioStatement(BehaviorsParser::RandomIdRatioStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNoGroupRandomIdSelector(BehaviorsParser::NoGroupRandomIdSelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitGroupingRandomIdSelector(BehaviorsParser::GroupingRandomIdSelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitEveryoneSelector(BehaviorsParser::EveryoneSelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitEnvironmentStateDeclaration(BehaviorsParser::EnvironmentStateDeclarationContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -43,11 +59,51 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitPedestrianSelected(BehaviorsParser::PedestrianSelectedContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitStateCondition(BehaviorsParser::StateConditionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitStateTransition(BehaviorsParser::StateTransitionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStateAction(BehaviorsParser::StateActionContext *ctx) override {
+  virtual antlrcpp::Any visitFasterOrSlower(BehaviorsParser::FasterOrSlowerContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitTowardOrAwayFrom(BehaviorsParser::TowardOrAwayFromContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitTarget(BehaviorsParser::TargetContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitStoppedBehavior(BehaviorsParser::StoppedBehaviorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitWalkSpeedBehavior(BehaviorsParser::WalkSpeedBehaviorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNormalBehavior(BehaviorsParser::NormalBehaviorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitStateActionStopped(BehaviorsParser::StateActionStoppedContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitStateActionWalkSpeed(BehaviorsParser::StateActionWalkSpeedContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitStateActionNormal(BehaviorsParser::StateActionNormalContext *ctx) override {
     return visitChildren(ctx);
   }
 

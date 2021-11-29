@@ -1,0 +1,25 @@
+/**
+  * IMPORTANT ANNOUNCEMENT
+  */
+// This models the behavior of everyone stopping to listen to an important announcement.
+Consider an announcement-listener.
+
+// This indicates that randomly 2 out of 4 given pedestrians are group-travelers.
+Everyone is an announcement-listener.
+
+// These are two states that the sleeper can be in. They can be named
+// anything, but it must be consistent throughout the entire file.
+An announcement-listener can be LISTENING.
+An announcement-listener can be READY.
+
+// These are environment states.
+The environment can be ANNOUNCING.
+The environment can be NOT_ANNOUNCING.
+
+// State transition rules
+An announcement-listener who is READY will be LISTENING when the environment is ANNOUNCING.
+An announcement-listener who is LISTENING will be READY when the environment is NOT_ANNOUNCING.
+
+// What the behaviors mean
+An announcement-listener who is LISTENING is STOPPED.
+An announcement-listener who is READY will behave normally.

@@ -1,6 +1,7 @@
 #include "dsl_human_behavior.hpp"
 #include "generated/BehaviorsLexer.h"
 #include "generated/BehaviorsParser.h"
+#include "selectors/everyone_selector.hpp"
 #include "selectors/id_ratio_selector.hpp"
 #include "selectors/id_random_selector.hpp"
 #include "actions/stop_movement_action.hpp"
@@ -27,9 +28,6 @@ int findState(std::vector<std::string> states, const std::string& stateName)
 DslHumanBehavior::DslHumanBehavior(const std::string &fileName, unsigned int seed)
     : HumanBehavior(), seed(seed)
 {
-    supportedActions.push_back(
-            new StopMovementAction(this->getSimulationContext()));
-
     std::ifstream dslFile(fileName);
     std::string line;
 
@@ -48,17 +46,10 @@ DslHumanBehavior::DslHumanBehavior(const std::string& fileName)
 {
 }
 
-DslHumanBehavior::~DslHumanBehavior()
-{
-    for (auto action: supportedActions)
-    {
-        delete action;
-    }
-}
-
 antlrcpp::Any DslHumanBehavior::visitConsideration(BehaviorsParser::ConsiderationContext *ctx)
 {
-    std::cout << "Considering " << ctx->ID()->getText() << " type of person" << std::endl;
+    this->behavior = ctx->ID()->getText();
+    std::cout << "Considering " << this->behavior << " type of person" << std::endl;
     return BehaviorsBaseVisitor::visitConsideration(ctx);
 }
 
@@ -66,41 +57,29 @@ antlrcpp::Any DslHumanBehavior::visitIdRatioSelector(BehaviorsParser::IdRatioSel
 {
     float percent = std::atof(ctx->NUMBER()->getText().c_str());
     this->addSelector(new IdRatioSelector(this->getSimulationContext(), percent / 100.0));
-    std::cout << "Added selector for " << percent << " percent of the population" << std::endl;
+    std::cout << behavior << ": Added selector for " << percent
+              << " percent of the population" << std::endl;
     return BehaviorsBaseVisitor::visitIdRatioSelector(ctx);
 }
 
-antlrcpp::Any DslHumanBehavior::visitRandomIdRatioSelector(BehaviorsParser::RandomIdRatioSelectorContext *ctx)
-{
-    float numerator = std::atof(ctx->NUMBER(0)->getText().c_str());
-    float denominator = std::atof(ctx->NUMBER(1)->getText().c_str());
-    this->addSelector(new IdRandomSelector(
-            this->getSimulationContext(),
-            numerator / denominator,
-            seed));
-    std::cout << "Added selector for a random " << numerator
-              << " out of " << denominator
-              << " pedestrians with a seed of " << seed << std::endl;
-    return BehaviorsBaseVisitor::visitRandomIdRatioSelector(ctx);
-}
 
 antlrcpp::Any DslHumanBehavior::visitStateDeclaration(BehaviorsParser::StateDeclarationContext *ctx)
 {
     std::string state = ctx->ID(1)->getText();
     this->addStateDefinition(state);
 
-    std::cout << "Added state definition for " << state << std::endl;
+    std::cout << behavior << ": Added state definition for " << state << std::endl;
     return 0;
 }
 
 antlrcpp::Any DslHumanBehavior::visitStateTransition(BehaviorsParser::StateTransitionContext *ctx)
 {
-    std::string fromStateName = ctx->ID(1)->getText();
+    std::string fromStateName = ctx->pedestrianSelected()->ID(1)->getText();
     int fromState = findState(this->getStateDefinitions(), fromStateName);
-    std::string toStateName = ctx->ID(2)->getText();
+    std::string toStateName = ctx->ID()->getText();
     int toState = findState(this->getStateDefinitions(), toStateName);
 
-    float seconds = std::atof(ctx->NUMBER()->getText().c_str());
+    float seconds = std::atof(ctx->stateCondition()->NUMBER()->getText().c_str());
 
     SimulationContext *simulationContext = this->getSimulationContext();
     this->addTransition
@@ -118,27 +97,42 @@ antlrcpp::Any DslHumanBehavior::visitStateTransition(BehaviorsParser::StateTrans
         )
     );
 
-    std::cout << "Added transition from " << fromStateName << " to " << toStateName << " after " << seconds << " seconds" << std::endl;
+    std::cout << behavior << ": Added transition from "
+              << fromStateName << " to " << toStateName
+              << " after " << seconds << " seconds" << std::endl;
 
     return 0;
 }
 
-antlrcpp::Any DslHumanBehavior::visitStateAction(BehaviorsParser::StateActionContext *ctx)
+antlrcpp::Any DslHumanBehavior::visitStateActionStopped(BehaviorsParser::StateActionStoppedContext *ctx)
 {
-    std::string stateName = ctx->ID(1)->getText();
+    std::string stateName = ctx->pedestrianSelected()->ID(1)->getText();
     int state = findState(this->getStateDefinitions(), stateName);
+    this->addStateAction(state, new StopMovementAction(this->getSimulationContext()));
+    std::cout << behavior << ": Added stopped action for state " << stateName << std::endl;
 
-    std::string stateAction = ctx->ID(2)->getText();
+    return BehaviorsBaseVisitor::visitStateActionStopped(ctx);
+}
 
+antlrcpp::Any DslHumanBehavior::visitNoGroupRandomIdSelector(BehaviorsParser::NoGroupRandomIdSelectorContext *ctx)
+{
+    float numerator = std::atof(ctx->randomIdRatioStatement()->NUMBER(0)->getText().c_str());
+    float denominator = std::atof(ctx->randomIdRatioStatement()->NUMBER(1)->getText().c_str());
+    this->addSelector(new IdRandomSelector(
+            this->getSimulationContext(),
+            numerator / denominator,
+            seed));
+    std::cout << behavior << ": Added selector for a random " << numerator
+              << " out of " << denominator
+              << " pedestrians with a seed of " << seed << std::endl;
 
-    for (auto action: supportedActions)
-    {
-        if (stateAction == action->getActionName())
-        {
-            this->addStateAction(state, action);
-            std::cout << "Added " << action->getActionName() << " action for state " << stateName << std::endl;
-        }
-    }
+    return BehaviorsBaseVisitor::visitNoGroupRandomIdSelector(ctx);
+}
 
-    return 0;
+antlrcpp::Any DslHumanBehavior::visitEveryoneSelector(BehaviorsParser::EveryoneSelectorContext *ctx)
+{
+    this->addSelector(new EveryoneSelector(this->getSimulationContext()));
+    std::cout << behavior << ": Added selector for everyone. " << std::endl;
+
+    return BehaviorsBaseVisitor::visitEveryoneSelector(ctx);
 }
