@@ -16,7 +16,7 @@ statement: consideration
     | stateAction;
 
 // Example: Consider a narcoleptic
-consideration: 'Consider ' ('a'|'an') ID '.';
+consideration: 'Consider ' ('a '|'an ') ID '.';
 
 stateSelector: idRatioSelector
     | randomIdRatioSelector
