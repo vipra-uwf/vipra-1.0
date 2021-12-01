@@ -11,6 +11,7 @@ program: statement+;
 statement: consideration
     | stateSelector
     | stateDeclaration
+    | initialStateDeclaration
     | environmentStateDeclaration
     | stateTransition
     | stateAction;
@@ -42,6 +43,9 @@ environmentStateDeclaration: 'The environment can be ' ID '.';
 // A narcoleptic can be SLEEPING.
 // A narcoleptic can be AWAKE.
 stateDeclaration: ('A '|'An ') ID ' can be ' ID '.';
+
+// Example: A narcoleptic is initially AWAKE.
+initialStateDeclaration: ('A '|'An ') ID ' is initially ' ID '.';
 
 pedestrianSelected: ('A '|'An ') ID ' who is ' ID;
 

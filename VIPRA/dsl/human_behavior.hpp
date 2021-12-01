@@ -47,6 +47,8 @@ class HumanBehavior
         void addStateAction(int state, Action *action);
         void addDecider(Condition *decider);
 
+        void setInitialState(int state);
+
         std::vector<Selector *> &getSelectors();
         std::vector<Transition *> &getTransitions();
         std::vector<Action *> &getStateActions();
@@ -62,6 +64,7 @@ class HumanBehavior
         // These states are defined by the this behavior. Currently they are a hard-coded enumeration but future 
         // iterations will have these defined directly in the DSL.
         std::vector<int> states;
+        int initialState;
 
         std::vector<Selector *> selectors;
         std::vector<Transition *> transitions;

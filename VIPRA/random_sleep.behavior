@@ -20,6 +20,9 @@ A random 1 out of every 50 pedestrians is a sleeper.
 A sleeper can be SLEEPING.
 A sleeper can be AWAKE.
 
+// Define the initial state of a sleeper
+A sleeper is initially AWAKE.
+
 // This indicates the state transition rules. In this case, we model a person
 // taking a two minute nap, then waking up 5 minutes
 A sleeper who is SLEEPING will be AWAKE after 120 seconds.

@@ -136,3 +136,12 @@ antlrcpp::Any DslHumanBehavior::visitEveryoneSelector(BehaviorsParser::EveryoneS
 
     return BehaviorsBaseVisitor::visitEveryoneSelector(ctx);
 }
+
+antlrcpp::Any DslHumanBehavior::visitInitialStateDeclaration(BehaviorsParser::InitialStateDeclarationContext *ctx)
+{
+    std::string stateName = ctx->ID(1)->getText();
+    int stateValue = findState(this->getStateDefinitions(), stateName);
+    this->setInitialState(stateValue);
+    std::cout << behavior << ": Set initial state to " << stateName << std::endl;
+    return BehaviorsBaseVisitor::visitInitialStateDeclaration(ctx);
+}

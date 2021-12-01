@@ -59,6 +59,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitInitialStateDeclaration(BehaviorsParser::InitialStateDeclarationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitPedestrianSelected(BehaviorsParser::PedestrianSelectedContext *ctx) override {
     return visitChildren(ctx);
   }

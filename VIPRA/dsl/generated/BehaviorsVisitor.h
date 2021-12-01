@@ -41,6 +41,8 @@ public:
 
     virtual antlrcpp::Any visitStateDeclaration(BehaviorsParser::StateDeclarationContext *context) = 0;
 
+    virtual antlrcpp::Any visitInitialStateDeclaration(BehaviorsParser::InitialStateDeclarationContext *context) = 0;
+
     virtual antlrcpp::Any visitPedestrianSelected(BehaviorsParser::PedestrianSelectedContext *context) = 0;
 
     virtual antlrcpp::Any visitStateCondition(BehaviorsParser::StateConditionContext *context) = 0;

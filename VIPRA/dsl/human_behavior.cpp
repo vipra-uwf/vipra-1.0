@@ -4,6 +4,7 @@
 // Provide default definitions for methods to make extending much easier
 
 HumanBehavior::HumanBehavior()
+    : initialState(0)
 {
     this->simulationContext.elapsedSeconds = 0.0f;
     this->simulationContext.states = &(this->states);
@@ -17,7 +18,7 @@ void HumanBehavior::initialize(PedestrianSet *pedestrianSet)
     // this->stateActions.resize(this->getStateDefinitions().size(), nullptr);
 
     int numPedestrians = pedestrianSet->getNumPedestrians();
-    this->states.resize(numPedestrians, 0);
+    this->states.resize(numPedestrians, this->initialState);
     this->simulationContext.transitionPointSeconds.resize(numPedestrians, 0);
 
     this->simulationContext.pedestrianSet = pedestrianSet;
@@ -70,12 +71,14 @@ void HumanBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOAT
          !transitioned && transition != this->getTransitions().end();
          ++transition)
     {
+        int oldState = this->getStates().at(pedestrianId);
         if ((*transition)->evaluateTransition(pedestrianIndex))
         {
             int newState = this->getStates().at(pedestrianId);
             std::cout 
-                << "Person with id " << pedestrianId 
-                << " has transitioned to " << this->getStateDefinitions().at(newState)
+                << "Person with id " << pedestrianId
+                << " has transitioned from " << this->getStateDefinitions().at(oldState)
+                << " to " << this->getStateDefinitions().at(newState)
                 << std::endl;
             transitioned = true;
         }
@@ -150,4 +153,9 @@ void HumanBehavior::addStateAction(int state, Action *action)
 void HumanBehavior::addDecider(Condition *decider)
 {
     this->deciders.push_back(decider);
+}
+
+void HumanBehavior::setInitialState(int state)
+{
+    this->initialState = state;
 }

@@ -24,9 +24,10 @@ class DslHumanBehavior : public HumanBehavior, public BehaviorsBaseVisitor
         antlrcpp::Any visitNoGroupRandomIdSelector(BehaviorsParser::NoGroupRandomIdSelectorContext *ctx) override;
         antlrcpp::Any visitStateActionStopped(BehaviorsParser::StateActionStoppedContext *ctx) override;
         antlrcpp::Any visitEveryoneSelector(BehaviorsParser::EveryoneSelectorContext *ctx) override;
+        antlrcpp::Any visitInitialStateDeclaration(BehaviorsParser::InitialStateDeclarationContext *ctx) override;
 
 
-    protected:
+protected:
         unsigned int seed;
 
     private:

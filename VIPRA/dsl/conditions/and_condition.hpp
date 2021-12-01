@@ -10,7 +10,7 @@ class AndCondition: public Condition
 {
     public:
         AndCondition(SimulationContext *simulationContext, Condition *lhs, Condition *rhs);
-        bool evaluate(int pedestrianIndex);
+        bool evaluate(int pedestrianIndex) override;
     
     private:
         Condition *lhs;

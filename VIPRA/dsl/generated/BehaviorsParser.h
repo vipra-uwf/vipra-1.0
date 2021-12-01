@@ -16,18 +16,18 @@ public:
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
-    T__26 = 27, T__27 = 28, T__28 = 29, ID = 30, NUMBER = 31, COMMENT = 32, 
-    LINE_COMMENT = 33, WHITESPACE = 34
+    T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, ID = 31, NUMBER = 32, 
+    COMMENT = 33, LINE_COMMENT = 34, WHITESPACE = 35
   };
 
   enum {
     RuleProgram = 0, RuleStatement = 1, RuleConsideration = 2, RuleStateSelector = 3, 
     RuleIdRatioSelector = 4, RuleRandomIdRatioStatement = 5, RuleRandomIdRatioSelector = 6, 
     RuleEveryoneSelector = 7, RuleEnvironmentStateDeclaration = 8, RuleStateDeclaration = 9, 
-    RulePedestrianSelected = 10, RuleStateCondition = 11, RuleStateTransition = 12, 
-    RuleFasterOrSlower = 13, RuleTowardOrAwayFrom = 14, RuleTarget = 15, 
-    RuleStoppedBehavior = 16, RuleWalkSpeedBehavior = 17, RuleNormalBehavior = 18, 
-    RuleStateAction = 19
+    RuleInitialStateDeclaration = 10, RulePedestrianSelected = 11, RuleStateCondition = 12, 
+    RuleStateTransition = 13, RuleFasterOrSlower = 14, RuleTowardOrAwayFrom = 15, 
+    RuleTarget = 16, RuleStoppedBehavior = 17, RuleWalkSpeedBehavior = 18, 
+    RuleNormalBehavior = 19, RuleStateAction = 20
   };
 
   explicit BehaviorsParser(antlr4::TokenStream *input);
@@ -50,6 +50,7 @@ public:
   class EveryoneSelectorContext;
   class EnvironmentStateDeclarationContext;
   class StateDeclarationContext;
+  class InitialStateDeclarationContext;
   class PedestrianSelectedContext;
   class StateConditionContext;
   class StateTransitionContext;
@@ -82,6 +83,7 @@ public:
     ConsiderationContext *consideration();
     StateSelectorContext *stateSelector();
     StateDeclarationContext *stateDeclaration();
+    InitialStateDeclarationContext *initialStateDeclaration();
     EnvironmentStateDeclarationContext *environmentStateDeclaration();
     StateTransitionContext *stateTransition();
     StateActionContext *stateAction();
@@ -223,6 +225,20 @@ public:
   };
 
   StateDeclarationContext* stateDeclaration();
+
+  class  InitialStateDeclarationContext : public antlr4::ParserRuleContext {
+  public:
+    InitialStateDeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> ID();
+    antlr4::tree::TerminalNode* ID(size_t i);
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  InitialStateDeclarationContext* initialStateDeclaration();
 
   class  PedestrianSelectedContext : public antlr4::ParserRuleContext {
   public:
