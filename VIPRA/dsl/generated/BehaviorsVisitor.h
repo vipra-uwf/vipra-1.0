@@ -35,9 +35,17 @@ public:
 
     virtual antlrcpp::Any visitGroupingRandomIdSelector(BehaviorsParser::GroupingRandomIdSelectorContext *context) = 0;
 
+    virtual antlrcpp::Any visitConditionElapsedTime(BehaviorsParser::ConditionElapsedTimeContext *context) = 0;
+
+    virtual antlrcpp::Any visitConditionEnvironmentState(BehaviorsParser::ConditionEnvironmentStateContext *context) = 0;
+
     virtual antlrcpp::Any visitEveryoneSelector(BehaviorsParser::EveryoneSelectorContext *context) = 0;
 
     virtual antlrcpp::Any visitEnvironmentStateDeclaration(BehaviorsParser::EnvironmentStateDeclarationContext *context) = 0;
+
+    virtual antlrcpp::Any visitEnvironmentInitialStateDeclaration(BehaviorsParser::EnvironmentInitialStateDeclarationContext *context) = 0;
+
+    virtual antlrcpp::Any visitEnvironmentTransition(BehaviorsParser::EnvironmentTransitionContext *context) = 0;
 
     virtual antlrcpp::Any visitStateDeclaration(BehaviorsParser::StateDeclarationContext *context) = 0;
 
@@ -45,9 +53,9 @@ public:
 
     virtual antlrcpp::Any visitPedestrianSelected(BehaviorsParser::PedestrianSelectedContext *context) = 0;
 
-    virtual antlrcpp::Any visitStateCondition(BehaviorsParser::StateConditionContext *context) = 0;
+    virtual antlrcpp::Any visitStateTransitionElapsedTime(BehaviorsParser::StateTransitionElapsedTimeContext *context) = 0;
 
-    virtual antlrcpp::Any visitStateTransition(BehaviorsParser::StateTransitionContext *context) = 0;
+    virtual antlrcpp::Any visitStateTransitionEnvironmentState(BehaviorsParser::StateTransitionEnvironmentStateContext *context) = 0;
 
     virtual antlrcpp::Any visitFasterOrSlower(BehaviorsParser::FasterOrSlowerContext *context) = 0;
 

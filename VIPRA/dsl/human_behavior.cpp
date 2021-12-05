@@ -21,6 +21,9 @@ void HumanBehavior::initialize(PedestrianSet *pedestrianSet)
     this->states.resize(numPedestrians, this->initialState);
     this->simulationContext.transitionPointSeconds.resize(numPedestrians, 0);
 
+    this->simulationContext.environmentState = this->initialEnvironmentState;
+    this->simulationContext.environmentTransitionPointSeconds = 0;
+
     this->simulationContext.pedestrianSet = pedestrianSet;
 
     // Initialize the selectors. These get their pedestrian set from the simulation context.
@@ -32,6 +35,18 @@ void HumanBehavior::initialize(PedestrianSet *pedestrianSet)
 void HumanBehavior::update(FLOATING_NUMBER timestep)
 {
     this->simulationContext.elapsedSeconds += timestep;
+
+    for (auto environmentTransition : this->environmentTransitions)
+    {
+        int oldState = this->simulationContext.environmentState;
+        if (environmentTransition->evaluateTransition())
+        {
+            std::cout
+                    << "Environment has transitioned from " << this->getEnvironmentStateDefinitions().at(oldState)
+                    << " to " << this->getEnvironmentStateDefinitions().at(this->simulationContext.environmentState)
+                    << std::endl;
+        }
+    }
 }
 
 bool HumanBehavior::select(PedestrianSet *pedestrianSet, int pedestrianIndex)
@@ -100,6 +115,11 @@ void HumanBehavior::addStateDefinition(std::string const &stateDefinition)
     this->stateActions.push_back(nullptr);
 }
 
+void HumanBehavior::addEnvironmentStateDefinition(const std::string &stateDefinition)
+{
+    this->environmentStateDefinitions.push_back(stateDefinition);
+}
+
 std::vector<std::string> HumanBehavior::getStateDefinitions() 
 {
     return this->stateDefinitions;
@@ -115,7 +135,7 @@ std::vector<Selector *> &HumanBehavior::getSelectors()
     return this->selectors;
 }
 
-std::vector<Transition *> &HumanBehavior::getTransitions()
+std::vector<PedestrianTransition *> &HumanBehavior::getTransitions()
 {
     return this->transitions;
 }
@@ -140,7 +160,7 @@ void HumanBehavior::addSelector(Selector *selector)
     this->selectors.push_back(selector);
 }
 
-void HumanBehavior::addTransition(Transition *transition)
+void HumanBehavior::addTransition(PedestrianTransition *transition)
 {
     this->transitions.push_back(transition);
 }
@@ -159,3 +179,19 @@ void HumanBehavior::setInitialState(int state)
 {
     this->initialState = state;
 }
+
+void HumanBehavior::setInitialEnvironmentState(int state)
+{
+    this->initialEnvironmentState = state;
+}
+
+const std::vector<std::string> &HumanBehavior::getEnvironmentStateDefinitions() const
+{
+    return environmentStateDefinitions;
+}
+
+void HumanBehavior::addEnvironmentTransition(EnvironmentTransition *environmentTransition)
+{
+    this->environmentTransitions.push_back(environmentTransition);
+}
+

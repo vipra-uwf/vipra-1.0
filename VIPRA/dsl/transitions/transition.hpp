@@ -1,5 +1,6 @@
-#ifndef TRANSITION_HPP
-#define TRANSITION_HPP
+#ifndef VIPRA_TRANSITION_HPP
+#define VIPRA_TRANSITION_HPP
+
 
 #include "../simulation_context.hpp"
 #include "../conditions/condition.hpp"
@@ -12,12 +13,12 @@ class Transition
 {
     public:
         Transition(SimulationContext *simulationContext, Condition *condition, int newState);
-        bool evaluateTransition(int pedestrianIndex);
-    
-    private:
+
+    protected:
         SimulationContext *simulationContext;
         Condition *condition;
         int newState;
 };
 
-#endif
+
+#endif //VIPRA_TRANSITION_HPP

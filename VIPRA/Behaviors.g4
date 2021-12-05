@@ -13,7 +13,10 @@ statement: consideration
     | stateDeclaration
     | initialStateDeclaration
     | environmentStateDeclaration
-    | stateTransition
+    | environmentInitialStateDeclaration
+    | environmentTransition
+    | stateTransitionElapsedTime
+    | stateTransitionEnvironmentState
     | stateAction;
 
 // Example: Consider a narcoleptic
@@ -34,10 +37,22 @@ randomIdRatioSelector : randomIdRatioStatement '.' #NoGroupRandomIdSelector
     | randomIdRatioStatement ', forming a ' ID '.' #GroupingRandomIdSelector
     ;
 
+// Examples:
+// A narcoleptic who is SLEEPING will be AWAKE after 120 seconds.
+// A group-traveler who is SLOWING_DOWN will be IN_GROUP if they are less than 10 feet ahead of someone in their travel-party.
+conditionElapsedTime: ' after ' NUMBER ' seconds.' ;
+conditionEnvironmentState:  (' if'|' when') ' the environment is ' ID '.';
+
 everyoneSelector: 'Everyone is ' ('a '|'an ') ID '.';
 
-// Example: The environment can be ANNOUNCING
+// Example: The environment can be ANNOUNCING.
 environmentStateDeclaration: 'The environment can be ' ID '.';
+
+// Example: The environment is initially PRE_ANNOUNCING.
+environmentInitialStateDeclaration: 'The environment is initially ' ID '.';
+
+// Example: The environment that is PRE_ANNOUNCING will be ANNOUNCING after 300 seconds.
+environmentTransition: 'The environment that is ' ID ' will be ' ID conditionElapsedTime;
 
 // Examples:
 // A narcoleptic can be SLEEPING.
@@ -49,14 +64,8 @@ initialStateDeclaration: ('A '|'An ') ID ' is initially ' ID '.';
 
 pedestrianSelected: ('A '|'An ') ID ' who is ' ID;
 
-// Examples:
-// A narcoleptic who is SLEEPING will be AWAKE after 120 seconds.
-// A group-traveler who is SLOWING_DOWN will be IN_GROUP if they are less than 10 feet ahead of someone in their travel-party.
-stateCondition: ' after ' NUMBER ' seconds.'
-//    | ' if they are ' NUMBER ' feet ' ID ' someone in their ' ID
-    ;
-
-stateTransition: pedestrianSelected ' will be ' ID stateCondition;
+stateTransitionElapsedTime: pedestrianSelected ' will be ' ID conditionElapsedTime;
+stateTransitionEnvironmentState: pedestrianSelected ' will be ' ID conditionEnvironmentState;
 
 // Examples:
 // A group-traveler who is CATCHING_UP will walk 5% faster toward their group.

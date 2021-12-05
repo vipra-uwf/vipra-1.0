@@ -61,7 +61,7 @@
         "type" : "human",
         "configuration" : {
             "random_seed": "1637762023",
-            "behavior#random_sleep": "./random_sleep.behavior"
+            "behavior#important_announcement": "./important_announcement.behavior"
         }
     }
 }

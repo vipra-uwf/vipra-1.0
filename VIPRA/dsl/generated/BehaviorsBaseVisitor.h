@@ -47,11 +47,27 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitConditionElapsedTime(BehaviorsParser::ConditionElapsedTimeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitConditionEnvironmentState(BehaviorsParser::ConditionEnvironmentStateContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitEveryoneSelector(BehaviorsParser::EveryoneSelectorContext *ctx) override {
     return visitChildren(ctx);
   }
 
   virtual antlrcpp::Any visitEnvironmentStateDeclaration(BehaviorsParser::EnvironmentStateDeclarationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitEnvironmentInitialStateDeclaration(BehaviorsParser::EnvironmentInitialStateDeclarationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitEnvironmentTransition(BehaviorsParser::EnvironmentTransitionContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -67,11 +83,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStateCondition(BehaviorsParser::StateConditionContext *ctx) override {
+  virtual antlrcpp::Any visitStateTransitionElapsedTime(BehaviorsParser::StateTransitionElapsedTimeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStateTransition(BehaviorsParser::StateTransitionContext *ctx) override {
+  virtual antlrcpp::Any visitStateTransitionEnvironmentState(BehaviorsParser::StateTransitionEnvironmentStateContext *ctx) override {
     return visitChildren(ctx);
   }
 

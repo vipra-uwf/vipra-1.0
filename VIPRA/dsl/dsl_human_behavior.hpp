@@ -18,17 +18,25 @@ class DslHumanBehavior : public HumanBehavior, public BehaviorsBaseVisitor
         ~DslHumanBehavior() override = default;
 
         antlrcpp::Any visitStateDeclaration(BehaviorsParser::StateDeclarationContext *ctx) override;
-        antlrcpp::Any visitStateTransition(BehaviorsParser::StateTransitionContext *ctx) override;
         antlrcpp::Any visitConsideration(BehaviorsParser::ConsiderationContext *ctx) override;
         antlrcpp::Any visitIdRatioSelector(BehaviorsParser::IdRatioSelectorContext *ctx) override;
         antlrcpp::Any visitNoGroupRandomIdSelector(BehaviorsParser::NoGroupRandomIdSelectorContext *ctx) override;
         antlrcpp::Any visitStateActionStopped(BehaviorsParser::StateActionStoppedContext *ctx) override;
         antlrcpp::Any visitEveryoneSelector(BehaviorsParser::EveryoneSelectorContext *ctx) override;
         antlrcpp::Any visitInitialStateDeclaration(BehaviorsParser::InitialStateDeclarationContext *ctx) override;
+        antlrcpp::Any visitEnvironmentStateDeclaration(BehaviorsParser::EnvironmentStateDeclarationContext *ctx) override;
+        antlrcpp::Any visitEnvironmentInitialStateDeclaration(BehaviorsParser::EnvironmentInitialStateDeclarationContext *ctx) override;
+
+        antlrcpp::Any visitStateTransitionElapsedTime(BehaviorsParser::StateTransitionElapsedTimeContext *ctx) override;
+
+        antlrcpp::Any
+        visitStateTransitionEnvironmentState(BehaviorsParser::StateTransitionEnvironmentStateContext *ctx) override;
+
+    antlrcpp::Any visitEnvironmentTransition(BehaviorsParser::EnvironmentTransitionContext *ctx) override;
 
 
 protected:
-        unsigned int seed;
+    unsigned int seed;
 
     private:
         std::string behavior;

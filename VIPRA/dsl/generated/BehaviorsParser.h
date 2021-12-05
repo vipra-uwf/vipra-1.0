@@ -16,18 +16,21 @@ public:
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
-    T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, ID = 31, NUMBER = 32, 
-    COMMENT = 33, LINE_COMMENT = 34, WHITESPACE = 35
+    T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
+    T__32 = 33, T__33 = 34, T__34 = 35, ID = 36, NUMBER = 37, COMMENT = 38, 
+    LINE_COMMENT = 39, WHITESPACE = 40
   };
 
   enum {
     RuleProgram = 0, RuleStatement = 1, RuleConsideration = 2, RuleStateSelector = 3, 
     RuleIdRatioSelector = 4, RuleRandomIdRatioStatement = 5, RuleRandomIdRatioSelector = 6, 
-    RuleEveryoneSelector = 7, RuleEnvironmentStateDeclaration = 8, RuleStateDeclaration = 9, 
-    RuleInitialStateDeclaration = 10, RulePedestrianSelected = 11, RuleStateCondition = 12, 
-    RuleStateTransition = 13, RuleFasterOrSlower = 14, RuleTowardOrAwayFrom = 15, 
-    RuleTarget = 16, RuleStoppedBehavior = 17, RuleWalkSpeedBehavior = 18, 
-    RuleNormalBehavior = 19, RuleStateAction = 20
+    RuleConditionElapsedTime = 7, RuleConditionEnvironmentState = 8, RuleEveryoneSelector = 9, 
+    RuleEnvironmentStateDeclaration = 10, RuleEnvironmentInitialStateDeclaration = 11, 
+    RuleEnvironmentTransition = 12, RuleStateDeclaration = 13, RuleInitialStateDeclaration = 14, 
+    RulePedestrianSelected = 15, RuleStateTransitionElapsedTime = 16, RuleStateTransitionEnvironmentState = 17, 
+    RuleFasterOrSlower = 18, RuleTowardOrAwayFrom = 19, RuleTarget = 20, 
+    RuleStoppedBehavior = 21, RuleWalkSpeedBehavior = 22, RuleNormalBehavior = 23, 
+    RuleStateAction = 24
   };
 
   explicit BehaviorsParser(antlr4::TokenStream *input);
@@ -47,13 +50,17 @@ public:
   class IdRatioSelectorContext;
   class RandomIdRatioStatementContext;
   class RandomIdRatioSelectorContext;
+  class ConditionElapsedTimeContext;
+  class ConditionEnvironmentStateContext;
   class EveryoneSelectorContext;
   class EnvironmentStateDeclarationContext;
+  class EnvironmentInitialStateDeclarationContext;
+  class EnvironmentTransitionContext;
   class StateDeclarationContext;
   class InitialStateDeclarationContext;
   class PedestrianSelectedContext;
-  class StateConditionContext;
-  class StateTransitionContext;
+  class StateTransitionElapsedTimeContext;
+  class StateTransitionEnvironmentStateContext;
   class FasterOrSlowerContext;
   class TowardOrAwayFromContext;
   class TargetContext;
@@ -85,7 +92,10 @@ public:
     StateDeclarationContext *stateDeclaration();
     InitialStateDeclarationContext *initialStateDeclaration();
     EnvironmentStateDeclarationContext *environmentStateDeclaration();
-    StateTransitionContext *stateTransition();
+    EnvironmentInitialStateDeclarationContext *environmentInitialStateDeclaration();
+    EnvironmentTransitionContext *environmentTransition();
+    StateTransitionElapsedTimeContext *stateTransitionElapsedTime();
+    StateTransitionEnvironmentStateContext *stateTransitionEnvironmentState();
     StateActionContext *stateAction();
 
 
@@ -186,6 +196,32 @@ public:
 
   RandomIdRatioSelectorContext* randomIdRatioSelector();
 
+  class  ConditionElapsedTimeContext : public antlr4::ParserRuleContext {
+  public:
+    ConditionElapsedTimeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NUMBER();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ConditionElapsedTimeContext* conditionElapsedTime();
+
+  class  ConditionEnvironmentStateContext : public antlr4::ParserRuleContext {
+  public:
+    ConditionEnvironmentStateContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ID();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ConditionEnvironmentStateContext* conditionEnvironmentState();
+
   class  EveryoneSelectorContext : public antlr4::ParserRuleContext {
   public:
     EveryoneSelectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -211,6 +247,34 @@ public:
   };
 
   EnvironmentStateDeclarationContext* environmentStateDeclaration();
+
+  class  EnvironmentInitialStateDeclarationContext : public antlr4::ParserRuleContext {
+  public:
+    EnvironmentInitialStateDeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ID();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  EnvironmentInitialStateDeclarationContext* environmentInitialStateDeclaration();
+
+  class  EnvironmentTransitionContext : public antlr4::ParserRuleContext {
+  public:
+    EnvironmentTransitionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> ID();
+    antlr4::tree::TerminalNode* ID(size_t i);
+    ConditionElapsedTimeContext *conditionElapsedTime();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  EnvironmentTransitionContext* environmentTransition();
 
   class  StateDeclarationContext : public antlr4::ParserRuleContext {
   public:
@@ -254,33 +318,35 @@ public:
 
   PedestrianSelectedContext* pedestrianSelected();
 
-  class  StateConditionContext : public antlr4::ParserRuleContext {
+  class  StateTransitionElapsedTimeContext : public antlr4::ParserRuleContext {
   public:
-    StateConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *NUMBER();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  StateConditionContext* stateCondition();
-
-  class  StateTransitionContext : public antlr4::ParserRuleContext {
-  public:
-    StateTransitionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    StateTransitionElapsedTimeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     PedestrianSelectedContext *pedestrianSelected();
     antlr4::tree::TerminalNode *ID();
-    StateConditionContext *stateCondition();
+    ConditionElapsedTimeContext *conditionElapsedTime();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
-  StateTransitionContext* stateTransition();
+  StateTransitionElapsedTimeContext* stateTransitionElapsedTime();
+
+  class  StateTransitionEnvironmentStateContext : public antlr4::ParserRuleContext {
+  public:
+    StateTransitionEnvironmentStateContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    PedestrianSelectedContext *pedestrianSelected();
+    antlr4::tree::TerminalNode *ID();
+    ConditionEnvironmentStateContext *conditionEnvironmentState();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  StateTransitionEnvironmentStateContext* stateTransitionEnvironmentState();
 
   class  FasterOrSlowerContext : public antlr4::ParserRuleContext {
   public:
