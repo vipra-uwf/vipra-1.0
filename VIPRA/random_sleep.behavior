@@ -12,7 +12,7 @@ Consider a sleeper.
 // 2% of the population are a sleeper.
 
 // This randomly selects a ratio of pedestrians for this behavior. In this
-// case, a random 1 out of every 5 pedestrians is a sleeper.
+// case, a random 1 out of every 50 pedestrians is a sleeper.
 A random 1 out of every 50 pedestrians is a sleeper.
 
 // These are two states that the sleeper can be in. They can be named
