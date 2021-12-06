@@ -16,7 +16,7 @@ void HumanBehavior::initialize(PedestrianSet *pedestrianSet)
     // this->stateActions.resize(this->getStateDefinitions().size(), nullptr);
 
     int numPedestrians = pedestrianSet->getNumPedestrians();
-    this->simulationContext.states = new std::vector<int>(numPedestrians, this->initialState);
+    this->simulationContext.states.resize(numPedestrians, this->initialState);
     this->simulationContext.transitionPointSeconds.resize(numPedestrians, 0);
 
     this->simulationContext.environmentState = this->initialEnvironmentState;
@@ -84,10 +84,10 @@ void HumanBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOAT
          !transitioned && transition != this->getTransitions().end();
          ++transition)
     {
-        int oldState = this->simulationContext.states->at(pedestrianId);
+        int oldState = this->simulationContext.states.at(pedestrianId);
         if ((*transition)->evaluateTransition(pedestrianIndex))
         {
-            int newState = this->simulationContext.states->at(pedestrianId);
+            int newState = this->simulationContext.states.at(pedestrianId);
             std::cout 
                 << "Person with id " << pedestrianId
                 << " has transitioned from " << this->getStateDefinitions().at(oldState)
@@ -99,7 +99,7 @@ void HumanBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOAT
 
     for (size_t state = 0; state < this->getStateActions().size(); ++state)
     {
-        if (this->simulationContext.states->at(pedestrianId) == state &&
+        if (this->simulationContext.states.at(pedestrianId) == state &&
             this->getStateActions().at(state) != nullptr)
         {
             this->getStateActions().at(state)->performAction(pedestrianIndex);

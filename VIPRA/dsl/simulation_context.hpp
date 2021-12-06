@@ -9,7 +9,7 @@
 struct SimulationContext
 {
     PedestrianSet *pedestrianSet;
-    std::vector<int> *states;
+    std::vector<int> states;
     int environmentState;
 
     // The timestamps for each person that transitions. This is used in the DSL state machine to define when a

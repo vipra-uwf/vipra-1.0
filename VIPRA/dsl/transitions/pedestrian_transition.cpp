@@ -12,7 +12,7 @@ bool PedestrianTransition::evaluateTransition(int pedestrianIndex)
     bool transitioned = false;
     if (this->condition->evaluate(pedestrianIndex))
     {
-        this->simulationContext->states->at(pedestrianId) = newState;
+        this->simulationContext->states.at(pedestrianId) = newState;
         this->simulationContext->transitionPointSeconds.at(pedestrianId) = this->simulationContext->elapsedSeconds;
         transitioned = true;
     }
