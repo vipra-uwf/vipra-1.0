@@ -4,11 +4,9 @@
 // Provide default definitions for methods to make extending much easier
 
 HumanBehavior::HumanBehavior()
-    : initialState(0)
+    : initialState(0), initialEnvironmentState(0)
 {
     this->simulationContext.elapsedSeconds = 0.0f;
-    this->simulationContext.states = &(this->states);
-
 }
 
 void HumanBehavior::initialize(PedestrianSet *pedestrianSet)
@@ -18,7 +16,7 @@ void HumanBehavior::initialize(PedestrianSet *pedestrianSet)
     // this->stateActions.resize(this->getStateDefinitions().size(), nullptr);
 
     int numPedestrians = pedestrianSet->getNumPedestrians();
-    this->states.resize(numPedestrians, this->initialState);
+    this->simulationContext.states = new std::vector<int>(numPedestrians, this->initialState);
     this->simulationContext.transitionPointSeconds.resize(numPedestrians, 0);
 
     this->simulationContext.environmentState = this->initialEnvironmentState;
@@ -86,10 +84,10 @@ void HumanBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOAT
          !transitioned && transition != this->getTransitions().end();
          ++transition)
     {
-        int oldState = this->getStates().at(pedestrianId);
+        int oldState = this->simulationContext.states->at(pedestrianId);
         if ((*transition)->evaluateTransition(pedestrianIndex))
         {
-            int newState = this->getStates().at(pedestrianId);
+            int newState = this->simulationContext.states->at(pedestrianId);
             std::cout 
                 << "Person with id " << pedestrianId
                 << " has transitioned from " << this->getStateDefinitions().at(oldState)
@@ -101,7 +99,7 @@ void HumanBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOAT
 
     for (size_t state = 0; state < this->getStateActions().size(); ++state)
     {
-        if (this->getStates().at(pedestrianId) == state && 
+        if (this->simulationContext.states->at(pedestrianId) == state &&
             this->getStateActions().at(state) != nullptr)
         {
             this->getStateActions().at(state)->performAction(pedestrianIndex);
@@ -148,11 +146,6 @@ std::vector<Action *> &HumanBehavior::getStateActions()
 std::vector<Condition *> &HumanBehavior::getDeciders()
 {
     return this->deciders;
-}
-
-std::vector<int> &HumanBehavior::getStates()
-{
-    return this->states;
 }
 
 void HumanBehavior::addSelector(Selector *selector)

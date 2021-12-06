@@ -59,7 +59,6 @@ protected:
         std::vector<PedestrianTransition *> &getTransitions();
         std::vector<Action *> &getStateActions();
         std::vector<Condition *> &getDeciders();
-        std::vector<int> &getStates();
 
         SimulationContext *getSimulationContext();
     
@@ -67,11 +66,6 @@ protected:
         // The definitions of the states as read in by the behavior file.
         std::vector<std::string> stateDefinitions;
         std::vector<std::string> environmentStateDefinitions;
-
-        // TODO: move this to the simulation context
-        // It's currently on this class but the reference is set in the simulation context, so it shouldn't be too bad
-        // of a change.
-        std::vector<int> states;
 
         int initialState;
         int initialEnvironmentState;
@@ -82,8 +76,6 @@ protected:
         std::vector<Action *> stateActions;
         std::vector<Condition *> deciders;
 
-        // Track the simulation context for use with the behavior
-        // TODO move this to the HBM?
         SimulationContext simulationContext;
 };
 
