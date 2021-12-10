@@ -24,7 +24,7 @@ The environment can be POST_ANNOUNCING.
 The environment is initially PRE_ANNOUNCING.
 
 // Environment state transitions.
-The environment that is PRE_ANNOUNCING will be ANNOUNCING after 300 seconds.
+The environment that is PRE_ANNOUNCING will be ANNOUNCING after 10 seconds.
 The environment that is ANNOUNCING will be POST_ANNOUNCING after 30 seconds.
 
 // State transition rules
@@ -32,5 +32,5 @@ An announcement-listener who is READY will be LISTENING when the environment is 
 An announcement-listener who is LISTENING will be READY when the environment is POST_ANNOUNCING.
 
 // What the behaviors mean
-An announcement-listener who is LISTENING is STOPPED.
+An announcement-listener who is LISTENING will walk 10% slower.
 An announcement-listener who is READY will behave normally.

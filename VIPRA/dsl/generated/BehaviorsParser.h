@@ -29,8 +29,8 @@ public:
     RuleEnvironmentTransition = 12, RuleStateDeclaration = 13, RuleInitialStateDeclaration = 14, 
     RulePedestrianSelected = 15, RuleStateTransitionElapsedTime = 16, RuleStateTransitionEnvironmentState = 17, 
     RuleFasterOrSlower = 18, RuleTowardOrAwayFrom = 19, RuleTarget = 20, 
-    RuleStoppedBehavior = 21, RuleWalkSpeedBehavior = 22, RuleNormalBehavior = 23, 
-    RuleStateAction = 24
+    RuleStoppedBehavior = 21, RuleWalkSpeedBehavior = 22, RuleWalkSpeedWithTargetBehavior = 23, 
+    RuleNormalBehavior = 24, RuleStateAction = 25
   };
 
   explicit BehaviorsParser(antlr4::TokenStream *input);
@@ -66,6 +66,7 @@ public:
   class TargetContext;
   class StoppedBehaviorContext;
   class WalkSpeedBehaviorContext;
+  class WalkSpeedWithTargetBehaviorContext;
   class NormalBehaviorContext;
   class StateActionContext; 
 
@@ -402,6 +403,20 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *NUMBER();
     FasterOrSlowerContext *fasterOrSlower();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  WalkSpeedBehaviorContext* walkSpeedBehavior();
+
+  class  WalkSpeedWithTargetBehaviorContext : public antlr4::ParserRuleContext {
+  public:
+    WalkSpeedWithTargetBehaviorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NUMBER();
+    FasterOrSlowerContext *fasterOrSlower();
     TowardOrAwayFromContext *towardOrAwayFrom();
     TargetContext *target();
 
@@ -410,7 +425,7 @@ public:
    
   };
 
-  WalkSpeedBehaviorContext* walkSpeedBehavior();
+  WalkSpeedWithTargetBehaviorContext* walkSpeedWithTargetBehavior();
 
   class  NormalBehaviorContext : public antlr4::ParserRuleContext {
   public:
@@ -443,6 +458,16 @@ public:
 
     PedestrianSelectedContext *pedestrianSelected();
     StoppedBehaviorContext *stoppedBehavior();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  StateActionWalkSpeedWithTargetContext : public StateActionContext {
+  public:
+    StateActionWalkSpeedWithTargetContext(StateActionContext *ctx);
+
+    PedestrianSelectedContext *pedestrianSelected();
+    WalkSpeedWithTargetBehaviorContext *walkSpeedWithTargetBehavior();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

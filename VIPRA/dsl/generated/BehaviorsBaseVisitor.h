@@ -111,6 +111,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitWalkSpeedWithTargetBehavior(BehaviorsParser::WalkSpeedWithTargetBehaviorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitNormalBehavior(BehaviorsParser::NormalBehaviorContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -120,6 +124,10 @@ public:
   }
 
   virtual antlrcpp::Any visitStateActionWalkSpeed(BehaviorsParser::StateActionWalkSpeedContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitStateActionWalkSpeedWithTarget(BehaviorsParser::StateActionWalkSpeedWithTargetContext *ctx) override {
     return visitChildren(ctx);
   }
 

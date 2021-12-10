@@ -26,13 +26,11 @@ class DslHumanBehavior : public HumanBehavior, public BehaviorsBaseVisitor
         antlrcpp::Any visitInitialStateDeclaration(BehaviorsParser::InitialStateDeclarationContext *ctx) override;
         antlrcpp::Any visitEnvironmentStateDeclaration(BehaviorsParser::EnvironmentStateDeclarationContext *ctx) override;
         antlrcpp::Any visitEnvironmentInitialStateDeclaration(BehaviorsParser::EnvironmentInitialStateDeclarationContext *ctx) override;
-
         antlrcpp::Any visitStateTransitionElapsedTime(BehaviorsParser::StateTransitionElapsedTimeContext *ctx) override;
-
         antlrcpp::Any
         visitStateTransitionEnvironmentState(BehaviorsParser::StateTransitionEnvironmentStateContext *ctx) override;
-
-    antlrcpp::Any visitEnvironmentTransition(BehaviorsParser::EnvironmentTransitionContext *ctx) override;
+        antlrcpp::Any visitEnvironmentTransition(BehaviorsParser::EnvironmentTransitionContext *ctx) override;
+        antlrcpp::Any visitStateActionWalkSpeed(BehaviorsParser::StateActionWalkSpeedContext *ctx) override;
 
 
 protected:

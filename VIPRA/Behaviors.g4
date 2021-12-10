@@ -75,12 +75,14 @@ towardOrAwayFrom: 'toward' | 'away from';
 target: 'their group' | 'their goal';
 
 stoppedBehavior: ' is STOPPED';
-walkSpeedBehavior: ' will walk ' NUMBER '% ' fasterOrSlower ' ' towardOrAwayFrom ' ' target;
+walkSpeedBehavior: ' will walk ' NUMBER '% ' fasterOrSlower;
+walkSpeedWithTargetBehavior: ' will walk ' NUMBER '% ' fasterOrSlower ' ' towardOrAwayFrom ' ' target;
 normalBehavior: ' will behave normally';
 
-stateAction: pedestrianSelected stoppedBehavior '.' #StateActionStopped
-    | pedestrianSelected walkSpeedBehavior '.'      #StateActionWalkSpeed
-    | pedestrianSelected normalBehavior '.'         #StateActionNormal
+stateAction: pedestrianSelected stoppedBehavior '.'      #StateActionStopped
+    | pedestrianSelected walkSpeedBehavior '.'           #StateActionWalkSpeed
+    | pedestrianSelected walkSpeedWithTargetBehavior '.' #StateActionWalkSpeedWithTarget
+    | pedestrianSelected normalBehavior '.'              #StateActionNormal
     ;
 
 /*

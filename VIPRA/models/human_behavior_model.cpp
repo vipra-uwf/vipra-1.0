@@ -48,8 +48,7 @@ void HumanBehaviorModel::update(FLOATING_NUMBER timestep)
             {
                 humanBehavior->act(calmPedestrianSet, i, timestep);
 
-                // If this behavior has decided that it will override the default, set the movement state.
-                // Note that this will look different once the HBM has its own copy of the data.
+                // Decide if this person is under the influence of the human behavior model
                 if (humanBehavior->decide(calmPedestrianSet, i))
                 {
                     behaviorDecided = true;
@@ -59,12 +58,13 @@ void HumanBehaviorModel::update(FLOATING_NUMBER timestep)
 
         if (behaviorDecided)
         {
-            // Set the movement state to HUMAN to avoid the PDM overwriting our states
+            // Set the movement state to HUMAN
             calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::HUMAN;
         }
         else
         {
-            // Only set the movement state back to stop if it doesn't have something already.
+            // Only set the movement state back to stop if it doesn't have something already. The definitions are set to
+            // what they need to be in the CALM pedestrian model.
             if (calmPedestrianSet->getMovementStates()->at(i) == MovementDefinitions::HUMAN)
             {
                 calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::STOP;

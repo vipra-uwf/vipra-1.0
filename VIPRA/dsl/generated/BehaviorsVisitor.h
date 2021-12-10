@@ -67,11 +67,15 @@ public:
 
     virtual antlrcpp::Any visitWalkSpeedBehavior(BehaviorsParser::WalkSpeedBehaviorContext *context) = 0;
 
+    virtual antlrcpp::Any visitWalkSpeedWithTargetBehavior(BehaviorsParser::WalkSpeedWithTargetBehaviorContext *context) = 0;
+
     virtual antlrcpp::Any visitNormalBehavior(BehaviorsParser::NormalBehaviorContext *context) = 0;
 
     virtual antlrcpp::Any visitStateActionStopped(BehaviorsParser::StateActionStoppedContext *context) = 0;
 
     virtual antlrcpp::Any visitStateActionWalkSpeed(BehaviorsParser::StateActionWalkSpeedContext *context) = 0;
+
+    virtual antlrcpp::Any visitStateActionWalkSpeedWithTarget(BehaviorsParser::StateActionWalkSpeedWithTargetContext *context) = 0;
 
     virtual antlrcpp::Any visitStateActionNormal(BehaviorsParser::StateActionNormalContext *context) = 0;
 

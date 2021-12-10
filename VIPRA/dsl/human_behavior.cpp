@@ -25,8 +25,17 @@ void HumanBehavior::initialize(PedestrianSet *pedestrianSet)
     this->simulationContext.pedestrianSet = pedestrianSet;
 
     // Initialize the selectors. These get their pedestrian set from the simulation context.
-    for (auto selector: this->selectors) {
+    for (auto selector: this->selectors)
+    {
         selector->initialize();
+    }
+
+    for (auto action: this->stateActions)
+    {
+        if (action != nullptr)
+        {
+            action->initialize();
+        }
     }
 }
 

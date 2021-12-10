@@ -10,6 +10,7 @@
 #include "conditions/elapsed_time_condition.hpp"
 #include "conditions/environment_state_condition.hpp"
 #include "conditions/environment_elapsed_time_condition.hpp"
+#include "actions/alter_velocity_action.hpp"
 #include <iostream>
 #include <fstream>
 #include <antlr4-runtime/support/Any.h>
@@ -247,4 +248,31 @@ antlrcpp::Any DslHumanBehavior::visitEnvironmentTransition(BehaviorsParser::Envi
               << " after " << seconds << " seconds." << std::endl;
 
     return BehaviorsBaseVisitor::visitEnvironmentTransition(ctx);
+}
+
+antlrcpp::Any DslHumanBehavior::visitStateActionWalkSpeed(BehaviorsParser::StateActionWalkSpeedContext *ctx)
+{
+    std::string stateName = ctx->pedestrianSelected()->ID(1)->getText();
+    int state = findState(this->getStateDefinitions(), stateName);
+    FLOATING_NUMBER factor = std::atof(ctx->walkSpeedBehavior()->NUMBER()->getText().c_str()) / 100.0F;
+    std::string fasterOrSlower = ctx->walkSpeedBehavior()->fasterOrSlower()->getText();
+    ALTER_DIRECTION alterDirection;
+    if (fasterOrSlower == "faster")
+    {
+        alterDirection = FASTER;
+    }
+    else if (fasterOrSlower == "slower")
+    {
+        alterDirection = SLOWER;
+    }
+    else
+    {
+        std::cerr << behavior << ": Unsupported alter direction: " << fasterOrSlower << " - must be faster or slower." << std::endl;
+        return BehaviorsBaseVisitor::visitStateActionWalkSpeed(ctx);
+    }
+
+    this->addStateAction(state, new AlterVelocityAction(this->getSimulationContext(), alterDirection, factor));
+    std::cout << behavior << ": Added alter velocity action for state " << stateName << ", " << fasterOrSlower <<  " by a factor of " << factor << std::endl;
+
+    return BehaviorsBaseVisitor::visitStateActionWalkSpeed(ctx);
 }
