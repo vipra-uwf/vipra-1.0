@@ -23,6 +23,6 @@ A group-traveler who is IN_GROUP will be SLOWING_DOWN if they are 10 feet ahead 
 A group-traveler who is SLOWING_DOWN will be IN_GROUP if they are less than 10 feet ahead of someone in their group.
 
 // What the behaviors mean
-A group-traveler who is CATCHING_UP will walk 5% faster toward their group.
-A group-traveler who is SLOWING_DOWN will walk 5% slower toward their goal.
+A group-traveler who is CATCHING_UP will walk 5% faster.
+A group-traveler who is SLOWING_DOWN will walk 5% slower.
 A group-traveler who is IN_GROUP will behave normally.

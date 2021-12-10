@@ -35,6 +35,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitExactlyNRandomSelector(BehaviorsParser::ExactlyNRandomSelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitRandomIdRatioStatement(BehaviorsParser::RandomIdRatioStatementContext *ctx) override {
     return visitChildren(ctx);
   }

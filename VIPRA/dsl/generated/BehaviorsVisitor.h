@@ -29,6 +29,8 @@ public:
 
     virtual antlrcpp::Any visitIdRatioSelector(BehaviorsParser::IdRatioSelectorContext *context) = 0;
 
+    virtual antlrcpp::Any visitExactlyNRandomSelector(BehaviorsParser::ExactlyNRandomSelectorContext *context) = 0;
+
     virtual antlrcpp::Any visitRandomIdRatioStatement(BehaviorsParser::RandomIdRatioStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitNoGroupRandomIdSelector(BehaviorsParser::NoGroupRandomIdSelectorContext *context) = 0;

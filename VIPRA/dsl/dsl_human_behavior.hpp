@@ -23,7 +23,10 @@ class DslHumanBehavior : public HumanBehavior, public BehaviorsBaseVisitor
         antlrcpp::Any visitNoGroupRandomIdSelector(BehaviorsParser::NoGroupRandomIdSelectorContext *ctx) override;
         antlrcpp::Any visitStateActionStopped(BehaviorsParser::StateActionStoppedContext *ctx) override;
         antlrcpp::Any visitEveryoneSelector(BehaviorsParser::EveryoneSelectorContext *ctx) override;
-        antlrcpp::Any visitInitialStateDeclaration(BehaviorsParser::InitialStateDeclarationContext *ctx) override;
+
+    antlrcpp::Any visitExactlyNRandomSelector(BehaviorsParser::ExactlyNRandomSelectorContext *ctx) override;
+
+    antlrcpp::Any visitInitialStateDeclaration(BehaviorsParser::InitialStateDeclarationContext *ctx) override;
         antlrcpp::Any visitEnvironmentStateDeclaration(BehaviorsParser::EnvironmentStateDeclarationContext *ctx) override;
         antlrcpp::Any visitEnvironmentInitialStateDeclaration(BehaviorsParser::EnvironmentInitialStateDeclarationContext *ctx) override;
         antlrcpp::Any visitStateTransitionElapsedTime(BehaviorsParser::StateTransitionElapsedTimeContext *ctx) override;

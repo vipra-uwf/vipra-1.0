@@ -11,6 +11,7 @@
 #include "conditions/environment_state_condition.hpp"
 #include "conditions/environment_elapsed_time_condition.hpp"
 #include "actions/alter_velocity_action.hpp"
+#include "selectors/exactly_n_random_selector.hpp"
 #include <iostream>
 #include <fstream>
 #include <antlr4-runtime/support/Any.h>
@@ -65,6 +66,14 @@ antlrcpp::Any DslHumanBehavior::visitIdRatioSelector(BehaviorsParser::IdRatioSel
     return BehaviorsBaseVisitor::visitIdRatioSelector(ctx);
 }
 
+
+antlrcpp::Any DslHumanBehavior::visitExactlyNRandomSelector(BehaviorsParser::ExactlyNRandomSelectorContext *ctx)
+{
+    int count = std::atoi(ctx->NUMBER()->getText().c_str());
+    this->addSelector(new ExactlyNRandomSelector(this->getSimulationContext(), count, seed));
+    std::cout << behavior << ": Added selector for exactly " << count << " random pedestrian(s)" << std::endl;
+    return BehaviorsBaseVisitor::visitExactlyNRandomSelector(ctx);
+}
 
 antlrcpp::Any DslHumanBehavior::visitStateDeclaration(BehaviorsParser::StateDeclarationContext *ctx)
 {

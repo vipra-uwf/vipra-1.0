@@ -17,20 +17,20 @@ public:
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
     T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
-    T__32 = 33, T__33 = 34, T__34 = 35, ID = 36, NUMBER = 37, COMMENT = 38, 
-    LINE_COMMENT = 39, WHITESPACE = 40
+    T__32 = 33, T__33 = 34, T__34 = 35, T__35 = 36, T__36 = 37, ID = 38, 
+    NUMBER = 39, COMMENT = 40, LINE_COMMENT = 41, WHITESPACE = 42
   };
 
   enum {
     RuleProgram = 0, RuleStatement = 1, RuleConsideration = 2, RuleStateSelector = 3, 
-    RuleIdRatioSelector = 4, RuleRandomIdRatioStatement = 5, RuleRandomIdRatioSelector = 6, 
-    RuleConditionElapsedTime = 7, RuleConditionEnvironmentState = 8, RuleEveryoneSelector = 9, 
-    RuleEnvironmentStateDeclaration = 10, RuleEnvironmentInitialStateDeclaration = 11, 
-    RuleEnvironmentTransition = 12, RuleStateDeclaration = 13, RuleInitialStateDeclaration = 14, 
-    RulePedestrianSelected = 15, RuleStateTransitionElapsedTime = 16, RuleStateTransitionEnvironmentState = 17, 
-    RuleFasterOrSlower = 18, RuleTowardOrAwayFrom = 19, RuleTarget = 20, 
-    RuleStoppedBehavior = 21, RuleWalkSpeedBehavior = 22, RuleWalkSpeedWithTargetBehavior = 23, 
-    RuleNormalBehavior = 24, RuleStateAction = 25
+    RuleIdRatioSelector = 4, RuleExactlyNRandomSelector = 5, RuleRandomIdRatioStatement = 6, 
+    RuleRandomIdRatioSelector = 7, RuleConditionElapsedTime = 8, RuleConditionEnvironmentState = 9, 
+    RuleEveryoneSelector = 10, RuleEnvironmentStateDeclaration = 11, RuleEnvironmentInitialStateDeclaration = 12, 
+    RuleEnvironmentTransition = 13, RuleStateDeclaration = 14, RuleInitialStateDeclaration = 15, 
+    RulePedestrianSelected = 16, RuleStateTransitionElapsedTime = 17, RuleStateTransitionEnvironmentState = 18, 
+    RuleFasterOrSlower = 19, RuleTowardOrAwayFrom = 20, RuleTarget = 21, 
+    RuleStoppedBehavior = 22, RuleWalkSpeedBehavior = 23, RuleWalkSpeedWithTargetBehavior = 24, 
+    RuleNormalBehavior = 25, RuleStateAction = 26
   };
 
   explicit BehaviorsParser(antlr4::TokenStream *input);
@@ -48,6 +48,7 @@ public:
   class ConsiderationContext;
   class StateSelectorContext;
   class IdRatioSelectorContext;
+  class ExactlyNRandomSelectorContext;
   class RandomIdRatioStatementContext;
   class RandomIdRatioSelectorContext;
   class ConditionElapsedTimeContext;
@@ -124,6 +125,7 @@ public:
     StateSelectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     IdRatioSelectorContext *idRatioSelector();
+    ExactlyNRandomSelectorContext *exactlyNRandomSelector();
     RandomIdRatioSelectorContext *randomIdRatioSelector();
     EveryoneSelectorContext *everyoneSelector();
 
@@ -147,6 +149,20 @@ public:
   };
 
   IdRatioSelectorContext* idRatioSelector();
+
+  class  ExactlyNRandomSelectorContext : public antlr4::ParserRuleContext {
+  public:
+    ExactlyNRandomSelectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NUMBER();
+    antlr4::tree::TerminalNode *ID();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExactlyNRandomSelectorContext* exactlyNRandomSelector();
 
   class  RandomIdRatioStatementContext : public antlr4::ParserRuleContext {
   public:
