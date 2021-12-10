@@ -77,4 +77,10 @@ Dimensions AlterVelocityAction::computeAlteredDimensions(Dimensions originalDime
     return Dimensions { coordinates };
 }
 
+void AlterVelocityAction::initialize()
+{
+    actionAppliedStatus.resize(this->getSimulationContext()->pedestrianSet->getNumPedestrians(), false);
+    Action::initialize();
+}
+
 

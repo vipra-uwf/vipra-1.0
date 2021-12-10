@@ -32,7 +32,7 @@ stateSelector: idRatioSelector
 idRatioSelector : NUMBER '% of the population are ' ('a '|'an ') ID '.';
 
 // Example: Exactly 1 random pedestrian is an injured-person.
-exactlyNRandomSelector: 'Exactly ' NUMBER ' random pedestrian is ' ('a ' | 'an ') ID;
+exactlyNRandomSelector: 'Exactly ' NUMBER ' random pedestrian is ' ('a ' | 'an ') ID '.';
 
 // Example: A random 1 out of every 50 pedestrians is a narcoleptic
 randomIdRatioStatement: 'A random ' NUMBER ' out of every ' NUMBER ' pedestrians is ' ('a '|'an ') ID;

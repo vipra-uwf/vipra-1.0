@@ -15,8 +15,9 @@ class AlterVelocityAction : public Action {
         AlterVelocityAction(SimulationContext *simulationContext, ALTER_DIRECTION alterDirection,
                             FLOATING_NUMBER factor);
         void performAction(int pedestrianIndex) override;
+        void initialize() override;
 
-    private:
+private:
         Dimensions computeAlteredDimensions(Dimensions originalDimensions);
         std::vector<bool> actionAppliedStatus;
         ALTER_DIRECTION alterDirection;
