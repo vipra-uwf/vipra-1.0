@@ -1,0 +1,28 @@
+/**
+  * RANDOM SLEEP
+  */
+// This is a random sleep behavior. It models the scenario of a certain percent
+// of the population that suffers from narcolepsy. Specifically, someone
+// subject to this behavior will stop movement to take a nap for the specified
+// number of seconds.
+Consider a sleeper.
+
+// This indicates that precisely persons 0, 50, and 100 are going to be subject
+// to this behavior.
+// 2% of the population are a sleeper.
+
+A random 1 out of every 50 pedestrians is a sleeper.
+
+// These are two states that the sleeper can be in. They can be named
+// anything, but it must be consistent throughout the entire file.
+A sleeper can be SLEEPING.
+A sleeper can be AWAKE.
+
+// This indicates the state transition rules. In this case, we model a person
+// taking a two minute nap, then waking up 5 minutes
+A sleeper who is SLEEPING will be AWAKE after 120 seconds.
+A sleeper who is AWAKE will be SLEEPING after 300 seconds.
+
+// This tells the model how the sleeping state affects their behavior. In this
+// case a sleeping person is stopped, meaning all movement is ceased.
+A sleeper who is SLEEPING is STOPPED.

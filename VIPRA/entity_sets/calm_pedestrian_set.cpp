@@ -34,6 +34,8 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
     this->nearestNeighbors.erase(nearestNeighbors.begin()+pedestrianIndex);
     this->movementStates.erase(movementStates.begin()+pedestrianIndex);
     this->priorities.erase(priorities.begin()+pedestrianIndex);
+    this->shoulderLengths.erase(shoulderLengths.begin()+pedestrianIndex);
+    this->startingAisles.erase(startingAisles.begin()+pedestrianIndex);
 
 }
 
@@ -107,6 +109,11 @@ std::vector<MovementDefinitions>* CalmPedestrianSet::getMovementStates()
 std::vector<int>* CalmPedestrianSet::getStartingAisles()
 {
     return &this->startingAisles;
+}
+
+std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getShoulderLengths()
+{
+  return &this->shoulderLengths;
 }
 
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
@@ -186,4 +193,9 @@ void CalmPedestrianSet::setMovementStates(
 void CalmPedestrianSet::setStartingAisles(std::vector<int> startingAisles)
 {
     this->startingAisles = startingAisles;
+}
+
+void CalmPedestrianSet::setShoulderLengths(std::vector<FLOATING_NUMBER> shoulderLengths)
+{
+  this->shoulderLengths = shoulderLengths;
 }

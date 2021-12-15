@@ -1,6 +1,11 @@
 CXX = g++
 NAME = "generated_main"
-CXXFLAGS = -std=c++11 -g -Wall -O3 -fopenmp -fPIE
+
+# For Fedora 35, run dnf install antlr4-cpp-runtime-devel
+# For Ubuntu 20.04, run apt install libantlr4-runtime-dev libstdc++-10-dev
+# The include paths are the same for both platforms
+CXXFLAGS = -std=c++11 -g -Wall -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
+LDLIBS = -lantlr4-runtime
 
 BUILD_DIR = build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
@@ -8,6 +13,10 @@ SRCS := $(filter-out code_generation/code_generator.cpp, $(SRCS)) #this gets com
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
 all: compile
+
+grammar: Behaviors.g4
+	antlr4 -Dlanguage=Cpp -o dsl/generated -Dlanguage=Cpp -no-listener -visitor Behaviors.g4 
+
 compile: setup generate_main make_directories main
 
 generate_main:
@@ -18,7 +27,7 @@ generate_main:
 	echo $(OBJECTS)
 	
 main: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(NAME) $^
+	$(CXX) $(CXXFLAGS) -o $(NAME) $^ $(LDLIBS)
 	
 $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -33,6 +42,11 @@ make_directories:
 	@mkdir -p $(BUILD_DIR)/configuration
 	@mkdir -p $(BUILD_DIR)/code_generation
 	@mkdir -p $(BUILD_DIR)/definitions
+	@mkdir -p $(BUILD_DIR)/dsl/actions
+	@mkdir -p $(BUILD_DIR)/dsl/conditions
+	@mkdir -p $(BUILD_DIR)/dsl/generated
+	@mkdir -p $(BUILD_DIR)/dsl/selectors
+	@mkdir -p $(BUILD_DIR)/dsl/transitions
 	@mkdir -p $(BUILD_DIR)/entity_sets
 	@mkdir -p $(BUILD_DIR)/entity_sets/factory
 	@mkdir -p $(BUILD_DIR)/goals

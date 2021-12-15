@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
 
-	config.vm.box = "generic/ubuntu1804"
+	config.vm.box = "generic/ubuntu2004"
 
 	config.vm.provider "virtualbox" do |vb|
 
@@ -29,6 +29,8 @@ Vagrant.configure("2") do |config|
 
 		sudo apt-get install make
 		sudo apt-get install build-essential -y #installs g++
+
+		sudo apt-get install libantlr4-runtime-dev libstdc++-10-dev
 
 			#does not work
 		#echo "$(tput setaf 6)$(tput bold)Setting up VIPRA $(tput sgr 0)"

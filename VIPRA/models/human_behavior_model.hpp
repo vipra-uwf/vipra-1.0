@@ -9,41 +9,30 @@
 #include "../simulation/data.hpp"
 #include "../definitions/behavior_definitions.hpp"
 #include "pedestrian_dynamics_model.hpp"
+#include "../dsl/human_behavior.hpp"
 
 /**
- * We define the Human Behavior Model to hold a Data object and define an update method for now. The Data object should
- * contain enough information for the human behaviors to be defined.
+ * We define the Human Behavior Model to hold a pointer to the shared data object and wrap a single human behavior.
+ * Eventually we want a list of human behaviors to model.
  */
 class HumanBehaviorModel
 {
 
     private:
         Data *data;
-        Goals *goals;
 
-        // These states are defined by the behavior model. Currently they are a hard-coded enumeration but future 
-        // iterations will have these defined directly in the DSL.
-        std::vector<BehaviorDefinitions> states;
+        std::vector <HumanBehavior *> humanBehaviors;
 
-
-        // The timestamps for each person that transitions. This is used in the DSL state machine to define when a
-        // person first entered the previous state, in case the rule is time-dependent (e.g., 30 minute nap).
-        std::vector<FLOATING_NUMBER> transitionPointMs;
-
-        FLOATING_NUMBER elapsedMs;
-
-        bool isChosen(int pedestrianIndex);
+    protected:
+        unsigned int seed;
 
     public:
         HumanBehaviorModel();
-        explicit HumanBehaviorModel(Data *data);
+        virtual ~HumanBehaviorModel();
         virtual void configure(CONFIG_MAP* configMap);
 
         void setData(Data *initialData);
         Data *getData();
-
-        void setGoals(Goals *goals);
-        Goals *getGoals();
 
         virtual void initialize();
         void update(FLOATING_NUMBER time);
