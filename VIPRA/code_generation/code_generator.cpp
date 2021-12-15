@@ -7,6 +7,7 @@
 
 std::vector<std::string> includes;
 Json::Value jsonObj;
+Json::Value input_files_jsonObj;
 
 std::string generateIncludes();
 std::string generateFunctionDeclarations();
@@ -24,18 +25,16 @@ std::string generatePopulateEntitySets();
 std::string generateExtractConfigMap();
 std::string generateMain();
 
-int main(int argc, char* argv[]) 
+int main() 
 {
 	ConfigurationReader configurationReader;
-	if(argc == 2)
-	{
-		configurationReader.readJsonConfiguration(argv[1]);
-	}
-	else //default config file if one was not entered in command line. Allows for make commands to still work -kenya
-	{
-		configurationReader.readJsonConfiguration("input_data/sim_options.json");
-	}
-	jsonObj = configurationReader.getJsonObject();
+    ConfigurationReader inputConfigFilesReader;
+
+    inputConfigFilesReader.readJsonConfiguration("input_data/input_files.json");
+    input_files_jsonObj = inputConfigFilesReader.getJsonObject();
+
+    configurationReader.readJsonConfiguration(input_files_jsonObj["configuration_options"].asString());
+    jsonObj = configurationReader.getJsonObject();
 
     std::string functionDeclarations = generateFunctionDeclarations();
     std::string inputDataLoaderFunction = generateInputDataLoader();
@@ -308,10 +307,16 @@ std::string generateMain()
     std::string generatedFunction = 
 
     "\nJson::Value simulationJsonConfig;\n"
+    "\nJson::Value input_files_jsonObj;\n"
     "\nint main()"
     "\n{"
         "\n\tConfigurationReader configurationReader;"
-        "\n\tconfigurationReader.readJsonConfiguration(\"input_data/sim_config.json\");"
+        "\n\tConfigurationReader inputConfigFilesReader;"
+        "\n"
+        "\n\tinputConfigFilesReader.readJsonConfiguration(\"input_data/input_files.json\");"
+        "\n\tinput_files_jsonObj = inputConfigFilesReader.getJsonObject();"
+        "\n"
+        "\n\tconfigurationReader.readJsonConfiguration(input_files_jsonObj[\"sim_configuration\"].asString());"
         "\n\tsimulationJsonConfig = configurationReader.getJsonObject();"
         "\n"
             "\n\tCONFIG_MAP* inputDataLoaderConfig = extractConfigMap(\"input_data_loader\");"
