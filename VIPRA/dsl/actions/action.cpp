@@ -17,3 +17,13 @@ const std::string &Action::getActionName() const
 {
     return actionName;
 }
+
+bool Action::actionApplied(int pedestrianIndex)
+{
+    return false;
+}
+
+void Action::initialize()
+{
+
+}

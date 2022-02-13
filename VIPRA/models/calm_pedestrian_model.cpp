@@ -216,13 +216,9 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
             }
 
         // Update the pedestrianSet inline. Future iterations will return a list of values for all pedestrians so the simulation can set them accordingly.
-        if (this->pedestrianSet->getMovementStates()->at(i) != MovementDefinitions::HUMAN)
-        {
-            this->pedestrianSet->getVelocities()->at(i) = newVelocity;
-            this->pedestrianSet->getPedestrianCoordinates()->at(i) = newPosition;
-            this->pedestrianSet->getSpeeds()->at(i) = newSpeed;
-
-        }
+        this->pedestrianSet->getVelocities()->at(i) = newVelocity;
+        this->pedestrianSet->getPedestrianCoordinates()->at(i) = newPosition;
+        this->pedestrianSet->getSpeeds()->at(i) = newSpeed;
     }
 
 }
@@ -396,24 +392,14 @@ void CalmPedestrianModel::calculatePropulsion()
             {
                 std::vector<FLOATING_NUMBER>
                 {
-                    (newVelocity.coordinates[0] - (*this->pedestrianSet->
-                    getVelocities())[i].coordinates[0]) *
-                    (*this->pedestrianSet->getMasses())[i]
-                    / (*this->pedestrianSet->getReactionTimes())[i],
-                    (newVelocity.coordinates[1] - (*this->pedestrianSet->
-                    getVelocities())[i].coordinates[1]) *
-                    (*this->pedestrianSet->getMasses())[i]
-                    / (*this->pedestrianSet->getReactionTimes())[i]
+                    (newVelocity.coordinates[0] - (*this->pedestrianSet->getVelocities())[i].coordinates[0]) * (*this->pedestrianSet->getMasses())[i] / (*this->pedestrianSet->getReactionTimes())[i],
+                    (newVelocity.coordinates[1] - (*this->pedestrianSet->getVelocities())[i].coordinates[1]) * (*this->pedestrianSet->getMasses())[i] / (*this->pedestrianSet->getReactionTimes())[i]
 
                 }
             }
         );
 
-        if (this->pedestrianSet->getMovementStates()->at(i) != MovementDefinitions::HUMAN)
-        {
-            // Only update the propulsion forces if we're not being governed by HBM
-            this->pedestrianSet->getPropulsionForces()->at(i) = newPropulsiveForce;
-        }
+        this->pedestrianSet->getPropulsionForces()->at(i) = newPropulsiveForce;
 
     }
 }
