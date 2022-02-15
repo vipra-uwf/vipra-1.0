@@ -1,0 +1,8 @@
+echo "COMPILING PROGRAM..."
+cd ..
+sudo make cc
+sudo make
+echo "COMPILATION COMPLETE"
+echo "RUNNING PROGRAM"
+./generated_main
+echo "PROGRAM COMPLETE"
