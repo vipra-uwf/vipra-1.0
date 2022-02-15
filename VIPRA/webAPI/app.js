@@ -1,16 +1,13 @@
 const port = 3000;
 const express = require("express");
-const exec = require("child_process").exec;
+
 const app = express();
 
-let vipraProcess = exec('./run');
-vipraProcess.stdout.on('data', function(data) {
-		console.log(data);
-});
+const API_Routes = require("./routes/API_routes.js");
 
-let main = require('./controllers/main');
 
-app.get("/", main.home);
+
+app.use('/', API_Routes);
 
 app.listen(port);
 console.log(`The server has started and is listening on port number:${port}`);
