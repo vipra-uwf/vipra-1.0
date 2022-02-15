@@ -1,4 +1,5 @@
 echo "COMPILING PROGRAM..."
+cd ..
 sudo make cc
 sudo make
 echo "COMPILATION COMPLETE"
