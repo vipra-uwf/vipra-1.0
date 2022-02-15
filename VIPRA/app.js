@@ -3,7 +3,7 @@ const express = require("express");
 const exec = require("child_process").exec;
 const app = express();
 
-let vipraProcess = exec('./run.sh');
+let vipraProcess = exec('./run');
 vipraProcess.stdout.on('data', function(data) {
 		console.log(data);
 });
