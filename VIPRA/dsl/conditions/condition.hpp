@@ -10,7 +10,7 @@
 class Condition
 {
     public:
-        Condition(SimulationContext *simulationContext);
+        explicit Condition(SimulationContext *simulationContext);
         virtual bool evaluate(int pedestrianIndex) = 0;
 
     protected:

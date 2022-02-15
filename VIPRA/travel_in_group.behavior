@@ -1,0 +1,28 @@
+/**
+  * GROUP TRAVELERS
+  */
+// This is a group-traveler. It models the scenario where people travel in
+// groups. If they drift too far away from their group, they will walk
+// slightly faster to catch up. If their group is too far ahead, they will
+// slow down slightly in order for the person to catch up.
+Consider a group-traveler.
+
+// This indicates that randomly 2 out of 4 given pedestrians are group-travelers.
+A random 2 out of every 4 pedestrians are group-travelers, forming a group.
+
+// These are two states that the sleeper can be in. They can be named
+// anything, but it must be consistent throughout the entire file.
+A group-traveler can be IN_GROUP.
+A group-traveler can be CATCHING_UP.
+A group-traveler can be SLOWING_DOWN.
+
+// State transition rules
+A group-traveler who is IN_GROUP will be CATCHING_UP if they are 10 feet behind someone in their group.
+A group-traveler who is CATCHING_UP will be IN_GROUP if they are less than 10 feet behind someone in their group.
+A group-traveler who is IN_GROUP will be SLOWING_DOWN if they are 10 feet ahead of someone in their group.
+A group-traveler who is SLOWING_DOWN will be IN_GROUP if they are less than 10 feet ahead of someone in their group.
+
+// What the behaviors mean
+A group-traveler who is CATCHING_UP will walk 5% faster.
+A group-traveler who is SLOWING_DOWN will walk 5% slower.
+A group-traveler who is IN_GROUP will behave normally.
