@@ -4,10 +4,28 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser')
 const router = express.Router();
+const exec = require("child_process").exec;
 
 
-const simulation = "../run";
-const runSim = require("child_process").exec(process);
+
+// TODO Might try to send output data even if the simulation errors out
+const simulation = "./test";
+const runSim = (res)=>{
+    exec(simulation, (err, stdout, stderr)=>{
+        if(err){
+            console.log(err);
+        }
+        if(stdout){
+            console.log(stdout);
+        }
+        if(stderr){
+            console.log(stderr);
+        }
+    }).on('close', ()=>{
+        console.log("Done");
+        res.send("Done");
+    });
+}
 
 
 
@@ -30,23 +48,14 @@ router.post("/api", (req, res) =>{
 	// user sends json of options for their sim in requests body simoptions
 	const options = req.body.SIMOPTIONS;
 
+    console.log(JSON.stringify(options));
+
 	// run the code gen with the options
 	fs.writeFile(input_data_options, JSON.stringify(options), 'utf-8', (err)=>{
 		
 	});
 
-	// run the simulation
-	runSim.stdout.pipe(process)
-    runSim.on('exit', ()=>{
-        // simulation has finished
-        // output data is in output_data
-        // read the data
-        // send it back
-
-        const output =  fs.readFileSync(output_data_path);
-        res.send(JSON.parse(output));
-
-    })
+    runSim(res);
 });
 
 
