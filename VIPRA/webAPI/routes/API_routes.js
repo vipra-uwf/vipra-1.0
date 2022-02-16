@@ -24,7 +24,7 @@ router.get("/api", (req, res) =>{
 // TODO Might try to send output data even if the simulation errors out
 const simulation = path.resolve(__dirname, './../run');
 const runSim = (res)=>{
-    exec(simulation, (err, stdout, stderr)=>{
+    let ps = exec(simulation, (err, stdout, stderr)=>{
         if(err){
             console.log(err);
         }
@@ -35,9 +35,17 @@ const runSim = (res)=>{
             console.log(stderr);
         }
     }).on('close', ()=>{
+        console.log("close");
         const output = fs.readFileSync(output_data_path);
         res.send(output);
     });
+
+    ps.stdout.on('data', (data)=>{
+        console.log(data);
+    });
+    ps.stderr.on('data', (data)=>{
+        console.log(data)
+    })
 }
 
 
