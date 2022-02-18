@@ -1,0 +1,3 @@
+echo "COMPILING PROGRAM..."
+make cc CONFIG_ID=$1
+make CONFIG_ID=$1

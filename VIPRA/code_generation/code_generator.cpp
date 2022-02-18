@@ -25,12 +25,19 @@ std::string generatePopulateEntitySets();
 std::string generateExtractConfigMap();
 std::string generateMain();
 
-int main() 
+std::string getConfigID(int, char **);
+
+
+// TODO switch this to load from folder created in API
+
+int main(int argc, char *argv[]) 
 {
+    std::string configID = getConfigID(argc, argv);
+
 	ConfigurationReader configurationReader;
     ConfigurationReader inputConfigFilesReader;
 
-    inputConfigFilesReader.readJsonConfiguration("input_data/input_files.json");
+    inputConfigFilesReader.readJsonConfiguration("input_data/"+configID+"/input_files.json");
     input_files_jsonObj = inputConfigFilesReader.getJsonObject();
 
     configurationReader.readJsonConfiguration(input_files_jsonObj["configuration_options"].asString());
@@ -52,7 +59,7 @@ int main()
     std::string mainFunction = generateMain();
 
     std::ofstream mainFile;
-    mainFile.open("generated_main.cpp");
+    mainFile.open("generated_main"+configID+".cpp");
     mainFile 
         << includes
         << functionDeclarations 
@@ -72,6 +79,15 @@ int main()
     mainFile.close();
 
     return 0;
+}
+
+// TODO Make this function more robust -RG
+std::string getConfigID(int argc, char *argv[]){
+    if(argc > 2 || argc < 2){
+        exit(1);
+    }
+
+    return std::string(argv[1]);    
 }
 
 std::string generateIncludes() 
