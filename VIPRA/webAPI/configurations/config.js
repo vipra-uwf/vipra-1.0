@@ -1,4 +1,6 @@
 
+// TODO maybe able to use this to decide on implementations -RG
+
 // TODO uncomment this to link to the machines environment variables -RG
 // NOTE: not needed for quiet a while -RG
 //const env = process.env.NODE_ENV

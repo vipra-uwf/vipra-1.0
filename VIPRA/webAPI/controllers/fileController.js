@@ -1,7 +1,7 @@
 
 const { response } = require('express');
 const fs = require('fs');
-const { SIM_OPTIONS_PATH, INPUT_DATA_PATH, OUTPUT_DATA_PATH, SIM_RUN_PATH, SIM_COMPILE_PATH } = require('./../File_Paths');
+const { SIM_OPTIONS_PATH, INPUT_DATA_PATH, OUTPUT_DATA_PATH, SIM_RUN_PATH, SIM_COMPILE_PATH } = require('../configurations/File_Paths');
 
 // TODO remove console logs in this file -RG
 

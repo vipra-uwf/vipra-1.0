@@ -7,7 +7,6 @@
 
 std::vector<std::string> includes;
 Json::Value jsonObj;
-Json::Value input_files_jsonObj;
 
 std::string generateIncludes();
 std::string generateFunctionDeclarations();
@@ -25,23 +24,11 @@ std::string generatePopulateEntitySets();
 std::string generateExtractConfigMap();
 std::string generateMain();
 
-std::string getConfigID(int, char **);
-
-
-// TODO switch this to load from folder created in API
-
-int main(int argc, char *argv[]) 
+int main() 
 {
-    std::string configID = getConfigID(argc, argv);
-
-	ConfigurationReader configurationReader;
-    ConfigurationReader inputConfigFilesReader;
-
-    inputConfigFilesReader.readJsonConfiguration("input_data/"+configID+"/input_files.json");
-    input_files_jsonObj = inputConfigFilesReader.getJsonObject();
-
-    configurationReader.readJsonConfiguration(input_files_jsonObj["configuration_options"].asString());
-    jsonObj = configurationReader.getJsonObject();
+    ConfigurationReader configurationReader;
+	configurationReader.readJsonConfiguration("input_data/sim_options.json");
+	jsonObj = configurationReader.getJsonObject();
 
     std::string functionDeclarations = generateFunctionDeclarations();
     std::string inputDataLoaderFunction = generateInputDataLoader();
@@ -59,7 +46,7 @@ int main(int argc, char *argv[])
     std::string mainFunction = generateMain();
 
     std::ofstream mainFile;
-    mainFile.open("generated_main"+configID+".cpp");
+    mainFile.open("generated_main.cpp");
     mainFile 
         << includes
         << functionDeclarations 
@@ -79,15 +66,6 @@ int main(int argc, char *argv[])
     mainFile.close();
 
     return 0;
-}
-
-// TODO Make this function more robust -RG
-std::string getConfigID(int argc, char *argv[]){
-    if(argc > 2 || argc < 2){
-        exit(1);
-    }
-
-    return std::string(argv[1]);    
 }
 
 std::string generateIncludes() 
@@ -323,16 +301,10 @@ std::string generateMain()
     std::string generatedFunction = 
 
     "\nJson::Value simulationJsonConfig;\n"
-    "\nJson::Value input_files_jsonObj;\n"
     "\nint main()"
     "\n{"
         "\n\tConfigurationReader configurationReader;"
-        "\n\tConfigurationReader inputConfigFilesReader;"
-        "\n"
-        "\n\tinputConfigFilesReader.readJsonConfiguration(\"input_data/input_files.json\");"
-        "\n\tinput_files_jsonObj = inputConfigFilesReader.getJsonObject();"
-        "\n"
-        "\n\tconfigurationReader.readJsonConfiguration(input_files_jsonObj[\"sim_configuration\"].asString());"
+        "\n\tconfigurationReader.readJsonConfiguration(\"input_data/sim_config.json\");"
         "\n\tsimulationJsonConfig = configurationReader.getJsonObject();"
         "\n"
             "\n\tCONFIG_MAP* inputDataLoaderConfig = extractConfigMap(\"input_data_loader\");"

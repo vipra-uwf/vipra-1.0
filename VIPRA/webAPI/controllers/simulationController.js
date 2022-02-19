@@ -2,7 +2,7 @@
 // All Functions for setting up and running a simulation
 
 
-const { SIM_OPTIONS_PATH, INPUT_DATA_PATH, OUTPUT_DATA_PATH, SIM_RUN_PATH, SIM_COMPILE_PATH } = require('./../File_Paths');
+const { SIM_OPTIONS_PATH, INPUT_DATA_PATH, OUTPUT_DATA_PATH, SIM_RUN_PATH, SIM_COMPILE_PATH } = require('../configurations/File_Paths');
 
 const spawn                                = require('child_process').spawn;
 
@@ -18,7 +18,7 @@ const spawnSimulation = (configID) => {
         cID_Process_Map.set(configID, ps);
     });
     ps.stdout.on('data', (data)=>{console.log(data.toString())})
-    ps.stderr.on('data', (data)=>{console.log(data.toString()); })
+    ps.stderr.on('data', (data)=>{console.log(data.toString());})
     ps.on('close', (data)=>{
         cID_Process_Map.delete(configID);
     })
@@ -46,15 +46,15 @@ const sendSimOptions = async (response)=>{
     });
 }
 
-// TODO check for errors in compilation
+// TODO check for errors in compilation -RG
 const compileSimulation = (configID) =>{
     console.log("COMPILING SIMULTAION");
     spawnCompile(configID);
 }
 
-// TODO actually run the simulation and get the pid
-// TODO check for errors in running simulation
-// TODO this compiles the simulation as well, may want to move
+// TODO actually run the simulation -RG
+// TODO check for errors in running simulation -RG
+// TODO this compiles the simulation as well, may want to move -RG
 const StartSim = (configID) => {
     //compileSimulation(configID);
     console.log("STARTING SIMULATION");

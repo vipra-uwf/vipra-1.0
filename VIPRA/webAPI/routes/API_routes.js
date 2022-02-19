@@ -35,7 +35,7 @@ router.post("/sim", checkOptions, (req, res) =>{
     createConfigFiles(configID, req.body.SIMOPTIONS, res);
 });
 
-
+// TODO doesn't properly respond that the task has been started
 router.get("/sim/start", checkUserID, (req, res)=>{
     let configID = req.body.configID;
     console.log(configID);

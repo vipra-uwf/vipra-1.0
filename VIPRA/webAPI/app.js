@@ -2,7 +2,7 @@
 // TODO fix makefile to build generated_main use configIDs
 
 const express       = require("express");
-const config        = require("./config");
+const config        = require("./configurations/config");
 
 const app = express();
 
