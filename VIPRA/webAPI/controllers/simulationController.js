@@ -3,8 +3,8 @@
 
 
 const { SIM_OPTIONS_PATH, INPUT_DATA_PATH, OUTPUT_DATA_PATH, SIM_RUN_PATH, SIM_COMPILE_PATH } = require('../configurations/File_Paths');
-
-const spawn                                = require('child_process').spawn;
+const fs					= require('fs');
+const spawn                                	= require('child_process').spawn;
 
 const cID_Process_Map = new Map();
 

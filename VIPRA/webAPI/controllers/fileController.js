@@ -11,6 +11,7 @@ const { SIM_OPTIONS_PATH, INPUT_DATA_PATH, OUTPUT_DATA_PATH, SIM_RUN_PATH, SIM_C
 const createConfigFolder = (configID, response) =>{
     console.log('Create Config Folder');
     const folderPath = INPUT_DATA_PATH.concat('/', configID);
+    console.log(folderPath);
     if(!fs.existsSync(folderPath)){
         fs.mkdirSync(folderPath, (err) =>{
             if(err){
