@@ -13,20 +13,23 @@ const cID_Process_Map = new Map();
 
 // TODO Spawn a proper process and feed it with the unique configID for the configuration chosen -RG
 const spawnSimulation = (configID) => {
+    console.log(configID);
     let ps = spawn('sh', [SIM_RUN_PATH, configID]).on('spawn', ()=>{
         cID_Process_Map.set(configID, ps);
     });
+    ps.stdout.on('data', (data)=>{console.log(data.toString())})
+    ps.stderr.on('data', (data)=>{console.log(data.toString()); })
     ps.on('close', (data)=>{
         cID_Process_Map.delete(configID);
     })
     return ps.connected;
 }
 
-const spawnCompile = (configID) =>{
-    let ps = spawn('sh', [SIM_COMPILE_PATH, configID]);
-    ps.stdout.on('data', (data)=>{console.log(data.toString())})
-    ps.stderr.on('data', (data)=>{console.log(data.toString()); })
-}
+//const spawnCompile = (configID) =>{
+//    let ps = spawn('sh', [SIM_COMPILE_PATH, configID]);
+//    ps.stdout.on('data', (data)=>{console.log(data.toString())})
+//    ps.stderr.on('data', (data)=>{console.log(data.toString()); })
+//}
 
 
 const sendSimOptions = async (response)=>{
@@ -53,9 +56,9 @@ const compileSimulation = (configID) =>{
 // TODO check for errors in running simulation
 // TODO this compiles the simulation as well, may want to move
 const StartSim = (configID) => {
-    compileSimulation(configID);
+    //compileSimulation(configID);
     console.log("STARTING SIMULATION");
-    spawnSimulation(configID);
+    return spawnSimulation(configID);
 }
 
 

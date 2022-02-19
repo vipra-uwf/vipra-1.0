@@ -7,7 +7,7 @@ NAME = "generated_main"
 CXXFLAGS = -std=c++11 -g -Wall -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
 LDLIBS = -lantlr4-runtime
 
-BUILD_DIR = build
+BUILD_DIR = ./../input_files/$(CONFIG_ID)/build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 SRCS := $(filter-out code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
@@ -22,28 +22,24 @@ compile: setup generate_main make_directories main
 
 # TODO this currently compiles the generated main to ./input_files/CONFIG_ID, this may need changed to a more appropriate location
 generate_main:
-	cd ..
-	$(CXX) $(CXXFLAGS) code_generation/code_generator.cpp jsoncpp/jsoncpp.cpp configuration/configuration_reader.cpp -o input_data/$(CONFIG_ID)/$@
-	./input_data/$(CONFIG_ID/$@
-	rm ./input_data/$(CONFIG_ID)/$@
+	$(CXX) $(CXXFLAGS) ./../code_generation/code_generator.cpp ./../jsoncpp/jsoncpp.cpp ./../configuration/configuration_reader.cpp -o ./../input_data/$(CONFIG_ID)/$@
+	./../input_data/$(CONFIG_ID)/$@
+#rm ./../input_data/$(CONFIG_ID)/$@
 	$(eval SRCS := $(NAME).cpp)
 	echo $(OBJECTS)
 	
 main: $(OBJECTS)
-	cd ..
 	$(CXX) $(CXXFLAGS) -o $(NAME) $^ $(LDLIBS)
 	
 $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 setup:
-	cd ..
 	@test -e rapidxml || git clone --depth=1 --branch=master https://github.com/dwd/rapidxml.git rapidxml
 	@rm -rf ./rapidxml/.git
 	@rm -rf ./rapidxml/test
 
 make_directories:
-	cd ..
 	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(BUILD_DIR)/configuration
 	@mkdir -p $(BUILD_DIR)/code_generation
@@ -68,7 +64,6 @@ run: compile # compile if needed & run
 	./$(NAME)
 
 clean:
-	cd ..
 	$(RM) *.o *.exe $(NAME) $(NAME).cpp
 	$(RM) -rf $(BUILD_DIR)
 
