@@ -12,7 +12,7 @@ UNIQUE_DIR = $(BASE_DIR)/input_data/$(CONFIG_ID)
 
 BUILD_DIR = $(UNIQUE_DIR)/build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
-SRCS := $(filter-out code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
+SRCS := $(filter-out code_generation/code_generator_webAPI.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
 all: compile
@@ -24,7 +24,7 @@ compile: setup generate_main make_directories main
 
 generate_main:
 	echo $(UNIQUE_DIR)/$@
-	$(CXX) $(CXXFLAGS) $(BASE_DIR)/code_generation/code_generator.cpp $(BASE_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $(UNIQUE_DIR)/$@
+	$(CXX) $(CXXFLAGS) $(BASE_DIR)/code_generation/code_generator_webAPI.cpp $(BASE_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $(UNIQUE_DIR)/$@
 	$(UNIQUE_DIR)/$@
 #rm $(UNIQUE_DIR)/$@
 	$(eval SRCS := $(NAME).cpp)
