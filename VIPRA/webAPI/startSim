@@ -1,8 +1,5 @@
 echo "COMPILING PROGRAM..."
 make cc CONFIG_ID=$1
-make CONFIG_ID=$1
 echo "COMPILATION COMPLETE"
-echo "RUNNING PROGRAM"
-cd ./input_files/$1
-./generated_main
-echo "PROGRAM COMPLETE"
+echo "STARTING SIMULATION"
+make CONFIG_ID=$1

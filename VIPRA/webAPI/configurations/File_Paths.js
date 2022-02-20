@@ -4,7 +4,7 @@
 
 const path = require('path');
 
-const INPUT_DATA_PATH       = path.resolve(__dirname, './../../input_data/');
+const INPUT_DATA_PATH       = path.resolve(__dirname, './../../input_data');
 const OUTPUT_DATA_PATH      = path.resolve(__dirname, './../../output_data/pedestrian_trajectory.json');
 const SIM_OPTIONS_PATH      = path.resolve(__dirname, './../../input_data/sim_options.json');
 

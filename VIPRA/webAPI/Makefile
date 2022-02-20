@@ -1,5 +1,5 @@
 CXX = g++
-NAME = generated_main$(CONFIG_ID)
+NAME = generated_main
 
 # For Fedora 35, run dnf install antlr4-cpp-runtime-devel
 # For Ubuntu 20.04, run apt install libantlr4-runtime-dev libstdc++-10-dev
@@ -11,9 +11,10 @@ BASE_DIR = ./..
 UNIQUE_DIR = $(BASE_DIR)/input_data/$(CONFIG_ID)
 
 BUILD_DIR = $(UNIQUE_DIR)/build
-SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
-SRCS := $(filter-out code_generation/code_generator_webAPI.cpp, $(SRCS)) #this gets compiled separately
-OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
+SRCS = $($(BASE_DIR)*.cpp) $(wildcard $(BASE_DIR)*/*.cpp) $(wildcard $(BASE_DIR)*/*/*.cpp)
+SRCS := $(filter-out code_generation/code_generator.cpp code_generation/code_generator_webAPI.cpp, $(SRCS)) #this gets compiled separately
+OBJECTS = $(SRCS:./../%.cpp=$(BUILD_DIR)/%.o)
+
 
 all: compile
 
@@ -23,17 +24,18 @@ grammar: Behaviors.g4
 compile: setup generate_main make_directories main
 
 generate_main:
-	echo $(UNIQUE_DIR)/$@
 	$(CXX) $(CXXFLAGS) $(BASE_DIR)/code_generation/code_generator_webAPI.cpp $(BASE_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $(UNIQUE_DIR)/$@
-	$(UNIQUE_DIR)/$@
+	$(UNIQUE_DIR)/$@ $(CONFIG_ID)
 #rm $(UNIQUE_DIR)/$@
 	$(eval SRCS := $(NAME).cpp)
-	echo $(OBJECTS)
+#echo $(OBJECTS)
 	
 main: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(NAME) $^ $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $(BUILD_DIR)/$(NAME) $^ $(LDLIBS)
 	
-$(BUILD_DIR)/%.o: %.cpp
+$(BUILD_DIR)/%.o: $(BASE_DIR)/%.cpp
+	echo "HERE----------------"
+	echo $@
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 setup:
@@ -66,8 +68,8 @@ run: compile # compile if needed & run
 	./$(NAME)
 
 clean:
-	$(RM) *.o *.exe $(NAME) $(NAME).cpp
-	$(RM) -rf $(BUILD_DIR)
+#$(RM) *.o *.exe $(NAME) $(NAME).cpp
+#$(RM) -rf $(BUILD_DIR)
 
 cc: clean compile # clean compile
 

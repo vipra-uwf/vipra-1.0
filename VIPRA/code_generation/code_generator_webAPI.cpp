@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     configID = getConfigID(argc, argv);
 
     ConfigurationReader configurationReader;
-	configurationReader.readJsonConfiguration("input_data/"+configID+"/config_"+configID+".json");
+	configurationReader.readJsonConfiguration("input_data/"+configID+"/sim_config.json");
 	jsonObj = configurationReader.getJsonObject();
 
     std::string functionDeclarations = generateFunctionDeclarations();
@@ -88,7 +88,7 @@ std::string generateIncludes()
 {
     std::string generatedIncludes = "";
 
-    includes.push_back("configuration/configuration_reader.hpp");
+    includes.push_back("./../../configuration/configuration_reader.hpp");
 
     for(long unsigned int i = 0; i < includes.size(); ++i) 
     {

@@ -9,7 +9,7 @@ LDLIBS = -lantlr4-runtime
 
 BUILD_DIR = build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
-SRCS := $(filter-out code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
+SRCS := $(filter-out $(wildcard input_data/*/*.cpp) $(wildcard input_data/*/*/*.cpp) code_generation/code_generator.cpp code_generation/code_generator_webAPI.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
 all: compile

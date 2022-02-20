@@ -40,7 +40,7 @@ const writeInput_Files = (configID, response) => {
 // TODO This is blocking -RG
 const writeConfigToFolder = (configID, configJSON, response) =>{
     console.log('Write to config folder');
-    const configFile = INPUT_DATA_PATH.concat('/', configID, '/config_', configID, '.json');
+    const configFile = INPUT_DATA_PATH.concat('/', configID, '/sim_config.json');
     fs.writeFileSync(configFile, JSON.stringify(configJSON), (err)=>{
         if(err){
             response.status(500).send("Error Creating Config Files");
