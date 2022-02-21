@@ -10,11 +10,10 @@ LDLIBS = -lantlr4-runtime
 BASE_DIR = ./..
 UNIQUE_DIR = $(BASE_DIR)/input_data/$(CONFIG_ID)
 
-BUILD_DIR = $(UNIQUE_DIR)/build
+BUILD_DIR = $(BASE_DIR)/build
 SRCS = $($(BASE_DIR)*.cpp) $(wildcard $(BASE_DIR)*/*.cpp) $(wildcard $(BASE_DIR)*/*/*.cpp)
-SRCS := $(filter-out code_generation/code_generator.cpp code_generation/code_generator_webAPI.cpp, $(SRCS)) #this gets compiled separately
+SRCS := $(filter-out $(BASE_DIR)/code_generation/code_generator.cpp $(BASE_DIR)/code_generation/code_generator_webAPI.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:./../%.cpp=$(BUILD_DIR)/%.o)
-
 
 all: compile
 
@@ -31,17 +30,15 @@ generate_main:
 #echo $(OBJECTS)
 	
 main: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(BUILD_DIR)/$(NAME) $^ $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $(UNIQUE_DIR)/$(NAME) $^ $(LDLIBS)
 	
 $(BUILD_DIR)/%.o: $(BASE_DIR)/%.cpp
-	echo "HERE----------------"
-	echo $@
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 setup:
-	@test -e rapidxml || git clone --depth=1 --branch=master https://github.com/dwd/rapidxml.git rapidxml
-	@rm -rf ./rapidxml/.git
-	@rm -rf ./rapidxml/test
+	@test -e $(BASE_DIR)/rapidxml || git clone --depth=1 --branch=master https://github.com/dwd/rapidxml.git $(BASE_DIR)/rapidxml
+	@rm -rf $(BASE_DIR)/rapidxml/.git
+	@rm -rf $(BASE_DIR)/rapidxml/test
 
 make_directories:
 	@mkdir -p $(BUILD_DIR)

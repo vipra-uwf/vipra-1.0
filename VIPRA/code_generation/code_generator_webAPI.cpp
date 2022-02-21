@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     configID = getConfigID(argc, argv);
 
     ConfigurationReader configurationReader;
+	std::cout << "input_data/"+configID+"/sim_config.json";
 	configurationReader.readJsonConfiguration("input_data/"+configID+"/sim_config.json");
 	jsonObj = configurationReader.getJsonObject();
 
