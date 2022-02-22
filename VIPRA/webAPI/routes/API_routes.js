@@ -1,56 +1,65 @@
 
 // Creates router for /api routes -RG
 
-
-// TODO remove console logging from this file
-
 const express                                       = require('express');
 const bodyParser                                    = require('body-parser');
-const { randomUUID }                                = require('crypto');
-
-const { sendSimOptions, StartSim }                  = require('./../controllers/simulationController');
-const { provideUpdates }                            = require('./../controllers/apiController');
-const { createConfigFiles }                         = require('./../controllers/fileController')
 
 const { checkOptions }                              = require('./../middleware/optionsCheck');
 const { checkUserID }                               = require('./../middleware/checkUserID');
 
+const config                                        = require('./../configurations/config');
+const FileCreator_Type                              = config.fileIO.FileCreator;
+const SimManager_Type                               = config.simulation.SimManager;
+const IDManager_Type                                = config.simulation.IDManager;
+const UpdateManager_Type                            = config.simulation.UpdateManager;
 
-const router = express.Router();
+
+const router        = express.Router();
+const SimManager    = new SimManager_Type();
+const FileCreator   = new FileCreator_Type();
+const IDManager     = new IDManager_Type();
+const UpdateManager = new UpdateManager_Type(SimManager);
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
 
 router.get("/", (req, res) =>{
-	sendSimOptions(res);
+	SimManager.SendSimOptions(res);
 });
 
 
-
-// NOTE: might be able to change this to use indexes of options instead of bulky JSON -RG
 // NOTE: configJSON is assumed to be normalised through checkOptions -RG
 router.post("/sim", checkOptions, (req, res) =>{
-    console.log("Received Config");
-    let configID = randomUUID();
-    createConfigFiles(configID, req.body.SIMOPTIONS, res);
+    const configID = IDManager.GetID(req);
+    FileCreator.SaveSimConfig(configID, req.body.SIMOPTIONS, res)
+    .then(()=>{
+        res.status(200).json({'configID': configID});
+    })
+    .catch(()=>{
+        res.status(500).send('Unable to create config files');
+    });
 });
+
 
 // TODO doesn't properly respond that the task has been started
 router.get("/sim/start", checkUserID, (req, res)=>{
-    let configID = req.body.configID;
-    console.log(configID);
-    let started = StartSim(configID);
-    if(started){
-        res.json({'configID': configID});
-    }else{
-        res.status(500).send("Unable To Start Simulation");
-    }
+    const configID = IDManager.GetID(req);
+    SimManager.StartSim(configID)
+    .then(()=>{
+        res.status(200).json({'configID': configID})
+    })
+    .catch(()=>{
+        res.status(500).send('Unable to start simulation')
+    });
 });
 
-// TODO make function to setup SSE -RG
+
 router.get("/sim/updates", checkUserID, (req, res) =>{
-    const configID = req.body.configID;
-    provideUpdates(res, configID);
+    const configID = IDManager.GetID(req);
+    UpdateManager.ProvideUpdates(configID, res)
+    .catch((err)=>{
+        res.end("An Error Occured: " + err);
+    });
 });
 
 module.exports = router
