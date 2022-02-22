@@ -1,0 +1,106 @@
+{
+    "input_data_loader" : [
+        {
+            "objectName": "inputXMLReader",
+            "className": "InputXMLReader",
+            "includePath": "../../readers/input_xml_reader.hpp",
+            "type": "xml"
+        },
+        {
+            "objectName": "inputJSONReader",
+            "className": "InputJSONReader",
+            "includePath": "../../readers/input_json_reader.hpp",
+            "type": "json"
+        }
+    ],
+    
+    "output_data_writer" : [
+        {
+            "objectName": "xmlWriter",
+            "className": "XMLWriter",
+            "includePath" : "../../writers/xml_writer.hpp",
+            "type" : "xml"
+        },
+        {
+            "objectName": "jsonWriter",
+            "className": "JSONWriter",
+            "includePath" : "../../writers/json_writer.hpp",
+            "type" : "json"
+        },
+        {
+            "objectName": "jsonTimestepWriter",
+            "className": "JSONTimestepWriter",
+            "includePath": "../../writers/json_timestep_writer.hpp",
+            "type": "json_timestep"
+        }
+    ],
+
+    "simulation_output_handler" : [
+        {
+            "objectName": "timestepOutputHandler",
+            "className": "TimestepOutputHandler",
+            "includePath" : "../../writers/timestep_output_handler.hpp",
+            "type" : "timestep_output_handler"
+        },
+        {
+            "objectName": "timestepConsoleLogger",
+            "className": "TimestepConsoleLogger",
+            "includePath": "../../writers/timestep_console_logger.hpp",
+            "type" : "timestep_console_logger"
+        }
+    ],
+
+    "pedestrian_set" : [
+        {
+            "objectName": "calmPedestrianSet",
+            "className": "CalmPedestrianSet",
+            "includePath" : "../../entity_sets/calm_pedestrian_set.hpp",
+            "type" : "calm"
+        }
+    ],
+
+    "obstacle_set" : [
+        {
+            "objectName": "airplaneObstacleSet",
+            "className": "AirplaneObstacleSet",
+            "includePath" : "../../entity_sets/airplane_obstacle_set.hpp",
+            "type" : "airplane"
+        }
+    ],
+
+    "entity_set_factory" : [
+        {
+            "objectName": "calmEntitySetFactory",
+            "className": "CalmEntitySetFactory",
+            "includePath" : "../../entity_sets/factory/calm_entity_set_factory.hpp",
+            "type" : "calm"
+        }
+    ],
+
+    "goals" : [
+        {
+            "objectName": "calmGoals",
+            "className": "CalmGoals",
+            "includePath" : "../../goals/calm_goals.hpp",
+            "type" : "calm"
+        }
+    ],
+
+    "pedestrian_dynamics_model" : [
+        {
+            "objectName": "calmPedestrianModel",
+            "className": "CalmPedestrianModel",
+            "includePath" : "../../models/calm_pedestrian_model.hpp",
+            "type" : "calm"
+        }
+    ],
+
+    "human_behavior_model" : [
+        {
+            "objectName": "humanBehaviorModel",
+            "className": "HumanBehaviorModel",
+            "includePath" : "../../models/human_behavior_model.hpp",
+            "type" : "human"
+        }
+    ]
+}

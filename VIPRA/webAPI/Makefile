@@ -11,7 +11,7 @@ BASE_DIR = ./..
 UNIQUE_DIR = $(BASE_DIR)/input_data/$(CONFIG_ID)
 
 BUILD_DIR = $(BASE_DIR)/build
-SRCS = $($(BASE_DIR)*.cpp) $(wildcard $(BASE_DIR)*/*.cpp) $(wildcard $(BASE_DIR)*/*/*.cpp)
+SRCS = $($(BASE_DIR)/*.cpp) $(wildcard $(BASE_DIR)/*/*.cpp) $(wildcard $(BASE_DIR)/*/*/*.cpp)
 SRCS := $(filter-out $(BASE_DIR)/code_generation/code_generator.cpp $(BASE_DIR)/code_generation/code_generator_webAPI.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:./../%.cpp=$(BUILD_DIR)/%.o)
 
@@ -25,13 +25,14 @@ compile: setup generate_main make_directories main
 generate_main:
 	$(CXX) $(CXXFLAGS) $(BASE_DIR)/code_generation/code_generator_webAPI.cpp $(BASE_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $(UNIQUE_DIR)/$@
 	$(UNIQUE_DIR)/$@ $(CONFIG_ID)
-#rm $(UNIQUE_DIR)/$@
-	$(eval SRCS := $(NAME).cpp)
-#echo $(OBJECTS)
+	rm $(UNIQUE_DIR)/$@
+	$(eval SRCS := $(UNIQUE_DIR)/$(NAME).cpp)
+	echo $(OBJECTS)
 	
 main: $(OBJECTS)
+	echo $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $(UNIQUE_DIR)/$(NAME) $^ $(LDLIBS)
-	
+
 $(BUILD_DIR)/%.o: $(BASE_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -58,6 +59,7 @@ make_directories:
 	@mkdir -p $(BUILD_DIR)/readers
 	@mkdir -p $(BUILD_DIR)/writers
 	@mkdir -p $(BUILD_DIR)/simulation
+	@mkdir -p $(BUILD_DIR)/input_data/$(CONFIG_ID)
 	
 .PHONY: make_directories
 
@@ -65,8 +67,8 @@ run: compile # compile if needed & run
 	./$(NAME)
 
 clean:
-#$(RM) *.o *.exe $(NAME) $(NAME).cpp
-#$(RM) -rf $(BUILD_DIR)
+	$(RM) *.o *.exe $(NAME) $(NAME).cpp
+	$(RM) -rf $(BUILD_DIR)
 
 cc: clean compile # clean compile
 

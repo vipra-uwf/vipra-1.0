@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include <filesystem>
+
 #include "../configuration/configuration_reader.hpp"
 
 std::vector<std::string> includes;
@@ -32,8 +34,7 @@ int main(int argc, char *argv[])
     configID = getConfigID(argc, argv);
 
     ConfigurationReader configurationReader;
-	std::cout << "input_data/"+configID+"/sim_config.json";
-	configurationReader.readJsonConfiguration("input_data/"+configID+"/sim_config.json");
+	configurationReader.readJsonConfiguration("../input_data/sim_options_webAPI.json");
 	jsonObj = configurationReader.getJsonObject();
 
     std::string functionDeclarations = generateFunctionDeclarations();
@@ -319,58 +320,47 @@ std::string generateMain()
 
     "\nJson::Value simulationJsonConfig;\n"
     "\nint main()"
-    "\n{"
-        "\n\tConfigurationReader configurationReader;"
-        "\n\tconfigurationReader.readJsonConfiguration(\"input_data/sim_config.json\");"
+    "\n{int cnt = 0;"
+	"\n\tConfigurationReader configurationReader;"
+        "\n\tconfigurationReader.readJsonConfiguration(\"sim_config.json\");"
         "\n\tsimulationJsonConfig = configurationReader.getJsonObject();"
-        "\n"
             "\n\tCONFIG_MAP* inputDataLoaderConfig = extractConfigMap(\"input_data_loader\");"
             "\n\tCONFIG_MAP* outputDataWriterConfig = extractConfigMap(\"output_data_writer\");"
             "\n\tCONFIG_MAP* simulationOutputHandlerConfig = extractConfigMap(\"simulation_output_handler\");"
-            "\n\tCONFIG_MAP* pedestrianSetConfig = extractConfigMap(\"pedestrian_set\");" 
+            "\n\tCONFIG_MAP* pedestrianSetConfig = extractConfigMap(\"pedestrian_set\");"
             "\n\tCONFIG_MAP* obstacleSetConfig = extractConfigMap(\"obstacle_set\");" 
             "\n\tCONFIG_MAP* simulationParametersConfig = extractConfigMap(\"simulation_parameters\");"
             "\n\tCONFIG_MAP* entitySetFactoryConfig = extractConfigMap(\"entity_set_factory\");" 
             "\n\tCONFIG_MAP* goalsConfig = extractConfigMap(\"goals\");" 
             "\n\tCONFIG_MAP* pedestrianDynamicsModelConfig = extractConfigMap(\"pedestrian_dynamics_model\");"
             "\n\tCONFIG_MAP* humanBehaviorModelConfig = extractConfigMap(\"human_behavior_model\");"
-            "\n"
+            
             "\n\tInputDataLoader* inputDataLoader = generateDataLoader("
                 "\n\t\tsimulationJsonConfig[\"input_data_loader\"][\"type\"].asString(),"
                 "\n\t\tinputDataLoaderConfig);"
-            "\n"
             "\n\tOutputDataWriter* outputDataWriter = generateDataWriter("
                 "\n\t\tsimulationJsonConfig[\"output_data_writer\"][\"type\"].asString(),"
                 "\n\t\toutputDataWriterConfig);"
-            "\n"
             "\n\tPedestrianSet* pedestrianSet = generatePedestrianSet("
                 "\n\t\tsimulationJsonConfig[\"pedestrian_set\"][\"type\"].asString(),"
                 "\n\t\tpedestrianSetConfig);"
-            "\n"
             "\n\tObstacleSet* obstacleSet = generateObstacleSet("
                 "\n\t\tsimulationJsonConfig[\"obstacle_set\"][\"type\"].asString(),"
                 "\n\t\tobstacleSetConfig);"
-            "\n"
             "\n\tEntitySetFactory* entitySetFactory = generateEntitySetFactory("
                 "\n\t\tsimulationJsonConfig[\"entity_set_factory\"][\"type\"].asString(),"
                 "\n\t\tentitySetFactoryConfig);"
-            "\n"
             "\n\tGoals* goals = generateGoals("
                 "\n\t\tsimulationJsonConfig[\"goals\"][\"type\"].asString(),"
                 "\n\t\tgoalsConfig);"
-            "\n"
             "\n\tPedestrianDynamicsModel* pedestrianDynamicsModel = generatePedestrianDynamicsModel("
                 "\n\t\tsimulationJsonConfig[\"pedestrian_dynamics_model\"][\"type\"].asString()," 
                 "\n\t\tpedestrianDynamicsModelConfig);"
-            "\n"
             "\n\tHumanBehaviorModel* humanBehaviorModel = generateHumanBehaviorModel("
                 "\n\t\tsimulationJsonConfig[\"human_behavior_model\"][\"type\"].asString(),"
-                "\n\t\thumanBehaviorModelConfig);"
-            "\n"
             "\n\tSimulationOutputHandler* outputHandler = generateOutputHandler("
                 "\n\t\tsimulationJsonConfig[\"simulation_output_handler\"][\"type\"].asString(),"
                 "\n\t\tsimulationOutputHandlerConfig);"
-            
             "\n"
             "\n\tSIM_PARAMS* simulationParameters = new SIM_PARAMS;"
             "\n"
