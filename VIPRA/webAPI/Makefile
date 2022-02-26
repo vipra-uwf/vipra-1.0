@@ -15,23 +15,11 @@ SRCS = $($(BASE_DIR)/*.cpp) $(wildcard $(BASE_DIR)/*/*.cpp) $(wildcard $(BASE_DI
 SRCS := $(filter-out $(BASE_DIR)/code_generation/code_generator.cpp $(BASE_DIR)/code_generation/code_generator_webAPI.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:./../%.cpp=$(BUILD_DIR)/%.o)
 
-all: compile
+main: make_directories $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(UNIQUE_DIR)/$(NAME) $^ $(LDLIBS)
 
 grammar: Behaviors.g4
 	antlr4 -Dlanguage=Cpp -o dsl/generated -Dlanguage=Cpp -no-listener -visitor Behaviors.g4 
-
-compile: setup generate_main make_directories main
-
-generate_main:
-	$(CXX) $(CXXFLAGS) $(BASE_DIR)/code_generation/code_generator_webAPI.cpp $(BASE_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $(UNIQUE_DIR)/$@
-	$(UNIQUE_DIR)/$@ $(CONFIG_ID)
-	rm $(UNIQUE_DIR)/$@
-	$(eval SRCS := $(UNIQUE_DIR)/$(NAME).cpp)
-	echo $(OBJECTS)
-	
-main: $(OBJECTS)
-	echo $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(UNIQUE_DIR)/$(NAME) $^ $(LDLIBS)
 
 $(BUILD_DIR)/%.o: $(BASE_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@

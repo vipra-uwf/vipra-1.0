@@ -9,25 +9,14 @@ LDLIBS = -lantlr4-runtime
 
 BUILD_DIR = build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
-SRCS := $(filter-out $(wildcard input_data/*/*.cpp) $(wildcard input_data/*/*/*.cpp) code_generation/code_generator.cpp code_generation/code_generator_webAPI.cpp, $(SRCS)) #this gets compiled separately
+SRCS := $(filter-out $(wildcard input_data/*/*.cpp) $(wildcard input_data/*/*/*.cpp) code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
-
-all: compile
 
 grammar: Behaviors.g4
 	antlr4 -Dlanguage=Cpp -o dsl/generated -Dlanguage=Cpp -no-listener -visitor Behaviors.g4 
 
-compile: setup generate_main make_directories main
-
-generate_main:
+generate_main: ./code_generation/code_generator.cpp
 	$(CXX) $(CXXFLAGS) code_generation/code_generator.cpp jsoncpp/jsoncpp.cpp configuration/configuration_reader.cpp -o $@
-	./$@
-	rm ./$@
-	$(eval SRCS := $(NAME).cpp)
-	echo $(OBJECTS)
-	
-main: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(NAME) $^ $(LDLIBS)
 	
 $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -58,16 +47,9 @@ make_directories:
 	
 .PHONY: make_directories
 
-run: compile # compile if needed & run
-	./$(NAME)
-
 clean:
 	$(RM) *.o *.exe $(NAME) $(NAME).cpp
 	$(RM) -rf $(BUILD_DIR)
-
-cc: clean compile # clean compile
-
-ccr: clean run # clean & compile & run
 
 co: #clear output folder
 	$(RM) output_data/*

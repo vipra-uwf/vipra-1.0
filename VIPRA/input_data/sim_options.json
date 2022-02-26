@@ -2,105 +2,109 @@
     "input_data_loader" : [
         {
             "objectName": "inputXMLReader",
-            "className": "InputXMLReader",
-            "includePath": "readers/input_xml_reader.hpp",
-            "type": "xml"
+            "configurations" : []
         },
         {
             "objectName": "inputJSONReader",
-            "className": "InputJSONReader",
-            "includePath": "readers/input_json_reader.hpp",
-            "type": "json"
+            "configurations" : []
         }
     ],
     
     "output_data_writer" : [
         {
             "objectName": "xmlWriter",
-            "className": "XMLWriter",
-            "includePath" : "writers/xml_writer.hpp",
-            "type" : "xml"
+            "configurations": [
+                "parentElementName",
+                "childElementName"           
+            ]
         },
         {
             "objectName": "jsonWriter",
-            "className": "JSONWriter",
-            "includePath" : "writers/json_writer.hpp",
-            "type" : "json"
+            "configurations": [
+                "parentElementName",
+                "childElementName"                
+            ]
         },
         {
             "objectName": "jsonTimestepWriter",
-            "className": "JSONTimestepWriter",
-            "includePath": "writers/json_timestep_writer.hpp",
-            "type": "json_timestep"
+            "configurations": [
+                {"parentElementName" : [
+                    "pedestrian-set"
+                ]},
+                {"childElementName" : [
+                    "pedestrian"
+                ]}
+            ]
         }
     ],
 
     "simulation_output_handler" : [
         {
             "objectName": "timestepOutputHandler",
-            "className": "TimestepOutputHandler",
-            "includePath" : "writers/timestep_output_handler.hpp",
-            "type" : "timestep_output_handler"
+            "configurations" : [
+                "outputFrequency"
+            ]
         },
         {
-            "objectName": "timestepConsoleLogger",
-            "className": "TimestepConsoleLogger",
-            "includePath": "writers/timestep_console_logger.hpp",
-            "type" : "timestep_console_logger"
+            "objectName": "timestepConsoleLogger"
         }
     ],
 
     "pedestrian_set" : [
         {
             "objectName": "calmPedestrianSet",
-            "className": "CalmPedestrianSet",
-            "includePath" : "entity_sets/calm_pedestrian_set.hpp",
-            "type" : "calm"
+            "type" : "calm",
+            "name" : "a320_144_pedestrians",
+            "configurations" : [
+                {"parentElementName" : [
+                    "pedestrian-set"
+                ]}
+            ]
         }
     ],
 
     "obstacle_set" : [
         {
             "objectName": "airplaneObstacleSet",
-            "className": "AirplaneObstacleSet",
-            "includePath" : "entity_sets/airplane_obstacle_set.hpp",
-            "type" : "airplane"
+            "type" : "airplane",
+            "name" : "a320_144_obstacles",
+            "configurations" : [
+                {"parentElementName" : [
+                    "pedestrian-set"
+                ]}
+            ]
         }
     ],
 
     "entity_set_factory" : [
         {
             "objectName": "calmEntitySetFactory",
-            "className": "CalmEntitySetFactory",
-            "includePath" : "entity_sets/factory/calm_entity_set_factory.hpp",
-            "type" : "calm"
+            "type" : "calm",
+            "configurations" : []
         }
     ],
 
     "goals" : [
         {
             "objectName": "calmGoals",
-            "className": "CalmGoals",
-            "includePath" : "goals/calm_goals.hpp",
-            "type" : "calm"
+            "type" : "calm",
+            "configurations" : []
         }
     ],
 
     "pedestrian_dynamics_model" : [
         {
             "objectName": "calmPedestrianModel",
-            "className": "CalmPedestrianModel",
-            "includePath" : "models/calm_pedestrian_model.hpp",
-            "type" : "calm"
+            "type" : "calm",
+            "configurations" : []
         }
     ],
 
     "human_behavior_model" : [
         {
             "objectName": "humanBehaviorModel",
-            "className": "HumanBehaviorModel",
-            "includePath" : "models/human_behavior_model.hpp",
-            "type" : "human"
+            "type" : "human",
+            "configurations" : []
         }
     ]
 }

@@ -5,9 +5,12 @@
 
 #include "../configuration/configuration_reader.hpp"
 
+std::string configID;
+
 std::vector<std::string> includes;
 Json::Value jsonObj;
 
+std::string getConfigID(int, char**);
 std::string generateIncludes();
 std::string generateFunctionDeclarations();
 std::string generateFunctionOptions(std::string optionsKey);
@@ -24,10 +27,13 @@ std::string generatePopulateEntitySets();
 std::string generateExtractConfigMap();
 std::string generateMain();
 
-int main() 
+int main(int argc, char *argv[]) 
 {
+
+    configID = getConfigID(argc, argv);
+
     ConfigurationReader configurationReader;
-	configurationReader.readJsonConfiguration("input_data/sim_options.json");
+	configurationReader.readJsonConfiguration("input_data/includes_map.json");
 	jsonObj = configurationReader.getJsonObject();
 
     std::string functionDeclarations = generateFunctionDeclarations();
@@ -46,7 +52,7 @@ int main()
     std::string mainFunction = generateMain();
 
     std::ofstream mainFile;
-    mainFile.open("generated_main.cpp");
+    mainFile.open("input_data/"+configID+"/generated_main.cpp");
     mainFile 
         << includes
         << functionDeclarations 
@@ -68,6 +74,17 @@ int main()
     return 0;
 }
 
+// TODO give proper errors when incorrect
+std::string getConfigID(int argc, char *argv[]){
+
+    if(argc > 2 || argc < 2){
+        std::cerr << "Invalid inputs";
+        exit(1);
+    }
+
+    return std::string(argv[1]);
+}
+
 std::string generateIncludes() 
 {
     std::string generatedIncludes = "";
@@ -76,7 +93,7 @@ std::string generateIncludes()
 
     for(long unsigned int i = 0; i < includes.size(); ++i) 
     {
-        generatedIncludes += "#include \"" + includes[i] + "\"\n"; 
+        generatedIncludes += "#include \"../../" + includes[i] + "\"\n";
     }
 
     return generatedIncludes;
@@ -304,14 +321,14 @@ std::string generateMain()
     "\nint main()"
     "\n{"
         "\n\tConfigurationReader configurationReader;"
-        "\n\tconfigurationReader.readJsonConfiguration(\"input_data/sim_config.json\");"
+        "\n\tconfigurationReader.readJsonConfiguration(\"sim_config.json\");"
         "\n\tsimulationJsonConfig = configurationReader.getJsonObject();"
         "\n"
             "\n\tCONFIG_MAP* inputDataLoaderConfig = extractConfigMap(\"input_data_loader\");"
             "\n\tCONFIG_MAP* outputDataWriterConfig = extractConfigMap(\"output_data_writer\");"
             "\n\tCONFIG_MAP* simulationOutputHandlerConfig = extractConfigMap(\"simulation_output_handler\");"
             "\n\tCONFIG_MAP* pedestrianSetConfig = extractConfigMap(\"pedestrian_set\");" 
-            "\n\tCONFIG_MAP* obstacleSetConfig = extractConfigMap(\"obstacle_set\");" 
+            "\n\tCONFIG_MAP* obstacleSetConfig = extractConfigMap(\"obstacle_set\");"
             "\n\tCONFIG_MAP* simulationParametersConfig = extractConfigMap(\"simulation_parameters\");"
             "\n\tCONFIG_MAP* entitySetFactoryConfig = extractConfigMap(\"entity_set_factory\");" 
             "\n\tCONFIG_MAP* goalsConfig = extractConfigMap(\"goals\");" 
@@ -360,9 +377,11 @@ std::string generateMain()
             "\n\tpopulateEntitySets("
                 "\n\t\tinputDataLoader, entitySetFactory,"
                 "\n\t\tpedestrianSet, obstacleSet, simulationParameters,"
-                "\n\t\tsimulationJsonConfig[\"pedestrian_set\"][\"inputFilePath\"].asString(),"
-                "\n\t\tsimulationJsonConfig[\"obstacle_set\"][\"inputFilePath\"].asString()," 
-                "\n\t\tsimulationJsonConfig[\"simulation_parameters\"][\"inputFilePath\"].asString(),"
+                // TODO these relative paths are hardcoded, will want to change this -RG
+                // TODO these are also hardcoded to be their json version -RG
+                "\n\t\t\"../pedestrian_sets/json/\" + simulationJsonConfig[\"pedestrian_set\"][\"name\"].asString() + \".json\","
+                "\n\t\t\"../obstacle_sets/json/\" + simulationJsonConfig[\"obstacle_set\"][\"name\"].asString() + \".json\"," 
+                "\n\t\t\"sim_params.json\","
                 "\n\t\tpedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);"
             "\n"
             "\n\tData data;"

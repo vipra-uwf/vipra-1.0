@@ -1,0 +1,52 @@
+{
+    "input_data_loader": {
+      "type": "json",
+      "configuration": {}
+    },
+    "output_data_writer": {
+      "type": "json_timestep",
+      "configuration": {
+        "parentElementName": "pedestrian-set",
+        "childElementName": "pedestrian"
+      }
+    },
+    "simulation_output_handler": {
+      "type": "timestep_output_handler",
+      "configuration": {
+        "outputFrequency": 100
+      }
+    },
+    "pedestrian_set": {
+      "type": "calm",
+      "name" : "a320_144_pedestrians",
+      "configuration": {
+        "parentElementName": "pedestrian-set"
+      }
+    },
+    "obstacle_set": {
+      "type": "airplane",
+      "name" : "a320_144_obstacles",
+      "configuration": {
+        "parentElementName": "obstacle-set"
+      }
+    },
+    "entity_set_factory": {
+      "type": "calm",
+      "configuration": {}
+    },
+    "goals": {
+      "type": "calm",
+      "configuration": {}
+    },
+    "pedestrian_dynamics_model": {
+      "type": "calm",
+      "configuration": {}
+    },
+    "human_behavior_model": {
+      "type": "human",
+      "configuration": {
+        "random_seed": "1637762023",
+        "behavior": "injured_person"
+      }
+    }
+  }

@@ -34,6 +34,7 @@ class SimManager_API{
         ps.stdout.on('data', (data)=>{console.log(data.toString())})
         ps.stderr.on('data', (data)=>{console.log(data.toString());})
         ps.on('close', (data)=>{
+            console.log("CLOSING SIM");
             this.cID_Process_Map.delete(configID);
         });
     }
