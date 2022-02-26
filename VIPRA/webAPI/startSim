@@ -1,3 +1,7 @@
+echo "GENERATING MAIN..."
+cd ..
+./generate_main $1
+cd webAPI/
 echo "COMPILING PROGRAM..."
 make CONFIG_ID=$1
 echo "RUNNING SIMULATION..."

@@ -1,7 +1,8 @@
 
 
-const { SIM_RUN_PATH }   = require('../configurations/File_Paths');
+const { SIM_OPTIONS_PATH, SIM_RUN_PATH }   = require('../configurations/File_Paths');
 const spawn              = require('child_process').spawn;
+const fs		 = require('fs');
 
 class SimManager_API{
     constructor(){
