@@ -104,7 +104,15 @@
         {
             "objectName": "humanBehaviorModel",
             "type" : "human",
-            "configurations" : []
+            "configurations" : [
+                "random_seed",
+                {"behavior#": [
+                    "important_announcement",
+                    "injured_person",
+                    "random_sleep",
+                    "travel_in_group"
+                ]}
+            ]
         }
     ]
 }

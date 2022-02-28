@@ -27,6 +27,7 @@ router.get("/", (req, res) =>{
 	SimManager.SendSimOptions(res);
 });
 
+// TODO add route to add new behaviors
 
 // NOTE: SIMOPTIONS is assumed to be normalised through checkOptions -RG
 router.post("/sim", checkOptions, (req, res) =>{
