@@ -35,9 +35,6 @@ setup:
 
 .PHONY: main_build_dir
 
-run: compile # compile if needed & run
-	./$(NAME)
-
 clean: 
 ifndef CONFIG_ID
 	$(error CONFIG_ID is not set)

@@ -41,9 +41,7 @@ router.post("/sim", checkOptions, (req, res) =>{
     });
 });
 
-
-// TODO doesn't properly respond that the task has been started
-router.get("/sim/start", checkConfigID, (req, res)=>{
+router.get("/sim/start/", checkConfigID, (req, res)=>{
     const configID = IDManager.GetID(req);
     SimManager.StartSim(configID)
     .then(()=>{
@@ -54,10 +52,10 @@ router.get("/sim/start", checkConfigID, (req, res)=>{
     });
 });
 
-
-router.get("/sim/updates/:configID", checkConfigID, (req, res) =>{
-    console.log(req.params.configID);
-    UpdateManager.ProvideUpdates(req.params.configID, res)
+// TODO sends raw error, want to change to something else -RG
+router.get("/sim/updates/", checkConfigID, (req, res) =>{
+    const configID = IDManager.GetID(req);
+    UpdateManager.ProvideUpdates(configID, res)
     .catch((err)=>{
         res.end("An Error Occured: " + err);
     });

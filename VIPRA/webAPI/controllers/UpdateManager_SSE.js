@@ -1,5 +1,3 @@
-
-
 class UpdateManager_SSE{
     constructor(SimManager){
         this.simManager = SimManager;
@@ -14,23 +12,19 @@ class UpdateManager_SSE{
 
         const ps = this.simManager.GetProcess(configID);
 
-        console.log("CALLED");
-
         if(ps){
             ps.stdout.on('data', (data)=>{
-                console.log("SENDING");
                 response.write('data: ' + data + '\n\n');
             });
             ps.stderr.on('data', (data)=>{
-                console.log("SENDING");
                 response.write('data: ' + data + '\n\n');
             });
             ps.on('close', ()=>{
                 response.end();
             });
         }else{
+            response.status(400).write("No Simulation Running with ID: " + configID);
             response.end();
-            throw Error("No simulation with configID: " + configID);
         }
     }
 

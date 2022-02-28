@@ -1,31 +1,49 @@
 {
     "input_data_loader" : [
         {
+            "DisplayName": "XML Input Reader",
             "objectName": "inputXMLReader",
+            "type": "xml",
             "configurations" : []
         },
         {
+            "DisplayName": "JSON Input Reader",
             "objectName": "inputJSONReader",
+            "type": "json",
             "configurations" : []
         }
     ],
     
     "output_data_writer" : [
         {
+            "DisplayName": "XML Output Writer",
+            "type": "xml",
             "objectName": "xmlWriter",
             "configurations": [
-                "parentElementName",
-                "childElementName"           
+                {"parentElementName": [
+                    "pedestrian-set"
+                ]},
+                {"childElementName": [
+                    "pedestrian"
+                ]}           
             ]
         },
         {
+            "DisplayName": "JSON Output Writer",
+            "type": "json",
             "objectName": "jsonWriter",
             "configurations": [
-                "parentElementName",
-                "childElementName"                
+                {"parentElementName": [
+                    "pedestrian-set"
+                ]},
+                {"childElementName": [
+                    "pedestrian"
+                ]}
             ]
         },
         {
+            "DisplayName": "JSON Timestep Output Writer",
+            "type": "json_timestep",
             "objectName": "jsonTimestepWriter",
             "configurations": [
                 {"parentElementName" : [
@@ -40,18 +58,26 @@
 
     "simulation_output_handler" : [
         {
+            "DisplayName": "Timestep Output Handler",
+            "type": "timestep_output_handler",
             "objectName": "timestepOutputHandler",
             "configurations" : [
-                "outputFrequency"
+                {"outputFrequency": {
+                    "minimum": 0,
+                    "maximum": 100
+                }}
             ]
         },
         {
+            "DisplayName": "Timestep Console Logger",
+            "type": "timestep_console_logger",
             "objectName": "timestepConsoleLogger"
         }
     ],
 
     "pedestrian_set" : [
         {
+            "DisplayName": "Calm Pedestrian Set",
             "objectName": "calmPedestrianSet",
             "type" : "calm",
             "name" : "a320_144_pedestrians",
@@ -65,6 +91,7 @@
 
     "obstacle_set" : [
         {
+            "DisplayName": "A320, 144 Pedestrians",
             "objectName": "airplaneObstacleSet",
             "type" : "airplane",
             "name" : "a320_144_obstacles",
@@ -78,6 +105,7 @@
 
     "entity_set_factory" : [
         {
+            "DisplayName": "Calm Entity Set Factory",
             "objectName": "calmEntitySetFactory",
             "type" : "calm",
             "configurations" : []
@@ -86,6 +114,7 @@
 
     "goals" : [
         {
+            "DisplayName": "Calm Goals",
             "objectName": "calmGoals",
             "type" : "calm",
             "configurations" : []
@@ -94,6 +123,7 @@
 
     "pedestrian_dynamics_model" : [
         {
+            "DisplayName": "Calm Pedestrian Model",
             "objectName": "calmPedestrianModel",
             "type" : "calm",
             "configurations" : []
@@ -102,17 +132,18 @@
 
     "human_behavior_model" : [
         {
+            "DisplayName": "Human Behavior Model",
             "objectName": "humanBehaviorModel",
             "type" : "human",
-            "configurations" : [
-                "random_seed",
-                {"behavior#": [
+            "configurations" : {
+                "random_seed": {},
+                "behavior#": [
                     "important_announcement",
                     "injured_person",
                     "random_sleep",
                     "travel_in_group"
-                ]}
-            ]
+                ]
+            }
         }
     ]
 }

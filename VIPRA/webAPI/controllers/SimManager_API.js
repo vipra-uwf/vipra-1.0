@@ -1,7 +1,7 @@
 
 
 const { SIM_OPTIONS_PATH, SIM_RUN_PATH }   = require('../configurations/File_Paths');
-const spawn              = require('child_process').spawn;
+const spawnSync                            = require('child_process').spawn;
 const fs		 = require('fs');
 
 class SimManager_API{
@@ -29,9 +29,10 @@ class SimManager_API{
 
     // TODO this currently compiles and starts the simulation, may want to change
     _START_SIM(configID){
-        const ps = spawn('sh', [SIM_RUN_PATH, configID]).on('spawn', ()=>{
-            this.cID_Process_Map.set(configID, ps);
-        });
+        const ps = spawnSync('sh', [SIM_RUN_PATH, configID])
+
+        this.cID_Process_Map.set(configID, ps);
+
         ps.stdout.on('data', (data)=>{console.log(data.toString())})
         ps.stderr.on('data', (data)=>{console.log(data.toString());})
         ps.on('close', (data)=>{
