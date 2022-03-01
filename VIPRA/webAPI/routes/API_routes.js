@@ -53,8 +53,8 @@ router.get("/sim/start/", checkConfigID, (req, res)=>{
 });
 
 // TODO sends raw error, want to change to something else -RG
-router.get("/sim/updates/", checkConfigID, (req, res) =>{
-    const configID = IDManager.GetID(req);
+router.get("/sim/updates/:configID", checkConfigID, (req, res) =>{
+    const configID = req.params.configID;
     UpdateManager.ProvideUpdates(configID, res)
     .catch((err)=>{
         res.end("An Error Occured: " + err);

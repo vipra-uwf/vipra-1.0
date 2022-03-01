@@ -1,21 +1,34 @@
 <html>
   <body>
+    <form action="/action_page.php">
+      <label for="configID">Config ID:</label>
+      <input type="text" id="configID" name="configID"><br><br>
+      <label for="port">Port:</label>
+      <input type="text" id="port" name="port"><br><br>
+    </form>
+
     <div id="content"></div>
     <button onclick="addListener()">Start</button>
 
     <script type="text/javascript">
       function addListener(){    
-        const source = new EventSource('http://localhost:3000/api/sim/updates/e5170874-d680-472b-b5d4-6480530d8d61');  
         
-        source.onerror = () => {source.close();}
+        const id = document.querySelector('#configID').value;
+        const port = document.querySelector('#port').value;
 
-        source.addEventListener('message', message => {
-            console.log("something");
-            console.log('Got', message);
+        if(id && port){
+          const source = new EventSource('http://localhost:' +port+ '/api/sim/updates/'+id);  
+          
+          source.onerror = () => {source.close();}
 
-            // Display the event data in the `content` div
-            document.querySelector('#content').innerHTML = event.data;
-        });
+          source.addEventListener('message', message => {
+              console.log("something");
+              console.log('Got', message);
+
+              // Display the event data in the `content` div
+              document.querySelector('#content').innerHTML = event.data;
+          });
+        }
       }
 
     </script>
