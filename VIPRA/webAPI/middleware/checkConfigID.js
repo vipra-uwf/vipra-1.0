@@ -1,7 +1,7 @@
 
-const fs = require('fs')
+const config = require('./../configurations/config')
 
-const { INPUT_DATA_PATH } = require('./../configurations/File_Paths')
+const ConfigManager = new config.simulation.ConfigManager();
 
 const checkConfigID = (req, res, next)=>{
     
