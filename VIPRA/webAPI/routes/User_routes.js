@@ -43,5 +43,4 @@ router.post('/register', checkRegistration, (req, res)=>{
     });
 });
 
-
 module.exports = router;

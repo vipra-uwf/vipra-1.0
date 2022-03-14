@@ -1,8 +1,10 @@
 
 
-const { SIM_OPTIONS_PATH, SIM_RUN_PATH }   = require('./../../configurations/File_Paths');
-const spawnSync                            = require('child_process').spawn;
-const fs		 = require('fs');
+const { SIM_OPTIONS_PATH, SIM_RUN_PATH }    = require('./../../configurations/File_Paths');
+const spawnSync                             = require('child_process').spawn;
+const fs		                            = require('fs');
+
+// TODO switch this from using configIDs to simIDs
 
 class SimManager_API{
     constructor(){
@@ -27,7 +29,6 @@ class SimManager_API{
         await this._START_SIM(configID);
     }
 
-    // TODO this currently compiles and starts the simulation, may want to change
     _START_SIM(configID){
         const ps = spawnSync('sh', [SIM_RUN_PATH, configID])
 

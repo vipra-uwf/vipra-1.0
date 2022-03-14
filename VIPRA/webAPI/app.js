@@ -12,8 +12,8 @@ app.use(cors());
 const API_Routes = require("./routes/Sim_routes.js");
 const User_Routes = require('./routes/User_routes');
 
-app.use('/api', API_Routes);
-app.use('/api', User_Routes);
+app.use('/', API_Routes);
+app.use('/', User_Routes);
 
 app.listen(config.app.port);
 console.log(`The server has started and is listening on port number:${config.app.port}`);

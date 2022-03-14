@@ -18,7 +18,10 @@ const testing = {
     repos:{
         UserRepo:   require('../controllers/Repos/Users/UserRepo_Mock'),
         ConfigRepo: require('../controllers/Repos/Configs/ConfigRepo_Local'),
-        GroupRepo:  require('../controllers/Repos/Groups/GroupRepo_Mock')
+        BehaviorRepo: require('../controllers/Repos/Behaviors/BehaviorRepo_Local')
+    },
+    behavior:{
+        BehaviorManager: require('../controllers/Behavior/BehaviorManager')
     },
     users:{
         UserManager:        require('../controllers/Users/UserManager_Local'),
