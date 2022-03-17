@@ -5,10 +5,13 @@ const config = require('../configurations/config')
 
 const { checkRegistration } = require('../middleware/checkRegistration');
 
-const UserRepo          = new config.repos.UserRepo();
+
+const UserRepo          = new config.repos.UserRepo(config.database.UserDB_Con);
+const UserManager       = new config.users.UserManager();
+
 const PasswordManager   = new config.users.PasswordManager();
 const Authentication    = new config.authentication.Authenticator(PasswordManager, UserRepo, config.users.JWT_SECRET, config.users.JWT_EXPIRATION);
-const UserManager       = new config.users.UserManager();
+
 
 const router = express.Router();
 

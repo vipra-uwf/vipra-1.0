@@ -69,15 +69,4 @@ class BehaviorRepo_Local{
     }
 }
 
-/*
-
-
-behavior:{
-    published: true,
-    content: "aerboiaervpoanervpionaerf",
-
-}
-
-*/
-
 module.exports = BehaviorRepo_Local;

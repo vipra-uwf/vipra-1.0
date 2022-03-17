@@ -1,24 +1,21 @@
-
-// Creates router for /api routes -RG
-
 const express                                       = require('express');
 const bodyParser                                    = require('body-parser');
 
 const { checkConfig }                               = require('../middleware/checkConfig');
 const { checkConfigID }                             = require('../middleware/checkConfigID');
 const { checkPermissions }                          = require('../middleware/checkPermissions');
-const { checkBehavior }                             = require('../middleware/checkBehavior');
 
 const config                                        = require('../configurations/config');
 
-
 const router        = express.Router();
+
 const SimManager    = new config.simulation.SimManager();
 const UpdateManager = new config.simulation.UpdateManager(SimManager);
+
 const ConfigRepo    = new config.repos.ConfigRepo();
 const ConfigManager = new config.simulation.ConfigManager(ConfigRepo);
 
-const BehaviorRepo      = new config.repos.BehaviorRepo();
+const BehaviorRepo      = new config.repos.BehaviorRepo(config.database.BehaviorDB_Con);
 const BehaviorManager   = new config.behavior.BehaviorManager(BehaviorRepo);
 
 router.use(bodyParser.json());
@@ -84,13 +81,13 @@ router.get("/sim/behaviors", (req, res)=>{
     });
 });
 
-router.post("/sim/behaviors", checkBehavior, (req, res)=>{
+router.post("/sim/behaviors", (req, res)=>{
     BehaviorManager.CreateBehavior(req.body.behavior)
     .then((created)=>{
         if(created){
             res.status(200).json({message: "Behavior Created"});
         }else{
-            res.status(400).json({error: "Invalid Request", "detail": "Behavior already exists, to update use PUT request"});
+            res.status(400).json({error: "Invalid Request", "detail": "Invalid Behavior Parameters or Behavior already exists, to update use PUT request"});
         }
     })
     .catch((err)=>{
@@ -99,7 +96,7 @@ router.post("/sim/behaviors", checkBehavior, (req, res)=>{
     });
 });
 
-router.put("/sim/behaviors", checkBehavior, (req, res)=>{
+router.put("/sim/behaviors", (req, res)=>{
     BehaviorManager.UpdateBehavior(req.body.behavior)
     .then((updated)=>{
         if(updated){
