@@ -5,18 +5,18 @@ const { BEHAVIOR_FOLDER_PATH } = require('../../../configurations/File_Paths');
 
 class BehaviorRepo_Local{
     constructor(){
-        this._LoadOptions();
+        this.#LoadOptions();
     }
 
-    async _LoadOptions(){
-        this._options = fs.readdirSync(BEHAVIOR_FOLDER_PATH);
-        this._options.forEach((file, index, options)=>{
+    async #LoadOptions(){
+        this.#options = fs.readdirSync(BEHAVIOR_FOLDER_PATH);
+        this.#options.forEach((file, index, options)=>{
             options[index] = path.parse(options[index]).name;
         });
     }
 
-    _DoesExist(name){
-        return this._options.includes(name);
+    #DoesExist(name){
+        return this.#options.includes(name);
     }
 
     async Load(behaviorID){
@@ -24,20 +24,20 @@ class BehaviorRepo_Local{
     }
 
     async Save(name, content, publish){
-        if(this._DoesExist(name)){
+        if(this.#DoesExist(name)){
             return false;
         }else{
             const filename = BEHAVIOR_FOLDER_PATH.concat('/', name, '.behavior');
             fs.writeFileSync(filename, content);
-            this._options.push(name);
+            this.#options.push(name);
             return true;
         }
     }
 
-    _RemoveFromOptions(name){
-        let index = this._options.indexOf(name);
+    #RemoveFromOptions(name){
+        let index = this.#options.indexOf(name);
         if (index !== -1) {
-            this._options.splice(index);
+            this.#options.splice(index);
         }
     }
 
@@ -46,7 +46,7 @@ class BehaviorRepo_Local{
         const filename = BEHAVIOR_FOLDER_PATH.concat('/', name, '.behavior');
         if(fs.existsSync(filename)){
             fs.rmSync(filename);
-            this._RemoveFromOptions(name);
+            this.#RemoveFromOptions(name);
             return true;
         }else{
             return false;
@@ -54,10 +54,10 @@ class BehaviorRepo_Local{
     }
 
     async Update(name, content, publish){
-        if(this._DoesExist(name)){
+        if(this.#DoesExist(name)){
             const filename = BEHAVIOR_FOLDER_PATH.concat('/', name, '.behavior');
             fs.writeFileSync(filename, content);
-            this._options.push(name);
+            this.#options.push(name);
             return true;
         }else{
             return false;
@@ -65,7 +65,7 @@ class BehaviorRepo_Local{
     }
 
     async GetOptions(){
-        return this._options;
+        return this.#options;
     }
 }
 

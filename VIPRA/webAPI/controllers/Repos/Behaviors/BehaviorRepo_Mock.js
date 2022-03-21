@@ -2,9 +2,9 @@
 class BehaviorRepo_Mock{
     constructor(){}
 
-    Load(behaviorID){
-        if(behaviorID === 'notarealid'){
-            return {'behaviorID': behaviorID,
+    GetBehavior(behaviorName){
+        if(behaviorName === 'notarealid'){
+            return {
                     'name': 'test_behavior',
                     'content': `Consider an injured-person.
                                 Exactly 1 random pedestrian is an injured-person.

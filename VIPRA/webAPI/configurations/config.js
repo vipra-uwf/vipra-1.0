@@ -39,14 +39,14 @@ const testing = {
     users:{
         UserManager:        require('../controllers/Users/UserManager'),
         PasswordManager:    require('../controllers/Authentication/PasswordManager_bcrypt'),
+    },
+    authentication:{
+        RequirePerms:   false,
+        Authenticator:  require('../controllers/Authentication/Authenticator_JWT').Authenticator,
+        DecodeToken:         require('../controllers/Authentication/Authenticator_JWT').DecodeToken,
         // TODO!!! make this an environment variable
         JWT_SECRET:     "testingSecret",
         JWT_EXPIRATION: 86400
-    },
-    authentication:{
-        RequirePerms: false,
-        Authenticator:  require('../controllers/Authentication/Authentication_JWT').Authenticator,
-        Decode:         require('../controllers/Authentication/Authentication_JWT').Decode
     }
 }
 

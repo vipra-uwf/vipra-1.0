@@ -1,11 +1,13 @@
-const express                                       = require('express');
-const bodyParser                                    = require('body-parser');
+const express                    = require('express');
+const bodyParser                 = require('body-parser');
 
-const { checkConfig }                               = require('../middleware/checkConfig');
-const { checkConfigID }                             = require('../middleware/checkConfigID');
-const { checkPermissions }                          = require('../middleware/checkPermissions');
+const { checkConfig }            = require('../middleware/checkConfig');
+const { checkConfigID }          = require('../middleware/checkConfigID');
+const { authenticate }           = require('../middleware/authenticate');
 
-const config                                        = require('../configurations/config');
+const { Status }                 = require('../configurations/Status')
+
+const config                     = require('../configurations/config');
 
 const router        = express.Router();
 
@@ -21,12 +23,14 @@ const BehaviorManager   = new config.behavior.BehaviorManager(BehaviorRepo);
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
 
-router.get("/sim", checkPermissions, (req, res) =>{
+router.use(authenticate);
+
+router.get("/sim", (req, res) =>{
 	SimManager.SendSimOptions(res);
 });
 
 // NOTE: SIMOPTIONS is assumed to be normalised through checkConfig -RG
-router.post("/sim", checkConfig, checkPermissions, (req, res) =>{
+router.post("/sim", checkConfig, (req, res) =>{
     ConfigManager.CreateConfig(req.body.sim_config, req.body.sim_params, res)
     .then((configID)=>{
         res.status(200).json({'configID': configID});
@@ -37,14 +41,13 @@ router.post("/sim", checkConfig, checkPermissions, (req, res) =>{
     });
 });
 
-
-router.put("/sim", checkConfig, checkPermissions, (req, res) =>{
+router.put("/sim", checkConfig, (req, res) =>{
     // TODO add route to update configs
     res.status(400).json({message: "Unable to PUT /api/sim"});
 });
 
 
-router.get("/sim/start/:configID", checkConfigID, checkPermissions, (req, res)=>{
+router.get("/sim/start/:configID", checkConfigID, (req, res)=>{
     const configID = req.params.configID;
     SimManager.StartSim(configID)
     .then(()=>{
@@ -56,7 +59,7 @@ router.get("/sim/start/:configID", checkConfigID, checkPermissions, (req, res)=>
 });
 
 
-router.get("/sim/updates/:configID", checkConfigID, checkPermissions, (req, res) =>{
+router.get("/sim/updates/:configID", checkConfigID, (req, res) =>{
     const configID = req.params.configID;
     UpdateManager.ProvideUpdates(configID, res)
     .catch((err)=>{
@@ -82,32 +85,53 @@ router.get("/sim/behaviors", (req, res)=>{
 });
 
 router.post("/sim/behaviors", (req, res)=>{
-    BehaviorManager.CreateBehavior(req.body.behavior)
+    BehaviorManager.CreateBehavior(req.body.behavior, req.Auth)
     .then((created)=>{
-        if(created){
-            res.status(200).json({message: "Behavior Created"});
-        }else{
-            res.status(400).json({error: "Invalid Request", "detail": "Invalid Behavior Parameters or Behavior already exists, to update use PUT request"});
+        switch(created){
+            case Status.SUCCESS:
+                res.status(200).json({message: "Behavior Created"});
+                break;
+            case Status.BAD_REQUEST:
+                res.status(400).json({error: "Invalid Request", detail: "Invalid Behavior Parameters or Behavior already exists, to update use PUT request"});
+                break;
+            case Status.UNAUTHORIZED:
+                res.status(401).json({error: "Unauthorized", detail: "Not authorized to access this resource"});
+                break;
+            default:
+                console.log(`[ERROR] Unhandled status in Create Behavior`);
+                res.status(500).json({message: "Unable to Create Behavior", detail: "An Unknown error occured on the server"});
         }
     })
     .catch((err)=>{
         console.log("[ERROR] Error in Create Behavior: " + err);
-        res.status(500).json({error: "Unable to create behavior"});
+        res.status(500).json({error: "Unable to Create Behavior", detail: "An Unknown error occured on the server"});
     });
 });
 
 router.put("/sim/behaviors", (req, res)=>{
-    BehaviorManager.UpdateBehavior(req.body.behavior)
+    BehaviorManager.UpdateBehavior(req.body.behavior, req.Auth)
     .then((updated)=>{
-        if(updated){
-            res.status(200).json({message: "Behavior Updated"});
-        }else{
-            res.status(404).json({error: "Invalid Request", "detail": "No Behavior with provided name"});
+        switch(updated){
+            case Status.SUCCESS:
+                res.status(200).json({message: "Behavior Updated"});
+                break;
+            case Status.BAD_REQUEST:
+                res.status(404).json({error: "Invalid Request", detail: "No Behavior with provided name"});
+                break;
+            case Status.UNAUTHORIZED:
+                res.status(401).json({error: "Unauthorized", detail: "Not authorized to access this resource"});
+                break;
+            case Status.INTERNAL_ERROR:
+                res.status(500).json({message: "Unable to Create Behavior", detail: "An Unknown error occured on the server"});
+                break;
+            default:
+                console.log(`[ERROR] Unhandled status in Create Behavior`);
+                res.status(500).json({message: "Unable to Create Behavior", detail: "An Unknown error occured on the server"});
         }
     })
     .catch((err)=>{
         console.log("[ERROR] Error in Create Behavior: " + err);
-        res.status(500).json({error: "Unable to create behavior"});
+        res.status(500).json({error: "Unable to create behavior", detail: "An Unknown error occured on the server"});
     });
 });
 
@@ -115,14 +139,14 @@ router.delete("/sim/behaviors/:name", (req, res)=>{
     BehaviorManager.DeleteBehavior(req.params.name)
     .then((deleted)=>{
         if(deleted){
-            res.status(200).json({message: `${req.params.name} Deleted`});
+            res.status(200).json({message: `Behavior Deleted`});
         }else{
-            res.status(404).json({error: "Bad Request", "detail": "No Behavior with provided name"}); 
+            res.status(404).json({error: "Bad Request", detail: "No Behavior with provided name"}); 
         }
     })
     .catch((err)=>{
         console.log("[ERROR] Error in Delete Behavior: " + err);
-        res.status(500).json({message: "Unable to delete behavior"});
+        res.status(500).json({error: "Unable to delete behavior", detail: "An Unknown error occured on the server"});
     });
 })
 

@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 
-let UserDB_Con = null;
-
 const ConnectDB = (uri)=>{
     const conn = mongoose.createConnection(uri)
-    console.log("[INFO] Behavior Database Connected");
-    UserDB_Con = conn.model('User', require('../models/Mongo/User'));
+    if(conn !== null){
+        console.log("[INFO] User Database Connected");
+    }else{
+        console.log(`[ERROR] User Database Could NOT!! be Connected to`);
+    }
+    return conn.model('User', require('../models/Mongo/User'));
 }
 
 module.exports = {
-    ConnectDB,
-    UserDB_Con
+    ConnectDB
 }

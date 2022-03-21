@@ -6,6 +6,8 @@ const SaltRounds = 2 ** 10;
 class PasswordManager_bcrypt{
     constructor(){}
 
+
+    // TODO!! this will produce the same hash if two users use the same password, need to add a way to change this -RG
     async HashPassword(password){
         return bcrypt.hash(password, SaltRounds);
     }

@@ -1,32 +1,35 @@
-const mongooose = require('mongoose');
 
 class BehaviorRepo_Mongo{
+
+    #dbModel;
+    #options;
+
     constructor(DBCon){
         if(DBCon == null){
             throw '[FATAL] Database Connection is null';
         }
-        this._dbModel = DBCon;
-        this._LoadOptions();
+        this.#dbModel = DBCon;
+        this.#LoadOptions();
     }
 
-    async _LoadOptions(){
-        const behaviors = await this._dbModel.find({}, {name:1, _id:0});
-        this._options = [];
+    async #LoadOptions(){
+        const behaviors = await this.#dbModel.find({}, {name:1, _id:0});
+        this.#options = [];
         behaviors.forEach((behavior)=>{
-            this._options.push(behavior.name);
+            this.#options.push(behavior.name);
         });
-        console.log(`Behavior Options Loaded: ${this._options}`);
     }
 
-    async Load(bname){
-        return await this._dbModel.findOne({name: bname});
+    async GetBehavior(bname){
+        const behavior = await this.#dbModel.findOne({name: bname});
+        return behavior;
     }
 
-    async Save(bname, bcontent, bcreator, bpublish){
-        if(this._options.includes(bname)){
+    async Create(bname, bcontent, bcreator, bpublish){
+        if(this.#options.includes(bname)){
             return false;
         }else{
-            return await this._dbModel.create(
+            return await this.#dbModel.create(
                 {
                     name: bname,
                     content: bcontent,
@@ -34,7 +37,7 @@ class BehaviorRepo_Mongo{
                     publish: bpublish
                 })
                 .then((created)=>{
-                        this._options.push(created.name);
+                        this.#options.push(created.name);
                         if(created){
                             return true;
                         }else{
@@ -48,9 +51,9 @@ class BehaviorRepo_Mongo{
     }
 
     _RemoveFromOptions(name){
-        let index = this._options.indexOf(name);
+        let index = this.#options.indexOf(name);
         if (index !== -1) {
-            this._options.splice(index);
+            this.#options.splice(index);
         }
     }
 
@@ -58,12 +61,12 @@ class BehaviorRepo_Mongo{
     // TODO check that the user calling the delete is the creator or has permissions
     async Delete(bname){
         this._RemoveFromOptions(bname);
-        const deleted = (await this._dbModel.deleteOne({name: bname}));
+        const deleted = (await this.#dbModel.deleteOne({name: bname}));
         return deleted.deletedCount === 1;
     }
 
     async Update(name, content=null, publish=null){
-        const behavior = await this._dbModel.findOne({name});
+        const behavior = await this.#dbModel.findOne({name});
         if(behavior){
             if(content !== null){
                 behavior.content = content;
@@ -85,7 +88,7 @@ class BehaviorRepo_Mongo{
 
     async GetOptions(user){
         // TODO return options only if they are published or if the requestor is the creator
-        return this._options;
+        return this.#options;
     }
 }
 
