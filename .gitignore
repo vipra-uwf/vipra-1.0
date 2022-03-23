@@ -14,3 +14,4 @@ uml_screenshot.png
 .vagrant
 .antlr
 .idea
+node_modules

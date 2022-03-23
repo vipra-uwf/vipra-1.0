@@ -1,8 +1,7 @@
 
 
 const { SIM_OPTIONS_PATH, SIM_GEN_PATH, INPUT_DATA_PATH }    = require('../../../configurations/File_Paths');
-const randomUUID                            = require('crypto').randomUUID;
-const execSync                              = require('child_process').execSync;
+const { spawnSync }                         = require('child_process');
 const fs		                            = require('fs');
 
 class SimManager_API{
@@ -66,11 +65,17 @@ class SimManager_API{
 
     async #GenerateSim(simID){
         try{
-            console.log("MAKING CODE");
-            execSync('sh', [SIM_GEN_PATH, simID], {stdio: 'inherit'});
-            console.log("MADE CODE");
+            console.log(
+                spawnSync('sh', [SIM_GEN_PATH, simID], {
+                cwd: process.cwd(),
+                env: process.env,
+                stdio: 'pipe',
+                encoding: 'utf-8'
+            }).output);
             return true;
         }catch (err){
+            console.log(err);
+            console.log(err.stderr.toString());
             return false;
         }
     }

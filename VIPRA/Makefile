@@ -12,7 +12,7 @@ SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 SRCS := $(filter-out $(wildcard input_data/*/*.cpp) $(wildcard input_data/*/*/*.cpp) code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
-generate_main: make_directories $(OBJECTS) ./code_generation/code_generator.cpp
+generate_main: make_directories setup $(OBJECTS) ./code_generation/code_generator.cpp
 	$(CXX) $(CXXFLAGS) code_generation/code_generator.cpp jsoncpp/jsoncpp.cpp configuration/configuration_reader.cpp -o $@
 
 grammar: Behaviors.g4
