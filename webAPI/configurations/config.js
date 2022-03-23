@@ -14,14 +14,14 @@ const testing = {
         FileCreator: require('../controllers/Configuration/SimConfigManager_Local')
     },
     simulation:{
-        SimManager:     require('../controllers/Simulation/SimManager_API'),
-        UpdateManager:  require('../controllers/Simulation/UpdateManager_SSE.js'),
-        ConfigManager:  require('../controllers/Configuration/SimConfigManager_Local.js')
+        SimManager:     require('../controllers/Simulation/Sim/SimManager_ProvideCode'),
+        UpdateManager:  require('../controllers/Simulation/Updates/UpdateManager_NoUpdates.js'),
+        ConfigManager:  require('../controllers/Configuration/SimConfigManager_NoSave')
     },
     repos:{
-        UserRepo:   require('../controllers/Repos/Users/UserRepo_Mongo'),
-        ConfigRepo: require('../controllers/Repos/Configs/ConfigRepo_Local'),
-        BehaviorRepo: require('../controllers/Repos/Behaviors/BehaviorRepo_Mongo')
+        UserRepo:       require('../controllers/Repos/Users/UserRepo_Mongo'),
+        BehaviorRepo:   require('../controllers/Repos/Behaviors/BehaviorRepo_Mongo'),
+        ConfigRepo:     require('../controllers/Repos/Configs/ConfigRepo_NoSave')
     },
     database:{
         BehaviorDB_Con: null,

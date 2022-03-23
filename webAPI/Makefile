@@ -7,7 +7,7 @@ NAME = generated_main
 CXXFLAGS = -std=c++11 -g -Wall -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
 LDLIBS = -lantlr4-runtime
 
-BASE_DIR = ./..
+BASE_DIR = ./../VIPRA
 UNIQUE_DIR = $(BASE_DIR)/input_data/$(CONFIG_ID)
 
 BUILD_DIR = $(BASE_DIR)/build

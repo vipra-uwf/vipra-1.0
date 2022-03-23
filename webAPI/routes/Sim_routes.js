@@ -1,24 +1,24 @@
-const express                    = require('express');
-const bodyParser                 = require('body-parser');
+const express               = require('express');
+const bodyParser            = require('body-parser');
 
-const { checkConfig }            = require('../middleware/checkConfig');
-const { checkConfigID }          = require('../middleware/checkConfigID');
-const { authenticate }           = require('../middleware/authenticate');
+const { checkConfig }       = require('../middleware/checkConfig');
+const { checkConfigID }     = require('../middleware/checkConfigID');
+const { authenticate }      = require('../middleware/authenticate');
 
-const { Status }                 = require('../configurations/Status')
+const { Status }            = require('../configurations/Status')
 
-const config                     = require('../configurations/config');
+const config                = require('../configurations/config');
 
-const router        = express.Router();
+const router                = express.Router();
 
-const SimManager    = new config.simulation.SimManager();
-const UpdateManager = new config.simulation.UpdateManager(SimManager);
-
-const ConfigRepo    = new config.repos.ConfigRepo();
-const ConfigManager = new config.simulation.ConfigManager(ConfigRepo);
+const ConfigRepo        = new config.repos.ConfigRepo();
+const ConfigManager     = new config.simulation.ConfigManager(ConfigRepo);
 
 const BehaviorRepo      = new config.repos.BehaviorRepo(config.database.BehaviorDB_Con);
 const BehaviorManager   = new config.behavior.BehaviorManager(BehaviorRepo);
+
+const SimManager        = new config.simulation.SimManager(ConfigManager, BehaviorManager);
+const UpdateManager     = new config.simulation.UpdateManager(SimManager);
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
@@ -29,39 +29,13 @@ router.get("/sim", (req, res) =>{
 	SimManager.SendSimOptions(res);
 });
 
-// NOTE: SIMOPTIONS is assumed to be normalised through checkConfig -RG
 router.post("/sim", checkConfig, (req, res) =>{
-    ConfigManager.CreateConfig(req.body.sim_config, req.body.sim_params, res)
-    .then((configID)=>{
-        res.status(200).json({'configID': configID});
-    })
-    .catch((err)=>{
-        console.log('[ERROR] Error in CreateConfig: ' + err);
-        res.status(500).send('Unable to create config files');
-    });
+    SimManager.HandleSimRequest(req.body, req.Auth, res);
 });
 
-router.put("/sim", checkConfig, (req, res) =>{
-    // TODO add route to update configs -RG
-    res.status(400).json({message: "Unable to PUT /api/sim"});
-});
-
-
-router.get("/sim/start/:configID", checkConfigID, (req, res)=>{
-    const configID = req.params.configID;
-    SimManager.StartSim(configID)
-    .then(()=>{
-        res.status(200).json({'configID': configID});
-    })
-    .catch(()=>{
-        res.status(500).send('Unable to start simulation');
-    });
-});
-
-
-router.get("/sim/updates/:configID", checkConfigID, (req, res) =>{
-    const configID = req.params.configID;
-    UpdateManager.ProvideUpdates(configID, res)
+router.get("/sim/updates/:simID", checkConfigID, (req, res) =>{
+    const simID = req.params.simID;
+    UpdateManager.ProvideUpdates(simID, res, req.Auth)
     .catch((err)=>{
         console.log("[ERROR] Error in sim updates: " + err);
         res.status(500).json({message: "Unable to provide simulation Updates"})

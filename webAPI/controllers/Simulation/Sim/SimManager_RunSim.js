@@ -1,13 +1,14 @@
 
 
-const { SIM_OPTIONS_PATH, SIM_RUN_PATH }    = require('./../../configurations/File_Paths');
+const { SIM_OPTIONS_PATH, SIM_RUN_PATH }    = require('../../../configurations/File_Paths');
 const spawnSync                             = require('child_process').spawn;
 const fs		                            = require('fs');
 
 // TODO switch this from using configIDs to simIDs -RG
 
 class SimManager_API{
-    constructor(){
+
+    constructor(ConfigManager){
         this.cID_Process_Map = new Map();    
     }
 

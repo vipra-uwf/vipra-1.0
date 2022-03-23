@@ -1,5 +1,5 @@
 echo "GENERATING MAIN..."
-cd ..
+cd ../..
 ./generate_main $1
 cd webAPI/
 echo "COMPILING PROGRAM..."

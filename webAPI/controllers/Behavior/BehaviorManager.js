@@ -14,7 +14,7 @@ class BehaviorController{
     }
 
     #CheckNewBehavior(behavior){
-        if(behavior.name === null || behavior.content === null || behavior.publish === null){
+        if(!(behavior.name && behavior.content && behavior.publish)){
             console.log("Behavior missing params");
             return false;
         }
@@ -72,7 +72,7 @@ class BehaviorController{
     }
 
     async StageBehavior(behaviorName){
-        const behaviorJSON = await this.#repo.Load(behaviorName);
+        const behaviorJSON = await this.#repo.GetBehavior(behaviorName);
         if(behaviorJSON){
             const filePath = BEHAVIOR_FOLDER_PATH.concat('/', behaviorJSON.name.concat('.behavior'));
             fs.writeFileSync(filePath, behaviorJSON.content);
