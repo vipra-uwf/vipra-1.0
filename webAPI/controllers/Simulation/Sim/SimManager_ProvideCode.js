@@ -18,8 +18,8 @@ class SimManager_API{
         if(auth){
             if(this.#CheckSimRequest(reqBody)){
                 const simID = await this.#SetupSim(reqBody.sim_config, reqBody.sim_params);
-                const genereated = await this.#GenerateSim(simID);
-                if(genereated){
+                const generated = await this.#GenerateSim(simID);
+                if(generated){
                     this.#SendGenerated(response, simID);
                 }else{
                     res.status(500).json({error: "Unknown Error", detail: "The Simulation Generation has failed"});
@@ -53,9 +53,12 @@ class SimManager_API{
     }
 
     // TODO currently only sends generatedmain, will need other parts as well -RG
-    #SendGenerated(response, simID){
-        const filepath = INPUT_DATA_PATH.concat('/', simID, '/generatedmain.cpp');
+    #SendGenerated(response, simID, behaviorName){
+        const filepath = INPUT_DATA_PATH.concat('/', simID, '/generated_main.cpp');
         response.status(200).download(filepath);
+        // TODO remove config / behavior and generated code
+        this.#configManager.UnStage(simID);
+        this.#behaviorManager.UnStage(behaviorName);
     }
 
     #GetBehaviorName(configJSON){

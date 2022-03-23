@@ -4,7 +4,7 @@ const { SIM_OPTIONS_PATH, SIM_RUN_PATH }    = require('../../../configurations/F
 const spawnSync                             = require('child_process').spawn;
 const fs		                            = require('fs');
 
-// TODO switch this from using configIDs to simIDs -RG
+// TODO This needs to be updated to use HandleSimRequest -RG
 
 class SimManager_API{
 

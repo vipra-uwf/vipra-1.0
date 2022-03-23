@@ -10,7 +10,11 @@ class  SimConfigManager_NoSave{
     }
 
     async StageConfig(configID){
-        // NOTE: already staged, just here for completeness -RG
+        this.#ConfigRepo.StageConfig(configID);
+    }
+
+    async UnStage(configID){
+        this.#ConfigRepo.DeleteSimConfig(configID);
     }
 
     async CreateConfig(configJSON, paramsJSON){

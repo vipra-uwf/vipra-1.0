@@ -15,6 +15,11 @@ class ConfigRepo_Local{
         return fs.writeFileSync(filePath, JSON.stringify(configJSON));
     }
 
+    DeleteSimConfig(configID){
+        const folderPath = INPUT_DATA_PATH.concat('/', configID);
+        fs.rmdir(folderPath, {recursive: true});
+    }
+
     #CREATE_FOLDER(configID){
         const folderPath = INPUT_DATA_PATH.concat('/', configID);
         return fs.mkdirSync(folderPath);

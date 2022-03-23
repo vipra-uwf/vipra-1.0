@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 std::string getConfigID(int argc, char *argv[]){
 
     if(argc > 2 || argc < 2){
-        std::cerr << "Invalid inputs";
+        std::cerr << "Invalid inputs\n";
         exit(1);
     }
 

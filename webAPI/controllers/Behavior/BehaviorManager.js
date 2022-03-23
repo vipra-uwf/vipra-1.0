@@ -5,6 +5,8 @@ const { BEHAVIOR_FOLDER_PATH } = require('../../configurations/File_Paths')
 const { Status } = require('../../configurations/Status');
 
 
+// TODO Cache behaviors and keep track of whether they are up to date etc.
+
 class BehaviorController{
 
     #repo;
@@ -61,6 +63,10 @@ class BehaviorController{
         }else{
             return Status.UNAUTHORIZED;
         }
+    }
+
+    async UnStage(behaviorName){
+        // TODO remove the behavior, low priority as it doesn't mess anything up with them being there
     }
 
     async #isCreator(behaviorName, auth){
