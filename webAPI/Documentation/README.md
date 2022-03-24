@@ -2,10 +2,10 @@
 # CURRENTLY IN PROGRESS
 
 # Contents
-**1. Current Routes**
-**2. Controllers**
-**3. Middleware**
-**4. Interfaces**
+1. **Current Routes**
+2. **Controllers**
+3. **Middleware**
+4. **Interfaces**
 
 # 1. Current Routes
 ## /sim
