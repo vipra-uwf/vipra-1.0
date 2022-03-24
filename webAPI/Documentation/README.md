@@ -237,10 +237,11 @@
 - **Call Path:**
 	- `UserManager.RemoveUser`
 	- `UserRepo.DeleteUser`
+----
 # 2. Controllers
-
+----
 # 3. Middleware
-## authenticate
+### authenticate
 -	**Function**
 	-	Decodes User's `Authorization` header token
 - **Affect**
@@ -248,7 +249,7 @@
 		- `req.Auth`: JSON Object
 			- Contains:
 				- `email`
-
+----
 # 4. Interfaces
 ## Contents
  1. **Authentication**
@@ -283,7 +284,7 @@
 		- 4.1.1 _Mongo
 	- 4.2 UserDB
 		 - 4.2.1 _Mongo
-
+---
 ## 1. Authentication
 
 ## 1.1 Authenticator
