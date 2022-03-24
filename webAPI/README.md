@@ -216,7 +216,7 @@
 - **Expected Request Content:**
 	- `headers`:
 		- `Authorization`: *authentication token*
-	-`parameters`:
+	- `parameters`:
 		`userEmail`: user email
 - **Response:**
 	- **Success:**  status: `200`
@@ -383,6 +383,11 @@
 		-	`paramsJSON`: JSON Object
 	-	Return Value:
 		-	`configID`: Promise\<string>
+- **DeleteConfig** (async)
+	- Parameters:
+		- `configID`: string
+	- Return Value:
+		- `status`: Promise\<STATUS>
 - **StageConfig** (async)
 	- Parameters:
 		- `configID`: string
@@ -453,7 +458,7 @@
 ---
 ## 2.5 **UserManager**
 ### Responsibility
-- Handles
+- Handles Creation/Editing of Users
 ### Methods
 - **CONSTRUCTOR**
 	- Parameters:
@@ -485,7 +490,7 @@
 		- `status`: Promise\<STATUS>
 
 **IMPLEMENTATIONS**
-2.5.1 **UserManager**
+- 2.5.1 **UserManager**
 
 ---
 ## 3. Repos
@@ -555,7 +560,7 @@
 		-	`configID`: string
 	- Return Value:
 		- `isStaged`: Promise\<boolean>
-- **UnStage**
+- **UnStageConfig**
 	- Parameters:
 		- `configID`: string
 	- Return Value:
@@ -574,7 +579,7 @@
 - **CONSTRUCTOR**
 	- Parameters:
 		- `DBcon`: DatabaseConnection
-- **Register** (async)
+- **RegisterUser** (async)
 	- Parameters:
 		- `email`: string
 		- `hashedPass`: string

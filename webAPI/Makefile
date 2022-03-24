@@ -25,9 +25,6 @@ $(GEN_MAIN_DIR)/generated_main.o: $(UNIQUE_DIR)/generated_main.cpp main_build_di
 main_build_dir:
 	@mkdir -p $(GEN_MAIN_DIR)
 
-grammar: Behaviors.g4
-	antlr4 -Dlanguage=Cpp -o dsl/generated -Dlanguage=Cpp -no-listener -visitor Behaviors.g4
-
 setup:
 	@test -e $(BASE_DIR)/rapidxml || git clone --depth=1 --branch=master https://github.com/dwd/rapidxml.git $(BASE_DIR)/rapidxml
 	@rm -rf $(BASE_DIR)/rapidxml/.git
