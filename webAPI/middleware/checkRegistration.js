@@ -1,5 +1,7 @@
 
 
+// TODO move functionality to UserManager
+
 const checkRegistration = async (req, res, next)=>{
     if(req.body.user){
         const user = req.body.user;

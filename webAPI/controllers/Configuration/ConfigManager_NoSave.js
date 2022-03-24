@@ -9,10 +9,13 @@ class  SimConfigManager_NoSave{
         this.#ConfigRepo = ConfigRepo;
     }
 
+    // TODO add return value boolean -RG
     async StageConfig(configID){
-        this.#ConfigRepo.StageConfig(configID);
+        this.#ConfigRepo.StageSimConfig(configID);
     }
 
+    // TODO add return value boolean -RG
+    //          maybe status, if so update readme
     async UnStage(configID){
         this.#ConfigRepo.DeleteSimConfig(configID);
     }
@@ -22,6 +25,9 @@ class  SimConfigManager_NoSave{
         this.#ConfigRepo.CreateSimConfig(configID, configJSON, paramsJSON);
         return configID;
     }
+
+    // TODO add deletesimconfig -RG
+
 }
 
 module.exports = SimConfigManager_NoSave;

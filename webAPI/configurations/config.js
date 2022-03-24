@@ -16,7 +16,7 @@ const testing = {
     simulation:{
         SimManager:     require('../controllers/Simulation/Sim/SimManager_ProvideCode'),
         UpdateManager:  require('../controllers/Simulation/Updates/UpdateManager_NoUpdates.js'),
-        ConfigManager:  require('../controllers/Configuration/SimConfigManager_NoSave')
+        ConfigManager:  require('../controllers/Configuration/ConfigManager_NoSave')
     },
     repos:{
         UserRepo:       require('../controllers/Repos/Users/UserRepo_Mongo'),

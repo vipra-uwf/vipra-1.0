@@ -21,7 +21,8 @@ class UserRepo_Mongo{
         return deleted.deletedCount === 1;
     }
 
-    async RegisterUser(uemail, hashedPass){
+    // TODO change this to return boolean -RG
+    async Register(uemail, hashedPass){
         const exists = await this.#dbModel.exists({email: uemail}).exec();
         if(exists){
             return null;

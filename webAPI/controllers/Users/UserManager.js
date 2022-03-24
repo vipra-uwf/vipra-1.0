@@ -39,7 +39,7 @@ class UserManager{
         return Status.UNAUTHORIZED;
     }
 
-    async EditUser(newUser){
+    async EditUser(user, auth){
         // TODO allow users to be updated, not needed till we add more fields -RG
     }
 
@@ -57,7 +57,7 @@ class UserManager{
     async RegisterUser(request){
         const user = request.body.user;
         user.password = await this.#passManager.HashPassword(user.password);
-        const created = await this.#UserRepo.RegisterUser(user.email, user.password);
+        const created = await this.#UserRepo.Register(user.email, user.password);
         if(created){
             return Status.SUCCESS;
         }else{

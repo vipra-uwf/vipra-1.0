@@ -67,6 +67,7 @@ class BehaviorController{
 
     async UnStage(behaviorName){
         // TODO remove the behavior, low priority as it doesn't mess anything up with them being there
+        return true;
     }
 
     async #isCreator(behaviorName, auth){
@@ -82,9 +83,9 @@ class BehaviorController{
         if(behaviorJSON){
             const filePath = BEHAVIOR_FOLDER_PATH.concat('/', behaviorJSON.name.concat('.behavior'));
             fs.writeFileSync(filePath, behaviorJSON.content);
-            return behaviorJSON.name;
+            return true;
         }else{
-            return null;
+            return false;
         }
     }
 

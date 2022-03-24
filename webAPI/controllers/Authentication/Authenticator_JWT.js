@@ -21,6 +21,7 @@ class Authenticator_JWT{
     #jwt_secret;
     #jwt_expiration;
 
+    // TODO: change this to accept an options JSON Object, that contains jwt_secret and jwt_expiration
     constructor(PasswordManager, jwt_secret, jwt_expiration){
         this.#CheckParams(PasswordManager, jwt_secret, jwt_expiration);
         this.#passManager = PasswordManager;

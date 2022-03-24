@@ -38,7 +38,7 @@ router.get("/sim/updates/:simID", checkConfigID, (req, res) =>{
     UpdateManager.ProvideUpdates(simID, res, req.Auth)
     .catch((err)=>{
         console.log("[ERROR] Error in sim updates: " + err);
-        res.status(500).json({message: "Unable to provide simulation Updates"})
+        res.status(500).json({message: "Unable to provide simulation Updates"});
     });
 });
 

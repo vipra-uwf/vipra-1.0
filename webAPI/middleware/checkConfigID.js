@@ -3,6 +3,9 @@ const config = require('./../configurations/config')
 
 const ConfigManager = new config.simulation.ConfigManager();
 
+// TODO remove this file, move functionality to repo
+
+
 const checkConfigID = (req, res, next)=>{
     
     let configID= req.body.configID;

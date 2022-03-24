@@ -35,9 +35,9 @@ class SimManager_API{
     SendSimOptions(response){
         fs.readFile(SIM_OPTIONS_PATH, (err, data)=>{
             if(err){
-                response.send("Error Reading From Options File");
+                response.status(500).json({error: "Unknown Error", detail: "Unable to read Config Options File"});
             }else{
-                response.send(data);
+                response.status(200).json({message: 'SUCCESS', data: data});
             }
         });
     }
