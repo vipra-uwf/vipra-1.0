@@ -1,13 +1,25 @@
 
-# CURRENTLY IN PROGRESS
+# VIPRA WebAPI
 
 # Contents
 1. **Current Routes**
+
 2. **Controllers**
+
 3. **Middleware**
-4. **Interfaces**
+
+5. **Interfaces**
 
 # 1. Current Routes
+## Format
+**Route Path**
+**Request Type**
+- `Function`
+- `Expected Request Content`
+- `Reponse`
+- `Middleware`
+- `Call Path`
+---
 ## /sim
 ### GET
 - **Function:**
@@ -241,6 +253,11 @@
 # 2. Controllers
 ----
 # 3. Middleware
+## Format
+**Middleware**
+- Function
+- Affect on Request/Reponse
+---
 ### authenticate
 -	**Function**
 	-	Decodes User's `Authorization` header token
