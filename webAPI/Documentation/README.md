@@ -1,7 +1,13 @@
 
 # CURRENTLY IN PROGRESS
 
-# Current Routes
+# Contents
+**1. Current Routes**
+**2. Controllers**
+**3. Middleware**
+**4. Interfaces**
+
+# 1. Current Routes
 ## /sim
 ### GET
 - **Function:**
@@ -30,9 +36,9 @@
 		- `Authorization`: 
 			- *authentication token*
 	- `body`: JSON
-		- `"sim_config"`: 
+		- `sim_config`: 
 			- *configuration options* 
-		- `"sim_params"`: 
+		- `sim_params`: 
 			- *simulation parameters*
 -	**Response:**
 	-	`See SimManager in Controllers`
@@ -50,7 +56,8 @@
 	`See UpdateManager in Controllers`
 - **Expected Request Content:**
 	- `headers`: 
-		- `Authorization: AUTHENTICATION TOKEN`
+		- `Authorization`: 
+			- *authentication token*
 	- `parameters`
 		- `simID`: id for simulation process
 -	**Response:**
@@ -230,9 +237,9 @@
 - **Call Path:**
 	- `UserManager.RemoveUser`
 	- `UserRepo.DeleteUser`
-# Controllers
+# 2. Controllers
 
-# Middleware
+# 3. Middleware
 ## authenticate
 -	**Function**
 	-	Decodes User's `Authorization` header token
@@ -242,7 +249,7 @@
 			- Contains:
 				- `email`
 
-# Interfaces
+# 4. Interfaces
 ## Contents
  1. **Authentication**
 	- 1.1 Authenticator
