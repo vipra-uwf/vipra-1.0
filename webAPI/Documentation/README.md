@@ -3,98 +3,304 @@
 
 # Contents
 1. **Current Routes**
+	- Simulation Paths
+	- Behavior Paths
+	- User Paths
 
-2. **Controllers**
-
-3. **Middleware**
-
-5. **Interfaces**
+2. **Configuration Options**
 
 # 1. Current Routes
-## Format
-**Route Path**
-**Request Type**
-- `Function`
-- `Expected Request Content`
-- `Reponse`
-- `Middleware`
-- `Call Path`
----
+# Simulation Paths
+These Paths deal with configuration and creation of simulations
 ## /sim
 ### GET
 - **Function:**
-		Returns JSON Contents of to the Client:
-		`VIPRA/input_data/sim_options.json`
+	Returns the current simulation configuration options and there possible selections
+	`see the Configurations Options section for current Configuration options`
 - **Expected Request Contents:**
 	- `none`
 - **Response:**
 	- **Success:** status: `200`
-		- Options returned successfully, `data` contains the options
+		- `data` contains the options
 	- **Error:** status: `500`
 		- Unknown Error, Options not returned
-- **Middleware:**
-	- `Authenticate`
-- **Call Path:**
-	- `SimManager.SendSimOptions`
+
+**Example Response:**
+```json
+{
+	"message": "SUCCESS",
+	"data":
+	{
+	    "input_data_loader" : [
+	        {
+	            "DisplayName": "XML Input Reader",
+	            "objectName": "inputXMLReader",
+	            "type": "xml",
+	            "configurations" : []
+	        },
+	        {
+	            "DisplayName": "JSON Input Reader",
+	            "objectName": "inputJSONReader",
+	            "type": "json",
+	            "configurations" : []
+	        }
+	    ],
+	    
+	    "output_data_writer" : [
+	        {
+	            "DisplayName": "XML Output Writer",
+	            "type": "xml",
+	            "objectName": "xmlWriter",
+	            "configurations": [
+	                {"parentElementName": [
+	                    "pedestrian-set"
+	                ]},
+	                {"childElementName": [
+	                    "pedestrian"
+	                ]}           
+	            ]
+	        },
+	        {
+	            "DisplayName": "JSON Output Writer",
+	            "type": "json",
+	            "objectName": "jsonWriter",
+	            "configurations": [
+	                {"parentElementName": [
+	                    "pedestrian-set"
+	                ]},
+	                {"childElementName": [
+	                    "pedestrian"
+	                ]}
+	            ]
+	        },
+	        {
+	            "DisplayName": "JSON Timestep Output Writer",
+	            "type": "json_timestep",
+	            "objectName": "jsonTimestepWriter",
+	            "configurations": [
+	                {"parentElementName" : [
+	                    "pedestrian-set"
+	                ]},
+	                {"childElementName" : [
+	                    "pedestrian"
+	                ]}
+	            ]
+	        }
+	    ],
+
+	    "simulation_output_handler" : [
+	        {
+	            "DisplayName": "Timestep Output Handler",
+	            "type": "timestep_output_handler",
+	            "objectName": "timestepOutputHandler",
+	            "configurations" : [
+	                {"outputFrequency": {
+	                    "minimum": 0,
+	                    "maximum": 100
+	                }}
+	            ]
+	        },
+	        {
+	            "DisplayName": "Timestep Console Logger",
+	            "type": "timestep_console_logger",
+	            "objectName": "timestepConsoleLogger"
+	        }
+	    ],
+
+	    "pedestrian_set" : [
+	        {
+	            "DisplayName": "Calm Pedestrian Set",
+	            "objectName": "calmPedestrianSet",
+	            "type" : "calm",
+	            "name" : "a320_144_pedestrians",
+	            "configurations" : [
+	                {"parentElementName" : [
+	                    "pedestrian-set"
+	                ]}
+	            ]
+	        }
+	    ],
+
+	    "obstacle_set" : [
+	        {
+	            "DisplayName": "A320, 144 Pedestrians",
+	            "objectName": "airplaneObstacleSet",
+	            "type" : "airplane",
+	            "name" : "a320_144_obstacles",
+	            "configurations" : [
+	                {"parentElementName" : [
+	                    "pedestrian-set"
+	                ]}
+	            ]
+	        }
+	    ],
+
+	    "entity_set_factory" : [
+	        {
+	            "DisplayName": "Calm Entity Set Factory",
+	            "objectName": "calmEntitySetFactory",
+	            "type" : "calm",
+	            "configurations" : []
+	        }
+	    ],
+
+	    "goals" : [
+	        {
+	            "DisplayName": "Calm Goals",
+	            "objectName": "calmGoals",
+	            "type" : "calm",
+	            "configurations" : []
+	        }
+	    ],
+
+	    "pedestrian_dynamics_model" : [
+	        {
+	            "DisplayName": "Calm Pedestrian Model",
+	            "objectName": "calmPedestrianModel",
+	            "type" : "calm",
+	            "configurations" : []
+	        }
+	    ],
+
+	    "human_behavior_model" : [
+	        {
+	            "DisplayName": "Human Behavior Model",
+	            "objectName": "humanBehaviorModel",
+	            "type" : "human",
+	            "configurations" : {
+	                "random_seed": {},
+	                "behavior#": [
+	                    "important_announcement",
+	                    "injured_person",
+	                    "random_sleep",
+	                    "travel_in_group"
+	                ]
+	            }
+	        }
+	    ]
+	}
+}
+
+```
+
 ---
 ## /sim
 ### POST
 - **Function:**
-	Calls SimManager to handle the request
-	`Functionality Depends on SimManager Implementation`
-	`See SimManager in Controllers`
+	Returns the Generated Simulation source files and a Vagrant file for setup of a build environment
 - **Expected Request Contents:**
 	- `headers`: 
 		- `Authorization`: 
 			- *authentication token*
 	- `body`: JSON
 		- `sim_config`: 
-			- *configuration options* 
+			- *configuration options*
+				- `for all options see Configuration Options`
 		- `sim_params`: 
 			- *simulation parameters*
+				- `for all parameters see Configuration Options`
+
+- **Example Request Body:**
+```json 
+{
+	"sim_config" : {
+		"input_data_loader": {
+		"type": "json",
+		"configuration": {}
+		},
+	"output_data_writer": {
+		"type": "json_timestep",
+		"configuration": {
+			"parentElementName": "pedestrian-set",
+			"childElementName": "pedestrian"
+		}
+	},
+	"simulation_output_handler": {
+		"type": "timestep_output_handler",
+		"configuration": {
+			"outputFrequency": 100
+		}
+	},
+	"pedestrian_set": {
+		"type": "calm",
+		"name" : "a320_144_pedestrians",
+		"configuration": {
+			"parentElementName": "pedestrian-set"
+		}
+	},
+	"obstacle_set": {
+		"type": "airplane",
+		"name" : "a320_144_obstacles",
+		"configuration": {
+			"parentElementName": "obstacle-set"
+		}
+	},
+	"entity_set_factory": {
+		"type": "calm",
+		"configuration": {}
+		},
+	"goals": {
+		"type": "calm",
+		"configuration": {}
+	},
+	"pedestrian_dynamics_model": {
+		"type": "calm",
+		"configuration": {}
+	},
+	"human_behavior_model": {
+		"type": "human",
+		"configuration": {
+		"random_seed": "1637762023",
+		"behavior#": "injured_person"
+	}
+},
+	"sim_params" : [
+		{"luggage": "0.46"},
+		{"exit_door_x": "23.25"},
+		{"exit_door_y": "1.73"},
+		{"aligning_stop_threshold": "0.2"},
+		{"toward_aisle_stop_threshold": "0.4"},
+		{"in_aisle_stop_threshold": "0.42"},
+		{"time_step": "0.000"},
+		{"time_step_size": "0.005"}
+		]
+	}
+}
+```
 -	**Response:**
-	-	`See SimManager in Controllers`
-- **Middleware**
-	- `Authenticate`
-	- `checkConfig`
-- **Call Path:**
-	- `SimManager.HandleSimRequest`
+	-	a
+TODO add response to this
 ---
-## /sim/updates/:simID
-### GET
-- **Function:**
-	Provides Updates on simulation progress to the client
-	`Exact Functionality Depends on UpdateManager Implementation`
-	`See UpdateManager in Controllers`
-- **Expected Request Content:**
-	- `headers`: 
-		- `Authorization`: 
-			- *authentication token*
-	- `parameters`
-		- `simID`: id for simulation process
--	**Response:**
-	-	`See UpdateManager in Controllers`
-- **Middleware:**
-	- `checkConfigID`
-- **Call Path**
-	-	`UpdateManager.ProvideUpdates`
----
+# Behavior Paths
 ## /sim/behaviors
 ### GET
 -	**Function:**
 	Returns available behavior options to the client
+	`only returns publically published Behaviors and Behaviors published by the logged in user`
 - **Expected Request Content:**
 	- `none`
 - **Response:**
 	- **Success:** status: `200`
-		- Behaviors returned successfully, `data` contains all published Behaviors
+		- `data` contains all published Behaviors
 	- **Error:** status: `500`
 		- Unknown Error, Behaviors not returned
-- **Middleware:**
-	- `Authenticate`
--	**Call Path:**
-	-	`BehaviorManager.GetBehaviorOptions`
-	-	`BehaviorRepo.GetOptions`
+
+**Example Response:**
+```json
+{
+    "data": [
+        {
+            "name": "injured_person"
+        },
+        {
+            "name": "important_announcement"
+        },
+        {
+            "name": "random_sleep"
+        }
+    ]
+}
+```
 ---
 ## /sim/behaviors
 ### POST
@@ -106,9 +312,9 @@
 			- *authentication token*
 	- `body`: JSON
 		- `"behavior"`
-			- `"name"` : (string) behavior name
-			- `"content"` : (string) behavior file content
-			- `"publish"` : (boolean) whether to publish behavior to other users
+			- `"name"` : (string) name for behavior to be identified by
+			- `"content"` : (string) the content of the behavior file
+			- `"publish"` : (boolean) whether behavior should published to other users
 - **Response:**
 	- **Success**: status: `200`
 		- Behavior was created on Repo
@@ -118,23 +324,29 @@
 		- User is not authenticated, Behavior was not created
 	- **Error**:status `500`
 		- Unknown Error, Behavior was not created
-- **Middleware:**
-	- `Authenticate`
-- **Call Path:**
-	- `BehaviorManager.CreateBehavior`
-	- `BehaviorRepo.Create`
+
+**Example Request Body:**
+```json
+{
+    "behavior": {
+        "name": "random_sleep",
+		"content": "/**  * RANDOM SLEEP  */// This is a random sleep behavior. It models the scenario of a certain percent// of the population that suffers from narcolepsy. Specifically, someone// subject to this behavior will stop movement to take a nap for the specified// number of seconds.Consider a sleeper.// This indicates that precisely persons 0, 50, and 100 are going to be subject// to this behavior.// 2% of the population are a sleeper.// This randomly selects a ratio of pedestrians for this behavior. In this// case, a random 1 out of every 50 pedestrians is a sleeper.A random 1 out of every 50 pedestrians is a sleeper.// These are two states that the sleeper can be in. They can be named// anything, but it must be consistent throughout the entire file.A sleeper can be SLEEPING.A sleeper can be AWAKE.// Define the initial state of a sleeperA sleeper is initially AWAKE.// This indicates the state transition rules. In this case, we model a person// taking a two minute nap, then waking up 5 minutesA sleeper who is SLEEPING will be AWAKE after 120 seconds.A sleeper who is AWAKE will be SLEEPING after 300 seconds.// This tells the model how the sleeping state affects their behavior. In this// case a sleeping person is stopped, meaning all movement is ceased.A sleeper who is SLEEPING is STOPPED.A sleeper who is AWAKE will behave normally.",
+        "publish": false
+    }
+}
+```
 ---
 ## /sim/behaviors
 ### PUT
 -	**Function:**
-	-	Updates Behaviors
+	-	Updates a behavior
 - **Expected Request Content:**
 	- `headers`:
 		- `Authorization`:
 			- *authentication token*
 	- `body`: JSON
 		- `"behavior"`:
-			- `"name"`: (string) behavior name
+			- `"name"`: (string) Name of behavior to update
 			- `"content"`: (string) behavior file contents
 			- `"publish"`: (boolean) whether to publish behavior to other users
 - **Response:**
@@ -148,11 +360,16 @@
 		- User is not authenticated OR User does not have access to edit the behavior, Behavior was not updated
 	- **Error:** status: `500`
 		- Unknown Error, Behavior was not updated
-- **Middleware**
-	- `Authenticate`
-- **Call Path:**
-	- `BehaviorManager.UpdateBehavior`
-	- `BehaviorRepo.Update`
+
+**Example Request:** (sets a behavior to be published)
+```json
+{
+    "behavior": {
+	    "name": "injured_person",
+        "publish": true
+    }
+}
+```
 ---
 ## /sim/behaviors/:name
 ### DELETE
@@ -163,7 +380,7 @@
 		- `Authorization`:
 			- *authentication token*
 	- `parameters`:
-		- `name`: behavior name
+		- `name`: name of behavior to be deleted
 - **Response:**
 	- **Success:** status: `200`
 		- Behavior was deleted
@@ -175,12 +392,8 @@
 		- User is not authenticated OR User does not have access to delete the behavior, Behavior was not deleted
 	- **Error** status: `500`
 		- Unknown Error, Behavior was not deleted
-- **Middleware**
-	- `Authenticate`
-- **Call Path:**
-	- `BehaviorManager.DeleteBehavior`
-	- `BehaviorRepo.Delete`
----
+
+# User Paths
 ## /login
 ### POST
 -	**Function:**
@@ -188,22 +401,26 @@
 - **Expected Request Content:**
 	- `body`:
 		- `user`:
-			- `email`: (string) user email
-			- `password`: (string) user password
+			- `email`: email of user to login as
+			- `password`:  password for user
 - **Response:**
 	- **Success:** 
 		- status: `200`
-		- body: `token` : *authentication token*
+		- body: 
+			- `token` : 
+				- *authentication token*
 		- Successfully Authenticated
 	- **Bad Request**
 		- status: `400`
 		- User not Authenticated
-- **Middleware**
-	- `Authenticate`
-- **Call Path:**
-	- `UserManager.Login`
-	- `UserRepo.FindByEmail`
-	- `Authenticator.GetToken`
+
+**Example Response:**
+```json
+{
+    "message": "Success",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBlcm1UZXN0QHRlc3QuY29tIiwiaWF0IjoxNjQ4NjczMzA5LCJleHAiOjE2NDg3NTk3MDl9.4rW-viMPEpylpcrKyv5eecUd0tG9nUEA2gWTqKvp01Q"
+}
+```
 ---
 ## /register
 ### POST
@@ -212,8 +429,8 @@
 - **Expected Request Content:**
 	- `body`
 		- `"user"`:
-			- `"email"`: (string) user email
-			- `"password"`: (string) user password
+			- `"email"`: email of user to register
+			- `"password"`: passsword for future authentication
 - **Response:**
 	- **Success** status: `200`
 		- User was created
@@ -221,12 +438,16 @@
 		- Request was malformed, User was not created
 	- **Error** status: `500`
 		- Unknown Error, User was not created
-- **Middleware**
-	- `Authenticate`
-- **Call Path:**
-	- `UserManager.RegisterUser`
-	- `PasswordManager.HashPassword`
-	- `UserRepo.Register`
+		
+**Example Request:**
+```json
+{
+    "user":{
+        "email":"example@exampleemail.com",
+        "password":"examplepassword"
+    }
+}
+```
 ---
 ## /users/:userEmail
 ### DELETE
@@ -236,7 +457,7 @@
 	- `headers`:
 		- `Authorization`: *authentication token*
 	- `parameters`:
-		`userEmail`: user email
+		- `userEmail`: email of user to delete
 - **Response:**
 	- **Success:**  status: `200`
 		- User was removed
@@ -244,423 +465,10 @@
 		- No user with provided name, User was not removed
 	- **Unauthorized:** status: `401`
 		- User was not authenticated OR User does not have access to remove the User, User was not removed
-- **Middleware**
-	- `Authenticate`
-- **Call Path:**
-	- `UserManager.RemoveUser`
-	- `UserRepo.DeleteUser`
 ----
-# 2. Controllers
-----
-# 3. Middleware
-## Format
-**Middleware**
-- Function
-- Affect on Request/Reponse
+# 2. Configuration Options
+TODO add simulation configuration options
 ---
-### authenticate
--	**Function**
-	-	Decodes User's `Authorization` header token
-- **Affect**
-	- adds `Auth` to the request
-		- `req.Auth`: JSON Object
-			- Contains:
-				- `email`
-----
-# 4. Interfaces
-## Contents
- 1. **Authentication**
-	- 1.1 Authenticator
-		- 1.1.1 _JWT
-	- 1.2 PasswordManager
-		- 1.2.1 _bcrypt
-2. **Managers**
-	- 2.1 BehaviorManager
-		- 2.1.1 BehaviorManager
-	- 2.2 ConfigManager
-		- 2.2.1 ConfigManager
-	- 2.3 SimManager
-		- 2.3.1 _ProvideCode
-		- 2.3.2 _RunSim
-	- 2.4 UpdateManager
-		- 2.4.1 _NoUpdates
-		- 2.4.2 _SSE
-	- 2.5 UserManager
-		- 2.5.1 UserManager
-3. **Repos**
-	- 3.1 BehaviorRepo
-		- 3.1.1 _Local
-		- 3.1.2 _Mongo
-	- 3.2 ConfigRepo
-		- 3.2.1 _Local
-		- 3.2.2 _NoSave
-	- 3.3 UserRepo
-		- 3.3.1 _Mongo
-4. **Database**
-	- 4.1 BehaviorDB
-		- 4.1.1 _Mongo
-	- 4.2 UserDB
-		 - 4.2.1 _Mongo
----
-## 1. Authentication
-
-## 1.1 Authenticator
-### Responsiblity
-- Handles Creation/Decoding of authentication tokens
-### Methods
-- **CONSTRUCTOR**
-	- Parameters:
-		- `PasswordManager`: PasswordManager
-		- `options`: JSON Object
-- **Get Token** (async)
-	- Parameters:
-		- `user`: JSON Object
-		- `dbUser`: JSON Object
-	- Return Value:
-		- `token`: string
-			- `null on failure to authenticate`
-
-**IMPLEMENTATIONS:**
-
-- 1.1.1 **_JWT**
-	- Create JSON Web Tokens as method of authentication
----
-## 1.2 PasswordManager
-### Responsibility
-- Handles Hashing/Decoding of passwords
-### Methods
-- **CONSTRUCTOR**
-	- Parameters:
-		- `none`
-- **HashPassword** (async)
-	- Parameters:
-		- `password`: string
-	- Return Value:
-		- `hashedPass`: Promse\<string>
-- **CheckPassword** (async)
-	- Parameters:
-		- `password`: string
-		- `dbPassword`: string
-	- Return Value:
-		- `isSame`: Promise\<boolean>
-
-**IMPLEMENTATIONS:**
-- 1.2.1 **_bcrypt:**
----
-## 2. Managers
-## 2.1 **BehaviorManager**
-
-### Responsibility
--	Handles Staging/Cleanup of Behaviors for simulation
-
-### Methods
-- **CONSTRUCTOR**
-	- Parameters: 
-		- `BehaviorRepo`
-- **CreateBehavior** (async)
-	- Parameters: 
-		- `behaviorJSON`: JSON Object
-		- `userAuth`: JSON Object
-	- Return Value: 
-		- `status`: Promise\<STATUS>
-- **UpdateBehavior** (async)
-	- Parameters:
-		- `behaviorJSON`: JSON Object
-		- `userAuth`: JSON Object
-	- Return Value:
-		- `status`: Promise\<STATUS>
-- **StageBehavior** (async)
-	- Parameters:
-		- `behaviorName`: string
-	- Return Value:
-		- `isStaged`: Promise\<boolean>
-- **UnStage** (async)
-	- Parameters:
-		- `behaviorName`: string
-	- Return Value:
-		- `isUnstaged`: Promise\<boolean>
-- **DeleteBehavior** (async)
-	- Parameters:
-		- `behaviorName`: string
-		- `userAuth`: JSON Object
-	- Return Value:
-		- `status`: Promise\<STATUS>
-- **GetBehaviorOptions** (async)
-	- Parameters:
-		- `userAuth`: JSON Object
-	- Return Value:
-		- `options`: Promise\<JSON Object>
-			- `null on failure to load`
-
-**IMPLEMENTATIONS**
-
-- 2.1.1 **BehaviorManager**
-
----
-## 2.2 **ConfigManger**
-### Responsibility
-- Handles Staging/Cleanup of sim_config.json
-
-### Methods
--	**CreateConfig** (async)
-	-	Parameters:
-		-	`configJSON`: JSON Object
-		-	`paramsJSON`: JSON Object
-	-	Return Value:
-		-	`configID`: Promise\<string>
-- **DeleteConfig** (async)
-	- Parameters:
-		- `configID`: string
-	- Return Value:
-		- `status`: Promise\<STATUS>
-- **StageConfig** (async)
-	- Parameters:
-		- `configID`: string
-	- Return Value:
-		- `isStaged`: Promise\<boolean>
-- **UnStage** (async)
-	- Parameters:
-		- `configID`: string
-	- Return Value:
-		- `isUnstaged`: Promise\<string>
-
-**IMPLEMENTATIONS**
-
-- 2.2.1 **_Local**
-	- Saves configurations to the local machine
-- 2.2.2 **_NoSave**
-	- Unloads configurations after use
-
-## 2.3 **SimManager**
-### Responsibility
-- Handles Requests for simulation resources
-### Methods
-- **CONSTRUCTOR**
-	- Parameters:
-		- `ConfigManager`
-		- `BehaviorManager`
--	**HandleSimRequest** (async)
-	-	Parameters:
-		-	`reqBody`: JSON Object
-		-	`userAuth`: JSON Object
-		-	`response`: Response
-	- Return Value:
-		- `none`
--	**SendSimOptions**
-	-	Parameters:
-		-	`response`: Response
-
-**IMPLEMENTATIONS**
-- 2.3.1 **_ProvideCode**
-	- `HandleSimRequest`
-		- Responds to client with generated simulation (will respond with build tools in future)
-- 2.3.2 **_RunSim**
-	- `HandleSimRequest`
-		- Starts Simulation with provided config - *updates are handled by UpdateManager*
-
----
-## 2.4 **UpdateManager**
-### Responsibility
-- Handles providing clients with updates on simulation progress
-### Methods
-- **CONSTRUCTOR**
-	- Parameters:
-		- `SimManager`: SimManager
-- **ProvideUpdates** (async)
-	- Parameters:
-		- `simID`: string
-	- Return Value:
-		- `none`
-
-**IMPLEMENTATIONS**
-- 2.4.1 **_NoUpdates**
-	- `ProvideUpdates`
-		- Responds to client with `404` as no updates are provided for simulations
-- 2.4.2 **_SSE**
-	- `ProvideUpdates`
-		- Responds to client with Server Sent Events from simulation
-
----
-## 2.5 **UserManager**
-### Responsibility
-- Handles Creation/Editing of Users
-### Methods
-- **CONSTRUCTOR**
-	- Parameters:
-		- `UserRepo`: User Repo
-		- `Authenticator`: Authenticator
-		- `PasswordManager`: PasswordManager
-- **Login** (async)
-	- Parameters:
-		- `request`: Request
-	- Return Value:
-		- `token`: Promise\<JWT>
-			- `null on failure to authenticate`
-- **Register** (async)
-	- Parameters:
-		- `request`: Request
-	- Return Value:
-		- `status`: Promise\<STATUS>
-- **EditUser** (async)
-	- Parameters:
-		- `request`: Request
-		- `userAuth`: JSON Object
-	- Return Value:
-		- `status`: Promise\<STATUS>
-- **RemoveUser** (async)
-	- Parameters:
-		- `request`: Request
-		- `userAuth`: JSON Object
-	- Return Value:
-		- `status`: Promise\<STATUS>
-
-**IMPLEMENTATIONS**
-- 2.5.1 **UserManager**
-
----
-## 3. Repos
-## 3.1 BehaviorRepo
-- **CONSTRUCTOR**
-	- Parameters:
-		- `DBcon`: DatabaseConnection
-- **Create** (async)
-	- Parameters:
-		- `behaviorName`: string
-		- `behaviorContent`: string
-		- `behaviorCreator`: string
-		- `publish`: boolean
-	- Return Value:
-		- `created`: Promise\<boolean>
-- **Update** (async)
-	- Parameters:
-		- `behaviorName`: string
-		- `behaviorContent`: string
-		- `behaviorCreator`: string
-		- `publish`: boolean
-	- Return Value:
-		- `updated`: Promise\<boolean>
-- **Delete** (async)
-	- Parameters:
-		- `behaviorName`: string
-	- Return Value:
-		- `deleted`: Promise\<boolean>
-- **GetOptions**
-	- Parameters:
-		- `user`: JSON Object
-	- Return Value:
-		- `options`: Promise\<JSON Object>
-- **GetBehavior** (async)
-	- Parameters:
-		- `behaviorName`: string
-	- Return Value:
-		- `behavior`: Promise\<JSON Object>
-
-**IMPLEMENTATIONS**
-
-- 3.1.1 **_Local**
-	-	Stores Behaviors on local machine
-- 3.1.2 **_Mongo**
-	- Stores Behaviors on MongoDB database
-
----
-## 3.2 ConfigRepo
-
-- **CONSTUCTOR**
-	- Parameters:
-		- `DBcon`: DatabaseConnection
-- **CreateSimConfig**
-	- Parameters:
-		- `configID`: string
-		- `configJSON`: JSON Object
-		- `paramsJSON`: JSON Object
-	- Return Value:
-		- `created`: Promise\<boolean>
-- **DeleteSimConfig** (async)
-	- Parameters:
-		- `configID`: string
-	- Return Value:
-		- `status`: Promise\<STATUS>
-- **StageConfig** (async)
-	- Parameters:
-		-	`configID`: string
-	- Return Value:
-		- `isStaged`: Promise\<boolean>
-- **UnStageConfig**
-	- Parameters:
-		- `configID`: string
-	- Return Value:
-		- `isUnstaged`: Promise\<boolean>
-
-**IMPLEMENTATIONS**
-
-- 3.2.1 **_Local**
-	- Stores Configs on Local Machine
-- 3.2.2 **_NoSave**
-	- Does not store configs
-
----
-## 3.3 UserRepo
-
-- **CONSTRUCTOR**
-	- Parameters:
-		- `DBcon`: DatabaseConnection
-- **RegisterUser** (async)
-	- Parameters:
-		- `email`: string
-		- `hashedPass`: string
-	- Return Value
-		- `created`: Promise\<boolean>
-- **DeleteUser** (async)
-	- Parameters:
-		- `email`: string
-	- Return Value:
-		- `deleted`: Promise\<boolean>
-- **FindByEmail**
-	- Parameters:
-		- `email`: string
-	- Return Value:
-		- `user`: JSON Object
-			- `null on failure to find`
-
-**IMPLEMENTATIONS**
-
-- 3.3.1 **_Mongo**
-	- Stores Users on a MongoDB database
 
 
-## 4. Database
 
-## 4.1 BehaviorDB
-
-- **ConnectDB**
-	- Affect:
-		- assigns `config.database.BehaviorDB` to database connection
-	- Parameters:
-		- `uri`: string
-	- Return Value:
-		- `none`
-
-**IMPLEMENTATIONS**
-
-- 4.1.1 **_Mongo**
-	- `ConnectDB`
-		- *important note:* `config.database.BehaviorDB` is of type mongoose.Model
-		- Create Connection to MongoDB database
-
----
-## 4.2 UserDB
-
-- **ConnectDB**
-	- Affect:
-		- assigns `config.database.UserDB` to database connection
-	- Parameters:
-		- `uri`: string
-	- Return Value:
-		- `none`
-
-**IMPLEMENTATIONS**
-
-- 4.2.1 **_Mongo**
-	- `ConnectDB`
-		- *important note:* `config.database.UserDB` is of type mongoose.Model
-		- Create Connection to MongoDB database

@@ -37,7 +37,7 @@ class SimManager_API{
             if(err){
                 response.status(500).json({error: "Unknown Error", detail: "Unable to read Config Options File"});
             }else{
-                response.status(200).json({message: 'SUCCESS', data: data});
+                response.status(200).json({message: 'SUCCESS', data: JSON.parse(data)});
             }
         });
     }

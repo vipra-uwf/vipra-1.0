@@ -104,11 +104,7 @@ class BehaviorController{
 
     async GetBehaviorOptions(auth){
         // TODO show all published options and unpublished created by auth.email -RG
-        if(auth){
-            return await this.#repo.GetOptions();
-        }else{
-            return null
-        }
+        return await this.#repo.GetOptions();
     }
 }
 

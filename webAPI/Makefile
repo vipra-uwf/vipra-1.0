@@ -12,9 +12,9 @@ UNIQUE_DIR = $(BASE_DIR)/input_data/$(CONFIG_ID)
 
 BUILD_DIR = $(BASE_DIR)/build
 GEN_MAIN_DIR = $(UNIQUE_DIR)/build
-SRCS = $($(BASE_DIR)/*.cpp) $(wildcard $(BASE_DIR)/*/*.cpp) $(wildcard $(BASE_DIR)/*/*/*.cpp)
-SRCS := $(filter-out $(wildcard $(BASE_DIR)/input_data/*/*.cpp) $(UNIQUE_DIR)/generated_main.cpp $(BASE_DIR)/code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
-OBJECTS = $(SRCS:./../%.cpp=$(BUILD_DIR)/%.o)
+OBJECTS := $(shell find $(BUILD_DIR) -name '*.o')
+
+$(info $$OBJECTS is [${OBJECTS}])
 
 main: $(GEN_MAIN_DIR)/generated_main.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $(UNIQUE_DIR)/$(NAME) $^ $(LDLIBS)

@@ -4,7 +4,7 @@ const { SIM_OPTIONS_PATH, SIM_RUN_PATH }    = require('../../../configurations/F
 const spawnSync                             = require('child_process').spawn;
 const fs		                            = require('fs');
 
-// TODO This needs to be updated to use HandleSimRequest -RG
+// TODO This needs to be updated to use HandleSimRequest and cleaned up -RG
 
 class SimManager_API{
 
@@ -19,18 +19,41 @@ class SimManager_API{
     SendSimOptions(response){
         fs.readFile(SIM_OPTIONS_PATH, (err, data)=>{
             if(err){
-                response.send("Error Reading From Options File");
+                response.status(500).json({error: "Unknown Error", detail: "Unable to read Config Options File"});
             }else{
-                response.send(data);
+                response.status(200).json({message: 'SUCCESS', data: JSON.parse(data)});
             }
         });
     }
 
-    async StartSim(configID){
-        await this._START_SIM(configID);
+    async HandleSimRequest(reqBody, auth, response){
+        if(auth){
+            if(this.#CheckSimRequest(reqBody)){
+                const simID = await this.#SetupSim(reqBody.sim_config, reqBody.sim_params);
+                const generated = await this.#StartSim(simID);
+                response.status(200).json({message:"started"});
+            }else{
+                response.status(400).json({error: "Bad Request", detail: "Request is Missing Simulation Configuration Information"});
+            }
+        }else{
+            response.status(401).json({error: "Not Authorized", detail: "Not Authorized to access this resource"});
+        }
     }
 
-    _START_SIM(configID){
+    async #SetupSim(sim_config, sim_params){
+        const simID = await this.#configManager.CreateConfig(sim_config, sim_params);
+        await this.#configManager.StageConfig(simID);
+        const behaviorName = await this.#GetBehaviorName(sim_config);
+        await this.#behaviorManager.StageBehavior(behaviorName);
+        return simID;
+    }
+
+    #GetBehaviorName(configJSON){
+        const name = configJSON.human_behavior_model.configuration["behavior#"];
+        return name;
+    }
+
+    #StartSim(configID){
         const ps = spawnSync('sh', [SIM_RUN_PATH, configID])
 
         this.cID_Process_Map.set(configID, ps);

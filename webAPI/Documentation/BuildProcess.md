@@ -29,6 +29,7 @@
 2. run command `make *id*`
 	- `*id*` is the id for a staged sim_config
 - **Necessary Files:**
+	- Antlr4
 	- `all object files`
 
 ## 4. Run `generated_main`
