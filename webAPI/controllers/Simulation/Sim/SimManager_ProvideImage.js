@@ -67,8 +67,8 @@ class SimManager_ProvideImage{
     }
 
     async #GenerateDocker(simID){
-        const generated = await this.#GenerateSim(simID);
-        if(generated){
+        //const generated = await this.#GenerateSim(simID);
+        //if(generated){
             console.log(
                 spawnSync('sh', [DOCKER_GEN_PATH, simID], {
                 cwd: process.cwd(),
@@ -77,27 +77,27 @@ class SimManager_ProvideImage{
                 encoding: 'utf-8'
             }).output);
             return true;
-        }else{
-            return false;
-        }
+        //}else{
+        //    return false;
+        //}
     }
 
-    async #GenerateSim(simID){
-        try{
-            console.log(
-                spawnSync('sh', [SIM_GEN_PATH, simID], {
-                cwd: process.cwd(),
-                env: process.env,
-                stdio: 'pipe',
-                encoding: 'utf-8'
-            }).output);
-            return true;
-        }catch (err){
-            console.log(err);
-            console.log(err.stderr.toString());
-            return false;
-        }
-    }
+    // async #GenerateSim(simID){
+    //     try{
+    //         console.log(
+    //             spawnSync('sh', [SIM_GEN_PATH, simID], {
+    //             cwd: process.cwd(),
+    //             env: process.env,
+    //             stdio: 'pipe',
+    //             encoding: 'utf-8'
+    //         }).output);
+    //         return true;
+    //     }catch (err){
+    //         console.log(err);
+    //         console.log(err.stderr.toString());
+    //         return false;
+    //     }
+    // }
 
     #CheckSimRequest(reqBody){
         if(!(reqBody.sim_config && reqBody.sim_params)){
