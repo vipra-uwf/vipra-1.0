@@ -11,7 +11,7 @@ const testing = {
         FileCreator: require('../controllers/Configuration/ConfigManager_Local')
     },
     simulation:{
-        SimManager:     require('../controllers/Simulation/Sim/SimManager_ProvideCode'),
+        SimManager:     require('../controllers/Simulation/Sim/SimManager_ProvideImage'),
         UpdateManager:  require('../controllers/Simulation/Updates/UpdateManager_NoUpdates'),
         ConfigManager:  require('../controllers/Configuration/ConfigManager_NoSave')
     },

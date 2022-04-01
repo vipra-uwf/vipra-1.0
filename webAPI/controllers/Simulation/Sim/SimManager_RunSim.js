@@ -6,10 +6,16 @@ const fs		                            = require('fs');
 
 // TODO This needs to be updated to use HandleSimRequest and cleaned up -RG
 
-class SimManager_API{
+class SimManager_RunSim{
 
-    constructor(ConfigManager){
-        this.cID_Process_Map = new Map();    
+    #configManager;
+    #behaviorManager;
+
+    constructor(ConfigManager, BehaviorManager){
+        throw(`SimManager_RunSim is not properly Implemented`);
+        this.cID_Process_Map = new Map();
+        this.#configManager = ConfigManager;
+        this.#behaviorManager = BehaviorManager; 
     }
 
     GetProcess(configID){
@@ -30,7 +36,7 @@ class SimManager_API{
         if(auth){
             if(this.#CheckSimRequest(reqBody)){
                 const simID = await this.#SetupSim(reqBody.sim_config, reqBody.sim_params);
-                const generated = await this.#StartSim(simID);
+                const started = await this.#StartSim(simID);
                 response.status(200).json({message:"started"});
             }else{
                 response.status(400).json({error: "Bad Request", detail: "Request is Missing Simulation Configuration Information"});
@@ -53,8 +59,15 @@ class SimManager_API{
         return name;
     }
 
+    #CheckSimRequest(reqBody){
+        if(!(reqBody.sim_config && reqBody.sim_params)){
+            return false;
+        }
+        return true;
+    }
+
     #StartSim(configID){
-        const ps = spawnSync('sh', [SIM_RUN_PATH, configID])
+        const ps = spawnSync('sh', [SIM_RUN_PATH, configID]);
 
         this.cID_Process_Map.set(configID, ps);
 
@@ -68,4 +81,4 @@ class SimManager_API{
 }
 
 
-module.exports = SimManager_API
+module.exports = SimManager_RunSim;

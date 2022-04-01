@@ -17,7 +17,7 @@ class  SimConfigManager_NoSave{
     // TODO add return value boolean -RG
     //          maybe status, if so update readme
     async UnStage(configID){
-        this.#ConfigRepo.DeleteSimConfig(configID);
+        return await this.#ConfigRepo.DeleteSimConfig(configID);
     }
 
     async CreateConfig(configJSON, paramsJSON){
@@ -26,8 +26,9 @@ class  SimConfigManager_NoSave{
         return configID;
     }
 
-    // TODO add deletesimconfig -RG
-
+    async DeleteConfig(configID){
+        return await this.#ConfigRepo.DeleteSimConfig(configID);
+    }
 }
 
 module.exports = SimConfigManager_NoSave;

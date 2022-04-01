@@ -1,0 +1,10 @@
+node_modules
+.vagrant
+.vscode
+.gitignore
+*.md
+*.png
+.gitignore
+.git
+Documentation
+package-lock.json

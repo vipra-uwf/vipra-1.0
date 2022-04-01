@@ -14,8 +14,6 @@ BUILD_DIR = $(BASE_DIR)/build
 GEN_MAIN_DIR = $(UNIQUE_DIR)/build
 OBJECTS := $(shell find $(BUILD_DIR) -name '*.o')
 
-$(info $$OBJECTS is [${OBJECTS}])
-
 main: $(GEN_MAIN_DIR)/generated_main.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $(UNIQUE_DIR)/$(NAME) $^ $(LDLIBS)
 

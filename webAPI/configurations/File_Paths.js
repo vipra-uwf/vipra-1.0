@@ -14,6 +14,7 @@ const BEHAVIOR_FOLDER_PATH      = path.resolve(__dirname, `${VIPRA_FOLDER}/input
 
 const SIM_RUN_PATH              = path.resolve(__dirname, './../scripts/startSim');
 const SIM_GEN_PATH              = path.resolve(__dirname, './../scripts/generateSim');
+const DOCKER_GEN_PATH           = path.resolve(__dirname, './../scripts/generateDocker');
 
 module.exports = 
 {
@@ -22,5 +23,6 @@ module.exports =
     SIM_OPTIONS_PATH,
     SIM_RUN_PATH,
     SIM_GEN_PATH,
+    DOCKER_GEN_PATH,
     BEHAVIOR_FOLDER_PATH
 }

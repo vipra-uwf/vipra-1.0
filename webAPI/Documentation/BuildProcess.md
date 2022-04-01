@@ -1,10 +1,12 @@
 # Build
-## External Libraries
-- Antlr4
-	- generates lexer & parser for dsl grammar
+## External Dependencies
+- **Antlr4**
+	- **Use:**
+		- generates lexer & parser for dsl grammar
 	- definition of grammar in `VIPRA/Behavior.g4`
-- rapidxml
-	- parses xml
+- **rapidxml**
+	- **Use:**
+		- parses xml
 	- used in `VIPRA/readers/input_xml_reader` & `VIPRA/writers/xml_writer`
 
 

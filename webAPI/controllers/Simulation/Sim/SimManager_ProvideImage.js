@@ -1,10 +1,10 @@
 
 
-const { SIM_OPTIONS_PATH, SIM_GEN_PATH, INPUT_DATA_PATH }    = require('../../../configurations/File_Paths');
+const { SIM_OPTIONS_PATH, SIM_GEN_PATH, INPUT_DATA_PATH, DOCKER_GEN_PATH }    = require('../../../configurations/File_Paths');
 const { spawnSync }                         = require('child_process');
 const fs		                            = require('fs');
 
-class SimManager_API{
+class SimManager_ProvideImage{
 
     #configManager;
     #behaviorManager;
@@ -18,7 +18,7 @@ class SimManager_API{
         if(auth){
             if(this.#CheckSimRequest(reqBody)){
                 const simID = await this.#SetupSim(reqBody.sim_config, reqBody.sim_params);
-                const generated = await this.#GenerateSim(simID);
+                const generated = await this.#GenerateDocker(simID);
                 if(generated){
                     this.#SendGenerated(response, simID);
                 }else{
@@ -52,7 +52,7 @@ class SimManager_API{
         return simID;
     }
 
-    // TODO currently only sends generatedmain, will need other parts as well -RG
+    // TODO change this to download docker image
     #SendGenerated(response, simID, behaviorName){
         const filepath = INPUT_DATA_PATH.concat('/', simID, '/generated_main.cpp');
         response.status(200).download(filepath);
@@ -64,6 +64,22 @@ class SimManager_API{
     #GetBehaviorName(configJSON){
         const name = configJSON.human_behavior_model.configuration["behavior#"];
         return name;
+    }
+
+    async #GenerateDocker(simID){
+        const generated = await this.#GenerateSim(simID);
+        if(generated){
+            console.log(
+                spawnSync('sh', [DOCKER_GEN_PATH, simID], {
+                cwd: process.cwd(),
+                env: process.env,
+                stdio: 'pipe',
+                encoding: 'utf-8'
+            }).output);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     async #GenerateSim(simID){
@@ -92,4 +108,4 @@ class SimManager_API{
 }
 
 
-module.exports = SimManager_API
+module.exports = SimManager_ProvideImage

@@ -6,26 +6,21 @@
 	- Simulation Paths
 	- Behavior Paths
 	- User Paths
-
-2. **Configuration Options**
+2. **Simulation Configuration Options**
+3. **Behaviors**
+4. **Server Setup**
 
 # 1. Current Routes
 # Simulation Paths
-These Paths deal with configuration and creation of simulations
+These Paths handle configuration and creation of simulations
 ## /sim
 ### GET
 - **Function:**
-	Returns the current simulation configuration options and there possible selections
+	Returns the current simulation configuration options and their possible selections
 	`see the Configurations Options section for current Configuration options`
 - **Expected Request Contents:**
 	- `none`
 - **Response:**
-	- **Success:** status: `200`
-		- `data` contains the options
-	- **Error:** status: `500`
-		- Unknown Error, Options not returned
-
-**Example Response:**
 ```json
 {
 	"message": "SUCCESS",
@@ -45,7 +40,6 @@ These Paths deal with configuration and creation of simulations
 	            "configurations" : []
 	        }
 	    ],
-	    
 	    "output_data_writer" : [
 	        {
 	            "DisplayName": "XML Output Writer",
@@ -87,7 +81,6 @@ These Paths deal with configuration and creation of simulations
 	            ]
 	        }
 	    ],
-
 	    "simulation_output_handler" : [
 	        {
 	            "DisplayName": "Timestep Output Handler",
@@ -106,7 +99,6 @@ These Paths deal with configuration and creation of simulations
 	            "objectName": "timestepConsoleLogger"
 	        }
 	    ],
-
 	    "pedestrian_set" : [
 	        {
 	            "DisplayName": "Calm Pedestrian Set",
@@ -120,7 +112,6 @@ These Paths deal with configuration and creation of simulations
 	            ]
 	        }
 	    ],
-
 	    "obstacle_set" : [
 	        {
 	            "DisplayName": "A320, 144 Pedestrians",
@@ -134,7 +125,6 @@ These Paths deal with configuration and creation of simulations
 	            ]
 	        }
 	    ],
-
 	    "entity_set_factory" : [
 	        {
 	            "DisplayName": "Calm Entity Set Factory",
@@ -143,7 +133,6 @@ These Paths deal with configuration and creation of simulations
 	            "configurations" : []
 	        }
 	    ],
-
 	    "goals" : [
 	        {
 	            "DisplayName": "Calm Goals",
@@ -152,7 +141,6 @@ These Paths deal with configuration and creation of simulations
 	            "configurations" : []
 	        }
 	    ],
-
 	    "pedestrian_dynamics_model" : [
 	        {
 	            "DisplayName": "Calm Pedestrian Model",
@@ -161,7 +149,6 @@ These Paths deal with configuration and creation of simulations
 	            "configurations" : []
 	        }
 	    ],
-
 	    "human_behavior_model" : [
 	        {
 	            "DisplayName": "Human Behavior Model",
@@ -180,14 +167,14 @@ These Paths deal with configuration and creation of simulations
 	    ]
 	}
 }
-
 ```
-
+- `The Configuration Options are explained in the Configuration Options section`
 ---
 ## /sim
 ### POST
 - **Function:**
-	Returns the Generated Simulation source files and a Vagrant file for setup of a build environment
+	Returns the Generated Simulation source files along with a Vagrant file for setup of the build environment
+	`requires Authentication (see /login in User Paths)`
 - **Expected Request Contents:**
 	- `headers`: 
 		- `Authorization`: 
@@ -268,24 +255,21 @@ These Paths deal with configuration and creation of simulations
 }
 ```
 -	**Response:**
-	-	a
-TODO add response to this
+TODO this has not been defined yet
 ---
 # Behavior Paths
+These Paths deal with Creating/Editing/Deleting Behaviors
 ## /sim/behaviors
 ### GET
 -	**Function:**
 	Returns available behavior options to the client
 	`only returns publically published Behaviors and Behaviors published by the logged in user`
+	`optional Authentication (see /login in User Paths)`
 - **Expected Request Content:**
-	- `none`
+	- `headers`:
+		- `Authorization`:
+			- *authentication token*
 - **Response:**
-	- **Success:** status: `200`
-		- `data` contains all published Behaviors
-	- **Error:** status: `500`
-		- Unknown Error, Behaviors not returned
-
-**Example Response:**
 ```json
 {
     "data": [
@@ -301,11 +285,13 @@ TODO add response to this
     ]
 }
 ```
+
 ---
 ## /sim/behaviors
 ### POST
 -	**Function:**
-	-	Upload Behavior to Repo
+	-	Uploads a new Behavior to the Repo
+	`requires Authentication (see /login in User Paths)`
 - **Expected Request Content:**
 	- `headers`: 
 		- `Authorization`: 
@@ -315,17 +301,7 @@ TODO add response to this
 			- `"name"` : (string) name for behavior to be identified by
 			- `"content"` : (string) the content of the behavior file
 			- `"publish"` : (boolean) whether behavior should published to other users
-- **Response:**
-	- **Success**: status: `200`
-		- Behavior was created on Repo
-	- **Bad Request**: status:`400`
-		- Behavior request was malformed, Behavior was not created
-	- **Unauthorized**: status: `401`
-		- User is not authenticated, Behavior was not created
-	- **Error**:status `500`
-		- Unknown Error, Behavior was not created
-
-**Example Request Body:**
+- **Request:**
 ```json
 {
     "behavior": {
@@ -335,11 +311,15 @@ TODO add response to this
     }
 }
 ```
+- **Response:**
+	- `No return values`
 ---
 ## /sim/behaviors
 ### PUT
 -	**Function:**
-	-	Updates a behavior
+	-	Updates a behavior, Can be used to update a behavior's 'published' status or update the contents of the behavior file
+	`behavior names cannot be updated or changed`
+	`requires Authentication (see /login in User Paths)`
 - **Expected Request Content:**
 	- `headers`:
 		- `Authorization`:
@@ -349,19 +329,7 @@ TODO add response to this
 			- `"name"`: (string) Name of behavior to update
 			- `"content"`: (string) behavior file contents
 			- `"publish"`: (boolean) whether to publish behavior to other users
-- **Response:**
-	- **Success:** status: `200`
-		- Behavior was updated
-	- **Bad Request:** status: `400`
-		- Behavior request was malformed, Behavior was not updated
-	- **Not Found:** status: `404`
-		- No Behavior with provided name, Behavior was not updated
-	- **Unauthorized:** status: `401`
-		- User is not authenticated OR User does not have access to edit the behavior, Behavior was not updated
-	- **Error:** status: `500`
-		- Unknown Error, Behavior was not updated
-
-**Example Request:** (sets a behavior to be published)
+- **Request:**
 ```json
 {
     "behavior": {
@@ -370,76 +338,37 @@ TODO add response to this
     }
 }
 ```
+- **Response:**
+	- `No return values`
 ---
-## /sim/behaviors/:name
+## /sim/behaviors/:behaviorName
 ### DELETE
 -	**Function:**
-	-	Removes Behaviors from Repo
+	-	Removes the Behavior with name `behaviorName` from the Repo
+`only behaviors authored by the authenticated user can be deleted`
+`requires Authentication (see /login in User Paths)`
 - **Expected Request Content:**
 	- `headers`:
 		- `Authorization`:
 			- *authentication token*
 	- `parameters`:
-		- `name`: name of behavior to be deleted
+		- `behaviorName`: name of behavior to be deleted
 - **Response:**
-	- **Success:** status: `200`
-		- Behavior was deleted
-	- **Bad Request** status: `400`
-		- Request was malformed, Behavior was not deleted
-	- **Not Found** status: `404`
-		- No Behavior with provided name, Behavior was not deleted
-	- **Unauthorized** status: `401`
-		- User is not authenticated OR User does not have access to delete the behavior, Behavior was not deleted
-	- **Error** status: `500`
-		- Unknown Error, Behavior was not deleted
+	- `No return values`
 
 # User Paths
+These paths handle User Registration and Authentication
 ## /login
 ### POST
 -	**Function:**
-	-	Returns Authentication token
+	-	Returns an authentication token identifying the recipient as the user
+`the token returned from this request will be expected in the 'Authorization' header for requests that require Authentication`
 - **Expected Request Content:**
 	- `body`:
 		- `user`:
 			- `email`: email of user to login as
 			- `password`:  password for user
-- **Response:**
-	- **Success:** 
-		- status: `200`
-		- body: 
-			- `token` : 
-				- *authentication token*
-		- Successfully Authenticated
-	- **Bad Request**
-		- status: `400`
-		- User not Authenticated
-
-**Example Response:**
-```json
-{
-    "message": "Success",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBlcm1UZXN0QHRlc3QuY29tIiwiaWF0IjoxNjQ4NjczMzA5LCJleHAiOjE2NDg3NTk3MDl9.4rW-viMPEpylpcrKyv5eecUd0tG9nUEA2gWTqKvp01Q"
-}
-```
----
-## /register
-### POST
--	**Function:**
-	-	Creates User in User Repo
-- **Expected Request Content:**
-	- `body`
-		- `"user"`:
-			- `"email"`: email of user to register
-			- `"password"`: passsword for future authentication
-- **Response:**
-	- **Success** status: `200`
-		- User was created
-	- **Bad Request** status: `400`
-		- Request was malformed, User was not created
-	- **Error** status: `500`
-		- Unknown Error, User was not created
-		
-**Example Request:**
+- **Example Request:**
 ```json
 {
     "user":{
@@ -448,27 +377,160 @@ TODO add response to this
     }
 }
 ```
+- **Response:**
+```json
+{
+    "message": "Success",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBlcm1UZXN0QHRlc3QuY29tIiwiaWF0IjoxNjQ4NjczMzA5LCJleHAiOjE2NDg3NTk3MDl9.4rW-viMPEpylpcrKyv5eecUd0tG9nUEA2gWTqKvp01Q"
+}
+```
+- `token` : authentication token used for identifying the user in future requests
+	-	expected in `Authorization` header for authenticated calls
+
+---
+## /register
+### POST
+-	**Function:**
+	-	Creates a new User in User Repo
+- **Expected Request Content:**
+	- `body`
+		- `"user"`:
+			- `"email"`: email of user to register
+			- `"password"`: passsword for future authentication
+		
+- **Example Request:**
+```json
+{
+    "user":{
+        "email":"example@exampleemail.com",
+        "password":"examplepassword"
+    }
+}
+```
+- **Response:**
+	- `No return values`
 ---
 ## /users/:userEmail
 ### DELETE
 -	**Function:**
-	-	Removes user from User Repo
+	-	Removes the User with email: `userEmail` from the User Repo
+		`requires Authentication (see /login in User Paths)`
 - **Expected Request Content:**
 	- `headers`:
 		- `Authorization`: *authentication token*
 	- `parameters`:
 		- `userEmail`: email of user to delete
 - **Response:**
-	- **Success:**  status: `200`
-		- User was removed
-	- **Bad Request:** status: `400`
-		- No user with provided name, User was not removed
-	- **Unauthorized:** status: `401`
-		- User was not authenticated OR User does not have access to remove the User, User was not removed
+	- `No return Values`
 ----
-# 2. Configuration Options
-TODO add simulation configuration options
----
+# 2. Simulation Configuration Options
 
+## Sim_Config Options
+### `input_data_loader`
+`required`
+- **Function:**
+	- Determines what file format simulation input will be provided in
+- **Configuration Settings:**
+	- `none`
+- **Available Options:**
+	- XML Input Reader
+		- Reads XML formatted input
+	- JSON Input Reader
+		- Reads JSON formatted input
+
+### `output_data_writer`
+`required`
+- **Function:**
+	- Determines what file format simulation output will be produced in
+- **Configuration Settings:**
+	- `parentElementName`
+		- TODO
+	- `childElementName`
+		- TODO
+- **Available Options:**
+	- `XML Output Writer`
+		- outputs simulation results in an XML format
+	- `JSON Output Writer`
+		- outputs simulation results in a JSON format
+	- `JSON Timestep Output Writer`
+		- TODO
+
+### `simulation_output_handler`
+`required`
+- **Function:**
+	- Handles how output is produced
+- **Configuration Settings:**
+	- `outputFrequency`
+		- TODO
+- **Available Options:**
+	- `Timestep Output Handler`
+		- outputs simulation results to a file using the chosen `output_data_writer`
+	- `Timestep Console Logger`
+		- output simulation results directly to console
+
+### `pedestrian_set`
+`required`
+- **Function:**
+	- TODO
+- **Configuration Settings:**
+	- TODO
+- **Options:**
+	- TODO
+
+### `obstacle_set`
+`required`
+- **Function:**
+	- Determines the map that the simulation is run on
+- **Configuration Settings:**
+	- `parentElementName`
+		- TODO
+- **Options:**
+	- `A320, 144 Pedestrians`
+		- sets the map to a A320 with 144 pedestrians
+
+### `entity_set_factory`
+`required`
+- **Function:**
+	- TODO
+- **Configuration Settings:**
+	- TODO
+- **Options:**
+	- `Calm Entity Set Factory`
+
+### `goals`
+`required`
+- **Function:**
+	- Describes the goals of the pedestrians in the simulation
+- **Configuration Settings:**
+	- `none`
+- **Options:**
+	- `Calm Goals`
+
+### `pedestrian_dynamics_model`
+`required`
+- **Function:**
+	- Determines the rules for pedestrian dynamics
+- **Configuration Settings:**
+	- `none`
+- **Options:**
+	- `Calm Pedestrian Model`
+
+### `human_behavior_model`
+`required`
+- **Function:**
+	- Determines the active behaviors for the simulation
+- **Configuration Settings:**
+	- 
+- **Options:**
+	- `Human Behavior Model`
+
+## Sim_Params Options
+
+---
+# 3. Behaviors
+TODO add behavior definitions
+---
+# 4. Server Setup
+TODO add server setup
 
 
