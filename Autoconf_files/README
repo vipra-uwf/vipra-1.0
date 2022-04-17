@@ -1,0 +1,31 @@
+# Compilation
+
+*Given all dependencies are satisfied `see 4. Dependencies`*
+- Extract `VIPRA.tar` to any directory
+- Run `./compile` from the directory `VIPRA.tar` was extracted to
+	- *`compile` should inform you of any missing depedencies*
+- The compiled `VIPRA` executable will be located in the directory
+---
+# Dependencies
+## 1. **AutoConf**
+Used for the compilation of VIPRA
+### Installation
+`$ sudo apt-get install autoconf`
+### Website
+`https://www.gnu.org/software/autoconf/`
+
+---
+## 2. **AutoMake**
+Used for the compilation of VIPRA
+### Installation
+`$ sudo apt-get install automake`
+### Website
+`https://www.gnu.org/software/automake/`
+
+---
+## 3. **Antlr4 Runtime**
+Used for parsing of Behaviors & Policies
+### Installation
+`$ sudo apt-get install libantlr4-runtime-dev`
+### Website
+`https://www.antlr.org/`

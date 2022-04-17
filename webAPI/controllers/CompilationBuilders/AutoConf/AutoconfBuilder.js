@@ -9,8 +9,7 @@ class AutoconfBuilder{
     constructor(){}
 
     // TODO return more descriptive errors (maybe use a STATUS) -RG
-    // TODO currently adds all source code, only needs to get what the sim_config requires -RG
-    // returns filepath to tar file
+    // NOTE: build_config is not used for autoconf, but keeps the interface so is needed -RG
     async BuildImage(build_config, configID){
         const buildDir = await this.MakeBuildDir(configID);
         await this.#CopySourceToBuild(buildDir, configID);
@@ -41,6 +40,11 @@ class AutoconfBuilder{
         const dirPath = BUILD_DIR_PATH.concat('/', configID);
         await MakeDirIfNotExists(dirPath);
         return dirPath;
+    }
+
+    async CleanUpBuild(configID){
+        const tarPath = BUILD_DIR_PATH.concat('/', configID, '.tar');
+        return await DeleteFile(tarPath);
     }
 
     // TODO copies all source, only need what the config calls for -RG

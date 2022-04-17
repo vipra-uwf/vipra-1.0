@@ -46,9 +46,6 @@ RUN apt-get install -y libantlr4-runtime-dev
 #build-essential
 RUN apt-get install -y build-essential
 
-#autoconf
-RUN apt-get install -y autoconf automake libtool
-
 #make
 RUN apt-get install -y make
 

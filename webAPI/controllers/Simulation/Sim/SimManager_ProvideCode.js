@@ -77,7 +77,7 @@ class SimManager_ProvideImage{
         .then((imagePath)=>{
             console.log(imagePath);
             if(imagePath){
-                response.download(imagePath);
+                response.download(imagePath, 'VIPRA.tar');
             }else{
                 console.log("[ERROR] Error in SendImage");
                 response.status(500).json({error: 'Unknown Error'});
@@ -85,6 +85,7 @@ class SimManager_ProvideImage{
             // TODO remove config / behavior and generated code
             this.#configManager.UnStage(configID, BUILD_DIR_PATH.concat('/', configID));
             this.#behaviorManager.UnStage(behaviorName, BUILD_DIR_PATH.concat('/', configID));
+            this.#imageBuilder.CleanUpBuild(configID);
         })
         .catch((err)=>{
             console.log(`[ERROR] Error in SendImage: ${err}`);
@@ -120,7 +121,7 @@ class SimManager_ProvideImage{
     }
 
     #CheckSimRequest(reqBody){
-        if(!(reqBody.sim_config && reqBody.sim_params && reqBody.build_config)){
+        if(!(reqBody.sim_config && reqBody.sim_params)){
             return false;
         }
         return true;
