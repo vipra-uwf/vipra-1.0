@@ -4,7 +4,9 @@ const { INPUT_DATA_PATH } = require('../../../configurations/File_Paths');
 
 
 class ConfigRepo_Local{
-    constructor(){}
+    constructor(){
+        throw(`ConfigRepo_Local needs updating to work`);
+    }
 
     CreateSimConfig(configID, configJSON, paramsJSON){
         this.#CREATE_FOLDER(configID);

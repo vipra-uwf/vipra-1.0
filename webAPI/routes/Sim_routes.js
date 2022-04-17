@@ -14,10 +14,12 @@ const router                = express.Router();
 const ConfigRepo        = new config.repos.ConfigRepo();
 const ConfigManager     = new config.simulation.ConfigManager(ConfigRepo);
 
+const ImageBuilder      = new config.image.ImageBuilder();
+
 const BehaviorRepo      = new config.repos.BehaviorRepo(config.database.BehaviorDB_Con);
 const BehaviorManager   = new config.behavior.BehaviorManager(BehaviorRepo);
 
-const SimManager        = new config.simulation.SimManager(ConfigManager, BehaviorManager);
+const SimManager        = new config.simulation.SimManager(ConfigManager, BehaviorManager, ImageBuilder);
 const UpdateManager     = new config.simulation.UpdateManager(SimManager);
 
 router.use(bodyParser.json());

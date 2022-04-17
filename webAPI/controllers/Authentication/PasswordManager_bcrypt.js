@@ -7,7 +7,7 @@ class PasswordManager_bcrypt{
     constructor(){}
 
 
-    // TODO!! this will produce the same hash if two users use the same password, need to add a way to change this -RG
+    // TODO!!!!! this will produce the same hash if two users use the same password, need to change this (something like add their email to the hash) -RG
     async HashPassword(password){
         return bcrypt.hash(password, SaltRounds);
     }

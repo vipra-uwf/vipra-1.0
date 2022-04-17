@@ -14,44 +14,49 @@
 				- `email`
 
 
-# Interfaces
+# Classes
+
+- *(interface)* denotes that a class is an interface with one or more implementations
+- *(needs update)* denotes that a class/implementation does not currently work
+
 ## Contents
  1. **Authentication**
-	- 1.1 Authenticator
+	- 1.1 Authenticator *(interface)*
 		- 1.1.1 _JWT
-	- 1.2 PasswordManager
+	- 1.2 PasswordManager *(interface)*
 		- 1.2.1 _bcrypt
 2. **Managers**
 	- 2.1 BehaviorManager
-		- 2.1.1 BehaviorManager
 	- 2.2 ConfigManager
-		- 2.2.1 ConfigManager
-	- 2.3 SimManager
-		- 2.3.1 _ProvideCode
-		- 2.3.2 _RunSim
-	- 2.4 UpdateManager
+	- 2.3 SimManager *(interface)*
+		- 2.3.1 _ProvideImage
+		- 2.3.2 _RunSim *(needs update)*
+	- 2.4 UpdateManager *(interface)*
 		- 2.4.1 _NoUpdates
-		- 2.4.2 _SSE
+		- 2.4.2 _SSE *(needs update)*
 	- 2.5 UserManager
-		- 2.5.1 UserManager
 3. **Repos**
-	- 3.1 BehaviorRepo
-		- 3.1.1 _Local
+	- 3.1 BehaviorRepo *(interface)*
+		- 3.1.1 _Local *(needs update)*
 		- 3.1.2 _Mongo
-	- 3.2 ConfigRepo
-		- 3.2.1 _Local
+	- 3.2 ConfigRepo *(interface)*
+		- 3.2.1 _Local *(needs update)*
 		- 3.2.2 _NoSave
-	- 3.3 UserRepo
-		- 3.3.1 _Mongo
-4. **Database**
-	- 4.1 BehaviorDB
-		- 4.1.1 _Mongo
-	- 4.2 UserDB
-		 - 4.2.1 _Mongo
+	- 3.3 UserRepo *(interface)*
+		- 3.3.1 _Mongo 
+4. **CompilationBuilders**
+	- 4.1 Builders *(interface)*
+		- 4.1.1 AutoconfBuilder
+		- 4.1.2 DockerBuilder
+5. **Database**
+	- 5.1 BehaviorDB *(interface)*
+		- 5.1.1 _Mongo
+	- 5.2 UserDB *(interface)*
+		 - 5.2.1 _Mongo
 ---
-## 1. Authentication
+# 1. Authentication
 
-## 1.1 Authenticator
+## 1.1 Authenticator (interface)
 ### Responsiblity
 - Handles Creation/Decoding of authentication tokens
 ### Methods
@@ -72,7 +77,7 @@
 - 1.1.1 **_JWT**
 	- Create JSON Web Tokens as method of authentication
 ---
-## 1.2 PasswordManager
+## 1.2 PasswordManager (interface)
 ### Responsibility
 - Handles Hashing/Decoding of passwords
 ### Methods
@@ -94,7 +99,7 @@
 **IMPLEMENTATIONS:**
 - 1.2.1 **_bcrypt:**
 ---
-## 2. Managers
+# 2. Managers
 ## 2.1 **BehaviorManager**
 
 ### Responsibility
@@ -138,47 +143,43 @@
 	- Return Value:
 		- `options`: Promise\<JSON Object>
 			- `null on failure to load`
-
-**IMPLEMENTATIONS**
-
-- 2.1.1 **BehaviorManager**
-
 ---
 ## 2.2 **ConfigManger**
 ### Responsibility
 - Handles Staging/Cleanup of sim_config.json
 
 ### Methods
+- **CONSTRUCTOR**
+	- Parameters:
+		- `ConfigRepo`: (ConfigRepo) Repo implementation
+
 -	**CreateConfig** (async)
 	-	Parameters:
 		-	`configJSON`: JSON Object
 		-	`paramsJSON`: JSON Object
 	-	Return Value:
 		-	`configID`: Promise\<string>
+
 - **DeleteConfig** (async)
 	- Parameters:
 		- `configID`: string
 	- Return Value:
 		- `status`: Promise\<STATUS>
+
 - **StageConfig** (async)
 	- Parameters:
 		- `configID`: string
+		- `stagePath`: (string) Path to place sim_config.json & sim_params.json
 	- Return Value:
 		- `isStaged`: Promise\<boolean>
+
 - **UnStage** (async)
 	- Parameters:
 		- `configID`: string
 	- Return Value:
 		- `isUnstaged`: Promise\<string>
 
-**IMPLEMENTATIONS**
-
-- 2.2.1 **_Local**
-	- Saves configurations to the local machine
-- 2.2.2 **_NoSave**
-	- Unloads configurations after use
-
-## 2.3 **SimManager**
+## 2.3 **SimManager** (interface)
 ### Responsibility
 - Handles Requests for simulation resources
 ### Methods
@@ -206,7 +207,7 @@
 		- Starts Simulation with provided config - *updates are handled by UpdateManager*
 
 ---
-## 2.4 **UpdateManager**
+## 2.4 **UpdateManager** (interface)
 ### Responsibility
 - Handles providing clients with updates on simulation progress
 ### Methods
@@ -220,10 +221,10 @@
 		- `none`
 
 **IMPLEMENTATIONS**
-- 2.4.1 **_NoUpdates**
+- 2.4.1 **_NoUpdates** 
 	- `ProvideUpdates`
 		- Responds to client with `404` as no updates are provided for simulations
-- 2.4.2 **_SSE**
+- 2.4.2 **_SSE** (needs update)
 	- `ProvideUpdates`
 		- Responds to client with Server Sent Events from simulation
 
@@ -260,12 +261,8 @@
 		- `userAuth`: JSON Object
 	- Return Value:
 		- `status`: Promise\<STATUS>
-
-**IMPLEMENTATIONS**
-- 2.5.1 **UserManager**
-
 ---
-## 3. Repos
+# 3. Repos
 ## 3.1 BehaviorRepo
 - **CONSTRUCTOR**
 	- Parameters:
@@ -304,7 +301,7 @@
 
 **IMPLEMENTATIONS**
 
-- 3.1.1 **_Local**
+- 3.1.1 **_Local** (needs update)
 	-	Stores Behaviors on local machine
 - 3.1.2 **_Mongo**
 	- Stores Behaviors on MongoDB database
@@ -340,7 +337,7 @@
 
 **IMPLEMENTATIONS**
 
-- 3.2.1 **_Local**
+- 3.2.1 **_Local** (needs update)
 	- Stores Configs on Local Machine
 - 3.2.2 **_NoSave**
 	- Does not store configs
@@ -374,10 +371,32 @@
 - 3.3.1 **_Mongo**
 	- Stores Users on a MongoDB database
 
+# 4. CompileBuilders
+### Methods
+- **CONSTRUCTOR**
+	- Parameters:
+		- `none`
+- **BuildImage** (async)
+	- Parameters:
+		- `build_config`: JSON Object
+		- `configID`: string
+	- Return Value:
+		- `buildPath`: (string) Path to the compressed folder to return to client
+- **MakeBuildDir**
+	- Parameters:
+		- `configID`: (string) ID for simulation configuration
 
-## 4. Database
+**Implementations**
 
-## 4.1 BehaviorDB
+ - 4.1 **AutoConf**
+	- Returns Compressed folder with necessary Autoconf and Source code files for local compilation
+- 4.2 **Docker**
+	- Returns a compressed folder with a dockerfile and source code for local compilation
+
+
+# 5. Database
+
+## 5.1 BehaviorDB
 
 - **ConnectDB**
 	- Affect:
@@ -389,13 +408,13 @@
 
 **IMPLEMENTATIONS**
 
-- 4.1.1 **_Mongo**
+- 5.1.1 **_Mongo**
 	- `ConnectDB`
 		- *important note:* `config.database.BehaviorDB` is of type mongoose.Model
 		- Create Connection to MongoDB database
 
 ---
-## 4.2 UserDB
+## 5.2 UserDB
 
 - **ConnectDB**
 	- Affect:
@@ -407,7 +426,7 @@
 
 **IMPLEMENTATIONS**
 
-- 4.2.1 **_Mongo**
+- 5.2.1 **_Mongo**
 	- `ConnectDB`
 		- *important note:* `config.database.UserDB` is of type mongoose.Model
 		- Create Connection to MongoDB database

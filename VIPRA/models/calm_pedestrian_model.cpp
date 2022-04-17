@@ -456,12 +456,7 @@ void CalmPedestrianModel::calculateDistanceMatrices()
     // Parallelize this loop using the guided scheduling, since the initial
     // workloads will complete faster than subsequent ones, and we want openmp
     // to front-load the work across cores.
-    #ifndef _WIN32
-    #pragma omp parallel for \
-        shared(pedestrianCoordinates, obstacleCoordinates) \
-        default(none) \
-        schedule(guided)
-    #endif
+
     for (int i = 0; i < this->numPedestrians; ++i)
     {
         // Only compute up to i since we only need to compute the distances
@@ -549,21 +544,11 @@ std::pair<std::string, int>
 
     std::pair<std::string, int> newNearestNeighbor;
 
-    #ifndef _WIN32
-    #pragma omp parallel shared(nearest, \
-            originSet, \
-            nearestDistance, \
-            pedestrianIndex) \
-            default(none)
-    #endif
     {
         int localNearest = NOT_FOUND;
         std::string localOriginSet = "P";
         FLOATING_NUMBER localNearestDistance = FLT_MAX;
 
-        #ifndef _WIN32
-        #pragma omp for nowait
-        #endif
         for (int j = 0; j < numObstacles; ++j)
         {
             if (pedestrianIndex != j && j < numPedestrians &&
@@ -595,10 +580,6 @@ std::pair<std::string, int>
                 }
             }
         }
-
-        #ifndef _WIN32
-        #pragma omp critical
-        #endif
         {
             if (localNearestDistance < nearestDistance)
             {

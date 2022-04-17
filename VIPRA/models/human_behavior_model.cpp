@@ -81,7 +81,7 @@ void HumanBehaviorModel::configure(CONFIG_MAP *configMap)
         {
             // This is a behavior, so add it to the human behaviors. The value is the filename.
             // TODO this relative path is hardcoded, may want to change this in the future -RG
-            this->humanBehaviors.push_back(new DslHumanBehavior("./../behaviors/" + config.second + ".behavior", this->seed));
+            this->humanBehaviors.push_back(new DslHumanBehavior(config.second + ".behavior", this->seed));
         }
 
         if (config.first == "random_seed")

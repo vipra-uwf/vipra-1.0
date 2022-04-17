@@ -78,11 +78,10 @@ class BehaviorController{
         return false;
     }
 
-    async StageBehavior(behaviorName){
+    async StageBehavior(behaviorName, stagePath){
         const behaviorJSON = await this.#repo.GetBehavior(behaviorName);
         if(behaviorJSON){
-            const filePath = BEHAVIOR_FOLDER_PATH.concat('/', behaviorJSON.name.concat('.behavior'));
-            fs.writeFileSync(filePath, behaviorJSON.content);
+            fs.writeFileSync(stagePath.concat('/', behaviorName, '.behavior'), behaviorJSON.content);
             return true;
         }else{
             return false;

@@ -5,6 +5,7 @@ const { BEHAVIOR_FOLDER_PATH } = require('../../../configurations/File_Paths');
 
 class BehaviorRepo_Local{
     constructor(){
+        throw(`BehaviorRepo_Local needs updating to work`);
         this.#LoadOptions();
     }
 

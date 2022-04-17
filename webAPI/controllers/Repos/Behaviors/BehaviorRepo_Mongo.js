@@ -62,7 +62,6 @@ class BehaviorRepo_Mongo{
     }
 
     // TODO make sure users can't delete arbitrary files -RG
-    // TODO check that the user calling the delete is the creator or has permissions -RG
     async Delete(bname){
         this._RemoveFromOptions(bname);
         const deleted = (await this.#dbModel.deleteOne({name: bname}));

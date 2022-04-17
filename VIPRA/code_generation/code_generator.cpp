@@ -52,7 +52,12 @@ int main(int argc, char *argv[])
     std::string mainFunction = generateMain();
 
     std::ofstream mainFile;
-    mainFile.open("input_data/"+configID+"/generated_main.cpp");
+    // TODO find a better way of getting the generated code into the build directory -RG
+    mainFile.open("../WebAPI/BUILDS/"+configID+"/generated_main.cpp");
+    if(!mainFile.is_open()){
+        std::cerr << "[ERROR] Unable to open output file\n";
+        return -1;
+    }
     mainFile 
         << includes
         << functionDeclarations 
@@ -93,7 +98,7 @@ std::string generateIncludes()
 
     for(long unsigned int i = 0; i < includes.size(); ++i) 
     {
-        generatedIncludes += "#include \"../../" + includes[i] + "\"\n";
+        generatedIncludes += "#include \"" + includes[i] + "\"\n";
     }
 
     return generatedIncludes;
@@ -379,8 +384,8 @@ std::string generateMain()
                 "\n\t\tpedestrianSet, obstacleSet, simulationParameters,"
                 // TODO these relative paths are hardcoded, will want to change this -RG
                 // TODO these are also hardcoded to be their json version -RG
-                "\n\t\t\"../pedestrian_sets/json/\" + simulationJsonConfig[\"pedestrian_set\"][\"name\"].asString() + \".json\","
-                "\n\t\t\"../obstacle_sets/json/\" + simulationJsonConfig[\"obstacle_set\"][\"name\"].asString() + \".json\"," 
+                "\n\t\t\"input_data/pedestrian_sets/json/\" + simulationJsonConfig[\"pedestrian_set\"][\"name\"].asString() + \".json\","
+                "\n\t\t\"input_data/obstacle_sets/json/\" + simulationJsonConfig[\"obstacle_set\"][\"name\"].asString() + \".json\"," 
                 "\n\t\t\"sim_params.json\","
                 "\n\t\tpedestrianSetConfig, obstacleSetConfig, simulationParametersConfig);"
             "\n"

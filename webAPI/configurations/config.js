@@ -7,13 +7,13 @@ const testing = {
     app:{
         port:3000
     },
-    fileIO:{
-        FileCreator: require('../controllers/Configuration/ConfigManager_Local')
+    image:{
+        ImageBuilder:   require('../controllers/CompilationBuilders/AutoConf/AutoconfBuilder')
     },
     simulation:{
-        SimManager:     require('../controllers/Simulation/Sim/SimManager_ProvideImage'),
+        SimManager:     require('../controllers/Simulation/Sim/SimManager_ProvideCode'),
         UpdateManager:  require('../controllers/Simulation/Updates/UpdateManager_NoUpdates'),
-        ConfigManager:  require('../controllers/Configuration/ConfigManager_NoSave')
+        ConfigManager:  require('../controllers/Configuration/ConfigManager')
     },
     repos:{
         UserRepo:       require('../controllers/Repos/Users/UserRepo_Mongo'),

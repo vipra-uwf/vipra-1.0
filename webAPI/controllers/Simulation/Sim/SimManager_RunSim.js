@@ -4,15 +4,13 @@ const { SIM_OPTIONS_PATH, SIM_RUN_PATH }    = require('../../../configurations/F
 const spawnSync                             = require('child_process').spawn;
 const fs		                            = require('fs');
 
-// TODO This needs to be updated to use HandleSimRequest and cleaned up -RG
-
 class SimManager_RunSim{
 
     #configManager;
     #behaviorManager;
 
     constructor(ConfigManager, BehaviorManager){
-        throw(`SimManager_RunSim is not properly Implemented`);
+        throw(`SimManager_RunSim needs updating to work`);
         this.cID_Process_Map = new Map();
         this.#configManager = ConfigManager;
         this.#behaviorManager = BehaviorManager; 
