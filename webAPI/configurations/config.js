@@ -8,12 +8,19 @@ const testing = {
         port:3000
     },
     image:{
-        ImageBuilder:   require('../controllers/CompilationBuilders/AutoConf/AutoconfBuilder')
+        ImageBuilder:   require('../controllers/CompilationBuilders/AutoConf/AutoconfBuilder'),
+        mocks:{
+            mock_ImageBuilder: require('../controllers/CompilationBuilders/mock_ImageBuilder')
+        }
     },
     simulation:{
         SimManager:     require('../controllers/Simulation/Sim/SimManager_ProvideCode'),
         UpdateManager:  require('../controllers/Simulation/Updates/UpdateManager_NoUpdates'),
-        ConfigManager:  require('../controllers/Configuration/ConfigManager')
+        ConfigManager:  require('../controllers/Configuration/ConfigManager'),
+        mocks:{
+            mock_ConfigManager: require('../controllers/Configuration/mock_ConfigManager'),
+            mock_BehaviorManager: require('../controllers/Behavior/mock_BehaviorManager'),
+        }
     },
     repos:{
         UserRepo:       require('../controllers/Repos/Users/UserRepo_Mongo'),

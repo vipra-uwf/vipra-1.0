@@ -1,3 +1,5 @@
+const { Status } = require('../../../configurations/Status');
+
 
 class ConfigRepo_NoSave{
     
@@ -31,12 +33,16 @@ class ConfigRepo_NoSave{
     async CreateSimConfig(configID, configJSON){
         this.#callCounts["Create"]++;
         this.#configs.set(configID, configJSON);
-        return true;
+        return Status.SUCCESS;
     }
 
     async DeleteSimConfig(configID){
         this.#callCounts["Delete"]++;
-        return this.#configs.delete(configID);
+        if(this.#configs.delete(configID)){
+            return Status.SUCCESS;
+        }else{
+            return Status.NOT_FOUND;
+        }
     }
 }
 

@@ -40,19 +40,32 @@ test('StageConfig', async ()=>{
 });
 
 test('UnStageConfig', async ()=>{
-    
-    // 
-
 });
 
 test('CreateConfig', async ()=>{
 
+    let createCalls = 0;
 
+    let result = await ConfigManager.CreateConfig({"test": "testvalue"}, {"param": "paramValue"});
+    expect(result).not.toBeNull();
+    createCalls++;
 
+    expect(ConfigRepo.CallCounts()["Create"]).toBe(createCalls);
 });
 
 test('DeleteConfig', async ()=>{
 
-    
+    let deleteCalls = 0;
 
+    // Attempt to delete exitant config
+    let result = await ConfigManager.DeleteConfig("first");
+    deleteCalls++;
+    expect(result).toBe(Status.SUCCESS);
+
+    // Attempt to delete non existant config
+    result = await ConfigManager.DeleteConfig("notaconfig");
+    deleteCalls++;
+    expect(result).toBe(Status.NOT_FOUND);
+
+    expect(ConfigRepo.CallCounts()["Delete"]).toBe(deleteCalls);
 });

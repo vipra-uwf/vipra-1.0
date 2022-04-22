@@ -1,6 +1,7 @@
 
-const { WriteNewFile }              = require('../Files/FileOperations')
+const { WriteNewFile }  = require('../Files/FileOperations')
 const { randomUUID }    = require('crypto');
+const { Status }        = require('../../configurations/Status');
 
 class  ConfigManager{
     
@@ -30,10 +31,15 @@ class  ConfigManager{
         return await this.#ConfigRepo.DeleteSimConfig(configID);
     }
 
+
     async CreateConfig(configJSON, paramsJSON){
         const configID = randomUUID();
-        this.#ConfigRepo.CreateSimConfig(configID, configJSON, paramsJSON);
-        return configID;
+        const created = await this.#ConfigRepo.CreateSimConfig(configID, configJSON, paramsJSON);
+        if(created === Status.SUCCESS){
+            return configID;
+        }else{
+            return null;
+        }
     }
 
     async DeleteConfig(configID){
