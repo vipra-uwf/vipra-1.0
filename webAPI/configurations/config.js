@@ -18,7 +18,11 @@ const testing = {
     repos:{
         UserRepo:       require('../controllers/Repos/Users/UserRepo_Mongo'),
         BehaviorRepo:   require('../controllers/Repos/Behaviors/BehaviorRepo_Mongo'),
-        ConfigRepo:     require('../controllers/Repos/Configs/ConfigRepo_NoSave')
+        ConfigRepo:     require('../controllers/Repos/Configs/ConfigRepo_NoSave'),
+        mocks:{
+            mock_BehaviorRepo: require('../controllers/Repos/Behaviors/mock_BehaviorRepo'),
+            mock_ConfigRepo: require('../controllers/Repos/Configs/mock_ConfigRepo')
+        }
     },
     database:{
         BehaviorDB_Con: null,
@@ -31,7 +35,7 @@ const testing = {
         UserURI: "mongodb+srv://VipraTest:LBQdDpyga5s7S8j9@cluster0.oovhk.mongodb.net/VIPRA?retryWrites=true&w=majority"
     },
     behavior:{
-        BehaviorManager: require('../controllers/Behavior/BehaviorManager')
+        BehaviorManager: require('../controllers/Behavior/BehaviorManager'),
     },
     users:{
         UserManager:        require('../controllers/Users/UserManager'),
@@ -46,7 +50,6 @@ const testing = {
         JWT_EXPIRATION: 86400
     }
 }
-
 
 const config = {
     testing,

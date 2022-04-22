@@ -45,8 +45,8 @@ class SimManager_ProvideImage{
         });
     }
 
-    // TODO doesn't check if something errored -RG
-    // TODO only loads one behavior -RG
+    // TODO!!!! doesn't check if something errored -RG
+    // TODO!!! only loads one behavior -RG
     async #SetupSim(configJSON){
         const configID = await this.#configManager.CreateConfig(configJSON);
         this.#imageBuilder.MakeBuildDir(configID);
@@ -75,16 +75,14 @@ class SimManager_ProvideImage{
     async #SendImage(response, build_config, configID, behaviorName){
         this.#imageBuilder.BuildImage(build_config, configID)
         .then((imagePath)=>{
-            console.log(imagePath);
             if(imagePath){
                 response.download(imagePath, 'VIPRA.tar');
             }else{
                 console.log("[ERROR] Error in SendImage");
                 response.status(500).json({error: 'Unknown Error'});
             }
-            // TODO remove config / behavior and generated code
-            this.#configManager.UnStage(configID, BUILD_DIR_PATH.concat('/', configID));
-            this.#behaviorManager.UnStage(behaviorName, BUILD_DIR_PATH.concat('/', configID));
+            this.#configManager.UnStageConfig(configID, BUILD_DIR_PATH.concat('/', configID));
+            this.#behaviorManager.UnStageBehavior(behaviorName, BUILD_DIR_PATH.concat('/', configID));
             this.#imageBuilder.CleanUpBuild(configID);
         })
         .catch((err)=>{

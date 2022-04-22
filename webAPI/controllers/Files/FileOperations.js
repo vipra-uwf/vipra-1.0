@@ -1,7 +1,7 @@
 const fs        = require('fs');
 const fsExtra   = require('fs-extra');
 
-const CopyFileFromTo = async (fromPath, toPath)=>{
+const CopyFileTo = async (fromPath, toPath)=>{
     if(fs.existsSync(fromPath)){
         await fsExtra.copyFile(fromPath, toPath);
         return true;
@@ -11,12 +11,20 @@ const CopyFileFromTo = async (fromPath, toPath)=>{
 }
 
 const MakeDir = async (dirPath)=>{
-    await fs.mkdir(dirPath, (err)=>{
-        if(err){
-            console.log(`[ERROR] Error in MakeDir: ${err}`);
-        }
-    });
+    if(fs.existsSync(dirPath)){
+        return false;
+    }
+    fs.mkdirSync(dirPath);
     return true;
+}
+
+const WriteNewFile = async (fileContent, filePath)=>{
+    if(fs.existsSync(filePath)){
+        return false;
+    }else{
+        fs.writeFileSync(filePath, fileContent, {flag:'a'});
+        return true;
+    }    
 }
 
 const DeleteFile = async (filePath)=>{
@@ -50,24 +58,21 @@ const CopyDirContentsTo = async (fromDir, toDir)=>{
     return false;
 }
 
-const MakeDirIfNotExists = async (dirPath)=>{
-    if(fs.existsSync(dirPath)){
-       return false; 
-    }
-    MakeDir(dirPath);
-    return true;
+const DoesFileExist = async (filePath)=>{
+    return fs.existsSync(filePath);
 }
 
 // TODO directory compress method -RG
 
 
 module.exports = {
-    CopyFileFromTo,
+    CopyFileTo,
     DeleteFile,
     CopyDirContentsTo,
     DeleteDirectory,
     MakeDir,
-    MakeDirIfNotExists
+    DoesFileExist,
+    WriteNewFile
 }
 
 

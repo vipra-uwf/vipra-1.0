@@ -1,11 +1,14 @@
 {
   "name": "vipra",
+  "jest": {
+    "testPathIgnorePatterns": ["TEST_FILES"]
+  },
   "version": "1.0.0",
   "description": "### Installation and Execution Instructions",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -28,5 +31,9 @@
     "jszip": "^3.8.0",
     "mongoose": "^6.2.6",
     "tar": "^6.1.11"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
   }
+
 }

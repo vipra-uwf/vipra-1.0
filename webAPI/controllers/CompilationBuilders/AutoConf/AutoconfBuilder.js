@@ -15,7 +15,6 @@ class AutoconfBuilder{
         await this.#CopySourceToBuild(buildDir, configID);
         await this.#CopyIncludeToBuild(buildDir, configID);
         await this.#CopyAutoConfFiles(buildDir);
-        //await this.#CopyGeneratedMain(buildDir, configID); - not needed as currently generates sim to build folder -RG
         await this.#PackageFiles(buildDir, configID);
         await DeleteDirectory(buildDir);
         return BUILD_DIR_PATH.concat('/', configID, '.tar');

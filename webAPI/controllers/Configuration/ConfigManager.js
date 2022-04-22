@@ -1,5 +1,5 @@
 
-const fs                = require('fs');
+const { WriteNewFile }              = require('../Files/FileOperations')
 const { randomUUID }    = require('crypto');
 
 class  ConfigManager{
@@ -14,8 +14,8 @@ class  ConfigManager{
         const configJSON = await this.#ConfigRepo.GetConfig(configID);
         if(configJSON){
             try{
-                fs.writeFileSync(stagePath.concat('/sim_config.json'), JSON.stringify(configJSON.sim_config));
-                fs.writeFileSync(stagePath.concat('/sim_params.json'), JSON.stringify(configJSON.sim_params));
+                await WriteNewFile(JSON.stringify(configJSON.sim_config), stagePath.concat('/sim_config.json'));
+                await WriteNewFile(JSON.stringify(configJSON.sim_params), stagePath.concat('/sim_params.json'));
             }catch(err){
                 console.log(`[ERROR] Error in StageConfig: ${err}`);
                 return false;
@@ -26,7 +26,7 @@ class  ConfigManager{
         }
     }
 
-    async UnStage(configID){
+    async UnStageConfig(configID){
         return await this.#ConfigRepo.DeleteSimConfig(configID);
     }
 

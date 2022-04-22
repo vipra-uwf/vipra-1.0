@@ -1,8 +1,9 @@
 
-const fs = require('fs');
+const { WriteNewFile } = require('../Files/FileOperations');
 const { BEHAVIOR_FOLDER_PATH } = require('../../configurations/File_Paths')
 
 const { Status } = require('../../configurations/Status');
+
 
 
 // TODO Cache behaviors and keep track of whether they are up to date etc.
@@ -17,7 +18,6 @@ class BehaviorController{
 
     #CheckNewBehavior(behavior){
         if(!(behavior.name && behavior.content && behavior.publish)){
-            console.log("Behavior missing params");
             return false;
         }
         return true;
@@ -34,7 +34,7 @@ class BehaviorController{
             const creator = auth.email;
             const saved = await this.#repo.Create(name, content, creator, publish);
             if(saved){
-                return Status.SUCCESS;
+                return Status.CREATED;
             }else{
                 return Status.BAD_REQUEST;
             }
@@ -49,13 +49,18 @@ class BehaviorController{
             const content = behaviorJSON.content;
             const publish = behaviorJSON.publish;
             if(name && (content || publish)){
-                if(this.#isCreator(name, auth)){
-                    const updated = await this.#repo.Update(name, content, publish);
-                    if(updated){
-                        return Status.SUCCESS;
-                    }else{
-                        return Status.NOT_FOUND;
-                    }
+                const isCreator = await this.#isCreator(name, auth) 
+                switch(isCreator){
+                    case Status.SUCCESS:
+                        const updated = await this.#repo.Update(name, content, publish);
+                        if(updated){
+                            return Status.SUCCESS;
+                        }else{
+                            return Status.NOT_FOUND;
+                        }
+                        break;
+                    default:
+                        return isCreator;
                 }
             }else{
                 return Status.BAD_REQUEST;
@@ -65,45 +70,57 @@ class BehaviorController{
         }
     }
 
-    async UnStage(behaviorName){
+    async UnStageBehavior(behaviorName){
         // TODO remove the behavior, low priority as it doesn't mess anything up with them being there -RG
-        return true;
+        return Status.SUCCESS;
     }
 
     async #isCreator(behaviorName, auth){
-        const behavior = this.#repo.GetBehavior(behaviorName);
-        if(behavior && auth){
-            return auth.email === behavior.creator;
+        if(!auth){
+            return Status.UNAUTHORIZED;
         }
-        return false;
+        const behavior = await this.#repo.GetBehavior(behaviorName);
+        if(behavior){
+            if(auth.email === behavior.creator){
+                return Status.SUCCESS;
+            }else{
+                return Status.FORBIDDEN;
+            }
+        }else{
+            return Status.NOT_FOUND;
+        }
     }
 
     async StageBehavior(behaviorName, stagePath){
         const behaviorJSON = await this.#repo.GetBehavior(behaviorName);
         if(behaviorJSON){
-            fs.writeFileSync(stagePath.concat('/', behaviorName, '.behavior'), behaviorJSON.content);
-            return true;
+            if(!behaviorJSON.publish){
+                return Status.FORBIDDEN;
+            }
+            if(WriteNewFile(behaviorJSON.content, stagePath.concat('/', behaviorName, '.behavior'))){
+                return Status.SUCCESS;
+            }else{
+                return Status.INTERNAL_ERROR;
+            }
         }else{
-            return false;
+            return Status.NOT_FOUND;
         }
     }
 
     async DeleteBehavior(name, auth){
-        if(this.#isCreator(name, auth)){
-            const deleted = await this.#repo.Delete(name);
-            if(deleted){
-                return Status.SUCCESS;
-            }else{
-                return Status.NOT_FOUND;
-            }
-        }else{
+        if(!auth){
             return Status.UNAUTHORIZED;
+        }
+        const isCreator = await this.#isCreator(name, auth);
+        if(isCreator === Status.SUCCESS){
+            return await this.#repo.Delete(name);
+        }else{
+            return isCreator;
         }
     }
 
     async GetBehaviorOptions(auth){
-        // TODO show all published options and unpublished created by auth.email -RG
-        return await this.#repo.GetOptions();
+        return await this.#repo.GetOptions(auth);
     }
 }
 

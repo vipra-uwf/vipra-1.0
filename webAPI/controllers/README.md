@@ -126,7 +126,7 @@
 		- `behaviorName`: string
 	- Return Value:
 		- `isStaged`: Promise\<boolean>
-- **UnStage** (async)
+- **UnStageBehavior** (async)
 	- Parameters:
 		- `behaviorName`: string
 	- Return Value:
