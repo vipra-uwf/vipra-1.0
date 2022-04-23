@@ -14,7 +14,12 @@ const MakeDir = async (dirPath)=>{
     if(fs.existsSync(dirPath)){
         return false;
     }
-    fs.mkdirSync(dirPath);
+    try{
+        fs.mkdirSync(dirPath);
+    } catch(err){
+        console.log(`[ERROR] Error in MakeDir: ${err}`);
+        return false;
+    }
     return true;
 }
 

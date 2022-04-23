@@ -44,7 +44,7 @@
 		- 3.2.2 _NoSave
 	- 3.3 UserRepo *(interface)*
 		- 3.3.1 _Mongo 
-4. **CompilationBuilders**
+4. **CompilationTarBuilders**
 	- 4.1 Builders *(interface)*
 		- 4.1.1 AutoconfBuilder
 		- 4.1.2 DockerBuilder
@@ -124,13 +124,14 @@
 - **StageBehavior** (async)
 	- Parameters:
 		- `behaviorName`: string
+		- `stagePath`: string
 	- Return Value:
-		- `isStaged`: Promise\<boolean>
+		- `status`: Promise\<STATUS>
 - **UnStageBehavior** (async)
 	- Parameters:
 		- `behaviorName`: string
 	- Return Value:
-		- `isUnstaged`: Promise\<boolean>
+		- `isUnstaged`: Promise\<STATUS>
 - **DeleteBehavior** (async)
 	- Parameters:
 		- `behaviorName`: string
@@ -173,7 +174,7 @@
 	- Return Value:
 		- `isStaged`: Promise\<boolean>
 
-- **UnStage** (async)
+- **UnStageConfig** (async)
 	- Parameters:
 		- `configID`: string
 	- Return Value:
@@ -318,22 +319,12 @@
 		- `configJSON`: JSON Object
 		- `paramsJSON`: JSON Object
 	- Return Value:
-		- `created`: Promise\<boolean>
+		- `created`: Promise\<STATUS>
 - **DeleteSimConfig** (async)
 	- Parameters:
 		- `configID`: string
 	- Return Value:
 		- `status`: Promise\<STATUS>
-- **StageConfig** (async)
-	- Parameters:
-		-	`configID`: string
-	- Return Value:
-		- `isStaged`: Promise\<boolean>
-- **UnStageConfig**
-	- Parameters:
-		- `configID`: string
-	- Return Value:
-		- `isUnstaged`: Promise\<boolean>
 
 **IMPLEMENTATIONS**
 
@@ -371,26 +362,35 @@
 - 3.3.1 **_Mongo**
 	- Stores Users on a MongoDB database
 
-# 4. CompileBuilders
+# 4. CompilationTarBuilders
 ### Methods
 - **CONSTRUCTOR**
 	- Parameters:
-		- `none`
-- **BuildImage** (async)
+		- `pathOptions`: (JSON Object) Holds options for building tars
+			- `buildPath`: (string) Path to directory to build Tar files to
+			- `srcPath`: (string) Path to directory holding source files for simulation
+			- `includePath`: (string) Path to directory holding header files
+- **BuildCompilationTar** (async)
 	- Parameters:
-		- `build_config`: JSON Object
 		- `configID`: string
 	- Return Value:
 		- `buildPath`: (string) Path to the compressed folder to return to client
 - **MakeBuildDir**
 	- Parameters:
 		- `configID`: (string) ID for simulation configuration
+	- Return Value:
+		- `buildDirPath`: Promise\<String>
+- **CleanUpBuild**
+	- Parameters:
+		- `configID`: (string) ID for simulation configuration
+	- Return Value:
+		- `cleaned`: Promise\<boolean>
 
 **Implementations**
 
  - 4.1 **AutoConf**
 	- Returns Compressed folder with necessary Autoconf and Source code files for local compilation
-- 4.2 **Docker**
+- 4.2 **Docker** (needs update)
 	- Returns a compressed folder with a dockerfile and source code for local compilation
 
 

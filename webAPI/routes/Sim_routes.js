@@ -1,6 +1,8 @@
 const express               = require('express');
 const bodyParser            = require('body-parser');
 
+const { SOURCE_DIR_PATH, INCLUDE_DIR_PATH, BUILD_DIR_PATH }                  = require('../configurations/File_Paths');
+
 const { checkConfig }       = require('../middleware/checkConfig');
 const { checkConfigID }     = require('../middleware/checkConfigID');
 const { authenticate }      = require('../middleware/authenticate');
@@ -14,7 +16,11 @@ const router                = express.Router();
 const ConfigRepo        = new config.repos.ConfigRepo();
 const ConfigManager     = new config.simulation.ConfigManager(ConfigRepo);
 
-const ImageBuilder      = new config.image.ImageBuilder();
+const ImageBuilder      = new config.image.ImageBuilder({
+                                                buildPath:      BUILD_DIR_PATH,
+                                                srcPath:        SOURCE_DIR_PATH,
+                                                includePath:    INCLUDE_DIR_PATH
+                                            });
 
 const BehaviorRepo      = new config.repos.BehaviorRepo(config.database.BehaviorDB_Con);
 const BehaviorManager   = new config.behavior.BehaviorManager(BehaviorRepo);
@@ -65,17 +71,17 @@ router.post("/sim/behaviors", (req, res)=>{
     BehaviorManager.CreateBehavior(req.body.behavior, req.Auth)
     .then((created)=>{
         switch(created){
-            case Status.SUCCESS:
-                res.status(200).json({message: "Behavior Created"});
+            case Status.CREATED:
+                res.status(created).json({message: "Behavior Created"});
                 break;
             case Status.BAD_REQUEST:
-                res.status(400).json({error: "Invalid Request", detail: "Invalid Behavior Parameters or Behavior already exists, to update use PUT request"});
+                res.status(created).json({error: "Invalid Request", detail: "Invalid Behavior Parameters or Behavior already exists, to update use PUT request"});
                 break;
             case Status.UNAUTHORIZED:
-                res.status(401).json({error: "Unauthorized", detail: "Not authorized to access this resource"});
+                res.status(created).json({error: "Unauthorized", detail: "Not authorized to access this resource"});
                 break;
             default:
-                console.log(`[ERROR] Unhandled status in Create Behavior`);
+                console.log(`[ERROR] Unhandled status in Create Behavior: ${created}`);
                 res.status(500).json({message: "Unable to Create Behavior", detail: "An Unknown error occured on the server"});
         }
     })
@@ -90,22 +96,22 @@ router.put("/sim/behaviors", (req, res)=>{
     .then((updated)=>{
         switch(updated){
             case Status.SUCCESS:
-                res.status(200).json({message: "Behavior Updated"});
+                res.status(updated).json({message: "Behavior Updated"});
                 break;
             case Status.BAD_REQUEST:
-                res.status(400).json({error: "Bad Request", detail: "Missing Behavior Parameters"});
+                res.status(updated).json({error: "Bad Request", detail: "Missing Behavior Parameters"});
                 break;
             case Status.NOT_FOUND:
-                res.status(404).json({error: "Not Found", detail: "No Behavior with provided name"});
+                res.status(updated).json({error: "Not Found", detail: "No Behavior with provided name"});
                 break;
             case Status.UNAUTHORIZED:
-                res.status(401).json({error: "Unauthorized", detail: "Not authorized to access this resource"});
+                res.status(updated).json({error: "Unauthorized", detail: "Not authorized to access this resource"});
                 break;
             case Status.INTERNAL_ERROR:
                 res.status(500).json({message: "Unable to Create Behavior", detail: "An Unknown error occured on the server"});
                 break;
             default:
-                console.log(`[ERROR] Unhandled status in Update Behavior`);
+                console.log(`[ERROR] Unhandled status in Update Behavior: ${updated}`);
                 res.status(500).json({message: "Unable to Update Behavior", detail: "An Unknown error occured on the server"});
         }
     })
@@ -120,19 +126,19 @@ router.delete("/sim/behaviors/:name", (req, res)=>{
     .then((deleted)=>{
         switch(deleted){
             case Status.SUCCESS:
-                res.status(200).json({message: `Behavior Deleted`});
+                res.status(deleted).json({message: `Behavior Deleted`});
                 break;
             case Status.BAD_REQUEST:
-                res.status(400).json({error: "Bad Request", detail: "No Behavior with provided name"}); 
+                res.status(deleted).json({error: "Bad Request", detail: "No Behavior with provided name"}); 
                 break;
             case Status.NOT_FOUND:
-                res.status(404).json({error: "Not Found", detail: "No Behavior with provided name"}); 
+                res.status(deleted).json({error: "Not Found", detail: "No Behavior with provided name"}); 
                 break;
             case Status.UNAUTHORIZED:
-                res.status(401).json({error: "Unauthorized", detail: "Not authorized to access this resource"});
+                res.status(deleted).json({error: "Unauthorized", detail: "Not authorized to access this resource"});
                 break;
             default:
-                console.log(`[ERROR] Unhandled status in Delete Behavior`);
+                console.log(`[ERROR] Unhandled status in Delete Behavior: ${deleted}`);
                 res.status(500).json({message: "Unable to Delete Behavior", detail: "An Unknown error occured on the server"});
         }
     })

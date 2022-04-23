@@ -6,6 +6,8 @@ const EXISTANT_FILE = path.resolve(__dirname, 'EXISTANT_FILE');
 const NON_EXISTANT_FILE = path.resolve(__dirname, 'NON_EXISTANT_FILE');
 const NON_EXISTANT_DIR = path.resolve(__dirname, 'NON_EXISTANT_DIR');
 const TEST_TEXT_FILE = path.resolve(__dirname, 'TEST_TEXT');
+const TEST_BUILD_PATH = path.resolve(__dirname, 'TEST_BUILD');
+const TEST_SRC_PATH = path.resolve(__dirname, 'TEST_SRC');
 const TESTFILE_DIR = path.resolve(__dirname);
 
 const CONFIGS_DIR = path.resolve(__dirname, 'CONFIGS_DIR');
@@ -24,5 +26,7 @@ module.exports = {
     TESTFILE_DIR,
     CONFIGS_DIR,
     MAKEDIR_PATH,
+    TEST_BUILD_PATH,
+    TEST_SRC_PATH,
     NON_EXISTANT_DIR
 }

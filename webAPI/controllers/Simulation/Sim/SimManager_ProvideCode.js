@@ -73,7 +73,7 @@ class SimManager_ProvideImage{
 
     // TODO provide more descriptive errors
     async #SendImage(response, build_config, configID, behaviorName){
-        this.#imageBuilder.BuildImage(build_config, configID)
+        this.#imageBuilder.BuildCompilationTar(build_config, configID)
         .then((imagePath)=>{
             if(imagePath){
                 response.download(imagePath, 'VIPRA.tar');

@@ -29,7 +29,7 @@ test('Creating Behavior', async ()=>{
 
     let createCallCount = 0;
 
-    // Attempt to create behavior that is properly formatted
+    // Attempt to create behavior that is properly formatted -RG
     const testBehavior = {
         name: "testBehavior",
         content: "this is a test behavior",

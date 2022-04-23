@@ -7,7 +7,9 @@ const { SOURCE_DIR_PATH, IMAGES_DIR_PATH, BUILD_DIR_PATH, INPUT_DATA_PATH } = re
 // TODO add FileOperations and use those methods
 
 class DockerBuilder{
-    constructor(){}
+    constructor(){
+        throw(`DockerBuilder is needs updating to work with the current system`);
+    }
 
     // TODO return more descriptive errors (maybe use a STATUS) -RG
     // TODO currently adds all source code, only needs to get what the sim_config requires -RG

@@ -91,7 +91,6 @@ class BehaviorRepo_Mongo{
 
     async GetOptions(userAuth){
         // TODO return options only if they are published or if the requestor is the creator -RG
-        console.log(this.#options);
         return this.#options;
     }
 }
