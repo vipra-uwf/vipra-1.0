@@ -1,2 +1,0 @@
-echo "GENERATING MAIN..."
-cd ~/VIPRA/ && ./generate_main $1

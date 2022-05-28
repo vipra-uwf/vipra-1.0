@@ -1,9 +1,0 @@
-echo "GENERATING MAIN..."
-cd ./../VIPRA
-./generate_main $1
-cd ./../webAPI/
-echo "COMPILING PROGRAM..."
-make CONFIG_ID=$1
-echo "RUNNING SIMULATION..."
-cd ./../VIPRA/input_data/$1/
-./generated_main

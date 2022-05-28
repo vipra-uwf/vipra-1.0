@@ -193,7 +193,7 @@ std::string generateOutputDataWriter()
     return generatedFunction;
 }
 
-std::string generateSimulationOutputHandler() 
+std::string generateSimulationOutputHandler()
 {
     std::string generatedFunction = 
         "\nSimulationOutputHandler* generateOutputHandler(std::string type, CONFIG_MAP* configMap)\n"
