@@ -11,8 +11,6 @@ export class BehaviorsContoller{
     }
 
     public async createBehavior(behaviorJSON: JSON) : Promise<Status>{
-        console.log(`BehaviorJSON: ${JSON.stringify(behaviorJSON)}`);
-
         if(!this.checkBehavior(behaviorJSON)){
             return Status.BAD_REQUEST;
         }
@@ -23,8 +21,17 @@ export class BehaviorsContoller{
         return created;
     }
 
+    // TODO refactor to one request -RG
+    // TODO NEXT doesn't return the proper status if only one fails  -RG
     public async updateBehavior(name: string, content?: string, publish?: boolean) : Promise<Status>{
-        throw new Error("method not implemented");
+        let updated = Status.BAD_REQUEST;
+        if(content){
+            updated = await this.behaviorDB.updateContent(name, content);
+        }
+        if(publish !== undefined){
+            updated = await this.behaviorDB.updatePublished(name, publish);
+        }
+        return updated;
     }
 
     public async deleteBehavior(name: string) : Promise<Status>{

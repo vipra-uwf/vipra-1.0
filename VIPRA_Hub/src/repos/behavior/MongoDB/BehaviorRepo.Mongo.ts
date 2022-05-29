@@ -29,11 +29,10 @@ export class BehaviorRepo implements IBehaviorRepo{
         return this.dbConn.readyState === mongoose.ConnectionStates.connected;
     }
 
+    // TODO NEXT this has a bug -RG
     public async createBehavior(behavior: Behavior): Promise<Status> {
         const created = await this.bModel.create(behavior)
         .catch((error)=>{
-            console.log(error);
-
             return MongoErrToStatus(error.code);
         });
         if(created === Status.CONFLICT){
@@ -48,10 +47,23 @@ export class BehaviorRepo implements IBehaviorRepo{
     }
 
     public async updatePublished(behaviorName: string, publish: boolean): Promise<Status> {
-        if(!this.isConnected){
-            return Status.INTERNAL_ERROR;
-        }
+        const updated = await this.bModel.updateOne({name:behaviorName}, {publish})
+        .catch((error)=>{
+            console.log(`[ERROR] Error in deleteBehavior: ${error}`);
+            return {matchedCount: -1};
+        });
 
+        switch(updated.matchedCount){
+            case 1:
+                return Status.SUCCESS;
+            case 0:
+                return Status.NOT_FOUND;
+            case -1:
+                return Status.INTERNAL_ERROR;
+            default:
+                console.log(`[ERROR] Unhandled Result in updatePublished: ${updated}`);
+                return Status.INTERNAL_ERROR;
+        }
     }
 
     public async deleteBehavior(behaviorName: string): Promise<Status> {
@@ -75,7 +87,23 @@ export class BehaviorRepo implements IBehaviorRepo{
     }
 
     public async updateContent(behaviorName: string, content: string): Promise<Status> {
-        throw new Error("Method not implemented.");
+        const updated = await this.bModel.updateOne({name:behaviorName}, {content})
+        .catch((error)=>{
+            console.log(`[ERROR] Error in deleteBehavior: ${error}`);
+            return {matchedCount: -1};
+        });
+
+        switch(updated.matchedCount){
+            case 1:
+                return Status.SUCCESS;
+            case 0:
+                return Status.NOT_FOUND;
+            case -1:
+                return Status.INTERNAL_ERROR;
+            default:
+                console.log(`[ERROR] Unhandled Result in updateContent: ${updated}`);
+                return Status.INTERNAL_ERROR;
+        }
     }
 
     public async getAll(): Promise<Behavior[]> {

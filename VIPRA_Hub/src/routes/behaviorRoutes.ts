@@ -5,6 +5,7 @@ import { BehaviorsContoller }   from "../controllers/behavior/BehaviorsControlle
 import { config }               from "../configuration/config";
 import { Status }               from "../data_models/Status";
 import { Behavior }             from "../data_models/Behavior";
+import { RespondError, RespondUnknownError }       from "../util/Responses";
 
 
 const BehaviorRoutes : express.Router = express.Router();
@@ -23,10 +24,10 @@ BehaviorRoutes.get('/', (req, res)=>{
                data: options
             });
         }
-        res.status(Status.INTERNAL_ERROR).json({ error: 'Unable to load options' });
+        RespondUnknownError(res);
     })
     .catch((error)=>{
-        res.status(Status.INTERNAL_ERROR).json({ error: 'Unable to load options' });
+        RespondUnknownError(res);
     });
 });
 
@@ -35,9 +36,8 @@ BehaviorRoutes.get('/:name', (req, res)=>{
 });
 
 BehaviorRoutes.post('/', (req, res)=>{
-    // TODO
     if(!req.body.behavior){
-        res.status(Status.BAD_REQUEST).json({ error: "No Behavior", detail: "No Behavior was provided with the request"});
+        RespondError(Status.BAD_REQUEST, "No Behavior", "No Behavior was provided with the request", res);
         return;
     }
 
@@ -49,35 +49,38 @@ BehaviorRoutes.post('/', (req, res)=>{
                 res.json({});
                 break;
             case Status.BAD_REQUEST:
-                res.json({ error: "Improper Format", detail: "Behaviors require attributes: name, content, creator, and publish"});
+                RespondError(created, "Improper Format", "Behaviors require attributes: name, content, creator, and publish", res);
                 break;
             case Status.CONFLICT:
-                res.json({ error: "Duplicate Name", detail: "Duplicate Behavior Names are not allowed. Use a PUT request to update behaviors"});
+                RespondError(created, "Duplicate Name", "Duplicate Behavior Names are not allowed. Use a PUT request to update behaviors", res);
                 break;
             case Status.INTERNAL_ERROR:
-                res.json({ error: "Unknown Error, Behavior not created"});
+                RespondUnknownError(res);
                 break;
             default:
                 console.log(`[ERROR] Unhandled Status in POST /behavior : ${created}`);
-                res.status(Status.INTERNAL_ERROR).json({ error: "Unkown Error, Behavior not created"});
+                RespondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
         console.log(`[ERROR] Error in POST /Behavior ${error}`);
-        res.status(Status.INTERNAL_ERROR).json({ error: "Unkown Error, Behavior not created"});
+        RespondUnknownError(res);
     });
 });
 
-BehaviorRoutes.put('/', (req : express.Request<{}, {}, {behavior: Behavior}>, res)=>{
+BehaviorRoutes.put('/', (req : express.Request<{}, {}, {behavior: {name:string, content?:string, publish?:boolean}}, {}>, res)=>{
 
-    const behavior : Behavior = req.body.behavior;
+    const bName = req.body.behavior.name;
+    const bContent = req.body.behavior.content;
+    const bPublish = req.body.behavior.publish;
 
-    if(!behavior.name || (!behavior.content && !behavior.publish)){
-        res.status(Status.BAD_REQUEST).json({error: "Missing Attributes", detail: "Request requires: name, and content or publish"});
+    if(!bName || (!bContent && (bPublish === undefined))){
+        RespondError(Status.BAD_REQUEST, "Missing Attributes", "Request requires: name, and content or publish", res);
+        return;
     }
 
-    BehaviorController.updateBehavior(req.body.behavior.name, )
+    BehaviorController.updateBehavior(bName, bContent, bPublish)
     .then((updated)=>{
         res.status(updated);
         switch(updated){
@@ -85,25 +88,27 @@ BehaviorRoutes.put('/', (req : express.Request<{}, {}, {behavior: Behavior}>, re
                 res.json({});
                 break;
             case Status.BAD_REQUEST:
-                res.json({error: ""});
+                // TODO make error response
+                RespondError(Status.BAD_REQUEST, "", "", res);
                 break;
             case Status.INTERNAL_ERROR:
+                RespondUnknownError(res);
                 break;
             default:
                 console.log(`[ERROR] Unhandled Status in PUT /behavior : ${updated}`);
-                res.status(Status.INTERNAL_ERROR).json({ error: "Unkown Error, Behavior not Updated"});
+                RespondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
         console.log(`[ERROR] Error in PUT /Behavior ${error}`);
-        res.status(Status.INTERNAL_ERROR).json({ error: "Unkown Error, Behavior not Updated"});
+        RespondUnknownError(res);
     });
 });
 
 BehaviorRoutes.delete('/', (req : express.Request<{},{},{},{name: string}>, res)=>{
     if(!req.query.name){
-        res.status(Status.BAD_REQUEST).json({ error: "No Behavior Name", detail: "No Behavior Name was provided with the request"});
+        RespondError(Status.BAD_REQUEST, "No Behavior Name", "No Behavior Name was provided with the request", res);
         return;
     }
 
@@ -115,20 +120,20 @@ BehaviorRoutes.delete('/', (req : express.Request<{},{},{},{name: string}>, res)
                 res.json({});
                 break;
             case Status.NOT_FOUND:
-                res.json({error: "Not Found", detail: "No Behavior with the provided name was found"});
+                RespondError(deleted, "Not Found", "No Behavior with the provided name was found", res);
                 break;
             case Status.INTERNAL_ERROR:
-                res.json({ error: "Unkown Error", detail: "An Unknown error occured. The Behavior may not have been deleted"});
+                RespondUnknownError(res);
                 break;
             default:
                 console.log(`[ERROR] Unhandled Status in DELETE /behavior : ${deleted}`);
-                res.status(Status.INTERNAL_ERROR).json({ error: "Unkown Error", detail: "An Unknown error occured. The Behavior may not have been deleted"});
+                RespondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
         console.log(`[ERROR] Error in deleteBehavior: ${error}`);
-        res.status(Status.INTERNAL_ERROR).json({ error: "Unkown Error", detail: "An Unknown error occured. The Behavior may not have been deleted"});
+        RespondUnknownError(res);
     });
 });
 
