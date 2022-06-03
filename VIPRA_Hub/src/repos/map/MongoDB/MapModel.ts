@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-interface IBehavior{
+interface IMap{
     name: string;
     content: string;
     description: string;
@@ -8,7 +8,7 @@ interface IBehavior{
     creator: string;
 }
 
-export const BehaviorSchema = new Schema<IBehavior>({
+export const MapSchema = new Schema<IMap>({
     'name':{
         type: String,
         required: true,

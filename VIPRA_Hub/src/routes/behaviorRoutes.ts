@@ -1,11 +1,9 @@
 import express      from "express";
-import { Request }  from "express";
 
 import { BehaviorsContoller }   from "../controllers/behavior/BehaviorsController";
 import { config }               from "../configuration/config";
 import { Status }               from "../data_models/Status";
-import { Behavior }             from "../data_models/Behavior";
-import { RespondError, RespondUnknownError }       from "../util/Responses";
+import { RespondError, RespondUnknownError, RespondSuccess, RespondBehavior }       from "../util/Responses";
 
 
 const BehaviorRoutes : express.Router = express.Router();
@@ -15,6 +13,7 @@ behaviorRepo.connect(config.Behavior.DB_URI);
 
 const BehaviorController : BehaviorsContoller = new BehaviorsContoller(behaviorRepo);
 
+
 BehaviorRoutes.get('/', (req, res)=>{
     // TODO
     BehaviorController.getOptions()
@@ -23,18 +22,42 @@ BehaviorRoutes.get('/', (req, res)=>{
             res.status(Status.SUCCESS).json({
                data: options
             });
+        }else{
+            RespondUnknownError(res);
         }
-        RespondUnknownError(res);
     })
     .catch((error)=>{
         RespondUnknownError(res);
     });
 });
 
-BehaviorRoutes.get('/:name', (req, res)=>{
-    // TODO
+
+BehaviorRoutes.get('/:name', (req : express.Request<{name: string}>, res)=>{
+    BehaviorController.getBehavior(req.params.name)
+    .then((behavior)=>{
+        switch(behavior.status){
+            case Status.SUCCESS:
+                RespondBehavior(res, behavior.behavior);
+                break;
+            case Status.NOT_FOUND:
+                RespondError(Status.NOT_FOUND, "Not Found", "No Behavior with the provided name was found", res);
+                break;
+            case Status.INTERNAL_ERROR:
+                RespondUnknownError(res);
+                break;
+            default:
+                console.log(`[ERROR] Unhandled Status in GET /:name: ${behavior.status}`);
+                RespondUnknownError(res);
+        }
+    })
+    .catch((error)=>{
+        console.log(`[ERROR] Error in GET /:name : ${error}`);
+        RespondUnknownError(res);
+    });
 });
 
+
+// TODO ?? allow for file upload to create behaviors ?? -RG
 BehaviorRoutes.post('/', (req, res)=>{
     if(!req.body.behavior){
         RespondError(Status.BAD_REQUEST, "No Behavior", "No Behavior was provided with the request", res);
@@ -71,6 +94,11 @@ BehaviorRoutes.post('/', (req, res)=>{
 
 BehaviorRoutes.put('/', (req : express.Request<{}, {}, {behavior: {name:string, content?:string, publish?:boolean}}, {}>, res)=>{
 
+    if(!req.body.behavior){
+        RespondError(Status.BAD_REQUEST, "Missing Behavior", "No Behavior was provided with the request", res);
+        return;
+    }
+
     const bName = req.body.behavior.name;
     const bContent = req.body.behavior.content;
     const bPublish = req.body.behavior.publish;
@@ -106,18 +134,14 @@ BehaviorRoutes.put('/', (req : express.Request<{}, {}, {behavior: {name:string, 
     });
 });
 
-BehaviorRoutes.delete('/', (req : express.Request<{},{},{},{name: string}>, res)=>{
-    if(!req.query.name){
-        RespondError(Status.BAD_REQUEST, "No Behavior Name", "No Behavior Name was provided with the request", res);
-        return;
-    }
+BehaviorRoutes.delete('/:name', (req, res)=>{
 
-    BehaviorController.deleteBehavior(req.query.name)
+    BehaviorController.deleteBehavior(req.params.name)
     .then((deleted)=>{
         res.status(deleted);
         switch(deleted){
             case Status.SUCCESS:
-                res.json({});
+                RespondSuccess(res);
                 break;
             case Status.NOT_FOUND:
                 RespondError(deleted, "Not Found", "No Behavior with the provided name was found", res);

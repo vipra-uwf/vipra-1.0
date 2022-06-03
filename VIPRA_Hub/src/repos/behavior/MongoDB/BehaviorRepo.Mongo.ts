@@ -1,10 +1,10 @@
 import { Behavior } from "../../../data_models/Behavior";
 import { Status } from "../../../data_models/Status";
 import { IBehaviorRepo } from "../BehaviorRepo.interface";
-import { behaviorScema } from "./BehaviorModel";
+import { BehaviorSchema } from "./BehaviorModel";
 
 import mongoose from "mongoose";
-import { MongoErrToStatus } from "./ErrorHandling";
+import { MongoErrToStatus } from "../../../util/ErrorHandling";
 
 export class BehaviorRepo implements IBehaviorRepo{
 
@@ -16,7 +16,7 @@ export class BehaviorRepo implements IBehaviorRepo{
     public connect(dbURI: string) : Status{
         console.log("Connecting");
         this.dbConn = mongoose.createConnection(dbURI);
-        this.bModel = this.dbConn.model('Behavior', behaviorScema);
+        this.bModel = this.dbConn.model('Behavior', BehaviorSchema);
         if(!this.isConnected){
             // TODO provide better error messaging -RG
             return Status.INTERNAL_ERROR;
@@ -29,11 +29,10 @@ export class BehaviorRepo implements IBehaviorRepo{
         return this.dbConn.readyState === mongoose.ConnectionStates.connected;
     }
 
-    // TODO NEXT this has a bug -RG
     public async createBehavior(behavior: Behavior): Promise<Status> {
         const created = await this.bModel.create(behavior)
         .catch((error)=>{
-            return MongoErrToStatus(error.code);
+            return MongoErrToStatus(error);
         });
         if(created === Status.CONFLICT){
             return created;
@@ -107,9 +106,37 @@ export class BehaviorRepo implements IBehaviorRepo{
     }
 
     public async getAll(): Promise<Behavior[]> {
-        throw new Error("Method not implemented.");
+        const result = this.bModel.find();
+        return (await result).map((behavior) : Behavior=>{
+            const b : Behavior = behavior;
+            return b;
+        });
     }
-    public async getBehavior(behaviorName: string): Promise<Behavior> {
-        throw new Error("Method not implemented.");
+
+    public async getBehavior(behaviorName: string): Promise<{behavior: Behavior, status: Status}> {
+
+        let status : Status = Status.SUCCESS;
+        let behavior : Behavior = await this.bModel.findOne({name: behaviorName}).
+        catch((error)=>{
+            status = MongoErrToStatus(error);
+            return null;
+        });
+
+        if(!behavior && status === Status.SUCCESS){
+            return {behavior: null, status: Status.NOT_FOUND};
+        }
+
+        behavior = {
+            name: behavior.name,
+            content: behavior.content,
+            description: behavior.description,
+            publish: behavior.publish,
+            creator: behavior.creator
+        };
+
+        return {
+            behavior,
+            status
+        };
     }
 }

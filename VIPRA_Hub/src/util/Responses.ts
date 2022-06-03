@@ -1,4 +1,5 @@
 import express from "express";
+import { Behavior } from "../data_models/Behavior";
 import { Status } from "../data_models/Status";
 
 const RespondUnknownError = (response : express.Response) : void => {
@@ -13,7 +14,26 @@ const RespondError = (code : Status, error : string, detail : string, response :
     });
 };
 
+const RespondSuccess = (response : express.Response, message? : string) : void => {
+    if(message){
+        response.status(Status.SUCCESS).json({});
+    }else{
+        response.status(Status.SUCCESS).json({message});
+    }
+};
+
+const RespondBehavior = ( response : express.Response, behavior : Behavior) : void => {
+    response.status(Status.SUCCESS).json({behavior});
+};
+
+const RespondData = (response : express.Response, data : any) : void => {
+    response.status(Status.SUCCESS).json({data});
+};
+
 export {
     RespondUnknownError,
-    RespondError
+    RespondError,
+    RespondSuccess,
+    RespondBehavior,
+    RespondData
 };

@@ -34,6 +34,11 @@ export class BehaviorsContoller{
         return updated;
     }
 
+    public async getBehavior(name: string) : Promise<{behavior: Behavior, status: Status}>{
+        const behavior = await this.behaviorDB.getBehavior(name);
+        return behavior;
+    }
+
     public async deleteBehavior(name: string) : Promise<Status>{
         const deleted = await this.behaviorDB.deleteBehavior(name);
         return deleted;
