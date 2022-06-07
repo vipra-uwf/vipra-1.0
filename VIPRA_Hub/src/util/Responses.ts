@@ -26,6 +26,10 @@ const RespondBehavior = ( response : express.Response, behavior : Behavior) : vo
     response.status(Status.SUCCESS).json({behavior});
 };
 
+const RespondFile = (response : express.Response, filePath : string) : void => {
+
+};
+
 const RespondData = (response : express.Response, data : any) : void => {
     response.status(Status.SUCCESS).json({data});
 };
@@ -35,5 +39,6 @@ export {
     RespondError,
     RespondSuccess,
     RespondBehavior,
-    RespondData
+    RespondData,
+    RespondFile
 };

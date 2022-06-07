@@ -23,8 +23,8 @@ export const config = {
         MapRepo: (): IMapRepo => { return new MapRepo(); }
     },
     Model:{
-        DB_URI: "",
-        Upload_Path: path.resolve('./MODEL_UPLOADS'),
+        DB_URI: path.resolve('./MODEL_UPLOADS'),
+        Zip_Path: path.resolve('./MODEL_UPLOADS'),
         ModelRepo: (): IModelRepo => { return new ModelRepo(); }
     }
 };
