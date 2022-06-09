@@ -8,7 +8,10 @@
         "trailing-comma": [ false ],
         "semicolon": [ true, "always" ],
         "no-empty":false,
-        "no-console":false
+        "no-console":false,
+        "ban-types":false,
+        "prefer-const":false,
+        "no-shadowed-variable":false
     },
     "rulesDirectory": []
 }
