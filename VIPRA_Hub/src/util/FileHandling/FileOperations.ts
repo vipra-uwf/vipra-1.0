@@ -1,15 +1,15 @@
-import fs from 'fs';
-import tar from 'tar';
+import fs   from 'fs';
+import tar  from 'tar';
 
 import { Status } from "../../data_models/Status";
 
 
-const FileExists = (filePath: string) : boolean => {
+const fileExists = (filePath: string) : boolean => {
     return fs.existsSync(filePath);
 };
 
-const DeleteFile = async (filePath: string) : Promise<Status> => {
-    if(!FileExists(filePath)){
+const deleteFile = async (filePath: string) : Promise<Status> => {
+    if(!fileExists(filePath)){
         return Status.NOT_FOUND;
     }else{
         fs.rmSync(filePath);
@@ -17,26 +17,39 @@ const DeleteFile = async (filePath: string) : Promise<Status> => {
     }
 };
 
-const TarFiles = async (folderPath : string, tarName: string, filePaths: string[]) : Promise<{status: Status, path: string}> => {
+const writeFile = (dirPath : string, filename : string, content : string) : void =>{
+    fs.writeFileSync(dirPath.concat(filename), content);
+};
+
+const makeDir = (dirPath: string) : void => {
+    if(!fs.existsSync(dirPath)){
+        fs.mkdirSync(dirPath);
+    }
+};
+
+const tarDirectory = async (folderPath : string, tarName: string, dirPath: string) : Promise<{status: Status, path: string}> => {
     const tarOptions = {
         file: folderPath.concat('/', tarName, '.tar'),
     };
 
     return new Promise((resolve, reject)=>{
-        tar.create(tarOptions, filePaths, (err)=>{
+        tar.create(tarOptions, [dirPath], (err)=>{
             if(err){
                 console.log(`[ERROR] Error in TarFiles: ${err}`);
                 reject(err);
             }
             resolve({
                 status: Status.SUCCESS,
-                path: folderPath.concat('/', tarName, '.tar')
+                path: tarOptions.file
             });
         });
     });
 };
 
 export {
-    FileExists,
-    TarFiles
+    fileExists,
+    deleteFile,
+    tarDirectory,
+    writeFile,
+    makeDir
 };

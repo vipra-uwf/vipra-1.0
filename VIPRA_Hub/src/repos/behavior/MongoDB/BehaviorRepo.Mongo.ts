@@ -11,7 +11,9 @@ export class BehaviorRepo implements IBehaviorRepo{
     private dbConn: mongoose.Connection;
     private bModel: mongoose.Model<Behavior>;
 
-    constructor(){}
+    constructor(){
+        
+    }
 
     public connect(dbURI: string) : Status{
         console.log("Connecting");

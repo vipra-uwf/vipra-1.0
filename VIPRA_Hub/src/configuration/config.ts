@@ -8,7 +8,7 @@ import { IMapRepo } from "../repos/map/MapRepo.interface";
 import { MapRepo } from "../repos/map/MongoDB/MapRepo.Mongo";
 
 import { IModelRepo } from "../repos/models/ModelRepo.interface";
-import { ModelRepo } from "../repos/models/local/ModelRepo.Local";
+import { ModelRepo } from "../repos/models/Mongo/ModelRepo.Mongo";
 
 // TODO!!!!! Setup environment variables for these -RG
 
@@ -23,8 +23,8 @@ export const config = {
         MapRepo: (): IMapRepo => { return new MapRepo(); }
     },
     Model:{
-        DB_URI: path.resolve('./MODEL_UPLOADS'),
-        Zip_Path: path.resolve('./MODEL_UPLOADS'),
+        DB_URI: 'mongodb+srv://vipratest:PmD1Sf3rdwmOFdRJ@cluster0.nugoo.mongodb.net/?retryWrites=true&w=majority',
+        TempDir: path.resolve('./MODEL_UPLOADS'),
         ModelRepo: (): IModelRepo => { return new ModelRepo(); }
     }
 };

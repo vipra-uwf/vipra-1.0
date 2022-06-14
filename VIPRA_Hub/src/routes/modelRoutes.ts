@@ -5,18 +5,17 @@ import { ModelsController }     from "../controllers/model/ModelsController";
 import { config }               from "../configuration/config";
 import { Status }               from "../data_models/Status";
 
-import { RespondError, RespondUnknownError, RespondSuccess, RespondFile, RespondData }       from "../util/Responses";
-
+import { RespondError, RespondUnknownError, RespondSuccess, RespondFile, RespondData, RespondCreated } from "../util/Responses";
 
 const ModelRoutes : express.Router = express.Router();
 
 const modelRepo = config.Model.ModelRepo();
-modelRepo.connect(config.Model.DB_URI);
+modelRepo.connect(config.Model.DB_URI, config.Model.TempDir);
 
-const ModelController : ModelsController = new ModelsController(modelRepo, config.Model.Zip_Path);
+const ModelController : ModelsController = new ModelsController(modelRepo, config.Model.TempDir);
+
 
 ModelRoutes.get('/', (req, res)=>{
-    // TODO
     ModelController.getOptions()
     .then((result)=>{
         switch(result.status){
@@ -59,12 +58,17 @@ ModelRoutes.get('/info/:name', (req, res)=>{
 });
 
 ModelRoutes.get('/:name', (req, res)=>{
-    // TODO
-    ModelController.getModel(req.params.name)
+
+    const modelName = req.params.name;
+
+    ModelController.getModel(modelName)
     .then((result)=>{
         switch(result.status){
             case Status.SUCCESS:
-                RespondFile(res, result.path);
+                RespondFile(res, result.path, {
+                            filename: modelName,
+                            callback: ModelController.handleDownloadCleanup
+                });
                 break;
             case Status.NOT_FOUND:
                 RespondError(Status.NOT_FOUND, "Not Found", "No Model with the provided name was found", res);
@@ -83,14 +87,12 @@ ModelRoutes.get('/:name', (req, res)=>{
     });
 });
 
-
-// TODO client needs to have modelname as the first element in the form data, want to find a way to fix this -RG
-ModelRoutes.post('/', (req, res)=>{
+ModelRoutes.post('/',(req, res)=>{
     ModelController.createModel(req)
     .then((created)=>{
         switch(created){
-            case Status.SUCCESS:
-                RespondSuccess(res);
+            case Status.CREATED:
+                RespondCreated(res);
                 break;
             case Status.CONFLICT:
                 RespondError(Status.CONFLICT, "Duplicate", "Models are not allowed duplicate names. Use a PUT request to update models.", res);

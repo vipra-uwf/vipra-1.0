@@ -3,7 +3,7 @@ import express      from "express";
 import { MapsContoller }         from "../controllers/map/MapsController";
 import { config }               from "../configuration/config";
 import { Status }               from "../data_models/Status";
-import { RespondData, RespondError, RespondUnknownError, RespondSuccess, RespondBehavior } from "../util/Responses";
+import { RespondData, RespondError, RespondUnknownError, RespondSuccess, RespondBehavior, RespondCreated } from "../util/Responses";
 import { Map, CheckMap } from "../data_models/Map";
 
 
@@ -36,7 +36,7 @@ MapRoutes.post('/', (req : express.Request<{}, {}, {map : Map}, {}>, res)=>{
     .then((created)=>{
         switch(created){
             case Status.SUCCESS:
-                RespondSuccess(res);
+                RespondCreated(res);
                 break;
             case Status.INTERNAL_ERROR:
                 RespondUnknownError(res);

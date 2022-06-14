@@ -7,11 +7,11 @@
     "rules": {
         "trailing-comma": [ false ],
         "semicolon": [ true, "always" ],
-        "no-empty":false,
+        "no-empty":true,
         "no-console":false,
         "no-async-without-await":true,
         "no-floating-promises":true,
-        "arrow-parns":true
+        "arrow-parens":true
     },
     "rulesDirectory": []
 }

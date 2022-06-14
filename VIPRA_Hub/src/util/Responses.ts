@@ -14,6 +14,10 @@ const RespondError = (code : Status, error : string, detail : string, response :
     });
 };
 
+const RespondCreated = (response : express.Response) : void =>{
+    response.status(Status.CREATED).json({});
+};
+
 const RespondSuccess = (response : express.Response, message? : string) : void => {
     if(message){
         response.status(Status.SUCCESS).json({});
@@ -26,8 +30,15 @@ const RespondBehavior = ( response : express.Response, behavior : Behavior) : vo
     response.status(Status.SUCCESS).json({behavior});
 };
 
-const RespondFile = (response : express.Response, filePath : string) : void => {
+const RespondFile = (response : express.Response, filePath : string,
+    cleanup?: {
+        filename : string,
+        callback : (filename : string) => Promise<void>
+    }) : void => {
 
+    if(cleanup){
+        cleanup.callback(cleanup.filename);
+    }
 };
 
 const RespondData = (response : express.Response, data : any) : void => {
@@ -40,5 +51,6 @@ export {
     RespondSuccess,
     RespondBehavior,
     RespondData,
-    RespondFile
+    RespondFile,
+    RespondCreated
 };

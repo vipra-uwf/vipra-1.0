@@ -3,7 +3,7 @@ import express      from "express";
 import { BehaviorsContoller }   from "../controllers/behavior/BehaviorsController";
 import { config }               from "../configuration/config";
 import { Status }               from "../data_models/Status";
-import { RespondError, RespondUnknownError, RespondSuccess, RespondBehavior }       from "../util/Responses";
+import { RespondError, RespondUnknownError, RespondSuccess, RespondBehavior, RespondCreated }       from "../util/Responses";
 
 
 const BehaviorRoutes : express.Router = express.Router();
@@ -69,7 +69,7 @@ BehaviorRoutes.post('/', (req, res)=>{
         res.status(created);
         switch(created){
             case Status.CREATED:
-                res.json({});
+                RespondCreated(res);
                 break;
             case Status.BAD_REQUEST:
                 RespondError(created, "Improper Format", "Behaviors require attributes: name, content, creator, and publish", res);
@@ -113,7 +113,7 @@ BehaviorRoutes.put('/', (req : express.Request<{}, {}, {behavior: {name:string, 
         res.status(updated);
         switch(updated){
             case Status.SUCCESS:
-                res.json({});
+                RespondCreated(res);
                 break;
             case Status.BAD_REQUEST:
                 // TODO make error response

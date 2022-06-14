@@ -1,16 +1,15 @@
 import express from "express";
-
-import { Status } from "../../data_models/Status";
-import { ModelMeta } from "../../data_models/ModelMeta";
+import { Status }           from "../../data_models/Status";
+import { ModelMeta }        from "../../data_models/ModelMeta";
+import { IModel }           from "./Mongo/ModelSchema";
 
 export interface IModelRepo{
-    connect(dbURI : string) : void;
-    getModel(name : string) : Promise<string>;
-    getOptions() : Promise<ModelMeta>;
+    connect(dbURI : string, stagingDir : string) : void;
+    getOptions() : Promise<ModelMeta[]>;
+    getModelInfo(name : string) : Promise<{status : Status, modelMeta : ModelMeta}>;
+    createModel(model : IModel) : Promise<Status>;
     deleteModel(name : string) : Promise<Status>;
-    // TODO this takes in a request to handle the files but I don't really like this, want to find a better factoring -RG
-    createModel(req : express.Request) : Promise<{status: Status, modelMeta: ModelMeta}>;
-    updateModel(req : express.Request) : Promise<Status>;
-
-    stageModel(name: string) : Promise<{status: Status, files: string[]}>;
+    updateModelSource(name : string, source : string) : Promise<Status>;
+    updateModelHeader(name : string, header : string) : Promise<Status>;
+    stageModel(name: string) : Promise<{status: Status, dirPath: string}>;
 }
