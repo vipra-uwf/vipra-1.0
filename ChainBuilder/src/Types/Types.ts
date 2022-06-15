@@ -2,7 +2,7 @@ interface Response{
     [key : string]:
     {
         description     : string,
-        type            : 'float' | 'string',
+        type            : string,
         sample?         : string | number,
         sample_href?    : string
     };
@@ -28,15 +28,13 @@ interface Parameter{
         [key: string] : {
             chain_name: string,
             description: string,
-            // TODO add more types -RG
-            type: 'float' | 'string',
+            type: string,
             repeatable: true | false,
-            sample: string | number
+            sample?: string | number
         },
     };
     server:[
-        'transient',
-        'cachable'
+        'transient'
     ];
 }
 

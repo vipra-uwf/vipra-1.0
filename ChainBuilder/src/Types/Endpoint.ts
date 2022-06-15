@@ -10,6 +10,7 @@ export class Endpoint{
     private name        : string;
     private href        : string;
     private links       : Map<string, Endpoint>;
+
     private service     : Service;
 
 
@@ -25,7 +26,7 @@ export class Endpoint{
     public treeTraverse(route : string[]) : Endpoint{
         const popped : string = route.shift();
         if(popped){
-            if(popped === '' || popped.charAt(0) === '?'){
+            if(popped === '' || popped.charAt(0) === '?' || popped.charAt(0) === '@'){
                 return this;
             }
             const next = this.links.get(popped);
@@ -45,7 +46,6 @@ export class Endpoint{
             this.service.handleRequest(request, response);
         }
     }
-
     public addEndpoint(endpoint : Endpoint){
         if(this.links.has(endpoint.name)){
             throw new Error(`Endpoint already has link to: ${endpoint.name}`);
@@ -56,6 +56,9 @@ export class Endpoint{
 
     public setService(service : Service){
         this.service = service;
+    }
+    public getService() : Service{
+        return this.service;
     }
 
     public getLinks() : Link[]{

@@ -1,5 +1,4 @@
 import express from 'express';
-import https from 'https';
 import { Link, Response, ServiceInfo, Parameter } from './Types';
 
 
@@ -15,11 +14,24 @@ const cbLinksRespond = (links : Link[], res : express.Response) : void =>{
         });
 };
 
-const cbResultRespond = (response : express.Response, data : {[key:string]:{href:string}}, expiration? : string) : void =>{
+const cbResultRespond = (response : express.Response, resultName : string, result : string, expiration? : string) : void => {
     response.status(200).json({
         status: 'success',
-        data,
+        data: {
+            [resultName]: {
+                'href': result
+            }
+        },
         expiration
+    });
+};
+
+const cbFormatRespond = (baseHref : string, resultHash : string, formats : string[], response : express.Response) => {
+    response.status(200).json({
+        status: 'success',
+        links: formats.map((format)=>{
+            return {"href": baseHref.concat('/',resultHash,'/',format)};
+        })
     });
 };
 
@@ -46,5 +58,6 @@ export {
     cbErrorRespond,
     cbLinksRespond,
     cbServiceInfoRespond,
-    cbResultRespond
+    cbResultRespond,
+    cbFormatRespond
 };

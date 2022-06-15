@@ -1,11 +1,12 @@
 import express from 'express';
+import https from 'https';
+import { ResultStore } from './ResultStore';
 import { cbErrorRespond, cbResultRespond, cbServiceInfoRespond } from './Responses';
-import { ResultStore } from './ResultStore.interface';
 import { Parameter, ServiceInfo, Response } from './Types';
 
-// TODO add a result store -RG
-// TODO refactor this so it doesn't look so digusting and a bit more user friendly -RG
+import axios from 'axios';
 
+// TODO allow multiple arguments
 export class Service{
 
     private href            : string;
@@ -15,14 +16,25 @@ export class Service{
 
     private resultStore     : ResultStore;
 
-    private serviceMethod   : Function;
+    private serviceMethod   : (args : string[]) => Promise<string>;
     private methodParams    : {name : string, type : string};
-    private methodReturn    : string;
+    private methodReturn    : {name: string, type : string};
 
-    constructor(href : string, info : ServiceInfo, resultStore : ResultStore){
-        this.href = href;
-        this.info = info;
-        this.resultStore = resultStore;
+    private httpsAgent      : https.Agent;
+
+    constructor(settings: {
+        info : ServiceInfo,
+        parameters  : {name : string, type : string},
+        returnValue : {name : string, type : string},
+        resultStore : ResultStore,
+        method      : (args : string[]) => Promise<string>
+    }){
+        this.info = settings.info;
+        this.httpsAgent = new https.Agent({
+            rejectUnauthorized: false
+        });
+        this.resultStore = settings.resultStore;
+        this.setMethod(settings.parameters, settings.returnValue, settings.method);
     }
 
     public async handleRequest(request : express.Request, response : express.Response) : Promise<void>{
@@ -30,51 +42,115 @@ export class Service{
             cbServiceInfoRespond(this.info, this.parameter, this.response, response);
             return;
         }else{
-            const resultLocation : string = await this.callMethod(request, response);
+            const resultLocation : string = await this.runService(request, response);
             if(resultLocation){
-                const data = {
-                   "sum": {
-                        "href": this.href.concat('%%', resultLocation)
-                    }
-                };
-                cbResultRespond(response, data);
+                const data = this.resultStore.getHref().concat('/', resultLocation);
+                cbResultRespond(response, this.methodReturn.name, data);
                 return;
             }else{
                 cbErrorRespond('Unable to complete request', response);
+                return;
             }
         }
     }
 
-    private async callMethod(request : express.Request, response : express.Response) : Promise<string>{
-        const parameter = request.query[this.methodParams.name];
-        if(parameter){
-            const result = this.serviceMethod(parameter);
-            return await this.resultStore.storeResult(result);
-        }else{
+    private async runService(request : express.Request, response : express.Response) : Promise<string>{
+        const parameters : string[] = await this.getRequestParams(request, response);
+        if(parameters){
+            const result : string = await this.serviceMethod(parameters);
+            if(result){
+                const location = await this.resultStore.storeResult(result);
+                return location;
+            }
             return null;
         }
+        return null;
     }
 
     // TODO change this to use reflection to get the required info about the method -RG
-    public setMethod(argument : {name: string, type: string}, returnType : string,method : (arg : string | number)=> string | number) : void{
+    public setMethod(argument : {name: string, type: string}, returnType : {name: string, type: string}, method : (args : string[])=> Promise<string>) : void{
         this.methodParams = argument;
         this.methodReturn = returnType;
-
         this.serviceMethod = method;
+
+        // TODO remove the server part and assign elsewhere -RG
+        // TODO remove the description and assign elsewhere -RG
+        // TODO remove the sample and assign elsewhere -RG
+        this.parameter = {
+            arguments : {
+                [argument.name]: {
+                    chain_name: argument.name.concat('_href'),
+                    description: "TODO",
+                    type: argument.type,
+                    repeatable: true,
+                    sample: 15
+                }
+            },
+            server:[
+                'transient'
+            ]
+        };
+
+        // TODO remove the description and assign elsewhere -RG
+        this.response = {
+            [returnType.name]: {
+                description: 'TODO',
+                type: returnType.type,
+                sample: 15
+            }
+        };
     }
 
 
-    public setResponse(response : Response) : void{
-        this.response = response;
+    // TODO NEXT one parameter causes this to interperet it as an array of one character strings -RG
+    private async getRequestParams(request : express.Request, response : express.Response) : Promise<string[]>{
+        if(request.query[this.methodParams.name]){
+            return request.query[this.methodParams.name] as string[];
+        }
+        if(request.query[this.methodParams.name.concat('_href')]){
+            const hrefs : string[] = request.query[this.methodParams.name.concat('_href')];
+            const params : string[] = await this.requestChainData(hrefs, response);
+            return params;
+        }
+        if(request.body[this.methodParams.name.concat('_href')]){
+            const hrefs : string[] = request.body[this.methodParams.name.concat('_href')];
+            const params : string[] = await this.requestChainData(hrefs, response);
+            return params;
+        }
+        return null;
     }
-    public setParameter(parameter : Parameter){
-        this.parameter = parameter;
+
+    private async requestChainData(hrefs : string[], response : express.Response) : Promise<string[]>{
+        let params : string[] = [];
+        for(const link of hrefs){
+            const data = await axios.get(link.concat('raw'), {httpsAgent:this.httpsAgent})
+            .catch((err)=>{
+                console.log(`[ERROR] Error getting data from ${link}\nError: ${err}`);
+                cbErrorRespond('Unable to get data from previous chain', response);
+                return null;
+            });
+            if(data){
+                params.push(data.data);
+            }
+        }
+        return params;
     }
+
     public getParameter() : Parameter{
         return this.parameter;
     }
     public getInfo() : ServiceInfo{
         return this.info;
+    }
+    public setHref(href : string){
+        this.href = href;
+    }
+    public setResultStore(store : ResultStore){
+        store.setResultType(this.methodReturn.name, this.methodReturn.type);
+        this.resultStore = store;
+    }
+    public getResultStore() : ResultStore {
+        return this.resultStore;
     }
     public setName(name : string){
         this.info.description = name;
