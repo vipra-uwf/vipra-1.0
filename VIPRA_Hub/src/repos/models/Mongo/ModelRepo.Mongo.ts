@@ -14,18 +14,24 @@ export class ModelRepo implements IModelRepo{
     private mModel : mongoose.Model<IModel>;
     private stagingDir : string;
 
-    connect(dbURI: string, stagingDir : string): void {
+    public connect(dbURI: string, stagingDir : string): void {
         this.dbConn = mongoose.createConnection(dbURI);
         this.mModel = this.dbConn.model('Model', ModelSchema);
         this.stagingDir = stagingDir;
         makeDir(stagingDir);
     }
 
-    getOptions(): Promise<ModelMeta[]> {
-        throw new Error("Method not implemented.");
+    public async getOptions(): Promise<ModelMeta[]> {
+        const models = await this.mModel.find({publish:true});
+        return models.map((model : IModel) =>{
+            return {
+                name : model.name,
+                description: model.description
+            };
+        });
     }
 
-    async createModel(model : IModel): Promise<Status> {
+    public async createModel(model : IModel): Promise<Status> {
         const created = await this.mModel.create(model)
         .catch((error)=>{
             return MongoErrToStatus(error);
@@ -40,7 +46,7 @@ export class ModelRepo implements IModelRepo{
         }
     }
 
-    async deleteModel(name: string): Promise<Status> {
+    public async deleteModel(name: string): Promise<Status> {
         const deleted = await this.mModel.deleteOne({name})
         .catch((error)=>{
             console.log(`[ERROR] Error in deleteModel: ${error}`);
@@ -60,15 +66,27 @@ export class ModelRepo implements IModelRepo{
         }
     }
 
-    async updateModelSource(name : string, source : string): Promise<Status> {
-        throw new Error("Method not implemented.");
+    public async updateModelSource(name : string, source : string): Promise<Status> {
+        const updated = await this.mModel.updateOne({name}, {source});
+
+        if(updated.modifiedCount === 1){
+            return Status.SUCCESS;
+        }else{
+            return Status.NOT_FOUND;
+        }
     }
 
-    async updateModelHeader(name : string, header: string): Promise<Status> {
-        throw new Error("Method not implemented.");
+    public async updateModelHeader(name : string, header: string): Promise<Status> {
+        const updated = await this.mModel.updateOne({name}, {header});
+
+        if(updated.modifiedCount === 1){
+            return Status.SUCCESS;
+        }else{
+            return Status.NOT_FOUND;
+        }
     }
 
-    async stageModel(name: string): Promise<{ status: Status, dirPath: string}> {
+    public async stageModel(name: string): Promise<{ status: Status, dirPath: string}> {
         const model = await this.mModel.findOne({name});
         if(model){
 
@@ -76,10 +94,11 @@ export class ModelRepo implements IModelRepo{
                 return {
                     status: Status.NO_CONTENT,
                     dirPath: null
-                }
+                };
             }
 
             const dirPath : string = this.stagingDir.concat('/', name, '/');
+            makeDir(dirPath);
 
             if(model.source){
                 writeFile(dirPath, name.concat('.cpp'), model.source);
@@ -87,14 +106,13 @@ export class ModelRepo implements IModelRepo{
             if(model.header){
                 writeFile(dirPath, name.concat('.hpp'), model.header);
             }
-
             const meta : ModelMeta = model;
             writeFile(dirPath, name.concat('.mm'), toString(meta));
 
             return {
                 status: Status.SUCCESS,
-                dirPath: dirPath
-            }
+                dirPath
+            };
         }else{
             return {
                 status: Status.NOT_FOUND,
@@ -103,7 +121,21 @@ export class ModelRepo implements IModelRepo{
         }
     }
 
-    getModelInfo(name: string): Promise<{status: Status, modelMeta: ModelMeta}> {
-        throw new Error("Method not implemented.");
+    public async getModelInfo(name: string): Promise<{status: Status, modelMeta: ModelMeta}> {
+        const model = await this.mModel.findOne({name});
+        if(model){
+            return {
+                status: Status.SUCCESS,
+                modelMeta: {
+                    name,
+                    description: model.description
+                }
+            };
+        }else{
+            return {
+                status: Status.NOT_FOUND,
+                modelMeta: null
+            };
+        }
     }
 }

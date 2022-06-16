@@ -17,6 +17,20 @@ const deleteFile = async (filePath: string) : Promise<Status> => {
     }
 };
 
+const deleteDir = async (dirPath : string, recursive : boolean) : Promise<Status> => {
+    if(!fileExists(dirPath)){
+        return Status.NOT_FOUND;
+    }else{
+        fs.rm(dirPath, {recursive}, (err)=>{
+            if(err){
+                console.log(`[ERROR] Error in deleteDir: ${err}`);
+                return Status.INTERNAL_ERROR;
+            }
+        });
+        return Status.SUCCESS;
+    }
+};
+
 const writeFile = (dirPath : string, filename : string, content : string) : void =>{
     fs.writeFileSync(dirPath.concat(filename), content);
 };
@@ -27,20 +41,19 @@ const makeDir = (dirPath: string) : void => {
     }
 };
 
-const tarDirectory = async (folderPath : string, tarName: string, dirPath: string) : Promise<{status: Status, path: string}> => {
-    const tarOptions = {
-        file: folderPath.concat('/', tarName, '.tar'),
-    };
-
+const tarDirectory = async (baseDirPath : string, dirName: string, outDirPath : string) : Promise<{status: Status, path: string}> => {
     return new Promise((resolve, reject)=>{
-        tar.create(tarOptions, [dirPath], (err)=>{
+        tar.create({
+            cwd: baseDirPath,
+            file: `${outDirPath}/${dirName}.tar`
+        }, [dirName], (err)=>{
             if(err){
                 console.log(`[ERROR] Error in TarFiles: ${err}`);
                 reject(err);
             }
             resolve({
                 status: Status.SUCCESS,
-                path: tarOptions.file
+                path: baseDirPath.concat('\\', dirName, '.tar')
             });
         });
     });
@@ -49,6 +62,7 @@ const tarDirectory = async (folderPath : string, tarName: string, dirPath: strin
 export {
     fileExists,
     deleteFile,
+    deleteDir,
     tarDirectory,
     writeFile,
     makeDir

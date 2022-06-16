@@ -6,4 +6,4 @@ export interface ModelMeta{
 
 export const toString = (meta : ModelMeta) : string => {
     return `{name: ${meta.name}, description: ${meta.description}}`;
-}
+};

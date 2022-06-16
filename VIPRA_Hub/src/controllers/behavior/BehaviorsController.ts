@@ -22,16 +22,20 @@ export class BehaviorsContoller{
     }
 
     // TODO refactor to one request -RG
-    // TODO NEXT doesn't return the proper status if only one fails  -RG
     public async updateBehavior(name: string, content?: string, publish?: boolean) : Promise<Status>{
-        let updated = Status.BAD_REQUEST;
         if(content){
-            updated = await this.behaviorDB.updateContent(name, content);
+            const updatedContent = await this.behaviorDB.updateContent(name, content);
+            if(updatedContent !== Status.SUCCESS){
+                return updatedContent;
+            }
         }
-        if(publish !== undefined){
-            updated = await this.behaviorDB.updatePublished(name, publish);
+        if(publish){
+            const updatedPublish = await this.behaviorDB.updatePublished(name, publish);
+            if(updatedPublish !== Status.SUCCESS){
+                return updatedPublish;
+            }
         }
-        return updated;
+        return Status.SUCCESS;
     }
 
     public async getBehavior(name: string) : Promise<{behavior: Behavior, status: Status}>{

@@ -15,7 +15,6 @@ const BehaviorController : BehaviorsContoller = new BehaviorsContoller(behaviorR
 
 
 BehaviorRoutes.get('/', (req, res)=>{
-    // TODO
     BehaviorController.getOptions()
     .then((options)=>{
         if(options !== null){
@@ -116,8 +115,7 @@ BehaviorRoutes.put('/', (req : express.Request<{}, {}, {behavior: {name:string, 
                 RespondCreated(res);
                 break;
             case Status.BAD_REQUEST:
-                // TODO make error response
-                RespondError(Status.BAD_REQUEST, "", "", res);
+                RespondError(Status.BAD_REQUEST, "Invalid Request", "Check The Request Format and Retry", res);
                 break;
             case Status.INTERNAL_ERROR:
                 RespondUnknownError(res);

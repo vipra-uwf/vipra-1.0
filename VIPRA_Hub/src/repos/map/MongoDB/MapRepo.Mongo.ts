@@ -17,7 +17,6 @@ export class MapRepo implements IMapRepo{
         this.dbConn = mongoose.createConnection(dbURI);
         this.bModel = this.dbConn.model('Map', MapSchema);
         if(!this.isConnected){
-            // TODO provide better error messaging -RG
             return Status.INTERNAL_ERROR;
         }
         console.log("Connected");

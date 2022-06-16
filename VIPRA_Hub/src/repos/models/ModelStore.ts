@@ -9,8 +9,6 @@ type Files = {[fieldname: string]: Express.Multer.File[]};
 const modelStore = multer.memoryStorage();
 const modelFilter = (req : express.Request, file : Express.Multer.File, cb : multer.FileFilterCallback)=>{
     const extension = path.extname(file.originalname);
-    console.log(extension);
-
     if(file.fieldname === 'header'){
         if(extension !== '.hpp'){
             return cb(new Error('type'));

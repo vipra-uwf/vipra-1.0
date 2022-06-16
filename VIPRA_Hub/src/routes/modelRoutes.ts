@@ -1,6 +1,5 @@
 import express      from "express";
 
-
 import { ModelsController }     from "../controllers/model/ModelsController";
 import { config }               from "../configuration/config";
 import { Status }               from "../data_models/Status";
@@ -13,7 +12,6 @@ const modelRepo = config.Model.ModelRepo();
 modelRepo.connect(config.Model.DB_URI, config.Model.TempDir);
 
 const ModelController : ModelsController = new ModelsController(modelRepo, config.Model.TempDir);
-
 
 ModelRoutes.get('/', (req, res)=>{
     ModelController.getOptions()
@@ -57,8 +55,7 @@ ModelRoutes.get('/info/:name', (req, res)=>{
     });
 });
 
-ModelRoutes.get('/:name', (req, res)=>{
-
+ModelRoutes.get('/:name', (req, res) => {
     const modelName = req.params.name;
 
     ModelController.getModel(modelName)
@@ -138,4 +135,4 @@ ModelRoutes.delete('/:name', (req, res)=>{
     });
 });
 
-export {ModelRoutes};
+export { ModelRoutes };

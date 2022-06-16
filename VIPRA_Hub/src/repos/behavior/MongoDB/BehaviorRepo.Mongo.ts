@@ -11,16 +11,11 @@ export class BehaviorRepo implements IBehaviorRepo{
     private dbConn: mongoose.Connection;
     private bModel: mongoose.Model<Behavior>;
 
-    constructor(){
-        
-    }
-
     public connect(dbURI: string) : Status{
         console.log("Connecting");
         this.dbConn = mongoose.createConnection(dbURI);
         this.bModel = this.dbConn.model('Behavior', BehaviorSchema);
         if(!this.isConnected){
-            // TODO provide better error messaging -RG
             return Status.INTERNAL_ERROR;
         }
         console.log("Connected");
