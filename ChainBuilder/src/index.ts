@@ -1,28 +1,37 @@
+import fs from 'fs';
+import path from 'path';
 import { CBServer } from "./CBServer";
 import { Service } from "./Types/Service";
 import { EchoResultStore } from "./echoResultStore";
 
 
 const server = new CBServer({
-    port: 80,
-    baseURL: 'http://192.168.1.120',
-    root: 'services'
+    port: 443,
+    baseURL: 'https://192.168.1.120/',
+    httpsCredentials: {
+        key: fs.readFileSync(path.resolve('./certs/local.pem')),
+        cert: fs.readFileSync(path.resolve('./certs/local.crt')),
+    }
 });
 
 const echoStore = new EchoResultStore("additionTestStore");
 
 const testMethod = async (arg : string[]) : Promise<string> => {
-    return arg[0];
+    let sum : number = 0;
+    arg.forEach((value) =>{
+        sum += parseInt(value, 10);
+    });
+    return sum.toString();
 };
 
 const testService = new Service({
         info: {
-            "key": "qwerqwerqwer",
-            "name": "newadditiontest",
+            "key": "fghfgh",
+            "name": "addTest",
             "version": "1.0.0.0",
             "description": "haha it works",
-            "author": "Robert Pahle",
-            "email": "robert.pahle@gmail.com",
+            "author": "Rolland Goodenough",
+            "email": "rtg13@students.uwf.edu",
             "doc_href": "https://dev.chain-builder.net/chainbuilder/chainphp/"
         },
         parameters: {name: "addend", type: "string"},

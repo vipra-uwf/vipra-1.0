@@ -44,7 +44,7 @@ export class Service{
         }else{
             const resultLocation : string = await this.runService(request, response);
             if(resultLocation){
-                const data = this.resultStore.getHref().concat('/', resultLocation);
+                const data = this.resultStore.getHref().concat(resultLocation, '/');
                 cbResultRespond(response, this.methodReturn.name, data);
                 return;
             }else{
@@ -67,7 +67,7 @@ export class Service{
         return null;
     }
 
-    // TODO change this to use reflection to get the required info about the method -RG
+
     public setMethod(argument : {name: string, type: string}, returnType : {name: string, type: string}, method : (args : string[])=> Promise<string>) : void{
         this.methodParams = argument;
         this.methodReturn = returnType;
@@ -87,7 +87,6 @@ export class Service{
                 }
             },
             server:[
-                'transient'
             ]
         };
 
@@ -105,15 +104,39 @@ export class Service{
     // TODO NEXT one parameter causes this to interperet it as an array of one character strings -RG
     private async getRequestParams(request : express.Request, response : express.Response) : Promise<string[]>{
         if(request.query[this.methodParams.name]){
-            return request.query[this.methodParams.name] as string[];
+            const query = request.query[this.methodParams.name];
+            let params : string[] = [];
+
+            if(typeof query === "string"){
+                params.push(query);
+            }else{
+                params = query as string[];
+            }
+            return params;
         }
         if(request.query[this.methodParams.name.concat('_href')]){
-            const hrefs : string[] = request.query[this.methodParams.name.concat('_href')];
+            const query = request.query[this.methodParams.name.concat('_href')];
+            let hrefs : string[] = [];
+
+            if(typeof query === "string"){
+                hrefs.push(query);
+            }else{
+                hrefs = query as string[];
+            }
+
             const params : string[] = await this.requestChainData(hrefs, response);
             return params;
         }
         if(request.body[this.methodParams.name.concat('_href')]){
-            const hrefs : string[] = request.body[this.methodParams.name.concat('_href')];
+            let hrefs : string[] = [];
+            const body = request.body[this.methodParams.name.concat('_href')];
+
+            if(typeof body === "string"){
+                hrefs.push(body);
+            }else{
+                hrefs = body as string[];
+            }
+
             const params : string[] = await this.requestChainData(hrefs, response);
             return params;
         }
@@ -123,7 +146,7 @@ export class Service{
     private async requestChainData(hrefs : string[], response : express.Response) : Promise<string[]>{
         let params : string[] = [];
         for(const link of hrefs){
-            const data = await axios.get(link.concat('raw'), {httpsAgent:this.httpsAgent})
+            const data = await axios.get(link.concat('raw/'), {httpsAgent:this.httpsAgent})
             .catch((err)=>{
                 console.log(`[ERROR] Error getting data from ${link}\nError: ${err}`);
                 cbErrorRespond('Unable to get data from previous chain', response);

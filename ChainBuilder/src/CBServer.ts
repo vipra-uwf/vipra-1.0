@@ -1,4 +1,6 @@
+import https from 'https';
 import express from 'express';
+import cors from 'cors';
 import { Endpoint } from './Types/Endpoint';
 import { cbErrorRespond, cbResultRespond } from './Types/Responses';
 import { ResultStore } from './Types/ResultStore';
@@ -7,7 +9,8 @@ import { Service } from './Types/Service';
 
 export class CBServer{
 
-    private server          : express.Application;
+    private httpsServer     : https.Server;
+    private express         : express.Application;
     private port            : number;
     private rootEndpoint    : Endpoint;
     private resultStores    : Map<string, ResultStore>;
@@ -17,18 +20,22 @@ export class CBServer{
         options:{
             port : number,
             baseURL : string,
-            root : string
+            httpsCredentials : {
+                key: Buffer,
+                cert: Buffer,
+                passphrase?: string,
+            }
         }
     ){
         this.port = options.port;
         this.baseURL = options.baseURL;
         this.resultStores = new Map();
-        this.makeRootEndpoint(options.root);
-        this.setupServer();
+        this.makeRootEndpoint();
+        this.setupServer(options.httpsCredentials);
     }
 
     public start(){
-        this.server.listen(this.port, ()=>{
+        this.httpsServer.listen(this.port, ()=>{
             console.log(`Listening on Port: ${this.port}`);
         });
     }
@@ -61,21 +68,24 @@ export class CBServer{
         return this.resultStores.get(name);
     }
 
-    private makeRootEndpoint(root : string) : void{
-        this.rootEndpoint = new Endpoint(root);
-        this.rootEndpoint.setHref(this.baseURL.concat(`/${root}`));
+    private makeRootEndpoint() : void{
+        this.rootEndpoint = new Endpoint('services');
+        this.rootEndpoint.setHref(this.baseURL.concat('services'));
     }
 
-    private setupServer(){
-        this.server = express();
-        this.server.use(express.urlencoded({extended: true}));
-        this.server.use(express.json());
-        this.server.use('/data', (req : express.Request, res : express.Response)=>{
+    private setupServer(credentials : {key : Buffer, cert : Buffer, passphrase? : string}){
+        this.express = express();
+        this.express.use(cors());
+        this.express.use(express.urlencoded({extended: true}));
+        this.express.use(express.json());
+        this.express.use('/data', (req : express.Request, res : express.Response)=>{
             this.respondResult(req, res);
         });
-        this.server.use('*', (req : express.Request, res : express.Response)=>{
+        this.express.use('*', (req : express.Request, res : express.Response)=>{
             this.routeRequest(req, res);
         });
+
+        this.httpsServer = https.createServer(credentials, this.express);
     }
 
     private fillRouteWithEmpty(route : string){
@@ -119,7 +129,7 @@ export class CBServer{
         if(this.getResultStore(resultStore.getName())){
             return;
         }
-        const href = this.baseURL.concat('/data/', resultStore.getName());
+        const href = this.baseURL.concat('data/', resultStore.getName(), '/');
         resultStore.setHref(href);
         this.resultStores.set(resultStore.getName(), resultStore);
     }

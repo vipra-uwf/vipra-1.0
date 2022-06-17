@@ -1,5 +1,5 @@
 import express from 'express';
-import { cbErrorRespond, cbFormatRespond, cbResultRespond } from './Responses';
+import { cbErrorRespond, cbFormatRespond, cbRawRespond, cbResultRespond } from './Responses';
 
 export abstract class ResultStore{
 
@@ -46,7 +46,7 @@ export abstract class ResultStore{
         if(result){
             switch(format){
                 case 'raw':
-                    response.send(result);
+                    cbRawRespond(response, result);
                     return;
                 case 'json':
                     cbResultRespond(response, this.resultName, result);

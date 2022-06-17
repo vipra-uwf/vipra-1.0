@@ -34,7 +34,6 @@ interface Parameter{
         },
     };
     server:[
-        'transient'
     ];
 }
 
