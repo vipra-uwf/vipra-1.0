@@ -1,18 +1,19 @@
 import express from "express";
+import { config } from "./configuration/config";
+import { Logger } from "./logging/Logging";
 import { BehaviorRoutes } from "./routes/behaviorRoutes";
 import { MapRoutes } from "./routes/mapRoutes";
-import { ModelRoutes } from "./routes/modelRoutes";
+import { ModuleRoutes } from "./routes/moduleRoutes";
 
 const app = express();
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-app.use('/model', ModelRoutes);
+app.use('/module', ModuleRoutes);
 app.use('/behavior', BehaviorRoutes);
 app.use('/map', MapRoutes);
 
-app.listen(3000, ()=>{
-    // tslint:disable-next-line:no-console
-    console.log("Listening");
+app.listen(config.port, ()=>{
+    Logger.info(`Listening on: ${config.port}`);
 });

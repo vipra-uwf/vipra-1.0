@@ -1,14 +1,7 @@
 import { Schema } from 'mongoose';
+import { Behavior } from '../../../data_models/Behavior';
 
-interface IMap{
-    name: string;
-    content: string;
-    description: string;
-    publish: boolean;
-    creator: string;
-}
-
-export const MapSchema = new Schema<IMap>({
+export const BehaviorSchema = new Schema<Behavior>({
     'name':{
         type: String,
         required: true,

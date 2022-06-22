@@ -1,6 +1,7 @@
 import fs   from 'fs';
 import tar  from 'tar';
 
+import { Logger } from '../../logging/Logging';
 import { Status } from "../../data_models/Status";
 
 
@@ -23,7 +24,7 @@ const deleteDir = async (dirPath : string, recursive : boolean) : Promise<Status
     }else{
         fs.rm(dirPath, {recursive}, (err)=>{
             if(err){
-                console.log(`[ERROR] Error in deleteDir: ${err}`);
+                Logger.error(`Error in deleteDir: ${err}`);
                 return Status.INTERNAL_ERROR;
             }
         });
@@ -48,7 +49,7 @@ const tarDirectory = async (baseDirPath : string, dirName: string, outDirPath : 
             file: `${outDirPath}/${dirName}.tar`
         }, [dirName], (err)=>{
             if(err){
-                console.log(`[ERROR] Error in TarFiles: ${err}`);
+                Logger.error(`Error in TarFiles: ${err}`);
                 reject(err);
             }
             resolve({

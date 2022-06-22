@@ -1,4 +1,5 @@
 import express from "express";
+import { Logger } from "../logging/Logging";
 import { Behavior } from "../data_models/Behavior";
 import { Status } from "../data_models/Status";
 import { deleteFile } from "./FileHandling/FileOperations";
@@ -39,12 +40,12 @@ const RespondFile = (response : express.Response, filePath : string,
 
     response.download(filePath, (err)=>{
         if(err){
-            console.log(`[ERROR] Error in RespondFile: ${err}`);
+            Logger.error(`Error in RespondFile: ${err}`);
         }
         if(cleanup){
             cleanup.callback(cleanup.filename)
             .catch((error)=>{
-                console.log(`[ERROR] Error in Model Cleanup: ${error}`);
+                Logger.error(`Error in Model Cleanup: ${error}`);
             });
         }
     });

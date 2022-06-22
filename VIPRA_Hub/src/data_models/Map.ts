@@ -2,10 +2,9 @@ export interface Map{
     name: string;
     content: string;
     description: string;
-    creator: string;
     publish: boolean;
+    creator: string;
 }
-
 export const CheckMap = (map : any) => {
 
     if(!map){

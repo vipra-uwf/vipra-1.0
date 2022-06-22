@@ -1,10 +1,12 @@
 import { Behavior } from "../../../data_models/Behavior";
 import { Status } from "../../../data_models/Status";
 import { IBehaviorRepo } from "../BehaviorRepo.interface";
-import { BehaviorSchema } from "./BehaviorModel";
+import { BehaviorSchema } from "./BehaviorSchema";
 
 import mongoose from "mongoose";
 import { MongoErrToStatus } from "../../../util/ErrorHandling";
+import { Logger } from "../../../logging/Logging";
+import { loggers } from "winston";
 
 export class BehaviorRepo implements IBehaviorRepo{
 
@@ -12,13 +14,11 @@ export class BehaviorRepo implements IBehaviorRepo{
     private bModel: mongoose.Model<Behavior>;
 
     public connect(dbURI: string) : Status{
-        console.log("Connecting");
         this.dbConn = mongoose.createConnection(dbURI);
         this.bModel = this.dbConn.model('Behavior', BehaviorSchema);
         if(!this.isConnected){
             return Status.INTERNAL_ERROR;
         }
-        console.log("Connected");
         return Status.SUCCESS;
     }
 
@@ -45,7 +45,7 @@ export class BehaviorRepo implements IBehaviorRepo{
     public async updatePublished(behaviorName: string, publish: boolean): Promise<Status> {
         const updated = await this.bModel.updateOne({name:behaviorName}, {publish})
         .catch((error)=>{
-            console.log(`[ERROR] Error in deleteBehavior: ${error}`);
+            Logger.error(`Error in deleteBehavior: ${error}`);
             return {matchedCount: -1};
         });
 
@@ -57,7 +57,7 @@ export class BehaviorRepo implements IBehaviorRepo{
             case -1:
                 return Status.INTERNAL_ERROR;
             default:
-                console.log(`[ERROR] Unhandled Result in updatePublished: ${updated}`);
+                Logger.error(`Unhandled Result in updatePublished: ${updated}`);
                 return Status.INTERNAL_ERROR;
         }
     }
@@ -65,7 +65,7 @@ export class BehaviorRepo implements IBehaviorRepo{
     public async deleteBehavior(behaviorName: string): Promise<Status> {
         const deleted = await this.bModel.deleteOne({name: behaviorName})
         .catch((error)=>{
-            console.log(`[ERROR] Error in deleteBehavior: ${error}`);
+            Logger.error(`Error in deleteBehavior: ${error}`);
             return {deletedCount: -1};
         });
 
@@ -77,7 +77,7 @@ export class BehaviorRepo implements IBehaviorRepo{
             case -1:
                 return Status.INTERNAL_ERROR;
             default:
-                console.log(`[ERROR] Unhandled Result in deleteBehavior: ${deleted.deletedCount}`);
+                Logger.error(`Unhandled Result in deleteBehavior: ${deleted.deletedCount}`);
                 return Status.INTERNAL_ERROR;
         }
     }
@@ -85,7 +85,7 @@ export class BehaviorRepo implements IBehaviorRepo{
     public async updateContent(behaviorName: string, content: string): Promise<Status> {
         const updated = await this.bModel.updateOne({name:behaviorName}, {content})
         .catch((error)=>{
-            console.log(`[ERROR] Error in deleteBehavior: ${error}`);
+            Logger.error(`Error in deleteBehavior: ${error}`);
             return {matchedCount: -1};
         });
 
@@ -97,7 +97,7 @@ export class BehaviorRepo implements IBehaviorRepo{
             case -1:
                 return Status.INTERNAL_ERROR;
             default:
-                console.log(`[ERROR] Unhandled Result in updateContent: ${updated}`);
+                Logger.error(`Unhandled Result in updateContent: ${updated}`);
                 return Status.INTERNAL_ERROR;
         }
     }

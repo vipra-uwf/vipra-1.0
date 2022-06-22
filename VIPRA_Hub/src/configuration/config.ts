@@ -7,8 +7,9 @@ import { BehaviorRepo } from "../repos/behavior/MongoDB/BehaviorRepo.Mongo";
 import { IMapRepo } from "../repos/map/MapRepo.interface";
 import { MapRepo } from "../repos/map/MongoDB/MapRepo.Mongo";
 
-import { IModelRepo } from "../repos/models/ModelRepo.interface";
-import { ModelRepo } from "../repos/models/Mongo/ModelRepo.Mongo";
+import { IModuleRepo } from "../repos/module/ModuleRepo.interface";
+import { ModuleRepo } from "../repos/module/Mongo/ModuleRepo.Mongo";
+
 
 // TODO!!!!! Setup environment variables for these -RG
 
@@ -22,9 +23,9 @@ export const config = {
         DB_URI: "mongodb+srv://vipratest:PmD1Sf3rdwmOFdRJ@cluster0.nugoo.mongodb.net/?retryWrites=true&w=majority",
         MapRepo: (): IMapRepo => { return new MapRepo(); }
     },
-    Model:{
+    Module:{
         DB_URI: 'mongodb+srv://vipratest:PmD1Sf3rdwmOFdRJ@cluster0.nugoo.mongodb.net/?retryWrites=true&w=majority',
-        TempDir: path.resolve('./MODEL_UPLOADS'),
-        ModelRepo: (): IModelRepo => { return new ModelRepo(); }
-    }
+        TempDir: path.resolve('./MODULE_TEMP'),
+        ModuleRepo: (): IModuleRepo => { return new ModuleRepo(); }
+    },
 };

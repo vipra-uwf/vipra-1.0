@@ -1,21 +1,18 @@
 import { Schema } from 'mongoose';
+import { Module } from '../../../data_models/Module';
 
-export interface IModel{
-    name: string;
-    description: string;
-    source?: string;
-    header?: string;
-    creator: string;
-    publish: boolean;
-}
 
-export const ModelSchema = new Schema<IModel>({
+const ModuleSchema = new Schema<Module>({
     name: {
         type: String,
         required: true,
-        unique:true
+        unique:false
     },
     description:{
+        type: String,
+        required: true
+    },
+    type:{
         type: String,
         required: true
     },
@@ -25,12 +22,17 @@ export const ModelSchema = new Schema<IModel>({
     header:{
         type: String
     },
-    creator:{
-        type: String,
-        required: true
-    },
     publish:{
         type: Boolean,
         required: true
     }
 });
+
+ModuleSchema.index(
+    {name:1, type:1}, {unique:true}
+);
+
+
+export {
+    ModuleSchema
+};

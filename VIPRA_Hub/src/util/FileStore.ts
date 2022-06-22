@@ -1,13 +1,13 @@
 import express from 'express';
 import multer from "multer";
 import path from 'path';
-import { Status } from '../../data_models/Status';
+import { Status } from '../data_models/Status';
 
 
 type Files = {[fieldname: string]: Express.Multer.File[]};
 
-const modelStore = multer.memoryStorage();
-const modelFilter = (req : express.Request, file : Express.Multer.File, cb : multer.FileFilterCallback)=>{
+const fileStore = multer.memoryStorage();
+const fileFilter = (req : express.Request, file : Express.Multer.File, cb : multer.FileFilterCallback)=>{
     const extension = path.extname(file.originalname);
     if(file.fieldname === 'header'){
         if(extension !== '.hpp'){
@@ -23,12 +23,12 @@ const modelFilter = (req : express.Request, file : Express.Multer.File, cb : mul
 };
 
 const upload = multer({
-    storage: modelStore,
-    fileFilter: modelFilter
+    storage: fileStore,
+    fileFilter
 });
 
 
-const storeModel = async (req : express.Request) : Promise<Status> => {
+const storeFiles = async (req : express.Request) : Promise<Status> => {
     return new Promise((resolve, reject)=>{
         upload.fields([
             {name:"source", maxCount:1},
@@ -47,6 +47,6 @@ const storeModel = async (req : express.Request) : Promise<Status> => {
 };
 
 export {
-    storeModel,
+    storeFiles,
     Files
 };

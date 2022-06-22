@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 import { Status } from "../../../data_models/Status";
 import { Map } from "../../../data_models/Map";
 import { IMapRepo } from "../MapRepo.interface";
-import { MapSchema } from "./MapModel";
+import { MapSchema } from "./MapSchema";
 import { MongoErrToStatus } from "../../../util/ErrorHandling";
+import { Logger } from "../../../logging/Logging";
 
 
 export class MapRepo implements IMapRepo{
@@ -13,13 +14,12 @@ export class MapRepo implements IMapRepo{
     private bModel: mongoose.Model<Map>;
 
     connect(dbURI: string): Status{
-        console.log("Connecting");
         this.dbConn = mongoose.createConnection(dbURI);
         this.bModel = this.dbConn.model('Map', MapSchema);
         if(!this.isConnected){
+            Logger.error(`MapRepo Unable To Connect`);
             return Status.INTERNAL_ERROR;
         }
-        console.log("Connected");
         return Status.SUCCESS;
     }
 
@@ -79,7 +79,7 @@ export class MapRepo implements IMapRepo{
     async deleteMap(mapName: string): Promise<Status>{
         const deleted = await this.bModel.deleteOne({name: mapName})
         .catch((error)=>{
-            console.log(`[ERROR] Error in deleteMap: ${error}`);
+            Logger.error(`Error in deleteMap: ${error}`);
             return {deletedCount : -1};
         });
 

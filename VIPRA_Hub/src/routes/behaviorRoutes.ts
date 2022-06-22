@@ -4,6 +4,7 @@ import { BehaviorsContoller }   from "../controllers/behavior/BehaviorsControlle
 import { config }               from "../configuration/config";
 import { Status }               from "../data_models/Status";
 import { RespondError, RespondUnknownError, RespondSuccess, RespondBehavior, RespondCreated }       from "../util/Responses";
+import { Logger } from "../logging/Logging";
 
 
 const BehaviorRoutes : express.Router = express.Router();
@@ -26,6 +27,7 @@ BehaviorRoutes.get('/', (req, res)=>{
         }
     })
     .catch((error)=>{
+        Logger.error(`Error in get /behavior: ${error}`);
         RespondUnknownError(res);
     });
 });
@@ -45,12 +47,12 @@ BehaviorRoutes.get('/:name', (req : express.Request<{name: string}>, res)=>{
                 RespondUnknownError(res);
                 break;
             default:
-                console.log(`[ERROR] Unhandled Status in GET /:name: ${behavior.status}`);
+                Logger.error(` Unhandled Status in GET /:name: ${behavior.status}`);
                 RespondUnknownError(res);
         }
     })
     .catch((error)=>{
-        console.log(`[ERROR] Error in GET /:name : ${error}`);
+        Logger.error(` Error in GET /:name : ${error}`);
         RespondUnknownError(res);
     });
 });
@@ -80,18 +82,20 @@ BehaviorRoutes.post('/', (req, res)=>{
                 RespondUnknownError(res);
                 break;
             default:
-                console.log(`[ERROR] Unhandled Status in POST /behavior : ${created}`);
+                Logger.error(` Unhandled Status in POST /behavior : ${created}`);
                 RespondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
-        console.log(`[ERROR] Error in POST /Behavior ${error}`);
+        Logger.error(` Error in POST /Behavior ${error}`);
         RespondUnknownError(res);
     });
 });
 
-BehaviorRoutes.put('/', (req : express.Request<{}, {}, {behavior: {name:string, content?:string, publish?:boolean}}, {}>, res)=>{
+
+// TODO NEXT change this to handle the name in the params rather than the body -RG
+BehaviorRoutes.put('/:name', (req : express.Request<{}, {}, {behavior: {name:string, content?:string, publish?:boolean}}, {}>, res)=>{
 
     if(!req.body.behavior){
         RespondError(Status.BAD_REQUEST, "Missing Behavior", "No Behavior was provided with the request", res);
@@ -121,13 +125,13 @@ BehaviorRoutes.put('/', (req : express.Request<{}, {}, {behavior: {name:string, 
                 RespondUnknownError(res);
                 break;
             default:
-                console.log(`[ERROR] Unhandled Status in PUT /behavior : ${updated}`);
+                Logger.error(` Unhandled Status in PUT /behavior : ${updated}`);
                 RespondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
-        console.log(`[ERROR] Error in PUT /Behavior ${error}`);
+        Logger.error(` Error in PUT /Behavior ${error}`);
         RespondUnknownError(res);
     });
 });
@@ -148,13 +152,13 @@ BehaviorRoutes.delete('/:name', (req, res)=>{
                 RespondUnknownError(res);
                 break;
             default:
-                console.log(`[ERROR] Unhandled Status in DELETE /behavior : ${deleted}`);
+                Logger.error(` Unhandled Status in DELETE /behavior : ${deleted}`);
                 RespondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
-        console.log(`[ERROR] Error in deleteBehavior: ${error}`);
+        Logger.error(` Error in deleteBehavior: ${error}`);
         RespondUnknownError(res);
     });
 });

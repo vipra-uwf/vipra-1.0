@@ -5,6 +5,7 @@ import { config }               from "../configuration/config";
 import { Status }               from "../data_models/Status";
 import { RespondData, RespondError, RespondUnknownError, RespondSuccess, RespondBehavior, RespondCreated } from "../util/Responses";
 import { Map, CheckMap } from "../data_models/Map";
+import { Logger } from "../logging/Logging";
 
 
 const MapRoutes : express.Router = express.Router();
@@ -20,7 +21,7 @@ MapRoutes.get('/', (req, res)=>{
         RespondData(res, options);
     })
     .catch((error)=>{
-        console.log(`[ERROR] Error in GET /map: ${error}`);
+        Logger.error(`Error in GET /map: ${error}`);
         RespondUnknownError(res);
     });
 });
@@ -45,12 +46,12 @@ MapRoutes.post('/', (req : express.Request<{}, {}, {map : Map}, {}>, res)=>{
                 RespondError(Status.CONFLICT, "Duplicate Name", "Map Names are required to be unique", res);
                 break;
             default:
-                console.log(`[ERROR] Unkown Error in POST /map: ${created}`);
+                Logger.error(`Unkown Error in POST /map: ${created}`);
                 RespondUnknownError(res);
         }
     })
     .catch((error)=>{
-        console.log(`[ERROR] Error in POST /map: ${error}`);
+        Logger.error(`Error in POST /map: ${error}`);
         RespondUnknownError(res);
     });
 });
@@ -80,13 +81,13 @@ MapRoutes.put('/:name', (req : express.Request<{name: string}, {}, {map : Map}, 
                 RespondUnknownError(res);
                 break;
             default:
-                console.log(`[ERROR] Unhandled Status in PUT /map: ${updated}`);
+                Logger.error(`Unhandled Status in PUT /map: ${updated}`);
                 RespondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
-        console.log(`[ERROR] Error in PUT /map: ${error}`);
+        Logger.error(`Error in PUT /map: ${error}`);
         RespondUnknownError(res);
     });
 });
@@ -105,13 +106,13 @@ MapRoutes.get('/:name', (req, res)=>{
                 RespondUnknownError(res);
                 break;
             default:
-                console.log(`[ERROR] Unhandled Status in GET /map: ${result.status}`);
+                Logger.error(`Unhandled Status in GET /map: ${result.status}`);
                 RespondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
-        console.log(`[ERROR] Error in GET /map`);
+        Logger.error(`Error in GET /map`);
         RespondUnknownError(res);
     });
 });
@@ -130,12 +131,12 @@ MapRoutes.delete('/:name', (req, res)=>{
                 RespondUnknownError(res);
                 break;
             default:
-                console.log(`[ERROR] Unhandled Status in DELETE /map: ${deleted}`);
+                Logger.error(`Unhandled Status in DELETE /map: ${deleted}`);
                 RespondUnknownError(res);
         }
     })
     .catch((error)=>{
-        console.log(`[ERROR] Error in DELETE /map: ${error}`);
+        Logger.error(`Error in DELETE /map: ${error}`);
         RespondUnknownError(res);
     });
 });
