@@ -1,3 +1,3 @@
 export const logConf = {
-    Level: 'info'
+    Level: 'debug',
 };

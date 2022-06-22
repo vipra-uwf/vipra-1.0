@@ -2,7 +2,6 @@ import express from "express";
 import { Logger } from "../logging/Logging";
 import { Behavior } from "../data_models/Behavior";
 import { Status } from "../data_models/Status";
-import { deleteFile } from "./FileHandling/FileOperations";
 
 const RespondUnknownError = (response : express.Response) : void => {
     response.status(Status.INTERNAL_ERROR).json({error: "Unknown Error", detail: "An Unknown error occured, Action may not have completed successfully"});

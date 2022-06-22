@@ -11,6 +11,15 @@ export interface ModuleMeta{
     type : ModuleType;
 }
 
+export interface ModuleUpdate{
+    name: string;
+    type: ModuleType;
+    description?: string;
+    source?: string;
+    header?: string;
+    publish?: boolean;
+}
+
 export interface Module{
     name: string;
     description: string;

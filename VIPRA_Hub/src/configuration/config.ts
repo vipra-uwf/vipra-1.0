@@ -26,6 +26,7 @@ export const config = {
     Module:{
         DB_URI: 'mongodb+srv://vipratest:PmD1Sf3rdwmOFdRJ@cluster0.nugoo.mongodb.net/?retryWrites=true&w=majority',
         TempDir: path.resolve('./MODULE_TEMP'),
-        ModuleRepo: (): IModuleRepo => { return new ModuleRepo(); }
+        ModuleRepo: (): IModuleRepo => { return new ModuleRepo(); },
+        AllowNoSource: false
     },
 };

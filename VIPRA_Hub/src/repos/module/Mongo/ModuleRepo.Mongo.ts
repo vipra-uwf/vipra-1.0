@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 
 import { MongoErrToStatus }                 from "../../../util/ErrorHandling";
-import { Module, ModuleMeta, ModuleType, toString } from "../../../data_models/Module";
+import { Module, ModuleMeta, ModuleType, ModuleUpdate, toString } from "../../../data_models/Module";
 import { Status }                           from "../../../data_models/Status";
 import { IModuleRepo }                      from "../ModuleRepo.interface";
 import { ModuleSchema }                     from "./ModuleSchema";
@@ -21,8 +21,6 @@ export class ModuleRepo implements IModuleRepo{
         this.stagingDir = stagingDir;
         makeDir(stagingDir);
     }
-
-    // TODO make get options for different types -RG
 
     public async getOptions(type : ModuleType): Promise<ModuleMeta[]> {
         const modules = await this.mModel.find({type: type.toString(), publish:true});
@@ -70,26 +68,6 @@ export class ModuleRepo implements IModuleRepo{
         }
     }
 
-    public async updateModuleSource(name : string, source : string): Promise<Status> {
-        const updated = await this.mModel.updateOne({name}, {source});
-
-        if(updated.modifiedCount === 1){
-            return Status.SUCCESS;
-        }else{
-            return Status.NOT_FOUND;
-        }
-    }
-
-    public async updateModuleHeader(name : string, header: string): Promise<Status> {
-        const updated = await this.mModel.updateOne({name}, {header});
-
-        if(updated.modifiedCount === 1){
-            return Status.SUCCESS;
-        }else{
-            return Status.NOT_FOUND;
-        }
-    }
-
     public async stageModule(type : ModuleType, name: string): Promise<{ status: Status, dirPath: string}> {
         const module = await this.mModel.findOne({type, name});
         if(module){
@@ -123,6 +101,17 @@ export class ModuleRepo implements IModuleRepo{
                 dirPath: null
             };
         }
+    }
+
+
+    public async updateModule(updateContent: ModuleUpdate): Promise<Status> {
+        const updated = await this.mModel.updateOne(updateContent);
+
+        if(updated.matchedCount === 0){
+            return Status.NOT_FOUND;
+        }
+
+        return Status.SUCCESS;
     }
 
     public async getModuleInfo(type : ModuleType, name: string): Promise<{status: Status, moduleMeta: ModuleMeta}> {

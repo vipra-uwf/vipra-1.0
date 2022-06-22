@@ -66,8 +66,8 @@ ModuleRoutes.get('/:type', (req, res)=>{
     }
 });
 
-// TODO
-ModuleRoutes.get('/:type/:name/info', (req, res)=>{
+
+ModuleRoutes.get('/info/:type/:name', (req, res)=>{
     const type : ModuleType = typeFromString(req.params.type);
     if(type){
         ModuleController.getModuleInfo(type, req.params.name)
@@ -93,7 +93,7 @@ ModuleRoutes.get('/:type/:name/info', (req, res)=>{
     }
 });
 
-// TODO
+
 ModuleRoutes.get('/:type/:name', (req, res) => {
     const moduleName = req.params.name;
     const type = typeFromString(req.params.type);
@@ -128,7 +128,7 @@ ModuleRoutes.get('/:type/:name', (req, res) => {
     }
 });
 
-// TODO add in the type stuff
+
 ModuleRoutes.post('/:type',(req, res)=>{
     ModuleController.createModule(req)
     .then((created)=>{
@@ -146,17 +146,48 @@ ModuleRoutes.post('/:type',(req, res)=>{
                 RespondUnknownError(res);
                 break;
             default:
-                Logger.error(`Unhandled Status in POST /module: ${created}`);
+                Logger.error(`Unhandled Status in POST /module/${req.params.type}: ${created}`);
                 RespondUnknownError(res);
         }
     })
     .catch((error)=>{
-        Logger.error(`Error in POST /module: ${error}`);
+        Logger.error(`Error in POST /module/${req.params.type}: ${error}`);
         RespondUnknownError(res);
     });
 });
 
-// TODO add in type stuff
+ModuleRoutes.put('/:type/:name', (req, res) => {
+    const type = typeFromString(req.params.type);
+    if(type){
+        ModuleController.updateModule(req)
+        .then((updated)=>{
+            switch(updated){
+                case Status.SUCCESS:
+                    RespondSuccess(res);
+                    break;
+                case Status.BAD_REQUEST:
+                    RespondError(Status.BAD_REQUEST, "Missing Attributes", "Missing or Malformed Attributes", res);
+                    break;
+                case Status.NOT_FOUND:
+                    RespondError(Status.NOT_FOUND, "Not Found", "No Module with the provided name was found", res);
+                    break;
+                case Status.INTERNAL_ERROR:
+                    RespondUnknownError(res);
+                    break;
+                default:
+                    Logger.error(`Unhandled Status in PUT /module/${req.params.type}/${req.params.name}: ${updated}`);
+                    RespondUnknownError(res);
+            }
+        })
+        .catch((error)=>{
+            Logger.error(`Error in PUT /module/${req.params.type}/${req.params.name}: ${error}`);
+            RespondUnknownError(res);
+        });
+    }else{
+        RespondError(Status.BAD_REQUEST, 'Invalid Module Type', `Module Type ${req.params.type} does not exists`, res);
+    }
+});
+
 ModuleRoutes.delete('/:type/:name', (req, res)=>{
     const type = typeFromString(req.params.type);
     if(type){
