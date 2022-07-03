@@ -20,7 +20,7 @@ const upload = multer({
     fileFilter
 });
 
-const storeFiles = (req : express.Request) : Promise<Status> => {
+const storeModule = (req : express.Request) : Promise<Status> => {
     return new Promise((resolve, reject)=>{
         upload.single('module')(req, null, (err : string)=>{
             if(err){
@@ -36,6 +36,6 @@ const storeFiles = (req : express.Request) : Promise<Status> => {
 };
 
 export {
-    storeFiles,
+    storeModule,
     Files
 };

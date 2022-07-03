@@ -68,7 +68,7 @@ export class ModuleRepo implements IModuleRepo{
         }
     }
 
-    public async stageModule(type : ModuleType, name: string): Promise<{ status: Status, dirPath: string}> {
+    public async stageModule(type : ModuleType, name: string): Promise<{ status: Status; dirPath: string}> {
         const module = await this.mModel.findOne({type, name});
         if(module){
 
@@ -114,7 +114,7 @@ export class ModuleRepo implements IModuleRepo{
         return Status.SUCCESS;
     }
 
-    public async getModuleInfo(type : ModuleType, name: string): Promise<{status: Status, moduleMeta: ModuleMeta}> {
+    public async getModuleInfo(type : ModuleType, name: string): Promise<{status: Status; moduleMeta: ModuleMeta}> {
         const module = await this.mModel.findOne({type, name});
         if(module){
             return {

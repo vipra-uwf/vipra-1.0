@@ -6,7 +6,6 @@ import { storeFiles, Files }            from "../../util/FileStore";
 import { config }                       from "../../configuration/config";
 import { deleteFile, deleteDir, tarDirectory, makeDir }     from "../../util/FileHandling/FileOperations";
 import { Module, ModuleMeta, ModuleType, ModuleUpdate, typeFromString }   from "../../data_models/Module";
-import e from "express";
 
 export class ModulesController{
 
@@ -20,7 +19,7 @@ export class ModulesController{
     }
 
     // TODO add caching of options -RG
-    public async getOptions(type : ModuleType) : Promise<{status: Status, options: ModuleMeta[]}>{
+    public async getOptions(type : ModuleType) : Promise<{status: Status; options: ModuleMeta[]}>{
         const options = await this.moduleRepo.getOptions(type);
         if(options){
             return {
@@ -35,13 +34,13 @@ export class ModulesController{
         }
     }
 
-    public async getModuleInfo(type : ModuleType, name : string) : Promise<{status : Status, moduleMeta: ModuleMeta}>{
+    public async getModuleInfo(type : ModuleType, name : string) : Promise<{status : Status; moduleMeta: ModuleMeta}>{
         const module = await this.moduleRepo.getModuleInfo(type, name);
         return module;
     }
 
     // TODO cache tars until model is updated -RG
-    public async getModule(type : ModuleType, name : string) : Promise<{status: Status, path: string}>{
+    public async getModule(type : ModuleType, name : string) : Promise<{status: Status; path: string}>{
         const staged = await this.moduleRepo.stageModule(type, name);
         if(staged.status === Status.SUCCESS){
             const tarred = await tarDirectory(this.tempDirPath, name, this.tempDirPath);
@@ -51,9 +50,9 @@ export class ModulesController{
         }
     }
 
-    public async handleDownloadCleanup(moduleName : string) : Promise<void>{
-        await deleteDir(`${config.Module.TempDir}/${moduleName}`, true);
-        await deleteFile(`${config.Module.TempDir}/${moduleName}.tar`);
+    public handleDownloadCleanup(moduleName : string) : void{
+        deleteDir(`${config.Module.TempDir}/${moduleName}`, true);
+        deleteFile(`${config.Module.TempDir}/${moduleName}.tar`);
     }
 
     public async createModule(req : express.Request) : Promise<Status>{

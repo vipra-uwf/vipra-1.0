@@ -16,6 +16,7 @@ export enum ModuleType{
 export interface Module{
     id          : string;
     name        : string;
+    description : string;
     dirPath     : string;
     type        : ModuleType;
     params      : ParamSet;

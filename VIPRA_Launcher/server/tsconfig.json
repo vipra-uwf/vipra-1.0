@@ -6,6 +6,7 @@
         "noImplicitAny": true,
         "moduleResolution": "node",
         "sourceMap": true,
+        "removeComments": true,
         "outDir": "dist",
         "baseUrl": ".",
         "paths": {
@@ -15,6 +16,7 @@
         }
     },
     "include": [
-        "src/**/*"
-    ]
+        "src/**/*.ts",
+        "src/**/*.tsx"
+    ],
 }

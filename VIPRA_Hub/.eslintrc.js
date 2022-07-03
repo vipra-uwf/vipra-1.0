@@ -74,7 +74,6 @@ module.exports = {
                 format: ["PascalCase"]
             }
         ],
-        "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-empty-function": "error",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-explicit-any": "off",
@@ -149,6 +148,7 @@ module.exports = {
         "no-console": "error",
         "no-debugger": "error",
         "no-empty": "error",
+        "no-empty-function": "error",
         "no-eval": "error",
         "no-fallthrough": "off",
         "no-invalid-this": "off",

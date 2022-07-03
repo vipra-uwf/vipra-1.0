@@ -20,7 +20,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
-    "ignorePatterns": ["*eslint*"],
+    "ignorePatterns": ["*eslint*", "babel.config.js"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "tsconfig.json",
@@ -45,6 +45,7 @@ module.exports = {
         "@typescript-eslint/consistent-type-assertions": "error",
         "@typescript-eslint/dot-notation": "error",
         "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/member-delimiter-style": [
             "error",
@@ -74,7 +75,6 @@ module.exports = {
                 format: ["PascalCase"]
             }
         ],
-        "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-empty-function": "error",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-explicit-any": "off",
@@ -149,6 +149,7 @@ module.exports = {
         "no-console": "error",
         "no-debugger": "error",
         "no-empty": "error",
+        "no-empty-function": "error",
         "no-eval": "error",
         "no-fallthrough": "off",
         "no-invalid-this": "off",

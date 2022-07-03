@@ -36,7 +36,7 @@ export class MapRepo implements IMapRepo{
         });
     }
 
-    async getMap(mapName: string): Promise<{map: Map, status: Status}>{
+    async getMap(mapName: string): Promise<{map: Map; status: Status}>{
         let map : Map = await this.bModel.findOne({name: mapName});
         if(!map){
             return {

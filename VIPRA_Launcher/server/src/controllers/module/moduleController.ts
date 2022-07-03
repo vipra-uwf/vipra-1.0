@@ -1,7 +1,7 @@
 import express from 'express';
 import crypto from 'crypto';
 
-import { storeFiles }                           from '../../util/FileStore';
+import { storeModule }                           from '../../util/FileStore';
 import { Module }                               from "../../data_models/module";
 import { Status }                               from "../../data_models/Status.e";
 import { deleteDir, deleteFile, extractTar, fileExists, makeDir, matchFile, moveFile, readJsonFile, writeFile, writeFileFromBuffer }      from '../../util/FileOperations';
@@ -12,12 +12,13 @@ export class ModuleController {
 
     modules         : Module[];
     moduleFilePath  : string;
-    tmpDir          : string;
+    modulesDir      : string;
 
-    constructor(tempDir : string, moduleFilePath : string){
-        this.moduleFilePath = moduleFilePath;
+    constructor(modulesDirPath : string){
+        this.modulesDir = modulesDirPath;
+        this.moduleFilePath = `${modulesDirPath}/modules.json`;
+        this.setupDirectories();
         this.loadModules();
-        this.setupTempDir(tempDir);
     }
 
     public getInstalledModules() : Module[] {
@@ -26,7 +27,7 @@ export class ModuleController {
 
     // TODO change the extraction etc to in-memory -RG
     public async installModule(req : express.Request) : Promise<Status> {
-        const stored = await storeFiles(req);
+        const stored = await storeModule(req);
         if(stored !== Status.SUCCESS){
             return stored;
         }
@@ -46,22 +47,31 @@ export class ModuleController {
         return installed;
     }
 
-    public removeModule(id : string) : Status {
+    // NOTE: turned off require-await as this may require await later -RG
+    // eslint-disable-next-line @typescript-eslint/require-await
+    public async removeModule(id : string) : Promise<Status> {
         const moduleIndex : number = this.modules.findIndex((mod)=>{
             return mod.id === id;
         });
 
-        const module = this.modules.at(moduleIndex);
+        const module : Module = this.modules.at(moduleIndex);
         if(module){
-            const deleted = deleteDir(`${module.dirPath}/${module.name}`, true);
+            const deleted = deleteDir(`${module.dirPath}/${module.id}`, true);
             if(deleted !== Status.SUCCESS){
                 return deleted;
             }
-            this.modules.slice(moduleIndex, moduleIndex);
-            writeFile(this.moduleFilePath, JSON.stringify(this.modules));
+            Logger.info(`Removed Module: ${module.name}:${module.id}`);
+            this.modules = this.modules.slice(moduleIndex, moduleIndex);
+            this.writeModules();
+            return Status.SUCCESS;
         }else{
             return Status.NOT_FOUND;
         }
+    }
+
+    private setupDirectories() : void{
+        makeDir(this.modulesDir);
+        return;
     }
 
     private loadModules() : void {
@@ -74,10 +84,10 @@ export class ModuleController {
         return;
     }
 
-    private setupTempDir(tempDir : string){
-        this.tmpDir = tempDir;
-        makeDir(tempDir);
+    private writeModules() : void {
+        writeFile(this.moduleFilePath, JSON.stringify(this.modules));
     }
+
 
     private checkModule(module : Module) : boolean{
         return (module.name && module.type && (module.params !== undefined));
@@ -85,12 +95,12 @@ export class ModuleController {
 
     private async unPackModule(file : Express.Multer.File, transId : string) : Promise<Status>{
 
-        const written = writeFileFromBuffer(this.tmpDir, `${transId}.tar`, file.buffer);
+        const written = writeFileFromBuffer(this.modulesDir, `${transId}.tar`, file.buffer);
         if(written !== Status.SUCCESS){
             return written;
         }
 
-        const extracted = await extractTar(this.tmpDir, `${transId}.tar`, `${this.tmpDir}/${transId}`);
+        const extracted = await extractTar(this.modulesDir, `${transId}.tar`, `${this.modulesDir}/${transId}`);
         if(extracted.status !== Status.SUCCESS){
             return extracted.status;
         }
@@ -112,20 +122,21 @@ export class ModuleController {
 
         this.moveModule(module, extracted.path);
         this.addModuleOption(module);
+        Logger.info(`Installed Module: ${module.name}:${module.id}`);
         return Status.SUCCESS;
     }
 
     private moveModule(module : Module, fromDir : string) : void{
         makeDir(`${config.vipra.vipraDir}/${module.type}`);
-        makeDir(`${config.vipra.vipraDir}/${module.type}/${module.name}`);
-        moveFile(`${fromDir}/${module.name}/${module.name}.hpp`, `${config.vipra.vipraDir}/${module.type}/${module.name}/${module.name}.hpp`);
-        moveFile(`${fromDir}/${module.name}/${module.name}.cpp`, `${config.vipra.vipraDir}/${module.type}/${module.name}/${module.name}.cpp`);
+        makeDir(`${config.vipra.vipraDir}/${module.type}/${module.id}`);
+        moveFile(`${fromDir}/${module.name}/${module.name}.hpp`, `${config.vipra.vipraDir}/${module.type}/${module.id}/${module.name}.hpp`);
+        moveFile(`${fromDir}/${module.name}/${module.name}.cpp`, `${config.vipra.vipraDir}/${module.type}/${module.id}/${module.name}.cpp`);
         module.dirPath = `${config.vipra.vipraDir}/${module.type}`;
     }
 
     private cleanup(id : string){
-        let deleted = deleteDir(`${this.tmpDir}/${id}`, true);
-        deleted = deleteFile(`${this.tmpDir}/${id}.tar`);
+        deleteDir(`${this.modulesDir}/${id}`, true);
+        deleteFile(`${this.modulesDir}/${id}.tar`);
         return;
     }
 
@@ -141,6 +152,6 @@ export class ModuleController {
 
     private addModuleOption(module : Module){
         this.modules.push(module);
-        writeFile(this.moduleFilePath, JSON.stringify(this.modules));
+        this.writeModules();
     }
 }

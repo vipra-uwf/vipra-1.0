@@ -21,7 +21,7 @@ export class MapsContoller{
         return deleted;
     }
 
-    public async getMap(name : string) : Promise<{map: Map, status: Status}>{
+    public async getMap(name : string) : Promise<{map: Map; status: Status}>{
         const map = await this.mapRepo.getMap(name);
         return map;
     }
@@ -31,7 +31,7 @@ export class MapsContoller{
         return updated;
     }
 
-    public async getOptions() : Promise<{name: string, description: string}[]>{
+    public async getOptions() : Promise<{name: string; description: string}[]>{
         const maps = await this.mapRepo.getAll();
         return maps.map((map)=>{
             const m = {

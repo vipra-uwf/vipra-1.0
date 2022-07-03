@@ -110,7 +110,7 @@ export class BehaviorRepo implements IBehaviorRepo{
         });
     }
 
-    public async getBehavior(behaviorName: string): Promise<{behavior: Behavior, status: Status}> {
+    public async getBehavior(behaviorName: string): Promise<{behavior: Behavior; status: Status}> {
 
         let status : Status = Status.SUCCESS;
         let behavior : Behavior = await this.bModel.findOne({name: behaviorName}).

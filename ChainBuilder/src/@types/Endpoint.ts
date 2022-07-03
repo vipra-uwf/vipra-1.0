@@ -1,5 +1,6 @@
 import express from 'express';
-import { cbLinksRespond } from "./Responses";
+
+import { cbErrorRespond, cbLinksRespond } from "./Responses";
 import { Service } from "./Service";
 import { Link } from "./Types";
 
@@ -14,19 +15,22 @@ export class Endpoint{
     private service     : Service;
 
 
-    constructor(name : string){
-        if(name === ''){
+    constructor(name : string, baseHref : string){
+        if(name === '' || name === null || name === undefined){
             throw new Error(`Endpoint names cannot be empty`);
         }
         this.name = name;
-        this.href = '';
+        this.href = `${baseHref}${name}/`;
         this.links = new Map();
     }
 
     public treeTraverse(route : string[]) : Endpoint{
-        const popped : string = route.shift();
+        let popped : string = route.shift();
+        while(popped === ""){
+            popped = route.shift();
+        }
         if(popped){
-            if(popped === '' || popped.charAt(0) === '?' || popped.charAt(0) === '@'){
+            if(popped === '' || popped.charAt(0) === '?'){
                 return this;
             }
             const next = this.links.get(popped);
@@ -43,15 +47,26 @@ export class Endpoint{
         if(!this.service){
             cbLinksRespond(this.getLinks(), response);
         }else{
-            this.service.handleRequest(request, response);
+            this.service.handleRequest(request, response)
+            .catch((error)=>{
+                cbErrorRespond(`Unknown Error`, response);
+            });
         }
     }
     public addEndpoint(endpoint : Endpoint){
         if(this.links.has(endpoint.name)){
             throw new Error(`Endpoint already has link to: ${endpoint.name}`);
         }
-        endpoint.setHref(this.getHref().concat('/', endpoint.name, '/'));
+        endpoint.setHref(`${this.href}${endpoint.name}`);
         this.links.set(endpoint.name, endpoint);
+    }
+
+    public getEndpoint(name : string) : Endpoint{
+        if(this.links.has(name)){
+            return this.links.get(name);
+        }else{
+            return null;
+        }
     }
 
     public setService(service : Service){

@@ -2,11 +2,10 @@ import express from 'express';
 import https from 'https';
 import { ResultStore } from './ResultStore';
 import { cbErrorRespond, cbResultRespond, cbServiceInfoRespond } from './Responses';
-import { Parameter, ServiceInfo, Response } from './Types';
+import { Parameter, ServiceInfo, Response, ServiceOptions, CbMethod } from './Types';
 
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-// TODO allow multiple arguments
 export class Service{
 
     private href            : string;
@@ -16,19 +15,13 @@ export class Service{
 
     private resultStore     : ResultStore;
 
-    private serviceMethod   : (args : string[]) => Promise<string>;
-    private methodParams    : {name : string, type : string};
-    private methodReturn    : {name: string, type : string};
+    private serviceMethod   : CbMethod;
+    private methodParams    : {name : string; type : string}[];
+    private methodReturn    : {name: string; type : string};
 
     private httpsAgent      : https.Agent;
 
-    constructor(settings: {
-        info : ServiceInfo,
-        parameters  : {name : string, type : string},
-        returnValue : {name : string, type : string},
-        resultStore : ResultStore,
-        method      : (args : string[]) => Promise<string>
-    }){
+    constructor(settings : ServiceOptions){
         this.info = settings.info;
         this.httpsAgent = new https.Agent({
             rejectUnauthorized: false
@@ -55,7 +48,7 @@ export class Service{
     }
 
     private async runService(request : express.Request, response : express.Response) : Promise<string>{
-        const parameters : string[] = await this.getRequestParams(request, response);
+        const parameters : { [key: string]: string[] } = await this.getRequestParams(request as express.Request<any, any, {[key:string]:any}>, response);
         if(parameters){
             const result : string = await this.serviceMethod(parameters);
             if(result){
@@ -68,7 +61,7 @@ export class Service{
     }
 
 
-    public setMethod(argument : {name: string, type: string}, returnType : {name: string, type: string}, method : (args : string[])=> Promise<string>) : void{
+    public setMethod(argument : {name: string; type: string; description: string; sample: string}[], returnType : {name: string; type: string}, method : CbMethod){
         this.methodParams = argument;
         this.methodReturn = returnType;
         this.serviceMethod = method;
@@ -76,19 +69,23 @@ export class Service{
         // TODO remove the server part and assign elsewhere -RG
         // TODO remove the description and assign elsewhere -RG
         // TODO remove the sample and assign elsewhere -RG
+
         this.parameter = {
-            arguments : {
-                [argument.name]: {
-                    chain_name: argument.name.concat('_href'),
-                    description: "TODO",
-                    type: argument.type,
-                    repeatable: true,
-                    sample: 15
-                }
-            },
-            server:[
-            ]
+            arguments : {},
+            server:[]
         };
+
+        argument.forEach((arg)=>{
+            this.parameter.arguments[arg.name] = {
+                chain_name: `${arg.name}_href`,
+                description: arg.description,
+                type: arg.type,
+                repeatable: true,
+                sample: arg.sample
+            };
+        });
+
+
 
         // TODO remove the description and assign elsewhere -RG
         this.response = {
@@ -100,60 +97,71 @@ export class Service{
         };
     }
 
+    private async getRequestParams(request : express.Request<any, any, {[key:string]:any}>, response : express.Response) : Promise<{ [key: string]: string[] }>{
 
-    // TODO NEXT one parameter causes this to interperet it as an array of one character strings -RG
-    private async getRequestParams(request : express.Request, response : express.Response) : Promise<string[]>{
-        if(request.query[this.methodParams.name]){
-            const query = request.query[this.methodParams.name];
-            let params : string[] = [];
+        const params : string[] = this.methodParams.map((arg)=>{
+            return arg.name;
+        });
 
-            if(typeof query === "string"){
-                params.push(query);
+        if(request.query){
+            let query : {[key:string] : string[]};
+            // NOTE: we check if we were provided with hrefs or raw values, based on that we either fetch or use directly
+            //       values/hrefs can come in either the query or body so we need to check both
+            //          checking whether query[param] is a string is a quirk of typescipt as if there is only one parameter provided it will be interpereted as an array of strings with length 1 -RG
+            if(request.query[`${params.at(0)}_href`]){
+                for await (const param of params){
+                    if(typeof request.query[param] === "string"){
+                        query[param] = await this.requestChainData([request.query[param] as string], response);
+                    }else{
+                        query[param] = await this.requestChainData(request.query[param] as string[], response);
+                    }
+                }
             }else{
-                params = query as string[];
+                params.forEach((param)=>{
+                    if(typeof (request.query[param]) === "string"){
+                        query[param] = [request.query[param] as string];
+                    }else{
+                        query[param] = request.query[param] as string[];
+                    }
+                });
             }
-            return params;
+            return query;
         }
-        if(request.query[this.methodParams.name.concat('_href')]){
-            const query = request.query[this.methodParams.name.concat('_href')];
-            let hrefs : string[] = [];
-
-            if(typeof query === "string"){
-                hrefs.push(query);
-            }else{
-                hrefs = query as string[];
+        if(request.body){
+            let query : {[key:string] : string[]};
+            // NOTE: we check that the member exists and that it is correct, this error is not needed -RG
+            if(request.body[`${params.at(0)}_href`]){
+                for await (const param of params){
+                    if(request.body[param]){
+                        if(typeof request.body[param] === "string"){
+                            query[param] = await this.requestChainData([request.body[param] as string], response);
+                        }else{
+                            query[param] = await this.requestChainData(request.body[param] as string[], response);
+                        }
+                    }else{
+                        cbErrorRespond("Missing Parameters", response);
+                        return null;
+                    }
+                }
             }
-
-            const params : string[] = await this.requestChainData(hrefs, response);
-            return params;
-        }
-        if(request.body[this.methodParams.name.concat('_href')]){
-            let hrefs : string[] = [];
-            const body = request.body[this.methodParams.name.concat('_href')];
-
-            if(typeof body === "string"){
-                hrefs.push(body);
-            }else{
-                hrefs = body as string[];
-            }
-
-            const params : string[] = await this.requestChainData(hrefs, response);
-            return params;
+            return query;
         }
         return null;
     }
 
     private async requestChainData(hrefs : string[], response : express.Response) : Promise<string[]>{
-        let params : string[] = [];
+        const params : string[] = [];
         for(const link of hrefs){
-            const data = await axios.get(link.concat('raw/'), {httpsAgent:this.httpsAgent})
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            const data : AxiosResponse = await axios.get(link.concat('raw/'), {httpsAgent:this.httpsAgent})
             .catch((err)=>{
-                console.log(`[ERROR] Error getting data from ${link}\nError: ${err}`);
                 cbErrorRespond('Unable to get data from previous chain', response);
                 return null;
             });
             if(data){
-                params.push(data.data);
+                if(data.data){
+                    params.push(JSON.stringify(data.data));
+                }
             }
         }
         return params;

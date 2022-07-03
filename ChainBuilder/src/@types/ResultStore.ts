@@ -1,6 +1,9 @@
 import express from 'express';
 import { cbErrorRespond, cbFormatRespond, cbRawRespond, cbResultRespond } from './Responses';
 
+
+// TODO add result expiration -RG
+
 export abstract class ResultStore{
 
     protected href            : string;
@@ -20,7 +23,10 @@ export abstract class ResultStore{
         const resultHash = path[2];
         const format = path[3];
         if(format){
-            this.respondResult(resultHash, format, response);
+            this.respondResult(resultHash, format, response)
+            .catch((error)=>{
+                cbErrorRespond('Error Retrieving Result from Result Store', response);
+            });
         }else{
             this.respondFormats(resultHash, response);
         }

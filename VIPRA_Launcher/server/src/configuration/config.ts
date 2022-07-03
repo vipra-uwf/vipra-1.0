@@ -1,14 +1,33 @@
 import path from 'path';
+import fs from 'fs';
 
-export const config ={
+// TODO!!!! change this to be set from environment -RG
+
+
+export const config = {
     app:{
-        port: 3001
+        port: 443,
+        https:{
+            key: fs.readFileSync(path.resolve('./certs/local.pem')),
+            cert: fs.readFileSync(path.resolve('./certs/local.crt')),
+            passphrase: null as string
+        }
+    },
+    cb:{
+        url: "https://192.168.1.120/",
     },
     vipra:{
-        vipraDir: path.resolve(`./TEST_VIPRA`)
+        vipraDir: path.resolve(`./TEST_VIPRA`),
+        simsDir: path.resolve(`./SIMS`),
+        outputDir: path.resolve(`./OUTPUT`),
+        scripts:{
+            genMain: path.resolve('./src/scripts/genMain'),
+            moduleObj: path.resolve('./src/scripts/buildObject'),
+            compConfig: path.resolve('./src/scripts/compConfig'),
+            runSim: path.resolve('./src/scripts/runSim')
+        }
     },
     module:{
-        modulesFile : path.resolve(`./MODULES/modules.json`),
-        tmpDir: path.resolve(`./TMP_DIR`)
+        modulesDir : path.resolve(`./MODULES`),
     }
 };

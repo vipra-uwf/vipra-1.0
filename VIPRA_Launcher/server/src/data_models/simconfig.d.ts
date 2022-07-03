@@ -1,18 +1,15 @@
-import { Module } from "./module";
-
-
 
 export interface SimConfig{
-    id                          : string;
-    name                        : string;
-    description                 : string;
-    input_data_loader           : Module;
-    output_data_writer          : Module;
-    simulation_output_handler   : Module;
-    pedestrian_set              : Module;
-    obstacle_set                : Module;
-    entity_set_factor           : Module;
-    goals                       : Module;
-    pedestrian_dynamics_model   : Module;
-    human_behavior_model        : Module;
+    id                              : string;
+    name                            : string;
+    description                     : string;
+    input_data_loader_id            : string;
+    output_data_writer_id           : string;
+    simulation_output_handler_id    : string;
+    pedestrian_set_id               : string;
+    obstacle_set_id                 : string;
+    entity_set_factory_id           : string;
+    goals_id                        : string;
+    pedestrian_dynamics_model_id    : string;
+    human_behavior_model_id         : string;
 }

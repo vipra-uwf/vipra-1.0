@@ -3,7 +3,7 @@ import express      from "express";
 import { BehaviorsContoller }   from "../controllers/behavior/BehaviorsController";
 import { config }               from "../configuration/config";
 import { Status }               from "../data_models/Status";
-import { RespondError, RespondUnknownError, RespondSuccess, RespondBehavior, RespondCreated }       from "../util/Responses";
+import { respondError, respondUnknownError, respondSuccess, respondBehavior, respondCreated }       from "../util/Responses";
 import { Logger } from "../logging/Logging";
 
 
@@ -23,12 +23,12 @@ BehaviorRoutes.get('/', (req, res)=>{
                data: options
             });
         }else{
-            RespondUnknownError(res);
+            respondUnknownError(res);
         }
     })
     .catch((error)=>{
         Logger.error(`Error in get /behavior: ${error}`);
-        RespondUnknownError(res);
+        respondUnknownError(res);
     });
 });
 
@@ -38,22 +38,22 @@ BehaviorRoutes.get('/:name', (req : express.Request<{name: string}>, res)=>{
     .then((behavior)=>{
         switch(behavior.status){
             case Status.SUCCESS:
-                RespondBehavior(res, behavior.behavior);
+                respondBehavior(res, behavior.behavior);
                 break;
             case Status.NOT_FOUND:
-                RespondError(Status.NOT_FOUND, "Not Found", "No Behavior with the provided name was found", res);
+                respondError(Status.NOT_FOUND, "Not Found", "No Behavior with the provided name was found", res);
                 break;
             case Status.INTERNAL_ERROR:
-                RespondUnknownError(res);
+                respondUnknownError(res);
                 break;
             default:
                 Logger.error(` Unhandled Status in GET /:name: ${behavior.status}`);
-                RespondUnknownError(res);
+                respondUnknownError(res);
         }
     })
     .catch((error)=>{
         Logger.error(` Error in GET /:name : ${error}`);
-        RespondUnknownError(res);
+        respondUnknownError(res);
     });
 });
 
@@ -61,7 +61,7 @@ BehaviorRoutes.get('/:name', (req : express.Request<{name: string}>, res)=>{
 // TODO ?? allow for file upload to create behaviors ?? -RG
 BehaviorRoutes.post('/', (req, res)=>{
     if(!req.body.behavior){
-        RespondError(Status.BAD_REQUEST, "No Behavior", "No Behavior was provided with the request", res);
+        respondError(Status.BAD_REQUEST, "No Behavior", "No Behavior was provided with the request", res);
         return;
     }
 
@@ -70,35 +70,35 @@ BehaviorRoutes.post('/', (req, res)=>{
         res.status(created);
         switch(created){
             case Status.CREATED:
-                RespondCreated(res);
+                respondCreated(res);
                 break;
             case Status.BAD_REQUEST:
-                RespondError(created, "Improper Format", "Behaviors require attributes: name, content, creator, and publish", res);
+                respondError(created, "Improper Format", "Behaviors require attributes: name, content, creator, and publish", res);
                 break;
             case Status.CONFLICT:
-                RespondError(created, "Duplicate Name", "Duplicate Behavior Names are not allowed. Use a PUT request to update behaviors", res);
+                respondError(created, "Duplicate Name", "Duplicate Behavior Names are not allowed. Use a PUT request to update behaviors", res);
                 break;
             case Status.INTERNAL_ERROR:
-                RespondUnknownError(res);
+                respondUnknownError(res);
                 break;
             default:
                 Logger.error(` Unhandled Status in POST /behavior : ${created}`);
-                RespondUnknownError(res);
+                respondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
         Logger.error(` Error in POST /Behavior ${error}`);
-        RespondUnknownError(res);
+        respondUnknownError(res);
     });
 });
 
 
 // TODO NEXT change this to handle the name in the params rather than the body -RG
-BehaviorRoutes.put('/:name', (req : express.Request<{}, {}, {behavior: {name:string, content?:string, publish?:boolean}}, {}>, res)=>{
+BehaviorRoutes.put('/:name', (req : express.Request<{}, {}, {behavior: {name:string; content?:string; publish?:boolean}}, {}>, res)=>{
 
     if(!req.body.behavior){
-        RespondError(Status.BAD_REQUEST, "Missing Behavior", "No Behavior was provided with the request", res);
+        respondError(Status.BAD_REQUEST, "Missing Behavior", "No Behavior was provided with the request", res);
         return;
     }
 
@@ -107,7 +107,7 @@ BehaviorRoutes.put('/:name', (req : express.Request<{}, {}, {behavior: {name:str
     const bPublish = req.body.behavior.publish;
 
     if(!bName || (!bContent && (bPublish === undefined))){
-        RespondError(Status.BAD_REQUEST, "Missing Attributes", "Request requires: name, and content or publish", res);
+        respondError(Status.BAD_REQUEST, "Missing Attributes", "Request requires: name, and content or publish", res);
         return;
     }
 
@@ -116,23 +116,23 @@ BehaviorRoutes.put('/:name', (req : express.Request<{}, {}, {behavior: {name:str
         res.status(updated);
         switch(updated){
             case Status.SUCCESS:
-                RespondCreated(res);
+                respondCreated(res);
                 break;
             case Status.BAD_REQUEST:
-                RespondError(Status.BAD_REQUEST, "Invalid Request", "Check The Request Format and Retry", res);
+                respondError(Status.BAD_REQUEST, "Invalid Request", "Check The Request Format and Retry", res);
                 break;
             case Status.INTERNAL_ERROR:
-                RespondUnknownError(res);
+                respondUnknownError(res);
                 break;
             default:
                 Logger.error(` Unhandled Status in PUT /behavior : ${updated}`);
-                RespondUnknownError(res);
+                respondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
         Logger.error(` Error in PUT /Behavior ${error}`);
-        RespondUnknownError(res);
+        respondUnknownError(res);
     });
 });
 
@@ -143,23 +143,23 @@ BehaviorRoutes.delete('/:name', (req, res)=>{
         res.status(deleted);
         switch(deleted){
             case Status.SUCCESS:
-                RespondSuccess(res);
+                respondSuccess(res);
                 break;
             case Status.NOT_FOUND:
-                RespondError(deleted, "Not Found", "No Behavior with the provided name was found", res);
+                respondError(deleted, "Not Found", "No Behavior with the provided name was found", res);
                 break;
             case Status.INTERNAL_ERROR:
-                RespondUnknownError(res);
+                respondUnknownError(res);
                 break;
             default:
                 Logger.error(` Unhandled Status in DELETE /behavior : ${deleted}`);
-                RespondUnknownError(res);
+                respondUnknownError(res);
                 break;
         }
     })
     .catch((error)=>{
         Logger.error(` Error in deleteBehavior: ${error}`);
-        RespondUnknownError(res);
+        respondUnknownError(res);
     });
 });
 

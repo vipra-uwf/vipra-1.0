@@ -16,7 +16,7 @@ export class BehaviorsContoller{
         }
 
         // TODO find a better way to do this, this is hideous -RG
-        const behavior : Behavior = JSON.parse(JSON.stringify(behaviorJSON));
+        const behavior : Behavior = JSON.parse(JSON.stringify(behaviorJSON)) as Behavior;
         const created : Status = await this.behaviorDB.createBehavior(behavior);
         return created;
     }
@@ -38,7 +38,7 @@ export class BehaviorsContoller{
         return Status.SUCCESS;
     }
 
-    public async getBehavior(name: string) : Promise<{behavior: Behavior, status: Status}>{
+    public async getBehavior(name: string) : Promise<{behavior: Behavior; status: Status}>{
         const behavior = await this.behaviorDB.getBehavior(name);
         return behavior;
     }

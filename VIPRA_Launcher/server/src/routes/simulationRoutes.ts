@@ -1,20 +1,21 @@
 import express from 'express';
-import { SimManager } from '../controllers/simulation/SimManager';
+import { setupCB } from '../chainbuilder/cbSetup';
+import { CBServer } from 'typechain';
 
-import { ConfigManager } from '../controllers/simconfig/ConfigManager';
+const simulationRouter = () : express.Router => {
+    const simRoutes = express.Router();
 
-const simulationRouter = express.Router();
+    const cbServer : CBServer = setupCB();
 
-const configManager = ConfigManager.getInstance();
-const simManager = new SimManager(configManager);
+    simRoutes.use('/', (req : express.Request, res : express.Response)=>{
+        req.originalUrl = req.url;
+        // TODO find out why eslint is complaining about this -RG
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        cbServer.handleChainBuilderRequest(req, res);
+    });
 
-// TODO:
-// Start Sim
-
-
-simulationRouter.get('/:id', (req, res)=>{
-    simManager.startSimWithConfig(req.params.id);
-});
+    return simRoutes;
+};
 
 
 export {
