@@ -1,0 +1,26 @@
+[
+    {
+        "luggage": "0.46"
+    },
+    {
+        "exit_door_x": "23.25"
+    },
+    {
+        "exit_door_y": "1.73"
+    },
+    {
+        "aligning_stop_threshold": "0.2"
+    },
+    {
+        "toward_aisle_stop_threshold": "0.4"
+    },
+    {
+        "in_aisle_stop_threshold": "0.42"
+    },
+    {
+        "time_step": "0.000"
+    },
+    {
+        "time_step_size": "0.005"
+    }
+]

@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { respondData, respondError, respondSuccess, respondUnknownError } from '../util/Responses';
-import { SimConfig }        from '../data_models/simconfig';
+import { SimConfig, SimConfigIDs }        from '../data_models/simconfig';
 import { ConfigManager }    from '../controllers/simconfig/ConfigManager';
 import { Status }           from '../data_models/Status.e';
 import { Logger }           from '../logging/Logging';
@@ -16,17 +16,20 @@ const simConfigRouter = () : express.Router => {
         respondData(configManager.getConfigs(), res);
     });
 
-    simConfigRoutes.post('/', (req : express.Request<{}, {}, {config : SimConfig}>, res)=>{
-        const simconf : SimConfig = req.body.config;
+    simConfigRoutes.post('/', (req : express.Request<{}, {}, {config : SimConfigIDs; name : string; description : string}>, res)=>{
+        const name : string = req.body.name;
+        const description : string = req.body.description;
+        const simconf : SimConfigIDs = req.body.config;
         if(simconf){
-            configManager.createConfig(simconf)
+            configManager.createConfig(name, description, simconf)
             .then((created)=>{
                 switch(created.status){
+                    // TODO return the created config
                     case Status.CREATED:
                         respondSuccess(res);
                         break;
                     case Status.BAD_REQUEST:
-                        respondError(Status.BAD_REQUEST, ``, ``, res);
+                        respondError(Status.BAD_REQUEST, `Missing Attributes`, `The Provided config was missing required modules`, res);
                         break;
                     case Status.CONFLICT:
                         respondError(Status.CONFLICT, 'Dupicate Configuration', `The provided configuration matches another config: ${created.config.id}`, res);
@@ -39,7 +42,8 @@ const simConfigRouter = () : express.Router => {
                         respondUnknownError(res);
                 }
             })
-            .catch((error)=>{
+            .catch((error : string)=>{
+                Logger.error(`createConfig: ${error}`);
                 respondUnknownError(res);
             });
         }else{

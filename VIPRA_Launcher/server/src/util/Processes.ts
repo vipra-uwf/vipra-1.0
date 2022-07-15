@@ -5,15 +5,27 @@ import { config } from "../configuration/config";
 import { Status } from "../data_models/Status.e";
 import { fileExists } from './FileOperations';
 import { SimConfig } from '../data_models/simconfig';
+import { Module } from '../data_models/module';
 
 
-const buildModule = async (moduleDir : string) : Promise<child_process.ChildProcess> => {
+// TODO NEXT remove scripts and run commands directly from here -RG
+
+
+// TODO
+// compile human behavior -> compiles the human behavior
+// compile generate main -> compiles code generation
+// call generate main -> creates main.cpp and compiles it (this needs to be seperate so we dont have to compile generate_main every time)
+// compile simulation -> takes all compiled modules and main into a simulation
+// runs simulation -> takes in a config id, map, pedestrians and output and runs sim
+
+const buildModule = async (module : Module) : Promise<Status> => {
     return new Promise((resolve, reject)=>{
-        if(!fileExists(moduleDir)){
-            Logger.error(`Attempt to build module that doesn't exist: ${moduleDir}`);
+        if(!fileExists(`${module.includePath}`)){
+            Logger.error(`Attempt to build module that doesn't exist: ${module.name}:${module.id}`);
             reject(Status.BAD_REQUEST);
         }
-        const ps = child_process.exec(`sh ${config.vipra.scripts.moduleObj} --module ${moduleDir}`, (error : child_process.ExecException) => {
+        const command : string = `make module -C ${config.vipra.vipraMake} MODULEPATH=${module.dirPath}/${module.name} MODULEID=${module.id}`;
+        const ps = child_process.exec(command, (error : child_process.ExecException) => {
             if(error){
                 Logger.error(`buildModule: ${error.message}`);
                 reject(error);
@@ -22,23 +34,50 @@ const buildModule = async (moduleDir : string) : Promise<child_process.ChildProc
         ps.stderr.on('data', (data : string) => {
             Logger.info(`buildModule: ${data}`);
         });
-        ps.stdout.on('data', (data : string) =>{
+        ps.stdout.on('data', (data : string) => {
             Logger.info(`buildModule: ${data}`);
         });
-        ps.on('close', (code : number, signal : NodeJS.Signals)=>{
+        ps.on('close', (code : number, signal : NodeJS.Signals) => {
             if(code !== 0){
                 reject(signal);
             }else{
-                Logger.info(`Module Build Successful: ${moduleDir}`);
-                resolve(ps);
+                Logger.info(`Module Build Successful: ${module.name}:${module.id}`);
+                resolve(Status.SUCCESS);
             }
         });
     });
 };
 
-const compileGenMain = async () : Promise<child_process.ChildProcess> => {
+const compileHumanBehavior = async() : Promise<Status> => {
+    return new Promise((resolve, reject) => {
+        const command : string = `make compile -C ${config.vipra.behaviorMake}`;
+        const ps = child_process.exec(command, (error : child_process.ExecException) => {
+            if(error){
+                Logger.error(`compileHumanBehavior: ${error.message}`);
+                reject(error);
+            }
+        });
+        ps.stderr.on('data', (data : string) => {
+            Logger.info(`compileHumanBehavior: ${data}`);
+        });
+        ps.stdout.on('data', (data : string) => {
+            Logger.info(`compileHumanBehavior: ${data}`);
+        });
+        ps.on('close', (code : number, signal : NodeJS.Signals) => {
+            if(code !== 0){
+                reject(signal);
+            }else{
+                Logger.info(`Human Behavior Compiled Successfully`);
+                resolve(Status.SUCCESS);
+            }
+        });
+    });
+};
+
+const compileGenMain = async () : Promise<Status> => {
     return new Promise((resolve, reject) =>{
-        const ps = child_process.exec(`sh ${config.vipra.scripts.genMain} --vipraDir ${config.vipra.vipraDir}`, (error : child_process.ExecException) => {
+        const command : string = `make generate_main -C ${config.vipra.vipraMake}`;
+        const ps = child_process.exec(command, (error : child_process.ExecException) => {
             if(error){
                 Logger.error(`compileGenMain: ${error.message}`);
                 reject(error);
@@ -55,54 +94,45 @@ const compileGenMain = async () : Promise<child_process.ChildProcess> => {
                 reject(signal);
             }else{
                 Logger.info(`Generate Main Compiled Successfully`);
-                resolve(ps);
+                resolve(Status.SUCCESS);
             }
         });
     });
 };
 
-const compileConfig = async (simconfig : SimConfig) : Promise<Status> => {
-    return new Promise((resolve, reject)=>{
-        const command : string =
-        `sh ${config.vipra.scripts.compConfig}\
-        --ID ${simconfig.id}\
-        --IDL ${simconfig.input_data_loader_id}\
-        --ODP ${simconfig.output_data_writer_id}\
-        --SOH ${simconfig.simulation_output_handler_id}\
-        --PS ${simconfig.pedestrian_set_id}\
-        --OS ${simconfig.obstacle_set_id}\
-        --ESF ${simconfig.entity_set_factory_id}\
-        --GS ${simconfig.goals_id}\
-        --PDM ${simconfig.pedestrian_dynamics_model_id}\
-        --HBM ${simconfig.human_behavior_model_id}`;
-
+const compileMain = async () : Promise<Status> => {
+    return new Promise((resolve, reject) =>{
+        const command : string = `make compileMain -C ${config.vipra.vipraMake} MODULEFILE=${config.module.modulesFile}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
             if(error){
-                Logger.error(`compileConfig: ID: ${simconfig.id} : ${error.message}`);
+                Logger.error(`compileMain: ${error.message}`);
                 reject(error);
             }
         });
         ps.stderr.on('data', (data : string) => {
-            Logger.error(`compileConfig: ID: ${simconfig.id} : ${data}`);
+            Logger.info(`compileMain: ${data}`);
         });
         ps.stdout.on('data', (data : string) => {
-            Logger.info(`compileConfig: ID: ${simconfig.id} : ${data}`);
+            Logger.info(`compileMain: ${data}`);
         });
         ps.on('close', (code : number, signal : NodeJS.Signals) => {
             if(code !== 0){
                 reject(signal);
+            }else{
+                Logger.info(`Main Compiled Successfully`);
+                resolve(Status.SUCCESS);
             }
-            Logger.info(`Config Compiled Successfully: ${simconfig.id}`);
-            resolve(Status.SUCCESS);
         });
     });
 };
 
-const runSim = (configID : string, outputDir : string) : child_process.ChildProcess =>{
-    if(!fileExists(`${config.vipra.simsDir}/${configID}`)){
+const runSim = (configID : string, mapFile : string, pedestrianFile : string, outputFile : string) : child_process.ChildProcess =>{
+    const configDir = `${config.vipra.simsDir}/${configID}`;
+    if(!fileExists(configDir)){
         return null;
     }
-    const ps = child_process.exec(`sh ${config.vipra.scripts.runSim} --configID ${configID} --outDir ${outputDir}`, (error) =>{
+    const command : string = `cd ${config.vipra.simsDir} && ./VIPRA ${configDir}/sim.config ${configDir}/module_params.json ${pedestrianFile} ${mapFile} ${outputFile}`;
+    const ps = child_process.exec(command, (error) =>{
         if(error){
             Logger.error(`runSim: ${error.message}`);
         }
@@ -116,10 +146,38 @@ const runSim = (configID : string, outputDir : string) : child_process.ChildProc
     return ps;
 };
 
+const compileSim = () : Promise<Status> => {
+    return new Promise((resolve, reject) =>{
+        const command : string = `make simulation -C ${config.vipra.vipraMake}`;
+        const ps = child_process.exec(command, (error : child_process.ExecException) => {
+            if(error){
+                Logger.error(`compileSim: ${error.message}`);
+                reject(error);
+            }
+        });
+        ps.stderr.on('data', (data : string) => {
+            Logger.info(`compileSim: ${data}`);
+        });
+        ps.stdout.on('data', (data : string) => {
+            Logger.info(`compileSim: ${data}`);
+        });
+        ps.on('close', (code : number, signal : NodeJS.Signals) => {
+            if(code !== 0){
+                reject(signal);
+            }else{
+                Logger.info(`Simulation Generated Successfully`);
+                resolve(Status.SUCCESS);
+            }
+        });
+    });
+};
+
 
 export {
     buildModule,
-    compileConfig,
+    compileSim,
+    compileGenMain,
     runSim,
-    compileGenMain
+    compileMain,
+    compileHumanBehavior
 };

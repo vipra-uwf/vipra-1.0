@@ -7,7 +7,6 @@ import { Status } from "../../data_models/Status.e";
 import { Logger } from "../../logging/Logging";
 import { ConfigManager } from "../simconfig/ConfigManager";
 
-
 export class SimManager{
 
     private static instance : SimManager;
@@ -25,6 +24,7 @@ export class SimManager{
         }
     }
 
+    // TODO change names here, it is confusing -RG
     public async runSim(args : {[key: string] : string[]}) : Promise<string>{
         if(!args.configid){
             return null;
@@ -33,7 +33,7 @@ export class SimManager{
             const configId = args.configid.at(0);
             const outputID : string = crypto.randomUUID();
             const outputPath : string = `${config.vipra.outputDir}/${configId}/${outputID}`;
-            const ps : ChildProcess = runSim(configId, outputPath);
+            const ps : ChildProcess = runSim(configId, outputPath, `TODO`, `TODO`);
             this.processMap.set(configId, ps);
 
             ps.on('close', (code : number, signal : NodeJS.Signals) =>{

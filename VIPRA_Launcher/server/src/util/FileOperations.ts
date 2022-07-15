@@ -5,6 +5,25 @@ import { Logger } from '../logging/Logging';
 import { Status } from "../data_models/Status.e";
 
 
+const getDirContents = (dirPath: string) : fs.Dirent[] => {
+    return fs.readdirSync(dirPath, {withFileTypes:true});
+};
+
+const forAllFilesThatMatchDo = (regex : RegExp, root : string, func : (filePath : string)=>void) : void => {
+    const files : fs.Dirent[] = getDirContents(root);
+
+    files.forEach((file)=>{
+        const filePath = `${root}/${file.name}`;
+        if(file.isDirectory()){
+            forAllFilesThatMatchDo(regex, filePath, func);
+        }else{
+            if(file.name.match(regex)){
+                func(filePath);
+            }
+        }
+    });
+};
+
 const fileExists = (filePath: string) : boolean => {
     return fs.existsSync(filePath);
 };
@@ -33,8 +52,13 @@ const deleteDir = (dirPath : string, recursive : boolean) : Status => {
 };
 
 const readJsonFile = <T>(filePath : string) : T => {
-    const json : T = JSON.parse(fs.readFileSync(filePath).toString()) as T;
-    return json;
+    try {
+        const json : T = JSON.parse(fs.readFileSync(filePath).toString()) as T;
+        return json;
+    } catch(e){
+        Logger.error(`readJsonFile: Unable to Load Object from : ${filePath}`);
+        return null;
+    }
 };
 
 const writeFile = (filePath : string, content : string) : void =>{
@@ -117,10 +141,12 @@ export {
     deleteFile,
     deleteDir,
     tarDirectory,
+    getDirContents,
     extractTar,
     readJsonFile,
     writeFile,
     writeFileFromBuffer,
+    forAllFilesThatMatchDo,
     makeDir,
     moveFile,
     matchFile

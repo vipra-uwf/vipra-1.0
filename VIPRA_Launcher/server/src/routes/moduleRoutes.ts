@@ -6,16 +6,19 @@ import { respondData, respondError, respondSuccess, respondUnknownError } from '
 import { ModuleController } from '../controllers/module/moduleController';
 import { Status } from '../data_models/Status.e';
 import { config } from '../configuration/config';
+import { ModuleType } from '../data_models/module';
 
 const moduleRouter = () : express.Router => {
 
     const moduleRoutes = express.Router();
-    const moduleController = new ModuleController(config.module.modulesDir);
+    const moduleController = new ModuleController();
 
     // TODO Can eventually have this link directly to the vipra hub -RG
 
-    moduleRoutes.get('/', (req, res)=>{
-        const modules = moduleController.getInstalledModules();
+    moduleRoutes.get('/:type', (req, res)=>{
+        // TODO check that the type is valid -RG
+        const type : ModuleType = req.params.type as ModuleType;
+        const modules = moduleController.getModulesofType(type);
         respondData(modules.map((module)=>{
             return {
                 name: module.name,

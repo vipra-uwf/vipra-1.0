@@ -1,12 +1,15 @@
 import crypto from 'crypto';
-import { compileConfig } from '../../util/Processes';
 
-import { SimConfig } from "../../data_models/simconfig";
+import { config } from '../../configuration/config';
+import { addModule, configIsSame, hasAllTypes, SimConfig, SimConfigIDs } from "../../data_models/simconfig";
 import { Status } from "../../data_models/Status.e";
+import { Logger } from '../../logging/Logging';
+import { makeDir, writeFile } from '../../util/FileOperations';
+import { Module, ModulesFile } from '../../data_models/module';
+import { readModules } from '../module/moduleLoading';
 
 export class ConfigManager{
 
-    private static  instance        : ConfigManager;
     private         configs         : Map<string, SimConfig>;
 
     constructor(){
@@ -17,19 +20,16 @@ export class ConfigManager{
         return Array.from<SimConfig>(this.configs.values());
     }
 
-    // TODO NEXT change this to accept a list of ids for modules
-    //      get available modules from modulemanager, compare -RG
-
-    public async createConfig(simconfig : SimConfig) : Promise<{status: Status; config : SimConfig}>{
-        const correct : boolean = this.checkConfig(simconfig);
-        if(!correct){
+    // eslint-disable-next-line @typescript-eslint/require-await
+    public async createConfig(name : string, description : string, simConfigIds : SimConfigIDs) : Promise<{status: Status; config : SimConfig}>{
+        if(!hasAllTypes(simConfigIds)){
             return {
                 status: Status.BAD_REQUEST,
                 config: null
             };
         }
 
-        const duplicate : SimConfig = this.getDuplicate(simconfig);
+        const duplicate : SimConfig = this.getDuplicate(simConfigIds);
         if(duplicate){
             return {
                 status: Status.CONFLICT,
@@ -37,24 +37,27 @@ export class ConfigManager{
             };
         }
 
-        let configID : string;
+        let configID : string = crypto.randomUUID();
         while(this.configs.has(configID)){
             configID = crypto.randomUUID();
         }
 
-        const compiled = await compileConfig(simconfig);
-        if(compiled !== Status.SUCCESS){
+        const simConfig = this.makeSimConfig(configID, name, description, simConfigIds);
+        if(!simConfig){
             return {
                 status: Status.INTERNAL_ERROR,
                 config: null
             };
         }
-        simconfig.id = configID;
-        this.configs.set(configID, simconfig);
+
+        simConfig.id = configID;
+        this.configs.set(configID, simConfig);
+
+        this.setupConfig(simConfig);
 
         return {
             status: Status.CREATED,
-            config: simconfig
+            config: simConfig
         };
     }
 
@@ -66,10 +69,10 @@ export class ConfigManager{
         return Status.SUCCESS;
     }
 
-    public getDuplicate(config : SimConfig) : SimConfig{
+    public getDuplicate(simconfig : SimConfigIDs) : SimConfig{
         let ret : SimConfig;
         this.configs.forEach((conf)=>{
-            if(this.isSame(config, conf)){
+            if(configIsSame(simconfig, conf)){
                 ret = conf;
                 return;
             }
@@ -77,35 +80,43 @@ export class ConfigManager{
         return ret;
     }
 
-    private checkConfig(config : SimConfig) : boolean{
-        const ok : boolean = (
-            "description_id" in config &&
-            "entity_set_factor_id" in config &&
-            "goals_id" in config &&
-            "human_behavior_model_id" in config &&
-            "input_data_loader_id" in config &&
-            "name_id" in config &&
-            "obstacle_set_id" in config &&
-            "output_data_writer_id" in config &&
-            "pedestrian_dynamics_model_id" in config &&
-            "pedestrian_set_id" in config &&
-            "simulation_output_handler_id" in config
-        );
+    private makeSimConfig(id : string, name : string, description : string, simConfigIds : SimConfigIDs) : SimConfig {
+        const simConfig : SimConfig = {
+            id,
+            name,
+            description
+        };
 
-        return ok;
+        const available : ModulesFile = readModules();
+        if(!available){
+            return null;
+        }
+
+        Object.values(simConfigIds).forEach((i : {id: string})=>{
+            const module = available.getModule(i.id);
+            if(!module){
+                return null;
+            }
+            addModule(simConfig, module);
+        });
+
+        return simConfig;
     }
 
-    private isSame(conf1 : SimConfig, conf2 : SimConfig) : boolean{
-        return(
-            conf1.entity_set_factory_id         === conf2.entity_set_factory_id &&
-            conf1.goals_id                      === conf2.goals_id &&
-            conf1.output_data_writer_id         === conf2.output_data_writer_id &&
-            conf1.simulation_output_handler_id  === conf2.simulation_output_handler_id &&
-            conf1.pedestrian_dynamics_model_id  === conf2.pedestrian_dynamics_model_id &&
-            conf1.obstacle_set_id               === conf2.obstacle_set_id &&
-            conf1.pedestrian_set_id             === conf2.pedestrian_set_id &&
-            conf1.human_behavior_model_id       === conf2.human_behavior_model_id &&
-            conf1.input_data_loader_id          === conf2.input_data_loader_id
-        );
+    private setupConfig(simconfig : SimConfig) : void {
+        const configDir : string = `${config.vipra.simsDir}/${simconfig.id}`;
+        makeDir(configDir);
+        let configFile = "{";
+        configFile += Object.entries(simconfig).map((value : [string, Module]) => {
+            let ret = `"${value[0]}":`;
+            if(value[0] !== "name" && value[0] !== "id" && value[0] !== "description"){
+                ret += `{"id":"${value[1].id}"}`;
+            }else{
+                ret += `"${simconfig[value[0]]}"`;
+            }
+            return ret;
+        });
+        configFile += '}';
+        writeFile(`${configDir}/sim.config`, configFile);
     }
 }

@@ -1,28 +1,41 @@
 import express from 'express';
 import crypto from 'crypto';
 
-import { storeModule }                           from '../../util/FileStore';
-import { Module }                               from "../../data_models/module";
-import { Status }                               from "../../data_models/Status.e";
-import { deleteDir, deleteFile, extractTar, fileExists, makeDir, matchFile, moveFile, readJsonFile, writeFile, writeFileFromBuffer }      from '../../util/FileOperations';
-import { config } from '../../configuration/config';
-import { Logger } from '../../logging/Logging';
+import { storeModule }      from '../../util/FileStore';
+import { Status }           from "../../data_models/Status.e";
+import { config }           from '../../configuration/config';
+import { Logger }           from '../../logging/Logging';
+import { buildModule, compileSim }      from '../../util/Processes';
+import { Module, ModulesFile, ModuleType } from "../../data_models/module";
+import { deleteDir, deleteFile, extractTar, makeDir, matchFile, moveFile, readJsonFile, writeFile, writeFileFromBuffer }      from '../../util/FileOperations';
+import { readModules, saveInstalledModules } from './moduleLoading';
+import { generateSimulation } from '../simulation/simulationBuild';
+
+
+// TODO split out-> module loading, File operations etc -RG
+
+// TODO at startup, load all modules from the vipra folder, not a file -RG
+// TODO if installation/compilation fails, remove from options and remove module code -RG
+// TODO provide more in-depth error messages for client -RG
+// TODO on start-up, make sure that all installed modules are compiled, compile them if not -RG
+
+// TODO remove modulesDir -RG
 
 export class ModuleController {
 
-    modules         : Module[];
+    modules         : ModulesFile;
     moduleFilePath  : string;
     modulesDir      : string;
 
-    constructor(modulesDirPath : string){
-        this.modulesDir = modulesDirPath;
-        this.moduleFilePath = `${modulesDirPath}/modules.json`;
+    constructor(){
+        this.modulesDir = './';
+        this.moduleFilePath = `${config.module.modulesFile}`;
         this.setupDirectories();
-        this.loadModules();
+        this.modules = readModules();
     }
 
-    public getInstalledModules() : Module[] {
-        return this.modules;
+    public getModulesofType(type : ModuleType) : Module[] {
+        return this.modules[type];
     }
 
     // TODO change the extraction etc to in-memory -RG
@@ -39,34 +52,51 @@ export class ModuleController {
         const moduleFile : Express.Multer.File = req.file;
         const transId : string = crypto.randomUUID();
 
-        const installed = await this.unPackModule(moduleFile, transId)
+        const unpacked = await this.unPackModule(moduleFile, transId)
         .finally(()=>{
-            this.cleanup(transId);
+              this.cleanup(transId);
         });
 
-        return installed;
+        if(unpacked.status !== Status.SUCCESS){
+            return unpacked.status;
+        }
+
+        // TODO break out simulation generation -RG
+
+        const build : Status = await buildModule(unpacked.module);
+        if(build !== Status.SUCCESS){
+            return build;
+        }
+
+        unpacked.module.compiled = true;
+        this.addModuleOption(unpacked.module);
+
+        const compiled : Status = await generateSimulation();
+        if(compiled !== Status.SUCCESS){
+            return compiled;
+        }
+
+        return Status.SUCCESS;
     }
 
-    // NOTE: turned off require-await as this may require await later -RG
+    // NOTE: turned off require-await as this will require await later -RG
     // eslint-disable-next-line @typescript-eslint/require-await
     public async removeModule(id : string) : Promise<Status> {
-        const moduleIndex : number = this.modules.findIndex((mod)=>{
-            return mod.id === id;
-        });
-
-        const module : Module = this.modules.at(moduleIndex);
-        if(module){
-            const deleted = deleteDir(`${module.dirPath}/${module.id}`, true);
-            if(deleted !== Status.SUCCESS){
-                return deleted;
+        let modulePath : string;
+        for(const key of Object.keys(this.modules)){
+            const index = this.modules[key as ModuleType].findIndex((mod : Module) =>{
+                if(mod.id === id){
+                    return true;
+                }
+            });
+            if(index !== -1){
+                modulePath = this.modules[key as ModuleType][index].dirPath;
+                this.modules[key as ModuleType].splice(index, 1);
             }
-            Logger.info(`Removed Module: ${module.name}:${module.id}`);
-            this.modules = this.modules.slice(moduleIndex, moduleIndex);
-            this.writeModules();
-            return Status.SUCCESS;
-        }else{
-            return Status.NOT_FOUND;
         }
+        deleteDir(modulePath, true);
+        saveInstalledModules(this.modules);
+        return Status.SUCCESS;
     }
 
     private setupDirectories() : void{
@@ -74,64 +104,68 @@ export class ModuleController {
         return;
     }
 
-    private loadModules() : void {
-        if(fileExists(this.moduleFilePath)){
-            this.modules = readJsonFile<Module[]>(this.moduleFilePath);
-        }else{
-            this.modules = [];
-            writeFile(this.moduleFilePath, "[]");
-        }
-        return;
-    }
-
-    private writeModules() : void {
-        writeFile(this.moduleFilePath, JSON.stringify(this.modules));
-    }
-
-
     private checkModule(module : Module) : boolean{
         return (module.name && module.type && (module.params !== undefined));
     }
 
-    private async unPackModule(file : Express.Multer.File, transId : string) : Promise<Status>{
+    private async unPackModule(file : Express.Multer.File, transId : string) : Promise<{status:Status; module:Module}>{
 
         const written = writeFileFromBuffer(this.modulesDir, `${transId}.tar`, file.buffer);
         if(written !== Status.SUCCESS){
-            return written;
+            return {
+                status: written,
+                module: null
+            };
         }
 
         const extracted = await extractTar(this.modulesDir, `${transId}.tar`, `${this.modulesDir}/${transId}`);
         if(extracted.status !== Status.SUCCESS){
-            return extracted.status;
+            return {
+                status: extracted.status,
+                module: null
+            };
         }
 
         const metaFilePath : string = matchFile(/.*\.mm/, extracted.path, true);
         if(!metaFilePath){
-            return Status.INTERNAL_ERROR;
+            return {
+                status: Status.INTERNAL_ERROR,
+                module: null
+            };
         }
 
         const module : Module = readJsonFile<Module>(metaFilePath);
         if(this.checkDuplicate(module)){
-            return Status.CONFLICT;
+            return {
+                status: Status.CONFLICT,
+                module
+            };
         }
 
         const correct = this.checkModule(module);
         if(!correct){
-            return Status.BAD_REQUEST;
+            return {
+                status: Status.BAD_REQUEST,
+                module: null
+            };
         }
 
+        // TODO this should be added after compilation -RG
+
         this.moveModule(module, extracted.path);
-        this.addModuleOption(module);
         Logger.info(`Installed Module: ${module.name}:${module.id}`);
-        return Status.SUCCESS;
+        return {
+            status: Status.SUCCESS,
+            module
+        };
     }
 
-    private moveModule(module : Module, fromDir : string) : void{
-        makeDir(`${config.vipra.vipraDir}/${module.type}`);
-        makeDir(`${config.vipra.vipraDir}/${module.type}/${module.id}`);
-        moveFile(`${fromDir}/${module.name}/${module.name}.hpp`, `${config.vipra.vipraDir}/${module.type}/${module.id}/${module.name}.hpp`);
-        moveFile(`${fromDir}/${module.name}/${module.name}.cpp`, `${config.vipra.vipraDir}/${module.type}/${module.id}/${module.name}.cpp`);
-        module.dirPath = `${config.vipra.vipraDir}/${module.type}`;
+    private moveModule(module : Module, fromDir : string) : void {
+        makeDir(`${config.vipra.vipraDir}/${module.name}/`);
+        moveFile(`${fromDir}/${module.name}/${module.name}.hpp`, `${config.vipra.vipraDir}/${module.name}/${module.name}.hpp`);
+        moveFile(`${fromDir}/${module.name}/${module.name}.cpp`, `${config.vipra.vipraDir}/${module.name}/${module.name}.cpp`);
+        module.dirPath = `${config.vipra.vipraDir}/${module.name}/`;
+        module.includePath = `${config.vipra.vipraDir}/${module.name}/${module.name}.hpp`;
     }
 
     private cleanup(id : string){
@@ -140,18 +174,21 @@ export class ModuleController {
         return;
     }
 
-    private checkDuplicate(module : Module) : boolean {
-        if(this.modules.length === 0){
-            return false;
+    private checkDuplicate(module : Module) : Module {
+        const modules = this.modules[module.type];
+        if(modules){
+            const duplicate = modules.find((mod) => {
+                if(mod.id === module.id){
+                    return true;
+                }
+            });
+            return duplicate;
         }
-        const duplicate : boolean = this.modules.every((m)=>{
-            return (m.id !== module.id);
-        });
-        return !duplicate;
+        return null;
     }
 
-    private addModuleOption(module : Module){
-        this.modules.push(module);
-        this.writeModules();
+    private addModuleOption(module : Module) : void {
+        this.modules[module.type].push(module);
+        saveInstalledModules(this.modules);
     }
 }

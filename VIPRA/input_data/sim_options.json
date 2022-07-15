@@ -1,149 +1,106 @@
 {
     "input_data_loader" : [
         {
-            "DisplayName": "XML Input Reader",
             "objectName": "inputXMLReader",
-            "type": "xml",
-            "configurations" : []
+            "className": "InputXMLReader",
+            "includePath": "readers/input_xml_reader.hpp",
+            "type": "xml"
         },
         {
-            "DisplayName": "JSON Input Reader",
             "objectName": "inputJSONReader",
-            "type": "json",
-            "configurations" : []
+            "className": "InputJSONReader",
+            "includePath": "readers/input_json_reader.hpp",
+            "type": "json"
         }
     ],
     
     "output_data_writer" : [
         {
-            "DisplayName": "XML Output Writer",
-            "type": "xml",
             "objectName": "xmlWriter",
-            "configurations": [
-                {"parentElementName": [
-                    "pedestrian-set"
-                ]},
-                {"childElementName": [
-                    "pedestrian"
-                ]}           
-            ]
+            "className": "XMLWriter",
+            "includePath" : "writers/xml_writer.hpp",
+            "type" : "xml"
         },
         {
-            "DisplayName": "JSON Output Writer",
-            "type": "json",
             "objectName": "jsonWriter",
-            "configurations": [
-                {"parentElementName": [
-                    "pedestrian-set"
-                ]},
-                {"childElementName": [
-                    "pedestrian"
-                ]}
-            ]
+            "className": "JSONWriter",
+            "includePath" : "writers/json_writer.hpp",
+            "type" : "json"
         },
         {
-            "DisplayName": "JSON Timestep Output Writer",
-            "type": "json_timestep",
             "objectName": "jsonTimestepWriter",
-            "configurations": [
-                {"parentElementName" : [
-                    "pedestrian-set"
-                ]},
-                {"childElementName" : [
-                    "pedestrian"
-                ]}
-            ]
+            "className": "JSONTimestepWriter",
+            "includePath": "writers/json_timestep_writer.hpp",
+            "type": "json_timestep"
         }
     ],
 
     "simulation_output_handler" : [
         {
-            "DisplayName": "Timestep Output Handler",
-            "type": "timestep_output_handler",
             "objectName": "timestepOutputHandler",
-            "configurations" : [
-                {"outputFrequency": {
-                    "minimum": 0,
-                    "maximum": 100
-                }}
-            ]
+            "className": "TimestepOutputHandler",
+            "includePath" : "writers/timestep_output_handler.hpp",
+            "type" : "timestep_output_handler"
         },
         {
-            "DisplayName": "Timestep Console Logger",
-            "type": "timestep_console_logger",
-            "objectName": "timestepConsoleLogger"
+            "objectName": "timestepConsoleLogger",
+            "className": "TimestepConsoleLogger",
+            "includePath": "writers/timestep_console_logger.hpp",
+            "type" : "timestep_console_logger"
         }
     ],
 
     "pedestrian_set" : [
         {
-            "DisplayName": "Calm Pedestrian Set",
             "objectName": "calmPedestrianSet",
-            "type" : "calm",
-            "name" : "a320_144_pedestrians",
-            "configurations" : [
-                {"parentElementName" : [
-                    "pedestrian-set"
-                ]}
-            ]
+            "className": "CalmPedestrianSet",
+            "includePath" : "entity_sets/calm_pedestrian_set.hpp",
+            "type" : "calm"
         }
     ],
 
     "obstacle_set" : [
         {
-            "DisplayName": "A320, 144 Pedestrians",
             "objectName": "airplaneObstacleSet",
-            "type" : "airplane",
-            "name" : "a320_144_obstacles",
-            "configurations" : [
-                {"parentElementName" : [
-                    "pedestrian-set"
-                ]}
-            ]
+            "className": "AirplaneObstacleSet",
+            "includePath" : "entity_sets/airplane_obstacle_set.hpp",
+            "type" : "airplane"
         }
     ],
 
     "entity_set_factory" : [
         {
-            "DisplayName": "Calm Entity Set Factory",
             "objectName": "calmEntitySetFactory",
-            "type" : "calm",
-            "configurations" : []
+            "className": "CalmEntitySetFactory",
+            "includePath" : "entity_sets/factory/calm_entity_set_factory.hpp",
+            "type" : "calm"
         }
     ],
 
     "goals" : [
         {
-            "DisplayName": "Calm Goals",
             "objectName": "calmGoals",
-            "type" : "calm",
-            "configurations" : []
+            "className": "CalmGoals",
+            "includePath" : "goals/calm_goals.hpp",
+            "type" : "calm"
         }
     ],
 
     "pedestrian_dynamics_model" : [
         {
-            "DisplayName": "Calm Pedestrian Model",
             "objectName": "calmPedestrianModel",
-            "type" : "calm",
-            "configurations" : []
+            "className": "CalmPedestrianModel",
+            "includePath" : "models/calm_pedestrian_model.hpp",
+            "type" : "calm"
         }
     ],
 
     "human_behavior_model" : [
         {
-            "DisplayName": "Human Behavior Model",
             "objectName": "humanBehaviorModel",
-            "type" : "human",
-            "configurations" : {
-                "random_seed": {},
-                "behavior#": [
-                    "important_announcement",
-                    "injured_person",
-                    "random_sleep",
-                    "travel_in_group"
-                ]
-            }
+            "className": "HumanBehaviorModel",
+            "includePath" : "models/human_behavior_model.hpp",
+            "type" : "human"
         }
     ]
 }

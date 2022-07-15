@@ -3,8 +3,10 @@ import fs from 'fs';
 
 // TODO!!!! change this to be set from environment -RG
 
-
 export const config = {
+    env:{
+        scriptRunner: 'sh'
+    },
     app:{
         port: 443,
         https:{
@@ -17,17 +19,13 @@ export const config = {
         url: "https://192.168.1.120/",
     },
     vipra:{
-        vipraDir: path.resolve(`./TEST_VIPRA`),
-        simsDir: path.resolve(`./SIMS`),
-        outputDir: path.resolve(`./OUTPUT`),
-        scripts:{
-            genMain: path.resolve('./src/scripts/genMain'),
-            moduleObj: path.resolve('./src/scripts/buildObject'),
-            compConfig: path.resolve('./src/scripts/compConfig'),
-            runSim: path.resolve('./src/scripts/runSim')
-        }
+        vipraDir: path.resolve(`../../VIPRA_DEV`),
+        vipraMake: path.resolve(`../../VIPRA_DEV/sims`),
+        simsDir: path.resolve(`../../VIPRA_DEV/sims`),
+        behaviorMake: path.resolve(`../../VIPRA_DEV/Base/dsl`),
+        outputDir: path.resolve(`./OUTPUT`)
     },
     module:{
-        modulesDir : path.resolve(`./MODULES`),
+        modulesFile : path.resolve(`./modules.json`),
     }
 };
