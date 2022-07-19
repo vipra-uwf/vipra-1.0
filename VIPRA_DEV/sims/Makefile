@@ -2,7 +2,7 @@ CPP= g++
 CPP_FLAGS= -std=c++17 -w -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
 
 ifeq ($(DEBUG_OUTPUT), 1)
-	CPP_FLAGS = $(CPP_FLAGS) -DDEBUG_OUTPUT=1
+	CPP_FLAGS := $(CPP_FLAGS) -DDEBUG_OUTPUT=1
 endif
 
 LDLIBS = -lantlr4-runtime
