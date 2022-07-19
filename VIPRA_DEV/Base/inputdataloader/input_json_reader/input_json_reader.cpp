@@ -6,15 +6,13 @@ ENTITY_SET InputJSONReader::getInputEntities()
 
     for(unsigned int i = 0; i < this->jsonDocument.size(); i++)
     {
-        inputData.push_back(std::unordered_map<std::string, std::string>());
 
         for(unsigned int j = 0; j < this->jsonDocument[i].size(); j++)
         {
-            std::string key = this->jsonDocument[i].getMemberNames()[j];
+            std::string key = this->jsonDocument.getMemberNames()[j];
             std::string value = this->jsonDocument[i][this->jsonDocument[i].getMemberNames()[j]].asString();
 
-            inputData[i][key] = value;
-        }
+        } 
     }
     
     return inputData;

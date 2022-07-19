@@ -19,21 +19,20 @@ void AlterVelocityAction::performAction(int pedestrianIndex)
     if (!actionApplied(pedestrianIndex))
     {
         // Slow down the new velocity
-        Dimensions &originalVelocity = this->getSimulationContext()->pedestrianSet->getVelocities()->at(
-                pedestrianIndex);
+        Dimensions &originalVelocity = const_cast<Dimensions&>(this->getSimulationContext()->pedestrianSet->getVelocities().at(pedestrianIndex));
         const Dimensions &newVelocity = computeAlteredDimensions(originalVelocity);
 
         // Override the velocity for this pedestrian
-        this->getSimulationContext()->pedestrianSet->getVelocities()->at(pedestrianIndex) = newVelocity;
+        const_cast<Dimensions&>(this->getSimulationContext()->pedestrianSet->getVelocities().at(pedestrianIndex)) = newVelocity;
 
 
         // Taken from the CALM pedestrian model
-        FLOATING_NUMBER newSpeed = ((newVelocity.coordinates[0]
-                     * newVelocity.coordinates[0])
-                    + (newVelocity.coordinates[1]
-                       * newVelocity.coordinates[1]));
+        FLOATING_NUMBER newSpeed = ((newVelocity[0]
+                     * newVelocity[0])
+                    + (newVelocity[1]
+                       * newVelocity[1]));
 
-        calmPedestrianSet->getSpeeds()->at(pedestrianIndex) = newSpeed;
+        const_cast<Dimensions&>(calmPedestrianSet->getSpeeds()).at(pedestrianIndex) = newSpeed;
 
         this->actionAppliedStatus.at(pedestrianIndex) = true;
     }
@@ -47,15 +46,15 @@ void AlterVelocityAction::performAction(int pedestrianIndex)
     // calculated in the precompute() section of the calm_pedestrian_model, and does not look at any previous value
     // of the propulsion force. So to persist our velocity change, we need to modify the original velocity once, but
     // modify the propulsion force every time while this action is active.
-    Dimensions &originalPropulsionForce = calmPedestrianSet->getPropulsionForces()->at(pedestrianIndex);
+    Dimensions &originalPropulsionForce = const_cast<DimsVector&>(calmPedestrianSet->getPropulsionForces()).at(pedestrianIndex);
     const Dimensions &newPropulsion = computeAlteredDimensions(originalPropulsionForce);
-    calmPedestrianSet->getPropulsionForces()->at(pedestrianIndex) = newPropulsion;
+    const_cast<DimsVector&>(calmPedestrianSet->getPropulsionForces()).at(pedestrianIndex) = newPropulsion;
 
 }
 
 Dimensions AlterVelocityAction::computeAlteredDimensions(Dimensions originalDimensions)
 {
-    std::vector<FLOATING_NUMBER> coordinates(originalDimensions.coordinates.size());
+    std::vector<FLOATING_NUMBER> coordinates(originalDimensions.size());
 
     FLOATING_NUMBER multiplier;
     if (alterDirection == FASTER)
@@ -69,9 +68,9 @@ Dimensions AlterVelocityAction::computeAlteredDimensions(Dimensions originalDime
         multiplier = 1.0F - factor;
     }
 
-    for (int i = 0; i < originalDimensions.coordinates.size(); ++i)
+    for (int i = 0; i < originalDimensions.size(); ++i)
     {
-        coordinates.at(i) = originalDimensions.coordinates.at(i) * multiplier;
+        coordinates.at(i) = originalDimensions.at(i) * multiplier;
     }
 
     return Dimensions { coordinates };

@@ -59,15 +59,15 @@ void HumanBehaviorModel::update(FLOATING_NUMBER timestep)
         if (behaviorDecided)
         {
             // Set the movement state to HUMAN
-            calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::HUMAN;
+            const_cast<std::vector<MovementDefinitions>&>(calmPedestrianSet->getMovementStates()).at(i) = MovementDefinitions::HUMAN;
         }
         else
         {
             // Only set the movement state back to stop if it doesn't have something already. The definitions are set to
             // what they need to be in the CALM pedestrian model.
-            if (calmPedestrianSet->getMovementStates()->at(i) == MovementDefinitions::HUMAN)
+            if (calmPedestrianSet->getMovementStates().at(i) == MovementDefinitions::HUMAN)
             {
-                calmPedestrianSet->getMovementStates()->at(i) = MovementDefinitions::STOP;
+                const_cast<std::vector<MovementDefinitions>&>(calmPedestrianSet->getMovementStates()).at(i) = MovementDefinitions::STOP;
             }
         }
     }

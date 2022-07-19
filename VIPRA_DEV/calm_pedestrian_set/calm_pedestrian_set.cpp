@@ -29,7 +29,7 @@ void CalmPedestrianSet::initialize(size_t pedestrianCount)
     this->shoulderLengths        = std::vector<FLOATING_NUMBER>(pedestrianCount, START_SHOULDER_WIDTH);
 
     this->setIds(std::vector(pedestrianCount, 0));
-    std::iota(this->getIds()->begin(), this->getIds()->end(), 0);
+    std::iota(this->ids.begin(), this->ids.end(), 0);
 }
 
 void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
@@ -56,81 +56,81 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 
 }
 
-int CalmPedestrianSet::getNumPedestrians()
+int CalmPedestrianSet::getNumPedestrians() const noexcept
 {
     return this->numPedestrians;
 }
 
-std::vector<int>* CalmPedestrianSet::getIds()
+const std::vector<int>& CalmPedestrianSet::getIds() const noexcept
 {
-    return &this->ids;
+    return this->ids;
 }
 
-std::vector<Dimensions>* CalmPedestrianSet::getPedestrianCoordinates()
+std::vector<Dimensions>* CalmPedestrianSet::getPedestrianCoordinates() noexcept
 {
     return &this->pedestrianCoordinates;
 }
 
-std::vector<Dimensions>* CalmPedestrianSet::getGoalCoordinates()
+const std::vector<Dimensions>& CalmPedestrianSet::getGoalCoordinates() const noexcept
 {
-    return &this->goalCoordinates;
+    return this->goalCoordinates;
 }
 
-std::vector<Dimensions>* CalmPedestrianSet::getVelocities()
+const std::vector<Dimensions>& CalmPedestrianSet::getVelocities() const noexcept
 {
-    return &this->velocities;
+    return this->velocities;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getSpeeds()
+const std::vector<FLOATING_NUMBER>& CalmPedestrianSet::getSpeeds() const noexcept
 {
-    return &this->speedsMetersPerSecond;
+    return this->speedsMetersPerSecond;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getMasses()
+const std::vector<FLOATING_NUMBER>& CalmPedestrianSet::getMasses() const noexcept
 {
-    return &this->massesKg;
+    return this->massesKg;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getReactionTimes()
+const std::vector<FLOATING_NUMBER>& CalmPedestrianSet::getReactionTimes() const noexcept
 {
-    return &this->reactionTimes;
+    return this->reactionTimes;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getDesiredSpeeds()
+const std::vector<FLOATING_NUMBER>& CalmPedestrianSet::getDesiredSpeeds() const noexcept
 {
-    return &this->desiredSpeeds;
+    return this->desiredSpeeds;
 }
 
-std::vector<Dimensions>* CalmPedestrianSet::getPropulsionForces()
+const std::vector<Dimensions>& CalmPedestrianSet::getPropulsionForces() const noexcept
 {
-    return &this->propulsionForces;
+    return this->propulsionForces;
 }
 
 
-std::vector<std::pair<std::string, int>>*
-    CalmPedestrianSet::getNearestNeighbors()
+const std::vector<std::pair<std::string, int>>&
+    CalmPedestrianSet::getNearestNeighbors() const noexcept
 {
-    return &this->nearestNeighbors;
+    return this->nearestNeighbors;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getPriorities()
+const std::vector<FLOATING_NUMBER>& CalmPedestrianSet::getPriorities() const noexcept
 {
-    return &this->priorities;
+    return this->priorities;
 }
 
-std::vector<MovementDefinitions>* CalmPedestrianSet::getMovementStates()
+const std::vector<MovementDefinitions>& CalmPedestrianSet::getMovementStates() const noexcept
 {
-    return &this->movementStates;
+    return this->movementStates;
 }
 
-std::vector<int>* CalmPedestrianSet::getStartingAisles()
+const std::vector<int>& CalmPedestrianSet::getStartingAisles() const noexcept
 {
-    return &this->startingAisles;
+    return this->startingAisles;
 }
 
-std::vector<FLOATING_NUMBER>* CalmPedestrianSet::getShoulderLengths()
+const std::vector<FLOATING_NUMBER>& CalmPedestrianSet::getShoulderLengths() const noexcept
 {
-  return &this->shoulderLengths;
+  return this->shoulderLengths;
 }
 
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)

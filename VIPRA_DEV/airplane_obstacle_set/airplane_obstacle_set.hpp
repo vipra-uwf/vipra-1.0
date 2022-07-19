@@ -6,35 +6,35 @@
 class AirplaneObstacleSet: public ObstacleSet 
 {
    private:
-        int numObstacles;
-        int numAisles;
-        std::vector<Dimensions> obstacleCoordinates;
+        ENTITY_SET objects;
+        std::vector<std::string> types;
+
         std::vector<FLOATING_NUMBER> aisles; //should i make these two one vector of pairs? or a vector of dimensions? -EL
         std::vector<FLOATING_NUMBER> aislesSize;
-
-        std::vector<Dimensions> exits;
-
     public:
-        AirplaneObstacleSet();
+                                                        AirplaneObstacleSet();
        
-        virtual void configure(CONFIG_MAP* configMap);
-        virtual int getNumObstacles();
-        virtual std::vector<Dimensions>* getObstacleCoordinates();
-        virtual void setNumObstacles(int numObstacles);
-        virtual void setObstacleCoordinates(
-            std::vector<Dimensions> coordinates);
+        void                                            configure(CONFIG_MAP* configMap)                                   override;
+        
+        void                                            setObstacleCoordinates(const std::vector<Dimensions>& coordinates) override;
 
-        int getNumAisles();
-        std::vector<FLOATING_NUMBER>* getAisles();
-        std::vector<FLOATING_NUMBER>* getAislesSize();
+        void                                            setAisles(const std::vector<FLOATING_NUMBER>&);
+        void                                            setAislesSize(const std::vector<FLOATING_NUMBER>&);
 
-        void setExits(const std::vector<Dimensions>& exits);
-        const std::vector<Dimensions>& getExits();
+        // TODO this is not needed, the number of aisles is set in setAisles, keeping for now to reduce changes -RG
+        void setNumAisles(int num);
 
-        void setNumAisles(int numAisles);
-        void setAisles(std::vector<FLOATING_NUMBER>);
-        void setAislesSize(std::vector<FLOATING_NUMBER>);
+        void                                            addObjects(const std::string& type, const std::vector<Dimensions>& locations) override;
+        
+        int                                               getNumAisles()                            const noexcept;
+        [[nodiscard]] const std::vector<FLOATING_NUMBER>& getAisles()                               const noexcept;
+        [[nodiscard]] const std::vector<FLOATING_NUMBER>& getAislesSize()                           const noexcept;
 
+        int                                             getNumObstacles()                           const noexcept  override;
+        [[nodiscard]] const std::vector<Dimensions>&    getObstacleCoordinates()                    const noexcept  override;
+
+        [[nodiscard]] const std::vector<Dimensions>&    getObjectsofType(const std::string& type)   const noexcept  override;
+        [[nodiscard]] const std::vector<std::string>&   getObjectTypes()                            const noexcept  override;
 };
 
 #endif

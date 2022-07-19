@@ -7,8 +7,9 @@ XMLWriter::XMLWriter()
 
 void XMLWriter::configure(CONFIG_MAP* configMap) 
 {
-    setParentElementName((*configMap)["parentElementName"]);
-    setChildElementName((*configMap)["childElementName"]);
+    // TODO: hard coding these until we find a better way -RG
+    setParentElementName("pedestrian-set");
+    setChildElementName("pedestrian");
 }
 
 void XMLWriter::initializeOutputFile(std::string outputFilePath)

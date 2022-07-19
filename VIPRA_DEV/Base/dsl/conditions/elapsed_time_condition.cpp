@@ -9,7 +9,7 @@ ElapsedTimeCondition::ElapsedTimeCondition(SimulationContext *simulationContext,
 
 bool ElapsedTimeCondition::evaluate(int pedestrianIndex)
 {
-    int pedestrianId = this->getSimulationContext()->pedestrianSet->getIds()->at(pedestrianIndex);
+    int pedestrianId = this->getSimulationContext()->pedestrianSet->getIds().at(pedestrianIndex);
     FLOATING_NUMBER lastTransitionMs = 
         this->getSimulationContext()->elapsedSeconds - 
         this->getSimulationContext()->transitionPointSeconds.at(pedestrianId);

@@ -13,7 +13,7 @@ std::string generateGetFiles();
 std::string generateIncludes();
 std::string generateFunctionDeclarations();
 std::string generateObjectFunction(const std::string &className, const std::string &type);
-std::string generateFunctionOptions(const std::string &optionsKey);
+std::string generateFunctionOptions(const std::string &type);
 std::string generateExtractConfigMap();
 std::string generateMain();
 
@@ -93,7 +93,15 @@ void setFiles(int argc, char **argv){
     optionsFile = std::string(argv[2]);
 }
 
-std::string generateIncludes() 
+std::string debugOutput(std::string message){
+    return {
+        "\n\n#ifdef DEBUG_OUTPUT"
+        "\nstd::cout << \"" + message + "\" << std::endl;"
+        "\n#endif"
+    };
+}
+
+std::string generateIncludes()
 {
     std::string generatedIncludes = "";
     for(const auto &include : includes) 
@@ -116,20 +124,21 @@ std::string generateObjectFunction(const std::string &className, const std::stri
     return generatedFunction;
 }
 
-std::string generateFunctionOptions(const std::string &optionsKey)
+std::string generateFunctionOptions(const std::string &type)
 {
     std::string generatedFunction{""};
-    for(const auto &option : jsonObj[optionsKey]){
+    for(const auto &option : jsonObj[type]){
         if(option["compiled"]){
             generatedFunction += 
+            debugOutput("generating " + type) +
             "\n\tif(id==\"" + option["id"].asString() + "\"){\n\t\t" +
             option["className"].asString() + "* " +
             option["name"].asString() + " = new " +
-            option["className"].asString() + ";\n\t\t" +
+            option["className"].asString() + "();\n\t\t" +
             option["name"].asString() + "->configure(configMap);" +
             "\n\t\treturn " + option["name"].asString() + ";"+
             "\n\t}";
-            includes.push_back(option["includePath"].asString());
+            includes.emplace_back(option["includePath"].asString());
         }
     }
 
@@ -142,7 +151,7 @@ std::string generateExtractConfigMap(){
     "\nCONFIG_MAP* extractConfigMap(std::string name)"
     "\n{"
         "\n\tCONFIG_MAP* configMap = new CONFIG_MAP;"
-        "\n"
+        +debugOutput("extracting config map:")+
         "\n\tfor(unsigned int i = 0; i < moduleParams[name][\"params\"].size(); i++)"
         "\n\t{"
             "\n\t\tstd::string attribute = moduleParams[name][\"params\"].getMemberNames()[i];"
@@ -173,28 +182,38 @@ std::string generateFunctionDeclarations()
 // NOTE: extractFileData takes in a string and a config_map* but does nothing with the pointer, so it's a nullptr for now -RG
 std::string generatePopulateObstacleSet(){
     return{
+        debugOutput("reading obstacledata")+
         "\n\tinput_data_loader->extractFileData(obstacleFile, nullptr);"
+        +debugOutput("getting input entities")+
         "\n\tENTITY_SET obstacleData = input_data_loader->getInputEntities();"
+        +debugOutput("done reading")+
         "\n\tentity_set_factory->populateObstacleSet(obstacleData, obstacle_set);"
+        +debugOutput("populated obstacleset")
     };
 }
 
 std::string generatePopulatePedestrianSet(){
     return{
+        debugOutput("reading pedestriandata")+
         "\n\tinput_data_loader->extractFileData(pedestrianFile, nullptr);"
+        +debugOutput("getting input entities")+
         "\n\tENTITY_SET pedestrianData = input_data_loader->getInputEntities();"
+        +debugOutput("done reading")+
         "\n\tentity_set_factory->populatePedestrianSet(pedestrianData, pedestrian_set);"
+        +debugOutput("populated pedestrianset")
     };
 }
 
 std::string outputSetup(){
     return {
+        debugOutput("setting up output")+
         "\n\toutput_data_writer->initializeOutputFile(outputFile);"
         "\n\tsimulation_output_handler->setOutputDataWriter(output_data_writer);"
         "\n\tsimulation_output_handler->setPedestrianSet(pedestrian_set);"
         "\n\tsimulation_output_handler->setSimulation(simulation);"
         "\n"
         "\n\tsimulation->setSimulationOutputHandler(simulation_output_handler);"
+        +debugOutput("done setting up output")
     };  
 }
 
@@ -205,7 +224,7 @@ std::string setData(){
         "\n\tdata->setObstacleSet(obstacle_set);"
         "\n"
         "\n\tgoals->setData(data);"
-        "\n\tgoals->addExitGoals(obstacle_set->getExits());"
+        "\n\tgoals->addExitGoals(*obstacle_set);"
         "\n\tpedestrian_dynamics_model->setData(data);"
         "\n\tpedestrian_dynamics_model->setGoals(goals);"
         "\n\tgoals->determinePedestrianGoals();"
@@ -263,6 +282,7 @@ std::string cleanup(){
 
 std::string runSim(){
     return {
+        debugOutput("running simulation")+
         "\n\tsimulation->run();"
     };
 }

@@ -68,6 +68,7 @@ export class ModuleController {
             return build;
         }
 
+        // TODO setting all modules to compiled even if failed -RG
         unpacked.module.compiled = true;
         this.addModuleOption(unpacked.module);
 

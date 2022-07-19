@@ -1,5 +1,7 @@
 #include "input_xml_reader.hpp"
 
+// TODO !!!! this needs redone to work with the new ENTITY_SET -RG
+
 ENTITY_SET InputXMLReader::getInputEntities()
 {
     initializeTraversalElement();

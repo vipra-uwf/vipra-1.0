@@ -14,21 +14,21 @@ class CalmPedestrianSet: public PedestrianSet
     private:
         int numPedestrians;
 
-        std::vector<Dimensions> pedestrianCoordinates;
-        std::vector<Dimensions> goalCoordinates;
-        std::vector<Dimensions> velocities;
+        std::vector<Dimensions>                   pedestrianCoordinates;
+        std::vector<Dimensions>                   goalCoordinates;
+        std::vector<Dimensions>                   velocities;
 
-        std::vector<FLOATING_NUMBER> speedsMetersPerSecond;
-        std::vector<FLOATING_NUMBER> massesKg;
-        std::vector<FLOATING_NUMBER> reactionTimes;
-        std::vector<FLOATING_NUMBER> desiredSpeeds;
-        std::vector<Dimensions> propulsionForces;
-        std::vector<std::pair<std::string, int>> nearestNeighbors;
-        std::vector<FLOATING_NUMBER> priorities;
-        std::vector<MovementDefinitions> movementStates;
-        std::vector<int> startingAisles;
-        std::vector<FLOATING_NUMBER> shoulderLengths;
-        std::vector<int> ids;
+        std::vector<FLOATING_NUMBER>              speedsMetersPerSecond;
+        std::vector<FLOATING_NUMBER>              massesKg;
+        std::vector<FLOATING_NUMBER>              reactionTimes;
+        std::vector<FLOATING_NUMBER>              desiredSpeeds;
+        std::vector<Dimensions>                   propulsionForces;
+        std::vector<std::pair<std::string, int>>  nearestNeighbors;
+        std::vector<FLOATING_NUMBER>              priorities;
+        std::vector<MovementDefinitions>          movementStates;
+        std::vector<int>                          startingAisles;
+        std::vector<FLOATING_NUMBER>              shoulderLengths;
+        std::vector<int>                          ids;
 
         FLOATING_NUMBER startMass;
         FLOATING_NUMBER startReaction_time;
@@ -37,41 +37,37 @@ class CalmPedestrianSet: public PedestrianSet
     public:
         CalmPedestrianSet();
 
-        virtual void configure(CONFIG_MAP* configMap);
-        virtual void initialize(size_t pedestrianCount);
-        virtual void removePedestrian(int pedestrianIndex);
+        void                                    configure(CONFIG_MAP* configMap)                                      override;
+        void                                    initialize(size_t pedestrianCount)                                    override;
+        void                                    removePedestrian(int pedestrianIndex)                                 override;
 
-        virtual int getNumPedestrians();
-        virtual std::vector<int>* getIds();
-        virtual std::vector<Dimensions>* getPedestrianCoordinates();
-        virtual std::vector<Dimensions>* getGoalCoordinates();
-        virtual std::vector<Dimensions>* getVelocities();
-        virtual std::vector<FLOATING_NUMBER>* getSpeeds();
+        int                                     getNumPedestrians()                                    const noexcept override;
+        const std::vector<int>&                 getIds()                                               const noexcept override;
+        // TODO: needs updated, more in interface -RG
+        std::vector<Dimensions>*          getPedestrianCoordinates()                              noexcept override;
+        const std::vector<Dimensions>&          getGoalCoordinates()                                   const noexcept override;
+        const std::vector<Dimensions>&          getVelocities()                                        const noexcept override;
+        const std::vector<FLOATING_NUMBER>&     getSpeeds()                                            const noexcept override;
 
-        virtual void setNumPedestrians(int numPedestrians);
-        virtual void setIds(
-                std::vector<int> ids);
-        virtual void setPedestrianCoordinates(
-				std::vector<Dimensions> coordinates);
-        virtual void setGoalCoordinates(
-				std::vector<Dimensions> goalCoordinates);
-        virtual void setVelocities(
-				std::vector<Dimensions> velocities);
-        virtual void setSpeeds(
-				std::vector<FLOATING_NUMBER> speedsMetersPerSecond);
+        void                                    setNumPedestrians(int numPedestrians)                                 override;
+        void                                    setIds(std::vector<int> ids)                                          override;
+        void                                    setPedestrianCoordinates(std::vector<Dimensions> coordinates)         override;
+        void                                    setGoalCoordinates(std::vector<Dimensions> goalCoordinates)           override;
+        void                                    setVelocities(std::vector<Dimensions> velocities)                     override;
+        void                                    setSpeeds(std::vector<FLOATING_NUMBER> speedsMetersPerSecond)         override;
 
         // virtual ~CalmPedestrianSet();
 
-        std::vector<FLOATING_NUMBER>* getMasses();
-        std::vector<FLOATING_NUMBER>* getReactionTimes();
-        std::vector<FLOATING_NUMBER>* getDesiredSpeeds();
-        std::vector<Dimensions>* getPropulsionForces();
-        std::vector<FLOATING_NUMBER>* getRepulsionForces();
-        std::vector<std::pair<std::string, int>>* getNearestNeighbors();
-        std::vector<FLOATING_NUMBER>* getPriorities();
-        std::vector<MovementDefinitions>* getMovementStates();
-        std::vector<int>* getStartingAisles();
-        std::vector<FLOATING_NUMBER>* getShoulderLengths();
+        const std::vector<FLOATING_NUMBER>&                     getMasses()                     const noexcept;
+        const std::vector<FLOATING_NUMBER>&                     getReactionTimes()              const noexcept;
+        const std::vector<FLOATING_NUMBER>&                     getDesiredSpeeds()              const noexcept;
+        const std::vector<Dimensions>&                          getPropulsionForces()           const noexcept;
+        const std::vector<FLOATING_NUMBER>&                     getRepulsionForces()            const noexcept;
+        const std::vector<std::pair<std::string, int>>&         getNearestNeighbors()           const noexcept;
+        const std::vector<FLOATING_NUMBER>&                     getPriorities()                 const noexcept;
+        const std::vector<MovementDefinitions>&                 getMovementStates()             const noexcept;
+        const std::vector<int>&                                 getStartingAisles()             const noexcept;
+        const std::vector<FLOATING_NUMBER>&                     getShoulderLengths()            const noexcept;
 
         void setMasses(std::vector<FLOATING_NUMBER> massesKg);
         void setReactionTimes(std::vector<FLOATING_NUMBER> reactionTimes);

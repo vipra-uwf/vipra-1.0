@@ -13,14 +13,12 @@
 class EntitySetFactory
 {
       public:
-            virtual ~EntitySetFactory() = default;
+            virtual           ~EntitySetFactory() = default;
 
-            virtual void configure(CONFIG_MAP* configMap) = 0;
+            virtual void      configure(CONFIG_MAP* configMap)                                             = 0;
 
-            virtual void populatePedestrianSet(
-            ENTITY_SET inputData, PedestrianSet* pedestrianSet) = 0;
-            virtual void populateObstacleSet(
-            ENTITY_SET inputData, ObstacleSet* obstacleSet) = 0;
+            virtual void      populatePedestrianSet(ENTITY_SET inputData, PedestrianSet* pedestrianSet)    = 0;
+            virtual void      populateObstacleSet(ENTITY_SET inputData, ObstacleSet* obstacleSet)          = 0;
 };
 
 #endif

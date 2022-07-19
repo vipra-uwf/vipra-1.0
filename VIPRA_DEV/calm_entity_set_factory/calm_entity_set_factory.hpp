@@ -8,19 +8,10 @@
 
 class CalmEntitySetFactory : public EntitySetFactory
 {
-    private:
-        std::vector<std::string> accumulateAttribute(
-            std::string attributeName, ENTITY_SET inputData);
-
-        std::vector<FLOATING_NUMBER> vectorStringToDouble(
-            std::vector<std::string> stringVec);
-	
     public:
-        virtual void configure(CONFIG_MAP* configMap);
-		virtual void populatePedestrianSet(
-            ENTITY_SET inputData, PedestrianSet* calmPedestrianSet);
-		virtual void populateObstacleSet(
-            ENTITY_SET inputData, ObstacleSet* obstacleSet);
+        void            configure(CONFIG_MAP* configMap)                                                    override;
+		void            populatePedestrianSet(ENTITY_SET inputData, PedestrianSet* calmPedestrianSet)       override;
+		void            populateObstacleSet(ENTITY_SET inputData, ObstacleSet* obstacleSet)                 override;
 };
 
 #endif

@@ -7,7 +7,7 @@ PedestrianTransition::PedestrianTransition(SimulationContext *simulationContext,
 
 bool PedestrianTransition::evaluateTransition(int pedestrianIndex)
 {
-    int pedestrianId = this->simulationContext->pedestrianSet->getIds()->at(pedestrianIndex);
+    int pedestrianId = this->simulationContext->pedestrianSet->getIds().at(pedestrianIndex);
 
     bool transitioned = false;
     if (this->condition->evaluate(pedestrianIndex))

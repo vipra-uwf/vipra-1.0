@@ -1,6 +1,8 @@
 #ifndef ID_RANDOM_SELECTOR_HPP
 #define ID_RANDOM_SELECTOR_HPP
 
+#include <ctime>
+
 #include "selector.hpp"
 #include "../../definitions/type_definitions.hpp"
 

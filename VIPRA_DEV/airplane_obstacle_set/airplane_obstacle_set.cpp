@@ -1,72 +1,64 @@
 #include "airplane_obstacle_set.hpp"
 
-AirplaneObstacleSet::AirplaneObstacleSet()
-{
-    this->numObstacles = 0;
-}
+const std::vector<Dimensions> ObstacleSet::__empty__{};
+
+AirplaneObstacleSet::AirplaneObstacleSet(): objects(), types(), aisles(), aislesSize(){}
 
 void AirplaneObstacleSet::configure(CONFIG_MAP* configMap)
 {
 
 }
 
-void AirplaneObstacleSet::setExits(const std::vector<Dimensions>& exits)
-{
-    this->exits = exits;
+void AirplaneObstacleSet::setObstacleCoordinates(const std::vector<Dimensions>& coordinates){
+    this->objects["obstacles"] = coordinates;
 }
 
-const std::vector<Dimensions>& AirplaneObstacleSet::getExits()
-{
-    return this->exits;
+void AirplaneObstacleSet::setAisles(const std::vector<FLOATING_NUMBER>& aisles){
+    this->aisles = aisles;
 }
 
-int AirplaneObstacleSet::getNumObstacles()
-{
-    return this->numObstacles;
+void AirplaneObstacleSet::setAislesSize(const std::vector<FLOATING_NUMBER>& aisles){
+    this->aislesSize = aisles;
 }
 
-int AirplaneObstacleSet::getNumAisles()
-{
-    return this->numAisles;
+void AirplaneObstacleSet::addObjects(const std::string& type, const std::vector<Dimensions>& locations) {
+    this->objects[type] = locations;
 }
 
-std::vector<Dimensions>* AirplaneObstacleSet::getObstacleCoordinates()
-{
-    return &this->obstacleCoordinates;
+int AirplaneObstacleSet::getNumAisles() const noexcept {
+    return this->aisles.size();
 }
 
-std::vector<FLOATING_NUMBER>* AirplaneObstacleSet::getAisles()
-{
-    return &this->aisles;
+const std::vector<FLOATING_NUMBER>& AirplaneObstacleSet::getAisles() const noexcept {
+    return this->aisles;
 }
 
-std::vector<FLOATING_NUMBER>* AirplaneObstacleSet::getAislesSize()
-{
-    return &this->aislesSize;
+const std::vector<FLOATING_NUMBER>& AirplaneObstacleSet::getAislesSize() const noexcept {
+    return this->aislesSize;
 }
 
-void AirplaneObstacleSet::setNumObstacles(int numObstacles)
-{
-    this->numObstacles = numObstacles;
+int AirplaneObstacleSet::getNumObstacles() const noexcept {
+    return this->objects.at("obstacles").size();
 }
 
-void AirplaneObstacleSet::setNumAisles(int numAisles)
-{
-    this->numAisles = numAisles;
+const std::vector<Dimensions>& AirplaneObstacleSet::getObstacleCoordinates() const noexcept {
+    return this->objects.at("obstacles");
 }
 
-void AirplaneObstacleSet::setObstacleCoordinates(
-    std::vector<Dimensions> coordinates)
-{
-    this->obstacleCoordinates = coordinates;
+const std::vector<Dimensions>& AirplaneObstacleSet::getObjectsofType(const std::string& type) const noexcept{
+    if(this->objects.find(type) != this->objects.end()){
+        return this->objects.at(type);
+    }else{
+        return __empty__;
+    }
 }
 
-void AirplaneObstacleSet::setAisles(std::vector<FLOATING_NUMBER> Aisles)
-{
-    this->aisles = Aisles;
+
+// TODO: remove -RG
+void setNumAisles(int num){
+    
 }
 
-void AirplaneObstacleSet::setAislesSize(std::vector<FLOATING_NUMBER> AislesSize)
-{
-    this->aislesSize = AislesSize;
+const std::vector<std::string>& AirplaneObstacleSet::getObjectTypes() const noexcept {
+    return this->types;
 }

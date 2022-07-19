@@ -13,11 +13,12 @@ class JSONTimestepWriter: public OutputDataWriter {
     private:
         Data* data;
         std::ofstream fileStream;
-        std::string parentElementName;
-        std::string childElementName;
         Json::Value document;
         int index;
         int timestepID;
+        // NOTE: these aren't used, xml specific so no need to set them -RG
+        std::string parentElementName;
+        std::string childElementName;
 
         void openFile(std::string fileName);
         void setParentElementName(std::string parentElementName);

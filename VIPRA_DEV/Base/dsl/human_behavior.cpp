@@ -85,7 +85,7 @@ bool HumanBehavior::decide(PedestrianSet *pedestrianSet, int pedestrianIndex)
 void HumanBehavior::act(PedestrianSet *pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep)
 {
 
-    int pedestrianId = pedestrianSet->getIds()->at(pedestrianIndex);
+    int pedestrianId = pedestrianSet->getIds().at(pedestrianIndex);
 
     // First phase: set the state transition
     bool transitioned = false;

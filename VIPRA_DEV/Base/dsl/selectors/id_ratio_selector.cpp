@@ -10,7 +10,7 @@ IdRatioSelector::IdRatioSelector(
 
 bool IdRatioSelector::select(int pedestrianIndex)
 {
-    int pedestrianId = this->getSimulationContext()->pedestrianSet->getIds()->at(pedestrianIndex);
+    int pedestrianId = this->getSimulationContext()->pedestrianSet->getIds().at(pedestrianIndex);
     
     static const int divisor = static_cast<int>(1.0 / this->ratio);
 

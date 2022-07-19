@@ -3,11 +3,14 @@
 
 #include "../Interfaces/goals/goals.hpp"
 
+
+// TODO: this needs updated for const correctness, and possibly reworked -RG
+
 class CalmGoals: public Goals
 {
 
     private:
-        std::vector<Dimensions> exitGoal;
+        std::vector<Dimensions> exitGoals;
         std::vector<int> nearestExit;
         Data* data;
         std::vector<Dimensions>* pedestrianCoordinatesPointer;
@@ -19,7 +22,7 @@ class CalmGoals: public Goals
 
         virtual void configure(CONFIG_MAP* configMap);
         virtual void setData(Data* data);
-        virtual void addExitGoals(const std::vector<Dimensions>& exits);
+        virtual void addExitGoals(const ObstacleSet&);
         virtual void removeExitGoal(int exitIndex);
         virtual void clearGoals();
         virtual void calculateNearestExit();

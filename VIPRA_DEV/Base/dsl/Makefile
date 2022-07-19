@@ -1,5 +1,5 @@
 CPP= g++
-CPP_FLAGS= -std=c++11 -g -Wall -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
+CPP_FLAGS= -std=c++17 -w -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
 LDLIBS = -lantlr4-runtime
 
 BUILD_DIR = ../../build

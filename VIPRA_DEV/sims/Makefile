@@ -1,5 +1,10 @@
 CPP= g++
-CPP_FLAGS= -std=c++17 -Wall -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
+CPP_FLAGS= -std=c++17 -w -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
+
+ifeq ($(DEBUG_OUTPUT), 1)
+	CPP_FLAGS = $(CPP_FLAGS) -DDEBUG_OUTPUT=1
+endif
+
 LDLIBS = -lantlr4-runtime
 
 BASE_DIR = ../Base
@@ -26,7 +31,13 @@ compileMain:
 $(BUILD_DIR)/main.o:
 	$(CPP) $(CPP_FLAGS) -c main.cpp -o $(BUILD_DIR)/main.o
 
-# TODO: add in compilation of base objects like jsoncpp etc
+debugMain:
+	make generate_main
+	make compileMain MODULEFILE=/usr/src/VIPRA/VIPRA_Launcher/modules.json DEBUG_OUTPUT=1 
+	make simulation
+
+testrun:
+	./VIPRA ./example/sim.config ./example/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
 
 clean:
 	rm -f generate_main main.cpp

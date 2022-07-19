@@ -8,8 +8,7 @@ JSONTimestepWriter::JSONTimestepWriter()
 
 void JSONTimestepWriter::configure(CONFIG_MAP *configMap)
 {
-    setParentElementName((*configMap)["parentElementName"]);
-    setChildElementName((*configMap)["childElementName"]);
+
 }
 
 void JSONTimestepWriter::initializeOutputFile(std::string outputFilePath)

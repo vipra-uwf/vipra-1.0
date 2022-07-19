@@ -7,8 +7,7 @@ JSONWriter::JSONWriter()
 
 void JSONWriter::configure(CONFIG_MAP *configMap)
 {
-    setParentElementName((*configMap)["parentElementName"]);
-    setChildElementName((*configMap)["childElementName"]);
+
 }
 
 void JSONWriter::initializeOutputFile(std::string outputFilePath)
