@@ -21,9 +21,6 @@ class AirplaneObstacleSet: public ObstacleSet
         void                                            setAisles(const std::vector<FLOATING_NUMBER>&);
         void                                            setAislesSize(const std::vector<FLOATING_NUMBER>&);
 
-        // TODO this is not needed, the number of aisles is set in setAisles, keeping for now to reduce changes -RG
-        void setNumAisles(int num);
-
         void                                            addObjects(const std::string& type, const std::vector<Dimensions>& locations) override;
         
         int                                               getNumAisles()                            const noexcept;

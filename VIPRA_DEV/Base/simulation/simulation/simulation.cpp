@@ -1,6 +1,5 @@
 #include "simulation.hpp"
 
-
 Simulation::Simulation()
 {
 
@@ -66,7 +65,6 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     // std::cout << "Adding " << this->timestep_size << " msec to the simulation." << std::endl;
-
     while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
@@ -84,6 +82,12 @@ void Simulation::run()
 
         this->timestep++;
         ++i;
+
+        if(i % 1000 == 0){
+            auto ped = this->data->getPedestrianSet()->getPedestrianCoordinates()->at(5);
+            std::cout << " X: " << std::to_string(ped[0]) << " Y: " << std::to_string(ped[1]) << "\n";
+        }
+
         this->pedestrianDynamicsModel->precompute();
     }
 

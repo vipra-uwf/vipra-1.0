@@ -53,12 +53,6 @@ const std::vector<Dimensions>& AirplaneObstacleSet::getObjectsofType(const std::
     }
 }
 
-
-// TODO: remove -RG
-void setNumAisles(int num){
-    
-}
-
 const std::vector<std::string>& AirplaneObstacleSet::getObjectTypes() const noexcept {
     return this->types;
 }

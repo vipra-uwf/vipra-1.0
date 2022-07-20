@@ -16,13 +16,14 @@ void CalmPedestrianSet::configure(CONFIG_MAP* configMap)
 
 void CalmPedestrianSet::initialize(size_t pedestrianCount)
 {
-    this->goalCoordinates        = std::vector<Dimensions>(pedestrianCount, Dimensions{{START_GOAL_X, START_GOAL_Y}});
-    this->velocities             = std::vector<Dimensions>(pedestrianCount, Dimensions{{START_VELOCITY_X, START_VELOCITY_Y}});
+    this->numPedestrians         = pedestrianCount;
+    this->goalCoordinates        = std::vector<Dimensions>(pedestrianCount, Dimensions{START_GOAL_X, START_GOAL_Y});
+    this->velocities             = std::vector<Dimensions>(pedestrianCount, Dimensions{START_VELOCITY_X, START_VELOCITY_Y});
     this->speedsMetersPerSecond  = std::vector<FLOATING_NUMBER>(pedestrianCount, START_SPEED);
     this->massesKg               = std::vector<FLOATING_NUMBER>(pedestrianCount, startMass);
     this->reactionTimes          = std::vector<FLOATING_NUMBER>(pedestrianCount, startReaction_time);
     this->desiredSpeeds          = std::vector<FLOATING_NUMBER>(pedestrianCount, startDesired_speed);
-    this->propulsionForces       = std::vector<Dimensions>(pedestrianCount, Dimensions{{START_PROP_FORCE, 0}});
+    this->propulsionForces       = std::vector<Dimensions>(pedestrianCount, Dimensions{START_PROP_FORCE, 0});
     this->nearestNeighbors       = std::vector<std::pair<std::string, int>>(pedestrianCount, {"P", START_NEAREST_NEIGHBOR});
     this->movementStates         = std::vector<MovementDefinitions>(pedestrianCount, MovementDefinitions::PED_DYNAM);
     this->startingAisles         = std::vector<int>(pedestrianCount, 0);
@@ -215,4 +216,20 @@ void CalmPedestrianSet::setStartingAisles(std::vector<int> startingAisles)
 void CalmPedestrianSet::setShoulderLengths(std::vector<FLOATING_NUMBER> shoulderLengths)
 {
   this->shoulderLengths = shoulderLengths;
+}
+
+void CalmPedestrianSet::setPedestrianCoordinates(Dimensions coords, size_t index){
+    this->pedestrianCoordinates.at(index) = coords;
+}
+
+void CalmPedestrianSet::setVelocity(Dimensions velocity, size_t index){
+    this->velocities.at(index) = velocity;
+}
+
+void CalmPedestrianSet::setSpeed(FLOATING_NUMBER speed, size_t index){
+    this->speedsMetersPerSecond.at(index) = speed;
+}
+
+void CalmPedestrianSet::setPropulsionForce(Dimensions propulsionForce, size_t index){
+    this->propulsionForces.at(index) = propulsionForce;
 }

@@ -6,11 +6,18 @@ ENTITY_SET InputJSONReader::getInputEntities()
 
     for(unsigned int i = 0; i < this->jsonDocument.size(); i++)
     {
-        std::cout << "KEY: " + this->jsonDocument.getMemberNames()[i] << std::endl; 
-        for(unsigned int j = 0; j < this->jsonDocument[i].size(); j++)
+        const std::string type = this->jsonDocument.getMemberNames()[i];
+        inputData[type] = DimsVector();
+
+        for(unsigned int j = 0; j < this->jsonDocument[type].size(); j++)
         {
-            std::cout << "VALUE: " + this->jsonDocument[this->jsonDocument.getMemberNames()[i]][j].asString() << std::endl;
-        } 
+            Dimensions temp{};
+            for(unsigned int k = 0; k < this->jsonDocument[type][j].size(); ++k){
+                const std::string name = this->jsonDocument[type][j].getMemberNames()[k];
+                temp.push_back(std::stof(this->jsonDocument[type][j][name].asString()));
+            }
+            inputData[type].push_back(temp);
+        }
     }
     
     return inputData;

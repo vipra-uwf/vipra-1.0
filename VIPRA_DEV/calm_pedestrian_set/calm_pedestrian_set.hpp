@@ -44,38 +44,44 @@ class CalmPedestrianSet: public PedestrianSet
         int                                     getNumPedestrians()                                    const noexcept override;
         const std::vector<int>&                 getIds()                                               const noexcept override;
         // TODO: needs updated, more in interface -RG
-        std::vector<Dimensions>*          getPedestrianCoordinates()                              noexcept override;
-        const std::vector<Dimensions>&          getGoalCoordinates()                                   const noexcept override;
-        const std::vector<Dimensions>&          getVelocities()                                        const noexcept override;
-        const std::vector<FLOATING_NUMBER>&     getSpeeds()                                            const noexcept override;
+        [[nodiscard]] std::vector<Dimensions>*                  getPedestrianCoordinates()                             noexcept override;
+        [[nodiscard]] const std::vector<Dimensions>&            getGoalCoordinates()                                   const noexcept override;
+        [[nodiscard]] const std::vector<Dimensions>&            getVelocities()                                        const noexcept override;
+        [[nodiscard]] const std::vector<FLOATING_NUMBER>&       getSpeeds()                                            const noexcept override;
 
         void                                    setNumPedestrians(int numPedestrians)                                 override;
         void                                    setIds(std::vector<int> ids)                                          override;
+        void                                    setPedestrianCoordinates(Dimensions coords, size_t index)             override;
         void                                    setPedestrianCoordinates(std::vector<Dimensions> coordinates)         override;
         void                                    setGoalCoordinates(std::vector<Dimensions> goalCoordinates)           override;
         void                                    setVelocities(std::vector<Dimensions> velocities)                     override;
+        void                                    setVelocity(Dimensions velocity, size_t index)                        override;
         void                                    setSpeeds(std::vector<FLOATING_NUMBER> speedsMetersPerSecond)         override;
+        void                                    setSpeed(FLOATING_NUMBER speed, size_t index)                         override;
 
         // virtual ~CalmPedestrianSet();
 
-        const std::vector<FLOATING_NUMBER>&                     getMasses()                     const noexcept;
-        const std::vector<FLOATING_NUMBER>&                     getReactionTimes()              const noexcept;
-        const std::vector<FLOATING_NUMBER>&                     getDesiredSpeeds()              const noexcept;
-        const std::vector<Dimensions>&                          getPropulsionForces()           const noexcept;
-        const std::vector<FLOATING_NUMBER>&                     getRepulsionForces()            const noexcept;
-        const std::vector<std::pair<std::string, int>>&         getNearestNeighbors()           const noexcept;
-        const std::vector<FLOATING_NUMBER>&                     getPriorities()                 const noexcept;
-        const std::vector<MovementDefinitions>&                 getMovementStates()             const noexcept;
-        const std::vector<int>&                                 getStartingAisles()             const noexcept;
-        const std::vector<FLOATING_NUMBER>&                     getShoulderLengths()            const noexcept;
+        [[nodiscard]] const std::vector<FLOATING_NUMBER>&                     getMasses()                     const noexcept;
+        [[nodiscard]] const std::vector<FLOATING_NUMBER>&                     getReactionTimes()              const noexcept;
+        [[nodiscard]] const std::vector<FLOATING_NUMBER>&                     getDesiredSpeeds()              const noexcept;
+        [[nodiscard]] const std::vector<Dimensions>&                          getPropulsionForces()           const noexcept;
+        [[nodiscard]] const std::vector<FLOATING_NUMBER>&                     getRepulsionForces()            const noexcept;
+        [[nodiscard]] const std::vector<std::pair<std::string, int>>&         getNearestNeighbors()           const noexcept;
+        [[nodiscard]] const std::vector<FLOATING_NUMBER>&                     getPriorities()                 const noexcept;
+        [[nodiscard]] const std::vector<MovementDefinitions>&                 getMovementStates()             const noexcept;
+        [[nodiscard]] const std::vector<int>&                                 getStartingAisles()             const noexcept;
+        [[nodiscard]] const std::vector<FLOATING_NUMBER>&                     getShoulderLengths()            const noexcept;
+
+
+        // TODO add move semantics -RG
 
         void setMasses(std::vector<FLOATING_NUMBER> massesKg);
         void setReactionTimes(std::vector<FLOATING_NUMBER> reactionTimes);
         void setDesiredSpeeds(std::vector<FLOATING_NUMBER> desiredSpeeds);
         void setPropulsionForces(std::vector<Dimensions> propulsionForces);
+        void setPropulsionForce(Dimensions propulsionForce, size_t index);
         void setRepulsionForces(std::vector<FLOATING_NUMBER> repulsionForces);
-        void setNearestNeighbors(
-          std::vector<std::pair<std::string, int>> nearestNeighbors);
+        void setNearestNeighbors(std::vector<std::pair<std::string, int>> nearestNeighbors);
         void setPriorities(std::vector<FLOATING_NUMBER> priorities);
         void setMovementStates(std::vector<MovementDefinitions> movementStates);
         void setStartingAisles(std::vector<int> startingAisles);

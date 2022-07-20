@@ -18,6 +18,7 @@ void CalmGoals::setData(Data* data)
 void CalmGoals::addExitGoals(const ObstacleSet& obstacleSet)
 {
     exitGoals = obstacleSet.getObjectsofType("exits");
+    std::cout << "exitsGoals Size:" << std::to_string(exitGoals.size());
     calculateNearestExit();
 }
 
