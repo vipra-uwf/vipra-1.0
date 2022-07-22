@@ -285,7 +285,7 @@ std::string runSim(){
     return {
         debugOutput("running simulation")+
         "\n\tsimulation->run();"
-        "\n\toutputDataWriter->writeDocumentContentsToFile();"
+        "\n\toutput_data_writer->writeDocumentContentsToFile();"
     };
 }
 

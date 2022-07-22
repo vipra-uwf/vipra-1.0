@@ -52,7 +52,7 @@ void CalmPedestrianModel::initialize()
         nearestNeighbors.push_back(calculateNearestNeighbors(i, pedestrianDisplacementX, pedestrianDisplacementY));
     }
 
-    this->pedestrianSet->setNearestNeighbors(nearestNeighbors);
+    this->pedestrianSet->setNearestNeighbors(std::move(nearestNeighbors));
 
     this->nearestNeighbors = this->pedestrianSet->getNearestNeighbors();
 
@@ -148,7 +148,7 @@ void CalmPedestrianModel::precompute()
         updatedMoveStates.push_back(updateMovementState(i));
     }
 
-    this->pedestrianSet->setNearestNeighbors(nearestNeighbors);
+    this->pedestrianSet->setNearestNeighbors(std::move(nearestNeighbors));
     this->nearestNeighbors = this->pedestrianSet->getNearestNeighbors();
 
     if(priorityActiveFlag == false)
@@ -157,7 +157,7 @@ void CalmPedestrianModel::precompute()
         std::cout << "current priority: " << currentPriority << std::endl;
     }
 
-    this->pedestrianSet->setMovementStates(updatedMoveStates);
+    this->pedestrianSet->setMovementStates(std::move(updatedMoveStates));
 
     this->moveStates = this->pedestrianSet->getMovementStates();
 
@@ -242,8 +242,8 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
 
         // Update the pedestrianSet inline. Future iterations will return a list of values for all pedestrians so the simulation can set them accordingly.
 
-        this->pedestrianSet->setVelocity(newVelocity, i);
-        this->pedestrianSet->setPedestrianCoordinates(newPosition, i);
+        this->pedestrianSet->setVelocity(std::move(newVelocity), i);
+        this->pedestrianSet->setPedestrianCoordinates(std::move(newPosition), i);
         this->pedestrianSet->setSpeed(newSpeed, i);
     }
 }
@@ -388,7 +388,7 @@ void CalmPedestrianModel::calculatePropulsion()
                 ((newVelocity[1] - velocityY) * mass / reactionTime)
             }
         );
-        this->pedestrianSet->setPropulsionForce(newPropulsiveForce, i);
+        this->pedestrianSet->setPropulsionForce(std::move(newPropulsiveForce), i);
     }
 }
 
@@ -420,7 +420,7 @@ void CalmPedestrianModel::calculateBeta()
 
         newDesiredSpeeds.push_back(0.3 * (c - exp(a * distanceMinusB))); //TODO - fix the coeff to change depending on goal -EL
     }
-    this->pedestrianSet->setDesiredSpeeds(newDesiredSpeeds);
+    this->pedestrianSet->setDesiredSpeeds(std::move(newDesiredSpeeds));
 }
 
 
@@ -735,8 +735,8 @@ void CalmPedestrianModel::calculatePriority()
         }
      }
 
-     this->pedestrianSet->setPriorities(priorities);
-     this->pedestrianSet->setStartingAisles(startingAisles);
+     this->pedestrianSet->setPriorities(std::move(priorities));
+     this->pedestrianSet->setStartingAisles(std::move(startingAisles));
 
 
 
