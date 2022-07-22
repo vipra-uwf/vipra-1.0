@@ -1,3 +1,3 @@
 export const loggingConfig = {
-    level: 'error'
+    level: 'info'
 };

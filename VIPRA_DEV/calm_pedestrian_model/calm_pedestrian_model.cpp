@@ -57,12 +57,12 @@ void CalmPedestrianModel::initialize()
     this->nearestNeighbors = this->pedestrianSet->getNearestNeighbors();
 
     calculateBeta();
-    calculatePropulsion();
-
-    this->propulsionForces = this->pedestrianSet->getPropulsionForces();
-    this->velocities = this->pedestrianSet->getVelocities();
     this->desiredSpeeds = this->pedestrianSet->getDesiredSpeeds();
-    
+
+    calculatePropulsion();
+    this->propulsionForces = this->pedestrianSet->getPropulsionForces();
+
+    this->velocities = this->pedestrianSet->getVelocities();
 }
 
 void CalmPedestrianModel::setData(Data* initialData)
@@ -166,7 +166,6 @@ void CalmPedestrianModel::precompute()
 
     calculatePropulsion();
     this->propulsionForces = this->pedestrianSet->getPropulsionForces();
-
 }
 
 void CalmPedestrianModel::update(FLOATING_NUMBER time)
@@ -181,66 +180,65 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
     for (int i = 0; i < this->numPedestrians; ++i)
     {
 
-      MovementDefinitions currentState = this->moveStates[i];
-      FLOATING_NUMBER propulsiveX = this->propulsionForces[i][0];
-      FLOATING_NUMBER propulsiveY = this->propulsionForces[i][1];
-      FLOATING_NUMBER velocityX = this->velocities[i][0];
-      FLOATING_NUMBER velocityY = this->velocities[i][1];
-      FLOATING_NUMBER mass = this->masses[i];
-      FLOATING_NUMBER desiredSpeed = this->desiredSpeeds[i];
-      FLOATING_NUMBER coordinateX = this->pedestrianCoordinates[i][0];
-      FLOATING_NUMBER coordinateY = this->pedestrianCoordinates[i][1];
+        MovementDefinitions currentState = this->moveStates[i];
+        FLOATING_NUMBER propulsiveX = this->propulsionForces[i][0];
+        FLOATING_NUMBER propulsiveY = this->propulsionForces[i][1];
+        FLOATING_NUMBER velocityX = this->velocities[i][0];
+        FLOATING_NUMBER velocityY = this->velocities[i][1];
+        FLOATING_NUMBER mass = this->masses[i];
+        FLOATING_NUMBER desiredSpeed = this->desiredSpeeds[i];
+        FLOATING_NUMBER coordinateX = this->pedestrianCoordinates[i][0];
+        FLOATING_NUMBER coordinateY = this->pedestrianCoordinates[i][1];
 
+        if(currentState == MovementDefinitions::STOP)
+        {
+            newVelocity =
+            (
+                Dimensions
+                {
+                        0,
+                        0
+                }
+            );
+        }
+        else
+        {
+            newVelocity =
+            (
 
+                Dimensions
+                {
+                        (propulsiveX * (time / mass) + velocityX),
+                        (propulsiveY * (time / mass) + velocityY)
+                }
+            );
+        }
 
-            if(currentState == MovementDefinitions::STOP)
-            {
-                newVelocity =
-                (
-                    Dimensions
-                    {
-                            0,
-                            0
-                    }
-                );
-            }
-            else
-            {
-                newVelocity =
-                (
-                    Dimensions
-                    {
-                            (propulsiveX * (time / mass) + velocityX),
-                            (propulsiveY * (time / mass) + velocityY)
-                    }
-                );
-            }
+        newSpeed = ((newVelocity[0]
+            * newVelocity[0])
+            + (newVelocity[1]
+            * newVelocity[1]));
 
-            newSpeed = ((newVelocity[0]
-                * newVelocity[0])
-                + (newVelocity[1]
-                * newVelocity[1]));
+        if(newSpeed < (desiredSpeed * desiredSpeed))
+        {
+            newPosition =
+                Dimensions
+                {
+                        (coordinateX + (newVelocity[0] * time)),
+                        (coordinateY + (newVelocity[1] * time))
+                };
+        }
 
-            if(newSpeed < (desiredSpeed * desiredSpeed))
-            {
-                newPosition =
-                    Dimensions
-                    {
-                            (coordinateX + (newVelocity[0] * time)),
-                            (coordinateY + (newVelocity[1] * time))
-                    };
-            }
+        else
+        {
+            newPosition =
+                Dimensions
+                {
+                        coordinateX + (newVelocity[0] * (desiredSpeed / (newSpeed+coeff)) * time),
+                        coordinateY + (newVelocity[1] * (desiredSpeed / (newSpeed+coeff)) * time)
+                };
 
-            else
-            {
-                newPosition =
-                    Dimensions
-                    {
-                            coordinateX + (newVelocity[0] * (desiredSpeed / (newSpeed+coeff)) * time),
-                            coordinateY + (newVelocity[1] * (desiredSpeed / (newSpeed+coeff)) * time)
-                    };
-
-            }
+        }
 
         // Update the pedestrianSet inline. Future iterations will return a list of values for all pedestrians so the simulation can set them accordingly.
 
@@ -252,15 +250,13 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
 
 void CalmPedestrianModel::calculatePropulsion()
 {
-    Dimensions newVelocity;
-    Dimensions newPropulsiveForce;
     FLOATING_NUMBER xAisleCoefficent = 0.5;
     FLOATING_NUMBER yAisleCoefficent = 0.9;
 
     for(int i = 0; i < this->numPedestrians; ++i)
     {
-        newVelocity = this->pedestrianSet->getVelocities().at(i);
-        newPropulsiveForce = this->pedestrianSet->getPropulsionForces().at(i);
+        Dimensions newVelocity = this->pedestrianSet->getVelocities().at(i);
+        Dimensions newPropulsiveForce = this->pedestrianSet->getPropulsionForces().at(i);
 
         MovementDefinitions currentState = this->moveStates[i];
         FLOATING_NUMBER goalX = this->goalCoordinates[i][0];
@@ -422,8 +418,7 @@ void CalmPedestrianModel::calculateBeta()
           )) - b);
         }
 
-
-    newDesiredSpeeds.push_back(0.3 * (c - exp(a * distanceMinusB))); //TODO - fix the coeff to change depending on goal -EL
+        newDesiredSpeeds.push_back(0.3 * (c - exp(a * distanceMinusB))); //TODO - fix the coeff to change depending on goal -EL
     }
     this->pedestrianSet->setDesiredSpeeds(newDesiredSpeeds);
 }

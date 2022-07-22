@@ -1,5 +1,7 @@
 #include "calm_entity_set_factory.hpp"
 
+#include <iostream>
+
 void CalmEntitySetFactory::configure(CONFIG_MAP* configMap)
 {
 

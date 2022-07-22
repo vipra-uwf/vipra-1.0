@@ -43,6 +43,7 @@ class CalmPedestrianSet: public PedestrianSet
 
         int                                     getNumPedestrians()                                    const noexcept override;
         const std::vector<int>&                 getIds()                                               const noexcept override;
+        
         // TODO: needs updated, more in interface -RG
         [[nodiscard]] std::vector<Dimensions>*                  getPedestrianCoordinates()                             noexcept override;
         [[nodiscard]] const std::vector<Dimensions>&            getGoalCoordinates()                                   const noexcept override;

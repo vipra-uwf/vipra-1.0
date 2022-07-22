@@ -156,6 +156,7 @@ std::string generateExtractConfigMap(){
         "\n\t{"
             "\n\t\tstd::string attribute = moduleParams[name][\"params\"].getMemberNames()[i];"
             "\n\t\tstd::string value = moduleParams[name][\"params\"][attribute].asString();"
+            "\n\tstd::cout << \"ATTRIBUTE: \" << attribute << \" : \" << value << \'\\n\';"
             "\n\t\t(*configMap)[attribute] = value;"
         "\n\t}"
         "\n"
@@ -284,6 +285,7 @@ std::string runSim(){
     return {
         debugOutput("running simulation")+
         "\n\tsimulation->run();"
+        "\n\toutputDataWriter->writeDocumentContentsToFile();"
     };
 }
 

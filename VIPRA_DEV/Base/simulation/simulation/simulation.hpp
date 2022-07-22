@@ -9,6 +9,8 @@
 
 #include "../../../Interfaces/pedestrianmodel/pedestrian_dynamics_model.hpp"
 
+#include "../../../calm_pedestrian_model/calm_pedestrian_model.hpp"
+
 class SimulationOutputHandler; // forward declaring 
 
 class Simulation
@@ -36,6 +38,9 @@ class Simulation
             SimulationOutputHandler* simulationOutputHandler);
         int* getTimestep();
         PedestrianDynamicsModel* getPedestrianDynamicsModel();
+
+
+        void printDataDELETETHIS();
 };
 
 #endif

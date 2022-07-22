@@ -23,7 +23,7 @@ void CalmPedestrianSet::initialize(size_t pedestrianCount)
     this->massesKg               = std::vector<FLOATING_NUMBER>(pedestrianCount, startMass);
     this->reactionTimes          = std::vector<FLOATING_NUMBER>(pedestrianCount, startReaction_time);
     this->desiredSpeeds          = std::vector<FLOATING_NUMBER>(pedestrianCount, startDesired_speed);
-    this->propulsionForces       = std::vector<Dimensions>(pedestrianCount, Dimensions{START_PROP_FORCE, 0});
+    this->propulsionForces       = std::vector<Dimensions>(pedestrianCount, Dimensions{START_PROP_FORCE, START_PROP_FORCE});
     this->nearestNeighbors       = std::vector<std::pair<std::string, int>>(pedestrianCount, {"P", START_NEAREST_NEIGHBOR});
     this->movementStates         = std::vector<MovementDefinitions>(pedestrianCount, MovementDefinitions::PED_DYNAM);
     this->startingAisles         = std::vector<int>(pedestrianCount, 0);
@@ -59,7 +59,7 @@ void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
 
 int CalmPedestrianSet::getNumPedestrians() const noexcept
 {
-    return this->numPedestrians;
+    return this->pedestrianCoordinates.size();
 }
 
 const std::vector<int>& CalmPedestrianSet::getIds() const noexcept

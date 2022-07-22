@@ -376,6 +376,9 @@ std::cout << "extracting config map:" + name << std::endl;
 	{
 		std::string attribute = moduleParams[name]["params"].getMemberNames()[i];
 		std::string value = moduleParams[name]["params"][attribute].asString();
+
+		std::cout << "ATTRIBUTE: " << attribute << " : " << value << '\n';
+
 		(*configMap)[attribute] = value;
 	}
 

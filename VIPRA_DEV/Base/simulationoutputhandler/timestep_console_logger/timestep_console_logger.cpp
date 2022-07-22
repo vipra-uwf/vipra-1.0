@@ -3,6 +3,7 @@
 void TimestepConsoleLogger::configure(CONFIG_MAP *configMap)
 {
     setOutputWritingFrequency(std::stoi((*configMap)["outputFrequency"]));
+    std::cout << "OUTPUT FREQ: " << std::to_string(this->frequency) << '\n';
 }
 
 void TimestepConsoleLogger::setOutputDataWriter(

@@ -17,7 +17,7 @@
     },
     "simulation_output_handler": {
         "params":{
-            "outputFrequency": 100
+            "outputFrequency": "100"
         }
     },
     "pedestrian_set": {
@@ -64,8 +64,8 @@
     },
     "simulation": {
         "params":{
-            "time_step": 0.00,
-            "time_step_size": 0.05
+            "time_step": "0.00",
+            "time_step_size": "0.005"
         }
     }
 }
