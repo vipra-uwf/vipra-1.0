@@ -12,12 +12,10 @@ class PedestrianSet
         
         virtual void                                    configure(CONFIG_MAP* configMap)                        = 0;
         virtual void                                    initialize(size_t pedestrianCount)                      = 0;
-        virtual void                                    removePedestrian(int pedestrianIndex)                   = 0;
+        virtual void                                    removePedestrian(size_t pedestrianIndex)                   = 0;
+
         virtual int                                     getNumPedestrians()                     const noexcept  = 0;
-        // TODO: this needs to be changed to returning a const reference -RG
-        //          keeping it as a raw pointer :( because goals needs completely updated to support otherwise
-        virtual       std::vector<Dimensions>*          getPedestrianCoordinates()              noexcept   = 0;
-        virtual const std::vector<Dimensions>&          getGoalCoordinates()                    const noexcept  = 0;
+        virtual const std::vector<Dimensions>&          getPedestrianCoordinates()              const noexcept  = 0;
         virtual const std::vector<Dimensions>&          getVelocities()                         const noexcept  = 0;
         virtual const std::vector<FLOATING_NUMBER>&     getSpeeds()                             const noexcept  = 0;
         virtual const std::vector<int>&                 getIds()                                const noexcept  = 0;
@@ -28,9 +26,6 @@ class PedestrianSet
         virtual void setPedestrianCoordinates(Dimensions&& coords, size_t index)                        = 0;
         virtual void setPedestrianCoordinates(std::vector<Dimensions>&& coordinates)                    noexcept = 0;
         virtual void setPedestrianCoordinates(const std::vector<Dimensions>& coordinates)               noexcept = 0;
-
-        virtual void setGoalCoordinates(const std::vector<Dimensions>& goalCoordinates)                 noexcept = 0;
-        virtual void setGoalCoordinates(std::vector<Dimensions>&& goalCoordinates)                      noexcept = 0;
 
         virtual void setVelocity(const Dimensions& velocity, size_t index)                              = 0;
         virtual void setVelocity(Dimensions&& velocity, size_t index)                                   = 0;

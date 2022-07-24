@@ -35,7 +35,6 @@ private:
     std::vector<Dimensions>                     velocities;
     std::vector<Dimensions>                     pedestrianCoordinates;
     std::vector<Dimensions>                     obstacleCoordinates;
-    std::vector<Dimensions>                     goalCoordinates;
 
     std::vector<FLOATING_NUMBER>                masses;
     std::vector<FLOATING_NUMBER>                desiredSpeeds;
@@ -80,6 +79,7 @@ public:
     
     Data*                           getData()                              override;
     Goals*                          getGoals()                             override;
+    
     FLOATING_NUMBER                 getDistance(int firstPedestrianIndex, int secondPedestrianIndex, std::string originSet);
 
     ~CalmPedestrianModel();

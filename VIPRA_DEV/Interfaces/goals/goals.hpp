@@ -23,16 +23,21 @@ class Goals
     public:
         virtual ~Goals() = default;
 
-        virtual void                configure(CONFIG_MAP* configMap) = 0;
-        virtual void                setData(Data* data) = 0;
-        virtual void                addExitGoals(const ObstacleSet&) = 0;
-        virtual void                removeExitGoal(int exitIndex) = 0;
-        virtual void                clearGoals() = 0;
-        virtual void                calculateNearestExit() = 0;
-        virtual void                determinePedestrianGoals() = 0;
-        virtual bool                checkPedestianGoalsMet(int pedestrianIndex) = 0;
-        virtual bool                isSimulationGoalMet() = 0; 
-        virtual Dimensions          getPedestrianExitGoal(int pedestrianIndex) = 0;
+        virtual void                        configure(CONFIG_MAP* configMap)                                                    = 0;
+        virtual void                        initialize(const ObstacleSet&, const PedestrianSet&)                                = 0;
+
+        virtual void                        updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&)                     = 0;
+
+        virtual const Dimensions&           getCurrentGoal(size_t index)                                        const           = 0;
+        virtual const Dimensions&           getEndGoal(size_t index)                                            const           = 0;
+
+        virtual const DimsVector&           getAllCurrentGoals()                                                const noexcept  = 0;
+        virtual const DimsVector&           getAllEndGoals()                                                    const noexcept  = 0;
+
+        virtual void                        clearGoals()                                                        noexcept        = 0;
+
+        virtual bool                        isPedestianGoalsMet(size_t)                                         const           = 0;
+        virtual bool                        isSimulationGoalMet()                                               const noexcept  = 0;
 };
 
 #endif

@@ -86,42 +86,52 @@ int main(int argc, const char **argv)
 	PedestrianDynamicsModel* pedestrian_dynamics_model = generatePedestrianDynamicsModel(simulationJsonConfig["pedestrian_dynamics_model"]["id"].asString(), pedestrian_dynamics_modelConfig);
 
 #ifdef DEBUG_OUTPUT
-std::cout << reading obstacledata << std::endl;
+std::cout << "reading obstacledata" << std::endl;
 #endif
 	input_data_loader->extractFileData(obstacleFile, nullptr);
+
+#ifdef DEBUG_OUTPUT
+std::cout << "getting input entities" << std::endl;
+#endif
 	ENTITY_SET obstacleData = input_data_loader->getInputEntities();
 
 #ifdef DEBUG_OUTPUT
-std::cout << done reading << std::endl;
+std::cout << "done reading" << std::endl;
 #endif
 	entity_set_factory->populateObstacleSet(obstacleData, obstacle_set);
 
 #ifdef DEBUG_OUTPUT
-std::cout << populated obstacleset << std::endl;
+std::cout << "populated obstacleset" << std::endl;
 #endif
 
 #ifdef DEBUG_OUTPUT
-std::cout << reading pedestriandata << std::endl;
+std::cout << "reading pedestriandata" << std::endl;
 #endif
 	input_data_loader->extractFileData(pedestrianFile, nullptr);
+
+#ifdef DEBUG_OUTPUT
+std::cout << "getting input entities" << std::endl;
+#endif
 	ENTITY_SET pedestrianData = input_data_loader->getInputEntities();
 
 #ifdef DEBUG_OUTPUT
-std::cout << done reading << std::endl;
+std::cout << "done reading" << std::endl;
 #endif
 	entity_set_factory->populatePedestrianSet(pedestrianData, pedestrian_set);
 
 #ifdef DEBUG_OUTPUT
-std::cout << populated pedestrianset << std::endl;
+std::cout << "populated pedestrianset" << std::endl;
 #endif
 	data->setPedestrianSet(pedestrian_set);
 	data->setObstacleSet(obstacle_set);
 
-	goals->setData(data);
-	goals->addExitGoals(*obstacle_set);
 	pedestrian_dynamics_model->setData(data);
 	pedestrian_dynamics_model->setGoals(goals);
-	goals->determinePedestrianGoals();
+
+
+	goals->initialize(*obstacle_set, *pedestrian_set);
+	goals->updatePedestrianGoals(*obstacle_set, *pedestrian_set);
+
 	pedestrian_dynamics_model->initialize();
 	human_behavior_model->setData(data);
 	simulation->setData(data);
@@ -129,7 +139,7 @@ std::cout << populated pedestrianset << std::endl;
 	simulation->setHumanBehaviorModel(human_behavior_model);
 
 #ifdef DEBUG_OUTPUT
-std::cout << setting up output << std::endl;
+std::cout << "setting up output" << std::endl;
 #endif
 	output_data_writer->initializeOutputFile(outputFile);
 	simulation_output_handler->setOutputDataWriter(output_data_writer);
@@ -139,13 +149,14 @@ std::cout << setting up output << std::endl;
 	simulation->setSimulationOutputHandler(simulation_output_handler);
 
 #ifdef DEBUG_OUTPUT
-std::cout << done setting up output << std::endl;
+std::cout << "done setting up output" << std::endl;
 #endif
 
 #ifdef DEBUG_OUTPUT
-std::cout << running simulation << std::endl;
+std::cout << "running simulation" << std::endl;
 #endif
 	simulation->run();
+	output_data_writer->writeDocumentContentsToFile();
 	delete input_data_loader;
 	delete output_data_writer;
 	delete pedestrian_set;
@@ -170,7 +181,7 @@ Simulation* generateSimulation(std::string id, CONFIG_MAP* configMap)
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating simulation << std::endl;
+std::cout << "generating simulation" << std::endl;
 #endif
 	if(id=="QQgWGHtxsVWT1jIEXbxjKG1HA3iqI0"){
 		Simulation* simulation = new Simulation();
@@ -184,7 +195,7 @@ Data* generateData(std::string id, CONFIG_MAP* configMap)
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating data << std::endl;
+std::cout << "generating data" << std::endl;
 #endif
 	if(id=="MJk1zG6WMVTwUT82QroZXohn3gnfT4"){
 		Data* data = new Data();
@@ -198,7 +209,7 @@ Clock* generateClock(std::string id, CONFIG_MAP* configMap)
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating clock << std::endl;
+std::cout << "generating clock" << std::endl;
 #endif
 	if(id=="NUpICP9g2eBe9GGYBXmx1jofH9TC7k"){
 		Clock* clock = new Clock();
@@ -212,7 +223,7 @@ ConfigurationReader* generateConfigurationReader(std::string id, CONFIG_MAP* con
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating configuration_reader << std::endl;
+std::cout << "generating configuration_reader" << std::endl;
 #endif
 	if(id=="5E4V21CyOwU5iMBfH97qlFDn6DlAlf"){
 		ConfigurationReader* configuration_reader = new ConfigurationReader();
@@ -226,7 +237,7 @@ HumanBehaviorModel* generateHumanBehaviorModel(std::string id, CONFIG_MAP* confi
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating human_behavior_model << std::endl;
+std::cout << "generating human_behavior_model" << std::endl;
 #endif
 	if(id=="e3y1yG6PSjrWzsptf6jHdfBElwFugQ"){
 		HumanBehaviorModel* human_behavior_model = new HumanBehaviorModel();
@@ -240,7 +251,7 @@ EntitySetFactory* generateEntitySetFactory(std::string id, CONFIG_MAP* configMap
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating entity_set_factory << std::endl;
+std::cout << "generating entity_set_factory" << std::endl;
 #endif
 	if(id=="h6fJTJdM5L9q8wjXEvN6Cq8D14MUeX"){
 		CalmEntitySetFactory* calm_entity_set_factory = new CalmEntitySetFactory();
@@ -254,7 +265,7 @@ ObstacleSet* generateObstacleSet(std::string id, CONFIG_MAP* configMap)
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating obstacle_set << std::endl;
+std::cout << "generating obstacle_set" << std::endl;
 #endif
 	if(id=="MTpemEr4jv5XTvgwO7q54Qco97Pnt4"){
 		AirplaneObstacleSet* airplane_obstacle_set = new AirplaneObstacleSet();
@@ -268,7 +279,7 @@ PedestrianSet* generatePedestrianSet(std::string id, CONFIG_MAP* configMap)
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating pedestrian_set << std::endl;
+std::cout << "generating pedestrian_set" << std::endl;
 #endif
 	if(id=="jLcPe7ZP8G15AFH5vPb6Wz2DrIVT94"){
 		CalmPedestrianSet* calm_pedestrian_set = new CalmPedestrianSet();
@@ -282,7 +293,7 @@ InputDataLoader* generateInputDataLoader(std::string id, CONFIG_MAP* configMap)
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating input_data_loader << std::endl;
+std::cout << "generating input_data_loader" << std::endl;
 #endif
 	if(id=="bQIGJDQw0Fgqo4oC3lH7mQerFGTQry"){
 		InputJSONReader* input_json_reader = new InputJSONReader();
@@ -296,7 +307,7 @@ OutputDataWriter* generateOutputDataWriter(std::string id, CONFIG_MAP* configMap
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating output_data_writer << std::endl;
+std::cout << "generating output_data_writer" << std::endl;
 #endif
 	if(id=="esBm2A3I0yIbGvzW5bLY0yKHJTzVCj"){
 		JSONTimestepWriter* json_timestep_writer = new JSONTimestepWriter();
@@ -305,7 +316,7 @@ std::cout << generating output_data_writer << std::endl;
 	}
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating output_data_writer << std::endl;
+std::cout << "generating output_data_writer" << std::endl;
 #endif
 	if(id=="f8qt7eLCczzFMjToJBsA5qYUz1A8E6"){
 		JSONWriter* json_writer = new JSONWriter();
@@ -319,7 +330,7 @@ Goals* generateGoals(std::string id, CONFIG_MAP* configMap)
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating goals << std::endl;
+std::cout << "generating goals" << std::endl;
 #endif
 	if(id=="Xz59g1o8HcsnMJlKaiYw00wZ19rB7P"){
 		CalmGoals* calm_goals = new CalmGoals();
@@ -333,7 +344,7 @@ SimulationOutputHandler* generateSimulationOutputHandler(std::string id, CONFIG_
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating simulation_output_handler << std::endl;
+std::cout << "generating simulation_output_handler" << std::endl;
 #endif
 	if(id=="RfH40LtLJjHOlPIEeTj0i6ghBygQsZ"){
 		TimestepConsoleLogger* timestep_console_logger = new TimestepConsoleLogger();
@@ -342,7 +353,7 @@ std::cout << generating simulation_output_handler << std::endl;
 	}
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating simulation_output_handler << std::endl;
+std::cout << "generating simulation_output_handler" << std::endl;
 #endif
 	if(id=="0bQVYYyskvxYq6YW4J67z73UB6GbnU"){
 		TimestepOutputHandler* timestep_output_handler = new TimestepOutputHandler();
@@ -356,7 +367,7 @@ PedestrianDynamicsModel* generatePedestrianDynamicsModel(std::string id, CONFIG_
 
 
 #ifdef DEBUG_OUTPUT
-std::cout << generating pedestrian_dynamics_model << std::endl;
+std::cout << "generating pedestrian_dynamics_model" << std::endl;
 #endif
 	if(id=="VbGjNW5NCkOmKAxvFmz5KwUV2zz469"){
 		CalmPedestrianModel* calm_pedestrian_model = new CalmPedestrianModel();
@@ -370,15 +381,13 @@ CONFIG_MAP* extractConfigMap(std::string name)
 	CONFIG_MAP* configMap = new CONFIG_MAP;
 
 #ifdef DEBUG_OUTPUT
-std::cout << "extracting config map:" + name << std::endl;
+std::cout << "extracting config map:" << std::endl;
 #endif
 	for(unsigned int i = 0; i < moduleParams[name]["params"].size(); i++)
 	{
 		std::string attribute = moduleParams[name]["params"].getMemberNames()[i];
 		std::string value = moduleParams[name]["params"][attribute].asString();
-
-		std::cout << "ATTRIBUTE: " << attribute << " : " << value << '\n';
-
+	std::cout << "ATTRIBUTE: " << attribute << " : " << value << '\n';
 		(*configMap)[attribute] = value;
 	}
 

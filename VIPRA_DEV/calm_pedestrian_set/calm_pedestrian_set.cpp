@@ -33,7 +33,7 @@ void CalmPedestrianSet::initialize(size_t pedestrianCount)
     std::iota(this->ids.begin(), this->ids.end(), 0);
 }
 
-void CalmPedestrianSet::removePedestrian(int pedestrianIndex)
+void CalmPedestrianSet::removePedestrian(size_t pedestrianIndex)
 {
     std::cout << "check removed: " << this->ids.at(pedestrianIndex) << std::endl;
     this->numPedestrians--;
@@ -67,14 +67,9 @@ const std::vector<int>& CalmPedestrianSet::getIds() const noexcept
     return this->ids;
 }
 
-std::vector<Dimensions>* CalmPedestrianSet::getPedestrianCoordinates() noexcept
+const std::vector<Dimensions>& CalmPedestrianSet::getPedestrianCoordinates() const noexcept
 {
-    return &this->pedestrianCoordinates;
-}
-
-const std::vector<Dimensions>& CalmPedestrianSet::getGoalCoordinates() const noexcept
-{
-    return this->goalCoordinates;
+    return this->pedestrianCoordinates;
 }
 
 const std::vector<Dimensions>& CalmPedestrianSet::getVelocities() const noexcept
@@ -148,12 +143,6 @@ void CalmPedestrianSet::setPedestrianCoordinates(const std::vector<Dimensions>&
     coordinates) noexcept
 {
     this->pedestrianCoordinates = coordinates;
-}
-
-void CalmPedestrianSet::setGoalCoordinates(
-		const std::vector<Dimensions>& goalCoordinates) noexcept
-{
-    this->goalCoordinates = goalCoordinates;
 }
 
 void CalmPedestrianSet::setSpeeds(
@@ -235,29 +224,25 @@ void CalmPedestrianSet::setSpeed(FLOATING_NUMBER speed, size_t index) {
 }
 
 void CalmPedestrianSet::setPropulsionForce(Dimensions&& propulsionForce, size_t index) {
-    this->propulsionForces.at(index) = propulsionForce;
+    this->propulsionForces.at(index) = std::move(propulsionForce);
 }
 
 void CalmPedestrianSet::setPedestrianCoordinates(std::vector<Dimensions>&& coordinates) noexcept {
-    this->pedestrianCoordinates = coordinates;
+    this->pedestrianCoordinates = std::move(coordinates);
 }
 
 void CalmPedestrianSet::setVelocities(std::vector<Dimensions>&& velocities) noexcept {
-    this->velocities = velocities;
+    this->velocities = std::move(velocities);
 }
 
 void CalmPedestrianSet::setSpeeds(std::vector<FLOATING_NUMBER>&& speedsMetersPerSecond) noexcept {
-    this->speedsMetersPerSecond = speedsMetersPerSecond;
-}
-
-void CalmPedestrianSet::setGoalCoordinates(std::vector<Dimensions>&& goalCoordinates) noexcept {
-    this->goalCoordinates = goalCoordinates;
+    this->speedsMetersPerSecond = std::move(speedsMetersPerSecond);
 }
 
 void CalmPedestrianSet::setVelocity(Dimensions&& velocity, size_t index) {
-    this->velocities.at(index) = velocity;
+    this->velocities.at(index) = std::move(velocity);
 }
 
 void CalmPedestrianSet::setPedestrianCoordinates(Dimensions&& coords, size_t index) {
-    this->pedestrianCoordinates.at(index) = coords;
+    this->pedestrianCoordinates.at(index) = std::move(coords);
 }

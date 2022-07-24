@@ -24,7 +24,6 @@ void Simulation::setHumanBehaviorModel(HumanBehaviorModel* behaviorModel){
     this->humanBehaviorModel = behaviorModel;
 }
 
-
 void Simulation::setData(Data* data)
  {
     this->data = data;
@@ -83,8 +82,8 @@ void Simulation::run()
         this->timestep++;
         ++i;
 
-        if(i % 1000 == 0){
-            printDataDELETETHIS();
+        if(i % 10 == 0){
+            printDataDELETETHIS(*dynamic_cast<CalmPedestrianModel*>(this->pedestrianDynamicsModel));
         }
 
         this->pedestrianDynamicsModel->precompute();
@@ -107,7 +106,7 @@ PedestrianDynamicsModel* Simulation::getPedestrianDynamicsModel()
 }
 
 
-void Simulation::printDataDELETETHIS()
+void Simulation::printDataDELETETHIS(CalmPedestrianModel& calmModel)
 {
     Data* data = this->pedestrianDynamicsModel->getData();
     CalmPedestrianSet* calmPedSet = dynamic_cast<CalmPedestrianSet*>(data->getPedestrianSet());
@@ -120,14 +119,12 @@ void Simulation::printDataDELETETHIS()
 	{
 		std::cout << "ped [" << i << "] ("
             << calmPedSet->getPedestrianCoordinates()
-                ->at(i)[0] << ", "
-		    << calmPedSet->getPedestrianCoordinates()
-                ->at(i)[1] << ")"
-			<< " goal (" << calmPedSet->getGoalCoordinates()
                 .at(i)[0] << ", "
-			<< calmPedSet->getGoalCoordinates()
+		    << calmPedSet->getPedestrianCoordinates()
                 .at(i)[1] << ")"
-
+			<< " currgoal (" << calmModel.getGoals()->getCurrentGoal(i)[0] << ", " << calmModel.getGoals()->getCurrentGoal(i)[1] << ")"
+            << " endGoal (" << calmModel.getGoals()->getEndGoal(i)[0] << ", " << calmModel.getGoals()->getEndGoal(i)[1] << ")"
+            << " metGoal (" << std::to_string(calmModel.getGoals()->isPedestianGoalsMet(i)) << ") "
 			<< " velocity (" << calmPedSet->getVelocities()
                 .at(i)[0] << ", "
 			<< calmPedSet->getVelocities()

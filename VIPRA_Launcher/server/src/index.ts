@@ -12,7 +12,7 @@ import { simulationRouter } from './routes/simulationRoutes';
 
 // TODO add installing map files -RG
 
-// TODO !!! add initial installation that finds vipra folder -RG
+// TODO !!! add initial installation that finds vipra folder, etc -RG
 
 const app = express();
 const httpsServer = https.createServer(config.app.https, app);

@@ -39,14 +39,12 @@ class CalmPedestrianSet: public PedestrianSet
 
         void                                                    configure(CONFIG_MAP* configMap)                                        override;
         void                                                    initialize(size_t pedestrianCount)                                      override;
-        void                                                    removePedestrian(int pedestrianIndex)                                   override;
+        void                                                    removePedestrian(size_t pedestrianIndex)                                   override;
 
         [[nodiscard]] int                                       getNumPedestrians()                                       const noexcept override;
         [[nodiscard]] const std::vector<int>&                   getIds()                                                  const noexcept override;
 
-        // TODO: needs updated, more in interface -RG
-        [[nodiscard]] std::vector<Dimensions>*                  getPedestrianCoordinates()                              noexcept override;
-        [[nodiscard]] const std::vector<Dimensions>&            getGoalCoordinates()                                    const noexcept override;
+        [[nodiscard]] const std::vector<Dimensions>&            getPedestrianCoordinates()                              const noexcept override;
         [[nodiscard]] const std::vector<Dimensions>&            getVelocities()                                         const noexcept override;
         [[nodiscard]] const std::vector<FLOATING_NUMBER>&       getSpeeds()                                             const noexcept override;
 
@@ -57,9 +55,6 @@ class CalmPedestrianSet: public PedestrianSet
         void                                    setPedestrianCoordinates(Dimensions&& coords, size_t index)                     override;
         void                                    setPedestrianCoordinates(const std::vector<Dimensions>& coordinates)            noexcept override;
         void                                    setPedestrianCoordinates(std::vector<Dimensions>&& coordinates)                 noexcept override;
-
-        void                                    setGoalCoordinates(const std::vector<Dimensions>& goalCoordinates)              noexcept override;
-        void                                    setGoalCoordinates(std::vector<Dimensions>&& goalCoordinates)                   noexcept override;
 
         void                                    setVelocity(const Dimensions& velocity, size_t index)                           override;
         void                                    setVelocity(Dimensions&& velocity, size_t index)                                override;

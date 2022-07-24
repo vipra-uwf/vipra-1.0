@@ -218,17 +218,17 @@ std::string outputSetup(){
     };  
 }
 
-// TODO names are hard coded -RG
 std::string setData(){
     return {
         "\n\tdata->setPedestrianSet(pedestrian_set);"
         "\n\tdata->setObstacleSet(obstacle_set);"
         "\n"
-        "\n\tgoals->setData(data);"
-        "\n\tgoals->addExitGoals(*obstacle_set);"
         "\n\tpedestrian_dynamics_model->setData(data);"
         "\n\tpedestrian_dynamics_model->setGoals(goals);"
-        "\n\tgoals->determinePedestrianGoals();"
+        + debugOutput("Initializing / Updating Goals") +
+        "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);"
+        "\n\tgoals->updatePedestrianGoals(*obstacle_set, *pedestrian_set);"
+        + debugOutput("Done") +
         "\n\tpedestrian_dynamics_model->initialize();"
         "\n\thuman_behavior_model->setData(data);"
         "\n\tsimulation->setData(data);"

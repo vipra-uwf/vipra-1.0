@@ -39,10 +39,10 @@ void TimestepOutputHandler::writeToDocument()
     for(int i = 0; i < this->pedestrianSet->getNumPedestrians(); ++i)
     {
         this->outputDataWriter->addFloatValue(
-            "x", (*this->pedestrianSet->getPedestrianCoordinates()).
+            "x", (this->pedestrianSet->getPedestrianCoordinates()).
             at(i)[0]);
         this->outputDataWriter->addFloatValue(
-            "y", (*this->pedestrianSet->getPedestrianCoordinates()).
+            "y", (this->pedestrianSet->getPedestrianCoordinates()).
             at(i)[1]);
     }
 }

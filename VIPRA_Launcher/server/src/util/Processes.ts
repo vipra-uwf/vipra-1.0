@@ -3,7 +3,7 @@ import child_process from 'child_process';
 import { Logger } from '../logging/Logging';
 import { config } from "../configuration/config";
 import { Status } from "../data_models/Status.e";
-import { fileExists } from './FileOperations';
+import { fileExists, makeDir } from './FileOperations';
 import { SimConfig } from '../data_models/simconfig';
 import { Module } from '../data_models/module';
 
@@ -24,6 +24,7 @@ const buildModule = async (module : Module) : Promise<Status> => {
             Logger.error(`Attempt to build module that doesn't exist: ${module.name}:${module.id}`);
             reject(Status.BAD_REQUEST);
         }
+        makeDir(`${config.vipra.vipraDir}/build`);
         const command : string = `make module -C ${config.vipra.vipraMake} MODULEPATH=${module.dirPath}/${module.name} MODULEID=${module.id}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
             if(error){
