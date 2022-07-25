@@ -1,7 +1,8 @@
 import json
+import sys
 import matplotlib.pyplot as plt
 
-f = open('pedestrian_trajectory.json')
+f = open(sys.argv[1])
 
 data = json.load(f)
 
