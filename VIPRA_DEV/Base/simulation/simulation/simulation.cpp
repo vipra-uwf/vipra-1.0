@@ -82,10 +82,6 @@ void Simulation::run()
         this->timestep++;
         ++i;
 
-        if(i % 10 == 0){
-            printDataDELETETHIS(*dynamic_cast<CalmPedestrianModel*>(this->pedestrianDynamicsModel));
-        }
-
         this->pedestrianDynamicsModel->precompute();
     }
 

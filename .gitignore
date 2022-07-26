@@ -16,3 +16,5 @@ uml_screenshot.png
 .idea
 node_modules
 dist
+output.json
+pedestrian_trajectory.json

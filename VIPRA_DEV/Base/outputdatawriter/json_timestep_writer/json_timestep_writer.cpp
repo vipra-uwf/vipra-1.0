@@ -1,4 +1,5 @@
 #include "json_timestep_writer.hpp"
+#include <iostream>
 
 JSONTimestepWriter::JSONTimestepWriter()
 {

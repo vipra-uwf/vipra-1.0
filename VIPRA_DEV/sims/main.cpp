@@ -1,18 +1,18 @@
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/simulation/simulation/simulation.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/simulation/data/data.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/simulation/clock/clock.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/configuration/configuration_reader.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/humanbehavior/human_behavior_model.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/calm_entity_set_factory/calm_entity_set_factory.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/airplane_obstacle_set/airplane_obstacle_set.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/calm_pedestrian_set/calm_pedestrian_set.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/inputdataloader/input_json_reader/input_json_reader.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/outputdatawriter/json_timestep_writer/json_timestep_writer.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/outputdatawriter/json_writer/json_writer.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/calm_goals/calm_goals.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/simulationoutputhandler/timestep_console_logger/timestep_console_logger.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/Base/simulationoutputhandler/timestep_output_handler/timestep_output_handler.hpp"
-#include "C:\Users\Goode\Documents\VIPRA\vipra\VIPRA_DEV/calm_pedestrian_model/calm_pedestrian_model.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/simulation/simulation/simulation.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/simulation/data/data.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/simulation/clock/clock.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/configuration/configuration_reader.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/humanbehavior/human_behavior_model.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/calm_entity_set_factory/calm_entity_set_factory.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/airplane_obstacle_set/airplane_obstacle_set.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/calm_pedestrian_set/calm_pedestrian_set.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/inputdataloader/input_json_reader/input_json_reader.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/outputdatawriter/json_timestep_writer/json_timestep_writer.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/outputdatawriter/json_writer/json_writer.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/calm_goals/calm_goals.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/simulationoutputhandler/timestep_console_logger/timestep_console_logger.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/Base/simulationoutputhandler/timestep_output_handler/timestep_output_handler.hpp"
+#include "/home/rolland/Documents/VIPRA/vipra/VIPRA_DEV/calm_pedestrian_model/calm_pedestrian_model.hpp"
 
 CONFIG_MAP* extractConfigMap(std::string name);
 void getInputFiles(int argc, const char** argv);Simulation* generateSimulation(std::string id, CONFIG_MAP* configMap);
@@ -128,10 +128,15 @@ std::cout << "populated pedestrianset" << std::endl;
 	pedestrian_dynamics_model->setData(data);
 	pedestrian_dynamics_model->setGoals(goals);
 
-
+#ifdef DEBUG_OUTPUT
+std::cout << "Initializing / Updating Goals" << std::endl;
+#endif
 	goals->initialize(*obstacle_set, *pedestrian_set);
 	goals->updatePedestrianGoals(*obstacle_set, *pedestrian_set);
 
+#ifdef DEBUG_OUTPUT
+std::cout << "Done" << std::endl;
+#endif
 	pedestrian_dynamics_model->initialize();
 	human_behavior_model->setData(data);
 	simulation->setData(data);

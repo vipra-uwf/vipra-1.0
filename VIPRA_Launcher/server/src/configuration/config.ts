@@ -19,10 +19,10 @@ export const config = {
         url: "https://192.168.1.120/",
     },
     vipra:{
-        vipraDir: path.resolve(`../VIPRA_DEV`),
-        vipraMake: path.resolve(`../VIPRA_DEV/sims`),
-        simsDir: path.resolve(`../VIPRA_DEV/sims`),
-        behaviorMake: path.resolve(`../VIPRA_DEV/Base/dsl`),
+        vipraDir: path.resolve(`../../VIPRA_DEV`),
+        vipraMake: path.resolve(`../../VIPRA_DEV/sims`),
+        simsDir: path.resolve(`../../VIPRA_DEV/sims`),
+        behaviorMake: path.resolve(`../../VIPRA_DEV/Base/dsl`),
         outputDir: path.resolve(`./OUTPUT`)
     },
     module:{

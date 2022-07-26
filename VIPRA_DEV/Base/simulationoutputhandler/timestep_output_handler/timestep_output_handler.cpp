@@ -25,7 +25,7 @@ void TimestepOutputHandler::setSimulation(Simulation* simulation)
 bool TimestepOutputHandler::isOutputCriterionMet()
 {
     if (*this->timestep % this->frequency == 0) {
-        this->timestepID = *this->timestep / this->frequency;
+        this->timestepID = (*this->timestep) / this->frequency;
         return true;
     }
     return false;
