@@ -27,7 +27,7 @@ ax = plt.gca()
 for step in data:
    plt.pause(0.05)
    plt.cla()
-   ax.set_ylim(-5, 20)
+   ax.set_ylim(-5, 5)
    ax.set_xlim(-5, 30)
    ax.autoscale(False)
    plt.title(step)
