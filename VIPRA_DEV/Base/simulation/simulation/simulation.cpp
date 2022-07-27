@@ -59,8 +59,16 @@ void Simulation::run()
     clock.start();
     clock.printRealStartTime();
 
+    #ifdef DEBUG_OUTPUT
+        printDataDELETETHIS();
+    #endif
+
     this->pedestrianDynamicsModel->precompute();
     //this->humanBehaviorModel->initialize();
+
+    #ifdef DEBUG_OUTPUT
+        printDataDELETETHIS();
+    #endif
 
     int i = 0; //delete this just for testing
     // std::cout << "Adding " << this->timestep_size << " msec to the simulation." << std::endl;
@@ -82,8 +90,16 @@ void Simulation::run()
         this->timestep++;
         ++i;
 
+        #ifdef DEBUG_OUTPUT
+            printDataDELETETHIS();
+        #endif
+
         this->pedestrianDynamicsModel->precompute();
     }
+
+    #ifdef DEBUG_OUTPUT
+        printDataDELETETHIS();
+    #endif
 
     clock.stop();
     clock.printRealEndTime();
@@ -102,7 +118,7 @@ PedestrianDynamicsModel* Simulation::getPedestrianDynamicsModel()
 }
 
 
-void Simulation::printDataDELETETHIS(CalmPedestrianModel& calmModel)
+void Simulation::printDataDELETETHIS()
 {
     Data* data = this->pedestrianDynamicsModel->getData();
     CalmPedestrianSet* calmPedSet = dynamic_cast<CalmPedestrianSet*>(data->getPedestrianSet());
@@ -118,9 +134,9 @@ void Simulation::printDataDELETETHIS(CalmPedestrianModel& calmModel)
                 .at(i)[0] << ", "
 		    << calmPedSet->getPedestrianCoordinates()
                 .at(i)[1] << ")"
-			<< " currgoal (" << calmModel.getGoals()->getCurrentGoal(i)[0] << ", " << calmModel.getGoals()->getCurrentGoal(i)[1] << ")"
-            << " endGoal (" << calmModel.getGoals()->getEndGoal(i)[0] << ", " << calmModel.getGoals()->getEndGoal(i)[1] << ")"
-            << " metGoal (" << std::to_string(calmModel.getGoals()->isPedestianGoalsMet(i)) << ") "
+			<< " currgoal (" << this->pedestrianDynamicsModel->getGoals()->getCurrentGoal(i)[0] << ", " << this->pedestrianDynamicsModel->getGoals()->getCurrentGoal(i)[1] << ")"
+            << " endGoal (" << this->pedestrianDynamicsModel->getGoals()->getEndGoal(i)[0] << ", " << this->pedestrianDynamicsModel->getGoals()->getEndGoal(i)[1] << ")"
+            << " metGoal (" << std::to_string(this->pedestrianDynamicsModel->getGoals()->isPedestianGoalsMet(i)) << ") "
 			<< " velocity (" << calmPedSet->getVelocities()
                 .at(i)[0] << ", "
 			<< calmPedSet->getVelocities()

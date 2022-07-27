@@ -40,7 +40,7 @@ class Simulation
         PedestrianDynamicsModel* getPedestrianDynamicsModel();
 
 
-        void printDataDELETETHIS(CalmPedestrianModel&);
+        void printDataDELETETHIS();
 };
 
 #endif
