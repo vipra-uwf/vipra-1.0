@@ -16,5 +16,8 @@ uml_screenshot.png
 .idea
 node_modules
 dist
+certs
 output.json
+config.json
 pedestrian_trajectory.json
+typechain-1.0.0.tgz

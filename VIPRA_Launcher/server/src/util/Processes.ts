@@ -3,7 +3,7 @@ import child_process from 'child_process';
 import { Logger } from '../logging/Logging';
 import { config } from "../configuration/config";
 import { Status } from "../data_models/Status.e";
-import { fileExists, makeDir } from './FileOperations';
+import { deleteFile, fileExists, makeDir } from './FileOperations';
 import { SimConfig } from '../data_models/simconfig';
 import { Module } from '../data_models/module';
 
@@ -18,14 +18,15 @@ import { Module } from '../data_models/module';
 // compile simulation -> takes all compiled modules and main into a simulation
 // runs simulation -> takes in a config id, map, pedestrians and output and runs sim
 
-const buildModule = async (module : Module) : Promise<Status> => {
+const buildModule = async (module : Module, debug : boolean) : Promise<Status> => {
     return new Promise((resolve, reject)=>{
         if(!fileExists(`${module.includePath}`)){
             Logger.error(`Attempt to build module that doesn't exist: ${module.name}:${module.id}`);
             reject(Status.BAD_REQUEST);
         }
         makeDir(`${config.vipra.vipraDir}/build`);
-        const command : string = `make module -C ${config.vipra.vipraMake} MODULEPATH=${module.dirPath}/${module.name} MODULEID=${module.id}`;
+        cleanModuleObject(module.id);
+        const command : string = `make module -C ${config.vipra.simsDir} MODULEPATH=${module.dirPath}/${module.name} MODULEID=${module.id} ${debug ? "DEBUG_OUTPUT=1" : ""}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
             if(error){
                 Logger.error(`buildModule: ${error.message}`);
@@ -49,9 +50,9 @@ const buildModule = async (module : Module) : Promise<Status> => {
     });
 };
 
-const compileHumanBehavior = async() : Promise<Status> => {
+const compileHumanBehavior = async (debug : boolean) : Promise<Status> => {
     return new Promise((resolve, reject) => {
-        const command : string = `make compile -C ${config.vipra.behaviorMake}`;
+        const command : string = `make compile -C ${config.vipra.behaviorDir} ${debug ? "DEBUG_OUTPUT=1" : ""}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
             if(error){
                 Logger.error(`compileHumanBehavior: ${error.message}`);
@@ -75,9 +76,9 @@ const compileHumanBehavior = async() : Promise<Status> => {
     });
 };
 
-const compileGenMain = async () : Promise<Status> => {
+const compileGenMain = async (debug : boolean) : Promise<Status> => {
     return new Promise((resolve, reject) =>{
-        const command : string = `make generate_main -C ${config.vipra.vipraMake}`;
+        const command : string = `make generate_main -C ${config.vipra.simsDir} ${debug ? "DEBUG_OUTPUT=1" : ""}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
             if(error){
                 Logger.error(`compileGenMain: ${error.message}`);
@@ -101,9 +102,9 @@ const compileGenMain = async () : Promise<Status> => {
     });
 };
 
-const compileMain = async () : Promise<Status> => {
+const compileMain = async (debug : boolean) : Promise<Status> => {
     return new Promise((resolve, reject) =>{
-        const command : string = `make compileMain -C ${config.vipra.vipraMake} MODULEFILE=${config.module.modulesFile}`;
+        const command : string = `make compileMain -C ${config.vipra.simsDir} MODULEFILE=${config.module.modulesFile} ${debug ? "DEBUG_OUTPUT=1" : ""}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
             if(error){
                 Logger.error(`compileMain: ${error.message}`);
@@ -147,9 +148,9 @@ const runSim = (configID : string, mapFile : string, pedestrianFile : string, ou
     return ps;
 };
 
-const compileSim = () : Promise<Status> => {
+const compileSim = (debug : boolean) : Promise<Status> => {
     return new Promise((resolve, reject) =>{
-        const command : string = `make simulation -C ${config.vipra.vipraMake}`;
+        const command : string = `make simulation -C ${config.vipra.simsDir} ${debug ? "DEBUG_OUTPUT=1" : ""}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
             if(error){
                 Logger.error(`compileSim: ${error.message}`);
@@ -171,6 +172,13 @@ const compileSim = () : Promise<Status> => {
             }
         });
     });
+};
+
+const cleanModuleObject = (id : string) => {
+    const objectFile = `${config.vipra.vipraDir}/build/${id}.o`;
+    if(fileExists(objectFile)){
+        deleteFile(objectFile);
+    }
 };
 
 

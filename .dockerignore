@@ -1,1 +1,6 @@
-typechain-1.0.0.tgz
+**/typechain-1.0.0.tgz
+**/node_modules
+**/certs
+**/config.json
+**/dist
+**/package-lock.json

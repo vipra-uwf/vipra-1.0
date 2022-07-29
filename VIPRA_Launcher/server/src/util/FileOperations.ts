@@ -51,12 +51,14 @@ const deleteDir = (dirPath : string, recursive : boolean) : Status => {
     }
 };
 
-const readJsonFile = <T>(filePath : string) : T => {
+const readJsonFile = <T>(filePath : string, options : {error:boolean}) : T => {
     try {
         const json : T = JSON.parse(fs.readFileSync(filePath).toString()) as T;
         return json;
     } catch(e){
-        Logger.error(`readJsonFile: Unable to Load Object from : ${filePath}`);
+        if(options.error){
+            Logger.error(`readJsonFile: Unable to Load Object from : ${filePath}`);
+        }
         return null;
     }
 };
@@ -102,37 +104,60 @@ const extractTar = async (sourceDirPath : string, tarName : string, outDirPath :
 };
 
 const matchFile = (regex : RegExp, dirPath : string, recursive : boolean) : string => {
-    const files : fs.Dirent[] = fs.readdirSync(dirPath, {withFileTypes:true});
-    const match : number = files.findIndex((file)=>{
-        if(file.name.match(regex)){
-            return true;
-        }
-        return false;
-    });
+    if(checkReadPerms(dirPath)){
+        try{
+            const files : fs.Dirent[] = fs.readdirSync(dirPath, {withFileTypes:true});
+            const match : number = files.findIndex((file)=>{
+                if(file.name.match(regex)){
+                    return true;
+                }
+                return false;
+            });
 
-    if(match !== -1){
-        return `${dirPath}/${files[match].name}`;
-    }
-
-    let recursiveMatch : string;
-    if(recursive && match === -1){
-        files.every((file)=>{
-            if(file.isDirectory()){
-                recursiveMatch = matchFile(regex, `${dirPath}/${file.name}`, true);
-                return (!recursiveMatch);
+            if(match !== -1){
+                return `${dirPath}/${files[match].name}`;
             }
-        });
-    }
 
-    if(recursiveMatch){
-        return recursiveMatch;
-    }else{
-        return null;
+            let recursiveMatch : string;
+            if(recursive){
+                files.some((file)=>{
+                    if(file.isDirectory()){
+                        recursiveMatch = matchFile(regex, `${dirPath}/${file.name}`, true);
+                        if(recursiveMatch){
+                            return true;
+                        }
+                    }
+                });
+            }
+
+            if(recursiveMatch){
+                return recursiveMatch;
+            }else{
+                return null;
+            }
+        }catch (err){
+            return null;
+        }
+    }
+    return null;
+};
+
+const checkReadPerms = (filePath : string) : boolean => {
+    try{
+        fs.accessSync(filePath, fs.constants.R_OK);
+        return true;
+    }catch (err){
+        Logger.info(`No READ Permissions for: ${filePath}`);
+        return false;
     }
 };
 
 const moveFile = (fromPath : string, toPath : string) : void => {
     fs.copyFileSync(fromPath, toPath);
+};
+
+const readFile = (filePath : string) : string => {
+    return fs.readFileSync(filePath).toString();
 };
 
 
@@ -142,6 +167,7 @@ export {
     deleteDir,
     tarDirectory,
     getDirContents,
+    checkReadPerms,
     extractTar,
     readJsonFile,
     writeFile,
@@ -149,5 +175,6 @@ export {
     forAllFilesThatMatchDo,
     makeDir,
     moveFile,
-    matchFile
+    matchFile,
+    readFile
 };

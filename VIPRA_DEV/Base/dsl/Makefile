@@ -2,7 +2,7 @@ CPP= g++
 CPP_FLAGS= -std=c++17 -w -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
 LDLIBS = -lantlr4-runtime
 
-BUILD_DIR = ../../build
+BUILD_DIR = ./../../build
 SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
@@ -18,8 +18,8 @@ $(BUILD_DIR)/%.o: %.cpp setup
 .PHONY: setup
 
 setup:
-	mkdir $(BUILD_DIR)/actions
-	mkdir $(BUILD_DIR)/conditions
-	mkdir $(BUILD_DIR)/generated
-	mkdir $(BUILD_DIR)/selectors
-	mkdir $(BUILD_DIR)/transitions
+	mkdir -p $(BUILD_DIR)/actions
+	mkdir -p $(BUILD_DIR)/conditions
+	mkdir -p $(BUILD_DIR)/generated
+	mkdir -p $(BUILD_DIR)/selectors
+	mkdir -p $(BUILD_DIR)/transitions

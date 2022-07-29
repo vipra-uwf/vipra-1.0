@@ -63,7 +63,7 @@ export class ModuleController {
 
         // TODO break out simulation generation -RG
 
-        const build : Status = await buildModule(unpacked.module);
+        const build : Status = await buildModule(unpacked.module, false);
         if(build !== Status.SUCCESS){
             return build;
         }
@@ -72,7 +72,8 @@ export class ModuleController {
         unpacked.module.compiled = true;
         this.addModuleOption(unpacked.module);
 
-        const compiled : Status = await generateSimulation();
+        // TODO get debug bool from request -RG
+        const compiled : Status = await generateSimulation(false);
         if(compiled !== Status.SUCCESS){
             return compiled;
         }
@@ -135,7 +136,7 @@ export class ModuleController {
             };
         }
 
-        const module : Module = readJsonFile<Module>(metaFilePath);
+        const module : Module = readJsonFile<Module>(metaFilePath, {error: true});
         if(this.checkDuplicate(module)){
             return {
                 status: Status.CONFLICT,

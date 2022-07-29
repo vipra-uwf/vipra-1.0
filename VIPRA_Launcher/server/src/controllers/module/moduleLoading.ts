@@ -10,7 +10,7 @@ import { buildModule } from "../../util/Processes";
 const loadInstalledModules = () : ModulesFile => {
     const modules : ModulesFile = new ModulesFile();
     forAllFilesThatMatchDo(/.*\.mm/, config.vipra.vipraDir, (filePath : string)=>{
-        const module : Module = verifyModule(readJsonFile<Module>(filePath));
+        const module : Module = verifyModule(readJsonFile<Module>(filePath, {error: true}));
         if(module){
             const basePath : string = filePath.substring(0, filePath.indexOf(`/${module.name}.mm`));
             module.dirPath = `${basePath}`;
@@ -26,11 +26,11 @@ const saveInstalledModules = (modules : ModulesFile) : void => {
     writeFile(config.module.modulesFile, JSON.stringify(modules));
 };
 
-const compileAllModules = async (modules : ModulesFile) : Promise<void> =>{
+const compileAllModules = async (modules : ModulesFile, debug : boolean) : Promise<void> =>{
     for(const key of Object.keys(modules)){
         for(const value of Object.values(modules.getModules(key))){
             if(!fileExists(`${config.vipra.vipraDir}/build/${value.name}.o`)){
-                await buildModule(value)
+                await buildModule(value, debug)
                 .catch((error : string)=>{
                     value.compiled = false;
                     Logger.error(`Unable to build module: ${value.name}:${value.id} ERROR: ${error}`);
@@ -45,7 +45,7 @@ const compileAllModules = async (modules : ModulesFile) : Promise<void> =>{
 
 const readModules = () : ModulesFile => {
     const modules = new ModulesFile();
-    Object.assign(modules, readJsonFile<ModulesFile>(config.module.modulesFile));
+    Object.assign(modules, readJsonFile<ModulesFile>(config.module.modulesFile, {error: true}));
     return modules;
 };
 

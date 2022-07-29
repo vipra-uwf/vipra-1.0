@@ -7,8 +7,8 @@ endif
 
 LDLIBS = -lantlr4-runtime
 
-BASE_DIR = ../Base
-BUILD_DIR = ../build
+BASE_DIR = ./../Base
+BUILD_DIR = ./../build
 
 OBJS := $(wildcard $(BUILD_DIR)/*.o) $(wildcard $(BUILD_DIR)/*/*.o)
 OBJS := $(filter-out $(BUILD_DIR)/main.o, $(OBJS))
@@ -16,31 +16,30 @@ OBJS := $(filter-out $(BUILD_DIR)/main.o, $(OBJS))
 generate_main:
 	$(CPP) $(CPP_FLAGS) $(BASE_DIR)/code_generation/code_generator.cpp $(BASE_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $@
 
-module:
+module: makeDirs
 	$(CPP) $(CPP_FLAGS) -c $(MODULEPATH).cpp -o $(BUILD_DIR)/$(MODULEID).o
 
-simulation:
+simulation: makeDirs
 	$(CPP) $(CPP_FLAGS) $(BUILD_DIR)/main.o $(OBJS) $(LDLIBS) -o VIPRA
 
-# TODO: move the compilation of jsoncpp
-compileMain:
+compileMain: makeDirs
 	./generate_main main.cpp $(MODULEFILE)
 	$(CPP) $(CPP_FLAGS) -c $(BASE_DIR)/jsoncpp/jsoncpp.cpp -o $(BUILD_DIR)/jsoncpp.o
 	$(CPP) $(CPP_FLAGS) -c main.cpp -o $(BUILD_DIR)/main.o
 
-$(BUILD_DIR)/main.o:
+$(BUILD_DIR)/main.o: makeDirs
 	$(CPP) $(CPP_FLAGS) -c main.cpp -o $(BUILD_DIR)/main.o
-
-debugMain:
-	make generate_main
-	make compileMain MODULEFILE=/usr/src/VIPRA/VIPRA_Launcher/modules.json DEBUG_OUTPUT=1 
-	make simulation
 
 testrun:
 	./VIPRA ./example/sim.config ./example/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
 
-debugrun:
-	gdb -args ./VIPRA ./example/sim.config ./example/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
-
 clean:
 	rm -f generate_main main.cpp VIPRA
+
+cleanObjs:
+	rm -rf $(BUILD_DIR)/*.o
+
+makeDirs:
+	mkdir -p $(BUILD_DIR)
+
+PHONY: makeDirs
