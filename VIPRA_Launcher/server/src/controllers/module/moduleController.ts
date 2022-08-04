@@ -5,21 +5,12 @@ import { storeModule }      from '../../util/FileStore';
 import { Status }           from "../../data_models/Status.e";
 import { config }           from '../../configuration/config';
 import { Logger }           from '../../logging/Logging';
-import { buildModule, compileSim }      from '../../util/Processes';
-import { Module, ModulesFile, ModuleType } from "../../data_models/module";
+import { buildModule }      from '../../util/Processes';
+import { Module, ModuleInfo, ModulesFile, ModuleType } from "../../data_models/module";
 import { deleteDir, deleteFile, extractTar, makeDir, matchFile, moveFile, readJsonFile, writeFile, writeFileFromBuffer }      from '../../util/FileOperations';
 import { readModules, saveInstalledModules } from './moduleLoading';
 import { generateSimulation } from '../simulation/simulationBuild';
-
-
-// TODO split out-> module loading, File operations etc -RG
-
-// TODO at startup, load all modules from the vipra folder, not a file -RG
-// TODO if installation/compilation fails, remove from options and remove module code -RG
-// TODO provide more in-depth error messages for client -RG
-// TODO on start-up, make sure that all installed modules are compiled, compile them if not -RG
-
-// TODO remove modulesDir -RG
+import { SimManager } from '../simulation/SimManager';
 
 export class ModuleController {
 
@@ -32,6 +23,22 @@ export class ModuleController {
         this.moduleFilePath = `${config.module.modulesFile}`;
         this.setupDirectories();
         this.modules = readModules();
+    }
+
+    public allModulesInfo() : {[type: string] : ModuleInfo[]}{
+        const moduleInfo : {[type: string] : ModuleInfo[]} = {'pedestrian_dynamics_model':[],'goals':[],'output_data_writer':[],'input_data_loader':[],'simulation_output_handler':[],'pedestrian_set':[],'obstacle_set':[],'entity_set_factory':[],'human_behavior_model':[],'configuration_reader':[],'clock':[],'data':[],'simulation': []};
+        Object.keys(this.modules).forEach((type)=>{
+            Object.values(this.modules[type as ModuleType]).forEach((module)=>{
+                moduleInfo[type].push({
+                    id: module.id,
+                    name: module.name,
+                    description: module.description,
+                    params: module.params,
+                    type: module.type
+                });
+            });
+        });
+        return moduleInfo;
     }
 
     public getModulesofType(type : ModuleType) : Module[] {
@@ -61,8 +68,6 @@ export class ModuleController {
             return unpacked.status;
         }
 
-        // TODO break out simulation generation -RG
-
         const build : Status = await buildModule(unpacked.module, false);
         if(build !== Status.SUCCESS){
             return build;
@@ -72,7 +77,6 @@ export class ModuleController {
         unpacked.module.compiled = true;
         this.addModuleOption(unpacked.module);
 
-        // TODO get debug bool from request -RG
         const compiled : Status = await generateSimulation(false);
         if(compiled !== Status.SUCCESS){
             return compiled;
@@ -84,31 +88,16 @@ export class ModuleController {
     // NOTE: turned off require-await as this will require await later -RG
     // eslint-disable-next-line @typescript-eslint/require-await
     public async removeModule(id : string) : Promise<Status> {
-        let modulePath : string;
-        for(const key of Object.keys(this.modules)){
-            const index = this.modules[key as ModuleType].findIndex((mod : Module) =>{
-                if(mod.id === id){
-                    return true;
-                }
-            });
-            if(index !== -1){
-                modulePath = this.modules[key as ModuleType][index].dirPath;
-                this.modules[key as ModuleType].splice(index, 1);
-            }
-        }
-        deleteDir(modulePath, true);
+        const module = this.modules.getModule(id);
+        deleteDir(module.dirPath, true);
+        this.modules.removeModule(module.id);
         saveInstalledModules(this.modules);
         return Status.SUCCESS;
     }
 
-    private setupDirectories() : void{
-        makeDir(this.modulesDir);
-        return;
-    }
 
-    private checkModule(module : Module) : boolean{
-        return (module.name && module.type && (module.params !== undefined));
-    }
+
+
 
     private async unPackModule(file : Express.Multer.File, transId : string) : Promise<{status:Status; module:Module}>{
 
@@ -192,5 +181,14 @@ export class ModuleController {
     private addModuleOption(module : Module) : void {
         this.modules[module.type].push(module);
         saveInstalledModules(this.modules);
+    }
+
+    private setupDirectories() : void{
+        makeDir(this.modulesDir);
+        return;
+    }
+
+    private checkModule(module : Module) : boolean{
+        return (module.name && module.type && (module.params !== undefined));
     }
 }

@@ -29,16 +29,12 @@ const saveInstalledModules = (modules : ModulesFile) : void => {
 const compileAllModules = async (modules : ModulesFile, debug : boolean) : Promise<void> =>{
     for(const key of Object.keys(modules)){
         for(const value of Object.values(modules.getModules(key))){
-            if(!fileExists(`${config.vipra.vipraDir}/build/${value.name}.o`)){
-                await buildModule(value, debug)
-                .catch((error : string)=>{
-                    value.compiled = false;
-                    Logger.error(`Unable to build module: ${value.name}:${value.id} ERROR: ${error}`);
-                });
-                value.compiled = true;
-            }else{
-                value.compiled = true;
-            }
+            await buildModule(value, debug)
+            .catch((error : string)=>{
+                value.compiled = false;
+                Logger.error(`Unable to build module: ${value.name}:${value.id} ERROR: ${error}`);
+            });
+            value.compiled = true;
         }
     }
 };

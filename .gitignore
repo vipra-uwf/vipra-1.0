@@ -1,3 +1,6 @@
+generate_main
+VIPRA
+main.cpp
 generated_main
 generated_main.cpp
 main
@@ -19,5 +22,6 @@ dist
 certs
 output.json
 config.json
+modules.json
 pedestrian_trajectory.json
 typechain-1.0.0.tgz

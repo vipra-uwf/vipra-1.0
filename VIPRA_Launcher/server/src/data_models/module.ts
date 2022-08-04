@@ -71,8 +71,29 @@ export class ModulesFile{
 
         return null;
     }
+
+    public removeModule(id : string) {
+        for(const [key, value] of Object.entries(this)){
+            const modules = value as Module[];
+            const index = modules.findIndex((mod) => {
+                if(mod.id === id){
+                    return true;
+                }
+            });
+            if(index !== -1){
+                this[key as ModuleType] = this[key as ModuleType].splice(index, 1);
+            }
+        }
+    }
 }
 
+export interface ModuleInfo{
+    id          : string;
+    name        : string;
+    description : string;
+    params      : ParamSet;
+    type        : ModuleType;
+}
 
 export interface Module{
     id          : string;

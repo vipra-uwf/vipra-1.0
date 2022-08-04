@@ -7,21 +7,20 @@ import { Status }           from '../data_models/Status.e';
 import { Logger }           from '../logging/Logging';
 
 
-const simConfigRouter = () : express.Router => {
+const simConfigRouter = (configManager : ConfigManager) : express.Router => {
 
     const simConfigRoutes   : express.Router    = express.Router();
-    const configManager     : ConfigManager     = new ConfigManager();
+    configManager.loadConfigs();
 
+    // TODO!!!!: this returns file paths etc, remove those before sending -RG
     simConfigRoutes.get('/', (req, res)=>{
         respondData(configManager.getConfigs(), res);
     });
 
-    simConfigRoutes.post('/', (req : express.Request<{}, {}, {config : SimConfigIDs; name : string; description : string}>, res)=>{
-        const name : string = req.body.name;
-        const description : string = req.body.description;
-        const simconf : SimConfigIDs = req.body.config;
+    simConfigRoutes.post('/', (req : express.Request<{}, {}, {simconfig : SimConfigIDs; name : string; description : string}>, res)=>{
+        const simconf : SimConfigIDs = req.body.simconfig;
         if(simconf){
-            configManager.createConfig(name, description, simconf)
+            configManager.createConfig(simconf)
             .then((created)=>{
                 switch(created.status){
                     // TODO return the created config
@@ -29,10 +28,10 @@ const simConfigRouter = () : express.Router => {
                         respondSuccess(res);
                         break;
                     case Status.BAD_REQUEST:
-                        respondError(Status.BAD_REQUEST, `Missing Attributes`, `The Provided config was missing required modules`, res);
+                        respondError(Status.BAD_REQUEST, `Missing Attributes`, `The Provided config was missing required modules or the chosen modules are not available`, res);
                         break;
                     case Status.CONFLICT:
-                        respondError(Status.CONFLICT, 'Dupicate Configuration', `The provided configuration matches another config: ${created.config.id}`, res);
+                        respondError(Status.CONFLICT, 'Dupicate Configuration', `The provided configuration matches another config: ${created.config.name}`, res);
                         break;
                     case Status.INTERNAL_ERROR:
                         respondUnknownError(res);

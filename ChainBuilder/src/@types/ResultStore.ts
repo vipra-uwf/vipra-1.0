@@ -11,17 +11,16 @@ export abstract class ResultStore{
     protected resultName      : string;
     protected type            : string;
 
-    abstract getResult(hash : string) : Promise<string>;
-    abstract hashResult(result : string) : Promise<string>;
-    abstract storeResult(result : string) : Promise<string>;
+    abstract getResult(hash : string) : Promise<{error: boolean; result: string}>;
+    abstract storeResult(result : string) : Promise<{error: boolean; result: string}>;
 
     constructor(name : string){
         this.name = name;
     }
 
     public handleRequest(path : string[], response : express.Response) : void{
-        const resultHash = path[2];
-        const format = path[3];
+        const resultHash = path[0];
+        const format = path[1];
         if(format){
             this.respondResult(resultHash, format, response)
             .catch((error)=>{
@@ -49,20 +48,20 @@ export abstract class ResultStore{
     }
     private async respondResult(resultHash : string, format : string, response : express.Response) {
         const result = await this.getResult(resultHash);
-        if(result){
+        if(!result.error){
             switch(format){
                 case 'raw':
-                    cbRawRespond(response, result);
+                    cbRawRespond(response, result.result);
                     return;
                 case 'json':
-                    cbResultRespond(response, this.resultName, result);
+                    cbResultRespond(response, this.resultName, result.result);
                     return;
                 default:
                     cbErrorRespond('Incorrect Format', response);
                     return;
             }
         }else{
-            cbErrorRespond('No Result at that Location', response);
+            cbErrorRespond(result.result, response);
         }
     }
     private respondFormats(resultHash : string, response : express.Response) {

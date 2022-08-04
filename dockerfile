@@ -1,5 +1,7 @@
 FROM node:latest
 
+EXPOSE 3001
+
 WORKDIR /usr/src/VIPRA
 
 RUN apt-get update && apt-get install

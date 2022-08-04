@@ -1,6 +1,7 @@
 import { ResultStore } from "./ResultStore";
 
-type CbMethod = (args : {[key: string] : string[]}) => Promise<string>;
+type CbResult = {error:boolean; result: string};
+type CbMethod = (args : {[key: string] : string[]}) => Promise<CbResult>;
 
 interface Response{
     [key : string]:
@@ -27,6 +28,7 @@ interface Link{
     href: string;
 }
 
+// TODO add server attributes
 interface Parameter{
     arguments : {
         [key: string] : {
@@ -54,6 +56,7 @@ export{
     ServiceInfo,
     Parameter,
     CbMethod,
+    CbResult,
     ServiceOptions,
     Response
 };

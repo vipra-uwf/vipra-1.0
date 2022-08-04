@@ -48,8 +48,8 @@ export class Endpoint{
             cbLinksRespond(this.getLinks(), response);
         }else{
             this.service.handleRequest(request, response)
-            .catch((error)=>{
-                cbErrorRespond(`Unknown Error`, response);
+            .catch((error : string)=>{
+                cbErrorRespond(`Unknown Error ${error}`, response);
             });
         }
     }

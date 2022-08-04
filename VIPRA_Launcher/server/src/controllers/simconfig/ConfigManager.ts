@@ -1,19 +1,37 @@
 import crypto from 'crypto';
+import path from 'path';
 
 import { config } from '../../configuration/config';
 import { addModule, configIsSame, hasAllTypes, SimConfig, SimConfigIDs } from "../../data_models/simconfig";
 import { Status } from "../../data_models/Status.e";
 import { Logger } from '../../logging/Logging';
-import { makeDir, writeFile } from '../../util/FileOperations';
-import { Module, ModulesFile } from '../../data_models/module';
+import { forAllFilesThatMatchDo, makeDir, readJsonFile, writeFile } from '../../util/FileOperations';
+import { Module, ModulesFile, ModuleType } from '../../data_models/module';
 import { readModules } from '../module/moduleLoading';
+import { ParamSet } from '../../data_models/simparam';
 
 export class ConfigManager{
 
-    private         configs         : Map<string, SimConfig>;
+    private configs : Map<string, SimConfig>;
 
     constructor(){
         this.configs = new Map();
+    }
+
+    public getParams(configID : string) : {type : string, params : ParamSet}[] {
+        if(this.configs.has(configID)){
+            const config = this.configs.get(configID);
+            let ret : {type : string, params : ParamSet}[] = [];
+            Object.values(ModuleType).forEach((key)=>{
+                ret.push({
+                    type: key as string,
+                    params: config[key].params
+                });
+            });
+            return ret;
+        }else{
+            return null;
+        }
     }
 
     public getConfigs() : SimConfig[]{
@@ -21,7 +39,7 @@ export class ConfigManager{
     }
 
     // eslint-disable-next-line @typescript-eslint/require-await
-    public async createConfig(name : string, description : string, simConfigIds : SimConfigIDs) : Promise<{status: Status; config : SimConfig}>{
+    public async createConfig(simConfigIds : SimConfigIDs) : Promise<{status: Status; config : SimConfig}>{
         if(!hasAllTypes(simConfigIds)){
             return {
                 status: Status.BAD_REQUEST,
@@ -42,10 +60,10 @@ export class ConfigManager{
             configID = crypto.randomUUID();
         }
 
-        const simConfig = this.makeSimConfig(configID, name, description, simConfigIds);
+        const simConfig = this.makeSimConfig(configID, simConfigIds);
         if(!simConfig){
             return {
-                status: Status.INTERNAL_ERROR,
+                status: Status.BAD_REQUEST,
                 config: null
             };
         }
@@ -80,11 +98,11 @@ export class ConfigManager{
         return ret;
     }
 
-    private makeSimConfig(id : string, name : string, description : string, simConfigIds : SimConfigIDs) : SimConfig {
+    private makeSimConfig(id : string, simConfigIds : SimConfigIDs) : SimConfig {
         const simConfig : SimConfig = {
             id,
-            name,
-            description
+            name: simConfigIds.name,
+            description: simConfigIds.description
         };
 
         const available : ModulesFile = readModules();
@@ -92,15 +110,21 @@ export class ConfigManager{
             return null;
         }
 
+        let ok : boolean = true;
         Object.values(simConfigIds).forEach((i : {id: string})=>{
-            const module = available.getModule(i.id);
-            if(!module){
-                return null;
+            if(i.id){
+                const module = available.getModule(i.id);
+                if(!module){
+                    ok = false;
+                }
+                addModule(simConfig, module);
             }
-            addModule(simConfig, module);
         });
-
-        return simConfig;
+        if(ok){
+            return simConfig;
+        }else{
+            return null;
+        }
     }
 
     private setupConfig(simconfig : SimConfig) : void {
@@ -118,5 +142,18 @@ export class ConfigManager{
         });
         configFile += '}';
         writeFile(`${configDir}/sim.config`, configFile);
+    }
+
+    public loadConfigs() {
+        forAllFilesThatMatchDo(/sim\.config/, config.vipra.simsDir, (filePath : string)=>{
+            const simconfigIDs = readJsonFile<SimConfigIDs>(filePath , {error:false});
+            const id = path.basename(path.dirname(filePath));
+            const simconfig = this.makeSimConfig(id, simconfigIDs);
+            if(simconfig){
+                Logger.info(`Found Simulation Configuration at: ${filePath}`);
+                this.configs.set(id, simconfig);
+            }
+        });
+        Logger.info(`Finished Loading Simulation Configurations`);
     }
 }

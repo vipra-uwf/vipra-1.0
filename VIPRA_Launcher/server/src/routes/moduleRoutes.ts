@@ -1,21 +1,22 @@
 import express from 'express';
 
-
 import { Logger } from '../logging/Logging';
 import { respondData, respondError, respondSuccess, respondUnknownError } from '../util/Responses';
 import { ModuleController } from '../controllers/module/moduleController';
 import { Status } from '../data_models/Status.e';
-import { config } from '../configuration/config';
-import { ModuleType } from '../data_models/module';
+import { ModulesFile, ModuleType } from '../data_models/module';
 
-const moduleRouter = () : express.Router => {
+const moduleRouter = (moduleController : ModuleController) : express.Router => {
 
     const moduleRoutes = express.Router();
-    const moduleController = new ModuleController();
 
-    // TODO Can eventually have this link directly to the vipra hub -RG
+    moduleRoutes.get('/', (req, res)=>{
+        const modules = moduleController.allModulesInfo();
+        respondData(modules, res);
+    });
 
     moduleRoutes.get('/:type', (req, res)=>{
+        Logger.info('Get /module/:type');
         // TODO check that the type is valid -RG
         const type : ModuleType = req.params.type as ModuleType;
         const modules = moduleController.getModulesofType(type);

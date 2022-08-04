@@ -15,7 +15,7 @@ export class CBServer{
     private baseURL         : string;
 
     constructor(baseURL : string){
-        this.baseURL = baseURL;
+        this.baseURL = this.correctURL(baseURL);
         this.resultStores = new Map();
         this.endpoints = new Map();
     }
@@ -107,9 +107,14 @@ export class CBServer{
         options.service.setHref(`${this.baseURL}${options.route}/`);
     }
 
-    private respondResult(req : express.Request, res : express.Response) : void{
+    private respondResult(req : express.Request, res : express.Response) : void{        
         const path : string[] = req.url.split('/');
-        const resultStore = this.resultStores.get(path[1]);
+        let resultStoreName : string = "";
+        while(resultStoreName !== 'data'){
+            resultStoreName = path.shift();
+        }
+        resultStoreName = path.shift();
+        const resultStore = this.resultStores.get(resultStoreName);
         if(resultStore){
             resultStore.handleRequest(path, res);
             return;
@@ -126,5 +131,13 @@ export class CBServer{
         const href = this.baseURL.concat('data/', resultStore.getName(), '/');
         resultStore.setHref(href);
         this.resultStores.set(resultStore.getName(), resultStore);
+    }
+
+    private correctURL(url : string) : string{
+        if(url.at(url.length-1) !== '/'){
+            return `${url}/`;
+        }else{
+            return url;
+        }
     }
 }

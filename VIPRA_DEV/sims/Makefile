@@ -31,7 +31,7 @@ $(BUILD_DIR)/main.o: makeDirs
 	$(CPP) $(CPP_FLAGS) -c main.cpp -o $(BUILD_DIR)/main.o
 
 testrun:
-	./VIPRA ./example/sim.config ./example/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
+	./VIPRA ./eff276f9-ba8c-483f-93f1-09613beae72f/sim.config ./eff276f9-ba8c-483f-93f1-09613beae72f/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
 
 clean:
 	rm -f generate_main main.cpp VIPRA

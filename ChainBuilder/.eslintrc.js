@@ -20,7 +20,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
-    "ignorePatterns": ["*eslint*", "babel.config.js"],
+    "ignorePatterns": ["*eslint*", "babel.config.js", "dist"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "tsconfig.json",

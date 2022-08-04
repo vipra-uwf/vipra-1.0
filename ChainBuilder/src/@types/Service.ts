@@ -2,7 +2,7 @@ import express from 'express';
 import https from 'https';
 import { ResultStore } from './ResultStore';
 import { cbErrorRespond, cbResultRespond, cbServiceInfoRespond } from './Responses';
-import { Parameter, ServiceInfo, Response, ServiceOptions, CbMethod } from './Types';
+import { Parameter, ServiceInfo, Response, ServiceOptions, CbMethod, CbResult } from './Types';
 
 import axios, { AxiosResponse } from 'axios';
 
@@ -35,29 +35,31 @@ export class Service{
             cbServiceInfoRespond(this.info, this.parameter, this.response, response);
             return;
         }else{
-            const resultLocation : string = await this.runService(request, response);
-            if(resultLocation){
-                const data = this.resultStore.getHref().concat(resultLocation, '/');
-                cbResultRespond(response, this.methodReturn.name, data);
+            const resultLocation = await this.runService(request, response);
+            if(resultLocation.error){
+                cbErrorRespond(resultLocation.result, response);
                 return;
             }else{
-                cbErrorRespond('Unable to complete request', response);
+                const data = this.resultStore.getHref().concat(resultLocation.result, '/');
+                cbResultRespond(response, this.methodReturn.name, data);
                 return;
             }
         }
     }
 
-    private async runService(request : express.Request, response : express.Response) : Promise<string>{
-        const parameters : { [key: string]: string[] } = await this.getRequestParams(request as express.Request<any, any, {[key:string]:any}>, response);
-        if(parameters){
-            const result : string = await this.serviceMethod(parameters);
-            if(result){
-                const location = await this.resultStore.storeResult(result);
+    private async runService(request : express.Request, response : express.Response) : Promise<CbResult>{
+        const parameters = await this.getRequestParams(request as express.Request<any, any, {[key:string]:any}>, response);
+        if(parameters.error){
+            return {error: true, result: parameters.error};    
+        }else{
+            const result = await this.serviceMethod(parameters.params);
+            if(!result.error){
+                const location = await this.resultStore.storeResult(result.result);
                 return location;
             }
-            return null;
+            return result;
         }
-        return null;
+        
     }
 
 
@@ -97,56 +99,43 @@ export class Service{
         };
     }
 
-    private async getRequestParams(request : express.Request<any, any, {[key:string]:any}>, response : express.Response) : Promise<{ [key: string]: string[] }>{
+    private async getRequestParams(request : express.Request<any, any, {[key:string]:any}>, response : express.Response) : Promise<{error: string, params: {[key: string]: string[]}}>{
 
         const params : string[] = this.methodParams.map((arg)=>{
             return arg.name;
         });
 
-        if(request.query){
-            let query : {[key:string] : string[]};
-            // NOTE: we check if we were provided with hrefs or raw values, based on that we either fetch or use directly
-            //       values/hrefs can come in either the query or body so we need to check both
-            //          checking whether query[param] is a string is a quirk of typescipt as if there is only one parameter provided it will be interpereted as an array of strings with length 1 -RG
-            if(request.query[`${params.at(0)}_href`]){
-                for await (const param of params){
-                    if(typeof request.query[param] === "string"){
-                        query[param] = await this.requestChainData([request.query[param] as string], response);
-                    }else{
-                        query[param] = await this.requestChainData(request.query[param] as string[], response);
-                    }
-                }
+        let ret : {[key: string]: string[]} = {};
+
+        for await (const param of params){
+            if(request.query[`${param}`]){
+                ret[param] = this.normalizeParam(request.query[`${param}`]);
+            }else if(request.query[`${param}_href`]){
+                ret[param] = await this.requestChainData(this.normalizeParam(request.query[`${param}_href`]), response);
+            }else if(request.body[`${param}`]){
+                ret[param] = this.normalizeParam(request.body[`${param}`]);
+            }else if(request.body[`${param}_href`]){
+                ret[param] = await this.requestChainData(this.normalizeParam(request.body[`${param}_href`]), response);
             }else{
-                params.forEach((param)=>{
-                    if(typeof (request.query[param]) === "string"){
-                        query[param] = [request.query[param] as string];
-                    }else{
-                        query[param] = request.query[param] as string[];
-                    }
-                });
+                return {
+                    error: `Missing Parameter: ${param}`,
+                    params: null
+                };
             }
-            return query;
         }
-        if(request.body){
-            let query : {[key:string] : string[]};
-            // NOTE: we check that the member exists and that it is correct, this error is not needed -RG
-            if(request.body[`${params.at(0)}_href`]){
-                for await (const param of params){
-                    if(request.body[param]){
-                        if(typeof request.body[param] === "string"){
-                            query[param] = await this.requestChainData([request.body[param] as string], response);
-                        }else{
-                            query[param] = await this.requestChainData(request.body[param] as string[], response);
-                        }
-                    }else{
-                        cbErrorRespond("Missing Parameters", response);
-                        return null;
-                    }
-                }
-            }
-            return query;
+
+        return {
+            error: null,
+            params: ret
+        };
+    }
+
+    private normalizeParam(param : any) : string[]{
+        if(typeof param === "string"){
+            return [param as string];
+        }else{
+            return param as string[];
         }
-        return null;
     }
 
     private async requestChainData(hrefs : string[], response : express.Response) : Promise<string[]>{

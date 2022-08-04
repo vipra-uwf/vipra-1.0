@@ -2,10 +2,10 @@ import express from 'express';
 import { setupCB } from '../chainbuilder/cbSetup';
 import { CBServer } from 'typechain';
 
-const simulationRouter = () : express.Router => {
+const simulationRouter = (debugSimResults : boolean, debugParams : boolean) : express.Router => {
     const simRoutes = express.Router();
 
-    const cbServer : CBServer = setupCB();
+    const cbServer : CBServer = setupCB(debugSimResults, debugParams);
 
     simRoutes.use('/', (req : express.Request, res : express.Response)=>{
         req.originalUrl = req.url;

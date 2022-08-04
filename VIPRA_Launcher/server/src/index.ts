@@ -1,7 +1,9 @@
 import express from 'express';
 import https from 'https';
+import cors from 'cors';
 
 import { config } from './configuration/config';
+import { FLAGS } from './data_models/flags';
 import { startup, initialSetup, debugSetup } from './configuration/setup';
 import { Logger } from './logging/Logging';
 import { defaultRouter } from './routes/defaultRoutes';
@@ -10,13 +12,15 @@ import { simConfigRouter } from './routes/simConfigRoutes';
 import { simulationRouter } from './routes/simulationRoutes';
 import { readFile } from './util/FileOperations';
 import { getCommandLineArguments } from './util/Util';
+import { ModuleController } from './controllers/module/moduleController';
+import { SimManager } from './controllers/simulation/SimManager';
+import { ConfigManager } from './controllers/simconfig/ConfigManager';
 
-const DEBUG_SETUP_FLAG = "debugsetup";
-const DEBUG_BUILD_FLAG = "debugbuild";
+
 
 const argv : Map<string, string> = getCommandLineArguments();
 
-if(argv.has(DEBUG_SETUP_FLAG)){
+if(argv.has(FLAGS.DEBUG_SETUP)){
     debugSetup();
 }else{
     try{
@@ -34,14 +38,21 @@ const httpsServer = https.createServer({
     passphrase: config.app.https.passphrase
 }, app);
 
-startup(argv.has(DEBUG_BUILD_FLAG))
-.then(()=>{
+
+startup(argv).then(()=>{
     app.use(express.urlencoded({extended: true}));
     app.use(express.json());
+    app.use(cors());
 
-    app.use('/chainbuilder', simulationRouter());
-    app.use('/module', moduleRouter());
-    app.use('/simconfig', simConfigRouter());
+    const modulesController = new ModuleController();
+    const configManager = new ConfigManager();
+    const simManager = SimManager.getInstance(configManager);
+    simManager.setQuickSim(argv.has(FLAGS.QUICK_SIM));
+
+
+    app.use('/chainbuilder', simulationRouter(argv.has(FLAGS.DEBUG_RESULTS), argv.has(FLAGS.DEBUG_PARAMS)));
+    app.use('/module', moduleRouter(modulesController));
+    app.use('/simconfig', simConfigRouter(configManager));
     app.use('*', defaultRouter);
 
     httpsServer.listen(config.app.port);

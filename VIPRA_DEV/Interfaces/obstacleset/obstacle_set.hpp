@@ -11,15 +11,15 @@ class ObstacleSet
 
         virtual ~ObstacleSet() = default;
         
-        virtual                 void                            configure(CONFIG_MAP* configMap)                                                    = 0;
+        virtual void                            configure(CONFIG_MAP* configMap)                                                    = 0;
 
-        virtual                 void                            addObjects(const std::string& type, const std::vector<Dimensions>& locations)       = 0;
-        virtual                 void                            setObstacleCoordinates(const std::vector<Dimensions>& coordinates)                  = 0;
+        virtual void                            addObjects(const std::string& type, const std::vector<Dimensions>& locations)       = 0;
+        virtual void                            setObstacleCoordinates(const std::vector<Dimensions>& coordinates)                  = 0;
         
-        virtual                 int                             getNumObstacles()                           const noexcept                          = 0;
-        virtual [[nodiscard]]   const std::vector<Dimensions>&  getObstacleCoordinates()                    const noexcept                          = 0;
-        virtual [[nodiscard]]   const std::vector<Dimensions>&  getObjectsofType(const std::string& type)   const noexcept                          = 0;
-        virtual [[nodiscard]]   const std::vector<std::string>& getObjectTypes()                            const noexcept                          = 0;
+        virtual int                             getNumObstacles()                           const noexcept                          = 0;
+        virtual const std::vector<Dimensions>&  getObstacleCoordinates()                    const noexcept                          = 0;
+        virtual const std::vector<Dimensions>&  getObjectsofType(const std::string& type)   const noexcept                          = 0;
+        virtual const std::vector<std::string>& getObjectTypes()                            const noexcept                          = 0;
 };
 
 #endif

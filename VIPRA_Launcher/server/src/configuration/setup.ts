@@ -3,6 +3,7 @@ import prompt from 'prompt-sync';
 import ip from 'ip';
 
 import { config }  from "./config";
+import { FLAGS } from "../data_models/flags";
 import { fileExists, makeDir, matchFile, writeFile } from "../util/FileOperations";
 import { compileMain, compileHumanBehavior, compileSim, compileGenMain } from "../util/Processes";
 import { compileAllModules, loadInstalledModules, saveInstalledModules } from "../controllers/module/moduleLoading";
@@ -16,13 +17,15 @@ const prompter = prompt();
 const debugSetup = () : void => {
     const vipraDir = findVipra();
 
+    config.app.debug = true;
     config.vipra.vipraDir = vipraDir;
     config.vipra.behaviorDir = `${vipraDir}/Base/dsl`;
     config.vipra.simsDir = `${vipraDir}/sims`;
     config.vipra.outputDir = path.resolve('./OUTPUT');
     config.module.modulesFile = path.resolve(`./modules.json`);
+    config.simconfig.configsFile = path.resolve(`./simconfigs.json`);
 
-    config.cb.url = `${ip.address()}:3001`;
+    config.cb.url = `${ip.address()}:3001/`;
     config.app.port = 3001;
     config.app.https = {
         key: "/usr/src/VIPRA/certs/local.pem",
@@ -46,6 +49,7 @@ const initialSetup = (argsMap : Map<string, string>) : void => {
         config.vipra.simsDir = `${vipraDir}/sims`;
         config.vipra.outputDir = path.resolve('./OUTPUT');
         config.module.modulesFile = path.resolve(`./modules.json`);
+        config.simconfig.configsFile = path.resolve(`./simconfigs.json`);
 
         setupHTTPS();
 
@@ -87,7 +91,7 @@ const getPort = () : Number => {
         port = parseInt(prompter("PORT Number for Server: "), 10);
     }
     return port;
-}
+};
 
 // TODO provide output for improper input -RG
 
@@ -130,6 +134,9 @@ const getHTTPS = () : {key : string; cert: string; passphrase : string} => {
 };
 
 const httpsURL = (url : string) : string => {
+    if(url.at(url.length-1) !== '/'){
+        url = `${url}/`;
+    }
     if(url.match(/^https:\/\//)){
         return url;
     }else{
@@ -150,36 +157,38 @@ const checkURL = (url : string) : boolean => {
     return true;
 };
 
-const startup = async (debugStartup : boolean) : Promise<void> => {
-    makeDirectories();
+const startup = async (flags : Map<string,string>) : Promise<void> => {
+    if(flags.get(FLAGS.REBUILD) !== "false" && flags.get(FLAGS.REBUILD) !== "False" && flags.get(FLAGS.REBUILD) !== "FALSE"){
+        makeDirectories();
 
-    const modules : ModulesFile = loadInstalledModules();
+        const modules : ModulesFile = loadInstalledModules();
 
-    await compileHumanBehavior(debugStartup)
-    .catch((error : string)=>{
-        Logger.info(`compileHumanBehavior failed: ${error}`);
-    });
+        await compileHumanBehavior(flags.has(FLAGS.DEBUG_BUILD))
+        .catch((error : string)=>{
+            Logger.info(`compileHumanBehavior failed: ${error}`);
+        });
 
-    await compileAllModules(modules, debugStartup)
-    .catch((error : string)=>{
-        Logger.error(`compileAllModules failed: ${error}`);
-    });
-    saveInstalledModules(modules);
+        await compileAllModules(modules, flags.has(FLAGS.DEBUG_BUILD))
+        .catch((error : string)=>{
+            Logger.error(`compileAllModules failed: ${error}`);
+        });
+        saveInstalledModules(modules);
 
-    await compileGenMain(debugStartup)
-    .catch((error : string) => {
-        Logger.error(`compileGenMain failed: ${error}`);
-    });
+        await compileGenMain(flags.has(FLAGS.DEBUG_BUILD))
+        .catch((error : string) => {
+            Logger.error(`compileGenMain failed: ${error}`);
+        });
 
-    await compileMain(debugStartup)
-    .catch((error : string)=>{
-        Logger.error(`compileMain failed: ${error}`);
-    });
+        await compileMain(flags.has(FLAGS.DEBUG_BUILD))
+        .catch((error : string)=>{
+            Logger.error(`compileMain failed: ${error}`);
+        });
 
-    await compileSim(debugStartup)
-    .catch((error : string) => {
-        Logger.error(`compileSim failed: ${error}`);
-    });
+        await compileSim(flags.has(FLAGS.DEBUG_BUILD))
+        .catch((error : string) => {
+            Logger.error(`compileSim failed: ${error}`);
+        });
+    }
 };
 
 const makeDirectories = () : void =>{

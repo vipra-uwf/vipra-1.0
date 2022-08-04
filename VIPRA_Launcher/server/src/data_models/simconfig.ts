@@ -1,19 +1,21 @@
 import { Module } from "./module";
 
 export interface SimConfigIDs{
-    input_data_loader               : string;
-    output_data_writer              : string;
-    simulation_output_handler       : string;
-    pedestrian_set                  : string;
-    obstacle_set                    : string;
-    entity_set_factory              : string;
-    goals                           : string;
-    pedestrian_dynamics_model       : string;
-    human_behavior_model            : string;
-    configuration_reader            : string;
-    clock                           : string;
-    data                            : string;
-    simulation                      : string;
+    name                            : string;
+    description                     : string;
+    input_data_loader               : {id: string};
+    output_data_writer              : {id: string};
+    simulation_output_handler       : {id: string};
+    pedestrian_set                  : {id: string};
+    obstacle_set                    : {id: string};
+    entity_set_factory              : {id: string};
+    goals                           : {id: string};
+    pedestrian_dynamics_model       : {id: string};
+    human_behavior_model            : {id: string};
+    configuration_reader            : {id: string};
+    clock                           : {id: string};
+    data                            : {id: string};
+    simulation                      : {id: string};
 }
 
 
@@ -60,14 +62,14 @@ export const addModule = (simConfig : SimConfig, module : Module) : void => {
 
 export const configIsSame = (conf1 : SimConfigIDs, conf2 : SimConfig) : boolean => {
     return(
-        conf1.entity_set_factory         === conf2.entity_set_factory.id &&
-        conf1.goals                      === conf2.goals.id &&
-        conf1.output_data_writer         === conf2.output_data_writer.id &&
-        conf1.simulation_output_handler  === conf2.simulation_output_handler.id &&
-        conf1.pedestrian_dynamics_model  === conf2.pedestrian_dynamics_model.id &&
-        conf1.obstacle_set               === conf2.obstacle_set.id &&
-        conf1.pedestrian_set             === conf2.pedestrian_set.id &&
-        conf1.human_behavior_model       === conf2.human_behavior_model.id &&
-        conf1.input_data_loader          === conf2.input_data_loader.id
+        conf1.entity_set_factory.id         === conf2.entity_set_factory.id &&
+        conf1.goals.id                      === conf2.goals.id &&
+        conf1.output_data_writer.id         === conf2.output_data_writer.id &&
+        conf1.simulation_output_handler.id  === conf2.simulation_output_handler.id &&
+        conf1.pedestrian_dynamics_model.id  === conf2.pedestrian_dynamics_model.id &&
+        conf1.obstacle_set.id               === conf2.obstacle_set.id &&
+        conf1.pedestrian_set.id             === conf2.pedestrian_set.id &&
+        conf1.human_behavior_model.id       === conf2.human_behavior_model.id &&
+        conf1.input_data_loader.id          === conf2.input_data_loader.id
     );
 };
