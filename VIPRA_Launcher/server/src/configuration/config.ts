@@ -1,7 +1,5 @@
 import { readJsonFile } from '../util/FileOperations';
 
-// TODO!!!! change this to be set from environment -RG
-
 interface Config{
     setup : boolean;
     app: {

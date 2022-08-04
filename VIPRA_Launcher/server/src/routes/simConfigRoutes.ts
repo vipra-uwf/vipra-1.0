@@ -1,13 +1,13 @@
 import express from 'express';
 
 import { respondData, respondError, respondSuccess, respondUnknownError } from '../util/Responses';
-import { SimConfig, SimConfigIDs }        from '../data_models/simconfig';
+import { SimConfigIDs }        from '../data_models/simconfig';
 import { ConfigManager }    from '../controllers/simconfig/ConfigManager';
 import { Status }           from '../data_models/Status.e';
 import { Logger }           from '../logging/Logging';
 
 
-const simConfigRouter = (configManager : ConfigManager) : express.Router => {
+const simConfigRouter = (argv : Map<string, string>, configManager : ConfigManager) : express.Router => {
 
     const simConfigRoutes   : express.Router    = express.Router();
     configManager.loadConfigs();
@@ -23,7 +23,6 @@ const simConfigRouter = (configManager : ConfigManager) : express.Router => {
             configManager.createConfig(simconf)
             .then((created)=>{
                 switch(created.status){
-                    // TODO return the created config
                     case Status.CREATED:
                         respondSuccess(res);
                         break;

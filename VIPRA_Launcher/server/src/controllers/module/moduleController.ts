@@ -7,10 +7,9 @@ import { config }           from '../../configuration/config';
 import { Logger }           from '../../logging/Logging';
 import { buildModule }      from '../../util/Processes';
 import { Module, ModuleInfo, ModulesFile, ModuleType } from "../../data_models/module";
-import { deleteDir, deleteFile, extractTar, makeDir, matchFile, moveFile, readJsonFile, writeFile, writeFileFromBuffer }      from '../../util/FileOperations';
+import { deleteDir, deleteFile, extractTar, makeDir, matchFile, moveFile, readJsonFile, writeFileFromBuffer }      from '../../util/FileOperations';
 import { readModules, saveInstalledModules } from './moduleLoading';
 import { generateSimulation } from '../simulation/simulationBuild';
-import { SimManager } from '../simulation/SimManager';
 
 export class ModuleController {
 
@@ -73,7 +72,7 @@ export class ModuleController {
             return build;
         }
 
-        // TODO setting all modules to compiled even if failed -RG
+        // TODO make sure that failed modules aren't being set to compiled -RG
         unpacked.module.compiled = true;
         this.addModuleOption(unpacked.module);
 
@@ -140,8 +139,6 @@ export class ModuleController {
                 module: null
             };
         }
-
-        // TODO this should be added after compilation -RG
 
         this.moveModule(module, extracted.path);
         Logger.info(`Installed Module: ${module.name}:${module.id}`);

@@ -233,162 +233,6 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
     }
 }
 
-// void CalmPedestrianModel::calculatePropulsion()
-// {
-//     const DimsVector& goals = this->goals->getAllCurrentGoals();
-//     const DimsVector& endGoals = this->goals->getAllEndGoals();
-//     FLOATING_NUMBER xAisleCoefficent = 0.5;
-//     FLOATING_NUMBER yAisleCoefficent = 0.9;
-
-//     for(int i = 0; i < this->numPedestrians; ++i)
-//     {
-//         if(!this->goals->isPedestianGoalsMet(i)){
-//             Dimensions newVelocity = this->pedestrianSet->getVelocities().at(i);
-//             Dimensions newPropulsiveForce = this->pedestrianSet->getPropulsionForces().at(i);
-
-//             MovementDefinitions currentState = this->moveStates[i];
-//             FLOATING_NUMBER goalX = goals[i][0];
-//             FLOATING_NUMBER goalY = goals[i][1];
-//             FLOATING_NUMBER coordinateX = this->pedestrianCoordinates[i][0];
-//             FLOATING_NUMBER coordinateY = this->pedestrianCoordinates[i][1];
-//             FLOATING_NUMBER mass = this->masses[i];
-//             FLOATING_NUMBER desiredSpeed = this->desiredSpeeds[i];
-//             FLOATING_NUMBER velocityX = this->velocities[i][0];
-//             FLOATING_NUMBER velocityY = this->velocities[i][1];
-//             FLOATING_NUMBER reactionTime = this->reactionTimes[i];
-
-//         if(currentState == MovementDefinitions::STOP)
-//         {
-
-//             newVelocity =
-//             (
-//                 Dimensions
-//                 {
-//                         0,
-//                         0
-//                 }
-//             );
-//         }
-
-//         else if (currentState == MovementDefinitions::PED_DYNAM)
-//         {
-//             if(goalX == coordinateX && goalY == 0)
-//             {
-                
-//                 if(coordinateY < 0)
-//                 {
-//                     newVelocity =
-//                     (
-//                         Dimensions
-//                         {
-//                                 0 * desiredSpeed,
-//                                 desiredSpeed
-//                         }
-//                     );
-//                 }
-
-//                 // Possible bug: We do not check the case where the coordinate is exactly 0
-//                 // TODO: people on the top half of the plane inexplicably get 1.1 times speed -RG
-//                 else if(coordinateY > 0)
-//                 {
-
-//                     newVelocity =
-//                     (
-//                         Dimensions
-//                         {
-//                                 0 *
-//                                 desiredSpeed,
-//                                 -1.1f *
-//                                 desiredSpeed
-//                         }
-//                     );
-//                 }
-//             }
-
-//             else if(goalX == endGoals[i][0]
-//                     && goalY == 0)
-//                 {
-//                 if((coordinateY >= (goalY) + 0.2)
-//                 || (coordinateY <= (goalY) - 0.2))
-//                 {
-//                     if(coordinateY > 0)
-//                     {
-//                         newVelocity = (
-//                         Dimensions
-//                         {
-//                               xAisleCoefficent *
-//                               desiredSpeed,
-//                               (-1 * yAisleCoefficent) *
-//                               desiredSpeed
-//                         }
-//                         );
-//                     }
-
-//                     else
-//                     {
-//                         newVelocity = (
-//                         Dimensions
-//                         {
-//                               xAisleCoefficent *
-//                               desiredSpeed,
-//                               yAisleCoefficent *
-//                               desiredSpeed
-//                         }
-//                       );
-
-//                     }
-
-//                 }
-//                 else
-//                 {
-//                     newVelocity = (
-//                         Dimensions
-//                         {
-//                                 1 *
-//                                 desiredSpeed,
-//                                 0 *
-//                                 desiredSpeed
-//                         }
-//                     );
-//                 }
-//             }
-
-//             else if(goalX == endGoals[i]
-//             [0]
-//             && goalY == endGoals[i][1])
-//             {
-
-//                 newVelocity =
-//                 (
-//                     Dimensions
-//                     {
-//                         std::vector<FLOATING_NUMBER>
-//                         {
-//                             0 * desiredSpeed,
-//                             1 * desiredSpeed
-//                         }
-//                     }
-//                 );
-//             }
-//         }
-
-//         newPropulsiveForce =
-//         (
-//             Dimensions
-//             {
-//                 std::vector<FLOATING_NUMBER>
-//                 {
-//                     (newVelocity[0] - velocityX) * mass / reactionTime,
-//                     (newVelocity[1] - velocityY) * mass / reactionTime
-
-//                 }
-//             }
-//         );
-//         this->pedestrianSet->setPropulsionForce(std::move(newPropulsiveForce), i);
-//     }
-// }
-//}
-
 void CalmPedestrianModel::calculatePropulsion()
 {
     const DimsVector& goals = this->goals->getAllCurrentGoals();
@@ -413,46 +257,202 @@ void CalmPedestrianModel::calculatePropulsion()
             FLOATING_NUMBER velocityY = this->velocities[i][1];
             FLOATING_NUMBER reactionTime = this->reactionTimes[i];
 
-            if(currentState == MovementDefinitions::STOP)
-            {
-                newVelocity = Dimensions{0,0};
-            }
-            else if (currentState == MovementDefinitions::PED_DYNAM)
-            {
-                // NOTE: taken from https://www.h3xed.com/programming/fast-unit-vector-calculation-for-2d-games -RG
-                FLOATING_NUMBER x = std::abs(goalX - coordinateX);
-                FLOATING_NUMBER y = std::abs(goalY - coordinateY);
+        if(currentState == MovementDefinitions::STOP)
+        {
 
-                FLOATING_NUMBER ratio = 1/ std::max(x, y);
-                ratio = ratio * (1.29289 - (x + y) * ratio * 0.29289);
-                x=x*ratio;
-                y=y*ratio;
-
-                // TODO!!!!!! : temporary fix for pedestrians not moving because they both get stuck on the other -RG
-                if(coordinateY < 0){
-                    y = y*1.1;
+            newVelocity =
+            (
+                Dimensions
+                {
+                        0,
+                        0
                 }
-
-                if(goalX - coordinateX < 0){
-                    x = -x;
-                }
-                if(goalY - coordinateY < 0){
-                    y = -y;
-                }
-
-                newVelocity = Dimensions{ x*desiredSpeed, y*desiredSpeed };
-            }
-                
-
-            newPropulsiveForce = Dimensions{
-                                            ((newVelocity[0] - velocityX) * mass / reactionTime),
-                                            ((newVelocity[1] - velocityY) * mass / reactionTime)
-                                            };
-
-            this->pedestrianSet->setPropulsionForce(std::move(newPropulsiveForce), i);
+            );
         }
+
+        else if (currentState == MovementDefinitions::PED_DYNAM)
+        {
+            if(goalX == coordinateX && goalY == 0)
+            {
+                
+                if(coordinateY < 0)
+                {
+                    newVelocity =
+                    (
+                        Dimensions
+                        {
+                                0 * desiredSpeed,
+                                desiredSpeed
+                        }
+                    );
+                }
+
+                // Possible bug: We do not check the case where the coordinate is exactly 0
+                // TODO: people on the top half of the plane inexplicably get 1.1 times speed -RG
+                else if(coordinateY > 0)
+                {
+
+                    newVelocity =
+                    (
+                        Dimensions
+                        {
+                                0 *
+                                desiredSpeed,
+                                -1.1f *
+                                desiredSpeed
+                        }
+                    );
+                }
+            }
+
+            else if(goalX == endGoals[i][0]
+                    && goalY == 0)
+                {
+                if((coordinateY >= (goalY) + 0.2)
+                || (coordinateY <= (goalY) - 0.2))
+                {
+                    if(coordinateY > 0)
+                    {
+                        newVelocity = (
+                        Dimensions
+                        {
+                              xAisleCoefficent *
+                              desiredSpeed,
+                              (-1 * yAisleCoefficent) *
+                              desiredSpeed
+                        }
+                        );
+                    }
+
+                    else
+                    {
+                        newVelocity = (
+                        Dimensions
+                        {
+                              xAisleCoefficent *
+                              desiredSpeed,
+                              yAisleCoefficent *
+                              desiredSpeed
+                        }
+                      );
+
+                    }
+
+                }
+                else
+                {
+                    newVelocity = (
+                        Dimensions
+                        {
+                                1 *
+                                desiredSpeed,
+                                0 *
+                                desiredSpeed
+                        }
+                    );
+                }
+            }
+
+            else if(goalX == endGoals[i]
+            [0]
+            && goalY == endGoals[i][1])
+            {
+
+                newVelocity =
+                (
+                    Dimensions
+                    {
+                        std::vector<FLOATING_NUMBER>
+                        {
+                            0 * desiredSpeed,
+                            1 * desiredSpeed
+                        }
+                    }
+                );
+            }
+        }
+
+        newPropulsiveForce =
+        (
+            Dimensions
+            {
+                std::vector<FLOATING_NUMBER>
+                {
+                    (newVelocity[0] - velocityX) * mass / reactionTime,
+                    (newVelocity[1] - velocityY) * mass / reactionTime
+
+                }
+            }
+        );
+        this->pedestrianSet->setPropulsionForce(std::move(newPropulsiveForce), i);
     }
 }
+}
+
+// void CalmPedestrianModel::calculatePropulsion()
+// {
+//     const DimsVector& goals = this->goals->getAllCurrentGoals();
+//     const DimsVector& endGoals = this->goals->getAllEndGoals();
+//     FLOATING_NUMBER xAisleCoefficent = 0.5;
+//     FLOATING_NUMBER yAisleCoefficent = 0.9;
+
+//     for(int i = 0; i < this->numPedestrians; ++i)
+//     {
+//         if(!this->goals->isPedestianGoalsMet(i)){
+//             Dimensions newVelocity = this->pedestrianSet->getVelocities().at(i);
+//             Dimensions newPropulsiveForce = this->pedestrianSet->getPropulsionForces().at(i);
+
+//             MovementDefinitions currentState = this->moveStates[i];
+//             FLOATING_NUMBER goalX = goals[i][0];
+//             FLOATING_NUMBER goalY = goals[i][1];
+//             FLOATING_NUMBER coordinateX = this->pedestrianCoordinates[i][0];
+//             FLOATING_NUMBER coordinateY = this->pedestrianCoordinates[i][1];
+//             FLOATING_NUMBER mass = this->masses[i];
+//             FLOATING_NUMBER desiredSpeed = this->desiredSpeeds[i];
+//             FLOATING_NUMBER velocityX = this->velocities[i][0];
+//             FLOATING_NUMBER velocityY = this->velocities[i][1];
+//             FLOATING_NUMBER reactionTime = this->reactionTimes[i];
+
+//             if(currentState == MovementDefinitions::STOP)
+//             {
+//                 newVelocity = Dimensions{0,0};
+//             }
+//             else if (currentState == MovementDefinitions::PED_DYNAM)
+//             {
+//                 // NOTE: taken from https://www.h3xed.com/programming/fast-unit-vector-calculation-for-2d-games -RG
+//                 FLOATING_NUMBER x = std::abs(goalX - coordinateX);
+//                 FLOATING_NUMBER y = std::abs(goalY - coordinateY);
+
+//                 FLOATING_NUMBER ratio = 1/ std::max(x, y);
+//                 ratio = ratio * (1.29289 - (x + y) * ratio * 0.29289);
+//                 x=x*ratio;
+//                 y=y*ratio;
+
+//                 // TODO!!!!!! : temporary fix for pedestrians not moving because they both get stuck on the other -RG
+//                 if(coordinateY < 0){
+//                     y = y*1.1;
+//                 }
+
+//                 if(goalX - coordinateX < 0){
+//                     x = -x;
+//                 }
+//                 if(goalY - coordinateY < 0){
+//                     y = -y;
+//                 }
+
+//                 newVelocity = Dimensions{ x*desiredSpeed, y*desiredSpeed };
+//             }
+                
+
+//             newPropulsiveForce = Dimensions{
+//                                             ((newVelocity[0] - velocityX) * mass / reactionTime),
+//                                             ((newVelocity[1] - velocityY) * mass / reactionTime)
+//                                             };
+
+//             this->pedestrianSet->setPropulsionForce(std::move(newPropulsiveForce), i);
+//         }
+//     }
+// }
 
 void CalmPedestrianModel::calculateBeta()
 {

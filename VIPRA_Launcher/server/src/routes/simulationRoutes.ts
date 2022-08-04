@@ -1,16 +1,15 @@
 import express from 'express';
 import { setupCB } from '../chainbuilder/cbSetup';
 import { CBServer } from 'typechain';
+import { FLAGS } from '../data_models/flags';
 
-const simulationRouter = (debugSimResults : boolean, debugParams : boolean) : express.Router => {
+const simulationRouter = (argv: Map<string, string>) : express.Router => {
     const simRoutes = express.Router();
 
-    const cbServer : CBServer = setupCB(debugSimResults, debugParams);
+    const cbServer : CBServer = setupCB(argv.has(FLAGS.DEBUG_RESULTS), argv.has(FLAGS.DEBUG_PARAMS));
 
     simRoutes.use('/', (req : express.Request, res : express.Response)=>{
         req.originalUrl = req.url;
-        // TODO find out why eslint is complaining about this -RG
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         cbServer.handleChainBuilderRequest(req, res);
     });
 

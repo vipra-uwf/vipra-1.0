@@ -4,9 +4,9 @@ import { Logger } from '../logging/Logging';
 import { respondData, respondError, respondSuccess, respondUnknownError } from '../util/Responses';
 import { ModuleController } from '../controllers/module/moduleController';
 import { Status } from '../data_models/Status.e';
-import { ModulesFile, ModuleType } from '../data_models/module';
+import { ModuleType } from '../data_models/module';
 
-const moduleRouter = (moduleController : ModuleController) : express.Router => {
+const moduleRouter = (argv : Map<string, string>, moduleController : ModuleController) : express.Router => {
 
     const moduleRoutes = express.Router();
 
@@ -17,18 +17,21 @@ const moduleRouter = (moduleController : ModuleController) : express.Router => {
 
     moduleRoutes.get('/:type', (req, res)=>{
         Logger.info('Get /module/:type');
-        // TODO check that the type is valid -RG
         const type : ModuleType = req.params.type as ModuleType;
-        const modules = moduleController.getModulesofType(type);
-        respondData(modules.map((module)=>{
-            return {
-                name: module.name,
-                description: module.description,
-                type: module.type,
-                params: module.params,
-                id: module.id
-            };
-        }), res);
+        if(!Object.values(ModuleType).includes(type)){
+            respondError(Status.BAD_REQUEST, `Invalid Type`, `${type} is not a valid type`, res);
+        }else{
+            const modules = moduleController.getModulesofType(type);
+            respondData(modules.map((module)=>{
+                return {
+                    name: module.name,
+                    description: module.description,
+                    type: module.type,
+                    params: module.params,
+                    id: module.id
+                };
+            }), res);
+        }
     });
 
     moduleRoutes.post('/', (req, res)=>{

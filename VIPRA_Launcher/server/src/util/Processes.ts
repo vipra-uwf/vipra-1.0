@@ -4,19 +4,8 @@ import { Logger } from '../logging/Logging';
 import { config } from "../configuration/config";
 import { Status } from "../data_models/Status.e";
 import { deleteFile, fileExists, makeDir } from './FileOperations';
-import { SimConfig } from '../data_models/simconfig';
 import { Module } from '../data_models/module';
 
-
-// TODO NEXT remove scripts and run commands directly from here -RG
-
-
-// TODO
-// compile human behavior -> compiles the human behavior
-// compile generate main -> compiles code generation
-// call generate main -> creates main.cpp and compiles it (this needs to be seperate so we dont have to compile generate_main every time)
-// compile simulation -> takes all compiled modules and main into a simulation
-// runs simulation -> takes in a config id, map, pedestrians and output and runs sim
 
 const buildModule = async (module : Module, debug : boolean) : Promise<Status> => {
     return new Promise((resolve, reject)=>{
@@ -128,22 +117,23 @@ const compileMain = async (debug : boolean) : Promise<Status> => {
     });
 };
 
-const runSim = (configID : string, mapFile : string, pedestrianFile : string, outputFile : string) : child_process.ChildProcess =>{
+const runSim = (configID : string, mapFile : string, pedestrianFile : string, paramsFile : string, outputFile : string, onExit : (code : number, signal : NodeJS.Signals)=>void) : child_process.ChildProcess =>{
     const configDir = `${config.vipra.simsDir}/${configID}`;
     if(!fileExists(configDir)){
         return null;
     }
-    const command : string = `cd ${config.vipra.simsDir} && ./VIPRA ${configDir}/sim.config ${configDir}/module_params.json ${pedestrianFile} ${mapFile} ${outputFile}`;
-    const ps = child_process.exec(command, (error) =>{
-        if(error){
-            Logger.error(`runSim: ${error.message}`);
-        }
-    });
+    const command : string = `${config.vipra.simsDir}/VIPRA`;
+    const args : string[] =  [`${configDir}/sim.config`, paramsFile, pedestrianFile, mapFile, outputFile];
+    const ps = child_process.spawn(command, args);
+
     ps.stderr.on('data', (data : string) => {
         Logger.error(`runSim: ID: ${configID} : ${data}`);
     });
     ps.stdout.on('data', (data : string) => {
-        Logger.info(`runSim: ID: ${configID} : ${data}`);
+        Logger.debug(`runSim: ID: ${configID} : ${data}`);
+    });
+    ps.on('close', (code : number, signal : NodeJS.Signals) =>{
+        onExit(code, signal);
     });
     return ps;
 };

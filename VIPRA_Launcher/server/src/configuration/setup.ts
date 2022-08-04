@@ -37,7 +37,7 @@ const debugSetup = () : void => {
     writeFile(path.resolve(`${__dirname}/config.json`), JSON.stringify(config));
 };
 
-// TODO: this will find the first instance of a file named vipra.info, if it is in the trash or something then this completely messes up -RG
+// TODO this will find the first instance of a file named vipra.info, if it is in the trash or something then this completely messes up -RG
 const initialSetup = (argsMap : Map<string, string>) : void => {
 
     if(!config.setup){

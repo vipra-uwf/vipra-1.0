@@ -18,14 +18,14 @@ export class ConfigManager{
         this.configs = new Map();
     }
 
-    public getParams(configID : string) : {type : string, params : ParamSet}[] {
+    public getParams(configID : string) : {type : string; params : ParamSet}[] {
         if(this.configs.has(configID)){
-            const config = this.configs.get(configID);
-            let ret : {type : string, params : ParamSet}[] = [];
+            const simconfig = this.configs.get(configID);
+            const ret : {type : string; params : ParamSet}[] = [];
             Object.values(ModuleType).forEach((key)=>{
                 ret.push({
                     type: key as string,
-                    params: config[key].params
+                    params: simconfig[key].params
                 });
             });
             return ret;

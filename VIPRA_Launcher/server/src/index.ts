@@ -47,12 +47,12 @@ startup(argv).then(()=>{
     const modulesController = new ModuleController();
     const configManager = new ConfigManager();
     const simManager = SimManager.getInstance(configManager);
-    simManager.setQuickSim(argv.has(FLAGS.QUICK_SIM));
+    simManager.setFlags(argv);
 
 
-    app.use('/chainbuilder', simulationRouter(argv.has(FLAGS.DEBUG_RESULTS), argv.has(FLAGS.DEBUG_PARAMS)));
-    app.use('/module', moduleRouter(modulesController));
-    app.use('/simconfig', simConfigRouter(configManager));
+    app.use('/chainbuilder', simulationRouter(argv));
+    app.use('/module', moduleRouter(argv, modulesController));
+    app.use('/simconfig', simConfigRouter(argv, configManager));
     app.use('*', defaultRouter);
 
     httpsServer.listen(config.app.port);

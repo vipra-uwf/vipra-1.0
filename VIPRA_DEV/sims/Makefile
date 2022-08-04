@@ -1,8 +1,10 @@
 CPP= g++
-CPP_FLAGS= -std=c++17 -w -O3 -fPIE -I/usr/include/antlr4-runtime
+CPP_FLAGS= -std=c++17 -w -fPIE -I/usr/include/antlr4-runtime
 
 ifeq ($(DEBUG_OUTPUT), 1)
-	CPP_FLAGS := $(CPP_FLAGS) -DDEBUG_OUTPUT=1
+	CPP_FLAGS := $(CPP_FLAGS) -DDEBUG_OUTPUT=1 -g -O0
+else
+	CPP_FLAGS := $(CPP_FLAGS) -O3
 endif
 
 LDLIBS = -lantlr4-runtime
@@ -31,7 +33,10 @@ $(BUILD_DIR)/main.o: makeDirs
 	$(CPP) $(CPP_FLAGS) -c main.cpp -o $(BUILD_DIR)/main.o
 
 testrun:
-	./VIPRA ./eff276f9-ba8c-483f-93f1-09613beae72f/sim.config ./eff276f9-ba8c-483f-93f1-09613beae72f/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
+	./VIPRA ./example/sim.config ./example/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
+
+debugrun:
+	gdb ./VIPRA ./example/sim.config ./example/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
 
 clean:
 	rm -f generate_main main.cpp VIPRA

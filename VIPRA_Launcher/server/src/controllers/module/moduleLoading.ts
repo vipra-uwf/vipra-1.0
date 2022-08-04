@@ -1,4 +1,4 @@
-import { forAllFilesThatMatchDo, readJsonFile, writeFile, fileExists } from "../../util/FileOperations";
+import { forAllFilesThatMatchDo, readJsonFile, writeFile } from "../../util/FileOperations";
 import { Module, ModulesFile, verifyModule } from "../../data_models/module";
 import { config } from "../../configuration/config";
 import { Logger } from "../../logging/Logging";

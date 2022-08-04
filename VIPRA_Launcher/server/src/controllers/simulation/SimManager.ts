@@ -3,10 +3,11 @@ import { ChildProcess } from 'child_process';
 
 import { config } from '../../configuration/config';
 import { runSim } from "../../util/Processes";
-import { Status } from "../../data_models/Status.e";
 import { Logger } from "../../logging/Logging";
 import { ConfigManager } from "../simconfig/ConfigManager";
 import { CbResult } from 'typechain';
+import { FLAGS } from '../../data_models/flags';
+import { makeDir } from '../../util/FileOperations';
 
 export class SimManager{
 
@@ -16,7 +17,12 @@ export class SimManager{
 
     private quicksim        : boolean;
 
+    private defaultMap      : string;
+    private defaultPeds     : string;
+    private defaultParams   : string;
+
     private constructor(configManager : ConfigManager){
+        this.processMap = new Map();
         this.configManager = configManager;
     }
 
@@ -34,28 +40,39 @@ export class SimManager{
         }
     }
 
-    public setQuickSim(quicksim : boolean){
-        this.quicksim = quicksim;
+    public setFlags(flags : Map<string, string>){
+        this.quicksim = flags.has(FLAGS.QUICK_SIM);
+        if(flags.has(FLAGS.DEFAULT_MAP)){
+            Logger.info(`Setting Sim Default Map: ${flags.get(FLAGS.DEFAULT_MAP)}`);
+            this.defaultMap = flags.get(FLAGS.DEFAULT_MAP);
+        }
+        if(flags.has(FLAGS.DEFAULT_PEDS)){
+            Logger.info(`Setting Sim Default Pedestrians: ${flags.get(FLAGS.DEFAULT_PEDS)}`);
+            this.defaultPeds = flags.get(FLAGS.DEFAULT_PEDS);
+        }
+        if(flags.has(FLAGS.DEFAULT_PARAMS)){
+            Logger.info(`Setting Sim Default Parameters: ${flags.get(FLAGS.DEFAULT_PARAMS)}`);
+            this.defaultParams = flags.get(FLAGS.DEFAULT_PARAMS);
+        }
     }
 
-    // TODO
     public async runSim(args : {[key: string] : string[]}) : Promise<CbResult>{
 
         if(this.quicksim){
             return {error: false, result: `${config.vipra.outputDir}/debug/quick.json`};
         }
 
-        if(args.configid && args.map && args.pedestrians && args.params){
-            return new Promise((resolve, reject)=>{
-                const configId = args.configid.at(0);
-                const outputID : string = crypto.randomUUID();
-                const outputPath : string = `${config.vipra.outputDir}/${configId}/${outputID}`;
-                const ps : ChildProcess = runSim(configId, args.map[0], args.pedestrians[0], outputPath);
-                this.processMap.set(configId, ps);
+        const configId : string = this.normalizeConfigId(args.configid[0]);
+        const map : string = `${this.defaultMap !== undefined ? this.defaultMap : this.getMap(args.map[0])}`;
+        const peds: string = `${this.defaultPeds !== undefined ? this.defaultPeds : this.getPeds(args.peds[0])}`;
+        const params: string = `${this.defaultParams !== undefined ? this.defaultParams : args.params[0]}`;
 
-                Logger.info(`Starting Simulation: ConfigID: ${configId}`);
+        if(configId && map && peds && params){
+            const outputID : string = crypto.randomUUID();
+            makeDir(`${config.vipra.outputDir}/${configId}/`);
+            return new Promise((resolve)=>{
 
-                ps.on('close', (code : number, signal : NodeJS.Signals) =>{
+                const onExit = (code : number) => {
                     this.processMap.delete(configId);
                     if(code !== 0){
                         Logger.error(`Error Running Simulation`);
@@ -64,20 +81,20 @@ export class SimManager{
                         Logger.info(`Successfully Finished Simulation: ID: ${configId}`);
                         resolve({error: false, result: outputPath});
                     }
-                });
+                };
+
+                const outputPath : string = `${config.vipra.outputDir}/${configId}/${outputID}`;
+                Logger.info(`Starting Simulation: ConfigID: ${configId}`);
+                const ps : ChildProcess = runSim(configId, map, peds, params, outputPath, onExit);
+                this.processMap.set(configId, ps);
             });
-        }else{
-            return {
-                error: true,
-                result: `Missing Parameters: ${args.configid ? "" : "configid, "}${args.map ? "" : "map, "}${args.pedestrians ? "" : "pedestrians, "}${args.params ? "" : "params"}`
-            };
         }
     }
 
     // NOTE: typechain requires this be async,
     // eslint-disable-next-line @typescript-eslint/require-await
     public async getParams(args : {[key: string] : string[]}) : Promise<CbResult>{
-        const configID = args['configid'][0].replace(/"/g,'');
+        const configID = args.configid[0].replace(/"/g,'');
         const params = this.configManager.getParams(configID);
         if(params){
             return {
@@ -90,5 +107,18 @@ export class SimManager{
                 result: `No Configuration With ID: ${configID}`
             };
         }
+    }
+
+    private normalizeConfigId(configid : string) : string {
+        return configid.replace(/"/g, '');
+    }
+
+    // TODO NEXT add loading maps and pedestrian files -RG
+    private getMap(id : string) : string {
+        return id;
+    }
+
+    private getPeds(id : string) : string {
+        return id;
     }
 }
