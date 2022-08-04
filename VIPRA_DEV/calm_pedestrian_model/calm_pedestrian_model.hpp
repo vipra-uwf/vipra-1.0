@@ -76,6 +76,7 @@ public:
     bool                            updatePriority(int pedestrianIndex);
 
     MovementDefinitions             updateMovementState(int pedestrianIndex);
+    void                            raceDetection();
     
     Data*                           getData()                              override;
     Goals*                          getGoals()                             override;

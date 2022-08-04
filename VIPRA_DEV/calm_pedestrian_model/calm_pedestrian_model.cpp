@@ -144,6 +144,8 @@ void CalmPedestrianModel::precompute()
 
     this->moveStates = this->pedestrianSet->getMovementStates();
 
+    raceDetection();
+
     calculateBeta();
     this->desiredSpeeds = this->pedestrianSet->getDesiredSpeeds();
 
@@ -602,14 +604,7 @@ std::pair<std::string, int>
     int nearest = NOT_FOUND;
     std::string originSet = "P";
     FLOATING_NUMBER nearestDistance = FLT_MAX;
-
-    if ((this->moveStates)[pedestrianIndex]
-          == MovementDefinitions::STOP)
-    {
-        //return NOT_FOUND pedestrian if pedestrian is stopped 
-        return std::make_pair(std::string(originSet), nearest);
-    }
-
+    
     if(this->goals->isPedestianGoalsMet(pedestrianIndex)){
         return std::make_pair("P", 0);
     }
@@ -899,26 +894,41 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
 
 MovementDefinitions CalmPedestrianModel::updateMovementState(int pedestrianIndex)
 {
-    // MovementDefinitions newDefinition = this->pedestrianSet->getMovementStates().at(pedestrianIndex);
-    // if (newDefinition != MovementDefinitions::HUMAN)
-    // {
-    //     if((this->pedestrianSet->getPriorities()).at(pedestrianIndex) < this->currentPriority
-    //         && 
-    //         ((this->pedestrianSet->getPedestrianCoordinates())[pedestrianIndex][0] >= 
-    //         ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAisles()).at((this->pedestrianSet->getStartingAisles()).at(pedestrianIndex))
-    //         + 
-    //         ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAislesSize()).at((this->pedestrianSet->getStartingAisles()).at(pedestrianIndex)) * 0.5) - 0.1)))
-    //     {
-    //         newDefinition = MovementDefinitions::STOP;
-    //     }
-    //     else
-    //     {
-    //         newDefinition = MovementDefinitions::PED_DYNAM;
-    //     }
-    // }
+     MovementDefinitions newDefinition = this->pedestrianSet->getMovementStates().at(pedestrianIndex);
+     if (newDefinition != MovementDefinitions::HUMAN)
+     {
+         if((this->pedestrianSet->getPriorities()).at(pedestrianIndex) < this->currentPriority)
+         {
+             newDefinition = MovementDefinitions::STOP;
+         }
+         else if((this->pedestrianSet->getPriorities()).at(pedestrianIndex) == this->currentPriority)
+         {
+             newDefinition = MovementDefinitions::PED_DYNAM;
+         }
+     }
 
-    // return newDefinition;
-    return MovementDefinitions::PED_DYNAM;
+     return newDefinition;
+}
+
+//Still needs work -NR
+void CalmPedestrianModel::raceDetection() {
+
+    for(int i = 0; i < this->numPedestrians; ++i) {
+        if(this->pedestrianSet->getMovementStates().at(i) == MovementDefinitions::STOP) {
+            int NID = this->pedestrianSet->getNearestNeighbors().at(i).second;
+            if(NID >= 0 && this->pedestrianSet->getMovementStates().at(NID) != MovementDefinitions::PED_DYNAM) {
+                if(rand() % 2 == 0) 
+                {
+                    this->pedestrianSet->setMovementState(MovementDefinitions::PED_DYNAM, i);
+                }
+                else
+                {
+                    this->pedestrianSet->setMovementState(MovementDefinitions::PED_DYNAM, NID);
+                }
+            }   
+        }
+    }
+    
 }
 
 bool CalmPedestrianModel::updatePriority(int pedestrianIndex)

@@ -199,6 +199,12 @@ void CalmPedestrianSet::setMovementStates(
     this->movementStates = movementStates;
 }
 
+void CalmPedestrianSet::setMovementState(
+    MovementDefinitions movementDefinition, size_t pedestrianIndex)
+{
+    this->movementStates.at(pedestrianIndex) = movementDefinition;
+}
+
 void CalmPedestrianSet::setStartingAisles(
     std::vector<int>&& startingAisles)
 {

@@ -90,6 +90,7 @@ class CalmPedestrianSet: public PedestrianSet
         void setMovementStates(std::vector<MovementDefinitions>&& movementStates);
         void setStartingAisles(std::vector<int>&& startingAisles);
         void setShoulderLengths(std::vector<FLOATING_NUMBER>&& shoulderLengths);
+        void setMovementState(MovementDefinitions movementDefinition, size_t pedestrianIndex);
 
     private:
       static constexpr FLOATING_NUMBER START_GOAL_X           = 0.00f;
