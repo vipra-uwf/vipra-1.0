@@ -142,9 +142,8 @@ void CalmPedestrianModel::precompute()
 
     this->pedestrianSet->setMovementStates(std::move(updatedMoveStates));
 
-    this->moveStates = this->pedestrianSet->getMovementStates();
-
     raceDetection();
+    this->moveStates = this->pedestrianSet->getMovementStates();
 
     calculateBeta();
     this->desiredSpeeds = this->pedestrianSet->getDesiredSpeeds();
@@ -229,6 +228,29 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
             this->pedestrianSet->setVelocity(std::move(newVelocity), i);
             this->pedestrianSet->setPedestrianCoordinates(std::move(newPosition), i);
             this->pedestrianSet->setSpeed(newSpeed, i);
+
+            //If the winner has moved enough in the aisle, we reset the conditions 
+            if(this->pedestrianSet->getRaceStatus().at(i) == RaceStatus::WINNER && 
+                this->pedestrianSet->getOpponentIDs().at(i) != -10 &&
+                 this->pedestrianSet->getRaceFinished().at(i) == false)
+            {
+                int opID = this->pedestrianSet->getOpponentIDs().at(i);
+                if(this->pedestrianSet->getOpponentIDs().at(i) >= 0 && this->pedestrianSet->getOpponentIDs().at(i) <= numPedestrians)
+                {
+                    if((this->pedestrianCoordinates[i][0] - this->pedestrianSet->getRacePositions().at(i)[0]) > 1
+                        && this->pedestrianSet->getRaceStatus().at(opID) == RaceStatus::LOOSER)
+                    {
+                        //reset race conditions for opponent
+                        this->pedestrianSet->setRaceStatus(RaceStatus::NO_RACE, opID);
+                        this->pedestrianSet->setOpponentID(-10, opID);
+                        this->pedestrianSet->setRaceFinished(true, opID);
+                        //Reset race conditions for pedestrian
+                        this->pedestrianSet->setRaceStatus(RaceStatus::NO_RACE, i);
+                        this->pedestrianSet->setOpponentID(-10, i);
+                        this->pedestrianSet->setRaceFinished(true, i);
+                    }
+                }
+            }
         }
     }
 }
@@ -604,7 +626,7 @@ std::pair<std::string, int>
     int nearest = NOT_FOUND;
     std::string originSet = "P";
     FLOATING_NUMBER nearestDistance = FLT_MAX;
-    
+
     if(this->goals->isPedestianGoalsMet(pedestrianIndex)){
         return std::make_pair("P", 0);
     }
@@ -692,7 +714,7 @@ inline bool CalmPedestrianModel::neighborDirectionTest(
 
     dotProduct = (displacementX * directionX) + (displacementY * directionY);
 
-    return dotProduct < 0;
+    return dotProduct <= 0;
 }
 
 inline bool CalmPedestrianModel::neighborSpacialTest(int firstPedestrianIndex,
@@ -897,13 +919,13 @@ MovementDefinitions CalmPedestrianModel::updateMovementState(int pedestrianIndex
      MovementDefinitions newDefinition = this->pedestrianSet->getMovementStates().at(pedestrianIndex);
      if (newDefinition != MovementDefinitions::HUMAN)
      {
-         if((this->pedestrianSet->getPriorities()).at(pedestrianIndex) < this->currentPriority)
-         {
-             newDefinition = MovementDefinitions::STOP;
-         }
-         else if((this->pedestrianSet->getPriorities()).at(pedestrianIndex) == this->currentPriority)
+         if(this->pedestrianSet->getRaceStatus().at(pedestrianIndex) != RaceStatus::LOOSER && this->pedestrianSet->getRaceStatus().at(pedestrianIndex) != RaceStatus::IN_RACE)
          {
              newDefinition = MovementDefinitions::PED_DYNAM;
+         }
+         else
+         {
+            newDefinition = MovementDefinitions::STOP;
          }
      }
 
@@ -914,21 +936,210 @@ MovementDefinitions CalmPedestrianModel::updateMovementState(int pedestrianIndex
 void CalmPedestrianModel::raceDetection() {
 
     for(int i = 0; i < this->numPedestrians; ++i) {
-        if(this->pedestrianSet->getMovementStates().at(i) == MovementDefinitions::STOP) {
-            int NID = this->pedestrianSet->getNearestNeighbors().at(i).second;
-            if(NID >= 0 && this->pedestrianSet->getMovementStates().at(NID) != MovementDefinitions::PED_DYNAM) {
-                if(rand() % 2 == 0) 
+
+        if(this->pedestrianSet->getMovementStates().at(i) == MovementDefinitions::STOP) 
+        {
+            if(this->pedestrianSet->getRaceStatus().at(i) == RaceStatus::NO_RACE)
+            {
+                int NID = this->pedestrianSet->getNearestNeighbors().at(i).second;
+                if(NID >= 0 && NID < numPedestrians &&
+                    this->pedestrianSet->getNearestNeighbors().at(i).first != "O")
+                    {
+                        if(this->pedestrianSet->getRaceStatus().at(NID) == RaceStatus::NO_RACE)
+                        {
+                            this->pedestrianSet->setRaceStatus(RaceStatus::IN_RACE, i);
+                            this->pedestrianSet->setRaceCounter(1, i);
+                            this->pedestrianSet->setOpponentID(NID, i);
+                            this->pedestrianSet->setRacePosition(this->pedestrianCoordinates[i], i);
+                            this->pedestrianSet->setRaceFinished(false, i);
+
+                            this->pedestrianSet->setRaceStatus(RaceStatus::IN_RACE, NID);
+                            this->pedestrianSet->setRaceCounter(1, NID);
+                            this->pedestrianSet->setOpponentID(i, NID);
+                            this->pedestrianSet->setRacePosition(this->pedestrianCoordinates[NID], NID);
+                            this->pedestrianSet->setRaceFinished(false, NID);
+
+                        }
+                    }
+            }
+            else if(this->pedestrianSet->getRaceStatus().at(i) == RaceStatus::IN_RACE)
+            {
+                if(this->pedestrianSet->getOpponentIDs().at(i) == this->pedestrianSet->getNearestNeighbors().at(i).second)
                 {
-                    this->pedestrianSet->setMovementState(MovementDefinitions::PED_DYNAM, i);
+                    this->pedestrianSet->setRaceCounter(this->pedestrianSet->getRaceCounter().at(i) + 1, i);
                 }
                 else
                 {
-                    this->pedestrianSet->setMovementState(MovementDefinitions::PED_DYNAM, NID);
+                    //Opponent changed
+                    int NID = this->pedestrianSet->getNearestNeighbors().at(i).second;
+                    int previousOpponentID = this->pedestrianSet->getOpponentIDs().at(i);
+
+                    if(NID >= 0 && NID < numPedestrians && previousOpponentID >= 0) 
+                    {
+                        if(this->pedestrianSet->getRaceStatus().at(NID) == RaceStatus::NO_RACE)
+                        {
+                            this->pedestrianSet->setRaceStatus(RaceStatus::IN_RACE, i);
+                            this->pedestrianSet->setRaceCounter(1, i);
+                            this->pedestrianSet->setOpponentID(NID, i);
+                            this->pedestrianSet->setRacePosition(this->pedestrianCoordinates[i], i);
+                            this->pedestrianSet->setRaceFinished(false, i);
+
+                            this->pedestrianSet->setRaceStatus(RaceStatus::IN_RACE, NID);
+                            this->pedestrianSet->setRaceCounter(1, NID);
+                            this->pedestrianSet->setOpponentID(i, NID);
+                            this->pedestrianSet->setRacePosition(this->pedestrianCoordinates[NID], NID);
+                            this->pedestrianSet->setRaceFinished(false, NID);
+
+                            this->pedestrianSet->setRaceStatus(RaceStatus::NO_RACE, previousOpponentID);
+                            this->pedestrianSet->setOpponentID(-10, previousOpponentID);
+                            this->pedestrianSet->setRaceFinished(true, previousOpponentID);
+                        }
+                        else
+                        {
+                            //New Opponent is in the race!
+                        }
+
+                    }
+                    else
+                    {
+                        //std::cout << "Error 1:" << std::endl;
+                    }
+
                 }
-            }   
+                if(this->pedestrianSet->getRaceCounter().at(i) == 10 && this->pedestrianSet->getRaceStatus().at(i) == RaceStatus::IN_RACE)
+                {
+                    //Decide winner or loser
+                    int opID = this->pedestrianSet->getOpponentIDs().at(i);
+
+                    if(opID >= 0 && opID < numPedestrians)
+                    {
+                        if(this->pedestrianSet->getPriorities().at(i) > this->pedestrianSet->getPriorities().at(opID))
+                        {
+                            this->pedestrianSet->setRaceStatus(RaceStatus::WINNER, i);
+                            this->pedestrianSet->setRaceStatus(RaceStatus::LOOSER, opID);
+                            
+                        }
+                        else if(this->pedestrianSet->getPriorities().at(i) < this->pedestrianSet->getPriorities().at(opID))
+                        {
+                            this->pedestrianSet->setRaceStatus(RaceStatus::LOOSER, i);
+                            this->pedestrianSet->setRaceStatus(RaceStatus::WINNER, opID);
+                        }
+                        else
+                        {
+                            if(fabs(this->pedestrianCoordinates[i][1]) < fabs(this->pedestrianCoordinates[opID][1]))
+                            {
+                                this->pedestrianSet->setRaceStatus(RaceStatus::WINNER, i);
+                                this->pedestrianSet->setRaceStatus(RaceStatus::LOOSER, opID);
+                            }
+                            else if(fabs(this->pedestrianCoordinates[i][1]) > fabs(this->pedestrianCoordinates[opID][1]))
+                            {
+                                this->pedestrianSet->setRaceStatus(RaceStatus::LOOSER, i);
+                                this->pedestrianSet->setRaceStatus(RaceStatus::WINNER, opID);
+                            }
+                            else if(fabs(this->pedestrianCoordinates[i][0]) > fabs(this->pedestrianCoordinates[opID][0]))
+                            {
+                                this->pedestrianSet->setRaceStatus(RaceStatus::WINNER, i);
+                                this->pedestrianSet->setRaceStatus(RaceStatus::LOOSER, opID);
+                            } else if(fabs(this->pedestrianCoordinates[i][0]) < fabs(this->pedestrianCoordinates[opID][0]))
+                            {
+                                this->pedestrianSet->setRaceStatus(RaceStatus::LOOSER, i);
+                                this->pedestrianSet->setRaceStatus(RaceStatus::WINNER, opID);
+                            }
+                            else
+                            {
+                                if(rand()%2==0)
+                                {
+                                    //Winner
+                                    this->pedestrianSet->setRaceStatus(RaceStatus::WINNER, i);
+                                    this->pedestrianSet->setRaceStatus(RaceStatus::LOOSER, opID);
+                                }
+                                else
+                                {
+                                    //Looser
+                                    this->pedestrianSet->setRaceStatus(RaceStatus::WINNER, i);
+                                    this->pedestrianSet->setRaceStatus(RaceStatus::LOOSER, opID);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //std::cout << "Error 2:" << std::endl;
+
+                    }
+                    
+                }
+            }
+            else if(this->pedestrianSet->getRaceStatus().at(i) == RaceStatus::WINNER)
+            {
+                //winner is blocked
+                int firstLooser = this->pedestrianSet->getOpponentIDs().at(i);
+                int NID = this->pedestrianSet->getNearestNeighbors().at(i).second;
+
+                if(NID >= 0 && NID < numPedestrians && firstLooser >= 0)
+                {
+                    if(this->pedestrianSet->getRaceStatus().at(NID) == WINNER)
+                    {
+                        int secondLooser = this->pedestrianSet->getOpponentIDs().at(NID);
+                        if(secondLooser >= 0)
+                        {
+                            this->pedestrianSet->setRaceStatus(RaceStatus::IN_RACE, i);
+                            this->pedestrianSet->setRaceCounter(1, i);
+                            this->pedestrianSet->setOpponentID(NID, i);
+                            this->pedestrianSet->setRacePosition(this->pedestrianCoordinates[i], i);
+                            this->pedestrianSet->setRaceFinished(false, i);
+
+                            this->pedestrianSet->setRaceStatus(RaceStatus::IN_RACE, NID);
+                            this->pedestrianSet->setRaceCounter(1, NID);
+                            this->pedestrianSet->setOpponentID(i, NID);
+                            this->pedestrianSet->setRacePosition(this->pedestrianCoordinates[NID], NID);
+                            this->pedestrianSet->setRaceFinished(false, NID);
+                        }
+                    }
+                    else if(this->pedestrianSet->getRaceStatus().at(NID) == RaceStatus::NO_RACE)
+                    {
+                        this->pedestrianSet->setRaceStatus(RaceStatus::IN_RACE, i);
+                        this->pedestrianSet->setRaceCounter(1, i);
+                        this->pedestrianSet->setOpponentID(NID, i);
+                        this->pedestrianSet->setRacePosition(this->pedestrianCoordinates[i], i);
+                        this->pedestrianSet->setRaceFinished(false, i);
+
+                        this->pedestrianSet->setRaceStatus(RaceStatus::IN_RACE, NID);
+                        this->pedestrianSet->setRaceCounter(1, NID);
+                        this->pedestrianSet->setOpponentID(i, NID);
+                        this->pedestrianSet->setRacePosition(this->pedestrianCoordinates[NID], NID);
+                        this->pedestrianSet->setRaceFinished(false, NID);
+                    }
+                    else
+                    {
+                        //Winner is still blocked
+                    }
+                }
+                else
+                {
+                    //std::cout << "Error 4:" << std::endl;
+                }
+            } else if(this->pedestrianSet->getNearestNeighbors().at(i).second > 5 && this->pedestrianSet->getRaceStatus().at(i) != RaceStatus::NO_RACE)
+            {
+                int opponent = this->pedestrianSet->getOpponentIDs().at(i);
+                if(opponent >= 0 && opponent < numPedestrians) 
+                {
+                    this->pedestrianSet->setRaceStatus(RaceStatus::NO_RACE, i);
+                    this->pedestrianSet->setOpponentID(-10, i);
+                    this->pedestrianSet->setRacePosition(this->pedestrianCoordinates[i], i);
+                    this->pedestrianSet->setRaceFinished(true, i);
+
+                    this->pedestrianSet->setRaceStatus(RaceStatus::NO_RACE, opponent);
+                    this->pedestrianSet->setOpponentID(-10, opponent);
+                    this->pedestrianSet->setRaceFinished(true, i);
+                }
+                else
+                {
+                    //std::cout << "Error 5:" << std::endl;
+                }
+            }
         }
     }
-    
 }
 
 bool CalmPedestrianModel::updatePriority(int pedestrianIndex)

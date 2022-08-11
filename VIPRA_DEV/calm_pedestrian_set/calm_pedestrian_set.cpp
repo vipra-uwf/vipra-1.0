@@ -28,6 +28,11 @@ void CalmPedestrianSet::initialize(size_t pedestrianCount)
     this->movementStates         = std::vector<MovementDefinitions>(pedestrianCount, MovementDefinitions::PED_DYNAM);
     this->startingAisles         = std::vector<int>(pedestrianCount, 0);
     this->shoulderLengths        = std::vector<FLOATING_NUMBER>(pedestrianCount, START_SHOULDER_WIDTH);
+    this->raceStatus             = std::vector<RaceStatus>(pedestrianCount, RaceStatus::NO_RACE);
+    this->raceCounter            = std::vector<int>(pedestrianCount, 0);
+    this->opponentIDs            = std::vector<int>(pedestrianCount, 0);
+    this->racePositions          = std::vector<Dimensions>(pedestrianCount, Dimensions{START_PROP_FORCE, START_PROP_FORCE});
+    this->raceFinished           = std::vector<bool>(pedestrianCount, false);
 
     this->setIds(std::vector(pedestrianCount, 0));
     std::iota(this->ids.begin(), this->ids.end(), 0);
@@ -129,6 +134,31 @@ const std::vector<FLOATING_NUMBER>& CalmPedestrianSet::getShoulderLengths() cons
   return this->shoulderLengths;
 }
 
+const std::vector<RaceStatus>& CalmPedestrianSet::getRaceStatus() const noexcept
+{
+    return this->raceStatus;
+}
+
+const std::vector<int>& CalmPedestrianSet::getRaceCounter() const noexcept
+{
+    return this->raceCounter;
+}
+
+const std::vector<int>& CalmPedestrianSet::getOpponentIDs() const noexcept
+{
+    return this->opponentIDs;
+}
+
+const std::vector<Dimensions>& CalmPedestrianSet::getRacePositions() const noexcept
+{
+    return this->racePositions;
+}
+
+const std::vector<bool>& CalmPedestrianSet::getRaceFinished() const noexcept
+{
+    return this->raceFinished;
+}
+
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
 {
    this->numPedestrians = numPedestrians;
@@ -203,6 +233,32 @@ void CalmPedestrianSet::setMovementState(
     MovementDefinitions movementDefinition, size_t pedestrianIndex)
 {
     this->movementStates.at(pedestrianIndex) = movementDefinition;
+}
+
+void CalmPedestrianSet::setRaceStatus(
+    RaceStatus status, size_t pedestrianIndex)
+{
+    this->raceStatus.at(pedestrianIndex) = status;
+}
+
+void CalmPedestrianSet::setRaceCounter(int newCounter, size_t pedestrianIndex)
+{
+    this->raceCounter.at(pedestrianIndex) = newCounter;
+}
+
+void CalmPedestrianSet::setOpponentID(int newID, size_t pedestrianIndex)
+{
+    this->opponentIDs.at(pedestrianIndex) = newID;
+}
+
+void CalmPedestrianSet::setRacePosition(Dimensions coordinates, size_t pedestrianIndex)
+{
+    this->racePositions.at(pedestrianIndex) = coordinates;
+}
+
+void CalmPedestrianSet::setRaceFinished(bool isFinished, size_t pedestrianIndex)
+{
+    this->raceFinished.at(pedestrianIndex) = isFinished;
 }
 
 void CalmPedestrianSet::setStartingAisles(

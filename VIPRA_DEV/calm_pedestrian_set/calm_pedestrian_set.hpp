@@ -8,6 +8,7 @@
 
 #include "../Base/definitions/movement_definitions.hpp"
 #include "../Interfaces/pedestrianset/pedestrian_set.hpp"
+#include "../Base/definitions/race_status.hpp"
 
 class CalmPedestrianSet: public PedestrianSet
 {
@@ -29,6 +30,11 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<int>                          startingAisles;
         std::vector<FLOATING_NUMBER>              shoulderLengths;
         std::vector<int>                          ids;
+        std::vector<RaceStatus>                   raceStatus;
+        std::vector<int>                          raceCounter;
+        std::vector<int>                          opponentIDs;
+        std::vector<Dimensions>                   racePositions;
+        std::vector<bool>                         raceFinished;
 
         FLOATING_NUMBER startMass;
         FLOATING_NUMBER startReaction_time;
@@ -77,6 +83,11 @@ class CalmPedestrianSet: public PedestrianSet
         [[nodiscard]] const std::vector<MovementDefinitions>&                 getMovementStates()             const noexcept;
         [[nodiscard]] const std::vector<int>&                                 getStartingAisles()             const noexcept;
         [[nodiscard]] const std::vector<FLOATING_NUMBER>&                     getShoulderLengths()            const noexcept;
+        [[nodiscard]] const std::vector<RaceStatus>&                          getRaceStatus()                 const noexcept;
+        [[nodiscard]] const std::vector<int>&                                 getRaceCounter()                const noexcept;
+        [[nodiscard]] const std::vector<int>&                                 getOpponentIDs()                const noexcept;
+        [[nodiscard]] const std::vector<Dimensions>&                          getRacePositions()              const noexcept;
+        [[nodiscard]] const std::vector<bool>&                                getRaceFinished()               const noexcept;
 
 
         void setMasses(std::vector<FLOATING_NUMBER>&& massesKg);
@@ -91,6 +102,11 @@ class CalmPedestrianSet: public PedestrianSet
         void setStartingAisles(std::vector<int>&& startingAisles);
         void setShoulderLengths(std::vector<FLOATING_NUMBER>&& shoulderLengths);
         void setMovementState(MovementDefinitions movementDefinition, size_t pedestrianIndex);
+        void setRaceStatus(RaceStatus status, size_t pedestrianIndex);
+        void setRaceCounter(int newCounter, size_t pedestrianIndex);
+        void setOpponentID(int newID, size_t pedestrianIndex);
+        void setRacePosition(Dimensions coordinates, size_t pedestrianIndex);
+        void setRaceFinished(bool isFinished, size_t newID);
 
     private:
       static constexpr FLOATING_NUMBER START_GOAL_X           = 0.00f;

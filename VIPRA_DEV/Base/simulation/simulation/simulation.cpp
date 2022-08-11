@@ -91,7 +91,10 @@ void Simulation::run()
         ++i;
 
         #ifdef DEBUG_OUTPUT
-            printDataDELETETHIS();
+            if(i % 100 == 0)
+            {
+                printDataDELETETHIS();
+            }
         #endif
 
         this->pedestrianDynamicsModel->precompute();
@@ -124,6 +127,7 @@ void Simulation::printDataDELETETHIS()
     CalmPedestrianSet* calmPedSet = dynamic_cast<CalmPedestrianSet*>(data->getPedestrianSet());
 
     MovementDefinitions state;
+    RaceStatus status;
 
     std::cout << "Pedestrians: " << std::endl;
 
@@ -166,7 +170,18 @@ void Simulation::printDataDELETETHIS()
                 case MovementDefinitions::POLICY : std::cout << "POLICY"; break;
                 case MovementDefinitions::STOP : std::cout << "STOP"; break;
             }
-
+            std::cout <<" race_status=";
+            status = calmPedSet->getRaceStatus().at(i);
+            switch(status)
+            {
+                case RaceStatus::NO_RACE : std::cout
+                    << "NO_RACE"; break;
+                case RaceStatus::IN_RACE : std::cout << "IN_RACE"; 
+                                           std::cout << " Opponent=" << calmPedSet->getOpponentIDs().at(i);
+                break;
+                case RaceStatus::WINNER : std::cout << "WINNER"; break;
+                case RaceStatus::LOOSER : std::cout << "LOOSER"; break;
+            }
 			std::cout << std::endl;
 	}
 }
