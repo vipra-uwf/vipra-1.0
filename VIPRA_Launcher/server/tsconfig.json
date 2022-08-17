@@ -1,10 +1,13 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "rootDir": "src",
         "module": "commonjs",
         "esModuleInterop": true,
         "target": "es6",
         "noImplicitAny": true,
+        "strictNullChecks": true,
         "moduleResolution": "node",
         "sourceMap": true,
         "removeComments": true,
@@ -17,6 +20,6 @@
         }
     },
     "include": [
-        "src/",
+        "src/"
     ],
 }

@@ -1,6 +1,9 @@
+/**
+ * @module DefaultRoutes
+ */
 import express from 'express';
 
-import { Status }       from '../data_models/Status.e';
+import { Status }       from '../types/Status';
 import { respondError } from '../util/Responses';
 
 const defaultRouter = express.Router();

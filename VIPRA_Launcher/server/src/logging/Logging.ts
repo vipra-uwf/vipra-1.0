@@ -1,3 +1,6 @@
+/**
+ * @module Logging
+ */
 import winston from 'winston';
 import { loggingConfig } from '../configuration/loggingConfig';
 

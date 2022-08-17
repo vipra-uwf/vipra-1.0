@@ -1,3 +1,6 @@
+/**
+ * @module TypeChainSetup
+ */
 
 import { CbMethod, ServiceInfo, ServiceOptions, Service, CBServer, CbResult, ResultStore } from 'typechain';
 import { SimResultStore } from './resultStores/simResultStore';
@@ -5,7 +8,10 @@ import { config } from '../configuration/config';
 import { SimManager } from '../controllers/simulation/SimManager';
 import { SimParamStore } from './resultStores/simParamStore';
 import { TestResultStore } from './resultStores/testResultStore';
+import { container } from 'tsyringe';
 
+
+// TODO make sure that url is proper format -RG
 const setupCB = (simDebug : boolean, paramsDebug : boolean) : CBServer => {
     const cbServer : CBServer = new CBServer(`${config.cb.url}/chainbuilder/`);
 
@@ -16,8 +22,8 @@ const setupCB = (simDebug : boolean, paramsDebug : boolean) : CBServer => {
 };
 
 const runSim : CbMethod = async (args: {[key: string] : string[]}) : Promise<CbResult> => {
-    const simManager = SimManager.getInstance(null);
-    return await simManager.runSim(args);
+    const simManager = container.resolve(SimManager);
+    return await simManager.startSim(args);
 };
 
 const simResultStore = (debug : boolean) : ResultStore => {
@@ -60,7 +66,7 @@ const setupSimulationService = (cbServer : CBServer, resultStore : ResultStore) 
         ],
         returnValue: {
             name: 'simresults',
-            type: 'xyz'
+            type: 'string'
         },
         resultStore,
         method: runSim
@@ -75,7 +81,7 @@ const setupSimulationService = (cbServer : CBServer, resultStore : ResultStore) 
 };
 
 const getParams : CbMethod = async (args: {[key: string] : string[]}) : Promise<CbResult> => {
-    const simManager = SimManager.getInstance(null);
+    const simManager = container.resolve(SimManager);
     const params = await simManager.getParams(args);
     return params;
 };

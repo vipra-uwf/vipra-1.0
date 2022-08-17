@@ -1,191 +1,145 @@
-import express from 'express';
-import crypto from 'crypto';
+/**
+ * @module ModuleController
+ */
 
-import { storeModule }      from '../../util/FileStore';
-import { Status }           from "../../data_models/Status.e";
+import { FileBuffers }      from '../../util/FileStore';
+import { FuncResult }       from '../../types/typeDefs';
+import { Status }           from "../../types/Status";
 import { config }           from '../../configuration/config';
-import { Logger }           from '../../logging/Logging';
-import { buildModule }      from '../../util/Processes';
-import { Module, ModuleInfo, ModulesFile, ModuleType } from "../../data_models/module";
-import { deleteDir, deleteFile, extractTar, makeDir, matchFile, moveFile, readJsonFile, writeFileFromBuffer }      from '../../util/FileOperations';
-import { readModules, saveInstalledModules } from './moduleLoading';
-import { generateSimulation } from '../simulation/simulationBuild';
+import { makeModule, Module, ModuleInfo, ModulesFile, ModuleType, toModuleInfo } from "../../types/module";
 
-export class ModuleController {
+import { inject, injectable } from 'tsyringe';
+import { FilesController } from '../files/FilesController';
+import { ISimBuilder } from '../simulation/interfaces/SimBuilder.interface';
+import { IModuleController } from './interfaces/ModuleController.interface';
 
+/**
+ * @description Handles keeping track of modules for the simulation
+ */
+@injectable()
+export class ModuleController implements IModuleController{
+
+    fc              : FilesController;
     modules         : ModulesFile;
+    simBuilder      : ISimBuilder;
     moduleFilePath  : string;
-    modulesDir      : string;
 
-    constructor(){
-        this.modulesDir = './';
-        this.moduleFilePath = `${config.module.modulesFile}`;
-        this.setupDirectories();
-        this.modules = readModules();
+    constructor(@inject("SimBuilder") simBuilder : ISimBuilder,@inject("FilesController") fileController : FilesController){
+        this.simBuilder = simBuilder;
+        this.fc = fileController;
+        this.modules = this.fc.loadInstalledModules(config.vipra.vipraDir);
     }
 
-    public allModulesInfo() : {[type: string] : ModuleInfo[]}{
+    /**
+     * @description Returns all of the currently installed modules
+     */
+    public getModules() : ModulesFile {
+        return this.modules;
+    }
+
+    /**
+     * @description Returns all installed modules without their respective paths
+     */
+    public allModulesInfo() :{[type: string] : ModuleInfo[]}{
         const moduleInfo : {[type: string] : ModuleInfo[]} = {'pedestrian_dynamics_model':[],'goals':[],'output_data_writer':[],'input_data_loader':[],'simulation_output_handler':[],'pedestrian_set':[],'obstacle_set':[],'entity_set_factory':[],'human_behavior_model':[],'configuration_reader':[],'clock':[],'data':[],'simulation': []};
         Object.keys(this.modules).forEach((type)=>{
             Object.values(this.modules[type as ModuleType]).forEach((module)=>{
-                moduleInfo[type].push({
-                    id: module.id,
-                    name: module.name,
-                    description: module.description,
-                    params: module.params,
-                    type: module.type
-                });
+                moduleInfo[type].push(toModuleInfo(module));
             });
         });
         return moduleInfo;
     }
 
+    /**
+     * @description Returns all of the installed modules of a given type
+     *
+     * @param  {ModuleType} type - required type of modules
+     */
     public getModulesofType(type : ModuleType) : Module[] {
         return this.modules[type];
     }
 
-    // TODO change the extraction etc to in-memory -RG
-    public async installModule(req : express.Request) : Promise<Status> {
-        const stored = await storeModule(req);
-        if(stored !== Status.SUCCESS){
-            return stored;
+    /**
+     * @description Installs a module that has been uploaded through {@link FileStore.storeModule}
+     *
+     * @param  {ModuleInfo} moduleInfo - information about module to be installed
+     * @param  {FileBuffers} fileBuffers - file buffers of the module source files
+     */
+    public async installModule(moduleInfo : ModuleInfo, fileBuffers : FileBuffers) : Promise<FuncResult> {
+
+        if(this.checkDuplicate(moduleInfo)){
+            return {status: Status.CONFLICT, message: `Duplicate Module ID: ${moduleInfo.id}`};
         }
 
-        if(!(req.file)){
-            return Status.BAD_REQUEST;
-        }
+        const moduleDir = `${config.vipra.vipraDir}/${moduleInfo.id}`;
+        this.fc.makeDir(moduleDir);
+        fileBuffers.forEach((file)=>{this.fc.writeFileFromBuffer(`${moduleDir}/${file.name}`, file.buffer);});
 
-        const moduleFile : Express.Multer.File = req.file;
-        const transId : string = crypto.randomUUID();
+        const module : Module = makeModule(moduleInfo);
 
-        const unpacked = await this.unPackModule(moduleFile, transId)
-        .finally(()=>{
-              this.cleanup(transId);
-        });
-
-        if(unpacked.status !== Status.SUCCESS){
-            return unpacked.status;
-        }
-
-        const build : Status = await buildModule(unpacked.module, false);
-        if(build !== Status.SUCCESS){
+        const build : FuncResult = await this.simBuilder.addModule(module);
+        if(build.status !== Status.SUCCESS){
+            this.fc.deleteDir(module.dirPath, false);
             return build;
         }
 
-        // TODO make sure that failed modules aren't being set to compiled -RG
-        unpacked.module.compiled = true;
-        this.addModuleOption(unpacked.module);
+        module.compiled = true;
+        this.addModule(module);
 
-        const compiled : Status = await generateSimulation(false);
-        if(compiled !== Status.SUCCESS){
-            return compiled;
-        }
+        void this.simBuilder.compileSimulation();
 
-        return Status.SUCCESS;
+        return {status: Status.SUCCESS, message: null};
     }
 
-    // NOTE: turned off require-await as this will require await later -RG
+    /**
+     * @description Removes the module with id id
+     * Returns Status.NOT_FOUND if the module does not exist
+     *
+     * @note turned off require-await as this will require await later -RG
+     *
+     * @param  {string} id - ID of module to remove
+     */
     // eslint-disable-next-line @typescript-eslint/require-await
     public async removeModule(id : string) : Promise<Status> {
         const module = this.modules.getModule(id);
-        deleteDir(module.dirPath, true);
-        this.modules.removeModule(module.id);
-        saveInstalledModules(this.modules);
-        return Status.SUCCESS;
+        if(module){
+            this.fc.deleteDir(module.dirPath, true);
+            this.modules.removeModule(module.id);
+            return Status.SUCCESS;
+        }else{
+            return Status.NOT_FOUND;
+        }
     }
 
-
-
-
-
-    private async unPackModule(file : Express.Multer.File, transId : string) : Promise<{status:Status; module:Module}>{
-
-        const written = writeFileFromBuffer(this.modulesDir, `${transId}.tar`, file.buffer);
-        if(written !== Status.SUCCESS){
-            return {
-                status: written,
-                module: null
-            };
-        }
-
-        const extracted = await extractTar(this.modulesDir, `${transId}.tar`, `${this.modulesDir}/${transId}`);
-        if(extracted.status !== Status.SUCCESS){
-            return {
-                status: extracted.status,
-                module: null
-            };
-        }
-
-        const metaFilePath : string = matchFile(/.*\.mm/, extracted.path, true);
-        if(!metaFilePath){
-            return {
-                status: Status.INTERNAL_ERROR,
-                module: null
-            };
-        }
-
-        const module : Module = readJsonFile<Module>(metaFilePath, {error: true});
-        if(this.checkDuplicate(module)){
-            return {
-                status: Status.CONFLICT,
-                module
-            };
-        }
-
-        const correct = this.checkModule(module);
-        if(!correct){
-            return {
-                status: Status.BAD_REQUEST,
-                module: null
-            };
-        }
-
-        this.moveModule(module, extracted.path);
-        Logger.info(`Installed Module: ${module.name}:${module.id}`);
-        return {
-            status: Status.SUCCESS,
-            module
-        };
-    }
-
-    private moveModule(module : Module, fromDir : string) : void {
-        makeDir(`${config.vipra.vipraDir}/${module.name}/`);
-        moveFile(`${fromDir}/${module.name}/${module.name}.hpp`, `${config.vipra.vipraDir}/${module.name}/${module.name}.hpp`);
-        moveFile(`${fromDir}/${module.name}/${module.name}.cpp`, `${config.vipra.vipraDir}/${module.name}/${module.name}.cpp`);
-        module.dirPath = `${config.vipra.vipraDir}/${module.name}/`;
-        module.includePath = `${config.vipra.vipraDir}/${module.name}/${module.name}.hpp`;
-    }
-
-    private cleanup(id : string){
-        deleteDir(`${this.modulesDir}/${id}`, true);
-        deleteFile(`${this.modulesDir}/${id}.tar`);
-        return;
-    }
-
-    private checkDuplicate(module : Module) : Module {
+    /**
+     * @description Checks if a module has a duplicate already installed
+     *
+     * @param  {ModuleInfo} module - module to check for duplicate of
+     */
+    private checkDuplicate(module : ModuleInfo) : boolean {
         const modules = this.modules[module.type];
         if(modules){
-            const duplicate = modules.find((mod) => {
-                if(mod.id === module.id){
-                    return true;
-                }
-            });
-            return duplicate;
+            return modules.find((mod)=>{return mod.id === module.id;}) !== undefined;
         }
-        return null;
+        return false;
     }
 
-    private addModuleOption(module : Module) : void {
+    /**
+     * @description Adds module to options, and updates the modules file
+     *
+     * @param  {Module} module - the module to be added
+     */
+    private addModule(module : Module) : void {
         this.modules[module.type].push(module);
-        saveInstalledModules(this.modules);
+        this.writeModulesFile();
     }
 
-    private setupDirectories() : void{
-        makeDir(this.modulesDir);
-        return;
-    }
-
-    private checkModule(module : Module) : boolean{
-        return (module.name && module.type && (module.params !== undefined));
+    /**
+     * @description Writes the currently installed modules to the modulesFile path in config.module
+     *
+     * @note The modules file needs to be written out for VIPRA as generate_main consumes it -RG
+     */
+    private writeModulesFile() : void {
+        this.fc.writeFile(config.module.modulesFile, JSON.stringify(this.modules));
     }
 }

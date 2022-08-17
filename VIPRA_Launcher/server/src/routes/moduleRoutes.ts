@@ -1,11 +1,25 @@
+/**
+ * @module ModuleRoutes
+ */
+
 import express from 'express';
 
 import { Logger } from '../logging/Logging';
-import { respondData, respondError, respondSuccess, respondUnknownError } from '../util/Responses';
+import { respondCreated, respondData, respondError, respondSuccess, respondUnknownError } from '../util/Responses';
 import { ModuleController } from '../controllers/module/moduleController';
-import { Status } from '../data_models/Status.e';
-import { ModuleType } from '../data_models/module';
+import { Status } from '../types/Status';
+import { ModuleType } from '../types/module';
 
+import { storeModule } from '../util/FileStore';
+
+/**
+ * @description Creates the router that handles routes pertaining to modules
+ *
+ * @note router factory functions are used to ensure that the objects are made at the correct time -RG
+ *
+ * @param  {Map<string, string>} argv - Map containing the commandline flags and their values
+ * @param  {ModuleManager} moduleController - ModuleController implementation that will be used to handle modules
+ */
 const moduleRouter = (argv : Map<string, string>, moduleController : ModuleController) : express.Router => {
 
     const moduleRoutes = express.Router();
@@ -15,7 +29,12 @@ const moduleRouter = (argv : Map<string, string>, moduleController : ModuleContr
         respondData(modules, res);
     });
 
-    moduleRoutes.get('/:type', (req, res)=>{
+    moduleRoutes.get('/:id', (req, res)=>{
+        // TODO
+        respondUnknownError(res);
+    });
+
+    moduleRoutes.get('/type/:type', (req, res)=>{
         Logger.info('Get /module/:type');
         const type : ModuleType = req.params.type as ModuleType;
         if(!Object.values(ModuleType).includes(type)){
@@ -34,31 +53,39 @@ const moduleRouter = (argv : Map<string, string>, moduleController : ModuleContr
         }
     });
 
-    moduleRoutes.post('/', (req, res)=>{
-        moduleController.installModule(req)
+    moduleRoutes.post('/', storeModule, (req, res)=>{
+        // TODO NEXT
+        if(req.module && req.fileBuffers){
+        moduleController.installModule(req.module, req.fileBuffers)
         .then((installed)=>{
-            switch(installed){
+            switch(installed.status){
                 case Status.SUCCESS:
-                    respondSuccess(res);
-                    break;
-                case Status.BAD_REQUEST:
-                    respondError(Status.BAD_REQUEST, `No File`, `A Module Tar file is required`, res);
+                    respondCreated(res);
                     break;
                 case Status.CONFLICT:
-                    respondError(Status.CONFLICT, `Duplicate`, `The provided module is already installed`, res);
+                    respondError(Status.CONFLICT, 'Duplicate Module', installed.message || "", res);
                     break;
                 case Status.INTERNAL_ERROR:
-                    respondUnknownError(res);
+                    respondError(Status.INTERNAL_ERROR, installed.message || "", ``, res);
+                    break;
+                case Status.BAD_REQUEST:
+                    respondError(Status.BAD_REQUEST, ``, ``, res);
                     break;
                 default:
-                    Logger.error(`Unhandled Status in POST /module: ${installed}`);
+                    Logger.error(`Unhandled Status in POST /module/: ${installed.status}`);
                     respondUnknownError(res);
             }
         })
-        .catch((error : Error)=>{
-            Logger.error(error.message);
+        .catch((error : string)=>{
+            Logger.error(`POST /module/ : ${error}`);
             respondUnknownError(res);
         });
+    }
+    });
+
+    moduleRoutes.put('/:id', (req, res)=>{
+        // TODO
+        respondUnknownError(res);
     });
 
     moduleRoutes.delete('/:id', (req, res)=>{

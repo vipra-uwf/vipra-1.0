@@ -1,8 +1,26 @@
-import { FLAGS } from "../data_models/flags";
-import { readFile } from "./FileOperations";
+/**
+ * @module Util
+ */
 
-// TODO: doesn't check for proper formatting -RG
+import { Nullable } from "../types/typeDefs";
+import { FLAGS } from "../types/flags";
+import { container } from "tsyringe";
+import { FilesController } from "../controllers/files/FilesController";
+
+
+
+const fc = container.resolve(FilesController);
+
+/**
+ * @description Creates a map containing the commandline flags and their respective values
+ *
+ * @note values are set to '' if the flag was input with an = -RG
+ */
 const getCommandLineArguments = () : Map<string, string> => {
+
+    // TODO stop for flags that don't exist -RG
+    // TODO doesn't check for proper formatting -RG
+
     const args = process.argv.slice(2);
     const params = new Map<string, string>();
 
@@ -12,16 +30,20 @@ const getCommandLineArguments = () : Map<string, string> => {
     });
 
     if(params.has(FLAGS.FLAGS_FILE)){
-        const flagsfile = readFile(params.get(FLAGS.FLAGS_FILE)).split('\n');
-        flagsfile.forEach((line)=>{
-            const flag = line.split('=');
-            params.set(flag[0], `${flag[1] ? flag[1] : ''}`);
-        });
+        const filePath = params.get(FLAGS.FLAGS_FILE);
+        if(filePath){
+            const flagsfile : Nullable<string> = fc.readFile(filePath);
+            if(flagsfile){
+                const flags : string[] = flagsfile.split('\n');
+                flags.forEach((line)=>{
+                    const flag = line.split('=');
+                    params.set(flag[0], `${flag[1] ? flag[1] : ''}`);
+                });
+            }
+        }
     }
     return params;
 };
-
-
 
 
 export {

@@ -20,7 +20,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
-    "ignorePatterns": ["*eslint*"],
+    "ignorePatterns": ["*eslint*","__tests__/*","docs/*","node_modules/*","dist/*"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "tsconfig.json",
@@ -135,9 +135,15 @@ module.exports = {
             "undefined"
         ],
         "id-match": "error",
+        'jsdoc/require-jsdoc': ["error", {checkConstructors: false, contexts: ["ClassDeclaration", "FunctionDeclaration", "MethodDefinition", "ArrowFunctionExpression"] }],
         "jsdoc/check-alignment": "error",
         "jsdoc/check-indentation": "error",
         "jsdoc/newline-after-description": "error",
+        "jsdoc/require-param": "error",
+        "jsdoc/require-param-type": "error",
+        "jsdoc/require-param-name": "error",
+        "jsdoc/require-param-description": "error",
+        "jsdoc/require-description": ["error", { descriptionStyle:"tag", contexts:['ClassDeclaration', 'ClassProperty', 'FunctionDeclaration', 'MethodDefinition', 'ArrowFunctionExpression']}],
         "max-classes-per-file": [
             "error",
             1

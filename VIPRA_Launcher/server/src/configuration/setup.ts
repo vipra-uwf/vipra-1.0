@@ -1,17 +1,23 @@
+/**
+ * @module Setup
+ */
+
 import path from 'path';
 import prompt from 'prompt-sync';
 import ip from 'ip';
+import https from 'https';
+import express from 'express';
 
 import { config }  from "./config";
-import { FLAGS } from "../data_models/flags";
-import { fileExists, makeDir, matchFile, writeFile } from "../util/FileOperations";
-import { compileMain, compileHumanBehavior, compileSim, compileGenMain } from "../util/Processes";
-import { compileAllModules, loadInstalledModules, saveInstalledModules } from "../controllers/module/moduleLoading";
-import { ModulesFile } from "../data_models/module";
+import { FLAGS } from "../types/flags";
 import { Logger } from "../logging/Logging";
+import { container } from 'tsyringe';
+import { FilesController } from '../controllers/files/FilesController';
+import { Nullable } from '../types/typeDefs';
+
+const fc = container.resolve(FilesController);
 
 /* eslint-disable no-console */
-
 const prompter = prompt();
 
 const debugSetup = () : void => {
@@ -22,7 +28,8 @@ const debugSetup = () : void => {
     config.vipra.behaviorDir = `${vipraDir}/Base/dsl`;
     config.vipra.simsDir = `${vipraDir}/sims`;
     config.vipra.outputDir = path.resolve('./OUTPUT');
-    config.module.modulesFile = path.resolve(`./modules.json`);
+    config.module.modulesFile = `${vipraDir}/sims/modules.json`;
+    config.map.mapsFile = `${vipraDir}/sims/maps.json`;
     config.simconfig.configsFile = path.resolve(`./simconfigs.json`);
 
     config.cb.url = `${ip.address()}:3001/`;
@@ -34,27 +41,32 @@ const debugSetup = () : void => {
     };
 
     config.setup = true;
-    writeFile(path.resolve(`${__dirname}/config.json`), JSON.stringify(config));
+    fc.writeFile(path.resolve(`${__dirname}/config.json`), JSON.stringify(config));
 };
 
 // TODO this will find the first instance of a file named vipra.info, if it is in the trash or something then this completely messes up -RG
 const initialSetup = (argsMap : Map<string, string>) : void => {
 
     if(!config.setup){
+        if(argsMap.has(FLAGS.DEBUG_SETUP)){
+            debugSetup();
+        }else{
 
         const vipraDir = findVipra();
 
         config.vipra.vipraDir = vipraDir;
         config.vipra.behaviorDir = `${vipraDir}/Base/dsl`;
         config.vipra.simsDir = `${vipraDir}/sims`;
-        config.vipra.outputDir = path.resolve('./OUTPUT');
-        config.module.modulesFile = path.resolve(`./modules.json`);
-        config.simconfig.configsFile = path.resolve(`./simconfigs.json`);
+        config.vipra.outputDir = path.resolve(`${__dirname}/OUTPUT`);
+        config.module.modulesFile = `${vipraDir}/sims/modules.json`;
+        config.map.mapsFile = `${vipraDir}/sims/maps.json`;
+        config.simconfig.configsFile = `${vipraDir}/sims/simconfigs.json`;
 
         setupHTTPS();
 
         config.setup = true;
-        writeFile(path.resolve(`${__dirname}/config.json`), JSON.stringify(config));
+        fc.writeFile(path.resolve(`${__dirname}/config.json`), JSON.stringify(config));
+        }
     }
 
     // TODO check that nothing has broken since initial setup -RG
@@ -63,13 +75,13 @@ const initialSetup = (argsMap : Map<string, string>) : void => {
 
 const findVipra = () : string => {
     const osType = process.platform;
-    let vipraInfoPath : string;
+    let vipraInfoPath : Nullable<string> = null;
 
     Logger.info(`Finding VIPRA Source Directory`);
     if(osType === 'win32'){
-        vipraInfoPath = matchFile(/vipra\.info/, path.resolve(`C://`), true);
+        vipraInfoPath = fc.matchFile(/vipra\.info/, path.resolve(`C://`), true);
     }else{
-        vipraInfoPath = matchFile(/vipra\.info/, path.resolve(`/`), true);
+        vipraInfoPath = fc.matchFile(/vipra\.info/, path.resolve(`/`), true);
     }
     if(!vipraInfoPath){
         throw new Error(`Unable to find VIPRA Source Directory`);
@@ -104,12 +116,12 @@ const getURL = () : string => {
 };
 
 // TODO figure out how to best handle passphrase -RG
-const getHTTPS = () : {key : string; cert: string; passphrase : string} => {
+const getHTTPS = () : {key : string; cert: string; passphrase : Nullable<string>} => {
     let key = "";
     let ok = false;
     while(!ok){
         key = prompter("Path to HTTPS Key file: ");
-        if(fileExists(key)){
+        if(fc.fileExists(key)){
            ok = true;
         }else{
             console.log(`Provided File does not exist: ${key}`);
@@ -119,7 +131,7 @@ const getHTTPS = () : {key : string; cert: string; passphrase : string} => {
     ok = false;
     while(!ok){
         cert = prompter("Path to HTTPS Cert file: ");
-        if(fileExists(cert)){
+        if(fc.fileExists(cert)){
             ok = true;
          }else{
              console.log(`Provided File does not exist: ${cert}`);
@@ -157,49 +169,30 @@ const checkURL = (url : string) : boolean => {
     return true;
 };
 
-const startup = async (flags : Map<string,string>) : Promise<void> => {
-    if(flags.get(FLAGS.REBUILD) !== "false" && flags.get(FLAGS.REBUILD) !== "False" && flags.get(FLAGS.REBUILD) !== "FALSE"){
-        makeDirectories();
 
-        const modules : ModulesFile = loadInstalledModules();
 
-        await compileHumanBehavior(flags.has(FLAGS.DEBUG_BUILD))
-        .catch((error : string)=>{
-            Logger.info(`compileHumanBehavior failed: ${error}`);
-        });
+const setupHTTPSServer = (app : express.Express) : https.Server => {
 
-        await compileAllModules(modules, flags.has(FLAGS.DEBUG_BUILD))
-        .catch((error : string)=>{
-            Logger.error(`compileAllModules failed: ${error}`);
-        });
-        saveInstalledModules(modules);
+    if(config.app.https.key && config.app.https.cert){
 
-        await compileGenMain(flags.has(FLAGS.DEBUG_BUILD))
-        .catch((error : string) => {
-            Logger.error(`compileGenMain failed: ${error}`);
-        });
+        const key : Nullable<string> = fc.readFile(config.app.https.key);
+        const cert : Nullable<string> = fc.readFile(config.app.https.cert);
 
-        await compileMain(flags.has(FLAGS.DEBUG_BUILD))
-        .catch((error : string)=>{
-            Logger.error(`compileMain failed: ${error}`);
-        });
-
-        await compileSim(flags.has(FLAGS.DEBUG_BUILD))
-        .catch((error : string) => {
-            Logger.error(`compileSim failed: ${error}`);
-        });
+        if(key && cert){
+            return https.createServer({
+                key,
+                cert,
+                passphrase: undefined
+            }, app);
+        }
     }
-};
 
-const makeDirectories = () : void =>{
-    makeDir(config.vipra.vipraDir);
-    makeDir(config.vipra.outputDir);
-    makeDir(config.vipra.simsDir);
+    throw new Error('Unable To Start HTTPS Server');
 };
 
 
 export {
     initialSetup,
     debugSetup,
-    startup
+    setupHTTPSServer
 };

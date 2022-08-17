@@ -1,8 +1,15 @@
+/**
+ * @module SimResultStore
+ */
+
 import crypto from 'crypto';
+import { FilesController } from '../../controllers/files/FilesController';
+import { container } from 'tsyringe';
 
-import { fileExists, readFile } from '../../util/FileOperations';
 import { CbResult, ResultStore } from 'typechain';
+import { Nullable } from '../../types/typeDefs';
 
+const fc = container.resolve(FilesController);
 
 export class SimResultStore extends ResultStore{
 
@@ -12,10 +19,16 @@ export class SimResultStore extends ResultStore{
     // NOTE: typechain requires this be async,
     // eslint-disable-next-line @typescript-eslint/require-await
     async getResult(hash: string): Promise<CbResult> {
-        if(!fileExists(this.resultMap.get(hash))){
-            return {error: true, result: `Invalid Result Location`};
+        const resultPath : Nullable<string> | undefined = this.resultMap.get(hash);
+
+        if(resultPath){
+            if(!fc.fileExists(resultPath)){
+                return {error: true, result: `Invalid Result Location`};
+            }
+            return {error: false, result: fc.readFile(resultPath) || ''};
+        }else{
+            return {error: true, result: 'Invalid Result Location'};
         }
-        return {error: false, result: readFile(this.resultMap.get(hash))};
     }
 
     // NOTE: typechain requires this be async,
