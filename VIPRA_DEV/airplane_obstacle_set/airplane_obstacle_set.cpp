@@ -1,7 +1,5 @@
 #include "airplane_obstacle_set.hpp"
 
-#include <iostream>
-
 const std::vector<Dimensions> ObstacleSet::__empty__{};
 
 AirplaneObstacleSet::AirplaneObstacleSet(): objects(), types(), aisles(), aislesSize(){}

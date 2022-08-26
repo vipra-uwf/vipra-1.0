@@ -1,5 +1,5 @@
 /**
- * @module DefaultRoutes
+ * @module Routes
  */
 import express from 'express';
 
@@ -10,10 +10,10 @@ const defaultRouter = express.Router();
 
 
 defaultRouter.use('*', (req, res)=>{
-    respondError(Status.NOT_FOUND, "No Route", `There is no route at: ${req.originalUrl}`, res);
+  respondError(Status.NOT_FOUND, 'No Route', `There is no route at: ${req.originalUrl}`, res);
 });
 
 
 export {
-    defaultRouter
+  defaultRouter,
 };

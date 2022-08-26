@@ -10,7 +10,7 @@ the recommended rulesets in typescript-eslint.
 https://github.com/typescript-eslint/tslint-to-eslint-config/blob/master/docs/FAQs.md
 
 Happy linting! 💖
-*/
+
 module.exports = {
     "env": {
         "browser": true,
@@ -20,7 +20,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
-    "ignorePatterns": ["*eslint*","__tests__/*","docs/*","node_modules/*","dist/*"],
+    "ignorePatterns": ["*eslint*","__tests__/*","docs/*","node_modules/*","dist/*", "jest.config.ts"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "tsconfig.json",
@@ -135,19 +135,6 @@ module.exports = {
             "undefined"
         ],
         "id-match": "error",
-        'jsdoc/require-jsdoc': ["error", {checkConstructors: false, contexts: ["ClassDeclaration", "FunctionDeclaration", "MethodDefinition", "ArrowFunctionExpression"] }],
-        "jsdoc/check-alignment": "error",
-        "jsdoc/check-indentation": "error",
-        "jsdoc/newline-after-description": "error",
-        "jsdoc/require-param": "error",
-        "jsdoc/require-param-type": "error",
-        "jsdoc/require-param-name": "error",
-        "jsdoc/require-param-description": "error",
-        "jsdoc/require-description": ["error", { descriptionStyle:"tag", contexts:['ClassDeclaration', 'ClassProperty', 'FunctionDeclaration', 'MethodDefinition', 'ArrowFunctionExpression']}],
-        "max-classes-per-file": [
-            "error",
-            1
-        ],
         "new-parens": "error",
         "no-bitwise": "error",
         "no-caller": "error",
@@ -190,3 +177,39 @@ module.exports = {
         "valid-typeof": "off"
     }
 };
+*/
+
+module.exports = {
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": "airbnb-typescript/base",
+    "ignorePatterns": ["*eslint*","__tests__/*","docs/*","node_modules/*","dist/*", "jest.config.ts"],
+    "overrides": [
+    ],
+    "parserOptions": {
+        "project": "./tsconfig.json",
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "eslint-plugin-jsdoc",
+        "import"
+    ],
+    "rules": {
+        'jsdoc/require-jsdoc': ["error", {checkConstructors: false, contexts: ["ClassDeclaration", "FunctionDeclaration", "MethodDefinition", "ArrowFunctionExpression"] }],
+        "jsdoc/check-alignment": "error",
+        "jsdoc/check-indentation": "error",
+        "jsdoc/newline-after-description": "error",
+        "jsdoc/require-param": "error",
+        "jsdoc/require-param-type": "error",
+        "jsdoc/require-param-name": "error",
+        "jsdoc/require-param-description": "error",
+        "jsdoc/require-description": ["error", { descriptionStyle:"tag", contexts:['ClassDeclaration', 'ClassProperty', 'FunctionDeclaration', 'MethodDefinition', 'ArrowFunctionExpression']}],
+        "max-classes-per-file": [
+            "error",
+            1
+        ],
+    }
+}

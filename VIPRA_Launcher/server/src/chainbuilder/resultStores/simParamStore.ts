@@ -1,5 +1,5 @@
 /**
- * @module SimParamStore
+ * @module TypeChain
  */
 
 import { CbResult, ResultStore } from 'typechain';

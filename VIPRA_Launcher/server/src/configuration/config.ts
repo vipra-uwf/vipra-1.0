@@ -1,47 +1,48 @@
 /**
- * @module Config
+ * @module Configuration
  */
 
-import 'reflect-metadata';
-import { Nullable } from "../types/typeDefs";
-import { container } from "tsyringe";
-import { FilesController } from "../controllers/files/FilesController";
+import fs from 'fs';
+import { Nullable } from '../types/typeDefs';
 
-
-const fc = container.resolve(FilesController);
-
-interface Config{
-    setup : boolean;
-    app: {
-        debug : boolean;
-        port : Number;
-        https: {key : string | null; cert : string | null; passphrase : Nullable<string>};
-    };
-    cb: {url : string};
-    vipra: {vipraDir : string; simsDir : string; behaviorDir : string; outputDir: string};
-    simconfig: {configsFile : string};
-    module: {modulesFile : string};
-    map: {mapsFile : string};
+interface Config {
+  setup : boolean;
+  app: {
+    debug : boolean;
+    port : Number;
+    https: { key : string | null; cert : string | null; passphrase : Nullable<string> };
+  };
+  cb: { url : string };
+  vipra: { vipraDir : string; simsDir : string; behaviorDir : string; outputDir: string };
+  simconfig: { configsFile : string };
+  module: { modulesFile : string };
+  map: { mapsFile : string };
 }
 
+/**
+ * @description Loads the configuration file and sets config
+ * @param  {string} configFile - path to config file
+ */
 const loadConfig = (configFile : string) : Config => {
-    const conf = fc.readJsonFile<Config>(configFile, {error: false});
-    if(!conf){
-        return {
-            setup: false,
-            app: {
-                debug : false,
-                port: -1,
-                https: {key: null, cert: null, passphrase: null}
-            },
-            cb: {url: ''},
-            vipra: {vipraDir: '', simsDir: '', behaviorDir: '', outputDir: ''},
-            simconfig: {configsFile: ''},
-            module: {modulesFile: ''},
-            map: {mapsFile: ''}
-        };
+  if (fs.existsSync(configFile)) {
+    const conf : Config = JSON.parse(fs.readFileSync(configFile).toString()) as Config;
+    if (conf) {
+      return conf;
     }
-    return conf;
+  }
+  return {
+    setup: false,
+    app: {
+      debug : false,
+      port: -1,
+      https: { key: null, cert: null, passphrase: null },
+    },
+    cb: { url: '' },
+    vipra: { vipraDir: '', simsDir: '', behaviorDir: '', outputDir: '' },
+    simconfig: { configsFile: '' },
+    module: { modulesFile: '' },
+    map: { mapsFile: '' },
+  };
 };
 
 export const config : Config = loadConfig(`${__dirname}/config.json`);

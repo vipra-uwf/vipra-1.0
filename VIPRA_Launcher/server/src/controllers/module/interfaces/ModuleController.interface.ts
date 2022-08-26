@@ -1,18 +1,16 @@
 /**
- * @module ModuleController.Interface
+ * @module Controller.Interfaces
  */
 
-import { Status } from "../../../types/Status";
-import { FuncResult} from "../../../types/typeDefs";
-import { Module, ModuleInfo, ModulesFile, ModuleType } from "../../../types/module";
-import { FileBuffers } from "../../../util/FileStore";
+import { FuncResult, Protect } from '../../../types/typeDefs';
+import { Module, ModuleInfo, ModulesFile, ModuleType } from '../../../types/module';
+import { FileBuffers } from '../../../util/FileStore';
 
 
-
-export interface IModuleController{
-    getModules() : ModulesFile;
-    allModulesInfo() : {[type: string] : ModuleInfo[]};
-    getModulesofType(type : ModuleType) : Module[];
-    installModule(moduleInfo : ModuleInfo, fileBuffers : FileBuffers) : Promise<FuncResult>;
-    removeModule(id : string) : Promise<Status>;
+export interface IModuleController {
+  getModules() : Protect<ModulesFile>;
+  allModulesInfo() : { [type: string] : ModuleInfo[] };
+  getModulesofType(type : ModuleType) : Module[];
+  installModule(moduleInfo : ModuleInfo, fileBuffers : FileBuffers) : FuncResult;
+  removeModule(id : string) : FuncResult;
 }

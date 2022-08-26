@@ -1,6 +1,8 @@
 #ifndef DSL_HUMAN_BEHAVIOR_HPP
 #define DSL_HUMAN_BEHAVIOR_HPP
 
+#include "../_pch/pch.hpp"
+
 #include "human_behavior.hpp"
 #include "generated/BehaviorsBaseVisitor.h"
 

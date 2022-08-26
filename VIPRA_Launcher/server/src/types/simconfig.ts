@@ -2,9 +2,6 @@
  * @module SimConfig
  */
 
-
-// TODO NEXT sim config needs reworked -RG
-
 // import { Module } from "./module";
 
 // export interface SimConfigIDs{

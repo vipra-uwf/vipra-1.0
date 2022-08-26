@@ -24,6 +24,8 @@ export class Endpoint{
         this.links = new Map();
     }
 
+
+    // TODO NEXT: parameters are not handled correctly, url/?param=example works but the proper url?param=example does not -RG
     public treeTraverse(route : string[]) : Endpoint{
         let popped : string = route.shift();
         while(popped === ""){

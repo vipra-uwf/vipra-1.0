@@ -2,14 +2,15 @@
  * @module Util
  */
 
-import { Nullable } from "../types/typeDefs";
-import { FLAGS } from "../types/flags";
-import { container } from "tsyringe";
-import { FilesController } from "../controllers/files/FilesController";
+import { Nullable } from '../types/typeDefs';
+import { FLAGS } from '../types/flags';
+import { container } from 'tsyringe';
+import { FilesController } from '../controllers/files/FilesController';
 
 
 
 const fc = container.resolve(FilesController);
+
 
 /**
  * @description Creates a map containing the commandline flags and their respective values
@@ -18,34 +19,34 @@ const fc = container.resolve(FilesController);
  */
 const getCommandLineArguments = () : Map<string, string> => {
 
-    // TODO stop for flags that don't exist -RG
-    // TODO doesn't check for proper formatting -RG
+  // TODO stop for flags that don't exist -RG
+  // TODO doesn't check for proper formatting -RG
 
-    const args = process.argv.slice(2);
-    const params = new Map<string, string>();
+  const args = process.argv.slice(2);
+  const params = new Map<string, string>();
 
-    args.forEach((arg) => {
-        const values = arg.split('=');
-        params.set(values[0], values[1]);
-    });
+  args.forEach((arg) => {
+    const values = arg.split('=');
+    params.set(values[0], values[1]);
+  });
 
-    if(params.has(FLAGS.FLAGS_FILE)){
-        const filePath = params.get(FLAGS.FLAGS_FILE);
-        if(filePath){
-            const flagsfile : Nullable<string> = fc.readFile(filePath);
-            if(flagsfile){
-                const flags : string[] = flagsfile.split('\n');
-                flags.forEach((line)=>{
-                    const flag = line.split('=');
-                    params.set(flag[0], `${flag[1] ? flag[1] : ''}`);
-                });
-            }
-        }
+  if (params.has(FLAGS.FLAGS_FILE)) {
+    const filePath = params.get(FLAGS.FLAGS_FILE);
+    if (filePath) {
+      const flagsfile : Nullable<string> = fc.readFile(filePath);
+      if (flagsfile) {
+        const flags : string[] = flagsfile.split('\n');
+        flags.forEach((line)=>{
+          const flag = line.split('=');
+          params.set(flag[0], `${flag[1] ? flag[1] : ''}`);
+        });
+      }
     }
-    return params;
+  }
+  return params;
 };
 
 
 export {
-    getCommandLineArguments
+  getCommandLineArguments,
 };

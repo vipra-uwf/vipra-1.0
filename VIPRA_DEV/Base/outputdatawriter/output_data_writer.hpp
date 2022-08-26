@@ -1,7 +1,7 @@
 #ifndef OUTPUT_DATA_WRITER_HPP 
 #define OUTPUT_DATA_WRITER_HPP 
 
-#include <string>
+#include "../_pch/pch.hpp"
 
 #include "../simulation/data/data.hpp"
 #include "../definitions/type_definitions.hpp"

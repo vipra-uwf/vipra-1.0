@@ -2,7 +2,6 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "rootDir": "src",
         "module": "commonjs",
         "esModuleInterop": true,
         "target": "es6",
@@ -12,14 +11,13 @@
         "sourceMap": true,
         "removeComments": true,
         "outDir": "dist",
-        "baseUrl": ".",
+        "baseUrl": "./",
         "paths": {
             "*": [
                 "node_modules/*"
             ]
-        }
+        },
+        "types":["jest", "node"]
     },
-    "include": [
-        "src/"
-    ],
+    "include":["."],
 }

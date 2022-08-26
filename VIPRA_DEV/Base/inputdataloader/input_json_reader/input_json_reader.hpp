@@ -1,9 +1,6 @@
 #ifndef INPUT_JSON_READER_HPP
 #define INPUT_JSON_READER_HPP
 
-#include <fstream>
-#include <iostream>
-
 #include "../input_data_loader.hpp"
 #include "../../jsoncpp/json/json.h"
 

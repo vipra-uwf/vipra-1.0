@@ -1,9 +1,7 @@
 #ifndef CLOCK_HPP
 #define CLOCK_HPP
 
-#include <iostream> 
-#include <chrono> 
-#include <ctime>
+#include "../../_pch/pch.hpp"
 
 #include "../../definitions/type_definitions.hpp"
 

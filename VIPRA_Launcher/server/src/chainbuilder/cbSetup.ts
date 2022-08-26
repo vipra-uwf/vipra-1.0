@@ -1,8 +1,8 @@
 /**
- * @module TypeChainSetup
+ * @module TypeChain
  */
 
-import { CbMethod, ServiceInfo, ServiceOptions, Service, CBServer, CbResult, ResultStore } from 'typechain';
+import { CbMethod, ServiceInfo, ServiceOptions, Service, CBServer, CbResult, ResultStore, CbArgs } from 'typechain';
 import { SimResultStore } from './resultStores/simResultStore';
 import { config } from '../configuration/config';
 import { SimManager } from '../controllers/simulation/SimManager';
@@ -10,8 +10,14 @@ import { SimParamStore } from './resultStores/simParamStore';
 import { TestResultStore } from './resultStores/testResultStore';
 import { container } from 'tsyringe';
 
+/* eslint-disable */
 
 // TODO make sure that url is proper format -RG
+/**
+ * @description Creates the ChainBuilder server for handling running the simulation
+ * @param {boolean} simDebug - whether the results for the simulation should be canned
+ * @param {boolean} paramsDebug - whether the results for config params should be canned
+ */
 const setupCB = (simDebug : boolean, paramsDebug : boolean) : CBServer => {
     const cbServer : CBServer = new CBServer(`${config.cb.url}/chainbuilder/`);
 
@@ -21,11 +27,18 @@ const setupCB = (simDebug : boolean, paramsDebug : boolean) : CBServer => {
     return cbServer;
 };
 
-const runSim : CbMethod = async (args: {[key: string] : string[]}) : Promise<CbResult> => {
+/**
+ * 
+ */
+const runSim : CbMethod = async (args: CbArgs) : Promise<CbResult> => {
     const simManager = container.resolve(SimManager);
     return await simManager.startSim(args);
 };
 
+/**
+ *
+ * @param debug
+ */
 const simResultStore = (debug : boolean) : ResultStore => {
     if(debug){
         return new TestResultStore("simresults");
@@ -34,6 +47,10 @@ const simResultStore = (debug : boolean) : ResultStore => {
     }
 };
 
+/**
+ *
+ * @param debug
+ */
 const paramsStore = (debug : boolean) : ResultStore => {
     if(debug){
         return new TestResultStore("simparams");
@@ -42,6 +59,11 @@ const paramsStore = (debug : boolean) : ResultStore => {
     }
 };
 
+/**
+ *
+ * @param cbServer
+ * @param resultStore
+ */
 const setupSimulationService = (cbServer : CBServer, resultStore : ResultStore) => {
 
     const serviceInfo : ServiceInfo = {
@@ -80,12 +102,20 @@ const setupSimulationService = (cbServer : CBServer, resultStore : ResultStore) 
     });
 };
 
-const getParams : CbMethod = async (args: {[key: string] : string[]}) : Promise<CbResult> => {
+/**
+ *
+ */
+const getParams : CbMethod = async (args: CbArgs) : Promise<CbResult> => {
     const simManager = container.resolve(SimManager);
     const params = await simManager.getParams(args);
     return params;
 };
 
+/**
+ *
+ * @param cbServer
+ * @param resultStore
+ */
 const setupParamsService = (cbServer : CBServer, resultStore : ResultStore) => {
     const serviceInfo : ServiceInfo = {
         name: 'VIPRA_Config_Params',

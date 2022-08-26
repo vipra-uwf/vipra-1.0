@@ -892,21 +892,14 @@ MovementDefinitions CalmPedestrianModel::updateMovementState
     MovementDefinitions newDefinition = this->pedestrianSet->getMovementStates()->at(pedestrianIndex);
     if (newDefinition != MovementDefinitions::HUMAN)
     {
-        if((*this->pedestrianSet->getPriorities())[pedestrianIndex]
-            < this->currentPriority
-            && ((*this->pedestrianSet->getPedestrianCoordinates())
-            [pedestrianIndex].coordinates[0]
-            >= ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
-                ->getAisles())
-            [(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]]
-            + ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
-                ->getAislesSize())
-            [(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]] * 0.5)
-            - 0.1)))
+        if((*this->pedestrianSet->getPriorities())[pedestrianIndex] < this->currentPriority 
+        && 
+        ((*this->pedestrianSet->getPedestrianCoordinates())[pedestrianIndex].coordinates[0]
+        >= 
+        ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAisles())[(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]] + ((*dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getAislesSize())[(*this->pedestrianSet->getStartingAisles())[pedestrianIndex]] * 0.5) - 0.1)))
         {
             newDefinition = MovementDefinitions::STOP;
         }
-
         else
         {
             newDefinition = MovementDefinitions::PED_DYNAM;

@@ -7,6 +7,7 @@ main
 *.exe
 *.out
 *.o
+*.gch
 .vscode
 build
 rapidxml

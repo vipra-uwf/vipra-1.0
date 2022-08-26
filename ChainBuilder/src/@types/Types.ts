@@ -2,6 +2,7 @@ import { ResultStore } from "./ResultStore";
 
 type CbResult = {error:boolean; result: string};
 type CbMethod = (args : {[key: string] : string[]}) => Promise<CbResult>;
+type CbArgs = {[key: string] : string[]};
 
 interface Response{
     [key : string]:
@@ -57,6 +58,7 @@ export{
     Parameter,
     CbMethod,
     CbResult,
+    CbArgs,
     ServiceOptions,
     Response
 };

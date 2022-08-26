@@ -1,11 +1,11 @@
 /**
- * @module ConfigManager.Interface
+ * @module Controller.Interfaces
  */
 
-import { Nullable } from "../../../types/typeDefs";
-import { ParamSet } from "../../../types/simparam";
+import { Nullable } from '../../../types/typeDefs';
+import { ParamSet } from '../../../types/simparam';
 
 
-export interface IConfigManager{
-    getParams(configID : string) : Nullable<{type : string; params : ParamSet}[]>;
+export interface IConfigManager {
+  getParams(configID : string) : Nullable<{ type : string; params : ParamSet }[]>;
 }

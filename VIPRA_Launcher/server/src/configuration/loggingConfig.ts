@@ -1,7 +1,7 @@
 /**
- * @module LoggingConfig
+ * @module Configuration
  */
 
 export const loggingConfig = {
-    level: 'debug'
+  level: 'debug',
 };

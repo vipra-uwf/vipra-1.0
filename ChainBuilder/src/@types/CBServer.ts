@@ -37,7 +37,6 @@ export class CBServer{
                 cbErrorRespond(`No Endpoint at: ${request.url}`, response);
             }
         }
-
     }
 
     public getEndpoint(route : string[]) : Endpoint{

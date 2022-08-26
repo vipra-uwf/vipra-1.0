@@ -1,9 +1,7 @@
 #ifndef CONFIGURATION_READER_HPP
 #define CONFIGURATION_READER_HPP
 
-#include <string>
-#include <fstream>
-#include <iostream>
+#include "../_pch/pch.hpp"
 
 #include "../definitions/type_definitions.hpp"
 #include "../jsoncpp/json/json.h"

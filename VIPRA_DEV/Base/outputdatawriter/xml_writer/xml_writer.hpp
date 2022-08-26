@@ -1,10 +1,7 @@
 #ifndef XML_WRITER_HPP
 #define XML_WRITER_HPP
 
-#include <vector>
-#include <fstream>
-#include <sstream>
-#include <cstring>
+#include "../../_pch/pch.hpp"
 
 #include "../output_data_writer.hpp"
 #include "../rapidxml/rapidxml.hpp"

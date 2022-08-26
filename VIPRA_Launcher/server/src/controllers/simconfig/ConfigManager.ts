@@ -1,12 +1,12 @@
 /**
- * @module ConfigManager
+ * @module Controllers
  */
 
-import { ParamSet } from "../../types/simparam";
-import { Nullable } from "../../types/typeDefs";
-import { injectable } from "tsyringe";
+import { ParamSet } from '../../types/simparam';
+import { Nullable } from '../../types/typeDefs';
+import { injectable } from 'tsyringe';
 
-import { IConfigManager } from "./interfaces/ConfigManager.interface";
+import { IConfigManager } from './interfaces/ConfigManager.interface';
 
 
 
@@ -16,14 +16,14 @@ import { IConfigManager } from "./interfaces/ConfigManager.interface";
  * @description Handles creation and tracking of simulation configurations
  */
 @injectable()
-export class ConfigManager implements IConfigManager{
+export class ConfigManager implements IConfigManager {
 
-    /**
-     * @description temp
-     * @param  {string} configID - aewrg
-     * @returns ParamSet
-     */
-    public getParams(configID : string) : Nullable<{type : string; params : ParamSet}[]>{
-        return null;
-    }
+  /**
+   * @description temp
+   * @param  {string} configID - aewrg
+   * @returns ParamSet
+   */
+  public getParams() : Nullable<{ type : string; params : ParamSet }[]> {
+    return null;
+  }
 }

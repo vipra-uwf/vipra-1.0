@@ -1,10 +1,8 @@
 #ifndef INPUT_XML_READER_HPP
 #define INPUT_XML_READER_HPP
 
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <cstring>
+#include "../../_pch/pch.hpp"
+
 
 #include "../input_data_loader.hpp"
 #include "../rapidxml/rapidxml.hpp"

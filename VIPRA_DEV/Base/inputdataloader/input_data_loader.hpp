@@ -1,10 +1,10 @@
 #ifndef INPUT_DATALOADER_HPP
 #define INPUT_DATALOADER_HPP
 
+#include "../_pch/pch.hpp"
+
 #include "../simulation/data/data.hpp"
 #include "../definitions/type_definitions.hpp"
-#include <unordered_map>
-#include <vector>
 
 class InputDataLoader
 {

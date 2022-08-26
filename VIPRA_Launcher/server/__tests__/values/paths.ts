@@ -1,5 +1,3 @@
-
-
 const SUCCESSFUL_PATH = 'successful/path';
 const BAD_PATH = 'bad/path';
 

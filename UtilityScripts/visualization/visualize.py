@@ -4,7 +4,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 if(len(sys.argv) != 3):
-    print("USAGE: python3 visualizer.py *pedestrian_trajectory.json* *obstacle_set.json*")
+    print("USAGE: python3 visualizer.pyz *pedestrian_trajectory.json* *obstacle_set.json*")
     exit(-1)
 
 

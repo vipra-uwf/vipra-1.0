@@ -1,8 +1,7 @@
 #ifndef DATA_HPP
 #define DATA_HPP
 
-#include <unordered_map>
-#include <string>
+#include "../../_pch/pch.hpp"
 
 #include "../../../Interfaces/pedestrianset/pedestrian_set.hpp"
 #include "../../../Interfaces/obstacleset/obstacle_set.hpp"

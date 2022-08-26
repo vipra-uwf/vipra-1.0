@@ -1,15 +1,17 @@
 /**
- * @module SimBuilder.Interface
+ * @module Controller.Interfaces
  */
-import { Module, ModulesFile } from "../../../types/module";
-import { FuncResult, SimState } from "../../../types/typeDefs";
+import { Module, ModulesFile } from '../../../types/module';
+import { FuncResult, Nullable, SimState } from '../../../types/typeDefs';
 
 
-export interface ISimBuilder{
-    setFlags            (argv : Map<string, string>)    : void;
-    isSimReady          ()                              : SimState;
-    compileSimulation   ()                              : Promise<FuncResult>;
-    addModule           (module : Module)               : Promise<FuncResult>;
-    startup             (modules : ModulesFile)         : Promise<FuncResult>;
+export interface ISimBuilder {
+  startup             (modules : ModulesFile)              : Promise<FuncResult>;
+  setFlags            (argv : Map<string, string>)         : void;
+  getSimState         ()                                   : SimState;
+  getBuildStatus      (buildID : string)                   : Nullable<SimState>;
+  compileSimulation   (buildID : Nullable<string>)         : FuncResult;
+  addModule           (added : Module)                     : FuncResult;
+  removeModule        (removed : Module)                   : FuncResult;
 }
 

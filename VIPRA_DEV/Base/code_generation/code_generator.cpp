@@ -1,9 +1,5 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <unordered_map>
 
+#include "../_pch/pch.hpp"
 #include "../configuration/configuration_reader.hpp"
 
 void setFiles(int, char**);
