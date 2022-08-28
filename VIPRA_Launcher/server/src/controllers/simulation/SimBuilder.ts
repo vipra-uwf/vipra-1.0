@@ -6,11 +6,10 @@ import crypto from 'crypto';
 import { Nullable, FuncResult, SimState, Protect, FlagMap } from '../../types/typeDefs';
 import { Status } from '../../types/Status';
 import { Module, ModulesFile, ModuleType } from '../../types/module';
-import { Logger } from '../../logging/Logging';
 import { inject, singleton } from 'tsyringe';
 import { ISimBuilder } from './interfaces/SimBuilder.interface';
 import { ProcessRunner } from '../processes/ProcessRunner';
-import { FilesController } from '../files/FilesController';
+import { IFilesController } from '../files/interfaces/FilesController.interface';
 import { FLAGS } from '../../types/flags';
 import { config } from '../../configuration/config';
 
@@ -22,9 +21,11 @@ export class SimBuilder implements ISimBuilder {
 
   private pr : ProcessRunner;
 
-  private fc : FilesController;
+  private fc : IFilesController;
 
   private debugMode : boolean;
+
+  private rebuild : boolean;
 
   private simState : SimState;
 
@@ -36,10 +37,11 @@ export class SimBuilder implements ISimBuilder {
 
   private missingModules : Map<ModuleType, number>;
 
-  constructor(@inject('FilesController') filesController : FilesController, @inject('ProcessRunner') processRunner : ProcessRunner) {
+  constructor(@inject('FilesController') filesController : IFilesController, @inject('ProcessRunner') processRunner : ProcessRunner) {
     this.pr = processRunner;
     this.fc = filesController;
     this.genMainBuilt = false;
+    this.rebuild = true;
     this.humanBehaviorBuilt = false;
     this.simState = { ready: false, reason: 'Builder Not Started' };
     this.missingModules = new Map();
@@ -70,21 +72,34 @@ export class SimBuilder implements ISimBuilder {
    */
   public async startup(modules: ModulesFile): Promise<FuncResult> {
 
-    this.setSimState({ ready: false, reason: 'Initial Simulation Compilation Running' });
-    await this.pr.precompileHeaders();
+    if (this.rebuild) {
+      this.setSimState({ ready: false, reason: 'Initial Simulation Compilation Running' });
+      await this.pr.precompileHeaders();
+      await this.compileAllModules(modules);
+      
+      const genMain = await this.pr.compileGenMain(this.debugMode);
+      if (genMain === Status.SUCCESS) {
+        this.genMainBuilt = true;
+      } else {
+        this.genMainBuilt = false;
+        this.setSimState({ ready: false, reason: 'Unable to Build Generate Main' });
+        return { status:Status.INTERNAL_ERROR, message: 'Unable to Build Generate Main' };
+      }
 
-    await this.compileAllModules(modules);
+      const humanBehavior = await this.pr.compileHumanBehavior(this.debugMode);
+      if (humanBehavior === Status.SUCCESS) {
+        this.humanBehaviorBuilt = true;
+      } else {
+        this.humanBehaviorBuilt = false;
+        this.setSimState({ ready: false, reason: 'Unable to Build Human Behavior' });
+        return { status:Status.INTERNAL_ERROR, message: 'Unable to Build Human Behavior' };
+      }
 
-    const humanBehavior = await this.pr.compileHumanBehavior(this.debugMode);
-    if (humanBehavior === Status.SUCCESS) {
-      this.humanBehaviorBuilt = true;
+      const simulation = this.compileSimulation();
+      return simulation;
     } else {
-      this.setSimState({ ready: false, reason: 'Unable to Build Human Behavior' });
-      return { status:Status.INTERNAL_ERROR, message: 'Unable to Build Human Behavior' };
+      return { status: Status.INTERNAL_ERROR, message: 'Rebuild Set To False' };
     }
-
-    const simulation = this.compileSimulation(null);
-    return simulation;
   }
 
   /**
@@ -92,6 +107,7 @@ export class SimBuilder implements ISimBuilder {
    * @param  {FlagMap} argv - command line arguments map
    */
   public setFlags(argv: FlagMap): void {
+    this.rebuild = (argv.get(FLAGS.REBUILD) === 'false') ? false : true;
     this.debugMode = argv.has(FLAGS.DEBUG_BUILD);
   }
 
@@ -99,21 +115,16 @@ export class SimBuilder implements ISimBuilder {
    * @description Compiles the simulation in the background, immediately returns a build id
    * @param {Nullable<string>} buildID - id for current build process, null if new process
    */
-  public compileSimulation(buildID : Nullable<string>): FuncResult {
-    let bID = crypto.randomUUID();
-    if (buildID) {
-      bID = buildID;
-    } else {
-      bID = crypto.randomUUID();
-    }
-
+  public compileSimulation(): FuncResult {
+    
     const missing = this.getMissing();
     if (missing.length !== 0) {
-      const state = { ready:false, reason:`Missing Module Types: ${missing.join(', ')}` };
-      this.setBuildState(bID, state);
+      const reason = `Missing Module Types: ${missing.join(', ')}`;
+      const state = { ready:false, reason };
       this.setSimState(state);
-      return { status: Status.BAD_REQUEST, message: bID };
+      return { status: Status.BAD_REQUEST, message: reason };
     }
+    const bID = crypto.randomUUID();
 
     this.setBuildState(bID, { ready:false, reason:'Currently Building Simulation' });
     this.fc.makeDir(`${config.vipra.simsDir}/build`);
@@ -121,7 +132,7 @@ export class SimBuilder implements ISimBuilder {
 
     let generateMain : Promise<Status> = new Promise<Status>((resolve)=>{resolve(Status.SUCCESS);});
     if (!this.genMainBuilt) {
-      generateMain = this.pr.compileGenMain(bID, this.debugMode);
+      generateMain = this.pr.compileGenMain(this.debugMode);
     }
     let humanBehavior : Promise<Status> = new Promise<Status>((resolve)=>{resolve(Status.SUCCESS);});
     if (!this.humanBehaviorBuilt) {
@@ -179,28 +190,24 @@ export class SimBuilder implements ISimBuilder {
 
   /**
    * @description Builds the added module and rebuilds the simulation with it added
-   * @note return value.message holds the buildID for the simulation build process
+   * @note return value.message holds the buildID for the simulation build process, null if the simulation can't be built
    * @param  {Module} added - the module that was added
    */
-  public addModule(added: Module): FuncResult {
-    const buildID = crypto.randomUUID();
-
-    this.pr.buildModule(added, this.debugMode)
-      .then((built)=>{
-        if (built === Status.SUCCESS) {
-          this.addedType(added.type);
-          added.compiled = true;
-          this.compileSimulation(buildID);
-        } else {
-          this.setBuildState(buildID, { ready:false, reason:`Unable to build Module: ${added.id}` });
-        }
-      })
-      .catch((error : string)=>{
-        Logger.error(`SimBuilder: addModule: ${error}`);
-        this.setBuildState(buildID, { ready:false, reason:'Unkown Error in Simulation Build' });
-      });
-
-    return { status:Status.SUCCESS, message:buildID };
+  public async addModule(added: Module): Promise<FuncResult> {
+    
+    const built = await this.pr.buildModule(added, this.debugMode);
+    
+    if (built === Status.SUCCESS) {
+      this.addedType(added.type);
+      added.compiled = true;
+      const simBuild = this.compileSimulation();
+      if (simBuild.status !== Status.SUCCESS) {
+        return { status: Status.SUCCESS, message:null };
+      }
+      return { status: Status.SUCCESS, message: simBuild.message };
+    } else {
+      return { status:Status.INTERNAL_ERROR, message: 'Unable To Compile Module' };
+    }
   }
 
 
@@ -211,7 +218,7 @@ export class SimBuilder implements ISimBuilder {
    */
   public removeModule(removed: Module): FuncResult {
     this.removedType(removed.type);
-    const simulation = this.compileSimulation(null);
+    const simulation = this.compileSimulation();
     return simulation;
   }
 

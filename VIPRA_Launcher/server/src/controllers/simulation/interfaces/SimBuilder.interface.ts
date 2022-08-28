@@ -11,7 +11,7 @@ export interface ISimBuilder {
   getSimState         ()                                   : SimState;
   getBuildStatus      (buildID : string)                   : Nullable<SimState>;
   compileSimulation   (buildID : Nullable<string>)         : FuncResult;
-  addModule           (added : Module)                     : FuncResult;
+  addModule           (added : Module)                     : Promise<FuncResult>;
   removeModule        (removed : Module)                   : FuncResult;
 }
 

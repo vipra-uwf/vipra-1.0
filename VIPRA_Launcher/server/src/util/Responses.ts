@@ -60,6 +60,7 @@ const respondSuccess = (response : express.Response, message? : string) : void =
  * @param  {any} data - data obejct to be place in response
  * @param  {express.Response} response - client response object
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const respondData = (data : any, response : express.Response) : void => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   response.status(Status.SUCCESS).json({ data });

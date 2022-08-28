@@ -1,9 +1,8 @@
 import fs from 'fs';
 
-import { Module, ModuleInfo, ModulesFile, ModuleType } from "../../src/types/module";
+import { Module, ModuleInfo, ModulesFile, ModuleType, removeModule } from "../../src/types/module";
 import { FileBuffers } from "../../src/util/FileStore";
 import { SUCCESSFUL_PATH } from "./paths";
-import { Nullable } from "../../src/types/typeDefs";
 
 const goodModule : Module = {
   id: "ponjpojrnaiervnakdna",
@@ -238,7 +237,7 @@ const installedModulesInfo = {
     ]
   };
 
-const mockInstalledModels = ()=>{
+const getInstalledModules = ()=>{
     if(fs.existsSync(`${__dirname}/installedModules.json`)){
       try{
           const obj : ModulesFile = Object.assign({}, JSON.parse(fs.readFileSync(`${__dirname}/installedModules.json`).toString()) as ModulesFile);
@@ -250,8 +249,19 @@ const mockInstalledModels = ()=>{
     throw new Error('Unable to read installedModules.json');
 };
 
+// missing obstacle_set and goals
+const getInstalled_Two_Missing = () : ModulesFile =>{
+  const modules = getInstalledModules();
+  if (!removeModule('MTpemEr4jv5XTvgwO7q54Qco97Pnt4',modules)) {
+    throw new Error('Unable to remove MTpemEr4jv5XTvgwO7q54Qco97Pnt4 from modules');
+  }
+  if (!removeModule('Xz59g1o8HcsnMJlKaiYw00wZ19rB7P', modules)) {
+    throw new Error('Unable to remove Xz59g1o8HcsnMJlKaiYw00wZ19rB7P from modules');
+  }
+  return modules;
+}
 
-const getInstalledMissing = ()=>{
+const getInstalled_One_Missing = () : ModulesFile => {
   if(fs.existsSync(`${__dirname}/missingObstacleSet.json`)){
     try{
         const obj : ModulesFile = Object.assign({}, JSON.parse(fs.readFileSync(`${__dirname}/missingObstacleSet.json`).toString()) as ModulesFile);
@@ -263,10 +273,33 @@ const getInstalledMissing = ()=>{
   throw new Error('Unable to read missingObstacleSet.json');
 }
 
+const missingModule : Module = {
+  id: "poaernvpaojernpvaiuernvpaojwn",
+  name: "example_obstacle_set",
+  description: "TODO",
+  params: {},
+  type: ModuleType.OBSTACLE_SET,
+  className: 'ExampleObstacleSet',
+  dirPath: 'successful/path',
+  includePath: 'successful/path',
+  compiled: false
+}
+
+const secondMissingModule : Module = {
+    "id": "Xz59g1o8HcsnMJlKaiYw00wZ19rB7P",
+    "name": "calm_goals",
+    "description": "TODO",
+    "params": {},
+    "className": "CALMGOALS",
+    "type": ModuleType.GOALS,
+    "dirPath": "successful/path",
+    "includePath": "successful/path",
+    "compiled": false
+}
 
 const NUM_MODULES = 15;
 const NUM_MISSING_MODULES = 1;
-
+const MODULE_TYPE_COUNT = 13
 const NON_EXISTANT_MODULE_ID = "thismoduledoesntexist";
 
 export {
@@ -279,7 +312,11 @@ export {
     NON_EXISTANT_MODULE_ID,
     NUM_MODULES,
     NUM_MISSING_MODULES,
+    MODULE_TYPE_COUNT,
+    missingModule,
+    secondMissingModule,
     installedOutputDataWriters,
-    mockInstalledModels,
-    getInstalledMissing
+    getInstalledModules,
+    getInstalled_One_Missing,
+    getInstalled_Two_Missing
 }

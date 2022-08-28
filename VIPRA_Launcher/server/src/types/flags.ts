@@ -4,6 +4,7 @@
 
 export enum FLAGS {
   FLAGS_FILE          = 'flagsfile',
+  REBUILD             = 'rebuild',
   DEBUG_SETUP         = 'debugsetup',
   DEBUG_BUILD         = 'debugbuild',
   QUICK_SIM           = 'quicksim',

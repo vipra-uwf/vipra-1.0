@@ -6,10 +6,10 @@ import { FileBuffers }      from '../../util/FileStore';
 import { FuncResult }       from '../../types/typeDefs';
 import { Status }           from '../../types/Status';
 import { config }           from '../../configuration/config';
-import { makeModule, Module, ModuleInfo, ModulesFile, ModuleType, removeModule, toModuleInfo } from '../../types/module';
+import { getModule, makeModule, Module, ModuleInfo, ModulesFile, ModuleType, removeModule, toModuleInfo } from '../../types/module';
 
 import { inject, injectable } from 'tsyringe';
-import { FilesController } from '../files/FilesController';
+import { IFilesController } from '../files/interfaces/FilesController.interface';
 import { ISimBuilder } from '../simulation/interfaces/SimBuilder.interface';
 import { IModuleController } from './interfaces/ModuleController.interface';
 
@@ -19,17 +19,34 @@ import { IModuleController } from './interfaces/ModuleController.interface';
 @injectable()
 export class ModuleController implements IModuleController {
 
-  private fc                  : FilesController;
+  private fc                  : IFilesController;
 
   private modules             : ModulesFile;
 
   private simBuilder          : ISimBuilder;
 
-  constructor(@inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : FilesController) {
+  constructor(@inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : IFilesController) {
     this.simBuilder = simBuilder;
     this.fc = fileController;
     this.modules = this.fc.loadInstalledModules(config.vipra.vipraDir);
     this.writeModulesFile();
+  }
+
+  /**
+   * @description Checks the module is installed and ready to use
+   * @param  {string} id - id of module to check
+   */
+  public checkModule(id: string): FuncResult {
+    const module = getModule(id, this.modules);
+    if (module) {
+      if (module.compiled) {
+        return { status: Status.SUCCESS, message: null };
+      } else {
+        return { status: Status.INTERNAL_ERROR, message: 'Not Compiled' };
+      }
+    } else {
+      return { status: Status.NOT_FOUND, message: null };
+    }
   }
 
   /**
@@ -68,7 +85,7 @@ export class ModuleController implements IModuleController {
    * @param  {ModuleInfo} moduleInfo - information about module to be installed
    * @param  {FileBuffers} fileBuffers - file buffers of the module source files
    */
-  public installModule(moduleInfo : ModuleInfo, fileBuffers : FileBuffers) : FuncResult {
+  public async installModule(moduleInfo : ModuleInfo, fileBuffers : FileBuffers) : Promise<FuncResult> {
 
     if (this.checkDuplicate(moduleInfo)) {
       return { status: Status.CONFLICT, message: `Duplicate Module ID: ${moduleInfo.id}` };

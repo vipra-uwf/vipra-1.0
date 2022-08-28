@@ -9,7 +9,7 @@ interface Config {
   setup : boolean;
   app: {
     debug : boolean;
-    port : Number;
+    port : number;
     https: { key : string | null; cert : string | null; passphrase : Nullable<string> };
   };
   cb: { url : string };

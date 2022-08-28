@@ -134,6 +134,7 @@ export const makeModule = (moduleDir : string, moduleInfo : Protect<ModuleInfo>)
  * @description Takes an object and verifies whether it follows the Module interface, Returns the object as Module or null if it isn't a module
  * @param {any} obj - object to check
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const verifyModule = (obj : any) : Nullable<Module> =>{
   if (obj) {
     if (

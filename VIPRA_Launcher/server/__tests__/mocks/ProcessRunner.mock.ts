@@ -5,12 +5,12 @@ export const ProcessRunnerMock = () => {
         return{
             ProcessRunner: jest.fn().mockImplementation(()=>{
                 return {
-                    buildModule: jest.fn(()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})}),
-                    compileHumanBehavior: jest.fn(()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})}),
-                    compileGenMain: jest.fn(()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})}),
-                    compileMain: jest.fn(()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})}),
-                    compileSim: jest.fn(()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})}),
-                    precompileHeaders: jest.fn(()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS)})})
+                    buildModule: ()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})},
+                    compileHumanBehavior: ()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})},
+                    compileGenMain: ()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})},
+                    compileMain: ()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})},
+                    compileSim: ()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS);})},
+                    precompileHeaders: ()=>{return new Promise((resolve)=>{resolve(Status.SUCCESS)})}
                 }
             })
         }

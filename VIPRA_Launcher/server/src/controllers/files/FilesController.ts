@@ -15,6 +15,7 @@ import { Status } from '../../types/Status';
 
 
 import { makeModule, ModuleInfo, ModulesFile } from '../../types/module';
+import { IFilesController } from './interfaces/FilesController.interface';
 
 
 /**
@@ -23,7 +24,7 @@ import { makeModule, ModuleInfo, ModulesFile } from '../../types/module';
  * @note Created to allow for mocking of file operations -RG
  */
 @singleton()
-export class FilesController {
+export class FilesController implements IFilesController {
 
   /**
    * @description Returns list of files in the provided directory
@@ -108,7 +109,7 @@ export class FilesController {
    *
    * @param  {string} filePath - path to json file to read
    * @param  {{error:boolean}} options - read options (error, )
-   * @param  {boolean} options.error - if true, if unable to read the file it is treated as an error, if false, it's not
+   * @param  {boolean} options.error - if true, if being unable to read the file it is treated as an error, if false, it's not
    */
   public readJsonFile<T>(filePath : string, options : { error:boolean }) : Nullable<T> {
     try {
@@ -326,27 +327,4 @@ export class FilesController {
     });
     return ret;
   }
-
-
-  // /**
-  //  * @description Loads all sim.config files under baseDirPath
-  //  * @param  {string} baseDirPath - root directory to start looking for sim.config files
-  //  * @returns SimConfig
-  //  */
-  // public loadConfigs(baseDirPath : string) : Map<string, SimConfig> {
-  //     const configs : Map<string, SimConfig> = new Map();
-  //     fc.forAllFilesThatMatchDo(/sim\.config/, baseDirPath, (filePath : string)=>{
-  //         const simconfigIDs = fc.readJsonFile<SimConfigIDs>(filePath , {error:false});
-  //         if(simconfigIDs){
-  //             const id = path.basename(path.dirname(filePath));
-  //             const simconfig = this.makeSimConfig(id, simconfigIDs);
-  //             if(simconfig){
-  //                 Logger.info(`Found Simulation Configuration at: ${filePath}`);
-  //                 this.configs.set(id, simconfig);
-  //             }
-  //         }
-  //     });
-  //     Logger.info(`Finished Loading Simulation Configurations`);
-  //     return configs;
-  // }
 }

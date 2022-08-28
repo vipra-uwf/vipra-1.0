@@ -17,6 +17,8 @@ import { FlagMap, Nullable } from '../types/typeDefs';
 
 const fc = container.resolve(FilesController);
 
+// NOTE: Need to change how setup is done, so this will be removed then -RG
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
 const prompter = prompt();
 
@@ -73,8 +75,8 @@ const debugSetup = () : void => {
 /**
  * @description Prompts user to input the port the launcher will be listening on
  */
-const getPort = () : Number => {
-  let port : Number = -1;
+const getPort = () : number => {
+  let port : number = -1;
   while (port < 1 || port > 65535) {
     port = parseInt(prompter('PORT Number for Server: '), 10);
   }
@@ -163,7 +165,7 @@ const getHTTPS = () : { key : string; cert: string; passphrase : Nullable<string
 /**
  * @description Runs through the setup of https
  */
-const setupHTTPS = () => {
+const setupHTTPS = () : void => {
   config.cb.url = getURL();
   config.app.https = getHTTPS();
   config.app.port = getPort();

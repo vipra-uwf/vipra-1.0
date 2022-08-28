@@ -38,7 +38,7 @@ const moduleStore = multer.memoryStorage();
  * @param  {Express.Multer.File} file - uploaded file
  * @param  {multer.FileFilterCallback} cb - Multer callback
  */
-const moduleFilter = (req : express.Request, file : Express.Multer.File, cb : multer.FileFilterCallback)=>{
+const moduleFilter = (req : express.Request, file : Express.Multer.File, cb : multer.FileFilterCallback) : void => {
   const extension = path.extname(file.originalname);
   if (extension !== '.tar') {
     return cb(new Error('type'));
@@ -86,7 +86,7 @@ const storeModule = (req : express.Request, res : express.Response, next : expre
 
         // NOTE: setting _read to noop is required, so the errors for doing so are set off for this line -RG
         // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-empty-function, jsdoc/require-jsdoc
-        file._read = ()=>{};
+        file._read = () : void =>{};
         file.push(req.file.buffer);
         file.push(null);
 

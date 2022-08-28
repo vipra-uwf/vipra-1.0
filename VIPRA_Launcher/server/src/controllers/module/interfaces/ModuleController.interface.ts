@@ -11,6 +11,7 @@ export interface IModuleController {
   getModules() : Protect<ModulesFile>;
   allModulesInfo() : { [type: string] : ModuleInfo[] };
   getModulesofType(type : ModuleType) : Module[];
-  installModule(moduleInfo : ModuleInfo, fileBuffers : FileBuffers) : FuncResult;
+  installModule(moduleInfo : ModuleInfo, fileBuffers : FileBuffers) : Promise<FuncResult>;
   removeModule(id : string) : FuncResult;
+  checkModule(id : string) : FuncResult;
 }

@@ -2,73 +2,110 @@
  * @module Routes
  */
 import express from 'express';
-//import { IConfigManager } from '../controllers/simconfig/interfaces/ConfigManager.interface';
+import multer from 'multer';
+import { respondData, respondError, respondSuccess, respondUnknownError } from '../util/Responses';
 
+import { IConfigManager } from '../controllers/simconfig/interfaces/ConfigManager.interface';
+import { Status } from '../types/Status';
+import { SimConfig } from '../types/simconfig';
+import { ModuleType } from '../types/module';
+import { Logger } from '../logging/Logging';
+
+const formData = multer();
+
+type ConfigRequestBody = {
+  name? : string;
+  description? : string;
+  moduleIDs? : Record<ModuleType, string>;
+};
 
 /**
  * @description Creates the router that handles routes pertaining to the simulation configurations
  *
  * @note router factory functions are used to ensure that the objects are made at the correct time -RG
  *
- * @param  {Map<string, string>} argv - Map containing the commandline flags and their values
  * @param  {ConfigManager} configManager - ConfigManager implementation that will be used to handle simconfigs
  */
-const simConfigRouter = ():express.Router=>{//(argv : Map<string, string>, configManager : IConfigManager) : express.Router => {
+const simConfigRouter = (configManager : IConfigManager):express.Router=>{//(argv : Map<string, string>, configManager : IConfigManager) : express.Router => {
 
   const simConfigRoutes   : express.Router    = express.Router();
-  // configManager.loadConfigs();
 
-  // // TODO!!!!: this returns file paths etc, remove those before sending -RG
-  // simConfigRoutes.get('/', (req, res)=>{
-  //     respondData(configManager.getConfigs(), res);
-  // });
+  simConfigRoutes.get('/', (req : express.Request, res : express.Response)=>{
+    respondData(configManager.getConfigs(), res);
+  });
 
-  // simConfigRoutes.post('/', (req : express.Request<{}, {}, {simconfig : SimConfigIDs; name : string; description : string}>, res)=>{
-  //     const simconf : SimConfigIDs = req.body.simconfig;
-  //     if(simconf){
-  //         configManager.createConfig(simconf)
-  //         .then((created)=>{
-  //             switch(created.status){
-  //                 case Status.CREATED:
-  //                     respondCreated(res);
-  //                     break;
-  //                 case Status.BAD_REQUEST:
-  //                     respondError(Status.BAD_REQUEST, `Missing Attributes`, `The Provided config was missing required modules or the chosen modules are not available`, res);
-  //                     break;
-  //                 case Status.CONFLICT:
-  //                         respondError(Status.CONFLICT, 'Dupicate Configuration', `The provided configuration matches another config: ${created.config ? created.config.name : 'Error: Missing Name'}`, res);
-  //                     break;
-  //                 case Status.INTERNAL_ERROR:
-  //                     respondUnknownError(res);
-  //                     break;
-  //                 default:
-  //                     Logger.error(`Unhandled Status in createConfig: ${created.status}`);
-  //                     respondUnknownError(res);
-  //             }
-  //         })
-  //         .catch((error : string)=>{
-  //             Logger.error(`createConfig: ${error}`);
-  //             respondUnknownError(res);
-  //         });
-  //     }else{
-  //         respondError(Status.BAD_REQUEST, `No Configuration`, `No Simulation Configuration was provided`, res);
-  //     }
-  // });
+  simConfigRoutes.post('/', formData.none(), (req : express.Request, res : express.Response)=>{
+    const body = req.body as ConfigRequestBody;
+    if (body && body.name && body.description && body.moduleIDs) {
+      const simconf : Partial<SimConfig> = {
+        name: body.name,
+        description: body.description,
+        moduleIDs: body.moduleIDs,
+      };
+      const added = configManager.addConfig(simconf);
+      switch (added.status) {
+        case Status.SUCCESS:
+          respondSuccess(res);
+          break;
+        case Status.CONFLICT:
+          respondError(Status.CONFLICT, 'Duplicate Configuration', `There is already a Configuration with the provided modules ID: ${added.message || 'null'}`, res);
+          break;
+        case Status.BAD_REQUEST:
+          respondError(Status.BAD_REQUEST, 'Bad Request', (added.message || 'null'), res);
+          break;
+        case Status.INTERNAL_ERROR:
+          respondUnknownError(res);
+          break;
+        default:
+          Logger.error(`Unhandled Status in POST /simconfig/: ${added.status}`);
+          respondUnknownError(res);
+      }
+    } else {
+      respondError(Status.BAD_REQUEST, 'Missing Properties', 'Request is Missing Properties', res);
+    }
+  });
 
-  // simConfigRoutes.delete('/:id', (req, res)=>{
-  //     const removed = configManager.removeConfig(req.params.id);
-  //     switch(removed){
-  //         case Status.SUCCESS:
-  //             respondSuccess(res);
-  //             break;
-  //         case Status.NOT_FOUND:
-  //             respondError(Status.NOT_FOUND, `Not Found`, `No Simulation Configuration with that ID was found`, res);
-  //             break;
-  //         default:
-  //             Logger.error(`Unhandled Status in removeConfig: ${removed}`);
-  //             respondUnknownError(res);
-  //     }
-  // });
+  simConfigRoutes.put('/:id', formData.none(), (req : express.Request, res : express.Response)=>{
+    const body = req.body as ConfigRequestBody;
+    if (body && body.description || body.moduleIDs) {
+      const updated = configManager.updateConfig(req.params.id, body);
+      switch (updated.status) {
+        case Status.SUCCESS:
+          respondSuccess(res);
+          break;
+        case Status.BAD_REQUEST:
+          respondError(Status.BAD_REQUEST, 'Bad Request', (updated.message || 'null'), res);
+          break;
+        case Status.NOT_FOUND:
+          respondError(Status.NOT_FOUND, 'Config Not Found', `No Config with ID: ${req.params.id}`, res);
+          break;
+        case Status.INTERNAL_ERROR:
+          respondUnknownError(res);
+          break;
+        default:
+          Logger.error(`Unhandled Status in PUT /simconfig/:id : ${updated.status}`);
+          respondUnknownError(res);  
+      }
+    } else {
+      respondError(Status.BAD_REQUEST, 'Missing Properties', 'Request is Missing Properties', res);
+    }
+  });
+
+  simConfigRoutes.delete('/:id', (req : express.Request, res : express.Response)=>{
+    const deleted = configManager.deleteConfig(req.params.id);
+    switch (deleted.status) {
+      case Status.SUCCESS:
+        respondSuccess(res);
+        break;
+      case Status.NOT_FOUND:
+        respondError(Status.NOT_FOUND, 'Config Not Found', `No SimCOnfig with ID: ${req.params.id}`, res);
+        break;
+      default:
+        Logger.error(`Unhandled Status in DELETE /simconfig/:id : ${deleted.status}`);
+        respondUnknownError(res);
+    }
+  });
+
   return simConfigRoutes;
 };
 

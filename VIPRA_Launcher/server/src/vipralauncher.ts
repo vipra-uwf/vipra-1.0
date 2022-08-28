@@ -18,7 +18,7 @@ import { ConfigManager } from './controllers/simconfig/ConfigManager';
 
 import { defaultRouter } from './routes/defaultRoutes';
 import { moduleRouter } from './routes/moduleRoutes';
-//import { simConfigRouter } from './routes/simConfigRoutes';
+import { simConfigRouter } from './routes/simConfigRoutes';
 import { simulationRouter } from './routes/simulationRoutes';
 import { SimBuilder } from './controllers/simulation/SimBuilder';
 import { Status } from './types/Status';
@@ -51,7 +51,7 @@ container.register('SimManager', SimManager);
 
 const simBuilder : SimBuilder               = container.resolve(SimBuilder);
 const modulesController : ModuleController  = container.resolve(ModuleController);
-//const configManager : ConfigManager         = container.resolve(ConfigManager);
+const configManager : ConfigManager         = container.resolve(ConfigManager);
 const simManager : SimManager               = container.resolve(SimManager);
 
 simManager.setFlags(argv);
@@ -73,7 +73,7 @@ simBuilder.startup(modulesController.getModules())
 
 app.use('/chainbuilder', simulationRouter(argv));
 app.use('/module', moduleRouter(argv, modulesController));
-//app.use('/simconfig', simConfigRouter(argv, configManager));
+app.use('/simconfig', simConfigRouter(configManager));
 app.use('*', defaultRouter);
 
 httpsServer.listen(config.app.port);

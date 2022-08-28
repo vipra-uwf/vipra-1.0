@@ -2,10 +2,13 @@
  * @module Controller.Interfaces
  */
 
-import { Nullable } from '../../../types/typeDefs';
-import { ParamSet } from '../../../types/simparam';
-
+import { FuncResult, Nullable } from '../../../types/typeDefs';
+import { SimConfig } from '../../../types/simconfig';
 
 export interface IConfigManager {
-  getParams(configID : string) : Nullable<{ type : string; params : ParamSet }[]>;
+  getConfig(id : string) : Nullable<SimConfig>;
+  getConfigs() : SimConfig[];
+  addConfig(simConfig : Partial<SimConfig>) : FuncResult;
+  updateConfig(configID : string, simConfig : Partial<SimConfig>) : FuncResult;
+  deleteConfig(configID : string) : FuncResult;
 }

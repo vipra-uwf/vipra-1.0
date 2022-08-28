@@ -11,7 +11,7 @@ import { config } from '../../configuration/config';
 import { Logger } from '../../logging/Logging';
 import { CbResult } from 'typechain';
 import { FLAGS } from '../../types/flags';
-import { FilesController } from '../files/FilesController';
+import { IFilesController } from '../files/interfaces/FilesController.interface';
 import { FlagMap, Nullable } from '../../types/typeDefs';
 import { ISimManager } from './interfaces/SimManager.interface';
 import { ISimBuilder } from './interfaces/SimBuilder.interface';
@@ -32,7 +32,7 @@ export class SimManager implements ISimManager {
 
   private simBuilder      : ISimBuilder;
 
-  private fc              : FilesController;
+  private fc              : IFilesController;
 
   private quicksim        : boolean;
 
@@ -42,7 +42,7 @@ export class SimManager implements ISimManager {
 
   private defaultParams   : string;
 
-  public constructor(@inject('ConfigManager') configManager : IConfigManager, @inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : FilesController) {
+  public constructor(@inject('ConfigManager') configManager : IConfigManager, @inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : IFilesController) {
     this.processMap = new Map();
     this.fc = fileController;
     this.configManager = configManager;
@@ -60,7 +60,7 @@ export class SimManager implements ISimManager {
    *
    * @param  {FlagMap} flags - Map of command line flags and their values
    */
-  public setFlags(flags : FlagMap) {
+  public setFlags(flags : FlagMap) : void {
     this.quicksim = flags.has(FLAGS.QUICK_SIM);
     if (flags.has(FLAGS.DEFAULT_MAP)) {
       Logger.info(`Setting Sim Default Map: ${flags.get(FLAGS.DEFAULT_MAP) || ''}`);
@@ -105,7 +105,7 @@ export class SimManager implements ISimManager {
            * @description callback function for simulation execution
            * @param {number} code - exit code of simulation process
            */
-          const onExit = (code : number) => {
+          const onExit = (code : number) : void => {
             this.processMap.delete(configId);
             if (code !== 0) {
               Logger.error('Error Running Simulation');
@@ -142,7 +142,7 @@ export class SimManager implements ISimManager {
   // eslint-disable-next-line @typescript-eslint/require-await
   public async getParams(args : { [key: string] : string[] }) : Promise<CbResult> {
     const configID = args.configid[0].replace(/"/g, '');
-    const params = this.configManager.getParams(configID);
+    const params = null;//this.configManager.getParams(configID);
     if (params) {
       return {
         error: false,
