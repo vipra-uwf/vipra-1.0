@@ -72,7 +72,7 @@ void Simulation::run()
 
     int i = 0; //delete this just for testing
     // std::cout << "Adding " << this->timestep_size << " msec to the simulation." << std::endl;
-    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
+    while(!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())//!this->pedestrianDynamicsModel->getGoals()->isSimulationGoalMet())
     {
 
         if(simulationOutputHandler->isOutputCriterionMet())
@@ -91,7 +91,7 @@ void Simulation::run()
         ++i;
 
         #ifdef DEBUG_OUTPUT
-            if(i % 100 == 0)
+            if(i % 1000 == 0)
             {
                 printDataDELETETHIS();
             }

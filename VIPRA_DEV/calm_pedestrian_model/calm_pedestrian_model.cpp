@@ -52,8 +52,6 @@ void CalmPedestrianModel::initialize()
             nearestNeighbors.push_back(calculateNearestNeighbors(i, pedestrianDisplacementX, pedestrianDisplacementY));
     }
 
-
-
     this->pedestrianSet->setNearestNeighbors(std::move(nearestNeighbors));
 
     this->nearestNeighbors = this->pedestrianSet->getNearestNeighbors();
@@ -131,6 +129,8 @@ void CalmPedestrianModel::precompute()
         }
     }
 
+    raceDetection();
+
     this->pedestrianSet->setNearestNeighbors(std::move(nearestNeighbors));
     this->nearestNeighbors = this->pedestrianSet->getNearestNeighbors();
 
@@ -142,7 +142,6 @@ void CalmPedestrianModel::precompute()
 
     this->pedestrianSet->setMovementStates(std::move(updatedMoveStates));
 
-    raceDetection();
     this->moveStates = this->pedestrianSet->getMovementStates();
 
     calculateBeta();
@@ -164,6 +163,7 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
     {
         if(!this->goals->isPedestianGoalsMet(i)){
             MovementDefinitions currentState = this->moveStates[i];
+            RaceStatus currentRaceStatus = this->pedestrianSet->getRaceStatus().at(i);
             FLOATING_NUMBER propulsiveX = this->propulsionForces[i][0];
             FLOATING_NUMBER propulsiveY = this->propulsionForces[i][1];
             FLOATING_NUMBER velocityX = this->velocities[i][0];
@@ -186,15 +186,30 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
             }
             else
             {
-                newVelocity =
-                (
+                if(currentRaceStatus == RaceStatus::WINNER)
+                {
+                    newVelocity =
+                    (
 
-                    Dimensions
-                    {
-                            (propulsiveX * (time / mass) + velocityX),
-                            (propulsiveY * (time / mass) + velocityY)
-                    }
-                );
+                        Dimensions
+                        {
+                                1.1f * (propulsiveX * (time / mass) + velocityX),
+                                1.1f * (propulsiveY * (time / mass) + velocityY)
+                        }
+                    );
+                }
+                else
+                {
+                    newVelocity =
+                    (
+
+                        Dimensions
+                        {
+                                (propulsiveX * (time / mass) + velocityX),
+                                (propulsiveY * (time / mass) + velocityY)
+                        }
+                    );
+                } 
             }
 
             newSpeed = ((newVelocity[0]
@@ -320,7 +335,7 @@ void CalmPedestrianModel::calculatePropulsion()
                         {
                                 0 *
                                 desiredSpeed,
-                                -1.1f *
+                                -1.0f *
                                 desiredSpeed
                         }
                     );
@@ -491,15 +506,15 @@ void CalmPedestrianModel::calculateBeta()
 
             if(nearestNeighborIndex == -1)
             {
-            distanceMinusB = ((1) - b); //the 1 value needs to be changed -EL
+                distanceMinusB = ((1) - b); //the 1 value needs to be changed -EL
             }
             else
             {
-            distanceMinusB = (sqrt(getDistance(
-                    i,
-                    FLOATING_NUMBER(nearestNeighborIndex),
-                    nearestNeighborOrigin
-            )) - b);
+                distanceMinusB = (sqrt(getDistance(
+                        i,
+                        FLOATING_NUMBER(nearestNeighborIndex),
+                        nearestNeighborOrigin
+                )) - b);
             }
 
             newDesiredSpeeds.push_back(0.3 * (c - exp(a * distanceMinusB))); //TODO - fix the coeff to change depending on goal -EL
@@ -917,15 +932,53 @@ void CalmPedestrianModel::createAisles() //TODO move this somewhere more approrp
 MovementDefinitions CalmPedestrianModel::updateMovementState(int pedestrianIndex)
 {
      MovementDefinitions newDefinition = this->pedestrianSet->getMovementStates().at(pedestrianIndex);
-     if (newDefinition != MovementDefinitions::HUMAN)
-     {
-         if(this->pedestrianSet->getRaceStatus().at(pedestrianIndex) != RaceStatus::LOOSER && this->pedestrianSet->getRaceStatus().at(pedestrianIndex) != RaceStatus::IN_RACE)
+    FLOATING_NUMBER speed = ((this->velocities[pedestrianIndex][0] * this->velocities[pedestrianIndex][0]) + (this->velocities[pedestrianIndex][1] * this->velocities[pedestrianIndex][1]));
+
+     //First check if the human behavior model is modifying the pedestrian
+      if (newDefinition != MovementDefinitions::HUMAN)
+      {
+         //Check if the pedestrian is less than the current priority and
+         // the x coordinate is greater than or equal to 
+
+        //  ((this->pedestrianSet->getPriorities())[pedestrianIndex]
+        //     < this->currentPriority
+        //     && (this->pedestrianCoordinates[pedestrianIndex][0]
+        //     >= ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
+        //         ->getAisles())
+        //     [(this->pedestrianSet->getStartingAisles())[pedestrianIndex]]
+        //     + ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
+        //         ->getAislesSize())
+        //     [(this->pedestrianSet->getStartingAisles())[pedestrianIndex]] * 0.5)
+        //     - 0.1))) || 
+
+        // (this->pedestrianCoordinates[pedestrianIndex][0]
+        //      >= ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
+        //          ->getAisles())
+        //      [(this->pedestrianSet->getStartingAisles())[pedestrianIndex]]
+        //      + ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
+        //          ->getAislesSize())
+        //      [(this->pedestrianSet->getStartingAisles())[pedestrianIndex]] * 0.5)
+        // //      - 0.1))
+        // this->pedestrianSet->getNearestNeighbors().at(pedestrianIndex).second != -1 && 
+        //         this->pedestrianSet->getNearestNeighbors().at(pedestrianIndex).first != "O" &&
+        //             this->pedestrianSet->getPriorities().at(this->pedestrianSet->getNearestNeighbors().at(pedestrianIndex).second) > this->pedestrianSet->getPriorities().at(pedestrianIndex)
+         
+         //Problem, pedestrians move too slow, fix STOP check desired speed
+         if(this->desiredSpeeds[pedestrianIndex] < 0.0001)
          {
-             newDefinition = MovementDefinitions::PED_DYNAM;
+            // if(this->pedestrianSet->getPriorities().at(this->pedestrianSet->getNearestNeighbors().at(pedestrianIndex).second) > this->pedestrianSet->getPriorities().at(pedestrianIndex))
+            // {
+            //     std::cout << "I am here!" << std::endl;
+                newDefinition = MovementDefinitions::STOP;   
+            // }
+            // else
+            // {
+            //     newDefinition = MovementDefinitions::PED_DYNAM;
+            // }
          }
          else
          {
-            newDefinition = MovementDefinitions::STOP;
+            newDefinition = MovementDefinitions::PED_DYNAM;
          }
      }
 
@@ -935,9 +988,12 @@ MovementDefinitions CalmPedestrianModel::updateMovementState(int pedestrianIndex
 //Still needs work -NR
 void CalmPedestrianModel::raceDetection() {
 
-    for(int i = 0; i < this->numPedestrians; ++i) {
 
-        if(this->pedestrianSet->getMovementStates().at(i) == MovementDefinitions::STOP) 
+    for(int i = 0; i < this->numPedestrians; ++i) {
+        FLOATING_NUMBER speed = ((this->velocities[i][0] * this->velocities[i][0]) + (this->velocities[i][1] * this->velocities[i][1]));
+        FLOATING_NUMBER force_mag = ((this->propulsionForces[i][0] * this->propulsionForces[i][0]) + (this->propulsionForces[i][1] * this->propulsionForces[i][1]));
+
+        if(speed < 0.0001 && force_mag < 0.0001) 
         {
             if(this->pedestrianSet->getRaceStatus().at(i) == RaceStatus::NO_RACE)
             {

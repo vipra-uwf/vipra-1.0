@@ -29,3 +29,5 @@ RUN ln -s /usr/src/VIPRA/VIPRA_DEV /usr/src/VIPRA/VIPRA_Launcher/server/VIPRA_DE
 
 RUN cd /usr/src/VIPRA/ChainBuilder && npm install && tsc && npm pack
 RUN cd /usr/src/VIPRA/VIPRA_Launcher/server && npm install
+
+CMD ["/bin/bash"]
