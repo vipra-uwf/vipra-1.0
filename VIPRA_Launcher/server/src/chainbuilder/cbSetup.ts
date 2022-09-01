@@ -16,8 +16,6 @@ const simManager : ISimManager = container.resolve('SimManager');
 
 // save results based on the inputs
 
-
-
 /**
  * @description CBMethod to run the simulation from a chainbuilder request
  * @param {CbArgs} args - chainbuilder args

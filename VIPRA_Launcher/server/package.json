@@ -11,7 +11,8 @@
     "lint": "eslint . --ext .ts --fix",
     "docs": "npx typedoc --options ./typedoc.json",
     "test": "jest",
-    "quickstart" : "tsc -p tsconfig.build.json && node ./dist/vipralauncher.js flagsfile=./dist/flags.txt"
+    "quickbuild" : "tsc -p tsconfig.build.json",
+    "quickstart" : "node ./dist/vipralauncher.js flagsfile=./dist/flags.txt qstart"
   },
   "author": "",
   "license": "ISC",
