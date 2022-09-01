@@ -2,9 +2,9 @@
  * @module Routes
  */
 import express from 'express';
-import { setupCB } from '../chainbuilder/cbSetup';
-import { CBServer } from 'typechain';
-import { FLAGS } from '../types/flags';
+// import { setupCB } from '../chainbuilder/cbSetup';
+// import { CBServer } from 'typechain';
+
 /**
  * @description Creates the router that handles routes pertaining to the VIPRA simulation
  *
@@ -12,15 +12,15 @@ import { FLAGS } from '../types/flags';
  *
  * @param  {Map<string, string>} argv - Map containing the commandline flags and their values
  */
-const simulationRouter = (argv: Map<string, string>) : express.Router => {
+const simulationRouter = () : express.Router => {
   const simRoutes = express.Router();
 
-  const cbServer : CBServer = setupCB(argv.has(FLAGS.DEBUG_RESULTS), argv.has(FLAGS.DEBUG_PARAMS));
+  // const cbServer : CBServer = setupCB();
 
-  simRoutes.use('/', (req : express.Request, res : express.Response)=>{
-    req.originalUrl = req.url;
-    cbServer.handleChainBuilderRequest(req, res);
-  });
+  // simRoutes.use('/', (req : express.Request, res : express.Response)=>{
+  //   req.originalUrl = req.url;
+  //   cbServer.handleChainBuilderRequest(req, res);
+  // });
 
   return simRoutes;
 };

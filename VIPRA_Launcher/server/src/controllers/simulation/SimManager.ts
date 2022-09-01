@@ -3,7 +3,7 @@
  */
 
 import crypto from 'crypto';
-import child_process, { ChildProcess } from 'child_process';
+import { ChildProcess } from 'child_process';
 
 import { inject, singleton } from 'tsyringe';
 
@@ -16,6 +16,7 @@ import { FlagMap, Nullable } from '../../types/typeDefs';
 import { ISimManager } from './interfaces/SimManager.interface';
 import { ISimBuilder } from './interfaces/SimBuilder.interface';
 import { IConfigManager } from '../simconfig/interfaces/ConfigManager.interface';
+import { ISimRunner } from './interfaces/SimRunner.interface';
 
 // TODO NEXT check simbuilder for simulation build status before attempting to run -RG
 
@@ -27,6 +28,8 @@ import { IConfigManager } from '../simconfig/interfaces/ConfigManager.interface'
 export class SimManager implements ISimManager {
 
   private processMap      : Map<string, ChildProcess>;
+
+  private simRunner       : ISimRunner;
 
   private configManager   : IConfigManager;
 
@@ -42,10 +45,11 @@ export class SimManager implements ISimManager {
 
   private defaultParams   : string;
 
-  public constructor(@inject('ConfigManager') configManager : IConfigManager, @inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : IFilesController) {
+  public constructor(@inject('ConfigManager') configManager : IConfigManager, @inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : IFilesController, @inject('SimRunner') simrunner : ISimRunner) {
     this.processMap = new Map();
     this.fc = fileController;
     this.configManager = configManager;
+    this.simRunner = simrunner;
     this.simBuilder = simBuilder;
   }
 
@@ -100,26 +104,14 @@ export class SimManager implements ISimManager {
         return new Promise((resolve)=>{
           
           const outputPath : string = `${config.vipra.outputDir}/${configId}/${outputID}`;
-          
-          /**
-           * @description callback function for simulation execution
-           * @param {number} code - exit code of simulation process
-           */
-          const onExit = (code : number) : void => {
-            this.processMap.delete(configId);
-            if (code !== 0) {
-              Logger.error('Error Running Simulation');
-              resolve({ error: true, result: 'Error Running Simulation' });
-            } else {
-              Logger.info(`Successfully Finished Simulation: ID: ${configId}`);
-              resolve({ error: false, result: outputPath });
-            }
-          };
+        
 
           Logger.info(`Starting Simulation: ConfigID: ${configId}`);
-          const ps : Nullable<ChildProcess> = this.runSim(configId, map, peds, params, outputPath, onExit);
-
+          const ps : Nullable<ChildProcess> = this.simRunner.runSim(configId, map, peds, params, outputPath);
           if (ps) {
+            ps.on('close', ()=>{
+              resolve({ error: false, result: outputPath });
+            });
             this.processMap.set(configId, ps);
           } else {
             return { error: true, result: 'Unable to start the Simulation' };
@@ -128,32 +120,6 @@ export class SimManager implements ISimManager {
       }
     }
     return { error: true, result: `Simulation is not ready to run: ${simready.reason || 'Unknown'}` };
-  }
-
-  /**
-   * @deprecated
-   *
-   *
-   * @description TypeChain Method that provided the parameters required for a given configid
-   *
-   * @param  {{[key:string]:string[]}} args - TypeChain arguments
-   */
-  // NOTE: typechain requires this be async,
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async getParams(args : { [key: string] : string[] }) : Promise<CbResult> {
-    const configID = args.configid[0].replace(/"/g, '');
-    const params = null;//this.configManager.getParams(configID);
-    if (params) {
-      return {
-        error: false,
-        result: `${JSON.stringify({ configID, params })}`,
-      };
-    } else {
-      return {
-        error: true,
-        result: `No Configuration With ID: ${configID}`,
-      };
-    }
   }
 
   /**
@@ -181,41 +147,6 @@ export class SimManager implements ISimManager {
    */
   private getPeds(id : string) : string {
     return id;
-  }
-
-
-  /**
-   * @description Runs the VIPRA Simulation with the given parameters
-   *
-   *
-   * @private
-   * @param  {string} configID - id of sim.config to use
-   * @param  {string} mapFile - path to obstacle_set file
-   * @param  {string} pedestrianFile - path to pedestrian_set file
-   * @param  {string} paramsFile - path to sim_params.json to use
-   * @param  {string} outputFile - path of output file
-   * @param  {(code:number,signal:NodeJS.Signals)=>void} onExit - callback function for when simulation completes
-   */
-  private runSim(configID : string, mapFile : string, pedestrianFile : string, paramsFile : string, outputFile : string, onExit : (code : number, signal : NodeJS.Signals)=>void) : Nullable<ChildProcess> {
-    const configDir = `${config.vipra.simsDir}/${configID}`;
-    if (!this.fc.fileExists(configDir)) {
-      return null;
-    }
-
-    const command : string = `${config.vipra.simsDir}/VIPRA`;
-    const args : string[] =  [`${configDir}/sim.config`, paramsFile, pedestrianFile, mapFile, outputFile];
-    const ps = child_process.spawn(command, args);
-
-    ps.stderr.on('data', (data : string) => {
-      Logger.error(`runSim: ID: ${configID} : ${data}`);
-    });
-    ps.stdout.on('data', (data : string) => {
-      Logger.debug(`runSim: ID: ${configID} : ${data}`);
-    });
-    ps.on('close', (code : number, signal : NodeJS.Signals) =>{
-      onExit(code, signal);
-    });
-    return ps;
   }
 }
 

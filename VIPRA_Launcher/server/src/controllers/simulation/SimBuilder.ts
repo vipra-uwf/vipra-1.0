@@ -25,6 +25,8 @@ export class SimBuilder implements ISimBuilder {
 
   private debugMode : boolean;
 
+  private quickStart : boolean;
+
   private rebuild : boolean;
 
   private simState : SimState;
@@ -77,26 +79,38 @@ export class SimBuilder implements ISimBuilder {
       await this.pr.precompileHeaders();
       await this.compileAllModules(modules);
       
-      const genMain = await this.pr.compileGenMain(this.debugMode);
-      if (genMain === Status.SUCCESS) {
-        this.genMainBuilt = true;
-      } else {
-        this.genMainBuilt = false;
-        this.setSimState({ ready: false, reason: 'Unable to Build Generate Main' });
-        return { status:Status.INTERNAL_ERROR, message: 'Unable to Build Generate Main' };
-      }
+      if (this.quickStart) {
+        if (this.fc.fileExists(`${config.vipra.simsDir}/generate_main`)) {
+          this.genMainBuilt = true;
+        }
 
-      const humanBehavior = await this.pr.compileHumanBehavior(this.debugMode);
-      if (humanBehavior === Status.SUCCESS) {
-        this.humanBehaviorBuilt = true;
+        if (this.fc.fileExists(`${config.vipra.vipraDir}/build/actions/action.o`)) {
+          this.humanBehaviorBuilt = true;
+        }
+        
+        return this.compileSimulation();
       } else {
-        this.humanBehaviorBuilt = false;
-        this.setSimState({ ready: false, reason: 'Unable to Build Human Behavior' });
-        return { status:Status.INTERNAL_ERROR, message: 'Unable to Build Human Behavior' };
+        const genMain = await this.pr.compileGenMain(this.debugMode);
+        if (genMain === Status.SUCCESS) {
+          this.genMainBuilt = true;
+        } else {
+          this.genMainBuilt = false;
+          this.setSimState({ ready: false, reason: 'Unable to Build Generate Main' });
+          return { status:Status.INTERNAL_ERROR, message: 'Unable to Build Generate Main' };
+        }
+  
+        const humanBehavior = await this.pr.compileHumanBehavior(this.debugMode);
+        if (humanBehavior === Status.SUCCESS) {
+          this.humanBehaviorBuilt = true;
+        } else {
+          this.humanBehaviorBuilt = false;
+          this.setSimState({ ready: false, reason: 'Unable to Build Human Behavior' });
+          return { status:Status.INTERNAL_ERROR, message: 'Unable to Build Human Behavior' };
+        }
+  
+        const simulation = this.compileSimulation();
+        return simulation;
       }
-
-      const simulation = this.compileSimulation();
-      return simulation;
     } else {
       return { status: Status.INTERNAL_ERROR, message: 'Rebuild Set To False' };
     }
@@ -108,6 +122,7 @@ export class SimBuilder implements ISimBuilder {
    */
   public setFlags(argv: FlagMap): void {
     this.rebuild = (argv.get(FLAGS.REBUILD) === 'false') ? false : true;
+    this.quickStart = argv.has(FLAGS.QUICK_START);
     this.debugMode = argv.has(FLAGS.DEBUG_BUILD);
   }
 

@@ -108,6 +108,7 @@ describe("ConfigManager", ()=>{
     expect(configManager.getConfig(first.message||'')?.description).toEqual('this is an updated config');
   });
 
+  
   // test that partial simconfigs are properly converted to full simconfigs
   // eg they fail if they are missing modules etc
 

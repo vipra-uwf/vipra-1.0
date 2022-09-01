@@ -10,6 +10,7 @@ import { Status } from '../types/Status';
 import { SimConfig } from '../types/simconfig';
 import { ModuleType } from '../types/module';
 import { Logger } from '../logging/Logging';
+import { Nullable } from '../types/typeDefs';
 
 const formData = multer();
 
@@ -30,8 +31,18 @@ const simConfigRouter = (configManager : IConfigManager):express.Router=>{//(arg
 
   const simConfigRoutes   : express.Router    = express.Router();
 
+  
   simConfigRoutes.get('/', (req : express.Request, res : express.Response)=>{
     respondData(configManager.getConfigs(), res);
+  });
+
+  simConfigRoutes.get('/:id', (req : express.Request, res : express.Response)=>{
+    const config : Nullable<SimConfig> = configManager.getConfig(req.params.id);
+    if (config) {
+      respondData(config, res);
+    } else {
+      respondError(Status.NOT_FOUND, 'Config Not Found', `No Config with ID: ${req.params.id}`, res);
+    }
   });
 
   simConfigRoutes.post('/', formData.none(), (req : express.Request, res : express.Response)=>{
