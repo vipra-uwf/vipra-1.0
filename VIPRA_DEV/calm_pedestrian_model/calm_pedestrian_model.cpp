@@ -34,6 +34,9 @@ void CalmPedestrianModel::initialize()
 
     createAisles();
     calculatePriority();
+    this->holds = std::vector<FLOATING_NUMBER>(dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getNumAisles(), 0);
+    this->aislePermissions = std::vector<bool>(dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getNumAisles(), false);
+    this->aislePermissions.at(dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)->getNumAisles() - 1) = true;
 
     std::vector<std::pair<std::string, int>> nearestNeighbors;
 
@@ -243,6 +246,20 @@ void CalmPedestrianModel::update(FLOATING_NUMBER time)
             this->pedestrianSet->setVelocity(std::move(newVelocity), i);
             this->pedestrianSet->setPedestrianCoordinates(std::move(newPosition), i);
             this->pedestrianSet->setSpeed(newSpeed, i);
+
+
+            if(this->pedestrianSet->getPedestrianCoordinates().at(i)[0] > this->pedestrianSet->getStartingAisles().at(i) &&
+                this->pedestrianSet->getReleased().at(i) == false)
+            {             
+                this->holds.at(this->pedestrianSet->getPriorities().at(i)) = this->holds.at(this->pedestrianSet->getPriorities().at(i)) - 1;
+                if(this->holds.at(this->pedestrianSet->getPriorities().at(i)) == 0) {
+                    this->aislePermissions.at(this->pedestrianSet->getPriorities().at(i)) = true; 
+                    std::cout << "I am here" << std::endl;
+                }
+                this->pedestrianSet->setReleased(true, i);
+            }
+
+
 
             //If the winner has moved enough in the aisle, we reset the conditions 
             if(this->pedestrianSet->getRaceStatus().at(i) == RaceStatus::WINNER && 
@@ -833,7 +850,7 @@ void CalmPedestrianModel::calculatePriority()
             }
         }
      }
-
+    std::cout << "Num Aisles: " << numAisles << std::endl;
      this->pedestrianSet->setPriorities(std::move(priorities));
      this->pedestrianSet->setStartingAisles(std::move(startingAisles));
 
@@ -937,44 +954,15 @@ MovementDefinitions CalmPedestrianModel::updateMovementState(int pedestrianIndex
      //First check if the human behavior model is modifying the pedestrian
       if (newDefinition != MovementDefinitions::HUMAN)
       {
-         //Check if the pedestrian is less than the current priority and
-         // the x coordinate is greater than or equal to 
-
-        //  ((this->pedestrianSet->getPriorities())[pedestrianIndex]
-        //     < this->currentPriority
-        //     && (this->pedestrianCoordinates[pedestrianIndex][0]
-        //     >= ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
-        //         ->getAisles())
-        //     [(this->pedestrianSet->getStartingAisles())[pedestrianIndex]]
-        //     + ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
-        //         ->getAislesSize())
-        //     [(this->pedestrianSet->getStartingAisles())[pedestrianIndex]] * 0.5)
-        //     - 0.1))) || 
-
-        // (this->pedestrianCoordinates[pedestrianIndex][0]
-        //      >= ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
-        //          ->getAisles())
-        //      [(this->pedestrianSet->getStartingAisles())[pedestrianIndex]]
-        //      + ((dynamic_cast<AirplaneObstacleSet*>(this->obstacleSet)
-        //          ->getAislesSize())
-        //      [(this->pedestrianSet->getStartingAisles())[pedestrianIndex]] * 0.5)
-        // //      - 0.1))
-        // this->pedestrianSet->getNearestNeighbors().at(pedestrianIndex).second != -1 && 
-        //         this->pedestrianSet->getNearestNeighbors().at(pedestrianIndex).first != "O" &&
-        //             this->pedestrianSet->getPriorities().at(this->pedestrianSet->getNearestNeighbors().at(pedestrianIndex).second) > this->pedestrianSet->getPriorities().at(pedestrianIndex)
-         
-         //Problem, pedestrians move too slow, fix STOP check desired speed
-         if(this->desiredSpeeds[pedestrianIndex] < 0.0001)
+        
+         //Needs changes made - if pedestrians desired speed is less than .0001 or pedestrians don't have aisle
+         //permission, set to stop
+         //Otherwise, they can move
+         if(this->desiredSpeeds[pedestrianIndex] < 0.0001 ||
+             ((this->pedestrianSet->getPriorities().at(pedestrianIndex) + 1) < (this->aislePermissions.size()) &&
+             this->aislePermissions.at(this->pedestrianSet->getPriorities().at(pedestrianIndex) + 1) == false))
          {
-            // if(this->pedestrianSet->getPriorities().at(this->pedestrianSet->getNearestNeighbors().at(pedestrianIndex).second) > this->pedestrianSet->getPriorities().at(pedestrianIndex))
-            // {
-            //     std::cout << "I am here!" << std::endl;
                 newDefinition = MovementDefinitions::STOP;   
-            // }
-            // else
-            // {
-            //     newDefinition = MovementDefinitions::PED_DYNAM;
-            // }
          }
          else
          {
@@ -985,7 +973,6 @@ MovementDefinitions CalmPedestrianModel::updateMovementState(int pedestrianIndex
      return newDefinition;
 }
 
-//Still needs work -NR
 void CalmPedestrianModel::raceDetection() {
 
 

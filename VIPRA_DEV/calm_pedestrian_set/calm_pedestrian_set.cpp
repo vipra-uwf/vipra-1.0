@@ -33,6 +33,7 @@ void CalmPedestrianSet::initialize(size_t pedestrianCount)
     this->opponentIDs            = std::vector<int>(pedestrianCount, 0);
     this->racePositions          = std::vector<Dimensions>(pedestrianCount, Dimensions{START_PROP_FORCE, START_PROP_FORCE});
     this->raceFinished           = std::vector<bool>(pedestrianCount, false);
+    this->released               = std::vector<bool>(pedestrianCount, false);
 
     this->setIds(std::vector(pedestrianCount, 0));
     std::iota(this->ids.begin(), this->ids.end(), 0);
@@ -159,6 +160,11 @@ const std::vector<bool>& CalmPedestrianSet::getRaceFinished() const noexcept
     return this->raceFinished;
 }
 
+const std::vector<bool>& CalmPedestrianSet::getReleased() const noexcept
+{
+    return this->released;
+}
+
 void CalmPedestrianSet::setNumPedestrians(int numPedestrians)
 {
    this->numPedestrians = numPedestrians;
@@ -259,6 +265,11 @@ void CalmPedestrianSet::setRacePosition(Dimensions coordinates, size_t pedestria
 void CalmPedestrianSet::setRaceFinished(bool isFinished, size_t pedestrianIndex)
 {
     this->raceFinished.at(pedestrianIndex) = isFinished;
+}
+
+void CalmPedestrianSet::setReleased(bool hasReleased, size_t pedestrianIndex)
+{
+    this->released.at(pedestrianIndex) = hasReleased;
 }
 
 void CalmPedestrianSet::setStartingAisles(

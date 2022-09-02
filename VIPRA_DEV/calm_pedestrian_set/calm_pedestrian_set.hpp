@@ -35,6 +35,7 @@ class CalmPedestrianSet: public PedestrianSet
         std::vector<int>                          opponentIDs;
         std::vector<Dimensions>                   racePositions;
         std::vector<bool>                         raceFinished;
+        std::vector<bool>                         released;
 
         FLOATING_NUMBER startMass;
         FLOATING_NUMBER startReaction_time;
@@ -88,6 +89,7 @@ class CalmPedestrianSet: public PedestrianSet
         [[nodiscard]] const std::vector<int>&                                 getOpponentIDs()                const noexcept;
         [[nodiscard]] const std::vector<Dimensions>&                          getRacePositions()              const noexcept;
         [[nodiscard]] const std::vector<bool>&                                getRaceFinished()               const noexcept;
+        [[nodiscard]] const std::vector<bool>&                                getReleased()                   const noexcept;
 
 
         void setMasses(std::vector<FLOATING_NUMBER>&& massesKg);
@@ -107,6 +109,7 @@ class CalmPedestrianSet: public PedestrianSet
         void setOpponentID(int newID, size_t pedestrianIndex);
         void setRacePosition(Dimensions coordinates, size_t pedestrianIndex);
         void setRaceFinished(bool isFinished, size_t newID);
+        void setReleased(bool hasReleased, size_t pedestrianIndex);
 
     private:
       static constexpr FLOATING_NUMBER START_GOAL_X           = 0.00f;

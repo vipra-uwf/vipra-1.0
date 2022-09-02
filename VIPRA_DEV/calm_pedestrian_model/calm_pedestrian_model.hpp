@@ -40,6 +40,9 @@ private:
     std::vector<FLOATING_NUMBER>                desiredSpeeds;
     std::vector<FLOATING_NUMBER>                reactionTimes;
     std::vector<FLOATING_NUMBER>                shoulderLengths;
+    std::vector<FLOATING_NUMBER>                holds;
+    std::vector<bool>                           aislePermissions;
+    
 
     std::vector<std::pair<std::string, int>>    nearestNeighbors;
 
