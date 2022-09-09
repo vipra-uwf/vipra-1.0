@@ -3,12 +3,12 @@
  */
 
 import { FileBuffers }      from '../../util/FileStore';
-import { FuncResult }       from '../../types/typeDefs';
+import { FuncResult, Nullable }       from '../../types/typeDefs';
 import { Status }           from '../../types/Status';
 import { config }           from '../../configuration/config';
 import { getModule, makeModule, Module, ModuleInfo, ModulesFile, ModuleType, removeModule, toModuleInfo } from '../../types/module';
 
-import { inject, injectable } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { IFilesController } from '../files/interfaces/FilesController.interface';
 import { ISimBuilder } from '../simulation/interfaces/SimBuilder.interface';
 import { IModuleController } from './interfaces/ModuleController.interface';
@@ -16,7 +16,7 @@ import { IModuleController } from './interfaces/ModuleController.interface';
 /**
  * @description Handles keeping track of modules for the simulation
  */
-@injectable()
+@singleton()
 export class ModuleController implements IModuleController {
 
   private fc                  : IFilesController;
@@ -47,6 +47,14 @@ export class ModuleController implements IModuleController {
     } else {
       return { status: Status.NOT_FOUND, message: null };
     }
+  }
+
+  /**
+   * @description Returns the module with the given ID, null if it doesn't exist
+   * @param  {string} id - id of module to find
+   */
+  public getModule(id: string): Nullable<Module> {
+    return getModule(id, this.modules);
   }
 
   /**

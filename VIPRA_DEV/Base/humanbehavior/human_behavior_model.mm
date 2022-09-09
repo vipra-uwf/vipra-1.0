@@ -2,7 +2,14 @@
     "id"          : "e3y1yG6PSjrWzsptf6jHdfBElwFugQ",
     "name"        : "human_behavior_model",
     "description" : "TODO",
-    "params"      : {"random_seed": {"regex": "*"}, "behavior": {"regex": "[A-Za-z]*"}},
+    "params"      : [
+        {
+            "name": "random_seed",
+            "type": "string",
+            "description": "String used for seeding random number generation",
+            "repeatable": false
+        }
+    ],
     "className"   : "HumanBehaviorModel",
     "type"        : "human_behavior_model"
 }

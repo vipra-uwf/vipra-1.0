@@ -2,18 +2,19 @@
  * @module Controllers
  */
 
-import crypto from 'crypto';
+import crypto                   from 'crypto';
 
-import { config } from '../../configuration/config';
-import { SimConfig, complete } from '../../types/simconfig';
+import { config }               from '../../configuration/config';
+import { SimConfig, complete }  from '../../types/simconfig';
 import { FuncResult, Nullable } from '../../types/typeDefs';
-import { inject, injectable } from 'tsyringe';
-import { IFilesController } from '../files/interfaces/FilesController.interface';
-import { IModuleController } from '../module/interfaces/ModuleController.interface';
-import { IConfigManager } from './interfaces/ConfigManager.interface';
-import { Status } from '../../types/Status';
-import { Logger } from '../../logging/Logging';
-import { ModuleType } from '../../types/module';
+import { inject, injectable }   from 'tsyringe';
+import { IFilesController }     from '../files/interfaces/FilesController.interface';
+import { IModuleController }    from '../module/interfaces/ModuleController.interface';
+import { IConfigManager }       from './interfaces/ConfigManager.interface';
+import { IChainManager }        from '../chainbuilder/interfaces/ChainManager.interface';
+import { Status }               from '../../types/Status';
+import { Logger }               from '../../logging/Logging';
+import { ModuleType }           from '../../types/module';
 
 
 // TODO when creating a new sim config, create new service for ChainBuilder -RG
@@ -23,17 +24,20 @@ import { ModuleType } from '../../types/module';
  */
 @injectable()
 export class ConfigManager implements IConfigManager {
-  
+
   private configsMap : Map<string, SimConfig>;
 
   private moduleController : IModuleController;
 
   private fc : IFilesController;
 
-  public constructor(@inject('ModuleController') moduleController : IModuleController, @inject('FilesController') fileController : IFilesController) {
+  private cm : IChainManager;
+
+  public constructor(@inject('ModuleController') moduleController : IModuleController, @inject('FilesController') fileController : IFilesController, @inject('ChainManager') chainManager : IChainManager) {
     this.configsMap = new Map();
     this.moduleController = moduleController;
     this.fc = fileController;
+    this.cm = chainManager;
     this.loadConfigs(config.vipra.vipraDir);
   }
   
@@ -61,9 +65,6 @@ export class ConfigManager implements IConfigManager {
    * @param  {SimConfig} simConfig - simulation config to create
    */
   public addConfig(simConfig: Partial<SimConfig>) : FuncResult {
-
-    // TODO add checking that modules are correct
-
     const configID = crypto.randomUUID();
     const simconf : Nullable<SimConfig> = complete(configID, simConfig);
 
@@ -82,6 +83,11 @@ export class ConfigManager implements IConfigManager {
       this.configsMap.set(configID, simconf);
       this.saveConfig(simconf);
       
+      const serviceCreated : FuncResult = this.cm.addNewService(simconf);
+      if (serviceCreated.status !== Status.SUCCESS) {
+        return serviceCreated;
+      }
+
       return { status:Status.SUCCESS, message: configID };
     } else {
       return { status: Status.BAD_REQUEST, message: 'Simulation Config Missing Properties' };
@@ -127,7 +133,7 @@ export class ConfigManager implements IConfigManager {
       const dirpath = `${config.vipra.simsDir}/${configID}`;
       this.fc.deleteDir(dirpath, true);
       this.configsMap.delete(configID);
-      return { status: Status.SUCCESS, message: null };
+      return this.cm.removeService(configID);      
     } else {
       return { status: Status.NOT_FOUND, message: null };
     }
@@ -139,7 +145,9 @@ export class ConfigManager implements IConfigManager {
    */
   private checkDuplicate(simconfig : SimConfig) : Nullable<string> {
     for (const [key, value] of this.configsMap) {
-      if (value.moduleIDs === simconfig.moduleIDs) {
+      if (Object.values(ModuleType).every((type)=>{
+        return (value[type as unknown as keyof SimConfig] === simconfig[type as unknown as keyof SimConfig]);
+      })) {
         return key;
       }
     }
@@ -178,6 +186,11 @@ export class ConfigManager implements IConfigManager {
         if (simconfig) {
           Logger.info(`Found Simulation Configuration at: ${filePath}`);
           this.configsMap.set(simconfig.id, simconfig);
+          const addService = this.cm.addNewService(simconfig);
+          if (addService.status !== Status.SUCCESS) {
+            Logger.error(`Unable To Create Service for SimConfig: ${simconfig.name} : ${simconfig.id}`);
+            this.configsMap.delete(simconfig.id);
+          }
         }
       }
     });

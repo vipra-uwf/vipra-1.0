@@ -8,7 +8,7 @@ import { cbErrorRespond, cbLinksRespond } from './Responses';
 
 import { Service } from './Service';
 import { Nullable, Protect } from './typedefs';
-import { Link } from './Types';
+import { Link } from './internalTypes';
 
 /**
  * @description Node in a ChainBuilder Service tree, can hold a {@link Service} and/or a {@link ResultStore}
@@ -91,7 +91,7 @@ export class Endpoint implements Node {
     const popped : Nullable<string> = route.shift() || null;
 
     if (popped) {
-      if (popped === '' || popped.includes('?')) {
+      if (popped === '') {
         return this;
       }
       const next = this.links.get(popped);

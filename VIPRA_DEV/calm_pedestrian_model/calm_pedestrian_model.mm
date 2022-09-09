@@ -2,7 +2,7 @@
     "id"          : "VbGjNW5NCkOmKAxvFmz5KwUV2zz469",
     "name"        : "calm_pedestrian_model",
     "description" : "TODO",
-    "params"      : {},
+    "params"      : [],
     "className"   : "CalmPedestrianModel",
     "type"        : "pedestrian_dynamics_model"
 }

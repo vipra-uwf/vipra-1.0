@@ -2,8 +2,8 @@
  * @module Types
  */
 
-import { ParamSet } from './simparam';
-import { Nullable, Protect } from './typeDefs';
+import { CbParameter } from 'typechain';
+import { Nullable } from './typeDefs';
 
 export enum ModuleType {
   MODEL                   = 'pedestrian_dynamics_model',
@@ -43,7 +43,7 @@ export interface ModulesFile {
  * @param  {string} id - id of module to search for
  * @param  {ModulesFile} modules - ModulesFile to search in
  */
-export const getModule = (id : string, modules : Protect<ModulesFile>) : Nullable<Module> => {
+export const getModule = (id : string, modules : ModulesFile) : Nullable<Module> => {
   for (const key in modules) {
     let ret : Nullable<Module> = null;
     if ({}.hasOwnProperty.call(modules, key)) {
@@ -84,7 +84,7 @@ export interface Module {
   id          : string;
   name        : string;
   description : string;
-  params      : ParamSet;
+  params      : CbParameter[];
   dirPath     : string;
   className   : string;
   type        : ModuleType;
@@ -99,7 +99,7 @@ export type ModuleInfo = Omit<Module, 'dirPath' | 'includePath' | 'compiled'>;
  * @note returns a copy of the object, module is not changed
  * @param {Protect<Module>} module - module to get info from
  */
-export const toModuleInfo = (module : Protect<Module>) : ModuleInfo => {
+export const toModuleInfo = (module : Module) : ModuleInfo => {
   const info : ModuleInfo = {
     id: module.id,
     name: module.name,
@@ -116,7 +116,7 @@ export const toModuleInfo = (module : Protect<Module>) : ModuleInfo => {
  * @param {string} moduleDir - absolute path to directory holding module files
  * @param {Protect<ModuleInfo>} moduleInfo - ModuleInfo to get a Module from
  */
-export const makeModule = (moduleDir : string, moduleInfo : Protect<ModuleInfo>) : Module =>{
+export const makeModule = (moduleDir : string, moduleInfo : ModuleInfo) : Module =>{
   return {
     id          : moduleInfo.id,
     name        : moduleInfo.name,

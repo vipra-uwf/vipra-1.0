@@ -2,10 +2,14 @@
     "id"          : "QQgWGHtxsVWT1jIEXbxjKG1HA3iqI0",
     "name"        : "simulation",
     "description" : "TODO",
-    "params"      : {
-        "time_step": {"minimum" : 0, "maximum": 100},
-        "time_step_size": {"minimum": 0, "maximum": 100}
-    },
+    "params"      : [
+        {
+            "name": "time_step_size",
+            "type": "integer",
+            "description": "Size of each timestep of the simulation",
+            "repeatable": false
+        }
+    ],
     "className"   : "Simulation",
     "type"        : "simulation"
 }

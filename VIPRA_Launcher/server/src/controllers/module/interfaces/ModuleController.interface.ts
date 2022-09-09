@@ -2,12 +2,13 @@
  * @module Controller.Interfaces
  */
 
-import { FuncResult } from '../../../types/typeDefs';
+import { FuncResult, Nullable } from '../../../types/typeDefs';
 import { Module, ModuleInfo, ModulesFile, ModuleType } from '../../../types/module';
 import { FileBuffers } from '../../../util/FileStore';
 
 
 export interface IModuleController {
+  getModule(id : string) : Nullable<Module>;
   getModules() : ModulesFile;
   allModulesInfo() : { [type: string] : ModuleInfo[] };
   getModulesofType(type : ModuleType) : Module[];

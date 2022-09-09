@@ -9,13 +9,12 @@ import { inject, singleton } from 'tsyringe';
 
 import { config } from '../../configuration/config';
 import { Logger } from '../../logging/Logging';
-import { CbResult } from 'typechain';
+import { CbArgs, CbResult } from 'typechain';
 import { FLAGS } from '../../types/flags';
 import { IFilesController } from '../files/interfaces/FilesController.interface';
 import { FlagMap, Nullable } from '../../types/typeDefs';
 import { ISimManager } from './interfaces/SimManager.interface';
 import { ISimBuilder } from './interfaces/SimBuilder.interface';
-import { IConfigManager } from '../simconfig/interfaces/ConfigManager.interface';
 import { ISimRunner } from './interfaces/SimRunner.interface';
 
 // TODO NEXT check simbuilder for simulation build status before attempting to run -RG
@@ -31,8 +30,6 @@ export class SimManager implements ISimManager {
 
   private simRunner       : ISimRunner;
 
-  private configManager   : IConfigManager;
-
   private simBuilder      : ISimBuilder;
 
   private fc              : IFilesController;
@@ -45,10 +42,9 @@ export class SimManager implements ISimManager {
 
   private defaultParams   : string;
 
-  public constructor(@inject('ConfigManager') configManager : IConfigManager, @inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : IFilesController, @inject('SimRunner') simrunner : ISimRunner) {
+  public constructor(@inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : IFilesController, @inject('SimRunner') simrunner : ISimRunner) {
     this.processMap = new Map();
     this.fc = fileController;
-    this.configManager = configManager;
     this.simRunner = simrunner;
     this.simBuilder = simBuilder;
   }
@@ -83,9 +79,9 @@ export class SimManager implements ISimManager {
   /**
    * @description TypeChain Method used for running the simulation
    *
-   * @param  {{[key:string]:string[]}} args - TypeChain arguments
+   * @param  {CbArgs} args - TypeChain arguments
    */
-  public async startSim(args : { [key: string] : string[] }) : Promise<CbResult> {
+  public async startSim(args : CbArgs) : Promise<CbResult> {
 
     if (this.quicksim) {
       return { error: false, result: `${config.vipra.outputDir}/debug/quick.json` };
@@ -149,5 +145,3 @@ export class SimManager implements ISimManager {
     return id;
   }
 }
-
-

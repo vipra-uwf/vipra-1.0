@@ -1,10 +1,12 @@
 import { FilesControllerMock } from "./mocks/FilesController.mock";
 import { ModuleControllerMock } from "./mocks/ModuleController.mock";
 import { SimBuilderMock } from "./mocks/SimBuilder.mock";
+import { ChainManagerMock } from "./mocks/ChainManager.mock";
 
 FilesControllerMock();
 ModuleControllerMock();
 SimBuilderMock();
+ChainManagerMock();
 
 import 'reflect-metadata';
 
@@ -15,6 +17,8 @@ import { SimBuilder } from "../src/controllers/simulation/SimBuilder";
 import { badConfig, goodConfig, goodConfigUpdate } from "./values/simconfig";
 import { Status } from "../src/types/Status";
 import { MODULE_TYPE_COUNT } from "./values/modules";
+import { ChainManager } from "../src/controllers/chainbuilder/ChainManager";
+import { SimManager } from "../src/controllers/simulation/SimManager";
 
 
 describe("ConfigManager", ()=>{
@@ -22,6 +26,8 @@ describe("ConfigManager", ()=>{
   let mockSB : SimBuilder;
   let mockFC : FilesController;
   let mockMC : ModuleController;
+  let mockCM : ChainManager;
+  let mockSM : SimManager;
 
   let configManager : ConfigManager;
 
@@ -29,7 +35,8 @@ describe("ConfigManager", ()=>{
     jest.clearAllMocks();
     mockFC = new FilesController();
     mockMC = new ModuleController(mockSB, mockFC);
-    configManager = new ConfigManager(mockMC, mockFC);
+    mockCM = new ChainManager(mockSM, mockMC, mockFC);
+    configManager = new ConfigManager(mockMC, mockFC, mockCM);
   });
 
   it("Should Load Simulation Configurations on Startup", ()=>{
@@ -40,6 +47,7 @@ describe("ConfigManager", ()=>{
     const makeDirSpy = jest.spyOn(mockFC, 'makeDir');
     const filewriteSpy = jest.spyOn(mockFC, 'writeFile');
     const moduleCheckSpy = jest.spyOn(mockMC, 'checkModule');
+    const newServiceSpy = jest.spyOn(mockCM, 'addNewService');
 
     const result = configManager.addConfig(goodConfig);
 
@@ -47,6 +55,7 @@ describe("ConfigManager", ()=>{
     expect(result.message).not.toBeNull();
     expect(makeDirSpy).toBeCalledTimes(1);
     expect(filewriteSpy).toBeCalledTimes(1);
+    expect(newServiceSpy).toBeCalledTimes(1);
     expect(moduleCheckSpy).toBeCalledTimes(MODULE_TYPE_COUNT);
   });
 
@@ -54,12 +63,14 @@ describe("ConfigManager", ()=>{
     const makeDirSpy = jest.spyOn(mockFC, 'makeDir');
     const filewriteSpy = jest.spyOn(mockFC, 'writeFile');
     const moduleCheckSpy = jest.spyOn(mockMC, 'checkModule');
+    const newServiceSpy = jest.spyOn(mockCM, 'addNewService');
 
     const result = configManager.addConfig(badConfig);
 
     expect(result).toEqual({ status: Status.BAD_REQUEST, message: `Module Not Found: badmodule` });
     expect(makeDirSpy).toBeCalledTimes(0);
     expect(filewriteSpy).toBeCalledTimes(0);
+    expect(newServiceSpy).toBeCalledTimes(0);
     expect(moduleCheckSpy).toBeCalledTimes(6);
   });
 
@@ -71,12 +82,14 @@ describe("ConfigManager", ()=>{
     const makeDirSpy = jest.spyOn(mockFC, 'makeDir');
     const filewriteSpy = jest.spyOn(mockFC, 'writeFile');
     const moduleCheckSpy = jest.spyOn(mockMC, 'checkModule');
+    const newServiceSpy = jest.spyOn(mockCM, 'addNewService');
 
     const result = configManager.addConfig(goodConfig);
 
     expect(result.status).toEqual(Status.CONFLICT);
     expect(makeDirSpy).toBeCalledTimes(0);
     expect(filewriteSpy).toBeCalledTimes(0);
+    expect(newServiceSpy).toBeCalledTimes(0);
     expect(moduleCheckSpy).toBeCalledTimes(0);
   });
 
@@ -86,11 +99,13 @@ describe("ConfigManager", ()=>{
     expect(first.message).not.toBeNull;
     
     const deleteSpy = jest.spyOn(mockFC, 'deleteDir');
+    const removeServiceSpy = jest.spyOn(mockCM, 'removeService');
 
     const result = configManager.deleteConfig(first.message || '');
 
     expect(result).toEqual({ status: Status.SUCCESS, message: null });
     expect(deleteSpy).toBeCalledTimes(1);
+    expect(removeServiceSpy).toBeCalledTimes(1);
     expect(configManager.getConfigs().length).toEqual(0);
   });
 

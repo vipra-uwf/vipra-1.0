@@ -3,7 +3,8 @@
  */
 
 import express from 'express';
-import { Link, CbResponse, CbServiceInfo, CbParametersInfo } from './Types';
+import { CbParametersInfo, CbResponses, Link } from './internalTypes';
+import { CbServiceInfo } from './Types';
 
 /**
  * @description Sends a Response with {@link Link}s from an {@link Endpoint}
@@ -55,7 +56,7 @@ const cbFormatRespond = (baseHref : string, resultHash : string, formats : strin
   response.status(200).json({
     methods:['DELETE'],
     links: formats.map((format)=>{
-      return { 'href': baseHref.concat(resultHash, '/', format) };
+      return { 'name': format, 'href': `${baseHref}/${resultHash}/${format}` };
     }),
     status: 'success',
   });
@@ -81,7 +82,7 @@ const cbErrorRespond = (message : string, response : express.Response) : void =>
  * @param {CbResponse} responses - Result Response information
  * @param {express.Response} res - Client Response Object
  */
-const cbServiceInfoRespond = (info : CbServiceInfo, parameters : CbParametersInfo, responses : CbResponse, res : express.Response) : void => {
+const cbServiceInfoRespond = (info : CbServiceInfo, parameters : CbParametersInfo, responses : CbResponses, res : express.Response) : void => {
   res.json({
     info,
     methods:['GET', 'POST'],

@@ -5,10 +5,11 @@ import express from 'express';
 import https from 'https';
 import { ResultStore } from './ResultStore';
 import { cbErrorRespond, cbResultRespond, cbServiceInfoRespond } from './Responses';
-import { CbMethod, CbResult, CbArgs, CbServiceOptions, CbServiceInfo, CbParameter, CbReturnType, CbParametersInfo, CbResponse } from './Types';
+import { CbMethod, CbResult, CbArgs, CbServiceOptions, CbServiceInfo, CbParameter, CbReturnType } from './Types';
 
 import axios, { AxiosResponse } from 'axios';
 import { Nullable, Protect } from './typedefs';
+import { CbParametersInfo, CbResponses } from './internalTypes';
 
 /**
  * @description ChainBuiler Service
@@ -19,7 +20,7 @@ export class Service {
 
   private paramsInfo      : CbParametersInfo;
 
-  private response        : CbResponse;
+  private response        : CbResponses;
 
   private resultStore     : ResultStore;
 
@@ -36,6 +37,8 @@ export class Service {
       rejectUnauthorized: false,
     });
     this.info = settings.info;
+    this.resultStore = settings.resultStore;
+    this.methodReturn = settings.returnValue;
     this.setMethod(settings.parameters, settings.method);
   }
 
@@ -54,7 +57,7 @@ export class Service {
         cbErrorRespond(resultLocation.result, response);
         return;
       } else {
-        cbResultRespond(this.methodReturn.name, resultLocation.result, response);
+        cbResultRespond(this.methodReturn.name, `${this.resultStore.getBaseURL()}/${resultLocation.result}`, response);
         return;
       }
     }
@@ -174,7 +177,10 @@ export class Service {
    */
   private setMethod(parameters : CbParameter[], method : CbMethod) : void {
     this.methodParams = parameters;
-
+    this.paramsInfo = {
+      arguments: {},
+      server: [],
+    };
     parameters.forEach((param)=>{
       this.paramsInfo.arguments[param.name] = {
         chain_name: `${param.name}_href`,

@@ -22,7 +22,7 @@ export abstract class ResultStore implements Node {
 
   protected type            : string;
 
-  abstract getResult(hash : string) : Promise<CbResult> | CbResult;
+  abstract getResult(locationID : string) : Promise<CbResult> | CbResult;
   abstract storeResult(args : CbArgs, result : string) : Promise<CbResult> | CbResult;
 
   constructor(name : string) {
@@ -64,6 +64,8 @@ export abstract class ResultStore implements Node {
         default:
           cbErrorRespond('Incorrect Format', response);
       }
+    } else {
+      cbErrorRespond(result.result, response);
     }
   }
 
@@ -84,10 +86,12 @@ export abstract class ResultStore implements Node {
    * @returns {Nullable<string>} The location string, null if no location provided
    */
   private getLocation(request : express.Request) : { location : Nullable<string>, format : Nullable<string> } {
-    const route : string[] = request.baseUrl.split('/');
+    const route : string[] = request.path.split('/').filter((value)=>{
+      return value !== '';
+    });
     const index : number = route.findIndex((value) => {
       if (value === `${this.name}_results`) {
-        return index;
+        return true;
       }
     });
     if (route[index + 1]) {
@@ -107,5 +111,21 @@ export abstract class ResultStore implements Node {
    */
   public setBaseURL(url : string) : void {
     this.baseURL = url;
+  }
+
+  /**
+   * @description gets the URL for this {@link ResultStore}
+   * @returns {string} URL
+   */
+  public getBaseURL() : string {
+    return this.baseURL;
+  }
+
+  /**
+   * @description Returns the name of this ResultStore
+   * @returns {string} name of ResultStore
+   */
+  public getName() : string { 
+    return this.name;
   }
 }

@@ -12,6 +12,7 @@ import { cbErrorRespond } from './Responses';
 import { ResultStore } from './ResultStore';
 import { Service } from './Service';
 import { Nullable } from './typedefs';
+import { CbRootOptions } from './Types';
 
 
 /**
@@ -24,10 +25,13 @@ export class CBServiceRoot {
 
   private baseURL         : string;
 
-  constructor(baseURL : string) {
+  private opts            : CbRootOptions;
+
+  constructor(baseURL : string, options? : CbRootOptions) {
     this.baseURL = this.correctURL(baseURL);
     this.endpoints = new Map();
     this.resultStores = new Map();
+    this.setOptions(options);
   }
 
   /**
@@ -36,7 +40,7 @@ export class CBServiceRoot {
    * @param {express.Response} response - Client Response Object
    */
   public handleChainBuilderRequest(request : express.Request, response: express.Response) : void {
-    const node : Nullable<Node> = this.getNode(request.originalUrl);
+    const node : Nullable<Node> = this.getNode(request.path);
     if (node) {
       node.handleRequest(request, response)
         .catch(()=>{
@@ -112,12 +116,19 @@ export class CBServiceRoot {
     const endpoint : Nullable<Endpoint> = this.getNode(route) as Endpoint;
     if (endpoint) {
       endpoint.setService(service);
-      this.addResultStore(service.getResultStore(), `${service.getKey()}_results`);
+      this.addResultStore(service.getResultStore(), `${service.getResultStore().getName()}_results`);
     } else {
       throw new Error('Attempt to Add a Service to an Endpoint that doesn\'t exits');
     }
   }
 
+  /**
+   * @description Sets whether {@linke ResultStores} are allowed to be shared between services
+   * @param  {boolean} allow - whether to allow sharing
+   */
+  public allowStoreSharing(allow : boolean) : void {
+    this.opts.allowStoreSharing = allow;
+  }
   
   /**
    * @throws
@@ -129,9 +140,11 @@ export class CBServiceRoot {
   private addResultStore(resultStore : ResultStore, name : string) : void {
     if (!this.resultStores.has(name)) {
       this.resultStores.set(name, resultStore);
-      resultStore.setBaseURL(`${this.baseURL}/data/${name}`);
+      resultStore.setBaseURL(`${this.baseURL}data/${name}`);
     } else {
-      throw new Error(`Duplicate ResultStore: ${name}`);
+      if (!this.opts.allowStoreSharing) {
+        throw new Error(`Duplicate ResultStore: ${name}`);
+      }
     }
   }
   
@@ -169,6 +182,18 @@ export class CBServiceRoot {
       return `${url}/`;
     } else {
       return url;
+    }
+  }
+
+  /**
+   * @description Sets the options if they are provided, default values if not
+   * @param  {CbRootOptions} opts - options the client provided
+   */
+  private setOptions(opts? : CbRootOptions) : void {
+    if (opts) {
+      this.opts = opts;
+    } else {
+      this.opts.allowStoreSharing = false;
     }
   }
 }

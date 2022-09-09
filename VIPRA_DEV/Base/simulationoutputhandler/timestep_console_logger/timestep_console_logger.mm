@@ -2,7 +2,14 @@
     "id"          : "RfH40LtLJjHOlPIEeTj0i6ghBygQsZ",
     "name"        : "timestep_console_logger",
     "description" : "TODO",
-    "params"      : {"outputFrequency": {"minmum": 1, "maximum": 100}},
+    "params"      : [
+        {
+            "name": "outputFrequency",
+            "type": "integer",
+            "description": "How frequently position samples are taken in the simulation",
+            "repeatable": false
+        }
+    ],
     "className"   : "TimestepConsoleLogger",
     "type"        : "simulation_output_handler"
 }

@@ -3,7 +3,7 @@
  */
 
 import crypto from 'crypto';
-import { Nullable, FuncResult, SimState, Protect, FlagMap } from '../../types/typeDefs';
+import { Nullable, FuncResult, SimState, FlagMap } from '../../types/typeDefs';
 import { Status } from '../../types/Status';
 import { Module, ModulesFile, ModuleType } from '../../types/module';
 import { inject, singleton } from 'tsyringe';
@@ -64,7 +64,7 @@ export class SimBuilder implements ISimBuilder {
   /**
    * @description returns the state of the simulation (whether it is ready to run, and why if not)
    */
-  public getSimState() : Protect<SimState> {
+  public getSimState() : SimState {
     return this.simState;
   }
 

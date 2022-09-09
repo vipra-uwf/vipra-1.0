@@ -9,6 +9,8 @@ interface SimConfig {
   id          : string;
   name        : string;
   description : string;
+  author      : string;
+  email       : string;
   moduleIDs   : Record<ModuleType, string>;
 }
 
@@ -20,21 +22,11 @@ interface SimConfig {
 const complete = (id : string, simConfig : Partial<SimConfig>) : Nullable<SimConfig> => {
   simConfig.id = id;
   const modulesMet : boolean = Object.values(ModuleType).every((value)=>{ 
-    if (simConfig.moduleIDs) {
-      return (simConfig.moduleIDs[value as ModuleType] !== undefined && simConfig.moduleIDs[value as ModuleType] !== null && simConfig.moduleIDs[value as ModuleType] !== '');
-    } else {
-      return false;
-    }
+    return (simConfig[value as unknown as keyof SimConfig]);
   });
 
-  if (simConfig.id && simConfig.name && simConfig.description && simConfig.moduleIDs && modulesMet) {
-
-    return Object.assign(simConfig, {
-      id,
-      name: simConfig.name,
-      description: simConfig.description,
-      moduleIDs: simConfig.moduleIDs,
-    });
+  if (simConfig.id && simConfig.name && simConfig.description && modulesMet) {
+    return simConfig as SimConfig;
   } else {
     return null;
   }

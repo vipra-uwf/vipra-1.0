@@ -1,26 +1,22 @@
 /**
  * @module Routes
  */
-import express from 'express';
-// import { setupCB } from '../chainbuilder/cbSetup';
-// import { CBServer } from 'typechain';
+import express           from 'express';
+import { IChainManager } from '../controllers/chainbuilder/interfaces/ChainManager.interface';
 
 /**
  * @description Creates the router that handles routes pertaining to the VIPRA simulation
  *
  * @note router factory functions are used to ensure that the objects are made at the correct time -RG
  *
- * @param  {Map<string, string>} argv - Map containing the commandline flags and their values
+ * @param  {IChainManager} chainManager - ChainBuilder manager implementation
  */
-const simulationRouter = () : express.Router => {
+const simulationRouter = (chainManager : IChainManager) : express.Router => {
   const simRoutes = express.Router();
 
-  // const cbServer : CBServer = setupCB();
-
-  // simRoutes.use('/', (req : express.Request, res : express.Response)=>{
-  //   req.originalUrl = req.url;
-  //   cbServer.handleChainBuilderRequest(req, res);
-  // });
+  simRoutes.use('/', (req : express.Request, res : express.Response)=>{
+    chainManager.handleChainBuilderRequest(req, res);
+  }); 
 
   return simRoutes;
 };

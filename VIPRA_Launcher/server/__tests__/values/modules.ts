@@ -8,7 +8,7 @@ const goodModule : Module = {
   id: "ponjpojrnaiervnakdna",
   name: "goodModule",
   description: "this is a good module",
-  params: {},
+  params: [],
   dirPath: SUCCESSFUL_PATH,
   className: "GoodModule",
   type: ModuleType.MODEL,
@@ -20,7 +20,7 @@ const goodModuleInfo : ModuleInfo = {
   id: "paornjbvapjnakjnairabgjin",
   name: "goodModule",
   description: "this is a good module upload",
-  params: {},
+  params: [],
   type: ModuleType.MODEL,
   className: 'GoodModule'
 };
@@ -32,7 +32,7 @@ const checkInstalledGoodModule : Module = {
   "id": "paornjbvapjnakjnairabgjin",
   "includePath": "/paornjbvapjnakjnairabgjin/goodModule.hpp",
   "name": "goodModule",
-  "params": {},
+  "params": [],
   "type": ModuleType.MODEL,
   compiled: false
 }
@@ -41,7 +41,7 @@ const duplicateModuleInfo : ModuleInfo = {
   id: "VbGjNW5NCkOmKAxvFmz5KwUV2zz469",
   name: "calm_pedestrian_model",
   description: "this describes a duplicate module",
-  params: {},
+  params: [],
   type: ModuleType.MODEL,
   className: 'CalmPedestrianModel'
 };
@@ -277,7 +277,7 @@ const missingModule : Module = {
   id: "poaernvpaojernpvaiuernvpaojwn",
   name: "example_obstacle_set",
   description: "TODO",
-  params: {},
+  params: [],
   type: ModuleType.OBSTACLE_SET,
   className: 'ExampleObstacleSet',
   dirPath: 'successful/path',
@@ -289,7 +289,7 @@ const secondMissingModule : Module = {
     "id": "Xz59g1o8HcsnMJlKaiYw00wZ19rB7P",
     "name": "calm_goals",
     "description": "TODO",
-    "params": {},
+    "params": [],
     "className": "CALMGOALS",
     "type": ModuleType.GOALS,
     "dirPath": "successful/path",

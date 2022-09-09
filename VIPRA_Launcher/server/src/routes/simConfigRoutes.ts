@@ -47,13 +47,8 @@ const simConfigRouter = (configManager : IConfigManager):express.Router=>{//(arg
 
   simConfigRoutes.post('/', formData.none(), (req : express.Request, res : express.Response)=>{
     const body = req.body as ConfigRequestBody;
-    if (body && body.name && body.description && body.moduleIDs) {
-      const simconf : Partial<SimConfig> = {
-        name: body.name,
-        description: body.description,
-        moduleIDs: body.moduleIDs,
-      };
-      const added = configManager.addConfig(simconf);
+    if (body && body.name && body.description) {
+      const added = configManager.addConfig(body as Partial<SimConfig>);
       switch (added.status) {
         case Status.SUCCESS:
           respondSuccess(res);

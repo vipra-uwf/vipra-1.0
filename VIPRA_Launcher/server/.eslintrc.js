@@ -16,8 +16,7 @@ module.exports = {
         "docs/*",
         "node_modules/*",
         "dist/*",
-        "jest.config.ts",
-        "chainbuilder/"
+        "jest.config.ts"
     ],
     "overrides": [
     ],

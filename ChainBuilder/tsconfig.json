@@ -10,7 +10,6 @@
         "strictNullChecks": true,
         "moduleResolution": "node",
         "sourceMap": true,
-        "removeComments": true,
         "outDir": "dist",
         "baseUrl": "./",
         "paths": {
@@ -20,5 +19,5 @@
         },
         "types":["node", "jest"]
     },
-    "include":["./src/*"],
+    "include":["./src/*", "__tests__"],
 }

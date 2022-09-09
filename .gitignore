@@ -25,4 +25,5 @@ output.json
 config.json
 modules.json
 pedestrian_trajectory.json
-typechain-1.0.0.tgz
+*.tgz
+coverage
