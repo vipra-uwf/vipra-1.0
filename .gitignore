@@ -1,29 +1,38 @@
+# VIPRA
 generate_main
-VIPRA
 main.cpp
 generated_main
 generated_main.cpp
 main
+VIPRAsim
 *.exe
 *.out
 *.o
 *.gch
-.vscode
 build
 rapidxml
 rapidxml-1.13
+output.json
+pedestrian_trajectory.json
+
+
+# VIPRA Launcher
+node_modules
+coverage
+dist
+certs
+modules.json
+config.json
+
+# ChainBuilder
+*.tgz
+
+# 3rd Party
 *.mdj
 odeint-v2
-uml_screenshot.png
 .vagrant
 .antlr
 .idea
-node_modules
-dist
-certs
-output.json
-config.json
-modules.json
-pedestrian_trajectory.json
-*.tgz
-coverage
+
+# VSCode
+.vscode

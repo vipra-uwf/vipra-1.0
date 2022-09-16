@@ -8,7 +8,6 @@
 
 #include "../dsl/human_behavior.hpp"
 
-#include "../simulation/data/data.hpp"
 #include "../definitions/behavior_definitions.hpp"
 
 #include "../../Interfaces/pedestrianmodel/pedestrian_dynamics_model.hpp"

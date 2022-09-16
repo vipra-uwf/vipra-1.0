@@ -3,26 +3,19 @@
 
 #include "../simulation_output_handler.hpp"
 
-class TimestepConsoleLogger: public SimulationOutputHandler
-{    
-    private: 
-        int frequency;
-        int* timestep;
-        OutputDataWriter* outputDataWriter;
-        PedestrianSet* pedestrianSet;
-        Simulation* simulation;
-        void setTimestep(int* timestep);
-        void setOutputWritingFrequency(int frequency);
-        void printPedestrianData();
-        void printAndTestGoals();
+class TimestepConsoleLogger : public SimulationOutputHandler {
+ private:
+  OutputDataWriter& outputDataWriter;
+  PedestrianSet&    pedestrianSet;
+  Simulation&       simulation;
 
-    public:
-        virtual void configure(CONFIG_MAP* configMap);
-        virtual void setOutputDataWriter(OutputDataWriter* outputDataWriter);
-        virtual void setPedestrianSet(PedestrianSet* pedestrianSet);
-        virtual void setSimulation(Simulation* simulation);
-        virtual bool isOutputCriterionMet();
-        virtual void writeToDocument();
+ public:
+  void configure(const CONFIG_MAP& configMap) override;
+  void setOutputDataWriter(OutputDataWriter& outputDataWriter) override;
+  void setPedestrianSet(const PedestrianSet& pedestrianSet) override;
+  void setSimulation(const Simulation& simulation) override;
+  bool isOutputCriterionMet() override;
+  void writeToDocument() override;
 };
 
 #endif

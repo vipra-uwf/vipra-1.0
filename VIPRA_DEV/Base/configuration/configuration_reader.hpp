@@ -6,22 +6,21 @@
 #include "../definitions/type_definitions.hpp"
 #include "../jsoncpp/json/json.h"
 
-class ConfigurationReader
-{
-    private:
-        Json::Value jsonDocument;
-        Json::CharReaderBuilder jsonReader;
-        std::ifstream fileStream;
-        std::string errors;
+class ConfigurationReader {
+ public:
+  void        readJsonConfiguration(std::string fileName);
+  Json::Value getJsonObject();
 
-        void openFile(std::string fileName);
-        void parseFile();
-    
-    public:
-        void readJsonConfiguration(std::string fileName);
-        Json::Value getJsonObject();
+  void configure(const CONFIG_MAP& config);
 
-        void configure(CONFIG_MAP* config);
+ private:
+  Json::Value             jsonDocument;
+  Json::CharReaderBuilder jsonReader;
+  std::ifstream           fileStream;
+  std::string             errors;
+
+  void openFile(std::string fileName);
+  void parseFile();
 };
 
 #endif

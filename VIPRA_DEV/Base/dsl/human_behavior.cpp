@@ -1,5 +1,4 @@
 #include "human_behavior.hpp"
-#include <iostream>
 
 // Provide default definitions for methods to make extending much easier
 

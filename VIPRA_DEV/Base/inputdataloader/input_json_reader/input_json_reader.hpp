@@ -1,26 +1,26 @@
 #ifndef INPUT_JSON_READER_HPP
 #define INPUT_JSON_READER_HPP
 
-#include "../input_data_loader.hpp"
 #include "../../jsoncpp/json/json.h"
+#include "../input_data_loader.hpp"
 
-class InputJSONReader: public InputDataLoader
-{
-    private:
-        Json::Value jsonDocument;
-        Json::CharReaderBuilder jsonReader;
-        std::ifstream fileStream;
-        std::string errors;
+class InputJSONReader : public InputDataLoader {
+ private:
+  Json::Value             jsonDocument;
+  Json::CharReaderBuilder jsonReader;
+  std::ifstream           fileStream;
+  std::string             errors;
 
-        void openFile(std::string fileName);
-        void parseFile();
+  void openFile(std::string fileName);
+  void parseFile();
 
-    public:
-        virtual ENTITY_SET getInputEntities();
-        virtual void configure(CONFIG_MAP* configMap);
-        virtual void extractFileData(
-            std::string fileName, 
-            CONFIG_MAP* configMap);
+ public:
+  ENTITY_SET getInputEntities() override;
+
+  void configure(const CONFIG_MAP& configMap) override;
+
+  void extractFileData(std::string       fileName,
+                       const CONFIG_MAP& configMap) override;
 };
 
 #endif

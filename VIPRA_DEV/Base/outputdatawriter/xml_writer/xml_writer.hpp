@@ -1,8 +1,6 @@
 #ifndef XML_WRITER_HPP
 #define XML_WRITER_HPP
 
-#include "../../_pch/pch.hpp"
-
 #include "../output_data_writer.hpp"
 #include "../rapidxml/rapidxml.hpp"
 #include "../rapidxml/rapidxml_print.hpp"
