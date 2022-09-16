@@ -70,20 +70,20 @@ export class ConfigManager implements IConfigManager {
 
     if (simconf) {
       
-      const duplicate = this.checkDuplicate(simconf);
+      const duplicate : Nullable<string> = this.checkDuplicate(simconf);
       if (duplicate) {
         return { status: Status.CONFLICT, message: duplicate };
       }
 
       const modulesCheck = this.checkModules(simconf.moduleIDs);
       if (modulesCheck.status !== Status.SUCCESS) {
-        return { status: Status.BAD_REQUEST, message: `Module Not Found: ${modulesCheck.message || 'null'}` };
+        return modulesCheck;
       }
 
       this.configsMap.set(configID, simconf);
       this.saveConfig(simconf);
       
-      const serviceCreated : FuncResult = this.cm.addNewService(simconf);
+      const serviceCreated : FuncResult = this.cm.addService(simconf);
       if (serviceCreated.status !== Status.SUCCESS) {
         return serviceCreated;
       }
@@ -105,7 +105,7 @@ export class ConfigManager implements IConfigManager {
     if (simconf) {
       const modulesCheck = this.checkModules(simconf.moduleIDs);
       if (modulesCheck.status !== Status.SUCCESS) {
-        return { status: Status.BAD_REQUEST, message: `Module Not Found: ${modulesCheck.message || 'null'}` };
+        return { status: Status.NOT_FOUND, message: `Module Not Found: ${modulesCheck.message || 'null'}` };
       }
 
       if (simConfig.description) {
@@ -127,7 +127,7 @@ export class ConfigManager implements IConfigManager {
    * @description Removes a simulation configuration, making it unusable
    * @param  {string} configID - id of configuration to delete
    */
-  public deleteConfig(configID: string) : FuncResult {
+  public removeConfig(configID: string) : FuncResult {
     
     if (this.configsMap.has(configID)) {
       const dirpath = `${config.vipra.simsDir}/${configID}`;
@@ -186,7 +186,7 @@ export class ConfigManager implements IConfigManager {
         if (simconfig) {
           Logger.info(`Found Simulation Configuration at: ${filePath}`);
           this.configsMap.set(simconfig.id, simconfig);
-          const addService = this.cm.addNewService(simconfig);
+          const addService = this.cm.addService(simconfig);
           if (addService.status !== Status.SUCCESS) {
             Logger.error(`Unable To Create Service for SimConfig: ${simconfig.name} : ${simconfig.id}`);
             this.configsMap.delete(simconfig.id);
@@ -203,8 +203,9 @@ export class ConfigManager implements IConfigManager {
    */
   private checkModules(modules : Record<ModuleType, string>) : FuncResult {
     for (const id in modules) {
-      if (this.moduleController.checkModule(modules[id as ModuleType]).status !== Status.SUCCESS) {
-        return { status: Status.BAD_REQUEST, message: modules[id as ModuleType] };
+      const check = this.moduleController.checkModule(modules[id as ModuleType]);
+      if (check.status !== Status.SUCCESS) {
+        return { status: check.status, message: `Module ${check.status === Status.NOT_FOUND ? 'Not Found' : 'Failed Compilation'}: ${modules[id as ModuleType]}` };
       }
     }
     return { status: Status.SUCCESS, message: null };

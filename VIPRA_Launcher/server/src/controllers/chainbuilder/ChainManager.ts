@@ -51,7 +51,7 @@ export class ChainManager implements IChainManager {
    * @description Creates a new service from a simulation configuration
    * @param {SimConfig} simconfig - sim config to create a service for
    */
-  public addNewService(simconfig: SimConfig): FuncResult {
+  public addService(simconfig: SimConfig): FuncResult {
 
     const serviceInfo : CbServiceInfo = {
       name       : simconfig.name,
@@ -105,7 +105,7 @@ export class ChainManager implements IChainManager {
    * @description Sets up the {@link CBServiceRoot} with default values
    */
   private setupServiceRoot() : void {
-    this.serviceRoot = new CBServiceRoot(config.cb.url, { allowStoreSharing: true });
+    this.serviceRoot = new CBServiceRoot(`${config.cb.url}/chainbuilder/`, { allowStoreSharing: true });
     this.serviceRoot.addRoute('/services');
   }
   

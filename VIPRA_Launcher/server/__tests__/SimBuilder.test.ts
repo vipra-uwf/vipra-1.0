@@ -85,7 +85,6 @@ describe('SimBuilder', ()=>{
 
     expect(result.status).toEqual(Status.BAD_REQUEST);
     await new Promise(process.nextTick);
-    expect(result.message).toBeNull();
     if(result.message){
         expect(simBuilder.getBuildStatus(result.message)).toEqual({ready:false, reason:`Missing Module Types: obstacle_set`});
     }
@@ -105,7 +104,6 @@ describe('SimBuilder', ()=>{
     await new Promise(process.nextTick);
     
     expect(startup.status).toEqual(Status.BAD_REQUEST);
-    expect(startup.message).toBeNull();
 
     const buildModuleSpy = jest.spyOn(mockPR, 'buildModule');
     const compileSimSpy = jest.spyOn(mockPR, 'compileSim');
@@ -115,11 +113,13 @@ describe('SimBuilder', ()=>{
     const moveSpy = jest.spyOn(mockFC, 'moveFile');
     const deleteSpy = jest.spyOn(mockFC, 'deleteDir');
     
-    const add = await simBuilder.addModule(missingModule);
+    const add = await simBuilder.addedModule(missingModule);
     await new Promise(process.nextTick);
 
     expect(add.status).toBe(Status.SUCCESS);
-    expect(add.message).toBeNull();
+    if (add.message) {
+      expect(simBuilder.getBuildStatus(add.message)).toEqual({ ready: false, reason: "Missing Module Types: goals" });
+    }
 
     expect(buildModuleSpy).toHaveBeenCalledTimes(1);
     expect(compileSimSpy).toHaveBeenCalledTimes(0);
@@ -145,7 +145,7 @@ describe('SimBuilder', ()=>{
     const compileSimSpy = jest.spyOn(mockPR, 'compileSim');
     const compileMainSpy = jest.spyOn(mockPR, 'compileMain');
 
-    const result = await simBuilder.addModule(missingModule);
+    const result = await simBuilder.addedModule(missingModule);
     await new Promise(process.nextTick);
 
     expect(result.status).toEqual(Status.SUCCESS);
@@ -170,7 +170,7 @@ describe('SimBuilder', ()=>{
     const compileSimSpy = jest.spyOn(mockPR, 'compileSim');
     const compileMainSpy = jest.spyOn(mockPR, 'compileMain');
 
-    const result = await simBuilder.addModule(missingModule);
+    const result = await simBuilder.addedModule(missingModule);
     await new Promise(process.nextTick);
 
     expect(result.status).toEqual(Status.SUCCESS);

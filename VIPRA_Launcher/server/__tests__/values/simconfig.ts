@@ -30,7 +30,7 @@ const badConfig : Partial<SimConfig> = {
   name: "goodConfig",
   description: "this is a good config",
   moduleIDs: {
-    pedestrian_dynamics_model: 'goodmodule',
+    pedestrian_dynamics_model: "goodmodule",
     goals: 'goodmodule',
     output_data_writer: 'goodmodule',
     input_data_loader: 'goodmodule',
@@ -42,7 +42,7 @@ const badConfig : Partial<SimConfig> = {
     configuration_reader: 'goodmodule',
     clock: 'goodmodule',
     data: 'goodmodule',
-    simulation: 'goodmodule',
+    simulation: 'goodmodule'
   }
 } 
 

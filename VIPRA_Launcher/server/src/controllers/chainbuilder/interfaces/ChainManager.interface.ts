@@ -4,7 +4,7 @@ import { FuncResult } from '../../../types/typeDefs';
 
 
 export interface IChainManager {
-  addNewService(simconfig : SimConfig) : FuncResult;
+  addService(simconfig : SimConfig) : FuncResult;
   removeService(id : string) : FuncResult;
   handleChainBuilderRequest(req : express.Request, res : express.Response) : void;
 }

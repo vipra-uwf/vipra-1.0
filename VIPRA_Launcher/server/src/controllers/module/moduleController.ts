@@ -106,7 +106,7 @@ export class ModuleController implements IModuleController {
     const module : Module = makeModule(moduleDir, moduleInfo);
     this.addModule(module);
 
-    return this.simBuilder.addModule(module);
+    return this.simBuilder.addedModule(module);
   }
 
   /**
@@ -122,7 +122,7 @@ export class ModuleController implements IModuleController {
       this.writeModulesFile();
       this.fc.deleteDir(module.dirPath, false);
       this.fc.deleteFile(`${config.vipra.vipraDir}/build/${module.id}.o`);
-      return this.simBuilder.removeModule(module);
+      return this.simBuilder.removedModule(module);
     } else {
       return { status: Status.NOT_FOUND, message: 'Unable to find module' };
     }

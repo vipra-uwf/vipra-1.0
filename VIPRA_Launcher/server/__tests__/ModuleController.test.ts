@@ -82,11 +82,11 @@ describe('ModuleController', () =>{
   });
 
   it("Should Delete Modules", async ()=>{
-    const removeSpy = jest.spyOn(mockSimBuilder, 'removeModule');
+    const removeSpy = jest.spyOn(mockSimBuilder, 'removedModule');
     const deleteDirSpy = jest.spyOn(mockFC, 'deleteDir');
     const deleteFileSpy = jest.spyOn(mockFC, 'deleteFile');
     const writeSpy = jest.spyOn(mockFC, 'writeFile');
-    const sbremoveSpy = jest.spyOn(mockSimBuilder, 'removeModule');
+    const sbremoveSpy = jest.spyOn(mockSimBuilder, 'removedModule');
 
     const result = moduleController.removeModule('f8qt7eLCczzFMjToJBsA5qYUz1A8E6');
 

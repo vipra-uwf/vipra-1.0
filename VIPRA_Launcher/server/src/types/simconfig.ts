@@ -21,8 +21,10 @@ interface SimConfig {
  */
 const complete = (id : string, simConfig : Partial<SimConfig>) : Nullable<SimConfig> => {
   simConfig.id = id;
-  const modulesMet : boolean = Object.values(ModuleType).every((value)=>{ 
-    return (simConfig[value as unknown as keyof SimConfig]);
+  const modulesMet : boolean = Object.values(ModuleType).every((value)=>{
+    if (simConfig.moduleIDs) {
+      return (simConfig.moduleIDs[value]);
+    }
   });
 
   if (simConfig.id && simConfig.name && simConfig.description && modulesMet) {

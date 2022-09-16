@@ -1,7 +1,7 @@
-import { FilesControllerMock } from "./mocks/FilesController.mock";
+import { FilesControllerMock }  from "./mocks/FilesController.mock";
 import { ModuleControllerMock } from "./mocks/ModuleController.mock";
-import { SimBuilderMock } from "./mocks/SimBuilder.mock";
-import { ChainManagerMock } from "./mocks/ChainManager.mock";
+import { SimBuilderMock }       from "./mocks/SimBuilder.mock";
+import { ChainManagerMock }     from "./mocks/ChainManager.mock";
 
 FilesControllerMock();
 ModuleControllerMock();
@@ -10,15 +10,15 @@ ChainManagerMock();
 
 import 'reflect-metadata';
 
-import { ConfigManager } from "../src/controllers/simconfig/ConfigManager";
-import { FilesController } from "../src/controllers/files/FilesController";
-import { ModuleController } from "../src/controllers/module/moduleController";
-import { SimBuilder } from "../src/controllers/simulation/SimBuilder";
+import { ConfigManager }                           from "../src/controllers/simconfig/ConfigManager";
+import { FilesController }                         from "../src/controllers/files/FilesController";
+import { ModuleController }                        from "../src/controllers/module/moduleController";
+import { SimBuilder }                              from "../src/controllers/simulation/SimBuilder";
 import { badConfig, goodConfig, goodConfigUpdate } from "./values/simconfig";
-import { Status } from "../src/types/Status";
-import { MODULE_TYPE_COUNT } from "./values/modules";
-import { ChainManager } from "../src/controllers/chainbuilder/ChainManager";
-import { SimManager } from "../src/controllers/simulation/SimManager";
+import { Status }                                  from "../src/types/Status";
+import { MODULE_TYPE_COUNT }                       from "./values/modules";
+import { ChainManager }                            from "../src/controllers/chainbuilder/ChainManager";
+import { SimManager }                              from "../src/controllers/simulation/SimManager";
 
 
 describe("ConfigManager", ()=>{
@@ -35,7 +35,7 @@ describe("ConfigManager", ()=>{
     jest.clearAllMocks();
     mockFC = new FilesController();
     mockMC = new ModuleController(mockSB, mockFC);
-    mockCM = new ChainManager(mockSM, mockMC, mockFC);
+    mockCM = new ChainManager(mockMC, mockFC, mockSM);
     configManager = new ConfigManager(mockMC, mockFC, mockCM);
   });
 
@@ -47,7 +47,7 @@ describe("ConfigManager", ()=>{
     const makeDirSpy = jest.spyOn(mockFC, 'makeDir');
     const filewriteSpy = jest.spyOn(mockFC, 'writeFile');
     const moduleCheckSpy = jest.spyOn(mockMC, 'checkModule');
-    const newServiceSpy = jest.spyOn(mockCM, 'addNewService');
+    const newServiceSpy = jest.spyOn(mockCM, 'addService');
 
     const result = configManager.addConfig(goodConfig);
 
@@ -63,11 +63,11 @@ describe("ConfigManager", ()=>{
     const makeDirSpy = jest.spyOn(mockFC, 'makeDir');
     const filewriteSpy = jest.spyOn(mockFC, 'writeFile');
     const moduleCheckSpy = jest.spyOn(mockMC, 'checkModule');
-    const newServiceSpy = jest.spyOn(mockCM, 'addNewService');
+    const newServiceSpy = jest.spyOn(mockCM, 'addService');
 
     const result = configManager.addConfig(badConfig);
 
-    expect(result).toEqual({ status: Status.BAD_REQUEST, message: `Module Not Found: badmodule` });
+    expect(result).toEqual({ status: Status.NOT_FOUND, message: `Module Not Found: badmodule` });
     expect(makeDirSpy).toBeCalledTimes(0);
     expect(filewriteSpy).toBeCalledTimes(0);
     expect(newServiceSpy).toBeCalledTimes(0);
@@ -82,7 +82,7 @@ describe("ConfigManager", ()=>{
     const makeDirSpy = jest.spyOn(mockFC, 'makeDir');
     const filewriteSpy = jest.spyOn(mockFC, 'writeFile');
     const moduleCheckSpy = jest.spyOn(mockMC, 'checkModule');
-    const newServiceSpy = jest.spyOn(mockCM, 'addNewService');
+    const newServiceSpy = jest.spyOn(mockCM, 'addService');
 
     const result = configManager.addConfig(goodConfig);
 
@@ -101,7 +101,7 @@ describe("ConfigManager", ()=>{
     const deleteSpy = jest.spyOn(mockFC, 'deleteDir');
     const removeServiceSpy = jest.spyOn(mockCM, 'removeService');
 
-    const result = configManager.deleteConfig(first.message || '');
+    const result = configManager.removeConfig(first.message || '');
 
     expect(result).toEqual({ status: Status.SUCCESS, message: null });
     expect(deleteSpy).toBeCalledTimes(1);

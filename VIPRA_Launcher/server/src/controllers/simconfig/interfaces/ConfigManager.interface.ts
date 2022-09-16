@@ -10,5 +10,5 @@ export interface IConfigManager {
   getConfigs() : SimConfig[];
   addConfig(simConfig : Partial<SimConfig>) : FuncResult;
   updateConfig(configID : string, simConfig : Partial<SimConfig>) : FuncResult;
-  deleteConfig(configID : string) : FuncResult;
+  removeConfig(configID : string) : FuncResult;
 }

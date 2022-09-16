@@ -94,18 +94,24 @@ export class SimBuilder implements ISimBuilder {
         if (genMain === Status.SUCCESS) {
           this.genMainBuilt = true;
         } else {
+          const bID = crypto.randomUUID();
+          const state = { ready: false, reason: 'Unable to Build Generate Main' };
           this.genMainBuilt = false;
-          this.setSimState({ ready: false, reason: 'Unable to Build Generate Main' });
-          return { status:Status.INTERNAL_ERROR, message: 'Unable to Build Generate Main' };
+          this.setSimState(state);
+          this.setBuildState(bID, state);
+          return { status:Status.INTERNAL_ERROR, message: bID };
         }
   
         const humanBehavior = await this.pr.compileHumanBehavior(this.debugMode);
         if (humanBehavior === Status.SUCCESS) {
           this.humanBehaviorBuilt = true;
         } else {
+          const bID = crypto.randomUUID();
+          const state = { ready: false, reason: 'Unable to Build Human Behavior' };
           this.humanBehaviorBuilt = false;
-          this.setSimState({ ready: false, reason: 'Unable to Build Human Behavior' });
-          return { status:Status.INTERNAL_ERROR, message: 'Unable to Build Human Behavior' };
+          this.setSimState(state);
+          this.setBuildState(bID, state);
+          return { status:Status.INTERNAL_ERROR, message: bID };
         }
   
         const simulation = this.compileSimulation();
@@ -132,16 +138,17 @@ export class SimBuilder implements ISimBuilder {
    */
   public compileSimulation(): FuncResult {
     
+    const bID = crypto.randomUUID();
+    this.setBuildState(bID, { ready:false, reason:'Currently Building Simulation' });
+
     const missing = this.getMissing();
     if (missing.length !== 0) {
       const reason = `Missing Module Types: ${missing.join(', ')}`;
       const state = { ready:false, reason };
+      this.setBuildState(bID, state);
       this.setSimState(state);
-      return { status: Status.BAD_REQUEST, message: reason };
+      return { status: Status.BAD_REQUEST, message: bID };
     }
-    const bID = crypto.randomUUID();
-
-    this.setBuildState(bID, { ready:false, reason:'Currently Building Simulation' });
     this.fc.makeDir(`${config.vipra.simsDir}/build`);
     this.fc.makeDir(`${config.vipra.simsDir}/build/${bID}`);
 
@@ -208,7 +215,7 @@ export class SimBuilder implements ISimBuilder {
    * @note return value.message holds the buildID for the simulation build process, null if the simulation can't be built
    * @param  {Module} added - the module that was added
    */
-  public async addModule(added: Module): Promise<FuncResult> {
+  public async addedModule(added: Module): Promise<FuncResult> {
     
     const built = await this.pr.buildModule(added, this.debugMode);
     
@@ -216,9 +223,6 @@ export class SimBuilder implements ISimBuilder {
       this.addedType(added.type);
       added.compiled = true;
       const simBuild = this.compileSimulation();
-      if (simBuild.status !== Status.SUCCESS) {
-        return { status: Status.SUCCESS, message:null };
-      }
       return { status: Status.SUCCESS, message: simBuild.message };
     } else {
       return { status:Status.INTERNAL_ERROR, message: 'Unable To Compile Module' };
@@ -231,7 +235,7 @@ export class SimBuilder implements ISimBuilder {
    * @param  {Module} removed - module that was removed
    * @returns FuncResult
    */
-  public removeModule(removed: Module): FuncResult {
+  public removedModule(removed: Module): FuncResult {
     this.removedType(removed.type);
     const simulation = this.compileSimulation();
     return simulation;

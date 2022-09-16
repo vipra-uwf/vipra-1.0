@@ -27,7 +27,7 @@ type ConfigRequestBody = {
  *
  * @param  {ConfigManager} configManager - ConfigManager implementation that will be used to handle simconfigs
  */
-const simConfigRouter = (configManager : IConfigManager):express.Router=>{//(argv : Map<string, string>, configManager : IConfigManager) : express.Router => {
+const simConfigRouter = (configManager : IConfigManager):express.Router=>{
 
   const simConfigRoutes   : express.Router    = express.Router();
 
@@ -98,8 +98,8 @@ const simConfigRouter = (configManager : IConfigManager):express.Router=>{//(arg
   });
 
   simConfigRoutes.delete('/:id', (req : express.Request, res : express.Response)=>{
-    const deleted = configManager.deleteConfig(req.params.id);
-    switch (deleted.status) {
+    const removed = configManager.removeConfig(req.params.id);
+    switch (removed.status) {
       case Status.SUCCESS:
         respondSuccess(res);
         break;
@@ -107,7 +107,7 @@ const simConfigRouter = (configManager : IConfigManager):express.Router=>{//(arg
         respondError(Status.NOT_FOUND, 'Config Not Found', `No SimCOnfig with ID: ${req.params.id}`, res);
         break;
       default:
-        Logger.error(`Unhandled Status in DELETE /simconfig/:id : ${deleted.status}`);
+        Logger.error(`Unhandled Status in DELETE /simconfig/:id : ${removed.status}`);
         respondUnknownError(res);
     }
   });

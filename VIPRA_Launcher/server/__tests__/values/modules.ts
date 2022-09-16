@@ -57,7 +57,7 @@ const installedOutputDataWriters = [
       "id": "esBm2A3I0yIbGvzW5bLY0yKHJTzVCj",
       "name": "json_timestep_writer",
       "description": "TODO",
-      "params": {},
+      "params": [],
       "className": "JSONTIMESTEPWRITER",
       "type": "output_data_writer",
       "dirPath": "successful/path",
@@ -68,7 +68,7 @@ const installedOutputDataWriters = [
       "id": "f8qt7eLCczzFMjToJBsA5qYUz1A8E6",
       "name": "json_writer",
       "description": "TODO",
-      "params": {},
+      "params": [],
       "className": "JSONWRITER",
       "type": "output_data_writer",
       "dirPath": "successful/path",
@@ -83,7 +83,7 @@ const installedModulesInfo = {
         "id": "bQIGJDQw0Fgqo4oC3lH7mQerFGTQry",
         "name": "input_json_reader",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "input_data_loader"
       }
     ],
@@ -92,14 +92,14 @@ const installedModulesInfo = {
         "id": "e3y1yG6PSjrWzsptf6jHdfBElwFugQ",
         "name": "human_behavior_model",
         "description": "TODO",
-        "params": {
-          "random_seed": {
-            "regex": "*"
-          },
-          "behavior": {
-            "regex": "[A-Za-z]*"
+        "params": [
+          {
+              "name": "random_seed",
+              "type": "string",
+              "description": "String used for seeding random number generation",
+              "repeatable": false
           }
-        },
+      ],
         "type": "human_behavior_model"
       }
     ],
@@ -108,14 +108,14 @@ const installedModulesInfo = {
         "id": "esBm2A3I0yIbGvzW5bLY0yKHJTzVCj",
         "name": "json_timestep_writer",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "output_data_writer"
       },
       {
         "id": "f8qt7eLCczzFMjToJBsA5qYUz1A8E6",
         "name": "json_writer",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "output_data_writer"
       }
     ],
@@ -124,24 +124,28 @@ const installedModulesInfo = {
         "id": "RfH40LtLJjHOlPIEeTj0i6ghBygQsZ",
         "name": "timestep_console_logger",
         "description": "TODO",
-        "params": {
-          "outputFrequency": {
-            "minmum": 1,
-            "maximum": 100
+        "params": [
+          {
+              "name": "outputFrequency",
+              "type": "integer",
+              "description": "How frequently position samples are taken in the simulation",
+              "repeatable": false
           }
-        },
+      ],
         "type": "simulation_output_handler"
       },
       {
         "id": "0bQVYYyskvxYq6YW4J67z73UB6GbnU",
         "name": "timestep_output_handler",
         "description": "TODO",
-        "params": {
-          "outputFrequency": {
-            "minmum": 1,
-            "maximum": 100
+        "params": [
+          {
+              "name": "outputFrequency",
+              "type": "integer",
+              "description": "How frequently position samples are taken in the simulation",
+              "repeatable": false
           }
-        },
+      ],
         "type": "simulation_output_handler",
       }
     ],
@@ -150,7 +154,7 @@ const installedModulesInfo = {
         "id": "jLcPe7ZP8G15AFH5vPb6Wz2DrIVT94",
         "name": "calm_pedestrian_set",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "pedestrian_set"
       }
     ],
@@ -159,7 +163,7 @@ const installedModulesInfo = {
         "id": "MTpemEr4jv5XTvgwO7q54Qco97Pnt4",
         "name": "airplane_obstacle_set",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "obstacle_set"
       }
     ],
@@ -168,7 +172,7 @@ const installedModulesInfo = {
         "id": "h6fJTJdM5L9q8wjXEvN6Cq8D14MUeX",
         "name": "calm_entity_set_factory",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "entity_set_factory"
       }
     ],
@@ -177,7 +181,7 @@ const installedModulesInfo = {
         "id": "Xz59g1o8HcsnMJlKaiYw00wZ19rB7P",
         "name": "calm_goals",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "goals"
       }
     ],
@@ -186,7 +190,7 @@ const installedModulesInfo = {
         "id": "VbGjNW5NCkOmKAxvFmz5KwUV2zz469",
         "name": "calm_pedestrian_model",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "pedestrian_dynamics_model"
       }
     ],
@@ -195,7 +199,7 @@ const installedModulesInfo = {
         "id": "5E4V21CyOwU5iMBfH97qlFDn6DlAlf",
         "name": "configuration_reader",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "configuration_reader"
       }
     ],
@@ -204,7 +208,7 @@ const installedModulesInfo = {
         "id": "NUpICP9g2eBe9GGYBXmx1jofH9TC7k",
         "name": "clock",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "clock"
       }
     ],
@@ -213,7 +217,7 @@ const installedModulesInfo = {
         "id": "MJk1zG6WMVTwUT82QroZXohn3gnfT4",
         "name": "data",
         "description": "TODO",
-        "params": {},
+        "params": [],
         "type": "data"
       }
     ],
@@ -222,16 +226,14 @@ const installedModulesInfo = {
         "id": "QQgWGHtxsVWT1jIEXbxjKG1HA3iqI0",
         "name": "simulation",
         "description": "TODO",
-        "params": {
-          "time_step": {
-            "minimum": 0,
-            "maximum": 100
-          },
-          "time_step_size": {
-            "minimum": 0,
-            "maximum": 100
+        "params": [
+          {
+              "name": "time_step_size",
+              "type": "integer",
+              "description": "Size of each timestep of the simulation",
+              "repeatable": false
           }
-        },
+      ],
         "type": "simulation"
       }
     ]
@@ -240,7 +242,7 @@ const installedModulesInfo = {
 const getInstalledModules = ()=>{
     if(fs.existsSync(`${__dirname}/installedModules.json`)){
       try{
-          const obj : ModulesFile = Object.assign({}, JSON.parse(fs.readFileSync(`${__dirname}/installedModules.json`).toString()) as ModulesFile);
+          const obj : ModulesFile = Object.assign([], JSON.parse(fs.readFileSync(`${__dirname}/installedModules.json`).toString()) as ModulesFile);
           return obj;
       }catch(e){
           throw new Error('Unable to read installedModules.json');      
@@ -264,7 +266,7 @@ const getInstalled_Two_Missing = () : ModulesFile =>{
 const getInstalled_One_Missing = () : ModulesFile => {
   if(fs.existsSync(`${__dirname}/missingObstacleSet.json`)){
     try{
-        const obj : ModulesFile = Object.assign({}, JSON.parse(fs.readFileSync(`${__dirname}/missingObstacleSet.json`).toString()) as ModulesFile);
+        const obj : ModulesFile = Object.assign([], JSON.parse(fs.readFileSync(`${__dirname}/missingObstacleSet.json`).toString()) as ModulesFile);
         return obj;
     }catch(e){
         throw new Error('Unable to read missingObstacleSet.json');      

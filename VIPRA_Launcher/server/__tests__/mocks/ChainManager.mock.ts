@@ -1,3 +1,4 @@
+import { Status } from "../../src/types/Status";
 
 
 export const ChainManagerMock = ()=>{
@@ -5,8 +6,8 @@ export const ChainManagerMock = ()=>{
         return{
             ChainManager: jest.fn().mockImplementation(()=>{
                 return {
-                  addNewService: ()=>{},
-                  removeService: ()=>{},
+                  addService: ()=>{return { status: Status.SUCCESS, message: null }},
+                  removeService: ()=>{return { status: Status.SUCCESS, message: null }},
                   handleChainBuilderRequest: ()=>{}                  
                 }
             })
