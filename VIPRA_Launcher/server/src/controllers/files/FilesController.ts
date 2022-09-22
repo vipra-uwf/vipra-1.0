@@ -5,7 +5,6 @@
 import 'reflect-metadata';
 import fs   from 'fs';
 import tar  from 'tar';
-import path from 'path';
 import { singleton } from 'tsyringe';
 
 
@@ -14,7 +13,6 @@ import { Logger } from '../../logging/Logging';
 import { Status } from '../../types/Status';
 
 
-import { makeModule, ModuleInfo, ModulesFile } from '../../types/module';
 import { IFilesController } from './interfaces/FilesController.interface';
 
 
@@ -293,38 +291,5 @@ export class FilesController implements IFilesController {
     } catch (e) {
       return null;
     }
-  }
-
-  /**
-   * @description Returns a {@link ModulesFile} containing all installed modules
-   * Returns an empty {@link ModulesFile} if no modules are installed
-   *
-   * @param  {string} baseDirPath - root directory to start searching for .mm files from
-   */
-  public loadInstalledModules(baseDirPath : string) : ModulesFile {
-    const ret : ModulesFile = {
-      input_data_loader: [],
-      human_behavior_model: [],
-      output_data_writer: [],
-      simulation_output_handler: [],
-      pedestrian_set: [],
-      obstacle_set: [],
-      entity_set_factory: [],
-      goals: [],
-      pedestrian_dynamics_model: [],
-      configuration_reader: [],
-      clock: [],
-      data: [],
-      simulation: [],
-    };
-    this.forAllFilesThatMatchDo(/.*\.mm/, baseDirPath, (filePath : string)=>{
-      const moduleinfo : Nullable<ModuleInfo> = this.readJsonFile<ModuleInfo>(filePath, { error: true });
-      if (moduleinfo) {
-        const module = makeModule(path.dirname(filePath), moduleinfo);
-        Logger.info(`Found Module: ${module.name}:${module.id} ${module.type}`);
-        ret[module.type].push(module);
-      }
-    });
-    return ret;
   }
 }

@@ -14,9 +14,9 @@ interface Config {
   };
   cb: { url : string };
   vipra: { vipraDir : string; simsDir : string; behaviorDir : string; outputDir: string };
-  simconfig: { configsFile : string };
-  module: { modulesFile : string };
-  map: { mapsFile : string };
+  simconfig: { configsFile : string; configsDir : string };
+  module: { modulesFile : string; modulesDir : string };
+  map: { mapsFile : string, mapsDir : string };
 }
 
 /**
@@ -39,9 +39,9 @@ const loadConfig = (configFile : string) : Config => {
     },
     cb: { url: '' },
     vipra: { vipraDir: '', simsDir: '', behaviorDir: '', outputDir: '' },
-    simconfig: { configsFile: '' },
-    module: { modulesFile: '' },
-    map: { mapsFile: '' },
+    simconfig: { configsFile: '', configsDir: '' },
+    module: { modulesFile: '', modulesDir: '' },
+    map: { mapsFile: '', mapsDir: '' },
   };
 };
 

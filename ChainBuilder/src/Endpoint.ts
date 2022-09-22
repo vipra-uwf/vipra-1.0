@@ -81,6 +81,15 @@ export class Endpoint implements Node {
     this.service = service;
   }
 
+  
+  /**
+   * @description Removes the service from the endpoint
+   * @returns void
+   */
+  public removeService() : void {
+    this.service = null;
+  }
+
 
   /**
    * @description Traverses the given route, returning the {@link Endpoint} at the end

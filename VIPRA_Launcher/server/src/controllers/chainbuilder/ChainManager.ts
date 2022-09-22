@@ -2,7 +2,7 @@ import express              from 'express';
 import { config } from '../../configuration/config';
 
 import { inject, singleton }        from 'tsyringe';
-import { CbArgs, CbParameter, CbReturnType, CbServiceInfo, CbServiceOptions, CBServiceRoot, Service } from 'typechain';
+import { CbArgs, CbArgument, CbResult, CbReturnValue, CbServiceInfo, CbServiceOptions, CBServiceRoot, Service } from 'typechain';
 import { SimConfig }        from '../../types/simconfig';
 import { FuncResult }       from '../../types/typeDefs';
 import { IChainManager }    from './interfaces/ChainManager.interface';
@@ -13,6 +13,7 @@ import { IModuleController } from '../module/interfaces/ModuleController.interfa
 import { Nullable } from 'typechain/dist/typedefs';
 import { Module, ModuleType } from '../../types/module';
 import { IFilesController } from '../files/interfaces/FilesController.interface';
+import { MapsResultStore } from './resultStores/MapsResultStore';
 
 /**
  * @description Handles Chainbuilder, creating/deleting services, routing requests etc
@@ -30,12 +31,16 @@ export class ChainManager implements IChainManager {
 
   private fc : IFilesController;
 
+  private serviceMap : Map<string, { service: Service; route : string }>;
+
   constructor(@inject('ModuleController') moduleController : IModuleController, @inject('FilesController') fileController : IFilesController, @inject('SimManager') simManager : ISimManager) {
     this.simManager = simManager;
     this.mc = moduleController;
     this.fc = fileController;
+    this.serviceMap = new Map();
     this.setupServiceRoot();
     this.setupResultStore();
+    this.setupMapsService();
   }
 
   /**
@@ -53,30 +58,33 @@ export class ChainManager implements IChainManager {
    */
   public addService(simconfig: SimConfig): FuncResult {
 
+    const key = `${simconfig.name}${simconfig.id}`;
+
     const serviceInfo : CbServiceInfo = {
       name       : simconfig.name,
       description: simconfig.description,
-      key        : `${simconfig.name}${simconfig.id}`,
-      version    : '1.0.0',
+      key,
+      version    : '1.0.0.0',
       author     : simconfig.author,
       email      : simconfig.email,
       doc_href   : '',
     };
 
-    const returnType : CbReturnType = {
+    const returnValue : CbReturnValue = {
       name: 'simresults',
       type: 'xyz',
+      description: 'Results of simulation run',
     };
 
-    const params : Nullable<CbParameter[]> = this.getParameters(simconfig);
+    const params : Nullable<CbArgument[]> = this.getParameters(simconfig);
     if (!params) {
       return { status: Status.BAD_REQUEST, message: 'Unable to get Parameters for configuration' };
     }
 
     const serviceOpts : CbServiceOptions = {
       info       : serviceInfo,
-      parameters : params,
-      returnValue: returnType,
+      arguments  : params,
+      returnValue,
       resultStore: this.resultStore,
       /**
        * @description ChainBuilder Method to run for starting a simulation
@@ -87,8 +95,10 @@ export class ChainManager implements IChainManager {
       server     : ['transient'],
     };
     const newService : Service = new Service(serviceOpts);
+    const route : string = `services/${simconfig.name}`;
 
-    this.serviceRoot.addService(newService, `services/${simconfig.name}`);
+    this.serviceRoot.addService(newService, route);
+    this.serviceMap.set(key, { service: newService, route });
     return { status: Status.SUCCESS, message: null };
   }
 
@@ -97,15 +107,20 @@ export class ChainManager implements IChainManager {
    * @param {string} id - id of simconfig to remove
    */
   public removeService(id: string): FuncResult {
-    // TODO
-    return { status: Status.SUCCESS, message: id };
+    const service : Nullable<{ service: Service; route: string }> = this.serviceMap.get(id) || null;
+    if (service) {
+      this.serviceRoot.removeService(service.route);
+      return { status: Status.SUCCESS, message: id };
+    } else {
+      return { status: Status.NOT_FOUND, message: null };
+    }
   }
 
   /**
    * @description Sets up the {@link CBServiceRoot} with default values
    */
   private setupServiceRoot() : void {
-    this.serviceRoot = new CBServiceRoot(`${config.cb.url}/chainbuilder/`, { allowStoreSharing: true });
+    this.serviceRoot = new CBServiceRoot(`${config.cb.url}chainbuilder/`, { allowStoreSharing: true });
     this.serviceRoot.addRoute('/services');
   }
   
@@ -120,16 +135,16 @@ export class ChainManager implements IChainManager {
    * @description Gets a full list of parameters needed for a config, null if error getting parameters
    * @param  {SimConfig} simconfig - config to get parameters of
    */
-  private getParameters(simconfig : SimConfig) : Nullable<CbParameter[]> {
-    let params : CbParameter[] = [
+  private getParameters(simconfig : SimConfig) : Nullable<CbArgument[]> {
+    let args : CbArgument[] = [
       {
-        name: 'mapID',
+        chain_name: 'mapID',
         type: 'string',
         description: 'Obstacle Map to run the simulation on',
         repeatable: false,
       },
       {
-        name: 'pedsID',
+        chain_name: 'pedsID',
         type: 'string',
         description: '',
         repeatable: false,
@@ -140,7 +155,14 @@ export class ChainManager implements IChainManager {
       if (simconfig[value as unknown as keyof SimConfig]) {
         const module : Nullable<Module> = this.mc.getModule(simconfig[value as unknown as keyof SimConfig] as string);
         if (module) { 
-          params = params.concat(module.params);
+          args = args.concat(module.params.map((param)=>{
+            return {
+              chain_name: param.name,
+              description: param.description,
+              type: param.type,
+              repeatable: param.multiple,
+            };
+          }));
         } else { 
           return null;
         }
@@ -148,6 +170,42 @@ export class ChainManager implements IChainManager {
         return null;
       }
     }
-    return params;
+    return args;
+  }
+
+  
+  /**
+   * @description Starts the service used for getting currently installed maps
+   */
+  private setupMapsService() : void {
+    const serviceInfo : CbServiceInfo = {
+      name: 'installedMaps',
+      description: 'Returns all installed VIPRA Maps',
+      key: 'installedMaps_phiuavdrfpiunjavdfkjnaevuipheargpuiohn',
+      version: '1.0.0.0',
+      author: 'Rolland Goodenough',
+      email: 'rtg13@students.uwf.edu',
+      doc_href: '',
+    };
+
+    const serviceOpts : CbServiceOptions = {
+      info: serviceInfo,
+      arguments: [],
+      returnValue: { name: 'maps', type: 'string', description: 'Array Of all Maps installed on the server' },
+      resultStore: new MapsResultStore('maps'),
+      /**
+       * @description Service method for returning maps (actual logic is in the result store)
+       * @param  {{[key:string]:string[];}} args - arguments passed
+       * @returns CbResult
+       */
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      method: (args: { [key: string]: string[]; }): CbResult => {
+        return { error: false, result: 'MAPS' };
+      },
+      server: [],
+    };
+
+    const service : Service = new Service(serviceOpts);
+    this.serviceRoot.addService(service, '/services/maps');
   }
 }

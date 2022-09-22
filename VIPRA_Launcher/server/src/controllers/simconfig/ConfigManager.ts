@@ -38,7 +38,7 @@ export class ConfigManager implements IConfigManager {
     this.moduleController = moduleController;
     this.fc = fileController;
     this.cm = chainManager;
-    this.loadConfigs(config.vipra.vipraDir);
+    this.loadConfigs(config.simconfig.configsDir);
   }
   
   /**
@@ -188,7 +188,7 @@ export class ConfigManager implements IConfigManager {
           this.configsMap.set(simconfig.id, simconfig);
           const addService = this.cm.addService(simconfig);
           if (addService.status !== Status.SUCCESS) {
-            Logger.error(`Unable To Create Service for SimConfig: ${simconfig.name} : ${simconfig.id}`);
+            Logger.error(`Unable To Create Service for SimConfig: ${simconfig.name} : ${simconfig.id} ; REASON: ${addService.message || 'UNKNOWN'}`);
             this.configsMap.delete(simconfig.id);
           }
         }

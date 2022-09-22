@@ -9,9 +9,7 @@ import multer from 'multer';
 import { Logger } from '../logging/Logging';
 
 type MapRequestBody = {
-  id? : string;
   name? : string;
-  description? : string;
 };
 
 const store = multer();

@@ -2,7 +2,6 @@
  * @module Types
  */
 
-import { CbParameter } from 'typechain';
 import { Nullable } from './typeDefs';
 
 export enum ModuleType {
@@ -13,11 +12,9 @@ export enum ModuleType {
   SIM_OUTPUT_HANDLER      = 'simulation_output_handler',
   PEDESTRIAN_SET          = 'pedestrian_set',
   OBSTACLE_SET            = 'obstacle_set',
-  ENTITY_SET_FACTORY      = 'entity_set_factory',
   HUMAN_BEHAVIOR_MODEL    = 'human_behavior_model',
   CONFIGURATION_READER    = 'configuration_reader',
   CLOCK                   = 'clock',
-  DATA                    = 'data',
   SIMULATION              = 'simulation',
 }
 
@@ -29,12 +26,10 @@ export interface ModulesFile {
   simulation_output_handler : Module[];
   pedestrian_set : Module[];
   obstacle_set : Module[];
-  entity_set_factory : Module[];
   goals : Module[];
   pedestrian_dynamics_model : Module[];
   configuration_reader: Module[];
   clock : Module[];
-  data : Module[];
   simulation : Module[];
 }
 
@@ -79,12 +74,18 @@ export const removeModule = (id : string, modules : ModulesFile) : Nullable<Modu
   return null;
 };
 
+export interface ModuleParam {
+  name:string;
+  type:string;
+  description:string;
+  multiple:boolean;
+}
 
 export interface Module {
   id          : string;
   name        : string;
   description : string;
-  params      : CbParameter[];
+  params      : ModuleParam[];
   dirPath     : string;
   className   : string;
   type        : ModuleType;

@@ -7,7 +7,7 @@
             "name": "time_step_size",
             "type": "integer",
             "description": "Size of each timestep of the simulation",
-            "repeatable": false
+            "multiple": false
         }
     ],
     "className"   : "Simulation",

@@ -1,6 +1,0 @@
-      include 'parameters.inc' 
-      include 'common_md.inc'
-      include 'common_lj_new.inc' 
-      include 'mpif.h'
-c      include '/cm/shared/apps/openmpi/intel/1.8.4/include/mpif.h'
-c      include 'mpif.h' 

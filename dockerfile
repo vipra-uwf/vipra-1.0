@@ -11,6 +11,22 @@ RUN apt-get install -y libantlr4-runtime-dev
 RUN npm install -g typescript 
 
 RUN mkdir /usr/src/VIPRA/certs
+
+COPY ./ChainBuilder ./ChainBuilder
+RUN cd /usr/src/VIPRA/ChainBuilder && npm install && npm run build && npm pack
+
+COPY ./VIPRA_Launcher/server/package.json ./VIPRA_Launcher/server/package.json
+RUN cd /usr/src/VIPRA/VIPRA_Launcher/server && npm install
+
+COPY ./VIPRA_Launcher ./VIPRA_Launcher
+
+RUN cd /usr/src/VIPRA/VIPRA_Launcher/server && npm run build
+
+
+COPY ./VIPRA_DEV ./VIPRA_DEV
+COPY ./Example_Maps ./VIPRA_DEV
+COPY ./Example_Modules ./VIPRA_DEV
+
 RUN openssl req -newkey rsa:4096 \
             -x509 \
             -sha256 \
@@ -20,14 +36,5 @@ RUN openssl req -newkey rsa:4096 \
             -keyout /usr/src/VIPRA/certs/local.pem \
             -subj "/C=US/ST=FL/L=Tempe/O=UWF/CN=127.0.0.1"
 
-COPY ./ChainBuilder ./ChainBuilder
-COPY ./VIPRA ./VIPRA
-COPY ./VIPRA_DEV ./VIPRA_DEV
-COPY ./VIPRA_Launcher ./VIPRA_Launcher
-
-RUN ln -s /usr/src/VIPRA/VIPRA_DEV /usr/src/VIPRA/VIPRA_Launcher/server/VIPRA_DEV
-
-RUN cd /usr/src/VIPRA/ChainBuilder && npm install && tsc && npm pack
-RUN cd /usr/src/VIPRA/VIPRA_Launcher/server && npm install
 
 CMD ["/bin/bash"]

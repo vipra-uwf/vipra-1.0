@@ -25,7 +25,7 @@ export class MapController implements IMapController {
 
   constructor(@inject('FilesController') fileContoller : IFilesController) {
     this.fc = fileContoller;
-    this.mapFile = this.loadMaps();
+    this.loadMaps();
   }
 
   /**
@@ -55,7 +55,7 @@ export class MapController implements IMapController {
     const map : Nullable<OMap> = completeMap(newMap);
     if (map) {
       this.saveMap(map, mapBuffer);
-      return { status: Status.CREATED, message: map.id };
+      return { status: Status.CREATED, message: map.name };
     } else {
       return { status: Status.BAD_REQUEST, message: 'Missing Properties' };
     }
@@ -86,7 +86,7 @@ export class MapController implements IMapController {
    */
   private saveMap(map : OMap, mapBuffer : Buffer) : void {
     this.fc.writeFileFromBuffer(map.filepath, mapBuffer);
-    this.mapMap.set(map.id, map);
+    this.mapMap.set(map.name, map);
     this.mapFile.maps.push(map);
     this.fc.writeFile(config.map.mapsFile, JSON.stringify(this.mapFile));
   }
@@ -94,14 +94,12 @@ export class MapController implements IMapController {
   /**
    * @description Finds all installed maps and loads them into the controller
    */
-  private loadMaps() : OMapFile {
-    const file : Nullable<OMapFile> = this.fc.readJsonFile<OMapFile>(config.map.mapsFile, { error: false });
-    if (file) {
-      return file;
-    } else {
-      return {
-        maps: [],
-      };
-    }
+  private loadMaps() : void {
+    this.fc.forAllFilesThatMatchDo(/\*\.map/, config.map.mapsDir, (filePath : string)=>{
+      const map : Nullable<OMap> = this.fc.readJsonFile<OMap>(filePath, { error: true });
+      if (map) {
+        this.mapMap.set(map.name, map);
+      }
+    });
   }
 }

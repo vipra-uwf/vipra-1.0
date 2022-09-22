@@ -1,6 +1,5 @@
 
 import fs from 'fs';
-import { ModulesFile } from '../../../types/module';
 import { Nullable } from '../../../types/typeDefs';
 import { Status } from '../../../types/Status';
 
@@ -22,5 +21,4 @@ export interface IFilesController {
   checkReadPerms(filePath : string) : boolean;
   moveFile(fromPath : string, toPath : string) : void;
   readFile(filePath : string) : Nullable<string>;
-  loadInstalledModules(baseDirPath : string) : ModulesFile;
 }

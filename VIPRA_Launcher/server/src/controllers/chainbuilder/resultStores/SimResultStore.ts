@@ -1,4 +1,6 @@
-
+/**
+ * @module ResultStores
+ */
 import crypto from 'crypto';
 import { IFilesController } from '../../../controllers/files/interfaces/FilesController.interface';
 import { inject } from 'tsyringe';

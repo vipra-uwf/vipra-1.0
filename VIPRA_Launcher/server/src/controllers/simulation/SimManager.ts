@@ -16,6 +16,7 @@ import { FlagMap, Nullable } from '../../types/typeDefs';
 import { ISimManager } from './interfaces/SimManager.interface';
 import { ISimBuilder } from './interfaces/SimBuilder.interface';
 import { ISimRunner } from './interfaces/SimRunner.interface';
+import { IMapController } from '../map/interfaces/MapController.interface';
 
 // TODO NEXT check simbuilder for simulation build status before attempting to run -RG
 
@@ -34,6 +35,8 @@ export class SimManager implements ISimManager {
 
   private fc              : IFilesController;
 
+  private mapC            : IMapController;
+
   private quicksim        : boolean;
 
   private defaultMap      : string;
@@ -42,9 +45,10 @@ export class SimManager implements ISimManager {
 
   private defaultParams   : string;
 
-  public constructor(@inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : IFilesController, @inject('SimRunner') simrunner : ISimRunner) {
+  public constructor(@inject('MapController') mapController : IMapController, @inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : IFilesController, @inject('SimRunner') simrunner : ISimRunner) {
     this.processMap = new Map();
     this.fc = fileController;
+    this.mapC = mapController;
     this.simRunner = simrunner;
     this.simBuilder = simBuilder;
   }
@@ -90,9 +94,12 @@ export class SimManager implements ISimManager {
     const simready = this.simBuilder.getSimState();
     if (simready.ready) {
       const configId : string = this.normalizeConfigId(args.configid[0]);
-      const map : string = `${this.defaultMap !== undefined ? this.defaultMap : this.getMap(args.map[0])}`;
-      const peds: string = `${this.defaultPeds !== undefined ? this.defaultPeds : this.getPeds(args.peds[0])}`;
+      const map : Nullable<string> = this.defaultMap !== undefined ? this.defaultMap : this.getMap(args.map[0]);
+      const peds: Nullable<string> = this.defaultPeds !== undefined ? this.defaultPeds : this.getPeds(args.peds[0]);
       const params: string = `${this.defaultParams !== undefined ? this.defaultParams : args.params[0]}`;
+
+      if (!map) { return { error: true, result: `No Map with ID: ${args.map[0]}` };}
+      if (!peds) { return { error: true, result: `No PedSet with ID: ${args.peds[0]}` };}
 
       if (configId && map && peds && params) {
         const outputID : string = crypto.randomUUID();
@@ -100,7 +107,6 @@ export class SimManager implements ISimManager {
         return new Promise((resolve)=>{
           
           const outputPath : string = `${config.vipra.outputDir}/${configId}/${outputID}`;
-        
 
           Logger.info(`Starting Simulation: ConfigID: ${configId}`);
           const ps : Nullable<ChildProcess> = this.simRunner.runSim(configId, map, peds, params, outputPath);
@@ -128,12 +134,16 @@ export class SimManager implements ISimManager {
   }
 
   /**
-   * @notimplemented
    * @description Returns the path to the map file with id
    * @param  {string} id - id of map file to get
    */
-  private getMap(id : string) : string {
-    return id;
+  private getMap(id : string) : Nullable<string> {
+    const map = this.mapC.getMap(id);
+    if (map) {
+      return map.filepath;
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -141,7 +151,7 @@ export class SimManager implements ISimManager {
    * @description Returns the path to the pedestrian set file with id
    * @param  {string} id - id of pedestrian set to get
    */
-  private getPeds(id : string) : string {
+  private getPeds(id : string) : Nullable<string> {
     return id;
   }
 }

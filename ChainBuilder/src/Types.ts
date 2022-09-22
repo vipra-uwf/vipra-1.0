@@ -23,23 +23,29 @@ interface CbServiceInfo {
   doc_href        : string;
 }
 
-interface CbParameter {
-  name: string; 
+interface CbParameters {
+  arguments: { [key : string] : CbArgument };
+  server: CbServerOptions[];
+}
+
+interface CbArgument {
+  chain_name: string; 
   type: string; 
   description: string;
   repeatable: boolean;
   sample?: string;
 }
 
-interface CbReturnType {
+interface CbReturnValue {
   name : string;
   type : string;
+  description : string;
 }
 
 interface CbServiceOptions {
   info: CbServiceInfo;
-  parameters: CbParameter[];
-  returnValue: CbReturnType;
+  arguments: CbArgument[];
+  returnValue: CbReturnValue;
   resultStore: ResultStore;
   method: CbMethod;
   server: CbServerOptions[];
@@ -48,10 +54,11 @@ interface CbServiceOptions {
 export {
   CbRootOptions,
   CbServiceInfo,
-  CbParameter,
+  CbParameters,
+  CbArgument,
   CbMethod,
   CbResult,
-  CbReturnType,
+  CbReturnValue,
   CbArgs,
   CbServiceOptions,
   CbServerOptions,

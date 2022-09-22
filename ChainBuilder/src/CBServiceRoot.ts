@@ -122,6 +122,19 @@ export class CBServiceRoot {
     }
   }
 
+  
+  /**
+   * @description Removes the service that resides at route
+   * @param  {string} route - route of service to remove
+   * @returns void
+   */
+  public removeService(route : string) : void {
+    const endpoint : Nullable<Endpoint> = this.getNode(route) as Nullable<Endpoint>;
+    if (endpoint) {
+      endpoint.removeService();
+    }
+  }
+
   /**
    * @description Sets whether {@linke ResultStores} are allowed to be shared between services
    * @param  {boolean} allow - whether to allow sharing

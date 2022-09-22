@@ -2,16 +2,19 @@
  * @module Controllers
  */
 
-import { FileBuffers }      from '../../util/FileStore';
-import { FuncResult, Nullable }       from '../../types/typeDefs';
-import { Status }           from '../../types/Status';
-import { config }           from '../../configuration/config';
+import path                                                                                               from 'path';
+
+import { FileBuffers }                                                                                    from '../../util/FileStore';
+import { FuncResult, Nullable }                                                                           from '../../types/typeDefs';
+import { Status }                                                                                         from '../../types/Status';
+import { config }                                                                                         from '../../configuration/config';
 import { getModule, makeModule, Module, ModuleInfo, ModulesFile, ModuleType, removeModule, toModuleInfo } from '../../types/module';
 
-import { inject, singleton } from 'tsyringe';
-import { IFilesController } from '../files/interfaces/FilesController.interface';
-import { ISimBuilder } from '../simulation/interfaces/SimBuilder.interface';
-import { IModuleController } from './interfaces/ModuleController.interface';
+import { inject, singleton }                                                                              from 'tsyringe';
+import { IFilesController }                                                                               from '../files/interfaces/FilesController.interface';
+import { ISimBuilder }                                                                                    from '../simulation/interfaces/SimBuilder.interface';
+import { IModuleController }                                                                              from './interfaces/ModuleController.interface';
+import { Logger }                                                                                         from '../../logging/Logging';
 
 /**
  * @description Handles keeping track of modules for the simulation
@@ -28,9 +31,10 @@ export class ModuleController implements IModuleController {
   constructor(@inject('SimBuilder') simBuilder : ISimBuilder, @inject('FilesController') fileController : IFilesController) {
     this.simBuilder = simBuilder;
     this.fc = fileController;
-    this.modules = this.fc.loadInstalledModules(config.vipra.vipraDir);
+    this.loadModules();
     this.writeModulesFile();
   }
+
 
   /**
    * @description Checks the module is installed and ready to use
@@ -158,5 +162,39 @@ export class ModuleController implements IModuleController {
    */
   public writeModulesFile() : void {
     this.fc.writeFile(config.module.modulesFile, JSON.stringify(this.modules));
+  }
+
+  /**
+   * @description Loads All modules in config.vipra.vipraDir & this.secondaryModuleDir
+   */
+  private loadModules() : void {
+    /**
+     * @description Loads a module from a module file
+     * @param {string} filePath - path of module file
+     */
+    const loadFunc = (filePath: string) : void => {
+      const moduleinfo : Nullable<ModuleInfo> = this.fc.readJsonFile<ModuleInfo>(filePath, { error: true });
+      if (moduleinfo) {
+        const module = makeModule(path.dirname(filePath), moduleinfo);
+        Logger.info(`Found Module: ${module.name}:${module.id} ${module.type}`);
+        this.modules[module.type].push(module);
+      }
+    };
+
+    this.modules = {
+      input_data_loader: [],
+      human_behavior_model: [],
+      output_data_writer: [],
+      simulation_output_handler: [],
+      pedestrian_set: [],
+      obstacle_set: [],
+      goals: [],
+      pedestrian_dynamics_model: [],
+      configuration_reader: [],
+      clock: [],
+      simulation: [],
+    };
+    this.fc.forAllFilesThatMatchDo(/.*\.mm/, config.module.modulesDir, loadFunc);
+    this.fc.forAllFilesThatMatchDo(/.*\.mm/, config.vipra.vipraDir, loadFunc);
   }
 }

@@ -1,0 +1,13 @@
+MPICC=mpicxx
+CCCFLAGS=-std=c++11 -O3 -mpif90
+
+
+SPED: DynamicLB.o main.o
+	$(MPICC) $(CCCFLAGS) -o SPED DynamicLB.o main.o
+
+DynamicLB.o: DynamicLB.cpp
+	$(MPICC) $(CCCFLAGS) -c DynamicLB.cpp 
+
+clean:
+	rm -f *.o SPED *~ animfile.xyz
+

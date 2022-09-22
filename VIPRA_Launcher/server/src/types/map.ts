@@ -2,9 +2,7 @@ import { config } from '../configuration/config';
 import { Nullable } from './typeDefs';
 
 interface OMap {
-  id : string;
   name : string;
-  description : string;
   filepath : string;
 }
 
@@ -21,9 +19,7 @@ interface OMapFile {
  */
 const mapToInfo = (map : OMap) : MapInfo => {
   return {
-    id : map.id,
     name : map.name,
-    description : map.description,
   };
 };
 
@@ -33,13 +29,11 @@ const mapToInfo = (map : OMap) : MapInfo => {
  * @returns Nullable<OMap> created OMap, null if the mapinfo was incorrect
  */
 const completeMap = (map : Partial<MapInfo>) : Nullable<OMap> => {
-  if (map.name && map.description) {
+  if (map.name) {
     const id = crypto.randomUUID();
     const newMap : OMap = {
-      id,
       name: map.name,
-      description: map.description,
-      filepath: `${config.vipra.vipraDir}/obstacleMaps/${id}.omap`,
+      filepath: `${config.map.mapsDir}/obstacleMaps/${id}.omap`,
     };
     return newMap;
   } else {

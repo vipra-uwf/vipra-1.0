@@ -57,6 +57,7 @@ const debugSetup = () : void => {
   config.vipra.simsDir = `${vipraDir}/sims`;
   config.vipra.outputDir = path.resolve('./OUTPUT');
   config.module.modulesFile = `${vipraDir}/sims/modules.json`;
+  config.module.modulesDir = `${vipraDir}/../Example_Modules`;
   config.map.mapsFile = `${vipraDir}/sims/maps.json`;
   config.simconfig.configsFile = path.resolve('./simconfigs.json');
 
@@ -184,6 +185,10 @@ const initialSetup = (argsMap : FlagMap) : void => {
     } else {
 
       const vipraDir = findVipra();
+
+      config.module.modulesDir = prompter('Path to Module Installation Directory: ');
+      config.map.mapsDir = prompter('Path to Maps Installation Directory: ');
+      config.simconfig.configsDir = prompter('Path to Simulation Configs Directory: ');
 
       config.vipra.vipraDir = vipraDir;
       config.vipra.behaviorDir = `${vipraDir}/Base/dsl`;

@@ -1,0 +1,36 @@
+/**
+  * IMPORTANT ANNOUNCEMENT
+  */
+// This models the behavior of everyone stopping to listen to an important announcement.
+Consider an announcement-listener.
+
+// This indicates that everyone is selected as an announcement listener
+Everyone is an announcement-listener.
+
+// These are two states that the sleeper can be in. They can be named
+// anything, but it must be consistent throughout the entire file.
+An announcement-listener can be LISTENING.
+An announcement-listener can be READY.
+
+// Add initial state for listener.
+An announcement-listener is initially READY.
+
+// These are environment states.
+The environment can be PRE_ANNOUNCING.
+The environment can be ANNOUNCING.
+The environment can be POST_ANNOUNCING.
+
+// Add an initial environment state.
+The environment is initially PRE_ANNOUNCING.
+
+// Environment state transitions.
+The environment that is PRE_ANNOUNCING will be ANNOUNCING after 10 seconds.
+The environment that is ANNOUNCING will be POST_ANNOUNCING after 30 seconds.
+
+// State transition rules
+An announcement-listener who is READY will be LISTENING when the environment is ANNOUNCING.
+An announcement-listener who is LISTENING will be READY when the environment is POST_ANNOUNCING.
+
+// What the behaviors mean
+An announcement-listener who is LISTENING will walk 10% slower.
+An announcement-listener who is READY will behave normally.

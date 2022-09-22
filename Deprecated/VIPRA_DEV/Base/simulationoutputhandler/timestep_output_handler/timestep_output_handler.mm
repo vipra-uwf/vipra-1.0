@@ -7,7 +7,7 @@
             "name": "outputFrequency",
             "type": "integer",
             "description": "How frequently position samples are taken in the simulation",
-            "repeatable": false
+            "multiple": false
         }
     ],
     "className"   : "TimestepOutputHandler",

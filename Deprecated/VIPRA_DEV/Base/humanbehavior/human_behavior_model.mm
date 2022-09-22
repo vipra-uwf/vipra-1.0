@@ -7,7 +7,7 @@
             "name": "random_seed",
             "type": "string",
             "description": "String used for seeding random number generation",
-            "repeatable": false
+            "multiple": false
         }
     ],
     "className"   : "HumanBehaviorModel",

@@ -3,8 +3,8 @@
  */
 
 import express from 'express';
-import { CbParametersInfo, CbResponses, Link } from './internalTypes';
-import { CbServiceInfo } from './Types';
+import { Link } from './internalTypes';
+import { CbParameters, CbReturnValue, CbServiceInfo } from './Types';
 
 /**
  * @description Sends a Response with {@link Link}s from an {@link Endpoint}
@@ -80,16 +80,17 @@ const cbErrorRespond = (message : string, response : express.Response) : void =>
  * @param {CbServiceInfo} info - Service information
  * @param {CbParameter} parameters - Parameters the {@link Service} takes
  * @param {CbResponse} responses - Result Response information
+ * @param {CbServerOptions[]} server - Server options
  * @param {express.Response} res - Client Response Object
  */
-const cbServiceInfoRespond = (info : CbServiceInfo, parameters : CbParametersInfo, responses : CbResponses, res : express.Response) : void => {
-  res.json({
+const cbServiceInfoRespond = (info : CbServiceInfo, parameters : CbParameters, responses : CbReturnValue[], res : express.Response) : void => {
+  res.send(JSON.stringify({
     info,
     methods:['GET', 'POST'],
     status: 'success',
     parameters,
     responses,
-  });
+  }));
 };
 
 export {

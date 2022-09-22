@@ -5,11 +5,10 @@ import express from 'express';
 import https from 'https';
 import { ResultStore } from './ResultStore';
 import { cbErrorRespond, cbResultRespond, cbServiceInfoRespond } from './Responses';
-import { CbMethod, CbResult, CbArgs, CbServiceOptions, CbServiceInfo, CbParameter, CbReturnType } from './Types';
+import { CbMethod, CbResult, CbArgs, CbServiceOptions, CbServiceInfo, CbParameters, CbReturnValue, CbArgument } from './Types';
 
 import axios, { AxiosResponse } from 'axios';
 import { Nullable, Protect } from './typedefs';
-import { CbParametersInfo, CbResponses } from './internalTypes';
 
 /**
  * @description ChainBuiler Service
@@ -18,17 +17,13 @@ export class Service {
 
   private info            : CbServiceInfo;
 
-  private paramsInfo      : CbParametersInfo;
-
-  private response        : CbResponses;
+  private parameters      : CbParameters;
 
   private resultStore     : ResultStore;
 
   private serviceMethod   : CbMethod;
-
-  private methodParams    : CbParameter[];
   
-  private methodReturn    : CbReturnType;
+  private methodReturn    : CbReturnValue;
 
   private httpsAgent      : https.Agent;
 
@@ -39,7 +34,9 @@ export class Service {
     this.info = settings.info;
     this.resultStore = settings.resultStore;
     this.methodReturn = settings.returnValue;
-    this.setMethod(settings.parameters, settings.method);
+    this.parameters = { arguments:{}, server:[] };
+    this.parameters.server = settings.server;
+    this.setMethod(settings.arguments, settings.method);
   }
 
   /**
@@ -49,7 +46,7 @@ export class Service {
    */
   public async handleRequest(request : express.Request, response : express.Response) : Promise<void> {
     if (request.method === 'GET') {
-      cbServiceInfoRespond(this.info, this.paramsInfo, this.response, response);
+      cbServiceInfoRespond(this.info, this.parameters, [this.methodReturn], response);
       return;
     } else {
       const resultLocation = await this.runService(request);
@@ -94,9 +91,7 @@ export class Service {
    */
   private async getRequestParams(request : express.Request<any, any, { [key:string]:any }>) : Promise<{ error: Nullable<string>, params: Nullable<CbArgs> }> {
 
-    const params : string[] = this.methodParams.map((arg)=>{
-      return arg.name;
-    });
+    const params : string[] = Object.keys(this.parameters.arguments);
 
     const ret : { [key: string]: string[] } = {};
 
@@ -172,21 +167,17 @@ export class Service {
 
   /**
    * @description Sets up the service method to be run, sets the return type and parameters
-   * @param {CbParameters} parameters - Parameters that the method accepts
+   * @param {CbArgument[]} args - Arguments that the method accepts
    * @param  {CbMethod} method - Method to call when running the service
    */
-  private setMethod(parameters : CbParameter[], method : CbMethod) : void {
-    this.methodParams = parameters;
-    this.paramsInfo = {
-      arguments: {},
-      server: [],
-    };
-    parameters.forEach((param)=>{
-      this.paramsInfo.arguments[param.name] = {
-        chain_name: `${param.name}_href`,
-        description: param.description,
-        type: param.type,
-        sample: param.sample,
+  private setMethod(args : CbArgument[], method : CbMethod) : void {
+    args.forEach((arg)=>{
+      this.parameters.arguments[arg.chain_name] = {
+        chain_name: `${arg.chain_name}_href`,
+        description: arg.description,
+        type: arg.type,
+        repeatable: arg.repeatable,
+        sample: arg.sample,
       };
     });
 
