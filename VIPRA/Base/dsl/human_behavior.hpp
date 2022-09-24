@@ -9,7 +9,7 @@
 #include "transitions/environment_transition.hpp"
 #include "transitions/pedestrian_transition.hpp"
 
-#include "../../Interfaces/pedestrianset/pedestrian_set.hpp"
+#include "../../Extendable/pedestrianset/pedestrian_set.hpp"
 #include "../definitions/type_definitions.hpp"
 
 /**

@@ -6,21 +6,9 @@
 
 class InputJSONReader : public InputDataLoader {
  private:
-  Json::Value             jsonDocument;
-  Json::CharReaderBuilder jsonReader;
-  std::ifstream           fileStream;
-  std::string             errors;
-
-  void openFile(std::string fileName);
-  void parseFile();
-
  public:
-  ENTITY_SET getInputEntities() override;
-
-  void configure(const CONFIG_MAP& configMap) override;
-
-  void extractFileData(std::string       fileName,
-                       const CONFIG_MAP& configMap) override;
+  ENTITY_SET getInputEntities(const std::string& filePath) override;
+  void       configure(const CONFIG_MAP& configMap) override;
 };
 
 #endif
