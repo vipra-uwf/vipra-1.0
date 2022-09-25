@@ -19,6 +19,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
                      const Goals&) override;
 
  private:
+
 };
 
 #endif
