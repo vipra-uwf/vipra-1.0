@@ -12,18 +12,13 @@ class JSONWriter : public OutputDataWriter {
   Json::Value   document;
   int           index;
 
-  void openFile(std::string fileName);
-  void setParentElementName(std::string parentElementName);
-  void setChildElementName(std::string dataElementName);
-
  public:
   JSONWriter();
   void configure(const CONFIG_MAP& configMap) override;
-  void initializeOutputFile(std::string outputFilePath) override;
-  void addFloatValue(std::string key, FLOATING_NUMBER value) override;
-  void addStringValue(std::string key, std::string value) override;
-  void writeToDocument(const PedestrianSet& data) override;
-  void writeDocumentContentsToFile() override;
+  void initializeOutputFile(const std::string& outputFilePath) override;
+  void addFloatValue(const std::string& key, FLOATING_NUMBER value) override;
+  void addStringValue(const std::string& key, const std::string& value) override;
+  void writeToDocument() override;
 };
 
 #endif

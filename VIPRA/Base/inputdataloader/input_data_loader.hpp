@@ -5,6 +5,15 @@
 
 #include "../definitions/type_definitions.hpp"
 
+class InputReaderException : public std::exception {
+ public:
+  InputReaderException(const std::string& message) : message(message) {}
+  const std::string& what() { return message; }
+
+ private:
+  std::string message;
+};
+
 class InputDataLoader {
  public:
   static const ENTITY_SET _emptyset_;

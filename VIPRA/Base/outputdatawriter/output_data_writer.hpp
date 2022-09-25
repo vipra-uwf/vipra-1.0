@@ -4,18 +4,25 @@
 #include "../_pch/pch.hpp"
 #include "../definitions/type_definitions.hpp"
 
-#include "../../Extendable/pedestrianset/pedestrian_set.hpp"
+class OutputDataWriterException : public std::exception {
+ public:
+  OutputDataWriterException(const std::string& message) : message(message) {}
+  const std::string& what() { return message; }
+
+ private:
+  std::string message;
+};
 
 class OutputDataWriter {
  public:
   virtual ~OutputDataWriter() = default;
 
   virtual void configure(const CONFIG_MAP& configMap) = 0;
-  virtual void initializeOutputFile(std::string outputFilePath) = 0;
-  virtual void addFloatValue(std::string key, FLOATING_NUMBER value) = 0;
-  virtual void addStringValue(std::string key, std::string value) = 0;
-  virtual void writeToDocument(const PedestrianSet& data) = 0;
-  virtual void writeDocumentContentsToFile() = 0;
+  virtual void initializeOutputFile(const std::string& outputFilePath) = 0;
+  virtual void addFloatValue(const std::string& key, FLOATING_NUMBER value) = 0;
+  virtual void addStringValue(const std::string& key, const std::string& value) = 0;
+
+  virtual void writeToDocument() = 0;
 };
 
 #endif

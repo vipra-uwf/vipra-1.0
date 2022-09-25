@@ -7,8 +7,6 @@
 
 #include "../../Interfaces/pedestrianset/pedestrian_set.hpp"
 
-class Simulation;  // forward declaring
-
 class SimulationOutputHandler {
  public:
   virtual ~SimulationOutputHandler() = default;
