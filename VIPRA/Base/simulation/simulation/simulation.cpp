@@ -1,14 +1,16 @@
 #include "simulation.hpp"
 
 
-Simulation::Simulation(Goals* goals,
-                        Data* data,
-                        PedestrianDynamicsModel* pedestrianDynamicsModel,
-                        HumanBehaviorModel* humanBehaviorModel,
-                        SimulationOutputHandler* simulationOutputHandler)
+Simulation::Simulation(Goals& goals,
+                        PedestrianSet& pedestrianSet,
+                        ObstacleSet& obstacleSet,
+                        PedestrianDynamicsModel& pedestrianDynamicsModel,
+                        HumanBehaviorModel& humanBehaviorModel,
+                        SimulationOutputHandler& simulationOutputHandler)
 {
     this->goals = goals;
-    this->data = data;
+    this->pedestrianSet = pedestrianSet;
+    this->obstacleSet = obstacleSet;
     this->pedestrianDynamicsModel = pedestrianDynamicsModel;
     this->humanBehaviorModel = humanBehaviorModel;
     this->simulationOutputHandler = simulationOutputHandler;
@@ -25,27 +27,26 @@ int Simulation::getTimestep() const {
 
 void Simulation::run() {
 
-    while(this->goals->isSimulationGoalMet()) {
+    while(this->goals.isSimulationGoalMet()) {
         //create ProposedState
         //Create ProposedStateDerivative (Naming can be changed)
 
         //Call PolicyModel
         //TODO: humanBehaviorModel should take in type State
-        this->humanBehaviorModel->update(this->timestep);
+        this->humanBehaviorModel.update(this->timestep);
         //Set flags to indicate if human behavior has effected state of pedestrian
         //Update both States
 
         //TODO: pedestrianDynamicsModel should return type State
-        this->pedestrianDynamicsModel->update(this->timestep);
+        this->pedestrianDynamicsModel.update(this->timestep);
 
         //TODO: call pedestrianSet::updateState
 
-        if(this->simulationOutputHandler->isOutputCriterionMet()) {
-            this->simulationOutputHandler->writeToDocument();
+        if(this->simulationOutputHandler.isOutputCriterionMet()) {
+            this->simulationOutputHandler.writeToDocument();
         }
 
         //Call update goals on goals to update current goals on pedestrians
-
     }
     
 }
