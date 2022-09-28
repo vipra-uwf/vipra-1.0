@@ -3,14 +3,15 @@
 const ENTITY_SET InputDataLoader::_emptyset_{};
 
 void
-throwIRError(const std::string& message) {
-  std::cerr << message;
-  throw InputReaderException(message);
-}
-
-void
 InputJSONReader::configure(const CONFIG_MAP& configMap) {}
 
+/**
+ * @throws InputReaderException
+ * @brief Gets the ENTITY_SET described by the file at filePath
+ * 
+ * @param filePath - Absolute path to file
+ * @return ENTITY_SET 
+ */
 ENTITY_SET
 InputJSONReader::getInputEntities(const std::string& filePath) {
 
@@ -20,11 +21,13 @@ InputJSONReader::getInputEntities(const std::string& filePath) {
   std::string             errors;
 
   fileStream.open(filePath);
-  if (!fileStream.is_open()) {}
+  if (!fileStream.is_open()) {
+    InputReaderException::Error("Unable To Open Input File: " + filePath + "\n");
+  }
 
   if (!Json::parseFromStream(jsonReader, fileStream, &jsonDocument, &errors)) {
     fileStream.close();
-    throwIRError("Unable To Parse Input File: " + filePath + "\n");
+    InputReaderException::Error("Unable To Parse Input File: " + filePath + "\n");
   }
   fileStream.close();
 
@@ -45,6 +48,6 @@ InputJSONReader::getInputEntities(const std::string& filePath) {
     }
     return inputData;
   } catch (std::exception ex) {
-    throwIRError("Unable To Parse Input File: " + filePath + "\n");
+    InputReaderException::Error("Unable To Parse Input File: " + filePath + "\n");
   }
 }

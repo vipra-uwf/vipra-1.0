@@ -5,17 +5,18 @@
 
 class TimestepConsoleLogger : public SimulationOutputHandler {
  private:
-  OutputDataWriter& outputDataWriter;
-  PedestrianSet&    pedestrianSet;
-  Simulation&       simulation;
+  size_t timestep;
+  size_t frequency;
 
  public:
   void configure(const CONFIG_MAP& configMap) override;
-  void setOutputDataWriter(OutputDataWriter& outputDataWriter) override;
-  void setPedestrianSet(const PedestrianSet& pedestrianSet) override;
-  void setSimulation(const Simulation& simulation) override;
-  bool isOutputCriterionMet() override;
-  void writeToDocument() override;
+  bool isOutputCriterionMet(const Simulation&,
+                            const PedestrianSet&,
+                            const ObstacleSet&,
+                            const Goals&) override;
+  void writeToDocument(OutputDataWriter&    outputDataWriter,
+                       const Simulation&    simulation,
+                       const PedestrianSet& pedestrianSet) override;
 };
 
 #endif

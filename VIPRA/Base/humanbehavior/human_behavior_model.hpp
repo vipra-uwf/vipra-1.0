@@ -17,8 +17,6 @@
 class HumanBehaviorModel {
 
  private:
-  Data* data;
-
   std::vector<HumanBehavior*> humanBehaviors;
 
  protected:
@@ -27,10 +25,7 @@ class HumanBehaviorModel {
  public:
   HumanBehaviorModel();
   virtual ~HumanBehaviorModel();
-  virtual void configure(CONFIG_MAP* configMap);
-
-  void  setData(Data* initialData);
-  Data* getData();
+  virtual void configure(const CONFIG_MAP& configMap);
 
   virtual void initialize();
   void         update(FLOATING_NUMBER time);

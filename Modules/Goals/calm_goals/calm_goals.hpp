@@ -1,7 +1,7 @@
 #ifndef CALM_GOALS
 #define CALM_GOALS
 
-#include "../../VIPRA_DEV/Extendable/goals/goals.hpp"
+#include "../../../VIPRA/Extendable/goals/goals.hpp"
 
 class CalmGoals : public Goals {
  public:

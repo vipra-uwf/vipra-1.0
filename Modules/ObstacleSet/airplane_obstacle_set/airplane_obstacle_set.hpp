@@ -1,7 +1,7 @@
 #ifndef AIRPLANE_OBSTACLE_SET
 #define AIRPLANE_OBSTACLE_SET
 
-#include "../../VIPRA_DEV/Extendable/obstacleset/obstacle_set.hpp"
+#include "../../../VIPRA/Extendable/obstacleset/obstacle_set.hpp"
 
 class AirplaneObstacleSet : public ObstacleSet {
  public:
@@ -13,8 +13,7 @@ class AirplaneObstacleSet : public ObstacleSet {
   void setObstacleCoords(const std::vector<Dimensions>& coordinates) override;
   int  getNumObstacles() const noexcept override;
 
-  const std::vector<Dimensions>& getObstacleCoordinates()
-      const noexcept override;
+  const std::vector<Dimensions>& getObstacleCoordinates() const noexcept override;
 
   const std::vector<Dimensions>& getObjectsofType(
       const std::string& type) const noexcept override;

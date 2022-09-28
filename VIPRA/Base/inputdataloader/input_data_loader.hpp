@@ -10,6 +10,11 @@ class InputReaderException : public std::exception {
   InputReaderException(const std::string& message) : message(message) {}
   const std::string& what() { return message; }
 
+  static void Error(const std::string& message) {
+    std::cerr << message << std::endl;
+    throw new InputReaderException(message);
+  }
+
  private:
   std::string message;
 };
@@ -19,8 +24,8 @@ class InputDataLoader {
   static const ENTITY_SET _emptyset_;
   virtual ~InputDataLoader() = default;
 
-  virtual void       configure(const CONFIG_MAP& configMap) = 0;
-  virtual ENTITY_SET getInputEntities(const std::string& filePath) = 0;
+  virtual void                     configure(const CONFIG_MAP& configMap) = 0;
+  [[nodiscard]] virtual ENTITY_SET getInputEntities(const std::string& filePath) = 0;
 };
 
 #endif

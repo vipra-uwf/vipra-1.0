@@ -6,21 +6,26 @@
 #include "../definitions/type_definitions.hpp"
 #include "../jsoncpp/json/json.h"
 
-class ConfigurationReader {
+class ConfigurationReaderException : public std::exception {
  public:
-  void        readJsonConfiguration(std::string fileName);
-  Json::Value getJsonObject();
+  ConfigurationReaderException(const std::string& message) : message(message) {}
+  const std::string& what() { return message; }
 
-  void configure(const CONFIG_MAP& config);
+  static void Error(const std::string& message) {
+    std::cerr << message << std::endl;
+    throw new ConfigurationReaderException(message);
+  }
 
  private:
-  Json::Value             jsonDocument;
-  Json::CharReaderBuilder jsonReader;
-  std::ifstream           fileStream;
-  std::string             errors;
+  std::string message;
+};
 
-  void openFile(std::string fileName);
-  void parseFile();
+class ConfigurationReader {
+ public:
+  Json::Value getConfiguration(const std::string& filePath);
+  void        configure(const CONFIG_MAP& config);
+
+ private:
 };
 
 #endif

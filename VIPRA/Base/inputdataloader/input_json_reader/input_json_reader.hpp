@@ -7,8 +7,8 @@
 class InputJSONReader : public InputDataLoader {
  private:
  public:
-  ENTITY_SET getInputEntities(const std::string& filePath) override;
-  void       configure(const CONFIG_MAP& configMap) override;
+  [[nodiscard]] ENTITY_SET getInputEntities(const std::string& filePath) override;
+  void                     configure(const CONFIG_MAP& configMap) override;
 };
 
 #endif

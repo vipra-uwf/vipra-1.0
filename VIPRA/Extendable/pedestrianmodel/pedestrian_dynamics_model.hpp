@@ -13,11 +13,12 @@ class PedestrianDynamicsModel {
 
   virtual void configure(const CONFIG_MAP& configMap) = 0;
 
-  virtual void initialize(const PedestrianSet&, const ObstacleSet&,
-                          const Goals&) = 0;
+  virtual void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) = 0;
 
-  virtual DimVector timestep(const PedestrianSet&, const ObstacleSet&,
-                             const Goals&) = 0;
+  virtual DimVector timestep(const PedestrianSet&,
+                             const ObstacleSet&,
+                             const Goals&,
+                             FLOATING_NUMBER timstep_size) = 0;
 };
 
 #endif

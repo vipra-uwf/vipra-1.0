@@ -1,16 +1,15 @@
 
 #include "json_timestep_writer.hpp"
 
-void
-throwODWError(const std::string& message) {
-  std::cerr << message;
-  throw OutputDataWriterException(message);
-}
-
 JSONTimestepWriter::JSONTimestepWriter() {
   document["timesteps"] = Json::Value();
 }
 
+/**
+ * @brief Returns the Json::Value that holds the timestep values
+ * 
+ * @return const Json::Value&
+ */
 const Json::Value&
 JSONTimestepWriter::getDocument() const {
   return document;
@@ -19,20 +18,33 @@ JSONTimestepWriter::getDocument() const {
 void
 JSONTimestepWriter::configure(const CONFIG_MAP& configMap) {}
 
+/**
+ * @throws OutputDataWriterException
+ * @brief Opens the output file, Throws {OutputDataWriterException} if unable to open file
+ * @param outputFilePath - Absolute path to output file
+ */
 void
 JSONTimestepWriter::initializeOutputFile(const std::string& outputFilePath) {
   fileStream.open(outputFilePath, std::fstream::out | std::fstream::trunc);
   if (!fileStream.is_open()) {
-    throwODWError("Unable To Open Output File: " + outputFilePath + "\n");
+    OutputDataWriterException::Error("Unable To Open Output File: " + outputFilePath);
   }
 }
 
+/**
+ * @brief Adds a float value to Document["timesteps"][timestep][key]
+ * @note if key == "NEW_TIMESTEP" timestep is set to value
+ * 
+ * @param key - key to set value of
+ * @param value - value to set key
+ */
 void
 JSONTimestepWriter::addFloatValue(const std::string& key, FLOATING_NUMBER value) {
   if (key == "NEW_TIMESTEP") {
-    ++timestep;
+    timestep = value;
     return;
   }
+
   auto& currTS = document["timesteps"][std::to_string(timestep)];
   if (currTS.isNull()) {
     index = 0;
@@ -47,6 +59,13 @@ JSONTimestepWriter::addFloatValue(const std::string& key, FLOATING_NUMBER value)
   }
 }
 
+/**
+ * @brief Adds a string value to Document["timesteps"][timestep][key]
+ * @note if key == "NEW_TIMESTEP" timestep is set to value
+ * 
+ * @param key - key to set value of
+ * @param value - value to set key
+ */
 void
 JSONTimestepWriter::addStringValue(const std::string& key, const std::string& value) {
   if (key == "NEW_TIMESTEP") {
@@ -67,6 +86,10 @@ JSONTimestepWriter::addStringValue(const std::string& key, const std::string& va
   }
 }
 
+/**
+ * @brief Writes the timestep values JSON to the output file, and closes the file
+ * 
+ */
 void
 JSONTimestepWriter::writeToDocument() {
   fileStream << document;

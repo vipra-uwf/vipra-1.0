@@ -7,10 +7,8 @@
 class JSONWriter : public OutputDataWriter {
  private:
   std::ofstream fileStream;
-  std::string   parentElementName;
-  std::string   childElementName;
   Json::Value   document;
-  int           index;
+  int           index = 0;
 
  public:
   JSONWriter();

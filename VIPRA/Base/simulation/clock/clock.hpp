@@ -11,8 +11,8 @@ class Clock {
   std::chrono::time_point<std::chrono::system_clock> realEndTime;
   std::chrono::time_point<std::chrono::system_clock> simulationEndTime;
   std::chrono::duration<double>                      realElapsedSeconds;
-  void          calculateRealElapsedSeconds();
-  unsigned long simulationElapsedMs;
+  void                                               calculateRealElapsedSeconds();
+  unsigned long                                      simulationElapsedMs;
 
  public:
   Clock();
@@ -24,7 +24,7 @@ class Clock {
   void addSimulationTimeMs(unsigned long milliseconds);
   void printSimulationDuration();
 
-  void configure(CONFIG_MAP* config);
+  void configure(const CONFIG_MAP& config);
 };
 
 #endif
