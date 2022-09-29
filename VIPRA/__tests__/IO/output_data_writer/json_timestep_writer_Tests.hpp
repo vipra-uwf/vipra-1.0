@@ -17,14 +17,15 @@ add_float_values(void) {
   sut.initializeOutputFile("./temp/jsontimestepwriter.json");
 
   for (size_t i = 0; i < NUMTIMESTEPS; ++i) {
+    sut.addFloatValue("NEW_TIMESTEP", i);
     for (size_t j = 0; j < NUMPEDS; ++j) {
       sut.addFloatValue("x", j);
       sut.addFloatValue("y", j);
     }
-    sut.addFloatValue("NEW_TIMESTEP", 0);
   }
   Json::Value expected;
   getExpectedTimeSteps(expected);
+
   TEST_CHECK(sut.getDocument().compare(expected) == 0);
 }
 
@@ -36,21 +37,25 @@ write_to_document(void) {
   sut.initializeOutputFile("./temp/jsontimestepwriter.json");
 
   for (size_t i = 0; i < NUMTIMESTEPS; ++i) {
+    sut.addFloatValue("NEW_TIMESTEP", i);
     for (size_t j = 0; j < NUMPEDS; ++j) {
       sut.addFloatValue("x", j);
       sut.addFloatValue("y", j);
     }
-    sut.addFloatValue("NEW_TIMESTEP", 0);
   }
 
   sut.writeToDocument();
 
-  TEST_FILE_CONTENT("./temp/jsontimestepwriter.json", expectedTimeSteps, true);
+  TEST_CHECK(
+      TEST_FILE_CONTENT("./temp/jsontimestepwriter.json", expectedTimeSteps, true));
 }
 
 }  // namespace Json_Timestep_Writer_TESTS
 
 #define json_timestep_writer_tests                                                       \
-  {"Can Add Float Values", Json_Timestep_Writer_TESTS::add_float_values}, {              \
-    "Can Write To Document", Json_Timestep_Writer_TESTS::write_to_document               \
+  {"JSON_TIMESTEP_WRITER: Can Add Float Values",                                         \
+   Json_Timestep_Writer_TESTS::add_float_values},                                        \
+  {                                                                                      \
+    "JSON_TIMESTEP_WRITER: Can Write To Document",                                       \
+        Json_Timestep_Writer_TESTS::write_to_document                                    \
   }

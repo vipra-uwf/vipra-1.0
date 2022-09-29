@@ -9,4 +9,7 @@ read_configuration(void) {}
 }  // namespace configuration_reader_TESTS
 
 #define configuration_reader_tests                                                       \
-  { "Can Read Configurations", configuration_reader_TESTS::read_configuration }
+  {                                                                                      \
+    "CONFIGURATION_READER: Can Read Configurations",                                     \
+        configuration_reader_TESTS::read_configuration                                   \
+  }

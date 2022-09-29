@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-void
+[[nodiscard]] bool
 TEST_FILE_CONTENT(std::string filepath, std::string expected, bool removeSpaces) {
   std::ifstream t(filepath);
   std::string   fileContent((std::istreambuf_iterator<char>(t)),
@@ -16,6 +16,6 @@ TEST_FILE_CONTENT(std::string filepath, std::string expected, bool removeSpaces)
                                      [](char chr) { return std::iswspace(chr); }),
                       fileContent.end());
   }
-  TEST_CHECK(expected.compare(fileContent) == 0);
   t.close();
+  return (expected.compare(fileContent) == 0);
 }

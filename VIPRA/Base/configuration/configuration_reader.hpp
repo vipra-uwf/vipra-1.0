@@ -13,7 +13,7 @@ class ConfigurationReaderException : public std::exception {
 
   static void Error(const std::string& message) {
     std::cerr << message << std::endl;
-    throw new ConfigurationReaderException(message);
+    throw ConfigurationReaderException(message);
   }
 
  private:

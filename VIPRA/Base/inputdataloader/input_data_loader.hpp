@@ -5,14 +5,14 @@
 
 #include "../definitions/type_definitions.hpp"
 
-class InputReaderException : public std::exception {
+class InputDataLoaderException : public std::exception {
  public:
-  InputReaderException(const std::string& message) : message(message) {}
+  InputDataLoaderException(const std::string& message) : message(message) {}
   const std::string& what() { return message; }
 
   static void Error(const std::string& message) {
     std::cerr << message << std::endl;
-    throw new InputReaderException(message);
+    throw InputDataLoaderException(message);
   }
 
  private:

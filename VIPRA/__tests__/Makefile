@@ -1,5 +1,5 @@
 CPP= g++
-CPP_FLAGS= -std=c++17 -Wall -O0 -g -fPIE
+CPP_FLAGS= -std=c++17 -O0 -g -fPIE
 
 BASE_DIR = ./../Base
 BUILD_DIR = ./build

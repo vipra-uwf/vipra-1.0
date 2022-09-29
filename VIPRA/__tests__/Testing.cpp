@@ -10,9 +10,12 @@
 #include "./Models/Behavior_Model/tests.hpp"
 #include "./Models/Pedestrian_Model/tests.hpp"
 
+#include "./Types/tests.hpp"
+
 #include "./Goals/tests.hpp"
 
 TEST_LIST = {INPUT_DATA_LOADER_TESTS,
              OUTPUT_DATA_WRITER_TESTS,
              CONFIGURATION_READER_TESTS,
+             TYPES_TESTS,
              {NULL, NULL}};
