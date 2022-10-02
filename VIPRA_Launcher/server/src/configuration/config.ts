@@ -1,48 +1,6 @@
-/**
- * @module Configuration
- */
 
-import fs from 'fs';
-import { Nullable } from '../types/typeDefs';
-
-interface Config {
-  setup : boolean;
-  app: {
-    debug : boolean;
-    port : number;
-    https: { key : string | null; cert : string | null; passphrase : Nullable<string> };
+export interface Config {
+  modules: {
+    modulesURL : string;
   };
-  cb: { url : string };
-  vipra: { vipraDir : string; simsDir : string; behaviorDir : string; outputDir: string };
-  simconfig: { configsFile : string; configsDir : string };
-  module: { modulesFile : string; modulesDir : string };
-  map: { mapsFile : string, mapsDir : string };
 }
-
-/**
- * @description Loads the configuration file and sets config
- * @param  {string} configFile - path to config file
- */
-const loadConfig = (configFile : string) : Config => {
-  if (fs.existsSync(configFile)) {
-    const conf : Config = JSON.parse(fs.readFileSync(configFile).toString()) as Config;
-    if (conf) {
-      return conf;
-    }
-  }
-  return {
-    setup: false,
-    app: {
-      debug : false,
-      port: -1,
-      https: { key: null, cert: null, passphrase: null },
-    },
-    cb: { url: '' },
-    vipra: { vipraDir: '', simsDir: '', behaviorDir: '', outputDir: '' },
-    simconfig: { configsFile: '', configsDir: '' },
-    module: { modulesFile: '', modulesDir: '' },
-    map: { mapsFile: '', mapsDir: '' },
-  };
-};
-
-export const config : Config = loadConfig(`${__dirname}/config.json`);

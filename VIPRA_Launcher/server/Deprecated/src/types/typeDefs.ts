@@ -2,7 +2,7 @@
  * @module Types
  */
 
-import { Status } from './status';
+import { Status } from './Status';
 
 /**
  * @description Allows the object to be null
@@ -10,13 +10,7 @@ import { Status } from './status';
 type Nullable<T> = T | null;
 
 
-type OperationResult<DataType> = { status: Status; object: Nullable<DataType> };
-
-type DeepPartial<T> = { [K in keyof T]?: DeepPartial<T[K]> };
-
-type Full<T> = {
-  [P in keyof T]-?: Full<T[P]>;
-};
+type FuncResult = { status : Status; message : Nullable<string> };
 
 
 type SimState = { ready : boolean; reason : Nullable<string> };
@@ -28,9 +22,7 @@ type FlagMap = Map<string, string>;
 
 export {
   Nullable,
-  OperationResult,
+  FuncResult,
   SimState,
   FlagMap,
-  DeepPartial,
-  Full,
 };

@@ -191,7 +191,7 @@ export class ChainManager implements IChainManager {
     const serviceOpts : CbServiceOptions = {
       info: serviceInfo,
       arguments: [],
-      returnValue: { name: 'maps', type: 'string', description: 'Array Of all Maps installed on the server' },
+      returnValue: { name: 'maps', type: 'JSON[]', description: 'Array Of all Maps installed on the server' },
       resultStore: new MapsResultStore('maps'),
       /**
        * @description Service method for returning maps (actual logic is in the result store)

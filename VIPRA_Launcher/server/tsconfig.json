@@ -16,4 +16,5 @@
         "types":["jest", "node"]
     },
     "include":["."],
+    "exclude":["Deprecated", "__tests__"]
 }

@@ -2,7 +2,7 @@
  * @module ResultStores
  */
 import crypto from 'crypto';
-import { IFilesController } from '../../../controllers/files/interfaces/FilesController.interface';
+import { IFilesController } from '../../files/interfaces/FilesController.interface';
 import { inject } from 'tsyringe';
 import { CbArgs, CbResult, ResultStore } from 'typechain';
 import { Nullable } from 'typechain/dist/typedefs';

@@ -1,8 +1,8 @@
 {
   "name": "vipralauncher",
   "version": "1.0.0",
-  "description": "This is the backend for the VIPRA Launcher",
-  "main": "vipralauncher.js",
+  "description": "Backend for the VIPRA Launcher",
+  "main": "index.js",
   "scripts": {
     "prebuild": "npm run lint",
     "build": "tsc -p tsconfig.build.json",

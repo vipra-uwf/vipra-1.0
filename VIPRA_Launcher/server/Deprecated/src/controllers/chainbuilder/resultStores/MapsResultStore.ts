@@ -1,7 +1,7 @@
 /**
  * @module ResultStores
  */
-import { IMapController } from '../../../controllers/map/interfaces/MapController.interface';
+import { IMapController } from '../../map/interfaces/MapController.interface';
 import { CbArgs, CbResult, ResultStore } from 'typechain';
 
 
