@@ -15,8 +15,12 @@ export class LocalSimConfigRepo implements BaseRepo<SimConfigUpload, SimConfig> 
 
   private configDir : string;
 
-  constructor(config : Config) {
-    this.configDir = config.simconfig.simconfigURL;
+  constructor(config? : Config) {
+    if (config) {
+      this.configDir = config.simconfig.simconfigURL;
+    } else {
+      throw new Error('Attempt to create Local SimConfig Repo without a Config');
+    }
   }
 
   /**

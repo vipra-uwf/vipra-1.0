@@ -1,8 +1,9 @@
 import { BaseRepo } from '../../repos/base.repo';
-import { Nullable, OperationResult, Full } from 'src/types/typeDefs';
+import { Nullable, OperationResult, Full } from '../../types/typeDefs';
 import { SimConfig, SimConfigUpload } from '../../types/simconfig/simconfig.types';
 import { BaseService } from '../base.service';
-import { Status } from 'src/types/status';
+import { Status } from '../../types/status';
+import { ModuleType } from '../../types/module/module.types';
 
 
 /**
@@ -79,7 +80,14 @@ export class SimConfigService implements BaseService<SimConfigUpload, SimConfig>
    */
   private completeConfig(simconfig : Partial<SimConfigUpload>) : Nullable<Full<SimConfigUpload>> {
     if (simconfig.id && simconfig.description && simconfig.modules && simconfig.name) {
-      return simconfig as Full<SimConfigUpload>;
+      if (simconfig.modules) {
+        for (const type of Object.values(ModuleType)) {
+          if (!simconfig.modules[type as keyof Record<ModuleType, string>]) {
+            return null;
+          }
+        }
+        return simconfig as Full<SimConfigUpload>;
+      }
     }
     return null;
   }
