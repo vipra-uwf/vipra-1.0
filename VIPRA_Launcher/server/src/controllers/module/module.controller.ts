@@ -1,26 +1,16 @@
 import express from 'express';
 
 
-import { Module, ModuleUpload } from '../../types/module/module.types';
+import { Module, ModuleRequest, ModuleUpload } from '../../types/module/module.types';
 import { Status } from '../../types/status';
 import { ModuleService } from '../../services/module/module.service';
 import { EventSystem } from '../events/eventSystem';
 import { Nullable, OperationResult } from '../../types/typeDefs';
-import { uploadModule, File } from './filestore';
+import { uploadModule } from './filestore';
 import { EventType, RequestType } from '../events/eventTypes';
 import { Logger } from '../logging/logger';
 import { BaseController } from '../base.controller';
 
-interface ModuleRequest {
-  body?: {
-    module? : Partial<Module>;
-  };
-  files? : {
-    source? : File,
-    header? : File,
-    meta? : File
-  };
-}
 
 
 /**

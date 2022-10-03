@@ -1,5 +1,4 @@
 
-
 import { Nullable } from '../../types/typeDefs';
 import { evLogger } from './eventLogger';
 import { EventHandler, EventType, RequestHandler, RequestType } from './eventTypes';

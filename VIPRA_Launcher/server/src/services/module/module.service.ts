@@ -14,14 +14,18 @@ export class ModuleService implements BaseService<ModuleUpload, Module> {
 
   private repo : BaseRepo<ModuleUpload, Module>;
 
-  constructor(repo : BaseRepo<ModuleUpload, Module>) {
-    this.repo = repo;
+  constructor(repo? : BaseRepo<ModuleUpload, Module>) {
+    if (repo) {
+      this.repo = repo;
+    } else { 
+      throw new Error('Attempt to Create Module Service without a Repo');
+    }
   }
   
   /**
    * @description Returns all modules installed
    */
-  getAll(): Promise<Module[]> {
+  public async getAll(): Promise<Module[]> {
     return this.repo.getAll();
   }
 
@@ -51,8 +55,8 @@ export class ModuleService implements BaseService<ModuleUpload, Module> {
    * @param {Partial<Module>} module - data to update
    */
   async update(id: string, module: Partial<ModuleUpload>): Promise<OperationResult<Module>> {
-    if (module.module) {
-      if (this.checkModuleUpdate(module.module)) {
+    if (module.module || module.files) {
+      if (this.checkModuleUpdate(module)) {
         return this.repo.update(id, module);
       }
     }
@@ -99,15 +103,15 @@ export class ModuleService implements BaseService<ModuleUpload, Module> {
    * @description Checks that a Partial<Module> for an update request is correct
    * @param {Partial<Module>} module - update data to check
    */
-  private checkModuleUpdate(module : Partial<Module>) : boolean {
-    if (module.id || module.name || module.type) {
+  private checkModuleUpdate(module : Partial<ModuleUpload>) : boolean {
+    if (module.module?.id || module.module?.name || module.module?.type) {
       return false;
     }
 
-    if (!module.description && !module.params) {
-      return false;
+    if (module.module?.description || module.module?.params || module.files?.srcFile || module.files?.headerFile || module.files?.metaFile) {
+      return true;
     }
 
-    return true;
+    return false;
   }
 }

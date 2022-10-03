@@ -14,6 +14,18 @@ export enum ModuleType {
   SIMULATION              = 'simulation',
 }
 
+export interface ModuleRequest {
+  body?: {
+    module? : Partial<Module>;
+  };
+  files? : {
+    source? : File,
+    header? : File,
+    meta? : File
+  };
+}
+
+
 export interface ModuleParam {
   name:string;
   type:string;

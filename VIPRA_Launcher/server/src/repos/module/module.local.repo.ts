@@ -19,8 +19,12 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
 
   private moduleDir : string;
 
-  constructor(config : Config) {
-    this.setConfiguration(config);
+  constructor(config? : Config) {
+    if (config) {
+      this.setConfiguration(config);
+    } else {
+      throw new Error('Attempt to Create Local Module Repo without a Config');
+    }
     this.loadInstalledModules();
   }
 

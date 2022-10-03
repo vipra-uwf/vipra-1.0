@@ -19,7 +19,7 @@ export class SimConfigService implements BaseService<SimConfigUpload, SimConfig>
   /**
    * @description Returns all Simconfigs in an array
    */
-  getAll(): Promise<SimConfig[]> {
+  public async getAll(): Promise<SimConfig[]> {
     return this.repo.getAll();
   }
 
@@ -27,7 +27,7 @@ export class SimConfigService implements BaseService<SimConfigUpload, SimConfig>
    * @description Returns the simconfig with id
    * @param {string} id - id of simconfig to get
    */
-  get(id: string): Promise<Nullable<SimConfig>> {
+  public async get(id: string): Promise<Nullable<SimConfig>> {
     return this.repo.get(id);
   }
 

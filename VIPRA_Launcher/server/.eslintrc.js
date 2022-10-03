@@ -12,10 +12,10 @@ module.exports = {
     ],
     "ignorePatterns": [
         "*eslint*",
-        "__tests__/*",
         "docs/*",
         "node_modules/*",
         "dist/*",
+        "__tests__/*",
         "jest.config.ts"
     ],
     "overrides": [

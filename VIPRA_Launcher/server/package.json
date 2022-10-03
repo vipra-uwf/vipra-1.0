@@ -23,7 +23,6 @@
     "@types/jest": "^28.1.7",
     "@types/multer": "^1.4.7",
     "@types/node": "^18.7.6",
-    "@types/prompt-sync": "^4.1.1",
     "@types/streamifier": "^0.1.0",
     "@types/tar": "^6.1.2",
     "@types/tar-stream": "^2.2.2",
@@ -46,43 +45,11 @@
     "express": "^4.18.1",
     "ip": "^1.1.8",
     "multer": "^1.4.5-lts.1",
-    "prompt-sync": "^4.2.0",
-    "reflect-metadata": "^0.1.13",
     "streamifier": "^0.1.1",
     "tar": "^6.1.11",
     "tar-stream": "^2.2.0",
-    "tsyringe": "^4.7.0",
     "typechain": "file:../../ChainBuilder/typechain-1.0.0.tgz",
     "winston": "^3.8.0",
     "zlib": "^1.0.5"
-  },
-  "jest": {
-    "roots": [
-      "."
-    ],
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "ts-jest"
-    },
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/__tests__/values/",
-      "/__tests__/mocks/"
-    ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.ts?$",
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json",
-      "node"
-    ],
-    "collectCoverage": true,
-    "coveragePathIgnorePatterns": [
-      "./src/configuration/*",
-      "./__tests__/mocks",
-      "./__tests__/values",
-      "./src/types"
-    ],
-    "clearMocks": true,
-    "coverageDirectory": "coverage"
   }
 }
