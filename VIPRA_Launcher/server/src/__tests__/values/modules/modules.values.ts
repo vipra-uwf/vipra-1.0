@@ -26,7 +26,28 @@ const properModuleUpload : Partial<ModuleUpload> = {
   }
 }
 
-const missingPropsModuleUpload : Partial<ModuleUpload> = {
+const missingIdModuleUpload : Partial<ModuleUpload> = {
+  module: {
+      name: 'properModule',
+    description: 'this is a proper module description',
+    params: [
+      {
+        name: 'exampleParam',
+        description: 'example param',
+        type: 'string',
+        multiple: false,
+      }
+    ],
+    type: 'goals' as ModuleType
+  },
+  files: {
+    srcFile: { buffer: new Buffer("this is the source file") } as File,
+    headerFile: { buffer: new Buffer("this is the header file") } as File,
+    metaFile: { buffer: new Buffer("this is the meta file") } as File,
+  }
+};
+
+const missingNameModuleUpload : Partial<ModuleUpload> = {
   module: {
     id: 'missingPropsModule',
     description: 'this is a missing properities module description',
@@ -111,7 +132,8 @@ const filesModuleUpdate : Partial<ModuleUpload> = {
 
 export {
   properModuleUpload,
-  missingPropsModuleUpload,
+  missingNameModuleUpload,
+  missingIdModuleUpload,
   properModule,
   missingFilesModuleUpload,
   properModuleUpdate,

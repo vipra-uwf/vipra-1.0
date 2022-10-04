@@ -85,6 +85,7 @@ export class ModuleService implements BaseService<ModuleUpload, Module> {
    */
   private completeModule(upload : Partial<ModuleUpload>) : Nullable<Full<ModuleUpload>> {
     if (
+      upload.module?.id &&
       upload.module?.description &&
       upload.module?.name &&
       upload.module?.params &&
