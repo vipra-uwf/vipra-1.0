@@ -19,9 +19,9 @@ export interface ModuleRequest {
     module? : Partial<Module>;
   };
   files? : {
-    source? : File,
-    header? : File,
-    meta? : File
+    source? : File[],
+    header? : File[],
+    meta? : File[]
   };
 }
 
@@ -51,3 +51,18 @@ export interface ModuleUpload {
     metaFile : File;
   }>;
 }
+
+/**
+ * @description Checks that a partial module is full
+ * @param {Partial<Module>} module - module to check
+ */
+export const isFullModule = (module : Partial<Module>) : boolean => {
+  return (
+    (module.compiled !== undefined) && 
+    (module.description !== undefined) && 
+    (module.id !== undefined) && 
+    (module.name !== undefined) && 
+    (module.params !== undefined) && 
+    (module.type !== undefined)
+  );
+};

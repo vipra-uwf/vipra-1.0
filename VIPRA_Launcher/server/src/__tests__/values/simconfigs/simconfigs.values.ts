@@ -1,9 +1,9 @@
-import { SimConfig, SimConfigUpload } from "../../../types/simconfig/simconfig.types";
+import { SimConfig, SimConfigUpload } from '../../../types/simconfig/simconfig.types';
 
 const properSimConfig : SimConfig = {
-  id: "properSimConfig",
-  name: "properSimConfig",
-  description: "this is a proper simconfig description",
+  id: 'properSimConfig',
+  name: 'properSimConfig',
+  description: 'this is a proper simconfig description',
   modules: {
     pedestrian_dynamics_model: 'good',
     goals: 'good',
@@ -16,14 +16,14 @@ const properSimConfig : SimConfig = {
     configuration_reader: 'good',
     clock: 'good',
     simulation: 'good',
-  }
+  },
 };
 
 const properSimConfigUpload : SimConfigUpload = properSimConfig;
 
 const missingNameSimConfigUpload : SimConfigUpload = {
-  id: "missingName",
-  description: "this is a proper simconfig description",
+  id: 'missingName',
+  description: 'this is a proper simconfig description',
   modules: {
     pedestrian_dynamics_model: 'good',
     goals: 'good',
@@ -36,13 +36,13 @@ const missingNameSimConfigUpload : SimConfigUpload = {
     configuration_reader: 'good',
     clock: 'good',
     simulation: 'good',
-  }
+  },
 };
 
 const missingModuleSimConfigUpload : SimConfigUpload = {
-  id: "missingModule",
-  name: "missingModule",
-  description: "this is a proper simconfig description",
+  id: 'missingModule',
+  name: 'missingModule',
+  description: 'this is a proper simconfig description',
   modules: {
     goals: 'good',
     output_data_writer: 'good',
@@ -54,13 +54,13 @@ const missingModuleSimConfigUpload : SimConfigUpload = {
     configuration_reader: 'good',
     clock: 'good',
     simulation: 'good',
-  }
-}
+  },
+};
 
 const badModuleSimConfigUpload : SimConfigUpload = {
-  id: "badModule",
-  name: "badModule",
-  description: "this is a proper simconfig description",
+  id: 'badModule',
+  name: 'badModule',
+  description: 'this is a proper simconfig description',
   modules: {
     goals: 'good',
     output_data_writer: 'good',
@@ -72,20 +72,20 @@ const badModuleSimConfigUpload : SimConfigUpload = {
     configuration_reader: 'good',
     clock: 'good',
     simulation: 'good',
-  }
+  },
 };
 
 const properSimConfigUpdate : Partial<SimConfigUpload> = {
-  description : "this is an updated description",
+  description : 'this is an updated description',
   modules: {
-    input_data_loader: "updatedid"
-  }
-}
+    input_data_loader: 'updatedid',
+  },
+};
 
 const updatedSimConfig : SimConfig = {
-  id: "properSimConfig",
-  name: "properSimConfig",
-  description: "this is an updated description",
+  id: 'properSimConfig',
+  name: 'properSimConfig',
+  description: 'this is an updated description',
   modules: {
     pedestrian_dynamics_model: 'good',
     goals: 'good',
@@ -98,15 +98,15 @@ const updatedSimConfig : SimConfig = {
     configuration_reader: 'good',
     clock: 'good',
     simulation: 'good',
-  }
+  },
 };
 
 const idSimConfigUpdate : Partial<SimConfigUpload> = {
-  id: 'shouldntchange'
+  id: 'shouldntchange',
 };
 
 const nameSimConfigUpdate : Partial<SimConfigUpload> = {
-  name: 'shouldntchange'
+  name: 'shouldntchange',
 };
 
 const emptySimConfigUpdate : Partial<SimConfigUpload> = {
@@ -115,8 +115,8 @@ const emptySimConfigUpdate : Partial<SimConfigUpload> = {
 
 const moduleSimConfigUpdate : Partial<SimConfigUpload> = {
   modules: {
-    goals: 'updatedid'
-  }
+    goals: 'updatedid',
+  },
 };
 
 export {

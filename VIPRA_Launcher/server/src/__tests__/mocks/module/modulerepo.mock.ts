@@ -1,21 +1,22 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { ModuleUpload } from "../../../types/module/module.types";
-import { Status } from "../../../types/status";
-import { Full } from "../../../types/typeDefs";
-import { properModule } from "../../values/modules/modules.values";
+import { ModuleUpload } from '../../../types/module/module.types';
+import { Status } from '../../../types/status';
+import { Full } from '../../../types/typeDefs';
+import { properModule } from '../../values/modules/modules.values';
 
 
 /**
  * @description Mocks an EventSystem
  */
- export const MockModuleRepo = () : void => {
+export const MockModuleRepo = () : void => {
   jest.mock('../../../repos/module/module.local.repo', () => {
     return {
       LocalModuleRepo: jest.fn().mockImplementation(()=>{
         return {
           getAll: ()=>{ return [properModule]; },
-          get: (id : string)=>{ if (id === 'properModule') { 
+          get: (id : string)=>{
+            if (id === 'properModule') { 
               return properModule; 
             }
             return null;

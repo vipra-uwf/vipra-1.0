@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { RequestType } from "../../../controllers/events/eventTypes";
+import { RequestType } from '../../../controllers/events/eventTypes';
 
 
 /**
@@ -13,7 +13,7 @@ export const MockEventSystem = () : void => {
         return {
           emit: () : void => {},
           request: (type : RequestType, select : any) : any => { 
-            if (select.id){
+            if (select.id) {
               if (select.id === 'good') {
                 return select; 
               }

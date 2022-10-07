@@ -8,10 +8,7 @@ import { EventSystem } from '../events/eventSystem';
 import { Nullable, OperationResult } from '../../types/typeDefs';
 import { uploadModule } from './filestore';
 import { EventHandler, EventType, RequestType } from '../events/eventTypes';
-import { Logger } from '../logging/logger';
 import { BaseController } from '../base.controller';
-
-
 
 /**
  * @description Business logic controller for modules
@@ -22,12 +19,9 @@ export class ModuleController implements BaseController<Module> {
 
   private eventController : EventSystem;
 
-  private logger : Logger;
-
-  constructor(eventController : EventSystem, logger : Logger, moduleService : ModuleService) {
+  constructor(eventController : EventSystem, moduleService : ModuleService) {
     this.moduleService = moduleService;
     this.eventController = eventController;
-    this.logger = logger;
     this.setupHandlers();
   }
 
@@ -75,7 +69,7 @@ export class ModuleController implements BaseController<Module> {
       if (createRequest) {
         const result = await this.moduleService.create(createRequest);
         if (result.status == Status.CREATED) {
-          void this.eventController.emit<Module, ModuleController>(EventType.NEW_MODULE, result.object, this);
+          void this.eventController.emit<Module>(EventType.NEW_MODULE, result.object);
         }
         return result;
       }
@@ -95,7 +89,7 @@ export class ModuleController implements BaseController<Module> {
       if (uploadRequest) {
         const result = await this.moduleService.update(id, uploadRequest);
         if (result.status == Status.SUCCESS) {
-          void this.eventController.emit<Module, ModuleController>(EventType.UPDATE_MODULE, result.object, this);
+          void this.eventController.emit<Module>(EventType.UPDATE_MODULE, result.object);
         }
         return result;
       }
@@ -113,7 +107,7 @@ export class ModuleController implements BaseController<Module> {
     if (id) {
       const result = await this.moduleService.delete(id);
       if (result.status == Status.SUCCESS) {
-        void this.eventController.emit<Module, ModuleController>(EventType.DELETE_MODULE, result.object, this);
+        void this.eventController.emit<Module>(EventType.DELETE_MODULE, result.object);
       }
       return result;
     }
@@ -184,9 +178,9 @@ export class ModuleController implements BaseController<Module> {
     return {
       module: upload.body?.module,
       files: {
-        srcFile : upload.files?.source,
-        headerFile : upload.files?.header,
-        metaFile : upload.files?.meta,
+        srcFile : (upload.files?.source ? upload.files?.source[0] : undefined),
+        headerFile : (upload.files?.header ? upload.files?.header[0] : undefined),
+        metaFile : (upload.files?.meta ? upload.files?.meta[0] : undefined),
       },
     };
   }

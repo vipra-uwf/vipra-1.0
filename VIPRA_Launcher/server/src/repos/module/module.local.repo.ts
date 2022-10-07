@@ -1,13 +1,14 @@
 
 import { Status } from '../../types/status';
 import { Full, Nullable, OperationResult } from '../../types/typeDefs';
-import { Module, ModuleUpload } from '../../types/module/module.types';
+import { Module, ModuleType, ModuleUpload } from '../../types/module/module.types';
 import { BaseRepo } from '../base.repo';
 import { InstalledModules, ModuleModel, toModule } from './module.model';
-import { deleteDir, forAllFilesThatMatchDo, readJsonFile, writeFileFromBuffer } from '../../util/fileOperations';
+import { deleteDir, forAllFilesThatMatchDo, makeDir, readJsonFile, writeFileFromBuffer } from '../../util/fileOperations';
 import { Config } from '../../configuration/config';
 import { File } from '../../controllers/module/filestore';
 import path from 'path';
+import { Logger } from '../../controllers/logging/logger';
 
 
 /**
@@ -15,7 +16,7 @@ import path from 'path';
  */
 export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
   
-  private installedModules : InstalledModules;
+  private installedModules : Record<ModuleType, ModuleModel[]>;
 
   private moduleDir : string;
 
@@ -63,6 +64,11 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
    * @param {ModuleUpload} upload - module to add to repo 
    */
   public async create(upload : Full<ModuleUpload>): Promise<OperationResult<Module>> {
+    const duplicate : Nullable<Module> = await this.get(upload.module.id);
+    if (duplicate) {
+      return { status: Status.CONFLICT, object: duplicate };
+    } 
+
     const module : ModuleModel = { module: upload.module, dirPath: '' };
     module.dirPath = `${this.moduleDir}/${module.module.name}`;
     await this.saveModule(module, upload.files.headerFile as File, upload.files.srcFile as File, upload.files.metaFile as File);
@@ -123,9 +129,24 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
    * @description Loads all installed modules
    */
   private loadInstalledModules() : void {
-    forAllFilesThatMatchDo(/\*.mm/, this.moduleDir, (filePath : string)=>{
+    this.installedModules = {
+      pedestrian_dynamics_model: [],
+      goals: [],
+      output_data_writer: [],
+      input_data_loader: [],
+      simulation_output_handler: [],
+      pedestrian_set: [],
+      obstacle_set: [],
+      human_behavior_model: [],
+      configuration_reader: [],
+      clock: [],
+      simulation: [],
+    };
+
+    forAllFilesThatMatchDo(/.*\.mm/, this.moduleDir, (filePath : string)=>{     
       const module : Nullable<Module> = readJsonFile<Module>(filePath);
       if (module) {
+        Logger.info(`Found Module: ${module.name} : ${module.id} AT: ${filePath}`);
         const mm : ModuleModel = {
           module,
           dirPath : path.dirname(filePath),
@@ -143,6 +164,7 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
    * @param {File} meta - module meta data
    */
   private async saveModule(module : ModuleModel, header : File, source : File, meta : File) : Promise<void> {
+    makeDir(module.dirPath);
     const basePath = `${module.dirPath}/${module.module.name}`;
     await Promise.all([writeFileFromBuffer(`${basePath}.hpp`, header.buffer),
       writeFileFromBuffer(`${basePath}.cpp`, source.buffer),

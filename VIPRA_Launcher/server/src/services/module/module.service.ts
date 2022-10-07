@@ -1,9 +1,10 @@
 import { BaseService } from '../base.service';
 
-import { Module, ModuleUpload } from '../../types/module/module.types';
+import { isFullModule, Module, ModuleUpload } from '../../types/module/module.types';
 import { Status } from '../../types/status';
-import { Full, Nullable, OperationResult } from 'src/types/typeDefs';
-import { BaseRepo } from 'src/repos/base.repo';
+import { Full, Nullable, OperationResult } from '../../types/typeDefs';
+import { BaseRepo } from '../../repos/base.repo';
+import { readJsonBuffer } from '../../util/fileOperations';
 
 
 /**
@@ -85,17 +86,24 @@ export class ModuleService implements BaseService<ModuleUpload, Module> {
    */
   private completeModule(upload : Partial<ModuleUpload>) : Nullable<Full<ModuleUpload>> {
     if (
-      upload.module?.id &&
-      upload.module?.description &&
-      upload.module?.name &&
-      upload.module?.params &&
-      upload.module?.type &&
       upload.files?.headerFile &&
       upload.files?.srcFile &&
       upload.files?.metaFile
     ) {
-      upload.module.compiled = false;
-      return upload as Full<ModuleUpload>;
+      const module = readJsonBuffer<Partial<Module>>(upload.files?.metaFile.buffer);
+      if (module) {
+        upload.module = {
+          id: module.id,
+          name: module.name,
+          description: module.description,
+          type: module.type,
+          params: module.params,
+          compiled: false,
+        };
+        if (isFullModule(upload.module)) {
+          return upload as Full<ModuleUpload>;
+        }
+      }
     }
 
     return null;

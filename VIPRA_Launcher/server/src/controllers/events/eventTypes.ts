@@ -28,4 +28,5 @@ export enum RequestType {
   MODULE,
   MAP,
   SIM_CONFIG,
+  SIM_CONFIG_PARAMS,
 }

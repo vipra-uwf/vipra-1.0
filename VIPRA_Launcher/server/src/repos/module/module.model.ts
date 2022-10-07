@@ -20,5 +20,6 @@ export const toModule = (module : ModuleModel) : Module => {
     description: module.module.description,
     params: module.module.params,
     type: module.module.type,
+    compiled: module.module.compiled,
   };
 };

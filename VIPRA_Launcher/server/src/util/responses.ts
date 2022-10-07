@@ -39,12 +39,14 @@ const respondUnknownError = (response : express.Response) : void => {
 
 /**
  * @description Responds that the operation failed due to user input
+ * @param {string} reason - reason for fail
  * @param {unknown} data - any message/data to send to client
  * @param {express.Response} response - client response object
  */
-const respondFail = (data : unknown, response : express.Response) : void => {
+const respondFail = (reason : string, data : unknown, response : express.Response) : void => {
   response.status(Status.SUCCESS).json({
     status: 'fail',
+    reason,
     data,
   });
 };
@@ -73,16 +75,16 @@ const switchDataResponse = (result : OperationResult<unknown>, response : expres
       respondData(result.object, response);
       break;
     case Status.FORBIDDEN:
-      respondFail({ data : 'Forbidden' }, response);
+      respondFail('Forbidden', {}, response);
       break;
     case Status.UNAUTHORIZED:
-      respondFail({ data : 'Not Authorized' }, response);
+      respondFail('Not Authorized', {}, response);
       break;
     case Status.BAD_REQUEST:
-      respondFail({ data: 'Bad Request' }, response);
+      respondFail('Bad Request', {}, response);
       break;
     case Status.NOT_FOUND:
-      respondFail({ data: 'Not Found' }, response);
+      respondFail('Not Found', {}, response);
       break;
     case Status.INTERNAL_ERROR:
       respondUnknownError(response);
@@ -101,16 +103,16 @@ const switchCreateResponse = (result : OperationResult<unknown>, response : expr
       respondData(result.object, response);
       break;
     case Status.FORBIDDEN:
-      respondFail({ data : 'Forbidden' }, response);
+      respondFail('Forbidden', {}, response);
       break;
     case Status.UNAUTHORIZED:
-      respondFail({ data : 'Not Authorized' }, response);
+      respondFail('Not Authorized', {}, response);
       break;
     case Status.BAD_REQUEST:
-      respondFail({ data: 'Bad Request' }, response);
+      respondFail('Bad Request', {}, response);
       break;
     case Status.CONFLICT:
-      respondFail({ data: 'Conflict', conflict: result.object }, response);
+      respondFail('Conflict', { data: result.object }, response);
       break;
     case Status.INTERNAL_ERROR:
       respondUnknownError(response);
@@ -129,19 +131,19 @@ const switchDeleteResponse = (result : OperationResult<unknown>, response : expr
       respondData(result.object, response);
       break;
     case Status.FORBIDDEN:
-      respondFail({ data : 'Forbidden' }, response);
+      respondFail('Forbidden', {}, response);
       break;
     case Status.UNAUTHORIZED:
-      respondFail({ data : 'Not Authorized' }, response);
+      respondFail('Not Authorized', {}, response);
       break;
     case Status.NOT_FOUND:
-      respondFail({ data: 'Not Found' }, response);
+      respondFail('Not Found', {}, response);
       break;
     case Status.BAD_REQUEST:
-      respondFail({ data: 'Bad Request' }, response);
+      respondFail('Bad Request', {}, response);
       break;
     case Status.CONFLICT:
-      respondFail({ data: 'Conflict', conflict: result.object }, response);
+      respondFail('Conflict', { conflict: result.object }, response);
       break;
     case Status.INTERNAL_ERROR:
       respondUnknownError(response);

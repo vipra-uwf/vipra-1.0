@@ -2,7 +2,7 @@ import { Config } from '../../configuration/config';
 import { Full, Nullable, OperationResult } from '../../types/typeDefs';
 import { SimConfig, SimConfigUpload } from '../../types/simconfig/simconfig.types';
 import { BaseRepo } from '../base.repo';
-import { Status } from 'src/types/status';
+import { Status } from '../../types/status';
 import { deleteDir, writeFile } from '../../util/fileOperations';
 
 /**

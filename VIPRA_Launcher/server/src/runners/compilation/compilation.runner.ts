@@ -14,11 +14,8 @@ export class CompilationRunner {
 
   private config : Config;
 
-  private logger : Logger;
-
-  constructor(config : Config, logger : Logger) {
+  constructor(config : Config) { 
     this.config = config;
-    this.logger = logger;
   }
 
   /**
@@ -34,28 +31,28 @@ export class CompilationRunner {
         const command = `make module -C ${this.config.vipra.vipraDir} MODULEPATH=${moduleDirPath} MODULEID=${module.id} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
-            this.logger.error(`buildModule: ${error.message}`);
+            Logger.error(`buildModule: ${error.message}`);
             resolve(Status.INTERNAL_ERROR);
           }
         });
         if (ps && ps.stderr && ps.stdout) {
           ps.stderr.on('data', (data : string) => {
-            this.logger.debug(`buildModule: ${data}`);
+            Logger.debug(`buildModule: ${data}`);
           });
           ps.stdout.on('data', (data : string) => {
-            this.logger.debug(`buildModule: ${data}`);
+            Logger.debug(`buildModule: ${data}`);
           });
           ps.on('close', (code : number) => {
             if (code !== 0) {
-              this.logger.error(`Build Module ended with code: ${code}`);
+              Logger.error(`Build Module ended with code: ${code}`);
               resolve(Status.INTERNAL_ERROR);
             } else {
-              this.logger.info(`Module Build Successful: ${module.name}:${module.id}`);
+              Logger.info(`Module Build Successful: ${module.name}:${module.id}`);
               resolve(Status.SUCCESS);
             }
           });
         } else {
-          this.logger.error(`Attempt tob build Module that doesn't exist: ${module.name}:${module.id} ; Path: ${moduleDirPath}`);
+          Logger.error(`Attempt tob build Module that doesn't exist: ${module.name}:${module.id} ; Path: ${moduleDirPath}`);
           resolve(Status.NOT_FOUND);
         }
       }
@@ -76,32 +73,32 @@ export class CompilationRunner {
         const command : string = `make compile -C ${this.config.vipra.behaviorDir} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
-            this.logger.error(`compileHumanBehavior: ${error.message}`);
+            Logger.error(`compileHumanBehavior: ${error.message}`);
             resolve(Status.INTERNAL_ERROR);
           }
         });
         if (ps && ps.stderr && ps.stdout) {
           ps.stderr.on('data', (data : string) => {
-            this.logger.debug(`compileHumanBehavior: ${data}`);
+            Logger.debug(`compileHumanBehavior: ${data}`);
           });
           ps.stdout.on('data', (data : string) => {
-            this.logger.debug(`compileHumanBehavior: ${data}`);
+            Logger.debug(`compileHumanBehavior: ${data}`);
           });
           ps.on('close', (code : number) => {
             if (code !== 0) {
-              this.logger.error(`Compile Human Behavior ended with code: ${code}`);
+              Logger.error(`Compile Human Behavior ended with code: ${code}`);
               resolve(Status.INTERNAL_ERROR);
             } else {
-              this.logger.info('Human Behavior Compiled Successfully');
+              Logger.info('Human Behavior Compiled Successfully');
               resolve(Status.SUCCESS);
             }
           });
         } else {
-          this.logger.error('Compile Human Behavior Process is null');
+          Logger.error('Compile Human Behavior Process is null');
           resolve(Status.INTERNAL_ERROR);
         }
       } catch (e : unknown) {
-        this.logger.error(`Compile Human Behavior: Caught: ${e as string}`);
+        Logger.error(`Compile Human Behavior: Caught: ${e as string}`);
         resolve(Status.INTERNAL_ERROR);
       }
     });
@@ -116,36 +113,36 @@ export class CompilationRunner {
   public async compileGenMain(debug : boolean) : Promise<Status> {
     return new Promise((resolve) =>{
       try {
-        this.logger.info('Compiling Generate Main');
+        Logger.info('Compiling Generate Main');
         const command : string = `make generate_main -C ${this.config.vipra.vipraDir} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
-            this.logger.error(`compileGenMain: ${error.message}`);
+            Logger.error(`compileGenMain: ${error.message}`);
             resolve(Status.INTERNAL_ERROR);
           }
         });
         if (ps && ps.stderr && ps.stdout) {
           ps.stderr.on('data', (data : string) => {
-            this.logger.debug(`compileGenMain: ${data}`);
+            Logger.debug(`compileGenMain: ${data}`);
           });
           ps.stdout.on('data', (data : string) => {
-            this.logger.debug(`compileGenMain: ${data}`);
+            Logger.debug(`compileGenMain: ${data}`);
           });
           ps.on('close', (code : number) => {
             if (code !== 0) {
-              this.logger.error(`Compile Generate Main ended with code: ${code}`);
+              Logger.error(`Compile Generate Main ended with code: ${code}`);
               resolve(Status.INTERNAL_ERROR);
             } else {
-              this.logger.info('Generate Main Compiled Successfully');
+              Logger.info('Generate Main Compiled Successfully');
               resolve(Status.SUCCESS);
             }
           });
         } else {
-          this.logger.error('Compile Generate Main Process is null');
+          Logger.error('Compile Generate Main Process is null');
           resolve(Status.INTERNAL_ERROR);
         }
       } catch (e : unknown) {
-        this.logger.error(`Compile Generate Main: Caught: ${e as string}`);
+        Logger.error(`Compile Generate Main: Caught: ${e as string}`);
         resolve(Status.INTERNAL_ERROR);
       }
     });
@@ -162,36 +159,36 @@ export class CompilationRunner {
   public async compileMain(buildID : string, debug : boolean) : Promise<Status> {
     return new Promise((resolve) =>{
       try {
-        this.logger.info('Compiling Main');
+        Logger.info('Compiling Main');
         const command : string = `make compileMain -C ${this.config.vipra.vipraDir} BID=${buildID} MODULEFILE=${this.config.modules.modulesFilePath} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
-            this.logger.error(`compileMain: ${error.message}`);
+            Logger.error(`compileMain: ${error.message}`);
             resolve(Status.INTERNAL_ERROR);
           }
         });
         if (ps && ps.stderr && ps.stdout) {
           ps.stderr.on('data', (data : string) => {
-            this.logger.debug(`compileMain: ${data}`);
+            Logger.debug(`compileMain: ${data}`);
           });
           ps.stdout.on('data', (data : string) => {
-            this.logger.debug(`compileMain: ${data}`);
+            Logger.debug(`compileMain: ${data}`);
           });
           ps.on('close', (code : number) => {
             if (code !== 0) {
-              this.logger.error(`Compile Main ended with code: ${code}`);
+              Logger.error(`Compile Main ended with code: ${code}`);
               resolve(Status.INTERNAL_ERROR);
             } else {
-              this.logger.info('Main Compiled Successfully');
+              Logger.info('Main Compiled Successfully');
               resolve(Status.SUCCESS);
             }
           });
         } else {
-          this.logger.error('Compile Main Process is null');
+          Logger.error('Compile Main Process is null');
           resolve(Status.INTERNAL_ERROR);
         }
       } catch (e : unknown) {
-        this.logger.error(`Compile Headers: Caught: ${e as string}`);
+        Logger.error(`Compile Headers: Caught: ${e as string}`);
         resolve(Status.INTERNAL_ERROR);
       }
     });
@@ -207,35 +204,35 @@ export class CompilationRunner {
   public compileSim(buildID : string, debug : boolean) : Promise<Status> {
     return new Promise((resolve) =>{
       try {
-        this.logger.info('Compiling Simulation');
+        Logger.info('Compiling Simulation');
         const command : string = `make simulation -C ${this.config.vipra.vipraDir} BID=${buildID} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
-            this.logger.error(`compileSim: ${error.message}`);
+            Logger.error(`compileSim: ${error.message}`);
             resolve(Status.INTERNAL_ERROR);
           }
         });
         if (ps && ps.stderr && ps.stdout) {
           ps.stderr.on('data', (data : string) => {
-            this.logger.debug(`compileSim: ${data}`);
+            Logger.debug(`compileSim: ${data}`);
           });
           ps.stdout.on('data', (data : string) => {
-            this.logger.debug(`compileSim: ${data}`);
+            Logger.debug(`compileSim: ${data}`);
           });
           ps.on('close', (code : number) => {
             if (code !== 0) {
               resolve(Status.INTERNAL_ERROR);
             } else {
-              this.logger.info('Simulation Generated Successfully');
+              Logger.info('Simulation Generated Successfully');
               resolve(Status.SUCCESS);
             }
           });
         } else {
-          this.logger.error('Compile Simulation Process is null');
+          Logger.error('Compile Simulation Process is null');
           resolve(Status.INTERNAL_ERROR);
         }
       } catch (e : unknown) {
-        this.logger.error(`Compile Simulation: Caught: ${e as string}`);
+        Logger.error(`Compile Simulation: Caught: ${e as string}`);
         resolve(Status.INTERNAL_ERROR);
       }
     });

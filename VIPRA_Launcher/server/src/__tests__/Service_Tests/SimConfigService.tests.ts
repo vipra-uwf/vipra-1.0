@@ -1,15 +1,15 @@
-import { MockSimConfigRepo } from "../mocks/simconfig/simconfigrepo.mock";
+import { MockSimConfigRepo } from '../mocks/simconfig/simconfigrepo.mock';
 MockSimConfigRepo();
 
-import { MockEventSystem } from "../mocks/events/eventSystem.mock";
+import { MockEventSystem } from '../mocks/events/eventSystem.mock';
 MockEventSystem();
 
-import { LocalSimConfigRepo } from "../../repos/simconfig/simconfig.local.repo";
-import { SimConfigService } from "../../services/simconfig/simconfig.service";
-import { Status } from "../../types/status";
-import { badModuleSimConfigUpload, emptySimConfigUpdate, idSimConfigUpdate, missingModuleSimConfigUpload, missingNameSimConfigUpload, moduleSimConfigUpdate, nameSimConfigUpdate, properSimConfig, properSimConfigUpdate, properSimConfigUpload, updatedSimConfig } from "../values/simconfigs/simconfigs.values";
-import { EventSystem } from "../../controllers/events/eventSystem";
-import { NUM_MODULE_TYPES } from "../values/modules/modules.values";
+import { LocalSimConfigRepo } from '../../repos/simconfig/simconfig.local.repo';
+import { SimConfigService } from '../../services/simconfig/simconfig.service';
+import { Status } from '../../types/status';
+import { badModuleSimConfigUpload, emptySimConfigUpdate, idSimConfigUpdate, missingModuleSimConfigUpload, missingNameSimConfigUpload, moduleSimConfigUpdate, nameSimConfigUpdate, properSimConfig, properSimConfigUpdate, properSimConfigUpload, updatedSimConfig } from '../values/simconfigs/simconfigs.values';
+import { EventSystem } from '../../controllers/events/eventSystem';
+import { NUM_MODULE_TYPES } from '../values/modules/modules.values';
 
 
 
@@ -53,7 +53,7 @@ describe('SimConfigService', ()=>{
     const createSpy = jest.spyOn(simconfigRepo, 'create');
 
     // Contains Bad Module
-    let result = await configService.create(badModuleSimConfigUpload);
+    const result = await configService.create(badModuleSimConfigUpload);
 
     expect(result.status).toEqual(Status.BAD_REQUEST);
     expect(result.object).toBeNull();

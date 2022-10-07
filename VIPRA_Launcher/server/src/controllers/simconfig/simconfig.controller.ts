@@ -3,13 +3,13 @@
 import express from 'express';
 import { SimConfig, SimConfigUpload } from '../../types/simconfig/simconfig.types';
 import { Nullable, OperationResult } from '../../types/typeDefs';
-import { Logger } from '../logging/logger';
 import { BaseController } from '../base.controller';
 import { EventSystem } from '../events/eventSystem';
 import { SimConfigService } from '../../services/simconfig/simconfig.service';
-import { Status } from 'src/types/status';
+import { Status } from '../../types/status';
 import { EventType, RequestType } from '../events/eventTypes';
-import { getFormData } from 'src/util/utilMethods';
+import { getFormData } from '../../util/utilMethods';
+import { Module, ModuleParam } from '../../types/module/module.types';
 
 
 /**
@@ -21,11 +21,9 @@ export class SimConfigController implements BaseController<SimConfig> {
 
   private scService : SimConfigService;
 
-  private logger : Logger;
 
-  constructor(eventController : EventSystem, logger : Logger, scService : SimConfigService) {
+  constructor(eventController : EventSystem, scService : SimConfigService) {
     this.eventController = eventController;
-    this.logger = logger;
     this.scService = scService;
     this.setupHandlers();
   }
@@ -63,7 +61,7 @@ export class SimConfigController implements BaseController<SimConfig> {
     const result = await this.scService.create(simconfig);
 
     if (result.status == Status.CREATED) {
-      void this.eventController.emit<SimConfig, SimConfigController>(EventType.NEW_SIMCONFIG, result.object, this);
+      void this.eventController.emit<SimConfig>(EventType.NEW_SIMCONFIG, result.object);
     }
     return result;
   }
@@ -79,7 +77,7 @@ export class SimConfigController implements BaseController<SimConfig> {
     if (id && simconfig) {
       const result = await this.scService.update(id, simconfig);
       if (result.status == Status.SUCCESS) {
-        void this.eventController.emit<SimConfig, SimConfigController>(EventType.UPDATE_SIMCONFIG, result.object, this);
+        void this.eventController.emit<SimConfig>(EventType.UPDATE_SIMCONFIG, result.object);
       }
       return result;
     }
@@ -97,7 +95,7 @@ export class SimConfigController implements BaseController<SimConfig> {
     if (id) {
       const result = await this.scService.delete(id);
       if (result.status == Status.SUCCESS) {
-        void this.eventController.emit<SimConfig, SimConfigController>(EventType.DELETE_SIMCONFIG, result.object, this);
+        void this.eventController.emit<SimConfig>(EventType.DELETE_SIMCONFIG, result.object);
       }
       return result;
     }
@@ -108,19 +106,42 @@ export class SimConfigController implements BaseController<SimConfig> {
    * @description sets up handlers for events
    */
   private setupHandlers() : void {   
-    /**
-     * @description finds the requested module and returns it
-     * @param {any} select - information for identifying the module
-     */
-    const simconfigRequestHandler = (select : unknown) : Promise<Nullable<SimConfig>> => {
-      const simconfig = select as Partial<SimConfig>;
-      if (simconfig.id) {
-        return this.scService.get(simconfig.id);
-      } else {
-        return Promise.resolve(null);
-      }
-    };
-
-    this.eventController.setRequestHandler(RequestType.SIM_CONFIG, simconfigRequestHandler);
+    this.eventController.setRequestHandler(RequestType.SIM_CONFIG, this.simconfigRequestHandler);
+    this.eventController.setRequestHandler(RequestType.SIM_CONFIG_PARAMS, this.getParams);
   }
+
+  /**
+   * @description Returns the parameters for a simconfig
+   * @param {{ id?: string }} select - select object with id
+   * @param {string} select.id - config id
+   */
+  private getParams = async (select : { id?: string }) : Promise<Nullable<ModuleParam[]>> => {
+    if (select.id) {
+      const simconfig = await this.scService.get(select.id);
+      if (simconfig) {
+        const params : ModuleParam[] = [];
+        for (const moduleId of Object.values(simconfig.modules)) {
+          const module = await this.eventController.request<Module>(RequestType.MODULE, { id: moduleId });
+          if (module) {
+            params.concat(module.params);
+          }
+        }
+        return params;
+      }
+    }
+    return Promise.resolve(null);
+  };
+
+  /**
+   * @description finds the requested module and returns it
+   * @param {any} select - information for identifying the module
+   */
+  private simconfigRequestHandler = (select : unknown) : Promise<Nullable<SimConfig>> => {
+    const simconfig = select as Partial<SimConfig>;
+    if (simconfig.id) {
+      return this.scService.get(simconfig.id);
+    } else {
+      return Promise.resolve(null);
+    }
+  };
 }

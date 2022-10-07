@@ -3,7 +3,6 @@ import { CompilationRunner } from '../../runners/compilation/compilation.runner'
 import { Config } from '../../configuration/config';
 import { EventSystem } from '../events/eventSystem';
 import { EventHandler, EventType, RequestType } from '../events/eventTypes';
-import { Logger } from '../logging/logger';
 import { Module, ModuleType } from '../../types/module/module.types';
 import { Status } from '../../types/status';
 import { SimState } from '../../types/simulation/simulation.types';
@@ -29,11 +28,11 @@ export class SimulationBuilder {
 
   private moduleTypes : Record<ModuleType, number>;
 
-  constructor(config : Config, logger : Logger, evSys : EventSystem) {
+  constructor(config : Config, evSys : EventSystem) {
     this.evSys = evSys;
     this.config = config;
     this.buildMap = new Map();
-    this.compilationRunner = new CompilationRunner(config, logger);
+    this.compilationRunner = new CompilationRunner(config);
     this.setupHandlers();
     this.startup();
   }
@@ -88,10 +87,10 @@ export class SimulationBuilder {
     const compiled = await this.compilationRunner.buildModule(module, false);
 
     if (compiled === Status.SUCCESS) {
-      void this.evSys.emit<Module, SimulationBuilder>(EventType.BUILT_MODULE, module, this);
-      void this.evSys.emit<string, SimulationBuilder>(EventType.NEW_SIMULATION_BUILD, this.compileSimulation(), this);
+      void this.evSys.emit<Module>(EventType.BUILT_MODULE, module);
+      void this.evSys.emit<string>(EventType.NEW_SIMULATION_BUILD, this.compileSimulation());
     } else {
-      void this.evSys.emit<Module, SimulationBuilder>(EventType.FAIL_MODULE, module, this);
+      void this.evSys.emit<Module>(EventType.FAIL_MODULE, module);
     }
   };
 
@@ -157,7 +156,7 @@ export class SimulationBuilder {
           // TODO move simulation to folder
           this.setBuildState(buildID, { ready:true, reason:'Successful Build' });
           this.setSimState({ ready: true, reason: 'Successful Build' });
-          void this.evSys.emit(EventType.SUCCESS_SIMULATION_BUILD, buildID, this);
+          void this.evSys.emit<string>(EventType.SUCCESS_SIMULATION_BUILD, buildID);
         } else {
           this.setBuildState(buildID, { ready:false, reason:'Unable To Compile Simulation' });
         }
@@ -237,9 +236,9 @@ export class SimulationBuilder {
             .then((result)=>{
               if (result === Status.SUCCESS) {
                 this.addedModuleType(module.type);
-                void this.evSys.emit(EventType.BUILT_MODULE, module, this);
+                void this.evSys.emit<Module>(EventType.BUILT_MODULE, module);
               } else {
-                void this.evSys.emit(EventType.FAIL_MODULE, module, this);
+                void this.evSys.emit<Module>(EventType.FAIL_MODULE, module);
               }
               return result;
             }),

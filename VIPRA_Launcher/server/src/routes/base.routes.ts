@@ -3,17 +3,17 @@ import express from 'express';
 import { Logger } from '../controllers/logging/logger';
 import { BaseController } from '../controllers/base.controller';
 import { respondUnknownError, switchCreateResponse, switchDataResponse, switchDeleteResponse } from '../util/responses';
-import { OperationResult } from 'src/types/typeDefs';
-
+import { OperationResult } from '../types/typeDefs';
 
 /**
  * @description Creates a router that handles Operations on a DataType
+ * @param {string} type - String of type being handled
  * @param {BaseController} controller - Controller for datatype
  * @param {BaseService} service - Service for datatype
  * @param {BaseRepo} repo - repo for datatype
  * @param {Logger} logger - logger
  */
-const createRouter = <DataType>(logger : Logger, controller : BaseController<DataType>) : express.Router => {
+const createRouter = <DataType>(type : string, controller : BaseController<DataType>) : express.Router => {
 
   /**
    * @description Logs an error for a given route
@@ -21,7 +21,7 @@ const createRouter = <DataType>(logger : Logger, controller : BaseController<Dat
    * @param {unknown} error - error
    */
   const logRouteError = (route : string, error : unknown) : void => {
-    logger.error(`${route} ERROR: ${error as string}`);
+    Logger.error(`${route} ERROR: ${error as string}`);
   };
 
   const router = express.Router();
@@ -32,7 +32,7 @@ const createRouter = <DataType>(logger : Logger, controller : BaseController<Dat
         switchDataResponse(result, res);
       })
       .catch((error : unknown)=>{
-        logRouteError(`${typeof controller}::getall()`, error);
+        logRouteError(`${type}::getall()`, error);
         respondUnknownError(res);
       });
   });
@@ -43,7 +43,7 @@ const createRouter = <DataType>(logger : Logger, controller : BaseController<Dat
         switchDataResponse(result, res);
       })
       .catch((error : unknown) => {
-        logRouteError(`${typeof controller}::get()`, error);
+        logRouteError(`${type}::get()`, error);
         respondUnknownError(res);
       });  
   });
@@ -54,7 +54,7 @@ const createRouter = <DataType>(logger : Logger, controller : BaseController<Dat
         switchCreateResponse(result, res);
       })
       .catch((error : unknown) => {
-        logRouteError(`${typeof controller}::create()`, error);
+        logRouteError(`${type}::create()`, error);
         respondUnknownError(res);
       });  
   });
@@ -65,7 +65,7 @@ const createRouter = <DataType>(logger : Logger, controller : BaseController<Dat
         switchCreateResponse(result, res);
       })
       .catch((error : unknown) =>{
-        logRouteError(`${typeof controller}::update()`, error);
+        logRouteError(`${type}::update()`, error);
         respondUnknownError(res);
       });
   });
@@ -76,7 +76,7 @@ const createRouter = <DataType>(logger : Logger, controller : BaseController<Dat
         switchDeleteResponse(result, res);
       })
       .catch((error : unknown) =>{
-        logRouteError(`${typeof controller}::delete()`, error);
+        logRouteError(`${type}::delete()`, error);
         respondUnknownError(res);
       });
   });
