@@ -18,9 +18,6 @@ type Full<T> = {
   [P in keyof T]-?: Full<T[P]>;
 };
 
-
-type SimState = { ready : boolean; reason : Nullable<string> };
-
 /**
  * @description Map meant for holding command line arguments
  */
@@ -29,7 +26,6 @@ type FlagMap = Map<string, string>;
 export {
   Nullable,
   OperationResult,
-  SimState,
   FlagMap,
   DeepPartial,
   Full,

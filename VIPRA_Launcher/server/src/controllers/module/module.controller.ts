@@ -7,7 +7,7 @@ import { ModuleService } from '../../services/module/module.service';
 import { EventSystem } from '../events/eventSystem';
 import { Nullable, OperationResult } from '../../types/typeDefs';
 import { uploadModule } from './filestore';
-import { EventType, RequestType } from '../events/eventTypes';
+import { EventHandler, EventType, RequestType } from '../events/eventTypes';
 import { Logger } from '../logging/logger';
 import { BaseController } from '../base.controller';
 
@@ -75,7 +75,7 @@ export class ModuleController implements BaseController<Module> {
       if (createRequest) {
         const result = await this.moduleService.create(createRequest);
         if (result.status == Status.CREATED) {
-          this.eventController.emit<Module, ModuleController>(EventType.NEW_MODULE, result.object, this);
+          void this.eventController.emit<Module, ModuleController>(EventType.NEW_MODULE, result.object, this);
         }
         return result;
       }
@@ -95,7 +95,7 @@ export class ModuleController implements BaseController<Module> {
       if (uploadRequest) {
         const result = await this.moduleService.update(id, uploadRequest);
         if (result.status == Status.SUCCESS) {
-          this.eventController.emit<Module, ModuleController>(EventType.UPDATE_MODULE, result.object, this);
+          void this.eventController.emit<Module, ModuleController>(EventType.UPDATE_MODULE, result.object, this);
         }
         return result;
       }
@@ -113,7 +113,7 @@ export class ModuleController implements BaseController<Module> {
     if (id) {
       const result = await this.moduleService.delete(id);
       if (result.status == Status.SUCCESS) {
-        this.eventController.emit<Module, ModuleController>(EventType.DELETE_MODULE, result.object, this);
+        void this.eventController.emit<Module, ModuleController>(EventType.DELETE_MODULE, result.object, this);
       }
       return result;
     }
@@ -121,26 +121,60 @@ export class ModuleController implements BaseController<Module> {
     return { status: Status.BAD_REQUEST, object: null };
   }
 
-
   /**
    * @description sets up handlers for events
    */
   private setupHandlers() : void {
-    /**
-     * @description finds the requested module and returns it
-     * @param {any} select - information for identifying the module
-     */
-    const moduleRequestHandler = (select : unknown) : Promise<Nullable<Module>> => {
-      const module = select as Partial<Module>;
-      if (module.id) {
-        return this.moduleService.get(module.id);
-      } else {
-        return Promise.resolve(null);
-      }
-    };
-
-    this.eventController.setRequestHandler(RequestType.MODULE, moduleRequestHandler);
+    this.eventController.setRequestHandler(RequestType.MODULE, this.moduleRequestHandler);
+    this.eventController.setRequestHandler(RequestType.ALL_MODULE, this.allModuleRequestHandler);
+    this.eventController.subscribe(EventType.FAIL_MODULE, this.moduleFailHandler);
+    this.eventController.subscribe(EventType.BUILT_MODULE, this.moduleBuiltHandler);
   }
+
+  /**
+   * @description finds the requested module and returns it
+   * @param {any} select - information for identifying the module
+   */
+  private moduleRequestHandler = (select : unknown) : Promise<Nullable<Module>> => {
+    const module = select as Partial<Module>;
+    if (module.id) {
+      return this.moduleService.get(module.id);
+    } else {
+      return Promise.resolve(null);
+    }
+  };
+
+  /**
+   * @description finds the requested module and returns it
+   * @param {any} select - information for identifying the module
+   */
+  private allModuleRequestHandler = () : Promise<Nullable<Module[]>> => {
+    return this.moduleService.getAll();
+  };
+
+  /**
+   * @description Handles Failed Module Compilation
+   * @param {Module} module - module that failed compilation
+   */
+  private moduleFailHandler : EventHandler = (module : Module) : void => {
+    void this.moduleService.update(module.id, {
+      module: {
+        compiled: false,
+      },
+    });
+  };
+
+  /**
+   * @description Handles Successful Module Compilation
+   * @param {Module} module - module that was compiled
+   */
+  private moduleBuiltHandler : EventHandler = (module : Module) : void => {
+    void this.moduleService.update(module.id, {
+      module: {
+        compiled: true,
+      },
+    });
+  };
 
   /**
    * @description Transforms a request into a ModuleUpload

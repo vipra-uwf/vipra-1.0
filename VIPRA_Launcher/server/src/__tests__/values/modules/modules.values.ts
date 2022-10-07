@@ -130,6 +130,8 @@ const filesModuleUpdate : Partial<ModuleUpload> = {
   }
 }
 
+const NUM_MODULE_TYPES = 11;
+
 export {
   properModuleUpload,
   missingNameModuleUpload,
@@ -141,5 +143,6 @@ export {
   idModuleUpdate,
   nameModuleUpdate,
   emptyModuleUpdate,
-  filesModuleUpdate
+  filesModuleUpdate,
+  NUM_MODULE_TYPES,
 };

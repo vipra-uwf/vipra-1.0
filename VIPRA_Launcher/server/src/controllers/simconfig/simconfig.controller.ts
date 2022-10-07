@@ -63,7 +63,7 @@ export class SimConfigController implements BaseController<SimConfig> {
     const result = await this.scService.create(simconfig);
 
     if (result.status == Status.CREATED) {
-      this.eventController.emit<SimConfig, SimConfigController>(EventType.NEW_SIMCONFIG, result.object, this);
+      void this.eventController.emit<SimConfig, SimConfigController>(EventType.NEW_SIMCONFIG, result.object, this);
     }
     return result;
   }
@@ -79,7 +79,7 @@ export class SimConfigController implements BaseController<SimConfig> {
     if (id && simconfig) {
       const result = await this.scService.update(id, simconfig);
       if (result.status == Status.SUCCESS) {
-        this.eventController.emit<SimConfig, SimConfigController>(EventType.UPDATE_SIMCONFIG, result.object, this);
+        void this.eventController.emit<SimConfig, SimConfigController>(EventType.UPDATE_SIMCONFIG, result.object, this);
       }
       return result;
     }
@@ -97,7 +97,7 @@ export class SimConfigController implements BaseController<SimConfig> {
     if (id) {
       const result = await this.scService.delete(id);
       if (result.status == Status.SUCCESS) {
-        this.eventController.emit<SimConfig, SimConfigController>(EventType.DELETE_SIMCONFIG, result.object, this);
+        void this.eventController.emit<SimConfig, SimConfigController>(EventType.DELETE_SIMCONFIG, result.object, this);
       }
       return result;
     }

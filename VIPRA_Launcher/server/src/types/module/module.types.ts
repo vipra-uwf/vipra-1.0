@@ -40,6 +40,7 @@ export interface Module {
   description : string;
   params : ModuleParam[];
   type : ModuleType;
+  compiled : boolean;
 }
 
 export interface ModuleUpload {

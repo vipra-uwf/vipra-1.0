@@ -3,7 +3,9 @@ import { Nullable, OperationResult, Full } from '../../types/typeDefs';
 import { SimConfig, SimConfigUpload } from '../../types/simconfig/simconfig.types';
 import { BaseService } from '../base.service';
 import { Status } from '../../types/status';
-import { ModuleType } from '../../types/module/module.types';
+import { Module, ModuleType } from '../../types/module/module.types';
+import { EventSystem } from '../../controllers/events/eventSystem';
+import { RequestType } from '../../controllers/events/eventTypes';
 
 
 /**
@@ -13,8 +15,11 @@ export class SimConfigService implements BaseService<SimConfigUpload, SimConfig>
 
   private repo : BaseRepo<SimConfigUpload, SimConfig>;
 
-  constructor(repo : BaseRepo<SimConfigUpload, SimConfig>) {
+  private evSys : EventSystem;
+
+  constructor(evSys : EventSystem, repo : BaseRepo<SimConfigUpload, SimConfig>) {
     this.repo = repo;
+    this.evSys = evSys;
   }
 
   /**
@@ -38,7 +43,7 @@ export class SimConfigService implements BaseService<SimConfigUpload, SimConfig>
    */
   public async create(object: Partial<SimConfigUpload>): Promise<OperationResult<SimConfig>> {
     
-    const simconfig : Nullable<Full<SimConfigUpload>> = this.completeConfig(object);
+    const simconfig : Nullable<Full<SimConfig>> = await this.completeConfig(object);
 
     if (simconfig) {
       return this.repo.create(simconfig);
@@ -78,16 +83,19 @@ export class SimConfigService implements BaseService<SimConfigUpload, SimConfig>
    * @description Makes sure the a simconfig upload is complete
    * @param {Partial<SimConfigUpload>} simconfig - simconfig to check
    */
-  private completeConfig(simconfig : Partial<SimConfigUpload>) : Nullable<Full<SimConfigUpload>> {
+  private async completeConfig(simconfig : Partial<SimConfigUpload>) : Promise<Nullable<Full<SimConfig>>> {
     if (simconfig.id && simconfig.description && simconfig.modules && simconfig.name) {
-      if (simconfig.modules) {
-        for (const type of Object.values(ModuleType)) {
-          if (!simconfig.modules[type as keyof Record<ModuleType, string>]) {
+      for (const type of Object.values(ModuleType)) {
+        const moduleID = simconfig.modules[type as keyof Record<ModuleType, string>];
+        if (moduleID) {
+          if (! await this.checkModule(moduleID, type)) {
             return null;
           }
+        } else {
+          return null;
         }
-        return simconfig as Full<SimConfigUpload>;
       }
+      return simconfig as Full<SimConfigUpload>;
     }
     return null;
   }
@@ -104,5 +112,22 @@ export class SimConfigService implements BaseService<SimConfigUpload, SimConfig>
       return true;
     }
     return false;
+  }
+
+  /**
+   * @description Checks that a module exists and is the expected type
+   * @param {string} moduleID - id of module to check
+   * @param {ModuleType} type - type module should be
+   */
+  private async checkModule(moduleID : string, type : ModuleType) : Promise<boolean> {
+    const module = await this.evSys.request<Module>(RequestType.MODULE, { id: moduleID, type });
+    if (module) {
+      if (module.type !== type) {
+        return false;
+      }
+    } else {
+      return false;
+    }
+    return true;
   }
 }

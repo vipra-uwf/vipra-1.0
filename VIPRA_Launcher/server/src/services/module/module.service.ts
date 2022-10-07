@@ -94,6 +94,7 @@ export class ModuleService implements BaseService<ModuleUpload, Module> {
       upload.files?.srcFile &&
       upload.files?.metaFile
     ) {
+      upload.module.compiled = false;
       return upload as Full<ModuleUpload>;
     }
 

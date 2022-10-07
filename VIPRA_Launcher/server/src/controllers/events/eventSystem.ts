@@ -22,15 +22,12 @@ export class EventSystem {
    * @param {any} data - data that goes along with the event
    * @param {any} source - what object the event originated from
    */
-  public emit<DataType, Source>(event : EventType, data : Nullable<DataType>, source : Source) : void {
+  public async emit<DataType, Source>(event : EventType, data : Nullable<DataType>, source : Source) : Promise<void> {
     if (data) {
       evLogger.info(`EMIT: ${event} ; SOURCE: ${source as string} ; DATA: ${data as string}`);
       const handlers : Nullable<EventHandler[]> = this.handlersMap.get(event) || null;
       if (handlers) {
-        for (const handler of handlers) {
-          evLogger.info(`HANDLE: ${event} ; SOURCE: ${source as string} ; DATA: ${data as string}`);
-          handler(data, source);
-        }
+        await Promise.all(handlers);
       }
     } else {
       evLogger.error(`NO DATA : EMIT ; EVENT : ${event} ; SOURCE : ${typeof source} ; DATATYPE : ${typeof data}`);
@@ -40,15 +37,15 @@ export class EventSystem {
   /**
    * @description Emits a request event, if a handler is attached the requested object is returned
    * @param {any} select - information used to find specific object
-   * @param {RequestType} datatype - type of object requested
+   * @param {RequestType} type - type of object requested
    */
-  public async request(datatype : RequestType, select : any) : Promise<Nullable<unknown>> {
-    evLogger.info(`REQUEST : ${datatype}, SELECT: ${select as string || 'NULL'}`);
-    const handler : Nullable<RequestHandler> = this.requestMap.get(datatype) || null;
+  public async request<DataType>(type : RequestType, select : any) : Promise<Nullable<DataType>> {
+    evLogger.info(`REQUEST : ${type}, SELECT: ${select as string || 'NULL'}`);
+    const handler = this.requestMap.get(type) || null;
     if (handler) {
-      return handler(select);
+      return await handler(select) as Nullable<DataType>;
     } else {
-      evLogger.error(`FAIL: REQUEST: ${datatype}, SELECT: ${select as string || 'NULL'}`);
+      evLogger.error(`FAIL: REQUEST: ${type}, SELECT: ${select as string || 'NULL'}`);
       return null;
     }
   }

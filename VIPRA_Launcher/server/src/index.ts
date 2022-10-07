@@ -17,10 +17,19 @@ const app = express();
 
 const config : Config = {
   modules: {
+    modulesFilePath: '',
     modulesURL: '',
   },
   simconfig: {
     simconfigURL: '',
+  },
+  vipra: {
+    vipraDir: '',
+    behaviorDir: '',
+  },
+  simulation: {
+    debugMode: false,
+    maxConcurComps: 10,
   },
 };
 
@@ -32,7 +41,7 @@ const moduleService : ModuleService = new ModuleService(moduleRepo);
 const moduleController : ModuleController = new ModuleController(evSys, logger, moduleService);
 
 const simconfigRepo : LocalSimConfigRepo = new LocalSimConfigRepo(config);
-const simconfigService : SimConfigService = new SimConfigService(simconfigRepo);
+const simconfigService : SimConfigService = new SimConfigService(evSys, simconfigRepo);
 const simconfigController : SimConfigController = new SimConfigController(evSys, logger, simconfigService);
 
 const moduleRoutes = createRouter<Module>(logger, moduleController);
