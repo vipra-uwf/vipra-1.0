@@ -25,13 +25,13 @@ export class EventSystem {
    */
   public async emit<DataType>(event : EventType, data : Nullable<DataType>) : Promise<void> {
     if (data) {
-      evLogger.info(`EMIT: ${event.toString()} ; DATA: ${JSON.stringify(data)}`);
+      evLogger.info(`EMIT: ${Object.values(EventType)[event]} ; DATA: ${JSON.stringify(data)}`);
       const handlers : Nullable<EventHandler[]> = this.handlersMap.get(event) || null;
       if (handlers) {
         await Promise.all(handlers);
       }
     } else {
-      evLogger.error(`NO DATA : EMIT ; EVENT : ${event.toString()} ; DATATYPE : ${typeof data}`);
+      evLogger.error(`NO DATA : EMIT ; EVENT : ${Object.values(EventType)[event]} ; DATATYPE : ${typeof data}`);
     }
   }
 
@@ -40,8 +40,8 @@ export class EventSystem {
    * @param {any} select - information used to find specific object
    * @param {RequestType} type - type of object requested
    */
-  public async request<DataType>(type : RequestType, select : any) : Promise<Nullable<DataType>> {
-    evLogger.info(`REQUEST : ${type}, SELECT: ${select as string || 'NULL'}`);
+  public async request<DataType>(type : RequestType, select : unknown) : Promise<Nullable<DataType>> {
+    evLogger.info(`REQUEST : ${Object.values(RequestType)[type]}, SELECT: ${select as string || 'NULL'}`);
     const handler = this.requestMap.get(type) || null;
     if (handler) {
       return await handler(select) as Nullable<DataType>;
@@ -58,10 +58,11 @@ export class EventSystem {
    * @param {RequestHandler} handler - handler for request
    */
   public setRequestHandler(datatype : RequestType, handler : RequestHandler) : void {
-    evLogger.info(`REGISTER : ${datatype}`);
+    const type = Object.values(RequestType)[datatype];
+    evLogger.info(`REGISTER : ${type}`);
     if (this.requestMap.has(datatype)) {
-      evLogger.info(`FAIL: REGISTER: ${datatype}`);
-      throw new Error(`Attempt to Set Multiple Request Handlers for: ${datatype}`);
+      evLogger.info(`FAIL: REGISTER: ${type}`);
+      throw new Error(`Attempt to Set Multiple Request Handlers for: ${type}`);
     }
     this.requestMap.set(datatype, handler);
   }
@@ -72,7 +73,7 @@ export class EventSystem {
    * @param  {EventHandler} handler - handler function to subscribe
    */
   public subscribe(event : EventType, handler : EventHandler) : void {
-    evLogger.info(`SUBSCRIBE: ${event.toString()}`);
+    evLogger.info(`SUBSCRIBE: ${Object.values(EventType)[event]}`);
     const handlerArray : Nullable<EventHandler[]> = this.handlersMap.get(event) || null;
     if (handlerArray) {
       handlerArray.push(handler);

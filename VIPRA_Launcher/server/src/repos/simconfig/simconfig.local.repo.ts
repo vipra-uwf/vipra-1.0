@@ -98,20 +98,6 @@ export class LocalSimConfigRepo implements BaseRepo<SimConfigUpload, SimConfig> 
   }
 
   /**
-   * @description Makes sure the simconfig is staged, ready for use
-   * @param {string} id - id of config to stage
-   */
-  public stage(id: string): OperationResult<string> {
-    const config = this.configMap.get(id);
-    if (config) {
-      const filePath = `${this.configDir}/${config.id}/sim.config`;
-      return { status: Status.SUCCESS, object: filePath };
-    }
-
-    return { status: Status.NOT_FOUND, object: null };
-  }
-
-  /**
    * @description Saves the SimConfig file to the local filesystem
    * @param {SimConfig} config - config to save
    */

@@ -1,9 +1,7 @@
 /**
  * @module ResultStores
  */
-import { CbArgs, CbResult, ResultStore } from 'typechain';
-
-
+import { CbResult, ResultStore } from 'typechain';
 
 /**
  * @description Result Store for the Maps service
@@ -15,8 +13,7 @@ export class MapsResultStore extends ResultStore {
    * @param  {string} locationID - location of result
    * @returns CbResult
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getResult(locationID: string): CbResult {
+  getResult(): CbResult {
     // const maps : string[] = this.mc.getAllMaps().map((map)=>{return map.name;});
     // if (maps) {
     //   return { error: false, result: JSON.stringify(maps) };
@@ -33,8 +30,7 @@ export class MapsResultStore extends ResultStore {
    * @param  {string} result - result of the service run
    * @returns CbResult
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  storeResult(args: CbArgs, result: string): CbResult {
+  storeResult(): CbResult {
     return { error: false, result: 'MAPS' };
   }
   

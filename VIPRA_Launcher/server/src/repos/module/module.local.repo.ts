@@ -4,7 +4,7 @@ import { Full, Nullable, OperationResult } from '../../types/typeDefs';
 import { Module, ModuleType, ModuleUpload } from '../../types/module/module.types';
 import { BaseRepo } from '../base.repo';
 import { InstalledModules, ModuleModel, toModule } from './module.model';
-import { deleteDir, forAllFilesThatMatchDo, makeDir, readJsonFile, writeFileFromBuffer } from '../../util/fileOperations';
+import { deleteDir, forAllFilesThatMatchDo, makeDir, readJsonFile, writeFile, writeFileFromBuffer } from '../../util/fileOperations';
 import { Config } from '../../configuration/config';
 import { File } from '../../controllers/module/filestore';
 import path from 'path';
@@ -18,11 +18,11 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
   
   private installedModules : Record<ModuleType, ModuleModel[]>;
 
-  private moduleDir : string;
+  private config : Config;
 
   constructor(config? : Config) {
     if (config) {
-      this.setConfiguration(config);
+      this.config = config;
     } else {
       throw new Error('Attempt to Create Local Module Repo without a Config');
     }
@@ -33,8 +33,7 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
   /**
    * @description returns all modules in the repo
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async getAll(): Promise<Module[]> {
+  public getAll(): Module[] {
     const retVal : Module[] = [];
     for (const key in this.installedModules) {
       const value = this.installedModules[key as keyof InstalledModules];
@@ -49,8 +48,7 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
    * @description Returns the Module with id, null if no module with id
    * @param {string} id - id of module to find
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async get(id: string): Promise<Nullable<Module>> {
+  public get(id: string): Nullable<Module> {
     const module = this.findModuleById(id);
     if (module) {
       return toModule(module);
@@ -64,13 +62,13 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
    * @param {ModuleUpload} upload - module to add to repo 
    */
   public async create(upload : Full<ModuleUpload>): Promise<OperationResult<Module>> {
-    const duplicate : Nullable<Module> = await this.get(upload.module.id);
+    const duplicate : Nullable<Module> = this.get(upload.module.id);
     if (duplicate) {
       return { status: Status.CONFLICT, object: duplicate };
-    } 
+    }
 
     const module : ModuleModel = { module: upload.module, dirPath: '' };
-    module.dirPath = `${this.moduleDir}/${module.module.name}`;
+    module.dirPath = `${this.config.modules.modulesURL}/${module.module.name}`;
     await this.saveModule(module, upload.files.headerFile as File, upload.files.srcFile as File, upload.files.metaFile as File);
     this.installedModules[module.module.type].push(module);
     return { status: Status.CREATED, object: toModule(module) };
@@ -84,7 +82,9 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
   async delete(id: string): Promise<OperationResult<Module>> {
     const module = this.findModuleById(id);
     if (module) {
-      return { status: await deleteDir(module.dirPath, true), object: toModule(module) };
+      const deleted = await deleteDir(module.dirPath, true);
+      this.writeModulesFile();
+      return { status: deleted, object: toModule(module) };
     } else {
       return { status: Status.NOT_FOUND, object: null };
     }
@@ -101,28 +101,11 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
     if (oldModule) {
       oldModule.module = { ...oldModule.module, ...module.module };
       await this.updateFiles(oldModule, module);
+      this.writeModulesFile();
       return { status: Status.SUCCESS, object: toModule(oldModule) };
     } else {
       return { status: Status.NOT_FOUND, object: null };
     }
-  }
-
-  /**
-   * @note This is here for possible extention in the future, and has no use atm
-   * @description - Stages a module and returns the directory it resides in
-   * @param {string} id - id of module to stage
-   */
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async stage(id: string): Promise<OperationResult<string>> {
-    for (const key in this.installedModules) {
-      const value = this.installedModules[key as keyof InstalledModules];
-      for (const module of value) {
-        if (id == module.module.id) {
-          return { status: Status.SUCCESS, object: module.dirPath };
-        }
-      }
-    }
-    return { status: Status.NOT_FOUND, object: null };
   }
 
   /**
@@ -143,17 +126,22 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
       simulation: [],
     };
 
-    forAllFilesThatMatchDo(/.*\.mm/, this.moduleDir, (filePath : string)=>{     
-      const module : Nullable<Module> = readJsonFile<Module>(filePath);
-      if (module) {
-        Logger.info(`Found Module: ${module.name} : ${module.id} AT: ${filePath}`);
-        const mm : ModuleModel = {
-          module,
-          dirPath : path.dirname(filePath),
-        };
-        this.installedModules[module.type].push(mm);
-      }
-    });
+    for (const dir of [this.config.modules.modulesURL, this.config.vipra.vipraDir]) {
+      forAllFilesThatMatchDo(/.*\.mm/, dir, (filePath : string)=>{     
+        const module : Nullable<Module> = readJsonFile<Module>(filePath);
+        if (module) {
+          Logger.info(`Found Module: ${module.name} : ${module.id} AT: ${filePath}`);
+          const mm : ModuleModel = {
+            module,
+            dirPath : path.resolve(path.dirname(filePath)),
+          };
+          mm.module.compiled = false;
+          this.installedModules[module.type].push(mm);
+        }
+      });
+    }
+
+    this.writeModulesFile();
   }
 
   /**
@@ -169,6 +157,7 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
     await Promise.all([writeFileFromBuffer(`${basePath}.hpp`, header.buffer),
       writeFileFromBuffer(`${basePath}.cpp`, source.buffer),
       writeFileFromBuffer(`${basePath}.mm`, meta.buffer)]);
+    this.writeModulesFile();
   }
 
   /**
@@ -188,14 +177,6 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
   }
 
   /**
-   * @description Takes in a config and sets the appropriate properties
-   * @param {Config} config - configuration settings
-   */
-  private setConfiguration(config : Config) : void {
-    this.moduleDir = config.modules.modulesURL;
-  }
-
-  /**
    * @description Updates the files for a module if they were provided in an update
    * @param {ModuleModel} oldModule - old module object
    * @param {Partial<ModuleUpload>} newModule - new module object
@@ -208,5 +189,12 @@ export class LocalModuleRepo implements BaseRepo<ModuleUpload, Module> {
     if (newModule.files?.srcFile) {
       await writeFileFromBuffer(`${dir}/${oldModule.module.name}/${oldModule.module.name}.cpp`, newModule.files.srcFile.buffer);
     }
+  }
+
+  /**
+   * @description Saves the installed modules to the modules file, used by the simulation
+   */
+  private writeModulesFile() : void {
+    writeFile(this.config.modules.modulesFilePath, JSON.stringify(this.installedModules));
   }
 }

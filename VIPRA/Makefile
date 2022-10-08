@@ -10,8 +10,8 @@ endif
 
 LDLIBS = -lantlr4-runtime
 
-BASE_DIR = ./../Base
-BUILD_DIR = ./../build
+BASE_DIR = ./Base
+BUILD_DIR = ./build
 
 OBJS := $(wildcard $(BUILD_DIR)/*.o) $(wildcard $(BUILD_DIR)/*/*.o)
 OBJS := $(filter-out $(BUILD_DIR)/main.o, $(OBJS))
@@ -29,6 +29,8 @@ module: makeDirs
 
 simulation: makeDirs
 	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) ./build/$(BID)/main.o $(OBJS) $(LDLIBS) -o ./build/$(BID)/VIPRA
+	mv ./build/$(BID)/VIPRA ./VIPRA
+	rm -rf ./build/$(BID)
 
 compileMain: makeDirs
 	./generate_main ./build/$(BID)/main.cpp $(MODULEFILE)
@@ -37,12 +39,6 @@ compileMain: makeDirs
 
 precompileHeaders: $(PCH_SOURCE) $(PCH_HEADERS)
 	$(CPP) $(CPP_FLAGS) $(BASE_DIR)/_pch/pch.hpp
-
-testrun:
-	./VIPRA ./example/sim.config ./example/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
-
-debugrun:
-	gdb ./VIPRA ./example/sim.config ./example/module_params.json ./../pedestrian_maps/a320_144_pedestrians.json ./../obstacle_maps/a320_144_obstacles.json ./output.json
 
 clean:
 	rm -rf generate_main main.cpp VIPRA ./build $(BUILD_DIR)/_pch/pch.hpp.gch

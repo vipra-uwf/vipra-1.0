@@ -11,5 +11,4 @@ export interface BaseService<UploadType, DataType> {
   create(object : Partial<UploadType>) : Promise<OperationResult<DataType>>;
   update(id : string, object : Partial<UploadType>) : Promise<OperationResult<DataType>>;
   delete(id : string) : Promise<OperationResult<DataType>>;
-  stage(id : string) : Promise<OperationResult<string>>;
 }

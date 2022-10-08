@@ -1,7 +1,7 @@
 import { Nullable } from '../../types/typeDefs';
 
-export type EventHandler = (data : any, source : any) => void | Promise<void>;
-export type RequestHandler = (select : any) => Nullable<any> | Promise<Nullable<any>>;
+export type EventHandler = (data : unknown, source : unknown) => void | Promise<void>;
+export type RequestHandler = (select : unknown) => Nullable<unknown> | Promise<Nullable<unknown>>;
 
 
 export enum EventType {

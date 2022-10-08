@@ -8,5 +8,4 @@ export interface BaseRepo<UploadObj, DataObj> {
   create(upObj : Full<UploadObj>) : OperationResult<DataObj> | Promise<OperationResult<DataObj>>;
   delete(id : string) : OperationResult<DataObj> | Promise<OperationResult<DataObj>>;
   update(id : string, object : Partial<UploadObj>) : OperationResult<DataObj> | Promise<OperationResult<DataObj>>;
-  stage(id : string) : OperationResult<string> | Promise<OperationResult<string>>;
 }

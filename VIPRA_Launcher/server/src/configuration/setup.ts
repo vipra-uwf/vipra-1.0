@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { Config } from './config';
 
 
@@ -8,15 +10,15 @@ import { Config } from './config';
 const initialSetup = () : Config => {
   return {
     modules: {
-      modulesFilePath: `${__dirname}/modules.json`,
-      modulesURL: `${__dirname}/../../../../Modules`,
+      modulesFilePath: path.resolve(`${__dirname}/modules.json`),
+      modulesURL: path.resolve(`${__dirname}/../../../../Modules`),
     },
     simconfig: {
-      simconfigURL: `${__dirname}/../../../../VIPRA/sims/configs/`,
+      simconfigURL: path.resolve(`${__dirname}/../../../../VIPRA/sims/configs/`),
     },
     vipra: {
-      vipraDir: `${__dirname}/../../../../VIPRA`,
-      behaviorDir: `${__dirname}/../../../../VIPRA/Base/dsl`,
+      vipraDir: path.resolve(`${__dirname}/../../../../VIPRA`),
+      behaviorDir: path.resolve(`${__dirname}/../../../../VIPRA/Base/dsl`),
     },
     simulation: {
       debugMode: false,

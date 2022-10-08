@@ -73,14 +73,6 @@ export class ModuleService implements BaseService<ModuleUpload, Module> {
   }
 
   /**
-   * @description Stages a Module on the local file system
-   * @param {string} id - id of module to stage
-   */
-  public async stage(id: string): Promise<OperationResult<string>> {
-    return this.repo.stage(id);
-  }
-
-  /**
    * @description Checks that a module is complete, returning it as a module if it is, null if not
    * @param {Partial<ModuleUpload>} upload - module to check
    */

@@ -70,14 +70,6 @@ export class SimConfigService implements BaseService<SimConfigUpload, SimConfig>
   public async delete(id: string): Promise<OperationResult<SimConfig>> {
     return this.repo.delete(id);
   }
-  
-  /**
-   * @description may not be needed?
-   * @param {string} id - id of simconfig to stage
-   */
-  public async stage(id: string): Promise<OperationResult<string>> {
-    return this.repo.stage(id);
-  }
 
   /**
    * @description Makes sure the a simconfig upload is complete
