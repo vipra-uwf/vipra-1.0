@@ -91,13 +91,12 @@ generateIncludes() {
 
 std::string
 generateFunctionDeclarations() {
-  std::string generatedDeclarations =
-      "\nCONFIG_MAP* extractConfigMap(std::string name);"
-      "\nvoid getInputFiles(int argc, const char** argv);";
+  std::string generatedDeclarations = "\nCONFIG_MAP* extractConfigMap(std::string name);"
+                                      "\nvoid getInputFiles(int argc, const char** argv);";
 
   for (const auto& [type, className] : TYPES) {
-    generatedDeclarations += className + "* generate" + className +
-                             "(std::string id, CONFIG_MAP* configMap);\n";
+    generatedDeclarations +=
+        className + "* generate" + className + "(std::string id, CONFIG_MAP* configMap);\n";
   }
 
   return generatedDeclarations;
@@ -118,14 +117,15 @@ std::string
 generateFunctionOptions(const std::string& type) {
   std::string generatedFunction{""};
   for (const auto& option : jsonObj[type]) {
-    if (option["compiled"]) {
-      generatedFunction += "\n\tif(id==\"" + option["id"].asString() + "\"){\n\t\t" +
-                           option["className"].asString() + "* " +
-                           option["name"].asString() + " = new " +
-                           option["className"].asString() + "();\n\t\t" +
-                           option["name"].asString() + "->configure(*configMap);" +
-                           "\n\t\treturn " + option["name"].asString() + ";" + "\n\t}";
-      includes.emplace_back(option["includePath"].asString());
+    const auto& module = option["module"];
+    if (module["compiled"]) {
+      generatedFunction += "\n\tif(id==\"" + module["id"].asString() + "\"){\n\t\t" +
+                           module["className"].asString() + "* " + module["name"].asString() +
+                           " = new " + module["className"].asString() + "();\n\t\t" +
+                           module["name"].asString() + "->configure(*configMap);" +
+                           "\n\t\treturn " + module["name"].asString() + ";" + "\n\t}";
+      includes.emplace_back(option["dirPath"].asString() + "/" + module["name"].asString() +
+                            ".hpp");
     }
   }
 
@@ -166,14 +166,12 @@ generateMain() {
       "\n\tmoduleParams = configurationReader.getConfiguration(paramsFile);";
 
   for (const auto& [type, className] : TYPES) {
-    mainFunction +=
-        "\n\tCONFIG_MAP* " + type + "Config =  extractConfigMap(\"" + type + "\");";
+    mainFunction += "\n\tCONFIG_MAP* " + type + "Config =  extractConfigMap(\"" + type + "\");";
   }
 
   for (const auto& [type, className] : TYPES) {
     mainFunction += "\n\t" + className + "* " + type + " = generate" + className +
-                    "(simulationJsonConfig[\"" + type + "\"].asString(), " + type +
-                    "Config);";
+                    "(simulationJsonConfig[\"" + type + "\"].asString(), " + type + "Config);";
   }
 
   mainFunction += outputSetup();
