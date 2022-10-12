@@ -4,7 +4,7 @@ MockSimConfigRepo();
 import { MockEventSystem } from '../mocks/events/eventSystem.mock';
 MockEventSystem();
 
-import { LocalSimConfigRepo } from '../../repos/simconfig/simconfig.local.repo';
+import { LocalSimConfigRepo } from '../../repos/simconfig/simconfig.repo';
 import { SimConfigService } from '../../services/simconfig/simconfig.service';
 import { Status } from '../../types/status';
 import { badModuleSimConfigUpload, emptySimConfigUpdate, idSimConfigUpdate, missingModuleSimConfigUpload, missingNameSimConfigUpload, moduleSimConfigUpdate, nameSimConfigUpdate, properSimConfig, properSimConfigUpdate, properSimConfigUpload, updatedSimConfig } from '../values/simconfigs/simconfigs.values';

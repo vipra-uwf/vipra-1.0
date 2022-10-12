@@ -1,5 +1,4 @@
 import { ModuleType } from '../module/module.types';
-import { DeepPartial } from '../typeDefs';
 
 interface SimConfig {
   id : string;
@@ -8,9 +7,8 @@ interface SimConfig {
   modules : Record<ModuleType, string>;
 }
 
-type SimConfigUpload = DeepPartial<SimConfig>;
+
 
 export {
   SimConfig,
-  SimConfigUpload,
 };

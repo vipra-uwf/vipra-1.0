@@ -41,8 +41,8 @@ export class SimulationBuilder {
   /**
    * @description Request handler for the current simulation state
    */
-  public getSimState = () : SimState => {
-    return this.simState;
+  public getSimState = () : SimState[] => {
+    return [this.simState];
   };
 
   /**
@@ -50,11 +50,11 @@ export class SimulationBuilder {
    * @param {{id? : string}} select - select object for builds
    * @param {string} select.id - id of build
    */
-  public getBuildStatus = (select : { id? : string }) : Nullable<SimState> => {
+  public getBuildStatus = (select : { id? : string }) : Nullable<SimState[]> => {
     if (select.id) {
       const build = this.buildMap.get(select.id);
       if (build) {
-        return build;
+        return [build];
       }
     }
     return null;
@@ -64,7 +64,7 @@ export class SimulationBuilder {
    * @description Sets up the event handlers for Simulation Building
    */
   private setupHandlers() : void {
-    this.evSys.subscribe(EventType.NEW_MODULE, this.compileModule);
+    this.evSys.subscribe(EventType.NEW, 'Module', this.compileModule);
     this.evSys.setRequestHandler(RequestType.SIM_BUILD, this.getBuildStatus);
     this.evSys.setRequestHandler(RequestType.SIM_STATE, this.getSimState);
   }
@@ -88,10 +88,10 @@ export class SimulationBuilder {
     const compiled = await this.compilationRunner.buildModule(module, false);
 
     if (compiled === Status.SUCCESS) {
-      void this.evSys.emit<Module>(EventType.BUILT_MODULE, module);
+      void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module);
       this.compileSimulation();
     } else {
-      void this.evSys.emit<Module>(EventType.FAIL_MODULE, module);
+      void this.evSys.emit<Module>(EventType.FAIL, 'Module', module);
     }
   };
 
@@ -103,7 +103,7 @@ export class SimulationBuilder {
 
     const buildID = crypto.randomUUID();
     this.setBuildState(buildID, { ready: false, reason: 'Build Starting' });
-    void this.evSys.emit<string>(EventType.NEW_SIMULATION_BUILD, buildID);
+    void this.evSys.emit<string>(EventType.NEW, 'Build', buildID);
     
     void Promise.all([this.compileGenMain(buildID), this.compileBehavior(buildID)])
       .then((result)=>{
@@ -227,7 +227,7 @@ export class SimulationBuilder {
    * @emits BUILT_MODULE, FAIL_MODULE
    */
   private async compileAllModules() : Promise<void> {
-    const modules : Nullable<Module[]> = await this.evSys.request(RequestType.ALL_MODULE, {});    
+    const modules : Nullable<Module[]> = await this.evSys.request(RequestType.MODULE, {});    
 
     if (modules) {
       let builds : Promise<Status>[] = [];
@@ -243,9 +243,9 @@ export class SimulationBuilder {
             .then((result)=>{
               if (result === Status.SUCCESS) {
                 this.addedModuleType(module.type);
-                void this.evSys.emit<Module>(EventType.BUILT_MODULE, module);
+                void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module);
               } else {
-                void this.evSys.emit<Module>(EventType.FAIL_MODULE, module);
+                void this.evSys.emit<Module>(EventType.FAIL, 'Module', module);
               }
               return result;
             }),
@@ -263,7 +263,7 @@ export class SimulationBuilder {
   private buildSuccess(buildID : string) : void {
     this.setBuildState(buildID, { ready:true, reason:'Successful Build' });
     this.setSimState({ ready: true, reason: 'Successful Build' });
-    void this.evSys.emit<string>(EventType.SUCCESS_SIMULATION_BUILD, buildID);
+    void this.evSys.emit<string>(EventType.SUCCESS, 'Build', buildID);
   }
 
   /**
@@ -274,7 +274,7 @@ export class SimulationBuilder {
    */
   private buildFailed(buildID : string, reason : string) : void {
     this.setBuildState(buildID, { ready: false, reason });
-    void this.evSys.emit<string>(EventType.FAIL_SIMULATION_BUILD, buildID);
+    void this.evSys.emit<string>(EventType.FAIL, 'Build', buildID);
   }
 
   /**

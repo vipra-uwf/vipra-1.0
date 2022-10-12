@@ -1,18 +1,22 @@
-import { EventSystem }            from '../controllers/events/eventSystem';
-import { SimConfigController }    from '../controllers/simconfig/simconfig.controller';
-import { SimulationBuilder }      from '../controllers/simulation/simulation.builder';
-import { LocalModuleRepo }        from '../repos/module/module.local.repo';
-import { LocalSimConfigRepo }     from '../repos/simconfig/simconfig.local.repo';
-import { ModuleService }          from '../services/module/module.service';
-import { SimConfigService }       from '../services/simconfig/simconfig.service';
-import { ModuleController }       from '../controllers/module/module.controller';
-import { Config }                 from './config';
+import { MapController }       from '../controllers/map/map.controller';
+import { MapRepo }             from '../repos/map/map.repo';
+import { MapService }          from '../services/map/map.service';
+import { EventSystem }         from '../controllers/events/eventSystem';
+import { SimConfigController } from '../controllers/simconfig/simconfig.controller';
+import { SimulationBuilder }   from '../controllers/simulation/simulation.builder';
+import { ModuleRepo }          from '../repos/module/module.repo';
+import { SimConfigRepo }       from '../repos/simconfig/simconfig.repo';
+import { ModuleService }       from '../services/module/module.service';
+import { SimConfigService }    from '../services/simconfig/simconfig.service';
+import { ModuleController }    from '../controllers/module/module.controller';
+import { Config }              from './config';
 
 
 export interface Controllers {
   ModuleController       : ModuleController,
   SimConfigController    : SimConfigController,
-  SimulationBuilder             : SimulationBuilder,
+  SimulationBuilder      : SimulationBuilder,
+  MapController : MapController,
 }
 
 
@@ -23,13 +27,18 @@ export interface Controllers {
  * @param {EventSystem} eventSys - event system to pass to controllers
  */
 export const getControllers = (config : Config, eventSys : EventSystem) : Controllers => {
-  const moduleRepo : LocalModuleRepo = new LocalModuleRepo(config);
-  const moduleService : ModuleService = new ModuleService(moduleRepo);
-  const moduleController : ModuleController = new ModuleController(eventSys, moduleService);
 
-  const simconfigRepo : LocalSimConfigRepo = new LocalSimConfigRepo(config);
-  const simconfigService : SimConfigService = new SimConfigService(eventSys, simconfigRepo);
-  const simconfigController : SimConfigController = new SimConfigController(eventSys, simconfigService);
+  const mapRepo             : MapRepo             = new MapRepo(config);
+  const mapService          : MapService          = new MapService(config, mapRepo);
+  const mapController       : MapController       = new MapController('Map', eventSys, mapService);
+
+  const moduleRepo          : ModuleRepo          = new ModuleRepo(config);
+  const moduleService       : ModuleService       = new ModuleService(config, moduleRepo);
+  const moduleController    : ModuleController    = new ModuleController('Module', eventSys, moduleService);
+
+  const simconfigRepo       : SimConfigRepo       = new SimConfigRepo(config);
+  const simconfigService    : SimConfigService    = new SimConfigService(config, simconfigRepo);
+  const simconfigController : SimConfigController = new SimConfigController('SimConfig', eventSys, simconfigService);
 
   const simbuilder : SimulationBuilder = new SimulationBuilder(config, eventSys);
 
@@ -37,5 +46,6 @@ export const getControllers = (config : Config, eventSys : EventSystem) : Contro
     ModuleController: moduleController,
     SimConfigController: simconfigController,
     SimulationBuilder: simbuilder,
+    MapController : mapController,
   };
 };

@@ -4,34 +4,42 @@ import { evLogger } from './eventLogger';
 import { EventHandler, EventType, RequestHandler, RequestType } from './eventTypes';
 
 
+type HandlersMap = Map<string, Map<EventType, EventHandler[]>>;
+
 /**
  * @description System for handling events
  */
 export class EventSystem {
 
-  private handlersMap : Map<EventType, EventHandler[]>;
+  private eventHandlers : HandlersMap;
 
   private requestMap : Map<RequestType, RequestHandler>;
 
   constructor() {
-    this.handlersMap = new Map();
+    this.eventHandlers = new Map();
     this.requestMap = new Map();
   }
 
   /**
    * @description Emits an event for all registered handlers
    * @param {EventType} event - type of event
-   * @param {any} data - data that goes along with the event
+   * @param {string} dataType - string of datatype
+   * @param {DataType} data - data that goes along with the event
    */
-  public async emit<DataType>(event : EventType, data : Nullable<DataType>) : Promise<void> {
+  public async emit<DataType>(event : EventType, dataType : string,  data : Nullable<DataType>) : Promise<void> {
     if (data) {
       evLogger.info(`EMIT: ${Object.values(EventType)[event]} ; DATA: ${JSON.stringify(data)}`);
-      const handlers : Nullable<EventHandler[]> = this.handlersMap.get(event) || null;
-      if (handlers) {
-        await Promise.all(handlers);
+      const typeHandlers = this.eventHandlers.get(dataType) || null;
+      if (typeHandlers) {
+        const handlers = typeHandlers.get(event) || null;
+        if (handlers) {
+          await Promise.all(handlers.map((handler)=>{
+            return handler(data);
+          }));
+        }
       }
     } else {
-      evLogger.error(`NO DATA : EMIT ; EVENT : ${Object.values(EventType)[event]} ; DATATYPE : ${typeof data}`);
+      evLogger.error(`${Object.values(EventType)[event]} ; TYPE: ${dataType} ; EMITTED WITH NO DATA`);
     }
   }
 
@@ -41,12 +49,12 @@ export class EventSystem {
    * @param {RequestType} type - type of object requested
    */
   public async request<DataType>(type : RequestType, select : unknown) : Promise<Nullable<DataType>> {
-    evLogger.info(`REQUEST : ${Object.values(RequestType)[type]}, SELECT: ${select as string || 'NULL'}`);
+    evLogger.info(`REQUEST : ${Object.values(RequestType)[type]}, SELECT: ${JSON.stringify(select) || 'NULL'}`);
     const handler = this.requestMap.get(type) || null;
     if (handler) {
       return await handler(select) as Nullable<DataType>;
     } else {
-      evLogger.error(`FAIL: REQUEST: ${type}, SELECT: ${select as string || 'NULL'}`);
+      evLogger.error(`FAIL: REQUEST: ${type}, SELECT: ${JSON.stringify(select) || 'NULL'}`);
       return null;
     }
   }
@@ -70,13 +78,17 @@ export class EventSystem {
   /**
    * @description Subscribes a handler to an event
    * @param  {EventType} event - type of event to subscribe to
+   * @param  {string} dataType - string of data type
    * @param  {EventHandler} handler - handler function to subscribe
    */
-  public subscribe(event : EventType, handler : EventHandler) : void {
-    evLogger.info(`SUBSCRIBE: ${Object.values(EventType)[event]}`);
-    const handlerArray : Nullable<EventHandler[]> = this.handlersMap.get(event) || null;
-    if (handlerArray) {
-      handlerArray.push(handler);
+  public subscribe(event : EventType, dataType : string, handler : EventHandler) : void {
+    evLogger.info(`SUBSCRIBE: ${Object.values(EventType)[event]} ; TYPE: ${dataType}`);
+    const typeHandlers = this.eventHandlers.get(dataType) || null;
+    if (typeHandlers) {
+      const handlers = typeHandlers.get(event);
+      if (handlers) {
+        handlers.push(handler);
+      }
     }
   }
 }

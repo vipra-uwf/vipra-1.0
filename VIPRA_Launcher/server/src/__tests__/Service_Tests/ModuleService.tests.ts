@@ -2,7 +2,7 @@
 import { MockModuleRepo } from '../mocks/module/modulerepo.mock';
 MockModuleRepo();
 
-import { LocalModuleRepo } from '../../repos/module/module.local.repo';
+import { LocalModuleRepo } from '../../repos/module/module.repo';
 import { ModuleService } from '../../services/module/module.service';
 import { emptyModuleUpdate, filesModuleUpdate, idModuleUpdate, missingFilesModuleUpload, missingIdModuleUpload, missingNameModuleUpload, nameModuleUpdate, properModule, properModuleUpdate, properModuleUpload, updatedModule } from '../values/modules/modules.values';
 import { Status } from '../../types/status';

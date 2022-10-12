@@ -11,10 +11,10 @@ const initialSetup = () : Config => {
   return {
     modules: {
       modulesFilePath: path.resolve(`${__dirname}/modules.json`),
-      modulesURL: path.resolve(`${__dirname}/../../../../Modules`),
+      modulesDir: path.resolve(`${__dirname}/../../../../Modules`),
     },
     simconfig: {
-      simconfigURL: path.resolve(`${__dirname}/../../../../VIPRA/sims/configs/`),
+      simconfigDir: path.resolve(`${__dirname}/../../../../SimConfigs`),
     },
     vipra: {
       vipraDir: path.resolve(`${__dirname}/../../../../VIPRA`),
@@ -23,6 +23,9 @@ const initialSetup = () : Config => {
     simulation: {
       debugMode: false,
       maxConcurComps: 10,
+    },
+    map : {
+      mapsDir: path.resolve(`${__dirname}/../../../../Maps`),
     },
   };
 };

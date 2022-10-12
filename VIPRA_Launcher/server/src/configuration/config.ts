@@ -5,14 +5,17 @@ export interface Config {
     behaviorDir : string;
   },
   modules: {
-    modulesURL : string;
+    modulesDir : string;
     modulesFilePath : string;
   };
   simconfig: {
-    simconfigURL : string;
+    simconfigDir : string;
   };
   simulation: {
     debugMode : boolean;
     maxConcurComps : number;
+  };
+  map: {
+    mapsDir : string;
   };
 }

@@ -25,7 +25,7 @@ export class CompilationRunner {
    */
   public async buildModule(module : Module, debug : boolean) : Promise<Status> {
     return new Promise(resolve=>{
-      const moduleDirPath : string = `${this.config.modules.modulesURL}/${module.type}/${module.name}`;
+      const moduleDirPath : string = `${this.config.modules.modulesDir}/${module.type}/${module.name}`;
       if (fileExists(moduleDirPath)) {
 
         const command = `make module -C ${this.config.vipra.vipraDir} MODULEPATH=${moduleDirPath} MODULEID=${module.id} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;

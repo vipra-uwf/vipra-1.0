@@ -4,6 +4,7 @@ import { Logger } from '../controllers/logging/logger';
 import { BaseController } from '../controllers/base.controller';
 import { respondUnknownError, switchCreateResponse, switchDataResponse, switchDeleteResponse } from '../util/responses';
 import { OperationResult } from '../types/typeDefs';
+import { Identifiable } from '../types/uploading.types';
 
 /**
  * @description Creates a router that handles Operations on a DataType
@@ -13,7 +14,7 @@ import { OperationResult } from '../types/typeDefs';
  * @param {BaseRepo} repo - repo for datatype
  * @param {Logger} logger - logger
  */
-const createRouter = <DataType>(type : string, controller : BaseController<DataType>) : express.Router => {
+const createRouter = <DataType extends Identifiable>(type : string, controller : BaseController<DataType>) : express.Router => {
 
   /**
    * @description Logs an error for a given route

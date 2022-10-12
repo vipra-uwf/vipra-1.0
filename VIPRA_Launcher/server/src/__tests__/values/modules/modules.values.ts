@@ -1,6 +1,6 @@
 
 import { Module, ModuleType, ModuleRequest, ModuleUpload } from '../../../types/module/module.types';
-import { File } from '../../../controllers/module/filestore';
+import { File } from '../../../util/filestore';
 
 const properModule : Module = {
   id: 'properModule',
