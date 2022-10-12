@@ -1,3 +1,4 @@
 ./../Base/jsoncpp
 ./../Base/inputdataloader/input_json_reader/
 ./../Base/outputdatawriter/json_timestep_writer/
+./../../Modules/PedestrianSet/calm_pedestrian_set/
