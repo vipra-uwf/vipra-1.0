@@ -117,7 +117,7 @@ std::string
 generateFunctionOptions(const std::string& type) {
   std::string generatedFunction{""};
   for (const auto& option : jsonObj[type]) {
-    const auto& module = option["module"];
+    const auto& module = option["object"];
     if (module["compiled"]) {
       generatedFunction += "\n\tif(id==\"" + module["id"].asString() + "\"){\n\t\t" +
                            module["className"].asString() + "* " + module["name"].asString() +
