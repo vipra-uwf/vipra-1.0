@@ -97,7 +97,7 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
    * @param {Map<string, RepoType<Module>>} modules - installed modules
    */
   private writeModulesFile(modules : Map<string, RepoType<Module>>) : void {
-    const installedModules : Record<ModuleType, Module[]> = {
+    const installedModules : Record<ModuleType, RepoType<Module>[]> = {
       pedestrian_dynamics_model: [],
       goals: [],
       output_data_writer: [],
@@ -113,7 +113,7 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
     for (const key of modules.keys()) {
       const module = modules.get(key);
       if (module) {
-        installedModules[module.object.type].push(module.object);
+        installedModules[module.object.type].push(module);
       }
     }
     writeFile(this.config.modules.modulesFilePath, JSON.stringify(installedModules));

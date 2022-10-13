@@ -25,7 +25,7 @@ app.use('/module', moduleRoutes);
 app.use('/simconfig', simconfigRoutes);
 app.use('*', createDefaultRouter());
 
-// controllers.SimulationBuilder.startup();
+controllers.SimulationBuilder.startup();
 
 app.listen(3000, ()=>{
   console.log('listening');
