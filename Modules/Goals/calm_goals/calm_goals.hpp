@@ -5,7 +5,8 @@
 #include <limits>
 
 #include "../../../VIPRA/Extendable/goals/goals.hpp"
-#include "NavLines.hpp"
+
+#include "adjacencyGraph.hpp"
 
 class CalmGoals : public Goals {
 
@@ -25,11 +26,11 @@ class CalmGoals : public Goals {
   [[nodiscard]] bool isSimulationGoalMet() const noexcept override;
 
  private:
-  std::string          endGoalType;
-  DimVector            currentGoals;
-  DimVector            endGoals;
-  std::vector<bool>    goalsMet;
-  std::vector<NavLine> rootLines;
+  std::string       endGoalType;
+  DimVector         currentGoals;
+  DimVector         endGoals;
+  std::vector<bool> goalsMet;
+  Graph             graph;
 
   void findNearestEndGoal(const ObstacleSet&, const PedestrianSet&);
   void createNavLines(const ObstacleSet&);

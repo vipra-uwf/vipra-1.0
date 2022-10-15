@@ -13,6 +13,7 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   currentGoals = DimVector(pedCnt, {-1, -1});
   endGoals = DimVector(pedCnt, {-1, -1});
   goalsMet = std::vector<bool>(pedCnt, false);
+  graph.buildGraph(obsSet);
   findNearestEndGoal(obsSet, pedSet);
   updatePedestrianGoals(obsSet, pedSet);
 }
@@ -24,18 +25,17 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
   if (objectives.size() == 1) {
     std::fill(endGoals.begin(), endGoals.end(), objectives.at(0));
   } else {
-    std::transform(
-        coords.begin(), coords.end(), endGoals.begin(), [&](const Dimensions& coord) {
-          Dimensions      goal;
-          FLOATING_NUMBER shortest = std::numeric_limits<float>::max();
-          for (const auto& obj : objectives) {
-            FLOATING_NUMBER dist = coord.distanceTo(obj);
-            if (dist < shortest) {
-              goal = obj;
-            }
-          }
-          return goal;
-        });
+    std::transform(coords.begin(), coords.end(), endGoals.begin(), [&](const Dimensions& coord) {
+      Dimensions      goal;
+      FLOATING_NUMBER shortest = std::numeric_limits<float>::max();
+      for (const auto& obj : objectives) {
+        FLOATING_NUMBER dist = coord.distanceTo(obj);
+        if (dist < shortest) {
+          goal = obj;
+        }
+      }
+      return goal;
+    });
   }
 }
 
@@ -43,13 +43,9 @@ void
 CalmGoals::updatePedestrianGoals(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   //TODO
 
-  // get neartest line from rootLine
-
   size_t numPeds = pedSet.getNumPedestrians();
 
-  for (size_t i = 0; i < numPeds; ++i) {
-    if (currentGoals.at(i)) {}
-  }
+  for (size_t i = 0; i < numPeds; ++i) {}
 }
 
 const Dimensions
