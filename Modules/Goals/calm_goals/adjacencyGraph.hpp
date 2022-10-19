@@ -4,6 +4,8 @@
 #include "../../../VIPRA/Base/definitions/type_definitions.hpp"
 #include "../../../VIPRA/Extendable/obstacleset/obstacle_set.hpp"
 
+namespace CalmPath {
+
 struct Node {
   Dimensions         center;
   float              size;
@@ -20,6 +22,8 @@ struct Node {
 
 class Graph {
  public:
+  ~Graph() { cleanNode(root); }
+
   void buildGraph(const ObstacleSet& obSet) {
     obs = &obSet;
     const Dimensions mapRes = obSet.getDimensions();
@@ -32,10 +36,42 @@ class Graph {
     printf("]");
   }
 
+  [[nodiscard]] Node* search(Dimensions coords) const {
+    Node* curr = nullptr;
+    Node* next = root;
+    while (next != nullptr) {
+      curr = next;
+      if (coords.axis[0] < curr->center.axis[0]) {
+        if (coords.axis[1] < curr->center.axis[1]) {
+          next = curr->bl;
+        } else {
+          next = curr->tl;
+        }
+      } else {
+        if (coords.axis[1] < curr->center.axis[1]) {
+          next = curr->br;
+        } else {
+          next = curr->tr;
+        }
+      }
+    }
+    return curr;
+  }
+
  private:
   static constexpr float gridUnit = .1;
   const ObstacleSet*     obs;
   Node*                  root;
+
+  void cleanNode(Node* node) {
+    if (node != nullptr) {
+      cleanNode(node->bl);
+      cleanNode(node->tl);
+      cleanNode(node->br);
+      cleanNode(node->tr);
+      delete node;
+    }
+  }
 
   void printTree(Node* root) {
     if (root != nullptr) {
@@ -93,17 +129,17 @@ class Graph {
       Node* br = construct({x + size / 4, y - size / 4}, size / 2, obSet);
       return new Node(center, size, tl, tr, bl, br);
     } else {
-      return new Node(center, size);
+      return nullptr;
     }
   }
 
   bool inside(Dimensions point, Dimensions center, float size) {
     Dimensions tl = {center.axis[0] - size / 2, center.axis[1] + size / 2};
     Dimensions br = {center.axis[0] + size / 2, center.axis[1] - size / 2};
-    bool       i = (point.axis[0] >= tl.axis[0] && point.axis[0] <= br.axis[0] &&
-              point.axis[1] <= tl.axis[1] && point.axis[1] >= br.axis[1]);
+    bool i = (point.axis[0] >= tl.axis[0] && point.axis[0] <= br.axis[0] && point.axis[1] <= tl.axis[1] &&
+              point.axis[1] >= br.axis[1]);
     return i;
   }
 };
-
+}  // namespace CalmPath
 #endif
