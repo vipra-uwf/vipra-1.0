@@ -3,9 +3,12 @@
 
 #include <algorithm>
 #include <limits>
+#include <queue>
 
 #include "../../../VIPRA/Extendable/goals/goals.hpp"
-#include "NavLines.hpp"
+
+#include "adjacencyGraph.hpp"
+#include "pathfinding.hpp"
 
 class CalmGoals : public Goals {
 
@@ -25,14 +28,17 @@ class CalmGoals : public Goals {
   [[nodiscard]] bool isSimulationGoalMet() const noexcept override;
 
  private:
-  std::string          endGoalType;
-  DimVector            currentGoals;
-  DimVector            endGoals;
-  std::vector<bool>    goalsMet;
-  std::vector<NavLine> rootLines;
+  static constexpr FLOATING_NUMBER GOAL_RANGE = 0.05;
+  std::string                      endGoalType;
 
+  DimVector                           currentGoals;
+  DimVector                           endGoals;
+  std::vector<bool>                   goalsMet;
+  CalmPath::Graph                     graph;
+  std::vector<std::queue<Dimensions>> paths;
+
+  void initializePaths(const PedestrianSet&);
   void findNearestEndGoal(const ObstacleSet&, const PedestrianSet&);
-  void createNavLines(const ObstacleSet&);
 };
 
 #endif

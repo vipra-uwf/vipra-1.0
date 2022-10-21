@@ -1,23 +1,21 @@
 import { Nullable } from '../../types/typeDefs';
 
-export type EventHandler = (data : any, source : any)=>void;
-export type RequestHandler = (data : any)=>Promise<Nullable<unknown>>;
-
+export type EventHandler = (data : unknown) => void | Promise<void>;
+export type RequestHandler = (select : unknown) => Nullable<unknown[]> | Promise<Nullable<unknown[]>>;
 
 export enum EventType {
-  NEW_MODULE,
-  UPDATE_MODULE,
-  DELETE_MODULE,
-  NEW_SIMCONFIG,
-  UPDATE_SIMCONFIG,
-  DELETE_SIMCONFIG,
-  NEW_MAP,
-  UPDATE_MAP,
-  DELETE_MAP,
+  NEW,
+  UPDATE,
+  DELETE,
+  FAIL,
+  SUCCESS,
 }
 
 export enum RequestType {
+  SIM_STATE,
+  SIM_BUILD,
   MODULE,
   MAP,
   SIM_CONFIG,
+  SIM_CONFIG_PARAMS,
 }

@@ -1,10 +1,10 @@
 
 import express from 'express';
 import multer from 'multer';
-import { Status } from '../../types/status';
+import { Status } from '../types/status';
 
 type File = Express.Multer.File;
-type Files = Express.Multer.File[];
+type Files = { [name : string]: File[] | undefined };
 
 const moduleStore = multer.memoryStorage();
 const upload = multer({
@@ -32,9 +32,30 @@ const uploadModule = (req : express.Request) : Promise<Status> => {
   });
 };
 
+const mapFields : multer.Field[] = [
+  { name: 'map', maxCount: 1 },
+  { name: 'meta', maxCount: 1 },
+];
+
+/**
+ * @description Adds uploaded Map files to request
+ * @param {express.Request} req - client request
+ */
+const uploadMap = (req : express.Request) : Promise<Status> => {
+  return new Promise<Status>((resolve, reject) => {
+    upload.fields(mapFields)(req, {} as express.Response, (error) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(Status.SUCCESS);
+    });
+  });
+};
+
 
 export {
   uploadModule,
+  uploadMap,
   File,
   Files,
 };

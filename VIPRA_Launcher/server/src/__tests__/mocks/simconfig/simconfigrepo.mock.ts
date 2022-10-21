@@ -1,21 +1,22 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { SimConfigUpload } from "../../../types/simconfig/simconfig.types";
-import { Status } from "../../../types/status";
-import { Full } from "../../../types/typeDefs";
-import { properSimConfig } from "../../values/simconfigs/simconfigs.values";
+import { SimConfigUpload } from '../../../types/simconfig/simconfig.types';
+import { Status } from '../../../types/status';
+import { Full } from '../../../types/typeDefs';
+import { properSimConfig } from '../../values/simconfigs/simconfigs.values';
 
 
 /**
  * @description Mocks an EventSystem
  */
- export const MockSimConfigRepo = () : void => {
+export const MockSimConfigRepo = () : void => {
   jest.mock('../../../repos/simconfig/simconfig.local.repo', () => {
     return {
       LocalSimConfigRepo: jest.fn().mockImplementation(()=>{
         return {
           getAll: ()=>{ return [properSimConfig]; },
-          get: (id : string)=>{ if (id === 'properSimConfig') { 
+          get: (id : string)=>{
+            if (id === 'properSimConfig') { 
               return properSimConfig; 
             }
             return null;

@@ -1,126 +1,103 @@
-
-
 import express from 'express';
-import { SimConfig, SimConfigUpload } from '../../types/simconfig/simconfig.types';
-import { Nullable, OperationResult } from '../../types/typeDefs';
-import { Logger } from '../logging/logger';
+import { Module, ModuleParam, ModuleType } from '../../types/module/module.types';
+import { SimConfig } from '../../types/simconfig/simconfig.types';
+import { Status } from '../../types/status';
+import { DeepPartial, Nullable, OperationResult } from '../../types/typeDefs';
+import { UploadRequest, UploadType } from '../../types/uploading.types';
+import { getFormData } from '../../util/utilMethods';
 import { BaseController } from '../base.controller';
-import { EventSystem } from '../events/eventSystem';
-import { SimConfigService } from '../../services/simconfig/simconfig.service';
-import { Status } from 'src/types/status';
-import { EventType, RequestType } from '../events/eventTypes';
-import { getFormData } from 'src/util/utilMethods';
-
+import { RequestType } from '../events/eventTypes';
 
 /**
- * @description Contoller for SimConfigs
+ * @description Controller for SimConfigs
  */
-export class SimConfigController implements BaseController<SimConfig> {
-
-  private eventController : EventSystem;
-
-  private scService : SimConfigService;
-
-  private logger : Logger;
-
-  constructor(eventController : EventSystem, logger : Logger, scService : SimConfigService) {
-    this.eventController = eventController;
-    this.logger = logger;
-    this.scService = scService;
-    this.setupHandlers();
-  }
-
+export class SimConfigController extends BaseController<SimConfig> {
   /**
-   * @description Returns all SimConfigs
+   * @description Sets the hanlders for SimConfig events 
    */
-  public async getAll(): Promise<OperationResult<SimConfig[]>> {
-    return { status: Status.SUCCESS, object: await this.scService.getAll() };
+  protected setupEventHandlers(): void {}
+
+  /**
+   * @description Sets the handlers for SimConfig Requests
+   */
+  protected setupRequestHandlers(): void {
+    this.evSys.setRequestHandler(RequestType.SIM_CONFIG, (select : Partial<SimConfig>) : Promise<Nullable<SimConfig[]>> => {
+      return this.service.get(select);
+    });
+    this.evSys.setRequestHandler(RequestType.SIM_CONFIG_PARAMS, this.getParams);
   }
 
   /**
-   * @description Returns the SimConfig with id
+   * @description Checks that a creation request has all required properties
    * @param {express.Request} req - client request object
    */
-  public async get(req: express.Request): Promise<OperationResult<SimConfig>> {
-    const id = req.params.id;
-    if (id) {
-      const result = await this.scService.get(id);
-      if (result) {
-        return { status: Status.SUCCESS, object: result };
-      } else {
-        return { status: Status.NOT_FOUND, object: null };
+  protected async createUpload(req: express.Request): Promise<OperationResult<Partial<UploadType<SimConfig>>>> {
+    const upload = await getFormData<SimConfig>(req);
+
+    if (upload) {
+      const request = req as UploadRequest;
+      const config = await this.makeConfig(request);
+      if (config) {
+        return { status: Status.SUCCESS, object: { object: config, files: undefined } };
       }
     }
     return { status: Status.BAD_REQUEST, object: null };
   }
-
+  
   /**
-   * @description Creates a SimConfig from a request
-   * @param {express.Request} req - client request object
+   * @description Request Hanlder for simconfig parameters
+   * @param {Partial<SimConfig>} select - select object for simconfig
    */
-  public async create(req: express.Request): Promise<OperationResult<SimConfig>> {
-    const simconfig : SimConfigUpload = await getFormData<SimConfig>(req);
-    const result = await this.scService.create(simconfig);
-
-    if (result.status == Status.CREATED) {
-      this.eventController.emit<SimConfig, SimConfigController>(EventType.NEW_SIMCONFIG, result.object, this);
-    }
-    return result;
-  }
-
-  /**
-   * @description Updates a SimConfig from a request
-   * @param {express.Request} req - client request object
-   */
-  public async update(req: express.Request): Promise<OperationResult<SimConfig>> {
-    const id = req.params.id;
-    const simconfig : SimConfigUpload = await getFormData<SimConfig>(req);
-
-    if (id && simconfig) {
-      const result = await this.scService.update(id, simconfig);
-      if (result.status == Status.SUCCESS) {
-        this.eventController.emit<SimConfig, SimConfigController>(EventType.UPDATE_SIMCONFIG, result.object, this);
+  private getParams = async (select : Partial<SimConfig>) : Promise<Nullable<ModuleParam[]>> => {
+    const simconfig = await this.service.get(select);
+    if (simconfig) {
+      const params : ModuleParam[] = [];
+      for (const id of Object.values(simconfig[0].modules)) {
+        const module = await this.evSys.request<Module>(RequestType.MODULE, { id });
+        if (module) {
+          params.concat(module.params);
+        }
       }
-      return result;
+      return params;
+    } else {
+      return null;
     }
+  
+  };
 
-    return { status: Status.BAD_REQUEST, object: null };
-  }
 
   /**
-   * @description Deletes a SimConfig from a request
-   * @param {express.Request} req - client request object
+   * @description Creates a simconfig from a request, returns null if the request is missing properties
+   * @param {UploadRequest} request - request object
    */
-  public async delete(req: express.Request): Promise<OperationResult<SimConfig>> {
-    const id = req.params.id;
+  private makeConfig = async (request : UploadRequest) : Promise<Nullable<SimConfig>> => {
+    if (request.body.id && request.body.name && request.body.description) {
+      const config : DeepPartial<SimConfig> = {
+        id: request.body.id as string,
+        name: request.body.name as string,
+        description: request.body.description as string,
+        modules: {},
+      };
 
-    if (id) {
-      const result = await this.scService.delete(id);
-      if (result.status == Status.SUCCESS) {
-        this.eventController.emit<SimConfig, SimConfigController>(EventType.DELETE_SIMCONFIG, result.object, this);
+      if (config.modules) {
+        for (const key of Object.values(ModuleType)) {
+          if (request.body[key]) {
+            const modules = await this.evSys.request<Module[]>(RequestType.MODULE, { id: request.body[key] as string });
+            if (modules) {
+              if (modules[0]) {
+                if (modules[0].type === key) {
+                  config.modules[key] = request.body[key] as string;
+                  continue;
+                }
+              }
+            }
+          }
+          return null;
+        }
+        return config as SimConfig;
       }
-      return result;
     }
-    return { status: Status.BAD_REQUEST, object: null };
-  }
+    return null;
+  };
 
-  /**
-   * @description sets up handlers for events
-   */
-  private setupHandlers() : void {   
-    /**
-     * @description finds the requested module and returns it
-     * @param {any} select - information for identifying the module
-     */
-    const simconfigRequestHandler = (select : unknown) : Promise<Nullable<SimConfig>> => {
-      const simconfig = select as Partial<SimConfig>;
-      if (simconfig.id) {
-        return this.scService.get(simconfig.id);
-      } else {
-        return Promise.resolve(null);
-      }
-    };
-
-    this.eventController.setRequestHandler(RequestType.SIM_CONFIG, simconfigRequestHandler);
-  }
 }

@@ -1,4 +1,4 @@
-import { File } from '../../controllers/module/filestore';
+import { File } from '../../util/filestore';
 
 export enum ModuleType {
   MODEL                   = 'pedestrian_dynamics_model',
@@ -12,17 +12,6 @@ export enum ModuleType {
   CONFIGURATION_READER    = 'configuration_reader',
   CLOCK                   = 'clock',
   SIMULATION              = 'simulation',
-}
-
-export interface ModuleRequest {
-  body?: {
-    module? : Partial<Module>;
-  };
-  files? : {
-    source? : File,
-    header? : File,
-    meta? : File
-  };
 }
 
 
@@ -40,6 +29,7 @@ export interface Module {
   description : string;
   params : ModuleParam[];
   type : ModuleType;
+  compiled : boolean;
 }
 
 export interface ModuleUpload {
@@ -50,3 +40,18 @@ export interface ModuleUpload {
     metaFile : File;
   }>;
 }
+
+/**
+ * @description Checks that a partial module is full
+ * @param {Partial<Module>} module - module to check
+ */
+export const isModuleFull = (module : Partial<Module>) : boolean => {
+  return (
+    (module.compiled !== undefined) && 
+    (module.description !== undefined) && 
+    (module.id !== undefined) && 
+    (module.name !== undefined) && 
+    (module.params !== undefined) && 
+    (module.type !== undefined)
+  );
+};

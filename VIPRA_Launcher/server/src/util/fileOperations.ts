@@ -235,6 +235,7 @@ export {
   checkReadPerms,
   matchFile,
   makeDir,
+  fileExists,
   deleteDir,
   writeFile,
   readJsonBuffer,

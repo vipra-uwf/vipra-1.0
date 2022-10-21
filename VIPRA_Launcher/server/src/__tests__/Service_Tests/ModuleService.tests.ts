@@ -2,9 +2,9 @@
 import { MockModuleRepo } from '../mocks/module/modulerepo.mock';
 MockModuleRepo();
 
-import { LocalModuleRepo } from '../../repos/module/module.local.repo';
+import { LocalModuleRepo } from '../../repos/module/module.repo';
 import { ModuleService } from '../../services/module/module.service';
-import { emptyModuleUpdate, filesModuleUpdate, idModuleUpdate, missingFilesModuleUpload, missingPropsModuleUpload, nameModuleUpdate, properModule, properModuleUpdate, properModuleUpload, updatedModule } from '../values/modules/modules.values';
+import { emptyModuleUpdate, filesModuleUpdate, idModuleUpdate, missingFilesModuleUpload, missingIdModuleUpload, missingNameModuleUpload, nameModuleUpdate, properModule, properModuleUpdate, properModuleUpload, updatedModule } from '../values/modules/modules.values';
 import { Status } from '../../types/status';
 
 
@@ -45,11 +45,17 @@ describe('ModuleService', ()=>{
   it('Should Handle Modules Missing Properties', async ()=>{
     const createSpy = jest.spyOn(moduleRepo, 'create');
     
-    const result = await moduleService.create(missingPropsModuleUpload);
+    let result = await moduleService.create(missingNameModuleUpload);
 
     expect(result.status).toEqual(Status.BAD_REQUEST);
     expect(result.object).toEqual(null);
+    expect(createSpy).toBeCalledTimes(0);
 
+    createSpy.mockClear();
+
+    result = await moduleService.create(missingIdModuleUpload);
+    expect(result.status).toEqual(Status.BAD_REQUEST);
+    expect(result.object).toEqual(null);
     expect(createSpy).toBeCalledTimes(0);
   });
 

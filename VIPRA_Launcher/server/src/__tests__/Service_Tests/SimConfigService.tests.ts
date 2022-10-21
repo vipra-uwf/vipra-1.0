@@ -1,20 +1,26 @@
-import { MockSimConfigRepo } from "../mocks/simconfig/simconfigrepo.mock";
+import { MockSimConfigRepo } from '../mocks/simconfig/simconfigrepo.mock';
 MockSimConfigRepo();
 
-import { LocalSimConfigRepo } from "../../repos/simconfig/simconfig.local.repo";
-import { SimConfigService } from "../../services/simconfig/simconfig.service";
-import { Status } from "../../types/status";
-import { emptySimConfigUpdate, idSimConfigUpdate, missingModuleSimConfigUpload, missingNameSimConfigUpload, moduleSimConfigUpdate, nameSimConfigUpdate, properSimConfig, properSimConfigUpdate, properSimConfigUpload, updatedSimConfig } from "../values/simconfigs/simconfigs.values";
+import { MockEventSystem } from '../mocks/events/eventSystem.mock';
+MockEventSystem();
+
+import { LocalSimConfigRepo } from '../../repos/simconfig/simconfig.repo';
+import { SimConfigService } from '../../services/simconfig/simconfig.service';
+import { Status } from '../../types/status';
+import { badModuleSimConfigUpload, emptySimConfigUpdate, idSimConfigUpdate, missingModuleSimConfigUpload, missingNameSimConfigUpload, moduleSimConfigUpdate, nameSimConfigUpdate, properSimConfig, properSimConfigUpdate, properSimConfigUpload, updatedSimConfig } from '../values/simconfigs/simconfigs.values';
+import { EventSystem } from '../../controllers/events/eventSystem';
+import { NUM_MODULE_TYPES } from '../values/modules/modules.values';
 
 
 
 describe('SimConfigService', ()=>{
 
   const simconfigRepo : LocalSimConfigRepo = new LocalSimConfigRepo();
+  const evSys : EventSystem = new EventSystem();
   let configService : SimConfigService;
 
   beforeEach(()=>{
-    configService = new SimConfigService(simconfigRepo);
+    configService = new SimConfigService(evSys, simconfigRepo);
     jest.clearAllMocks();
   });
 
@@ -33,12 +39,25 @@ describe('SimConfigService', ()=>{
 
   it('Should Handle Proper SimConfig Uploads', async ()=> {
     const createSpy = jest.spyOn(simconfigRepo, 'create');
+    const requestSpy = jest.spyOn(evSys, 'request');
 
     const result = await configService.create(properSimConfigUpload);
 
     expect(result.status).toEqual(Status.CREATED);
     expect(result.object).toEqual(properSimConfig);
     expect(createSpy).toBeCalledTimes(1);
+    expect(requestSpy).toBeCalledTimes(NUM_MODULE_TYPES);
+  });
+
+  it('Should Handle Bad SimConfigs', async ()=>{
+    const createSpy = jest.spyOn(simconfigRepo, 'create');
+
+    // Contains Bad Module
+    const result = await configService.create(badModuleSimConfigUpload);
+
+    expect(result.status).toEqual(Status.BAD_REQUEST);
+    expect(result.object).toBeNull();
+    expect(createSpy).toBeCalledTimes(0);
   });
 
   it('Should Handle SimConfigs Missing Properties', async ()=>{

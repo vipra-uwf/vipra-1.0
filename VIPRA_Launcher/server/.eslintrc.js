@@ -15,7 +15,8 @@ module.exports = {
         "docs/*",
         "node_modules/*",
         "dist/*",
-        "__tests__/*",
+        "*/__tests__/*",
+        "*Deprecated*",
         "jest.config.ts"
     ],
     "overrides": [
