@@ -128,8 +128,6 @@ export class SimulationBuilder {
     return buildID;
   };
 
-
-  // TODO add then / catch
   /**
    * @description Compiles Main
    * @emits FAIL_SIMULATION_BUILD

@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { Status } from '../types/status';
+import { respondFail } from 'src/util/responses';
 
 /**
  * @description Creates a router for default routes
@@ -11,7 +11,7 @@ export const createDefaultRouter = () : express.Router => {
 
 
   router.use('/', (req, res)=>{
-    res.status(Status.NOT_FOUND).send('No Route');
+    respondFail('No Route', null, res);
   });
 
   return router;

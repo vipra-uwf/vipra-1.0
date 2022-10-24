@@ -5,7 +5,7 @@ import { BaseService } from '../services/base.service';
 import { Identifiable, UploadType } from '../types/uploading.types';
 import { Status } from '../types/status';
 import { EventSystem } from './events/eventSystem';
-import { EventType } from './events/eventTypes';
+import { EventData, EventType } from './events/eventTypes';
 
 type Request = express.Request;
 
@@ -23,9 +23,9 @@ export abstract class BaseController<DataType extends Identifiable> {
 
   protected service : BaseService<DataType>;
 
-  private type : string;
+  private type : EventData;
 
-  constructor(type : string, evSys : EventSystem, service : BaseService<DataType>) {
+  constructor(type : EventData, evSys : EventSystem, service : BaseService<DataType>) {
     this.service = service;
     this.evSys = evSys;
     this.type = type;
@@ -34,7 +34,7 @@ export abstract class BaseController<DataType extends Identifiable> {
   }
 
   /**
-   * @description Returns all installed maps
+   * @description Returns all installed objects
    */
   getAll(): Promise<OperationResult<DataType[]>> {
     return Promise.resolve({ status: Status.SUCCESS, object: this.service.getAll() });

@@ -10,6 +10,9 @@ import { ModuleService }       from '../services/module/module.service';
 import { SimConfigService }    from '../services/simconfig/simconfig.service';
 import { ModuleController }    from '../controllers/module/module.controller';
 import { Config }              from './config';
+import { ChainBuilderController } from 'src/controllers/chainbuilder/chainbuilder.controller';
+import { SimController } from 'src/controllers/simulation/simulation.controller';
+import { SimRunner } from 'src/runners/simulation/simulation.runner';
 
 
 export interface Controllers {
@@ -17,6 +20,8 @@ export interface Controllers {
   SimConfigController    : SimConfigController,
   SimulationBuilder      : SimulationBuilder,
   MapController : MapController,
+  ChainBuilderController : ChainBuilderController,
+
 }
 
 
@@ -41,11 +46,15 @@ export const getControllers = (config : Config, eventSys : EventSystem) : Contro
   const simconfigController : SimConfigController = new SimConfigController('SimConfig', eventSys, simconfigService);
 
   const simbuilder : SimulationBuilder = new SimulationBuilder(config, eventSys);
+  const simRunner : SimRunner = new SimRunner(config);
+  const simController : SimController = new SimController(simRunner, config, eventSys);
+  const cbController : ChainBuilderController = new ChainBuilderController(config, simController, eventSys);
 
   return {
     ModuleController: moduleController,
     SimConfigController: simconfigController,
     SimulationBuilder: simbuilder,
     MapController : mapController,
+    ChainBuilderController : cbController,
   };
 };

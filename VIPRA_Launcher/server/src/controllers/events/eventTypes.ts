@@ -11,6 +11,8 @@ export enum EventType {
   SUCCESS,
 }
 
+export type EventData = 'SimConfig' | 'Module' | 'Map' | 'Build' | 'SimRun';
+
 export enum RequestType {
   SIM_STATE,
   SIM_BUILD,

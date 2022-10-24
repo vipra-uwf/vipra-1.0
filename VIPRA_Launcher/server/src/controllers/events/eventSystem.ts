@@ -1,7 +1,7 @@
 
 import { Nullable } from '../../types/typeDefs';
 import { evLogger } from './eventLogger';
-import { EventHandler, EventType, RequestHandler, RequestType } from './eventTypes';
+import { EventData, EventHandler, EventType, RequestHandler, RequestType } from './eventTypes';
 
 
 type HandlersMap = Map<string, Map<EventType, EventHandler[]>>;
@@ -26,7 +26,7 @@ export class EventSystem {
    * @param {string} dataType - string of datatype
    * @param {DataType} data - data that goes along with the event
    */
-  public async emit<DataType>(event : EventType, dataType : string,  data : Nullable<DataType>) : Promise<void> {
+  public async emit<DataType>(event : EventType, dataType : EventData,  data : Nullable<DataType>) : Promise<void> {
     if (data) {
       evLogger.info(`EMIT: ${Object.values(EventType)[event]} ; DATA: ${JSON.stringify(data)}`);
       const typeHandlers = this.eventHandlers.get(dataType) || null;
@@ -81,7 +81,7 @@ export class EventSystem {
    * @param  {string} dataType - string of data type
    * @param  {EventHandler} handler - handler function to subscribe
    */
-  public subscribe(event : EventType, dataType : string, handler : EventHandler) : void {
+  public subscribe(event : EventType, dataType : EventData, handler : EventHandler) : void {
     evLogger.info(`SUBSCRIBE: ${Object.values(EventType)[event]} ; TYPE: ${dataType}`);
     const typeHandlers = this.eventHandlers.get(dataType) || null;
     if (typeHandlers) {
