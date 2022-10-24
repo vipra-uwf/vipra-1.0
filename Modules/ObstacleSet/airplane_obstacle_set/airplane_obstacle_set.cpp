@@ -13,6 +13,12 @@ AirplaneObstacleSet::configure(const CONFIG_MAP& configMap) {
 void
 AirplaneObstacleSet::addObjects(const std::string& type, const std::vector<Dimensions>& locations) {
   this->objects[type] = locations;
+  for(int i = 0; i < objectTypes.size(); i++)
+  {
+    if(objectTypes.at(i) == type)
+      return;
+  }
+  objectTypes.push_back(type);
 }
 
 void
@@ -44,15 +50,15 @@ AirplaneObstacleSet::NearestObstacle(const Dimensions coordinates, const Dimensi
 
 const DimVector
 AirplaneObstacleSet::NearestObstacle(const PedestrianSet& PedSet) const {
-  //   Dimensions coordinates = PedSet.getPedestrianCoords();
-  //   int        min_index = 0;
-  //   for (int i = 0; i < objects.at("obstacles").size(); i++) {
-  //     if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
-  //         coordinates.distanceTo(objects.at("obstacles").at(min_index)))
-  //       min_index = i;
-  //   }
+    Dimensions coordinates = PedSet.getPedestrianCoords();
+    int        min_index = 0;
+    for (int i = 0; i < objects.at("obstacles").size(); i++) {
+      if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
+          coordinates.distanceTo(objects.at("obstacles").at(min_index)))
+        min_index = i;
+    }
 
-  //   return &objects.at("obstacles").at(min_index);
+    return &objects.at("obstacles").at(min_index);
 }
 
 const std::vector<Dimensions>&
@@ -62,12 +68,7 @@ AirplaneObstacleSet::getObjectsofType(const std::string& type) const noexcept {
 
 const std::vector<std::string>&
 AirplaneObstacleSet::getObjectTypes() const noexcept {
-  std::vector<std::string> mapKeys;
-  for (auto mapIterator : objects) {
-    mapKeys.push_back(mapIterator.first);
-  }
-
-  return mapKeys;
+  return objectTypes;
 }
 
 const Dimensions

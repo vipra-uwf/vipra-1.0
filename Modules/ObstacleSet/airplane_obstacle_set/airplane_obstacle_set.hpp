@@ -8,6 +8,7 @@ class AirplaneObstacleSet : public ObstacleSet {
  private:
   DimVector  obstacleCoordinates;
   CONFIG_MAP configurationMap;
+  std::vector<std::string> objectTypes;
 
  public:
   void configure(const CONFIG_MAP& configMap) override;
