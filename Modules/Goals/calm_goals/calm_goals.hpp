@@ -7,9 +7,7 @@
 
 #include "../../../VIPRA/Extendable/goals/goals.hpp"
 
-#include "adjacencyGraph.hpp"
 #include "pathfinding.hpp"
-
 class CalmGoals : public Goals {
 
  public:
@@ -26,6 +24,9 @@ class CalmGoals : public Goals {
 
   [[nodiscard]] bool isPedestianGoalMet(size_t) const override;
   [[nodiscard]] bool isSimulationGoalMet() const noexcept override;
+
+  void printGraph();
+  void printPaths();
 
  private:
   static constexpr FLOATING_NUMBER GOAL_RANGE = 0.05;

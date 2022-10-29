@@ -2,6 +2,8 @@
 
 #include "calm_goals.hpp"
 
+#include "pathfinding.hpp"
+
 void
 CalmGoals::configure(const CONFIG_MAP& configMap) {
   endGoalType = configMap.at("endGoalType");
@@ -21,9 +23,13 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   goalsMet = std::vector<bool>(pedCnt, false);
   paths = std::vector<std::queue<Dimensions>>(pedCnt);
 
+  std::cout << "Building Graph\n";
   graph.buildGraph(obsSet);
+  std::cout << "Finding Nearest End Goal\n";
   findNearestEndGoal(obsSet, pedSet);
+  std::cout << "Creating Paths\n";
   initializePaths(pedSet);
+  std::cout << "Done\n";
 }
 
 /**
@@ -37,7 +43,7 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet) {
   const DimVector& coords = pedSet.getAllPedCoords();
 
   for (size_t i = 0; i < pedCnt; ++i) {
-    paths[i] = pathFind(coords.at(i), endGoals.at(i), graph);
+    paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph);
   }
 }
 
@@ -88,6 +94,7 @@ CalmGoals::updatePedestrianGoals(const ObstacleSet& obsSet, const PedestrianSet&
       const Dimensions& currGoal = paths[i].front();
       if (pedCoords.at(i).inside(currGoal, GOAL_RANGE)) {
         paths[i].pop();
+        currentGoals[i] = paths[i].front();
         goalsMet[i] = paths[i].empty();
       }
     }
@@ -123,13 +130,6 @@ CalmGoals::getEndGoal(size_t index) const {
  */
 const DimVector&
 CalmGoals::getAllCurrentGoals() const noexcept {
-  // since current goals are the first element of a queue, we need to convert that to a vector
-  std::transform(paths.begin(), paths.end(), currentGoals.begin(), [](const std::queue<Dimensions>& path) {
-    if (path.empty()) {
-      return Dimensions{-1, -1};
-    }
-    return path.front();
-  });
   return currentGoals;
 }
 
@@ -164,4 +164,59 @@ CalmGoals::isPedestianGoalMet(size_t index) const {
 bool
 CalmGoals::isSimulationGoalMet() const noexcept {
   return std::all_of(goalsMet.begin(), goalsMet.end(), [](bool met) { return met; });
+}
+
+int n = 0;
+
+void
+printTree(CalmPath::Quad* root) {
+  if (root != nullptr) {
+    fprintf(stderr,
+            "{\"x\":%f , \"y\":%f, \"size\":%f, \"trav\":%s, \"adjacencies\":[\n",
+            root->center.axis[0],
+            root->center.axis[1],
+            root->size,
+            (root->traversable ? "true" : "false"));
+    if (n % 1000 == 0) {
+      for (int i = 0; i < root->adj.size(); ++i) {
+        fprintf(
+            stderr, "\t{\"x\": %f, \"y\": %f}\n", root->adj[i]->center.axis[0], root->adj[i]->center.axis[1]);
+        if (i < root->adj.size() - 1) {
+          fprintf(stderr, ",");
+        }
+      }
+    }
+    ++n;
+    fprintf(stderr, "]},\n");
+    printTree(root->tl);
+    printTree(root->tr);
+    printTree(root->bl);
+    printTree(root->br);
+  }
+}
+
+void
+CalmGoals::printGraph() {
+  fprintf(stderr, "\"quads\":[");
+  printTree(graph.getRoot());
+  fprintf(stderr, "]");
+}
+
+void
+CalmGoals::printPaths() {
+  fprintf(stderr, "\"paths\": [");
+  for (auto& path : paths) {
+    if (!path.empty()) {
+      int i = 0;
+      fprintf(stderr, "[");
+      while (!path.empty()) {
+        auto d = path.front();
+        path.pop();
+        fprintf(stderr, "{\"x\":%f, \"y\":%f},\n", d.axis[0], d.axis[1]);
+        ++i;
+      }
+      fprintf(stderr, "],");
+    }
+  }
+  fprintf(stderr, "]");
 }
