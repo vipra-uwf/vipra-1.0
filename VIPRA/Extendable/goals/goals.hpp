@@ -13,8 +13,7 @@ class Goals {
   virtual void configure(const CONFIG_MAP& configMap) = 0;
   virtual void initialize(const ObstacleSet&, const PedestrianSet&) = 0;
 
-  virtual void updatePedestrianGoals(const ObstacleSet&,
-                                     const PedestrianSet&) = 0;
+  virtual void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&) = 0;
 
   virtual const Dimensions getCurrentGoal(size_t index) const = 0;
   virtual const Dimensions getEndGoal(size_t index) const = 0;

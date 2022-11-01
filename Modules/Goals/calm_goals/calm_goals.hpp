@@ -30,7 +30,9 @@ class CalmGoals : public Goals {
 
  private:
   static constexpr FLOATING_NUMBER GOAL_RANGE = 0.05;
+  FLOATING_NUMBER                  diagonalCost;
   std::string                      endGoalType;
+  std::string                      pathingType;
 
   DimVector                           currentGoals;
   DimVector                           endGoals;
@@ -38,8 +40,10 @@ class CalmGoals : public Goals {
   CalmPath::Graph                     graph;
   std::vector<std::queue<Dimensions>> paths;
 
-  void initializePaths(const PedestrianSet&);
-  void findNearestEndGoal(const ObstacleSet&, const PedestrianSet&);
+  void                                 initializePaths(const PedestrianSet&, const ObstacleSet&);
+  void                                 findNearestEndGoal(const ObstacleSet&, const PedestrianSet&);
+  [[nodiscard]] std::queue<Dimensions> deplanePath(const Dimensions&, const Dimensions&, const ObstacleSet&);
+  [[nodiscard]] const Dimensions& nearestObjective(const std::string&, const Dimensions&, const ObstacleSet&);
 };
 
 #endif

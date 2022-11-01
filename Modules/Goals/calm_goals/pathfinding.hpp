@@ -50,8 +50,12 @@ makeQuad(Quad* node, AQuad* parent, float g, float f, std::vector<AQuad*>& alloc
  * @return float
  */
 inline float
-distance(Quad* first, Quad* second) {
-  return first->center.distanceTo(second->center);
+cost(Quad* first, Quad* goal, float diagonalCost) {
+  float dx = first->center.axis[0] - goal->center.axis[0];
+  float dy = first->center.axis[1] - goal->center.axis[1];
+  float d_max = (dx > dy ? dx : dy);
+  float d_min = (dx < dy ? dx : dy);
+  return (diagonalCost * d_min) + (d_max - d_min);
 }
 
 inline std::queue<Dimensions>
@@ -77,7 +81,7 @@ constructPath(Dimensions start, Dimensions goal, AQuad* end) {
  * @return std::queue<Dimensions>
  */
 inline std::queue<Dimensions>
-pathFind(Dimensions start, Dimensions end, const Graph& g) {
+pathFind(Dimensions start, Dimensions end, const Graph& g, float diagonalCost) {
 
   // find grid Quads the start and end reside in (flipped since the path is
   // created in reverse)
@@ -90,7 +94,7 @@ pathFind(Dimensions start, Dimensions end, const Graph& g) {
   std::vector<AQuad*> closed_list{};
 
   // add start first node to "open list"
-  open_list.emplace(makeQuad(first, nullptr, 0, distance(first, last), allocList));
+  open_list.emplace(makeQuad(first, nullptr, 0, cost(first, last, diagonalCost), allocList));
 
   AQuad* curr = nullptr;
 
@@ -114,8 +118,8 @@ pathFind(Dimensions start, Dimensions end, const Graph& g) {
       if (!std::any_of(
               closed_list.begin(), closed_list.end(), [&](AQuad* n) { return n->node == neighbor; })) {
         // if the neighbor hasn't been visited yet, calculate it's cost
-        float  g = curr->g + distance(neighbor, curr->node);
-        float  f = g + distance(neighbor, last);
+        float  g = curr->g + neighbor->center.distanceTo(curr->node->center);
+        float  f = g + cost(neighbor, last, diagonalCost);
         AQuad* neighborQuad = makeQuad(neighbor, curr, g, f, allocList);
 
         auto found = open_list.search(neighborQuad);

@@ -7,6 +7,8 @@
 void
 CalmGoals::configure(const CONFIG_MAP& configMap) {
   endGoalType = configMap.at("endGoalType");
+  pathingType = configMap.at("pathFinding");
+  diagonalCost = (std::stof(configMap.at("diagonalCost")));
 }
 
 /**
@@ -22,13 +24,16 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   endGoals = DimVector(pedCnt, {-1, -1});
   goalsMet = std::vector<bool>(pedCnt, false);
   paths = std::vector<std::queue<Dimensions>>(pedCnt);
-
-  std::cout << "Building Graph\n";
-  graph.buildGraph(obsSet);
   std::cout << "Finding Nearest End Goal\n";
   findNearestEndGoal(obsSet, pedSet);
+
+  if (pathingType == "Astar") {
+    std::cout << "Building Graph\n";
+    graph.buildGraph(obsSet);
+  } else {
+  }
   std::cout << "Creating Paths\n";
-  initializePaths(pedSet);
+  initializePaths(pedSet, obsSet);
   std::cout << "Done\n";
 }
 
@@ -38,13 +43,44 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
  * @param pedSet 
  */
 void
-CalmGoals::initializePaths(const PedestrianSet& pedSet) {
+CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSet) {
   const size_t     pedCnt = pedSet.getNumPedestrians();
   const DimVector& coords = pedSet.getAllPedCoords();
 
   for (size_t i = 0; i < pedCnt; ++i) {
-    paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph);
+    if (pathingType == "Astar") {
+      paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph, diagonalCost);
+    } else if (pathingType == "Deplane") {
+      paths[i] = deplanePath(coords.at(i), endGoals.at(i), obsSet);
+    }
   }
+}
+
+std::queue<Dimensions>
+CalmGoals::deplanePath(const Dimensions& start, const Dimensions& endGoal, const ObstacleSet& obsSet) {
+  std::queue<Dimensions> path;
+  Dimensions             aisle = nearestObjective("aisle", start, obsSet);
+  path.push(aisle);
+  Dimensions aisleEnd = nearestObjective("endAisle", aisle, obsSet);
+  path.push(aisleEnd);
+  path.push(nearestObjective("exits", aisleEnd, obsSet));
+  return path;
+}
+
+const Dimensions&
+CalmGoals::nearestObjective(const std::string& type, const Dimensions& point, const ObstacleSet& obsSet) {
+  const auto&     objectives = obsSet.getObjectsofType(type);
+  const size_t    objCnt = objectives.size();
+  size_t          closest = 0;
+  FLOATING_NUMBER minDist = std::numeric_limits<float>::max();
+  for (size_t i = 0; i < objCnt; ++i) {
+    FLOATING_NUMBER dist = objectives.at(i).distanceTo(point);
+    if (dist < minDist) {
+      minDist = dist;
+      closest = i;
+    }
+  }
+  return objectives.at(closest);
 }
 
 /**
