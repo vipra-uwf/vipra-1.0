@@ -1,7 +1,6 @@
 
 
 #include "calm_goals.hpp"
-
 #include "pathfinding.hpp"
 
 void
@@ -14,8 +13,8 @@ CalmGoals::configure(const CONFIG_MAP& configMap) {
 /**
  * @brief Initializes the member variables and path finding
  * 
- * @param obsSet 
- * @param pedSet 
+ * @param obsSet
+ * @param pedSet
  */
 void
 CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
@@ -45,7 +44,7 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
 void
 CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSet) {
   const size_t     pedCnt = pedSet.getNumPedestrians();
-  const DimVector& coords = pedSet.getAllPedCoords();
+  const DimVector& coords = pedSet.getPedestrianCoordinates();
 
   for (size_t i = 0; i < pedCnt; ++i) {
     if (pathingType == "Astar") {
@@ -91,7 +90,7 @@ CalmGoals::nearestObjective(const std::string& type, const Dimensions& point, co
  */
 void
 CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
-  const auto& coords = pedSet.getAllPedCoords();
+  const auto& coords = pedSet.getPedestrianCoordinates();
   const auto& objectives = obsSet.getObjectsofType(endGoalType);
 
   if (objectives.size() == 1) {
@@ -123,7 +122,7 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
 void
 CalmGoals::updatePedestrianGoals(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   const size_t     numPeds = pedSet.getNumPedestrians();
-  const DimVector& pedCoords = pedSet.getAllPedCoords();
+  const DimVector& pedCoords = pedSet.getPedestrianCoordinates();
 
   for (size_t i = 0; i < numPeds; ++i) {
     if (!paths[i].empty()) {
