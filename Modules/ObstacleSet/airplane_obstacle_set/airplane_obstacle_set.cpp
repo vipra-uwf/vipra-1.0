@@ -1,8 +1,11 @@
 #include "airplane_obstacle_set.hpp"
 
 void
-AirplaneObstacleSet::initialize(const ENTITY_SET& MapType) noexcept {
-  this->objects = MapType;
+AirplaneObstacleSet::initialize(const std::unique_ptr<MapType> map) {
+  if (map->type != "PointMap") {
+    throw std::runtime_error("Improper Map Type, Expected \"PointMap\"");
+  }
+  objects = static_cast<const PointMap*>(map.get())->entities;
 }
 
 void
@@ -13,9 +16,8 @@ AirplaneObstacleSet::configure(const CONFIG_MAP& configMap) {
 void
 AirplaneObstacleSet::addObjects(const std::string& type, const std::vector<Dimensions>& locations) {
   this->objects[type] = locations;
-  for(int i = 0; i < objectTypes.size(); i++)
-  {
-    if(objectTypes.at(i) == type)
+  for (int i = 0; i < objectTypes.size(); i++) {
+    if (objectTypes.at(i) == type)
       return;
   }
   objectTypes.push_back(type);
@@ -50,21 +52,20 @@ AirplaneObstacleSet::NearestObstacle(const Dimensions coordinates, const Dimensi
 
 const DimVector
 AirplaneObstacleSet::NearestObstacle(const PedestrianSet& PedSet) const {
-    const DimVector& coordinatesVector = PedSet.getAllPedCoords();
-    DimVector nearestObstacleVector;
-    for (int j = 0; j < coordinatesVector.size(); j++)
-    {
-      Dimensions coordinates = coordinatesVector.at(j);
-      int        min_index = 0;
-      for (int i = 0; i < objects.at("obstacles").size(); i++) {
-        if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
-            coordinates.distanceTo(objects.at("obstacles").at(min_index)))
-          min_index = i;
-      }
-      nearestObstacleVector.push_back(objects.at("obstacles").at(min_index));
+  const DimVector& coordinatesVector = PedSet.getAllPedCoords();
+  DimVector        nearestObstacleVector;
+  for (int j = 0; j < coordinatesVector.size(); j++) {
+    Dimensions coordinates = coordinatesVector.at(j);
+    int        min_index = 0;
+    for (int i = 0; i < objects.at("obstacles").size(); i++) {
+      if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
+          coordinates.distanceTo(objects.at("obstacles").at(min_index)))
+        min_index = i;
     }
+    nearestObstacleVector.push_back(objects.at("obstacles").at(min_index));
+  }
 
-    return nearestObstacleVector;
+  return nearestObstacleVector;
 }
 
 const std::vector<Dimensions>&
