@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { respondFail } from 'src/util/responses';
+import { respondFail } from '../util/responses';
 
 /**
  * @description Creates a router for default routes

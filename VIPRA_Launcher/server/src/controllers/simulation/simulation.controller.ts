@@ -5,8 +5,8 @@ import { EventSystem } from '../events/eventSystem';
 import { EventHandler, EventType, RequestType } from '../events/eventTypes';
 import { ISimController } from './interfaces/simulation.controller.interface';
 import { Config } from '../../configuration/config';
-import { deleteDir, fileExists, makeDir } from 'src/util/fileOperations';
-import { OMap } from 'src/types/maps/map.types';
+import { deleteDir, fileExists, makeDir } from '../../util/fileOperations';
+import { OMap } from '../../types/maps/map.types';
 
 interface SimInputs {
   mapPath : string;
@@ -117,8 +117,9 @@ export class SimController implements ISimController {
    * @param {CbArgs} params - chainbuilder parameters
    * @param {string} runDir - directory to place file
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private writeParams(params : CbArgs, runDir : string) : Nullable<string> {
-
+    return null;
   }
 
   /**
@@ -140,7 +141,8 @@ export class SimController implements ISimController {
    * @description Gets the path to the map file for the map with id mapID, null if no map with id
    * @param {string} pedsID - id of pedestrian file to get
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private getPeds(pedsID : string) : Nullable<string> {
-
+    return null;
   }
 }

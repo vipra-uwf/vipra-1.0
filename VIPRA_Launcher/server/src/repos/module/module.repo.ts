@@ -109,6 +109,8 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
       configuration_reader: [],
       clock: [],
       simulation: [],
+      map_loader: [],
+      policy_model: [],
     };
     for (const key of modules.keys()) {
       const module = modules.get(key);
