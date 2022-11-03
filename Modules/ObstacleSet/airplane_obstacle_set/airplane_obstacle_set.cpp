@@ -52,18 +52,19 @@ AirplaneObstacleSet::NearestObstacle(const Dimensions coordinates, const Dimensi
 
 const DimVector
 AirplaneObstacleSet::NearestObstacle(const PedestrianSet& PedSet) const {
-  const DimVector& coordinatesVector = PedSet.getAllPedCoords();
-  DimVector        nearestObstacleVector;
-  for (int j = 0; j < coordinatesVector.size(); j++) {
-    Dimensions coordinates = coordinatesVector.at(j);
-    int        min_index = 0;
-    for (int i = 0; i < objects.at("obstacles").size(); i++) {
-      if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
-          coordinates.distanceTo(objects.at("obstacles").at(min_index)))
-        min_index = i;
+    const DimVector& coordinatesVector = PedSet.getPedestrianCoordinates();
+    DimVector nearestObstacleVector;
+    for (int j = 0; j < coordinatesVector.size(); j++)
+    {
+      Dimensions coordinates = coordinatesVector.at(j);
+      int        min_index = 0;
+      for (int i = 0; i < objects.at("obstacles").size(); i++) {
+        if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
+            coordinates.distanceTo(objects.at("obstacles").at(min_index)))
+          min_index = i;
+      }
+      nearestObstacleVector.push_back(objects.at("obstacles").at(min_index));
     }
-    nearestObstacleVector.push_back(objects.at("obstacles").at(min_index));
-  }
 
   return nearestObstacleVector;
 }

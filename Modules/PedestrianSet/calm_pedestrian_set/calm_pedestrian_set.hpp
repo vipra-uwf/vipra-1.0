@@ -5,7 +5,7 @@
 #include <string>
 #include <utility>
 
-#include "../pedestrian_set.hpp"
+#include "../../../VIPRA/Extendable/pedestrianset/pedestrian_set.hpp"
 
 class CalmPedestrianSet : public PedestrianSet {
  public:
@@ -50,10 +50,10 @@ class CalmPedestrianSet : public PedestrianSet {
         [[nodiscard]] const std::vector<int>&                                 getStartingAisles()             const noexcept;
 
 
-        void setMasses(std::vector<FLOATING_NUMBER>&& massesKg);
-        void setReactionTimes(std::vector<FLOATING_NUMBER>&& reactionTimes);
-        void setDesiredSpeeds(std::vector<FLOATING_NUMBER>&& desiredSpeeds);
-        void setShoulderLengths(std::vector<FLOATING_NUMBER>&& shoulderLengths);
+        void setMasses(std::vector<FLOATING_NUMBER>& massesKg);
+        void setReactionTimes(std::vector<FLOATING_NUMBER>& reactionTimes);
+        void setDesiredSpeeds(std::vector<FLOATING_NUMBER>& desiredSpeeds);
+        void setShoulderLengths(std::vector<FLOATING_NUMBER>& shoulderLengths);
 
 
  private:
@@ -79,18 +79,18 @@ class CalmPedestrianSet : public PedestrianSet {
     FLOATING_NUMBER startDesired_speed;
 
     //Constants used for initializing data
-    const FLOATING_NUMBER STARTING_VELOCITY_X = 0.0f;
-    const FLOATING_NUMBER STARTING_VELOCITY_Y = 0.0f;
+    static constexpr FLOATING_NUMBER STARTING_VELOCITY_X = 0.0f;
+    static constexpr FLOATING_NUMBER STARTING_VELOCITY_Y = 0.0f;
     
-    const FLOATING_NUMBER STARTING_SPEED = 0.0f;
+    static constexpr FLOATING_NUMBER STARTING_SPEED = 0.0f;
 
-    const FLOATING_NUMBER STARTING_MASS = 0.0f;
+    static constexpr FLOATING_NUMBER STARTING_MASS = 0.0f;
 
-    const FLOATING_NUMBER STARTING_REACTION_TIME = 0.0f;
-    const FLOATING_NUMBER STARTING_DESIRED_SPEED = 0.0f;
-    const FLOATING_NUMBER STARTING_PROP_FORCE = 0.0f;
-    const FLOATING_NUMBER STARTING_NEAREST_NEIGHBOR = 0.0f;
-    const FLOATING_NUMBER STARTING_SHOULDER_WIDTH = 0.0f;
+    static constexpr FLOATING_NUMBER STARTING_REACTION_TIME = 0.0f;
+    static constexpr FLOATING_NUMBER STARTING_DESIRED_SPEED = 0.0f;
+    static constexpr FLOATING_NUMBER STARTING_PROP_FORCE = 0.0f;
+    static constexpr FLOATING_NUMBER STARTING_NEAREST_NEIGHBOR = 0.0f;
+    static constexpr FLOATING_NUMBER STARTING_SHOULDER_WIDTH = 0.0f;
 
 };
 #endif

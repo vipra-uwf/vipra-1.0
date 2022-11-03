@@ -9,16 +9,14 @@
 
 class PedestrianDynamicsModel {
  public:
-  virtual ~PedestrianDynamicsModel() = default;
 
-  virtual void configure(const CONFIG_MAP& configMap) = 0;
+    virtual ~PedestrianDynamicsModel() = default;
 
-  virtual void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) = 0;
+    virtual void configure(const CONFIG_MAP& configMap) = 0;
+    virtual void initialize(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet, Goals& goals) = 0;
+    virtual DimVector update(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
+                    Goals& goals, FLOATING_NUMBER time) = 0;
 
-  virtual DimVector timestep(const PedestrianSet&,
-                             const ObstacleSet&,
-                             const Goals&,
-                             FLOATING_NUMBER timstep_size) = 0;
 };
 
 #endif

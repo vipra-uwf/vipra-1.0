@@ -115,25 +115,25 @@ void CalmPedestrianSet::setVelocities(
 }
 
 void CalmPedestrianSet::setMasses(
-    std::vector<FLOATING_NUMBER>&& massesKg)
+    std::vector<FLOATING_NUMBER>& massesKg)
 {
     this->massesKg = massesKg;
 }
 
 void CalmPedestrianSet::setReactionTimes(
-		std::vector<FLOATING_NUMBER>&& reactionTimes)
+		std::vector<FLOATING_NUMBER>& reactionTimes)
 {
     this->reactionTimes = reactionTimes;
 }
 
 void CalmPedestrianSet::setDesiredSpeeds(
-		std::vector<FLOATING_NUMBER>&& desiredSpeeds)
+		std::vector<FLOATING_NUMBER>& desiredSpeeds)
 {
     this->desiredSpeeds = desiredSpeeds;
 }
 
 void CalmPedestrianSet::setShoulderLengths(
-    std::vector<FLOATING_NUMBER>&& shoulderLengths)
+    std::vector<FLOATING_NUMBER>& shoulderLengths)
 {
   this->shoulderLengths = shoulderLengths;
 }
