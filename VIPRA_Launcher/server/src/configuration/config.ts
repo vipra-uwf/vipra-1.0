@@ -1,5 +1,6 @@
 
 export interface Config {
+  flags : Map<string, string>;
   app: {
     port : number;
     certDir : string;

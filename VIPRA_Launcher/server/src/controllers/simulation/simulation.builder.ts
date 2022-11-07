@@ -9,6 +9,8 @@ import { Module, ModuleType } from '../../types/module/module.types';
 import { Status } from '../../types/status';
 import { SimState } from '../../types/simulation/simulation.types';
 import { Nullable } from 'typechain/dist/typedefs';
+import { RepoType } from '../../types/uploading.types';
+import { deleteDir, makeDir, moveFile } from '../../util/fileOperations';
 
 
 /**
@@ -35,6 +37,7 @@ export class SimulationBuilder {
     this.config = config;
     this.buildMap = new Map();
     this.compilationRunner = new CompilationRunner(config);
+    this.setupTypes();
     this.setupHandlers();
   }
 
@@ -85,14 +88,16 @@ export class SimulationBuilder {
    */
   private compileModule : EventHandler = async (module : Module) : Promise<void> => {
     
-    const compiled = await this.compilationRunner.buildModule(module, false);
-
-    if (compiled === Status.SUCCESS) {
-      void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module);
-      this.compileSimulation();
-    } else {
-      void this.evSys.emit<Module>(EventType.FAIL, 'Module', module);
+    const mod = await this.evSys.request<RepoType<Module>>(RequestType.MODULE_REPO, { id: module.id });
+    if (mod) {
+      const compiled = await this.compilationRunner.buildModule(module, mod.dirPath, false);
+      if (compiled === Status.SUCCESS) {
+        this.addedModuleType(module.type);
+        void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module);
+        this.compileSimulation();
+      }  
     }
+    void this.evSys.emit<Module>(EventType.FAIL, 'Module', module);
   };
 
   /**
@@ -103,26 +108,31 @@ export class SimulationBuilder {
 
     const buildID = crypto.randomUUID();
     this.setBuildState(buildID, { ready: false, reason: 'Build Starting' });
+    makeDir(`${this.config.vipra.vipraDir}/build/${buildID}`);
     void this.evSys.emit<string>(EventType.NEW, 'Build', buildID);
     
     void Promise.all([this.compileGenMain(buildID), this.compileBehavior(buildID)])
       .then((result)=>{
         if (result.every((val)=> {return val === Status.SUCCESS;})) {
-          void this.compileAllModules()
+          this.compileAllModules()
             .then(()=>{
               if (this.reqsMet()) {
-                void this.compileMain(buildID)
+                this.compileMain(buildID)
                   .then((mainReady)=>{
-                    if (mainReady) {
+                    if (mainReady === Status.SUCCESS) {
                       void this.compileSim(buildID);
+                    } else {
+                      this.buildFailed(buildID, 'Unable To Compile Main');      
                     }
-                  });
+                  }).catch(() => {this.buildFailed(buildID, 'Unknown Error');});
+              } else {
+                this.buildFailed(buildID, 'Module Requirements Not Met');
               }
-            });
+            }).catch(() => {this.buildFailed(buildID, 'Unknown Error');});
         }
       })
-      .catch(()=>{
-        this.buildFailed(buildID, 'Unknown Error');
+      .catch(()=>{ 
+        this.buildFailed(buildID, 'Unknown Error'); 
       });
 
     return buildID;
@@ -149,7 +159,7 @@ export class SimulationBuilder {
 
   /**
    * @description Compiles The full simulation executable
-   * @emits SUCCESS_SIMULATION_BUILD, FAIL_SIMULATION_BUILD
+   * @emits SUCCESS BUILD, FAIL BUILD
    * @param {string} buildID - id of current build
    */
   private compileSim(buildID : string) : Promise<Status> {
@@ -170,7 +180,7 @@ export class SimulationBuilder {
 
   /**
    * @description Compiles generate_main, if it hasn't already been compiled
-   * @emits FAIL_SIMULATION_BUILD
+   * @emits FAIL BUILD
    * @param {string} buildID - id of current build
    */
   private compileGenMain(buildID : string) : Promise<Status> {
@@ -196,7 +206,7 @@ export class SimulationBuilder {
 
   /**
    * @description Compiles the Human Behavior Module, if it hasn't already been compiled
-   * @emits FAIL_SIMULATION_BUILD
+   * @emits FAIL BUILD
    * @param {string} buildID - id of current build
    */
   private compileBehavior(buildID : string) : Promise<Status> {
@@ -225,32 +235,42 @@ export class SimulationBuilder {
    * @emits BUILT_MODULE, FAIL_MODULE
    */
   private async compileAllModules() : Promise<void> {
-    const modules : Nullable<Module[]> = await this.evSys.request(RequestType.MODULE, {});    
+    const modules = await this.evSys.request<RepoType<Module>[]>(RequestType.MODULE_REPO, {});
 
     if (modules) {
-      let builds : Promise<Status>[] = [];
-      let curr = 0;
       for (const module of modules) {
-        if (curr >= this.config.simulation.maxConcurComps) {
-          await Promise.all(builds);
-          curr = 0;
-          builds = [];
+        const compiled = await this.compilationRunner.buildModule(module.object, module.dirPath, this.config.simulation.debugMode).catch(()=>{return Status.INTERNAL_ERROR;});
+        if (compiled === Status.SUCCESS) {
+          this.addedModuleType(module.object.type);
+          void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module.object);
         }
-        builds.push(
-          this.compilationRunner.buildModule(module, this.config.simulation.debugMode)
-            .then((result)=>{
-              if (result === Status.SUCCESS) {
-                this.addedModuleType(module.type);
-                void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module);
-              } else {
-                void this.evSys.emit<Module>(EventType.FAIL, 'Module', module);
-              }
-              return result;
-            }),
-        );
-        curr++;
       }
     }
+
+    // if (modules) {
+    //   let builds : Promise<Status>[] = [];
+    //   let curr = 0;
+    //   for (const module of modules) {
+    //     if (curr >= this.config.simulation.maxConcurComps) {
+    //       await Promise.all(builds);
+    //       curr = 0;
+    //       builds = [];
+    //     }
+    //     builds.push(
+    //       this.compilationRunner.buildModule(module, this.config.simulation.debugMode)
+    //         .then((result)=>{
+    //           if (result === Status.SUCCESS) {
+    //             this.addedModuleType(module.type);
+    //             void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module);
+    //           } else {
+    //             void this.evSys.emit<Module>(EventType.FAIL, 'Module', module);
+    //           }
+    //           return result;
+    //         }),
+    //     );
+    //     curr++;
+    //   }
+    // }
   }
 
   /**
@@ -261,6 +281,8 @@ export class SimulationBuilder {
   private buildSuccess(buildID : string) : void {
     this.setBuildState(buildID, { ready:true, reason:'Successful Build' });
     this.setSimState({ ready: true, reason: 'Successful Build' });
+    moveFile(`${this.config.vipra.vipraDir}/build/${buildID}/VIPRA`, `${this.config.vipra.vipraDir}/VIPRA`);
+    this.buildCleanUp(buildID);
     void this.evSys.emit<string>(EventType.SUCCESS, 'Build', buildID);
   }
 
@@ -272,6 +294,7 @@ export class SimulationBuilder {
    */
   private buildFailed(buildID : string, reason : string) : void {
     this.setBuildState(buildID, { ready: false, reason });
+    this.buildCleanUp(buildID);
     void this.evSys.emit<string>(EventType.FAIL, 'Build', buildID);
   }
 
@@ -288,6 +311,15 @@ export class SimulationBuilder {
       return false;
     }
     return true;
+  }
+
+  /**
+   * @description Cleans up the build files from a build
+   * @param {string} buildID - id of build
+   */
+  private buildCleanUp(buildID: string) : void {
+    deleteDir(`${this.config.vipra.vipraDir}/build/${buildID}`, true)
+      .catch(()=>{});
   }
 
   /**
@@ -321,5 +353,26 @@ export class SimulationBuilder {
    */
   private setBuildState(buildID : string, state : SimState) : void {
     this.buildMap.set(buildID, state);
+  }
+
+  /**
+   * @description sets the module types all to zero
+   */
+  private setupTypes() : void {
+    this.moduleTypes = {
+      pedestrian_dynamics_model: 0,
+      goals: 0,
+      output_data_writer: 0,
+      input_data_loader: 0,
+      simulation_output_handler: 0, 
+      pedestrian_set: 0, 
+      obstacle_set: 0, 
+      human_behavior_model: 0,
+      configuration_reader: 0, 
+      clock: 0, 
+      simulation : 0, 
+      map_loader: 0, 
+      policy_model: 0,
+    };
   }
 }

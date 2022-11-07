@@ -1,7 +1,7 @@
 import express from 'express';
 import { Status } from '../../types/status';
 import { Nullable, OperationResult } from '../../types/typeDefs';
-import { UploadRequest, UploadType } from '../../types/uploading.types';
+import { RepoType, UploadRequest, UploadType } from '../../types/uploading.types';
 import { uploadModule } from '../../util/filestore';
 import { Module } from '../../types/module/module.types';
 import { BaseController } from '../base.controller';
@@ -28,6 +28,10 @@ export class ModuleController extends BaseController<Module> {
   protected setupRequestHandlers(): void {
     this.evSys.setRequestHandler(RequestType.MODULE, (select : Partial<Module>) : Promise<Nullable<Module[]>> => {
       return this.service.get(select);
+    });
+
+    this.evSys.setRequestHandler(RequestType.MODULE_REPO, (select: Partial<Module>) : Promise<Nullable<RepoType<Module>[]>> => {
+      return this.service.getRepo(select);
     });
   }
 

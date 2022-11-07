@@ -21,14 +21,13 @@ export class CompilationRunner {
   /**
    * @description Compiles a Single Module
    * @param {Module} module - module to be compiled
+   * @param {string} dirPath - directory the module is in
    * @param {boolean} debug - whether to compile in debug mode
    */
-  public async buildModule(module : Module, debug : boolean) : Promise<Status> {
+  public async buildModule(module : Module, dirPath : string, debug : boolean) : Promise<Status> {
     return new Promise(resolve=>{
-      const moduleDirPath : string = `${this.config.modules.modulesDir}/${module.type}/${module.name}`;
-      if (fileExists(moduleDirPath)) {
-
-        const command = `make module -C ${this.config.vipra.vipraDir} MODULEPATH=${moduleDirPath} MODULEID=${module.id} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
+      if (fileExists(dirPath)) {
+        const command = `make module -C ${this.config.vipra.vipraDir} MODULEPATH=${dirPath}/${module.name} MODULEID=${module.id} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
             Logger.error(`buildModule: ${error.message}`);
@@ -51,10 +50,10 @@ export class CompilationRunner {
               resolve(Status.SUCCESS);
             }
           });
-        } else {
-          Logger.error(`Attempt tob build Module that doesn't exist: ${module.name}:${module.id} ; Path: ${moduleDirPath}`);
-          resolve(Status.NOT_FOUND);
         }
+      } else {
+        Logger.error(`Attempt to build Module that doesn't exist: ${module.name}:${module.id} ; Path: ${dirPath}`);
+        resolve(Status.NOT_FOUND);
       }
     });
   }

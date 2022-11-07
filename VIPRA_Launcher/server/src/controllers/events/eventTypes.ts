@@ -17,6 +17,7 @@ export enum RequestType {
   SIM_STATE,
   SIM_BUILD,
   MODULE,
+  MODULE_REPO,
   MAP,
   SIM_CONFIG,
   SIM_CONFIG_PARAMS,

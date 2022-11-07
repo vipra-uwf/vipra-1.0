@@ -2,19 +2,53 @@ import express from 'express';
 import path from 'path';
 import https from 'https';
 
+import { FLAGS } from '../types/flags/flags.types';
 import { Config } from './config';
 import { readFile } from '../util/fileOperations';
 import { Logger } from '../controllers/logging/logger';
+import { Nullable } from '../types/typeDefs';
 
+/**
+ * @description Creates a map containing the commandline flags and their respective values
+ *
+ * @note values are set to '' if the flag was input with an = -RG
+ */
+const getCommandLineArguments = () : Map<string, string> => {
+
+  const args = process.argv.slice(2);
+  const params = new Map<string, string>();
+
+  args.forEach((arg) => {
+    const values = arg.split('=');
+    params.set(values[0], values[1]);
+  });
+
+  if (params.has(FLAGS.FLAGS_FILE)) {
+    const filePath = params.get(FLAGS.FLAGS_FILE);
+    if (filePath) {
+      const flagsfile : Nullable<string> = readFile(filePath);
+      if (flagsfile) {
+        const flags : string[] = flagsfile.split('\n');
+        flags.forEach((line)=>{
+          const flag = line.split('=');
+          params.set(flag[0], `${flag[1] ? flag[1] : ''}`);
+        });
+      }
+    }
+  }
+  return params;
+};
 
 /**
  * @note currently hardcoded
  * @description Sets config variables
  */
 const initialSetup = () : Config => {
+  const flags = getCommandLineArguments();
   return {
+    flags,
     app: {
-      certDir: path.resolve(`${__dirname}`),
+      certDir: path.resolve(`${__dirname}/../../certs`),
       port: 3000,
     },
     modules: {
@@ -30,7 +64,7 @@ const initialSetup = () : Config => {
       simsDir: path.resolve(`${__dirname}/../../../../VIPRA/sims`),
     },
     simulation: {
-      debugMode: false,
+      debugMode: flags.has(FLAGS.DEBUG_BUILD),
       maxConcurComps: 10,
     },
     map : {
@@ -58,7 +92,6 @@ const setupHTTPS = (app : express.Application, config : Config) : https.Server =
   Logger.error('Unable to start HTTPS Server');
   throw new Error('Unable to start HTTPS Server');
 };
-
 
 export {
   initialSetup,

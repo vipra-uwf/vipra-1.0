@@ -11,6 +11,7 @@ import { getControllers } from './configuration/DepInj';
 import { OMap } from './types/maps/map.types';
 import { Logger } from './controllers/logging/logger';
 import { createSimRouter } from './routes/simulation.routes';
+import { FLAGS } from './types/flags/flags.types';
 
 const app = express();
 const config : Config = initialSetup();
@@ -31,4 +32,6 @@ app.use('*', createDefaultRouter());
 
 controllers.SimulationBuilder.startup();
 
-setupHTTPS(app, config).listen(config.app.port).on('error', (error : Error) => { Logger.error(`HTTPS Server: ${error.message}`); });
+if (!config.flags.has(FLAGS.NO_SERV)) {
+  setupHTTPS(app, config).listen(config.app.port).on('error', (error : Error) => { Logger.error(`HTTPS Server: ${error.message}`); });
+}

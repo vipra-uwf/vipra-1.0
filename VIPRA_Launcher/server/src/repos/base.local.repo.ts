@@ -56,6 +56,22 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
   }
 
   /**
+   * @description Returns all objects whose properties match the provided select
+   * @param {Partial<DataType>} select - properties to match
+   */
+  getRepo(select : Partial<DataType>) : RepoType<DataType>[] {
+    const ret : RepoType<DataType>[] = [];
+    for (const value of this.objects) {
+      if (Object.keys(select).every((key)=>{
+        return select[key as keyof Partial<DataType>] === value[1].object[key as keyof DataType];
+      })) {
+        ret.push(value[1]);
+      }
+    }
+    return ret;
+  }
+
+  /**
    * @uses saveFiles
    * @description Creates a new object on the repo
    * @param {Full<UploadType<DataType>>} upObj - uploaded object

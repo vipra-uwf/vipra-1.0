@@ -1,6 +1,6 @@
 
 
-import { Identifiable, UploadType } from '../types/uploading.types';
+import { Identifiable, RepoType, UploadType } from '../types/uploading.types';
 import { BaseLocalRepo } from '../repos/base.local.repo';
 import { Status } from '../types/status';
 import { Full, Nullable, OperationResult } from '../types/typeDefs';
@@ -37,6 +37,14 @@ export abstract class BaseService<DataType extends Identifiable> {
    */
   get(select : Partial<DataType>) : Promise<Nullable<DataType[]>> {
     return Promise.resolve(this.repo.get(select));
+  }
+
+  /**
+   * @description Returns full repotypes of objects
+   * @param {Partial<DataType>} select - properties to match
+   */
+  getRepo(select : Partial<DataType>) : Promise<Nullable<RepoType<DataType>[]>> {
+    return Promise.resolve(this.repo.getRepo(select));
   }
 
   /**
