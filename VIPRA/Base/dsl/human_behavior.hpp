@@ -1,16 +1,17 @@
 #ifndef VIPRA_HUMAN_BEHAVIOR_HPP
 #define VIPRA_HUMAN_BEHAVIOR_HPP
 
+#include "../../Extendable/goals/goals.hpp"
+#include "../../Extendable/obstacleset/obstacle_set.hpp"
+#include "../../Extendable/pedestrianset/pedestrian_set.hpp"
 #include "../_pch/pch.hpp"
+#include "../definitions/type_definitions.hpp"
 #include "actions/action.hpp"
 #include "conditions/condition.hpp"
 #include "selectors/selector.hpp"
 #include "simulation_context.hpp"
 #include "transitions/environment_transition.hpp"
 #include "transitions/pedestrian_transition.hpp"
-
-#include "../../Extendable/pedestrianset/pedestrian_set.hpp"
-#include "../definitions/type_definitions.hpp"
 
 /**
  * Describes a specific human behavior. Implementations can either define the behavior directly in C++ or use a DSL.
@@ -23,20 +24,19 @@ class HumanBehavior {
   // The pattern across the board is to have actual handles to the data that are provided on object creation.
   // But the data lives on the model itself. Therefore we should have the behavior take in the PedestrianSet as an argument.
 
-  virtual void initialize(PedestrianSet* pedestrianSet);
+  virtual void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&);
 
   // Track any internal state if it exists
   virtual void update(FLOATING_NUMBER timestep);
 
   // Select a specific pedestrian for this behavior
-  virtual bool select(PedestrianSet* pedestrianSet, int pedestrianIndex);
+  virtual bool select(const PedestrianSet& pedestrianSet, int pedestrianIndex);
 
   // Tell the simulation whether or not this behavior will decide their speed (or anything else for that matter).
-  virtual bool decide(PedestrianSet* pedestrianSet, int pedestrianIndex);
+  virtual bool decide(const PedestrianSet& pedestrianSet, int pedestrianIndex);
 
   // Perform the action associated with this behavior
-  virtual void act(PedestrianSet* pedestrianSet, int pedestrianIndex,
-                   FLOATING_NUMBER timestep);
+  virtual void act(const PedestrianSet& pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
 
   // Get the state definitions
   std::vector<std::string> getStateDefinitions();

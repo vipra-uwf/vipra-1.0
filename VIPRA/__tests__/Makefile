@@ -1,5 +1,5 @@
 CPP= g++
-CPP_FLAGS= -std=c++17 -O0 -g -fPIE
+CPP_FLAGS= -std=c++17 -w -O0 -g -fPIE
 
 BASE_DIR = ./../Base
 BUILD_DIR = ./build
@@ -13,7 +13,6 @@ Test: clean makeDirs
 
 clean:
 	rm -rf ./temp
-	rm -f Test
 
 makeDirs:
 	mkdir -p ./temp

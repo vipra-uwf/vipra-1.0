@@ -3,8 +3,8 @@ import path from 'path';
 import https from 'https';
 
 import { Config } from './config';
-import { readFile } from 'src/util/fileOperations';
-import { Logger } from 'src/controllers/logging/logger';
+import { readFile } from '../util/fileOperations';
+import { Logger } from '../controllers/logging/logger';
 
 
 /**

@@ -11,6 +11,11 @@ std::string generateObjectFunction(const std::string& className, const std::stri
 std::string generateFunctionOptions(const std::string& type);
 std::string generateExtractConfigMap();
 std::string generateMain();
+std::string initializeModules();
+
+std::string mainFunctionDefinition();
+std::string generateModules();
+std::string makeModuleConfigs();
 
 std::string cleanup();
 std::string runSim();
@@ -33,7 +38,8 @@ const std::unordered_map<std::string, std::string> TYPES{
     {"configuration_reader", "ConfigurationReader"},
     {"clock", "Clock"},
     {"simulation", "Simulation"},
-};
+    {"policy_model", "PolicyModel"},
+    {"map_loader", "MapLoader"}};
 
 int
 main(int argc, char const* argv[]) {
@@ -83,6 +89,15 @@ setFiles(int argc, const char** argv) {
 std::string
 generateIncludes() {
   std::string generatedIncludes = "";
+  for (const auto& t : TYPES) {
+    for (const auto& option : jsonObj[t.first]) {
+      const auto& module = option["object"];
+      if (module["compiled"]) {
+        includes.emplace_back(option["dirPath"].asString() + "/" + module["name"].asString() + ".hpp");
+      }
+    }
+  }
+
   for (const auto& include : includes) {
     generatedIncludes += "#include \"" + include + "\"\n";
   }
@@ -120,12 +135,10 @@ generateFunctionOptions(const std::string& type) {
     const auto& module = option["object"];
     if (module["compiled"]) {
       generatedFunction += "\n\tif(id==\"" + module["id"].asString() + "\"){\n\t\t" +
-                           module["className"].asString() + "* " + module["name"].asString() +
-                           " = new " + module["className"].asString() + "();\n\t\t" +
-                           module["name"].asString() + "->configure(*configMap);" +
-                           "\n\t\treturn " + module["name"].asString() + ";" + "\n\t}";
-      includes.emplace_back(option["dirPath"].asString() + "/" + module["name"].asString() +
-                            ".hpp");
+                           module["className"].asString() + "* " + module["name"].asString() + " = new " +
+                           module["className"].asString() + "();\n\t\t" + module["name"].asString() +
+                           "->configure(*configMap);" + "\n\t\treturn " + module["name"].asString() + ";" +
+                           "\n\t}";
     }
   }
 
@@ -156,23 +169,14 @@ generateExtractConfigMap() {
 
 std::string
 generateMain() {
-  std::string mainFunction =
-      "\nJson::Value simulationJsonConfig;"
-      "\nJson::Value moduleParams;"
-      "\nint main(int argc, const char **argv) {"
-      "\n\tgetInputFiles(argc, argv);"
-      "\n\tConfigurationReader configurationReader;"
-      "\n\tsimulationJsonConfig = configurationReader.getConfiguration(configFile);"
-      "\n\tmoduleParams = configurationReader.getConfiguration(paramsFile);";
+  std::string mainFunction = "";
 
-  for (const auto& [type, className] : TYPES) {
-    mainFunction += "\n\tCONFIG_MAP* " + type + "Config =  extractConfigMap(\"" + type + "\");";
-  }
+  mainFunction += mainFunctionDefinition();
 
-  for (const auto& [type, className] : TYPES) {
-    mainFunction += "\n\t" + className + "* " + type + " = generate" + className +
-                    "(simulationJsonConfig[\"" + type + "\"].asString(), " + type + "Config);";
-  }
+  mainFunction += makeModuleConfigs();
+  mainFunction += generateModules();
+
+  mainFunction += initializeModules();
 
   mainFunction += outputSetup();
 
@@ -183,6 +187,48 @@ generateMain() {
   mainFunction += "\n}";
 
   return mainFunction;
+}
+
+std::string
+initializeModules() {
+  return "\n\tmap_loader->initialize();"
+         "\n\tobstacle_set->initialize(map_loader->LoadMap(obstacleFile));"
+         "\n\tpedestrian_set->initialize(input_data_loader->getInputEntities(pedestrianFile));"
+         "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);"
+         "\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);"
+         "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);";
+}
+
+std::string
+mainFunctionDefinition() {
+  return "\nJson::Value simulationJsonConfig;"
+         "\nJson::Value moduleParams;"
+         "\nint main(int argc, const char **argv) {"
+         "\n\tgetInputFiles(argc, argv);"
+         "\n\tConfigurationReader configurationReader;"
+         "\n\tsimulationJsonConfig = configurationReader.getConfiguration(configFile);"
+         "\n\tmoduleParams = configurationReader.getConfiguration(paramsFile);";
+}
+
+std::string
+generateModules() {
+  std::string str{""};
+  for (const auto& [type, className] : TYPES) {
+    str += "\n\t" + className + "* " + type + " = generate" + className + "(simulationJsonConfig[\"" + type +
+           "\"].asString(), " + type + "Config);";
+  }
+
+  return str;
+}
+
+std::string
+makeModuleConfigs() {
+  std::string str{""};
+  for (const auto& [type, className] : TYPES) {
+    str += "\n\tCONFIG_MAP* " + type + "Config =  extractConfigMap(\"" + type + "\");";
+  }
+
+  return str;
 }
 
 std::string

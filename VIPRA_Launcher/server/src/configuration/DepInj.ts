@@ -10,9 +10,9 @@ import { ModuleService }       from '../services/module/module.service';
 import { SimConfigService }    from '../services/simconfig/simconfig.service';
 import { ModuleController }    from '../controllers/module/module.controller';
 import { Config }              from './config';
-import { ChainBuilderController } from 'src/controllers/chainbuilder/chainbuilder.controller';
-import { SimController } from 'src/controllers/simulation/simulation.controller';
-import { SimRunner } from 'src/runners/simulation/simulation.runner';
+import { ChainBuilderController } from '../controllers/chainbuilder/chainbuilder.controller';
+import { SimController } from '../controllers/simulation/simulation.controller';
+import { SimRunner } from '../runners/simulation/simulation.runner';
 
 
 export interface Controllers {

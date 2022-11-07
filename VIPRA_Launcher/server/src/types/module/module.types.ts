@@ -12,6 +12,8 @@ export enum ModuleType {
   CONFIGURATION_READER    = 'configuration_reader',
   CLOCK                   = 'clock',
   SIMULATION              = 'simulation',
+  MAP_LOADER              = 'map_loader',
+  POLICY_MODEL            = 'policy_model',
 }
 
 
