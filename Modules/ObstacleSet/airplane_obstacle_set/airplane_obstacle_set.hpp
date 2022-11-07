@@ -3,6 +3,7 @@
 
 #include "../../../VIPRA/Extendable/obstacleset/obstacle_set.hpp"
 #include "../../MapLoader/Point_Map_Loader/point_map_loader.hpp"
+#include "../../PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
 
 class AirplaneObstacleSet : public ObstacleSet {
 

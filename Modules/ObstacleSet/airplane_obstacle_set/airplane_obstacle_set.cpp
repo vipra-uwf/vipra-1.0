@@ -16,7 +16,7 @@ AirplaneObstacleSet::configure(const CONFIG_MAP& configMap) {
 void
 AirplaneObstacleSet::addObjects(const std::string& type, const std::vector<Dimensions>& locations) {
   this->objects[type] = locations;
-  for (int i = 0; i < objectTypes.size(); i++) {
+  for (unsigned int i = 0; i < objectTypes.size(); i++) {
     if (objectTypes.at(i) == type)
       return;
   }
@@ -41,7 +41,7 @@ AirplaneObstacleSet::getObstacleCoordinates() const noexcept {
 const Dimensions
 AirplaneObstacleSet::NearestObstacle(const Dimensions coordinates, const Dimensions velocity) const {
   int min_index = 0;
-  for (int i = 0; i < objects.at("obstacles").size(); i++) {
+  for (unsigned int i = 0; i < objects.at("obstacles").size(); i++) {
     if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
         coordinates.distanceTo(objects.at("obstacles")[min_index]))
       min_index = i;
@@ -54,7 +54,7 @@ const DimVector
 AirplaneObstacleSet::NearestObstacle(const PedestrianSet& PedSet) const {
     const DimVector& coordinatesVector = PedSet.getPedestrianCoordinates();
     DimVector nearestObstacleVector;
-    for (int j = 0; j < coordinatesVector.size(); j++)
+    for (unsigned int j = 0; j < coordinatesVector.size(); j++)
     {
       Dimensions coordinates = coordinatesVector.at(j);
       int        min_index = 0;
@@ -83,7 +83,7 @@ const Dimensions
 AirplaneObstacleSet::getDimensions() const noexcept {
   FLOATING_NUMBER maxX = 0, maxY = 0, maxZ = 0;
   for (auto mapIterator : objects) {
-    for (int i = 0; i < mapIterator.second.size(); i++) {
+    for (unsigned int i = 0; i < mapIterator.second.size(); i++) {
       Dimensions coordinates = mapIterator.second[i];
 
       if (coordinates.axis[0] > maxX)
@@ -101,21 +101,12 @@ AirplaneObstacleSet::getDimensions() const noexcept {
 
 const FLOATING_NUMBER
 AirplaneObstacleSet::rayHit(Dimensions point1, Dimensions point2) const noexcept {
-  FLOATING_NUMBER dirRatioL, dirRatioM, dirRatioN;
-  dirRatioL = point2.axis[0] - point1.axis[0];
-  dirRatioM = point2.axis[1] - point1.axis[1];
-  dirRatioN = point2.axis[2] - point1.axis[2];
 
-  for (int i = 0; i < objects.at("obstacles").size(); i++) {
+  for (unsigned int i = 0; i < objects.at("obstacles").size(); i++) {
     Dimensions coordinates = objects.at("obstacles")[i];
-
-    FLOATING_NUMBER xRatio = (coordinates.axis[0] - point1.axis[0]) / dirRatioL;
-    FLOATING_NUMBER yRatio = (coordinates.axis[1] - point1.axis[1]) / dirRatioM;
-    FLOATING_NUMBER zRatio = (coordinates.axis[2] - point1.axis[2]) / dirRatioN;
-
-    if (xRatio == yRatio && yRatio == zRatio) {
+    
+    if(coordinates.distanceTo(point1) + coordinates.distanceTo(point1) == point1.distanceTo(point2))
       return coordinates.distanceTo(point1);
-    }
   }
 
   return -1;

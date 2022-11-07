@@ -22,7 +22,7 @@ void CalmPedestrianSet::initialize(size_t pedestrianCount)
     this->desiredSpeeds          = std::vector<FLOATING_NUMBER>(pedestrianCount, STARTING_DESIRED_SPEED);
     this->shoulderLengths        = std::vector<FLOATING_NUMBER>(pedestrianCount, STARTING_SHOULDER_WIDTH);
 
-    this->setIds(std::vector(pedestrianCount, 0));
+    this->setIds(std::vector<int>(pedestrianCount, 0));
     std::iota(this->ids.begin(), this->ids.end(), 0);
 }
 
