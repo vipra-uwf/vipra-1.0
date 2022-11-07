@@ -7,11 +7,35 @@ class PedestrianSetMock : public PedestrianSet {
  public:
   void configure(const CONFIG_MAP& configMap) override {}
 
-  void initialize(size_t pedestrianCount) override {}
+  void initialize(ENTITY_SET pedestrianCount) override {}
 
   const DimVector& getPedestrianCoordinates() const noexcept override { return pedCoords; }
 
   int getNumPedestrians() const noexcept override { return pedCoords.size(); }
+
+  void removePedestrian(size_t pedestrianIndex) override {}
+
+  const DimVector&                    getVelocities() const noexcept override {}
+  const std::vector<FLOATING_NUMBER>& getSpeeds() const noexcept override {}
+  const std::vector<int>&             getIds() const noexcept override {}
+
+  void setNumPedestrians(int numPedestrians) override {}
+
+  void setPedestrianCoordinates(const Dimensions& coords, size_t index) override {}
+  void setPedestrianCoordinates(Dimensions&& coords, size_t index) override {}
+  void setPedestrianCoordinates(DimVector&& coordinates) noexcept override {}
+  void setPedestrianCoordinates(const DimVector& coordinates) noexcept override {}
+
+  void setVelocity(const Dimensions& velocity, size_t index) override {}
+  void setVelocity(Dimensions&& velocity, size_t index) override {}
+  void setVelocities(const DimVector& velocities) noexcept override {}
+  void setVelocities(DimVector&& velocities) noexcept override {}
+
+  void setSpeeds(const std::vector<FLOATING_NUMBER>& speedsMetersPerSecond) noexcept override {}
+  void setSpeeds(std::vector<FLOATING_NUMBER>&& speedsMetersPerSecond) noexcept override {}
+  void setSpeed(FLOATING_NUMBER speed, size_t index) override {}
+
+  void setIds(std::vector<int> ids) override {}
 
  private:
   DimVector pedCoords = {
