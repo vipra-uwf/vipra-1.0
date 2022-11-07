@@ -4,10 +4,9 @@
 #include "../../Extendable/pedestrianset/pedestrian_set.hpp"
 
 /**
- * Holder object for pedestrian set and states vector. Used for actions, conditions, and selectors in the DSL.
+ * Holder object for states vector. Used for actions, conditions, and selectors in the DSL.
  */
 struct SimulationContext {
-  PedestrianSet*   pedestrianSet;
   std::vector<int> states;
   int              environmentState;
 
