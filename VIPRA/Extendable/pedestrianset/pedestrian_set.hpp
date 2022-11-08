@@ -8,7 +8,7 @@ class PedestrianSet {
   virtual ~PedestrianSet() = default;
         
         virtual void                                    configure(const CONFIG_MAP& configMap)                        = 0;
-        virtual void                                    initialize(size_t pedestrianCount)                      = 0;
+        virtual void                                    initialize(ENTITY_SET pedestrianCount)                      = 0;
         virtual void                                    removePedestrian(size_t pedestrianIndex)                   = 0;
 
         virtual int                                     getNumPedestrians()                     const noexcept  = 0;

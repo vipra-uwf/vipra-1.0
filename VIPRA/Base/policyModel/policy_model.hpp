@@ -11,11 +11,8 @@
 
 class PolicyModel {
  public:
-  void timestep(const PedestrianSet&,
-                const ObstacleSet&,
-                const Goals&,
-                State&          outState,
-                FLOATING_NUMBER timestep_size);
+  void configure(const CONFIG_MAP& configMap);
+  void timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, FLOATING_NUMBER timestep_size);
 };
 
 #endif

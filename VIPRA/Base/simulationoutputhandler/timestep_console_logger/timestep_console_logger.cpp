@@ -19,9 +19,8 @@ TimestepConsoleLogger::writeToDocument(OutputDataWriter&    outputDataWriter,
                                        const Simulation&    simulation,
                                        const PedestrianSet& pedestrianSet) {
   std::printf("TIMESTEP: %i", simulation.getTimestep());
-  const auto& coords = pedestrianSet.getAllPedCoords();
+  const auto& coords = pedestrianSet.getPedestrianCoordinates();
   for (int i = 0; i < coords.size(); ++i) {
-    std::printf(
-        "Pedestrian: %i : X: %f, Y: %f\n", i, coords.at(i).axis[0], coords.at(i).axis[1]);
+    std::printf("Pedestrian: %i : X: %f, Y: %f\n", i, coords.at(i).axis[0], coords.at(i).axis[1]);
   }
 }

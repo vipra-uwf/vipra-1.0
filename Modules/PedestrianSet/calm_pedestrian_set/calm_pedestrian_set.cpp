@@ -12,17 +12,22 @@ void CalmPedestrianSet::configure(const CONFIG_MAP& configMap)
     startDesired_speed = std::stof(configMap.at("desired_speed"));
 }
 
-void CalmPedestrianSet::initialize(size_t pedestrianCount)
+void CalmPedestrianSet::initialize(ENTITY_SET pedestrians)
 {
-    this->numPedestrians         = pedestrianCount;
-    this->velocities             = DimVector(pedestrianCount, Dimensions{STARTING_VELOCITY_X, STARTING_VELOCITY_Y});
-    this->speedsMetersPerSecond  = std::vector<FLOATING_NUMBER>(pedestrianCount, STARTING_SPEED);
-    this->massesKg               = std::vector<FLOATING_NUMBER>(pedestrianCount, STARTING_MASS);
-    this->reactionTimes          = std::vector<FLOATING_NUMBER>(pedestrianCount, STARTING_REACTION_TIME);
-    this->desiredSpeeds          = std::vector<FLOATING_NUMBER>(pedestrianCount, STARTING_DESIRED_SPEED);
-    this->shoulderLengths        = std::vector<FLOATING_NUMBER>(pedestrianCount, STARTING_SHOULDER_WIDTH);
 
-    this->setIds(std::vector<int>(pedestrianCount, 0));
+    const auto& peds = pedestrians.at("pedestrians");
+    const size_t pedCnt = peds.size();
+
+    this->numPedestrians         = pedCnt;
+    this->velocities             = DimVector(pedCnt, Dimensions{STARTING_VELOCITY_X, STARTING_VELOCITY_Y});
+    this->speedsMetersPerSecond  = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_SPEED);
+    this->massesKg               = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_MASS);
+    this->reactionTimes          = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_REACTION_TIME);
+    this->desiredSpeeds          = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_DESIRED_SPEED);
+    this->shoulderLengths        = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_SHOULDER_WIDTH);
+
+    setPedestrianCoordinates(peds);
+    this->setIds(std::vector<int>(pedCnt, 0));
     std::iota(this->ids.begin(), this->ids.end(), 0);
 }
 

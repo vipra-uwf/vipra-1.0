@@ -28,20 +28,18 @@ module: makeDirs
 	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) -c $(MODULEPATH).cpp -o $(BUILD_DIR)/$(MODULEID).o
 
 simulation: makeDirs
-	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) ./build/$(BID)/main.o $(OBJS) $(LDLIBS) -o ./build/$(BID)/VIPRA
-	mv ./build/$(BID)/VIPRA ./VIPRA
-	rm -rf ./build/$(BID)
+	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) $(BUILD_DIR)/$(BID)/main.o $(OBJS) $(LDLIBS) -o $(BUILD_DIR)/$(BID)/VIPRA
 
 compileMain: makeDirs
-	./generate_main ./build/$(BID)/main.cpp $(MODULEFILE)
+	./generate_main $(BUILD_DIR)/$(BID)/main.cpp $(MODULEFILE)
 	$(CPP) $(CPP_FLAGS) -c $(BASE_DIR)/jsoncpp/jsoncpp.cpp -o $(BUILD_DIR)/jsoncpp.o
-	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) -c ./build/$(BID)/main.cpp -o ./build/$(BID)/main.o
+	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) -c $(BUILD_DIR)/$(BID)/main.cpp -o $(BUILD_DIR)/$(BID)/main.o
 
 precompileHeaders: $(PCH_SOURCE) $(PCH_HEADERS)
 	$(CPP) $(CPP_FLAGS) $(BASE_DIR)/_pch/pch.hpp
 
 clean:
-	rm -rf generate_main main.cpp VIPRA ./build $(BUILD_DIR)/_pch/pch.hpp.gch
+	rm -rf generate_main main.cpp VIPRA $(BUILD_DIR) $(BUILD_DIR)/_pch/pch.hpp.gch
 
 cleanObjs:
 	rm -rf $(BUILD_DIR)/*.o

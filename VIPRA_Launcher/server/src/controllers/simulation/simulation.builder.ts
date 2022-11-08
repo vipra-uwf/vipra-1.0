@@ -11,6 +11,7 @@ import { SimState } from '../../types/simulation/simulation.types';
 import { Nullable } from 'typechain/dist/typedefs';
 import { RepoType } from '../../types/uploading.types';
 import { deleteDir, makeDir, moveFile } from '../../util/fileOperations';
+import { Logger } from '../logging/logger';
 
 
 /**
@@ -78,6 +79,7 @@ export class SimulationBuilder {
   public startup() : void {
     this.setSimState({ ready : false, reason: 'Initial Startup Running' });
     this.isBuilt = { genMain: false, humanBehavior: false };
+    makeDir(`${this.config.vipra.vipraDir}/build/`);
     this.compileSimulation();
   }
 
@@ -210,6 +212,10 @@ export class SimulationBuilder {
    * @param {string} buildID - id of current build
    */
   private compileBehavior(buildID : string) : Promise<Status> {
+
+    this.isBuilt.humanBehavior = true;
+    return Promise.resolve(Status.SUCCESS);
+
     let genBehavior : Promise<Status> = new Promise(resolve=>resolve(Status.SUCCESS));
     if (!this.isBuilt.humanBehavior) {
       genBehavior  = this.compilationRunner.compileHumanBehavior(this.config.simulation.debugMode)
@@ -238,40 +244,37 @@ export class SimulationBuilder {
     const modules = await this.evSys.request<RepoType<Module>[]>(RequestType.MODULE_REPO, {});
 
     if (modules) {
+      let builds : Promise<Status>[] = [];
+      let curr = 0;
       for (const module of modules) {
-        const compiled = await this.compilationRunner.buildModule(module.object, module.dirPath, this.config.simulation.debugMode).catch(()=>{return Status.INTERNAL_ERROR;});
-        if (compiled === Status.SUCCESS) {
-          this.addedModuleType(module.object.type);
-          void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module.object);
+        if (curr >= this.config.simulation.maxConcurComps) {
+          await Promise.all(builds);
+          curr = 0;
+          builds = [];
         }
+        builds.push(
+          this.compilationRunner.buildModule(module.object, module.dirPath, this.config.simulation.debugMode)
+            .then((result)=>{
+              if (result === Status.SUCCESS) {
+                this.addedModuleType(module.object.type);
+                void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module.object);
+              } else {
+                void this.evSys.emit<Module>(EventType.FAIL, 'Module', module.object);
+              }
+              return result;
+            }).catch(()=>{
+              void this.evSys.emit<Module>(EventType.FAIL, 'Module', module.object);
+              return Status.INTERNAL_ERROR;
+            }),
+        );
+        curr++;
       }
+      await Promise.all(builds);
     }
-
-    // if (modules) {
-    //   let builds : Promise<Status>[] = [];
-    //   let curr = 0;
-    //   for (const module of modules) {
-    //     if (curr >= this.config.simulation.maxConcurComps) {
-    //       await Promise.all(builds);
-    //       curr = 0;
-    //       builds = [];
-    //     }
-    //     builds.push(
-    //       this.compilationRunner.buildModule(module, this.config.simulation.debugMode)
-    //         .then((result)=>{
-    //           if (result === Status.SUCCESS) {
-    //             this.addedModuleType(module.type);
-    //             void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module);
-    //           } else {
-    //             void this.evSys.emit<Module>(EventType.FAIL, 'Module', module);
-    //           }
-    //           return result;
-    //         }),
-    //     );
-    //     curr++;
-    //   }
-    // }
+    Logger.info('Finished all modules');
   }
+
+
 
   /**
    * @description Sets build state / sim state, emits the SUCCESS_SIMULATION_BUILD event

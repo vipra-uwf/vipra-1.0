@@ -19,7 +19,7 @@ TimestepOutputHandler::writeToDocument(OutputDataWriter&    outputDataWriter,
                                        const PedestrianSet& pedestrianSet) {
   outputDataWriter.addFloatValue("NEW_TIMESTEP", 0);
 
-  const auto& coords = pedestrianSet.getAllPedCoords();
+  const auto& coords = pedestrianSet.getPedestrianCoordinates();
 
   for (const auto& coord : coords) {
     outputDataWriter.addFloatValue("x", coord.axis[0]);

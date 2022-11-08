@@ -12,7 +12,7 @@ class CalmPedestrianSet : public PedestrianSet {
         CalmPedestrianSet();
 
         void configure(const CONFIG_MAP& configMap) override;
-        void initialize(size_t pedestrianCount) override;
+        void initialize(ENTITY_SET pedestrianCount) override;
         void removePedestrian(size_t pedestrianIndex) override;
 
 

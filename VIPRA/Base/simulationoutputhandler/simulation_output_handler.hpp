@@ -1,11 +1,11 @@
 #ifndef SIMULATION_OUTPUT_HANDLER_HPP
 #define SIMULATION_OUTPUT_HANDLER_HPP
 
+#include "../../Extendable/pedestrianset/pedestrian_set.hpp"
 #include "../definitions/type_definitions.hpp"
 #include "../outputdatawriter/output_data_writer.hpp"
 #include "../simulation/simulation/simulation.hpp"
 
-#include "../../Extendable/pedestrianset/pedestrian_set.hpp"
 
 class SimulationOutputHandler {
 
@@ -17,9 +17,7 @@ class SimulationOutputHandler {
                                     const PedestrianSet&,
                                     const ObstacleSet&,
                                     const Goals&) = 0;
-  virtual void writeToDocument(OutputDataWriter&,
-                               const Simulation&,
-                               const PedestrianSet&) = 0;
+  virtual void writeToDocument(OutputDataWriter&, const Simulation&, const PedestrianSet&) = 0;
 };
 
 #endif

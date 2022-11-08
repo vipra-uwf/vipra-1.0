@@ -263,14 +263,13 @@ cleanup() {
 
 std::string
 runSim() {
-  return "\n\tsimulation->run(*pedestrian_dynamics_model,"
-         "*human_behavior_model,"
-         "*goals,"
+  return "simulation->run(*goals,"
          "*pedestrian_set,"
          "*obstacle_set,"
-         "*output_data_writer,"
-         "*simulation_output_handler,"
-         "*clock);"
+         "*pedestrian_dynamics_model,"
+         "*human_behavior_model,"
+         "*policy_model,"
+         "*simulation_output_handler);"
          "\n\toutput_data_writer->writeToDocument();";
 }
 
