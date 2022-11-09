@@ -214,9 +214,6 @@ export class SimulationBuilder {
    */
   private compileBehavior(buildID : string) : Promise<Status> {
 
-    // this.isBuilt.humanBehavior = true;
-    // return Promise.resolve(Status.SUCCESS);
-
     let genBehavior : Promise<Status> = new Promise(resolve=>resolve(Status.SUCCESS));
     if (!this.isBuilt.humanBehavior) {
       genBehavior  = this.compilationRunner.compileHumanBehavior(this.config.simulation.debugMode)

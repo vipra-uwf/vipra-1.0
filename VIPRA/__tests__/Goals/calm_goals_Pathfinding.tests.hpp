@@ -19,7 +19,8 @@ testPathfinding(void) {
   CalmGoals           goals;
   PointMapLoader      loader;
 
-  goals.configure(CONFIG_MAP{{"endGoalType", "exits"}, {"pathFinding", "Deplane"}, {"diagonalCost", "2.0"}});
+  goals.configure(CONFIG_MAP{
+      {"endGoalType", "exits"}, {"pathFinding", "Astar"}, {"diagonalCost", "2.0"}, {"goalRange", "0.05"}});
 
   obs.initialize(loader.LoadMap("../../Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.json"));
 

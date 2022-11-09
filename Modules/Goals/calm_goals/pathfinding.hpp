@@ -62,8 +62,7 @@ inline std::queue<Dimensions>
 constructPath(Dimensions start, Dimensions goal, AQuad* end) {
   // create queue by traversing the path, add the start and end, return
   std::queue<Dimensions> path;
-  path.push(start);
-  AQuad* iter = end;
+  AQuad*                 iter = end;
   while (iter != nullptr) {
     path.push(iter->node->center);
     iter = iter->parent;

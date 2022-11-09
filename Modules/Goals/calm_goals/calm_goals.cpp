@@ -5,6 +5,7 @@
 
 void
 CalmGoals::configure(const CONFIG_MAP& configMap) {
+  goalRange = std::stof(configMap.at("goalRange"));
   endGoalType = configMap.at("endGoalType");
   pathingType = configMap.at("pathFinding");
   diagonalCost = (std::stof(configMap.at("diagonalCost")));
@@ -29,7 +30,6 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   if (pathingType == "Astar") {
     std::cout << "Building Graph\n";
     graph.buildGraph(obsSet);
-  } else {
   }
   std::cout << "Creating Paths\n";
   initializePaths(pedSet, obsSet);
@@ -49,14 +49,14 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
   for (size_t i = 0; i < pedCnt; ++i) {
     if (pathingType == "Astar") {
       paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph, diagonalCost);
-    } else if (pathingType == "Deplane") {
-      paths[i] = deplanePath(coords.at(i), endGoals.at(i), obsSet);
+    } else if (pathingType == "Disembark") {
+      paths[i] = disembarkPath(coords.at(i), endGoals.at(i), obsSet);
     }
   }
 }
 
 std::queue<Dimensions>
-CalmGoals::deplanePath(const Dimensions& start, const Dimensions& endGoal, const ObstacleSet& obsSet) {
+CalmGoals::disembarkPath(const Dimensions& start, const Dimensions& endGoal, const ObstacleSet& obsSet) {
   std::queue<Dimensions> path;
   Dimensions             aisle = nearestObjective("aisle", start, obsSet);
   path.push(aisle);
@@ -127,7 +127,7 @@ CalmGoals::updatePedestrianGoals(const ObstacleSet& obsSet, const PedestrianSet&
   for (size_t i = 0; i < numPeds; ++i) {
     if (!paths[i].empty()) {
       const Dimensions& currGoal = paths[i].front();
-      if (pedCoords.at(i).inside(currGoal, GOAL_RANGE)) {
+      if (pedCoords.at(i).inside(currGoal, goalRange)) {
         paths[i].pop();
         currentGoals[i] = paths[i].front();
         goalsMet[i] = paths[i].empty();
