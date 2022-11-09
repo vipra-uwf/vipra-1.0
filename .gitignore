@@ -5,6 +5,7 @@ generated_main
 generated_main.cpp
 main
 VIPRAsim
+VIPRA
 *.exe
 *.out
 *.o

@@ -14,7 +14,7 @@ BASE_DIR = ./Base
 BUILD_DIR = ./build
 
 OBJS := $(wildcard $(BUILD_DIR)/*.o) $(wildcard $(BUILD_DIR)/*/*.o)
-OBJS := $(filter-out $(BUILD_DIR)/main.o, $(OBJS))
+OBJS := $(filter-out $(wildcard $(BUILD_DIR)/*/main.o), $(OBJS))
 
 PCH_SOURCE= $(BASE_DIR)/_pch/pch.hpp
 PCH_HEADERS= 

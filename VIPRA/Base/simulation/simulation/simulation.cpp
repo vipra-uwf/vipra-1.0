@@ -22,7 +22,7 @@ Simulation::run(Goals&                   goals,
 
   while (!goals.isSimulationGoalMet()) {
     policyModel.timestep(pedestrianSet, obstacleSet, goals, timestep);
-    humanBehaviorModel.update(pedestrianSet, obstacleSet, goals, timestep);
+    humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, timestep);
     pedestrianDynamicsModel.update(pedestrianSet, obstacleSet, goals, timestep);
   }
 }

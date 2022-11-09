@@ -106,8 +106,7 @@ generateIncludes() {
 
 std::string
 generateFunctionDeclarations() {
-  std::string generatedDeclarations = "\nCONFIG_MAP* extractConfigMap(std::string name);"
-                                      "\nvoid getInputFiles(int argc, const char** argv);";
+  std::string generatedDeclarations = "\nCONFIG_MAP* extractConfigMap(std::string name);";
 
   for (const auto& [type, className] : TYPES) {
     generatedDeclarations +=
@@ -240,7 +239,7 @@ generateGetFiles() {
           "\nstd::string outputFile;"
           "\nvoid getInputFiles(int argc, const char** argv){"
           "\n\tif(argc > 6 || argc < 6){"
-          "\n\t\tstd::cerr << \"Invalid inputs\";\n"
+          "\n\t\tstd::cerr << \"Invalid inputs\\n\";\n"
           "\n\t\texit(1);"
           "\n\t}"
           "\n\tconfigFile=argv[1];"

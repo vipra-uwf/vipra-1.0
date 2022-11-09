@@ -28,7 +28,7 @@ export class EventSystem {
    */
   public async emit<DataType>(event : EventType, dataType : EventData,  data : Nullable<DataType>) : Promise<void> {
     if (data) {
-      evLogger.info(`EMIT: ${Object.values(EventType)[event]} ; DATA: ${JSON.stringify(data)}`);
+      evLogger.info(`EMIT: ${Object.values(EventType)[event]} ; TYPE: ${dataType} ; DATA: ${JSON.stringify(data)}`);
       const typeHandlers = this.eventHandlers.get(dataType) || null;
       if (typeHandlers) {
         const handlers = typeHandlers.get(event) || null;

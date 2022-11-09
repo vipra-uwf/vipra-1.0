@@ -12,6 +12,7 @@ import { Nullable } from 'typechain/dist/typedefs';
 import { RepoType } from '../../types/uploading.types';
 import { deleteDir, makeDir, moveFile } from '../../util/fileOperations';
 import { Logger } from '../logging/logger';
+import { FLAGS } from '../../types/flags/flags.types';
 
 
 /**
@@ -213,8 +214,8 @@ export class SimulationBuilder {
    */
   private compileBehavior(buildID : string) : Promise<Status> {
 
-    this.isBuilt.humanBehavior = true;
-    return Promise.resolve(Status.SUCCESS);
+    // this.isBuilt.humanBehavior = true;
+    // return Promise.resolve(Status.SUCCESS);
 
     let genBehavior : Promise<Status> = new Promise(resolve=>resolve(Status.SUCCESS));
     if (!this.isBuilt.humanBehavior) {
@@ -321,8 +322,10 @@ export class SimulationBuilder {
    * @param {string} buildID - id of build
    */
   private buildCleanUp(buildID: string) : void {
-    deleteDir(`${this.config.vipra.vipraDir}/build/${buildID}`, true)
-      .catch(()=>{});
+    if (!this.config.flags.has(FLAGS.NO_BUILD_CLEAN)) {
+      deleteDir(`${this.config.vipra.vipraDir}/build/${buildID}`, true)
+        .catch(()=>{});
+    }
   }
 
   /**

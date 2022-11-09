@@ -4,4 +4,5 @@ export enum FLAGS {
   DEBUG_SETUP         = '-debugsetup',
   DEBUG_BUILD         = '-debugbuild',
   NO_SERV   = '-noserver',
+  NO_BUILD_CLEAN = '-noclean',
 }
