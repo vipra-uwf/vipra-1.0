@@ -9,7 +9,7 @@
 #include "../../../VIPRA/Extendable/pedestrianmodel/pedestrian_dynamics_model.hpp"
 //#include "../../ObstacleSet/airplane_obstacle_set/airplane_obstacle_set.hpp"
 #include "../../PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
-// #include "../../Goals/calm_goals/calm_goals.hpp"
+//#include "../../Goals/calm_goals/calm_goals.hpp"
 
 class CalmPedestrianModel : public PedestrianDynamicsModel {
  public:

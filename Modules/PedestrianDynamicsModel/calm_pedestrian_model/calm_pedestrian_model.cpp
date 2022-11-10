@@ -214,8 +214,10 @@ inline bool CalmPedestrianModel::neighborSpacialTest(CalmPedestrianSet& pedestri
 }
 
 
-
-
+void CalmPedestrianModel::calculatePropulsion() 
+{
+    
+}
 
 
 

@@ -14,7 +14,7 @@
 
 #include "./Types/tests.hpp"
 
-#include "./Goals/tests.hpp"
+//#include "./Goals/tests.hpp"
 
 TEST_LIST = {INPUT_DATA_LOADER_TESTS,
              OUTPUT_DATA_WRITER_TESTS,

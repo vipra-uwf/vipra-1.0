@@ -3,16 +3,18 @@
 #include "./../../acutest/acutest.h"
 
 #include "../../../../Modules/PedestrianDynamicsModel/calm_pedestrian_model/calm_pedestrian_model.hpp"
+#include "../../../Base/definitions/state.hpp"
 
 namespace Calm_Pedestrian_Model_TESTS {
 
     void ModelReturnsCorrectDistanceMatrix(void) {
-        
         CalmPedestrianSet pedestrianSet;
         CalmPedestrianModel pedestrianModel;
         DimVector pedestrianCoords = {{8,5}, {4,2}, {0,5}};
+        ENTITY_SET pedestrians = {{"pedestrians", pedestrianCoords}};
 
-        pedestrianSet.initialize(3);
+
+        pedestrianSet.initialize(pedestrians);
         pedestrianSet.setPedestrianCoordinates(pedestrianCoords);
         pedestrianModel.initialize(pedestrianSet);
 
@@ -36,8 +38,9 @@ namespace Calm_Pedestrian_Model_TESTS {
         DimVector pedestrianCoords = {{8,5}, {4,2}, {0,5}};
         DimVector velocities = {{3, 4}, {5,1}, {6,2}};
         std::vector<FLOATING_NUMBER> shoulderLengths = {4, 5, 2};
+        ENTITY_SET pedestrians = {{"pedestrians", pedestrianCoords}};
 
-        pedestrianSet.initialize(3);
+        pedestrianSet.initialize(pedestrians);
 
         pedestrianSet.setPedestrianCoordinates(pedestrianCoords);
         pedestrianSet.setShoulderLengths(shoulderLengths);

@@ -10,9 +10,13 @@ namespace Calm_Pedestrian_Set_TESTS {
     void
     LoadProperValuesInPedestrianSet(void) {
     CalmPedestrianSet pedestrianSet;
-    size_t numPedestrians = 100;
+    size_t numPedestrians = 3;
 
-    pedestrianSet.initialize(numPedestrians);
+    DimVector pedestrianCoords = {{8,5}, {4,2}, {0,5}};
+    ENTITY_SET pedestrians = {{"pedestrians", pedestrianCoords}};
+
+
+    pedestrianSet.initialize(pedestrians);
 
     TEST_CHECK(pedestrianSet.getIds().size() == numPedestrians);
     TEST_CHECK(pedestrianSet.getVelocities().size() == numPedestrians);

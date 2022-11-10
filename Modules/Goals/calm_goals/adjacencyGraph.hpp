@@ -3,6 +3,7 @@
 
 #include "../../../VIPRA/Base/definitions/type_definitions.hpp"
 #include "../../../VIPRA/Extendable/obstacleset/obstacle_set.hpp"
+#include <optional>
 
 namespace CalmPath {
 struct Quad {
