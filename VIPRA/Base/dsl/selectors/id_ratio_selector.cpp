@@ -8,7 +8,7 @@ IdRatioSelector::IdRatioSelector(
     this->ratio = ratio;
 }
 
-bool IdRatioSelector::select(int pedestrianIndex)
+bool IdRatioSelector::select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals)
 {
     int pedestrianId = this->getSimulationContext()->pedestrianSet->getIds().at(pedestrianIndex);
     

@@ -27,7 +27,7 @@ void IdRandomSelector::selectPedestrianIds()
     }
 }
 
-bool IdRandomSelector::select(int pedestrianIndex)
+bool IdRandomSelector::select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals)
 {
     int pedestrianId = this->getSimulationContext()->pedestrianSet->getIds().at(pedestrianIndex);
     return std::find(selectedPedestrianIds.begin(),

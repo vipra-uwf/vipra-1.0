@@ -3,7 +3,7 @@
 //
 
 #include "alter_velocity_action.hpp"
-#include "../../../calm_pedestrian_set/calm_pedestrian_set.hpp"
+#include "..\..\..\Extendable\pedestrianset\pedestrian_set.hpp"
 
 AlterVelocityAction::AlterVelocityAction(SimulationContext *simulationContext,
                                          ALTER_DIRECTION alterDirection,
@@ -13,9 +13,9 @@ AlterVelocityAction::AlterVelocityAction(SimulationContext *simulationContext,
 {
 }
 
-void AlterVelocityAction::performAction(int pedestrianIndex)
+void AlterVelocityAction::performAction(int pedestrianIndex, PedestrianSet pedestrianSet)
 {
-    auto *calmPedestrianSet = dynamic_cast<CalmPedestrianSet *>(this->getSimulationContext()->pedestrianSet);
+    //auto *calmPedestrianSet = dynamic_cast<CalmPedestrianSet *>(this->getSimulationContext()->pedestrianSet);
     if (!actionApplied(pedestrianIndex))
     {
         // Slow down the new velocity

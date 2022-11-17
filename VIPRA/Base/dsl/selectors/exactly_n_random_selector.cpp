@@ -32,7 +32,7 @@ void ExactlyNRandomSelector::initialize()
     selectPedestrianIds();
 }
 
-bool ExactlyNRandomSelector::select(int pedestrianIndex)
+bool ExactlyNRandomSelector::select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals)
 {
     int pedestrianId = this->getSimulationContext()->pedestrianSet->getIds().at(pedestrianIndex);
     return std::find(selectedPedestrianIds.begin(),

@@ -29,7 +29,7 @@ HumanBehaviorModel::update(const PedestrianSet& pedSet,
   for (int i = 0; i < pedCnt; ++i) {
     bool behaviorDecided = false;
     for (auto humanBehavior : this->humanBehaviors) {
-      if (humanBehavior->select(pedSet, i)) {
+      if (humanBehavior->select(pedSet, obsSet, goals, i)) {
         humanBehavior->act(pedSet, i, timestep);
 
         // Decide if this person is under the influence of the human behavior model

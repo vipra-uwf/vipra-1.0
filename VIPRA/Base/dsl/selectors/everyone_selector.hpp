@@ -11,7 +11,7 @@ class EveryoneSelector: public Selector
 {
     public:
         explicit EveryoneSelector(SimulationContext *simulationContext);
-        bool select(int pedestrianIndex) override;
+        bool select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals) override;
 };
 
 #endif

@@ -34,7 +34,8 @@ HumanBehavior::initialize(const ObstacleSet&   obstacleSet,
 }
 
 void
-HumanBehavior::update(FLOATING_NUMBER timestep) {
+HumanBehavior::update(FLOATING_NUMBER timestep) 
+{
   this->simulationContext.elapsedSeconds += timestep;
 
   for (auto environmentTransition : this->environmentTransitions) {
@@ -49,11 +50,11 @@ HumanBehavior::update(FLOATING_NUMBER timestep) {
 }
 
 bool
-HumanBehavior::select(const PedestrianSet& pedestrianSet, int pedestrianIndex) {
+HumanBehavior::select(const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet, const Goals& goals, int pedestrianIndex) {
   bool selected = false;
   for (auto selector = this->getSelectors().begin(); !selected && selector != this->getSelectors().end();
        selector++) {
-    selected = (*selector)->select(pedestrianIndex);
+    selected = (*selector)->select(pedestrianIndex, obstacleSet, goals);
   }
 
   return selected;
