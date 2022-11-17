@@ -7,7 +7,7 @@ StopMovementAction::StopMovementAction(SimulationContext *simulationContext)
 
 }
 
-void StopMovementAction::performAction(int pedestrianIndex)
+void StopMovementAction::performAction(int pedestrianIndex, const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet, const Goals& goals)
 {
     static const Dimensions STOPPED = Dimensions
     {

@@ -11,7 +11,7 @@ class StopMovementAction : public Action
     public:
         explicit StopMovementAction(SimulationContext *simulationContext);
         ~StopMovementAction() override = default;
-        void performAction(int pedestrianIndex) override;
+        void performAction(int pedestrianIndex, const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet, const Goals& goals) override;
 };
 
 #endif

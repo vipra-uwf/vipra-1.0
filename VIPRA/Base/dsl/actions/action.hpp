@@ -2,6 +2,8 @@
 #define ACTION_HPP
 
 #include "../simulation_context.hpp"
+#include "../../../pedestrian_set/pedestrian_set.hpp"
+#include "../../../obstacle_set/obstacle_set.hpp"
 
 /**
  * An action is something the pedestrian does, such as stopping movement.
@@ -12,7 +14,7 @@ class Action
         Action(SimulationContext *simulationContext, std::string actionName);
         virtual ~Action() = default;
 
-        virtual void performAction(int pedestrianIndex) = 0;
+        virtual void performAction(int pedestrianIndex, const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet, const Goals& goals) = 0;
         const std::string &getActionName() const;
         virtual void initialize();
 

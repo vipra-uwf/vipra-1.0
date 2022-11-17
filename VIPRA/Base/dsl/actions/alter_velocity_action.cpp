@@ -13,9 +13,8 @@ AlterVelocityAction::AlterVelocityAction(SimulationContext *simulationContext,
 {
 }
 
-void AlterVelocityAction::performAction(int pedestrianIndex, PedestrianSet pedestrianSet)
+void AlterVelocityAction::performAction(int pedestrianIndex, const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet, const Goals& goals)
 {
-    //auto *calmPedestrianSet = dynamic_cast<CalmPedestrianSet *>(this->getSimulationContext()->pedestrianSet);
     if (!actionApplied(pedestrianIndex))
     {
         // Slow down the new velocity

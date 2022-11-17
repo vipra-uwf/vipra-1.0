@@ -14,7 +14,7 @@ class AlterVelocityAction : public Action {
     public:
         AlterVelocityAction(SimulationContext *simulationContext, ALTER_DIRECTION alterDirection,
                             FLOATING_NUMBER factor);
-        void performAction(int pedestrianIndex) override;
+        void performAction(int pedestrianIndex, const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet, const Goals& goals) override;
         void initialize() override;
 
 private:
