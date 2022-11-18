@@ -6,7 +6,6 @@
 #include "../../../Modules/Goals/calm_goals/calm_goals.hpp"
 #include "../../../Modules/MapLoader/Point_Map_Loader/point_map_loader.hpp"
 #include "../../../Modules/ObstacleSet/airplane_obstacle_set/airplane_obstacle_set.hpp"
-#include "../../../VIPRA/Base/inputdataloader/input_json_reader/input_json_reader.hpp"
 #include "../MOCKS/pedestrian_set/pedestrian_set.mock.hpp"
 
 namespace path_finding_TESTS {
@@ -14,7 +13,6 @@ namespace path_finding_TESTS {
 void
 testPathfinding(void) {
   PedestrianSetMock   pedSet;
-  InputJSONReader     reader;
   AirplaneObstacleSet obs;
   CalmGoals           goals;
   PointMapLoader      loader;

@@ -8,6 +8,8 @@
 
 class Goals {
  public:
+  static const Dimensions __empty__;
+
   virtual ~Goals() = default;
 
   virtual void configure(const CONFIG_MAP& configMap) = 0;
@@ -15,8 +17,8 @@ class Goals {
 
   virtual void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&) = 0;
 
-  virtual const Dimensions getCurrentGoal(size_t index) const = 0;
-  virtual const Dimensions getEndGoal(size_t index) const = 0;
+  virtual const Dimensions& getCurrentGoal(size_t index) const = 0;
+  virtual const Dimensions& getEndGoal(size_t index) const = 0;
 
   virtual const DimVector& getAllCurrentGoals() const noexcept = 0;
   virtual const DimVector& getAllEndGoals() const noexcept = 0;

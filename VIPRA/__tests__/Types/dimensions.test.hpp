@@ -91,10 +91,8 @@ boolean_comparisons(void) {
 
 }  // namespace dimensions_TESTS
 
-#define dimensions_tests                                                                 \
-  {"DIMENSIONS: Dimension Initializes Properly",                                         \
-   dimensions_TESTS::proper_initialization},                                             \
-      {"DIMENSIONS: distanceTo Gets Proper Result", dimensions_TESTS::distance_to}, {    \
-    "DIMENSIONS: Equality between Dimensions can be checked",                            \
-        dimensions_TESTS::boolean_comparisons                                            \
+#define dimensions_tests                                                                                     \
+  {"DIMENSIONS: Dimension Initializes Properly", dimensions_TESTS::proper_initialization},                   \
+      {"DIMENSIONS: distanceTo Gets Proper Result", dimensions_TESTS::distance_to}, {                        \
+    "DIMENSIONS: Equality between Dimensions can be checked", dimensions_TESTS::boolean_comparisons          \
   }

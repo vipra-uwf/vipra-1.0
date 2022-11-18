@@ -3,6 +3,8 @@
 #include "calm_goals.hpp"
 #include "pathfinding.hpp"
 
+const Dimensions Goals::__empty__ = Dimensions{};
+
 void
 CalmGoals::configure(const CONFIG_MAP& configMap) {
   goalRange = std::stof(configMap.at("goalRange"));
@@ -24,16 +26,12 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   endGoals = DimVector(pedCnt, {-1, -1});
   goalsMet = std::vector<bool>(pedCnt, false);
   paths = std::vector<std::queue<Dimensions>>(pedCnt);
-  std::cout << "Finding Nearest End Goal\n";
   findNearestEndGoal(obsSet, pedSet);
 
   if (pathingType == "Astar") {
-    std::cout << "Building Graph\n";
     graph.buildGraph(obsSet);
   }
-  std::cout << "Creating Paths\n";
   initializePaths(pedSet, obsSet);
-  std::cout << "Done\n";
 }
 
 /**
@@ -52,6 +50,7 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
     } else if (pathingType == "Disembark") {
       paths[i] = disembarkPath(coords.at(i), endGoals.at(i), obsSet);
     }
+    currentGoals[i] = paths[i].front();
   }
 }
 
@@ -137,13 +136,16 @@ CalmGoals::updatePedestrianGoals(const ObstacleSet& obsSet, const PedestrianSet&
 }
 
 /**
- * @brief returns the current goal for the pedestrian at index
+ * @brief returns the current goal for the pedestrian at index, returns uninitialized Dimensions if no current goal
  * 
  * @param index 
  * @return const Dimensions 
  */
-const Dimensions
+const Dimensions&
 CalmGoals::getCurrentGoal(size_t index) const {
+  if (paths[index].empty()) {
+    return __empty__;
+  }
   return paths[index].front();
 }
 
@@ -153,7 +155,7 @@ CalmGoals::getCurrentGoal(size_t index) const {
  * @param index 
  * @return const Dimensions 
  */
-const Dimensions
+const Dimensions&
 CalmGoals::getEndGoal(size_t index) const {
   return endGoals.at(index);
 }

@@ -6,12 +6,27 @@
 typedef float FLOATING_NUMBER;
 
 struct Dimensions {
-  Dimensions() : axis{0, 0, 0} {}
-  Dimensions(FLOATING_NUMBER x) : axis{x, 0, 0} {}
-  Dimensions(FLOATING_NUMBER x, FLOATING_NUMBER y) : axis{x, y, 0} {}
-  Dimensions(FLOATING_NUMBER x, FLOATING_NUMBER y, FLOATING_NUMBER z) : axis{x, y, z} {}
-
+  bool            initialized = false;
   FLOATING_NUMBER axis[3];
+
+  Dimensions() : axis{0, 0, 0}, initialized(false) {}
+  Dimensions(FLOATING_NUMBER x) : axis{x, 0, 0}, initialized(true) {}
+  Dimensions(FLOATING_NUMBER x, FLOATING_NUMBER y) : axis{x, y, 0}, initialized(true) {}
+  Dimensions(FLOATING_NUMBER x, FLOATING_NUMBER y, FLOATING_NUMBER z) : axis{x, y, z}, initialized(true) {}
+
+  Dimensions(const Dimensions& other) {
+    axis[0] = other.axis[0];
+    axis[1] = other.axis[1];
+    axis[2] = other.axis[2];
+    initialized = other.initialized;
+  }
+
+  void operator=(const Dimensions& other) {
+    axis[0] = other.axis[0];
+    axis[1] = other.axis[1];
+    axis[2] = other.axis[2];
+    initialized = other.initialized;
+  }
 
   bool operator==(const Dimensions& other) const {
     return (axis[0] == other.axis[0] && axis[1] == other.axis[1] && axis[2] == other.axis[2]);

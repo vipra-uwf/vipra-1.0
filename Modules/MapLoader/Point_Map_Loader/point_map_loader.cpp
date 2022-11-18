@@ -29,10 +29,11 @@ PointMapLoader::LoadMap(const std::string& filePath) const {
     inputData->type = "PointMap";
     for (unsigned int i = 0; i < jsonDocument.size(); i++) {
       const std::string type = jsonDocument.getMemberNames()[i];
-      inputData->entities[type] = {};
+      inputData->entities[type] = DimVector{};
 
       for (unsigned int j = 0; j < jsonDocument[type].size(); j++) {
         Dimensions temp{};
+        temp.initialized = true;
         for (unsigned int k = 0; k < jsonDocument[type][j].size(); ++k) {
           const std::string name = jsonDocument[type][j].getMemberNames()[k];
           temp.axis[k] = std::stof(jsonDocument[type][j][name].asString());

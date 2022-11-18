@@ -21,10 +21,12 @@ class PedestrianSetMock : public PedestrianSet {
 
   void setNumPedestrians(int numPedestrians) override {}
 
-  void setPedestrianCoordinates(const Dimensions& coords, size_t index) override {}
+  void setPedestrianCoordinates(const Dimensions& coords, size_t index) override {
+    pedCoords[index] = coords;
+  }
   void setPedestrianCoordinates(Dimensions&& coords, size_t index) override {}
   void setPedestrianCoordinates(DimVector&& coordinates) noexcept override {}
-  void setPedestrianCoordinates(const DimVector& coordinates) noexcept override {}
+  void setPedestrianCoordinates(const DimVector& coordinates) noexcept override { pedCoords = coordinates; }
 
   void setVelocity(const Dimensions& velocity, size_t index) override {}
   void setVelocity(Dimensions&& velocity, size_t index) override {}

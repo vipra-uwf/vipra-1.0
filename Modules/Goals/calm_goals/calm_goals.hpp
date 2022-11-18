@@ -16,8 +16,8 @@ class CalmGoals : public Goals {
 
   void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&) override;
 
-  [[nodiscard]] const Dimensions getCurrentGoal(size_t index) const override;
-  [[nodiscard]] const Dimensions getEndGoal(size_t index) const override;
+  [[nodiscard]] const Dimensions& getCurrentGoal(size_t index) const override;
+  [[nodiscard]] const Dimensions& getEndGoal(size_t index) const override;
 
   [[nodiscard]] const DimVector& getAllCurrentGoals() const noexcept override;
   [[nodiscard]] const DimVector& getAllEndGoals() const noexcept override;

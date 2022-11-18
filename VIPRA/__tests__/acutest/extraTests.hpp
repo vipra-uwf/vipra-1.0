@@ -14,3 +14,5 @@ TEST_DIMENSIONS(const Dimensions& value, const Dimensions& expected, float error
           TEST_FLOAT(value.axis[1], expected.axis[1], error) &&
           TEST_FLOAT(value.axis[2], expected.axis[2], error));
 }
+
+#define TEST_NO_EXCEPTION(code, check) try { code; } catch (...) { check;}
