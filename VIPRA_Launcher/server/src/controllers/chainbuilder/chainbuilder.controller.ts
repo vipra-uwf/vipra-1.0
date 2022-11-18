@@ -85,7 +85,7 @@ export class ChainBuilderController {
     };
 
     // TODO request params, emit fail if fails
-    const params : Nullable<CbArgument[]> = (await this.evSys.request<ModuleParam[]>(RequestType.SIM_CONFIG_PARAMS, { id: simconfig.id }))?.map((param) : CbArgument => {
+    const params : Nullable<CbArgument[]> = (await this.evSys.request<ModuleParam[]>(RequestType.DATA, 'SimConfigParams', { id: simconfig.id }))?.map((param) : CbArgument => {
       return {
         chain_name: `${param.name}_href`,
         description: param.description,

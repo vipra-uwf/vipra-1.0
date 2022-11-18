@@ -70,8 +70,8 @@ export class SimulationBuilder {
    */
   private setupHandlers() : void {
     this.evSys.subscribe(EventType.NEW, 'Module', this.compileModule);
-    this.evSys.setRequestHandler(RequestType.SIM_BUILD, this.getBuildStatus);
-    this.evSys.setRequestHandler(RequestType.SIM_STATE, this.getSimState);
+    this.evSys.setRequestHandler(RequestType.DATA, 'SimBuild', this.getBuildStatus);
+    this.evSys.setRequestHandler(RequestType.DATA, 'SimState', this.getSimState);
   }
 
   /**
@@ -91,7 +91,7 @@ export class SimulationBuilder {
    */
   private compileModule : EventHandler = async (module : Module) : Promise<void> => {
     
-    const mod = await this.evSys.request<RepoType<Module>>(RequestType.MODULE_REPO, { id: module.id });
+    const mod = await this.evSys.request<RepoType<Module>>(RequestType.DATA_W_PATH, 'Module', { id: module.id });
     if (mod) {
       const compiled = await this.compilationRunner.buildModule(module, mod.dirPath, false);
       if (compiled === Status.SUCCESS) {
@@ -112,7 +112,7 @@ export class SimulationBuilder {
     const buildID = crypto.randomUUID();
     this.setBuildState(buildID, { ready: false, reason: 'Build Starting' });
     makeDir(`${this.config.vipra.vipraDir}/build/${buildID}`);
-    void this.evSys.emit<string>(EventType.NEW, 'Build', buildID);
+    void this.evSys.emit<string>(EventType.NEW, 'SimBuild', buildID);
     
     void Promise.all([this.compileGenMain(buildID), this.compileBehavior(buildID)])
       .then((result)=>{
@@ -239,7 +239,7 @@ export class SimulationBuilder {
    * @emits BUILT_MODULE, FAIL_MODULE
    */
   private async compileAllModules() : Promise<void> {
-    const modules = await this.evSys.request<RepoType<Module>[]>(RequestType.MODULE_REPO, {});
+    const modules = await this.evSys.request<RepoType<Module>[]>(RequestType.DATA_W_PATH, 'Module', {});
 
     if (modules) {
       let builds : Promise<Status>[] = [];
@@ -284,7 +284,7 @@ export class SimulationBuilder {
     this.setSimState({ ready: true, reason: 'Successful Build' });
     moveFile(`${this.config.vipra.vipraDir}/build/${buildID}/VIPRA`, `${this.config.vipra.vipraDir}/VIPRA`);
     this.buildCleanUp(buildID);
-    void this.evSys.emit<string>(EventType.SUCCESS, 'Build', buildID);
+    void this.evSys.emit<string>(EventType.SUCCESS, 'SimBuild', buildID);
   }
 
   /**
@@ -296,7 +296,7 @@ export class SimulationBuilder {
   private buildFailed(buildID : string, reason : string) : void {
     this.setBuildState(buildID, { ready: false, reason });
     this.buildCleanUp(buildID);
-    void this.evSys.emit<string>(EventType.FAIL, 'Build', buildID);
+    void this.evSys.emit<string>(EventType.FAIL, 'SimBuild', buildID);
   }
 
   /**

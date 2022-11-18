@@ -26,11 +26,11 @@ export class ModuleController extends BaseController<Module> {
    * @description Sets up handlers for requests of modules
    */
   protected setupRequestHandlers(): void {
-    this.evSys.setRequestHandler(RequestType.MODULE, (select : Partial<Module>) : Promise<Nullable<Module[]>> => {
+    this.evSys.setRequestHandler(RequestType.DATA, 'Module', (select : Partial<Module>) : Promise<Nullable<Module[]>> => {
       return this.service.get(select);
     });
 
-    this.evSys.setRequestHandler(RequestType.MODULE_REPO, (select: Partial<Module>) : Promise<Nullable<RepoType<Module>[]>> => {
+    this.evSys.setRequestHandler(RequestType.DATA_W_PATH, 'Module', (select: Partial<Module>) : Promise<Nullable<RepoType<Module>[]>> => {
       return this.service.getRepo(select);
     });
   }

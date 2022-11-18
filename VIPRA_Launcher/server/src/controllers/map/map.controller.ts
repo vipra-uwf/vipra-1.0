@@ -22,7 +22,7 @@ export class MapController extends BaseController<OMap> {
    * @description Sets up handlers for requests of maps
    */
   protected setupRequestHandlers(): void {
-    this.evSys.setRequestHandler(RequestType.MAP, (select : Partial<OMap>) : Promise<Nullable<OMap[]>> => {
+    this.evSys.setRequestHandler(RequestType.DATA, 'Map', (select : Partial<OMap>) : Promise<Nullable<OMap[]>> => {
       return this.service.get(select);
     });
   }

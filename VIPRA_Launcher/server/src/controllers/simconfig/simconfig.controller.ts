@@ -21,10 +21,10 @@ export class SimConfigController extends BaseController<SimConfig> {
    * @description Sets the handlers for SimConfig Requests
    */
   protected setupRequestHandlers(): void {
-    this.evSys.setRequestHandler(RequestType.SIM_CONFIG, (select : Partial<SimConfig>) : Promise<Nullable<SimConfig[]>> => {
+    this.evSys.setRequestHandler(RequestType.DATA, 'SimConfig', (select : Partial<SimConfig>) : Promise<Nullable<SimConfig[]>> => {
       return this.service.get(select);
     });
-    this.evSys.setRequestHandler(RequestType.SIM_CONFIG_PARAMS, this.getParams);
+    this.evSys.setRequestHandler(RequestType.DATA, 'SimConfigParams', this.getParams);
   }
 
   /**
@@ -53,7 +53,7 @@ export class SimConfigController extends BaseController<SimConfig> {
     if (simconfig) {
       const params : ModuleParam[] = [];
       for (const id of Object.values(simconfig[0].modules)) {
-        const module = await this.evSys.request<Module>(RequestType.MODULE, { id });
+        const module = await this.evSys.request<Module>(RequestType.DATA, 'Module', { id });
         if (module) {
           params.concat(module.params);
         }
@@ -82,7 +82,7 @@ export class SimConfigController extends BaseController<SimConfig> {
       if (config.modules) {
         for (const key of Object.values(ModuleType)) {
           if (request.body[key]) {
-            const modules = await this.evSys.request<Module[]>(RequestType.MODULE, { id: request.body[key] as string });
+            const modules = await this.evSys.request<Module[]>(RequestType.DATA, 'Module', { id: request.body[key] as string });
             if (modules) {
               if (modules[0]) {
                 if (modules[0].type === key) {

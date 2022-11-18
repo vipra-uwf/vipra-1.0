@@ -76,7 +76,7 @@ export class SimController implements ISimController {
    * @description Sets up the event handlers for SimController
    */
   private setupHandlers() : void {
-    this.evSys.subscribe(EventType.NEW, 'Build', this.handleNewBuild);
+    this.evSys.subscribe(EventType.NEW, 'SimBuild', this.handleNewBuild);
   }
 
   /**
@@ -127,7 +127,7 @@ export class SimController implements ISimController {
    * @param {string} mapID - id of map to get path of
    */
   private async getMap(mapID : string) : Promise<Nullable<string>> {
-    const map = await this.evSys.request<OMap>(RequestType.MAP, { id: mapID });
+    const map = await this.evSys.request<OMap>(RequestType.DATA, 'Map', { id: mapID });
     if (map) {
       const mapPath = `${this.config.map.mapsDir}/${map.name}/${map.name}.vmap`;
       if (fileExists(mapPath)) {

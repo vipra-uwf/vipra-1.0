@@ -4,7 +4,8 @@ import { evLogger } from './eventLogger';
 import { EventData, EventHandler, EventType, RequestHandler, RequestType } from './eventTypes';
 
 
-type HandlersMap = Map<string, Map<EventType, EventHandler[]>>;
+type HandlersMap = Map<EventData, Map<EventType, EventHandler[]>>;
+type RequestMap = Map<EventData, Map<RequestType, RequestHandler>>;
 
 /**
  * @description System for handling events
@@ -13,7 +14,7 @@ export class EventSystem {
 
   private eventHandlers : HandlersMap;
 
-  private requestMap : Map<RequestType, RequestHandler>;
+  private requestMap : RequestMap;
 
   constructor() {
     this.eventHandlers = new Map();
@@ -46,33 +47,45 @@ export class EventSystem {
   /**
    * @description Emits a request event, if a handler is attached the requested object is returned
    * @param {any} select - information used to find specific object
-   * @param {RequestType} type - type of object requested
+   * @param {EventData} dataType - type of object requested
+   * @param {RequestType} type - type of request
    */
-  public async request<DataType>(type : RequestType, select : unknown) : Promise<Nullable<DataType>> {
-    evLogger.info(`REQUEST : ${Object.values(RequestType)[type]}, SELECT: ${JSON.stringify(select) || 'NULL'}`);
-    const handler = this.requestMap.get(type) || null;
-    if (handler) {
-      return await handler(select) as Nullable<DataType>;
-    } else {
-      evLogger.error(`FAIL: REQUEST: ${type}, SELECT: ${JSON.stringify(select) || 'NULL'}`);
-      return null;
+  public async request<DataType>(type : RequestType, dataType : EventData, select : unknown) : Promise<Nullable<DataType>> {
+    evLogger.info(`REQUEST : ${Object.values(RequestType)[type]} ; DATATYPE: ${dataType} ; SELECT: ${JSON.stringify(select) || 'NULL'}`);
+    const map = this.requestMap.get(dataType) || null;
+    if (map) {
+      const handler = map.get(type);
+      if (handler) {
+        return await handler(select) as Nullable<DataType>;
+      }
     }
+    evLogger.error(`FAIL: REQUEST: ${type} ; DATATYPE: ${dataType} ; SELECT: ${JSON.stringify(select) || 'NULL'}`);
+    return null;
   }
 
   /**
    * @throws
    * @description Sets the request handler for a data request, throws error if there is already a request handler for the type
-   * @param {RequestType} datatype - type of request the handler is for
+   * @param {RequestType} requestType - type of request the handler is for
+   * @param {EventData} dataType - data type of request
    * @param {RequestHandler} handler - handler for request
    */
-  public setRequestHandler(datatype : RequestType, handler : RequestHandler) : void {
-    const type = Object.values(RequestType)[datatype];
-    evLogger.info(`REGISTER : ${type}`);
-    if (this.requestMap.has(datatype)) {
-      evLogger.info(`FAIL: REGISTER: ${type}`);
-      throw new Error(`Attempt to Set Multiple Request Handlers for: ${type}`);
+  public setRequestHandler(requestType : RequestType, dataType : EventData,  handler : RequestHandler) : void {
+
+    if (this.requestMap.has(dataType)) {
+      const type = Object.values(RequestType)[requestType];
+      evLogger.info(`FAIL: REGISTER: ${dataType} : ${type}`);
+      throw new Error(`Attempt to Set Multiple Request Handlers for: ${dataType} : ${type}`);
     }
-    this.requestMap.set(datatype, handler);
+    const map = this.requestMap.get(dataType);
+    if (map) {
+      if (map.has(requestType)) {
+        const type = Object.values(RequestType)[requestType];
+        evLogger.info(`FAIL: REGISTER: ${dataType} : ${type}`);
+        throw new Error(`Attempt to Set Multiple Request Handlers for: ${dataType} : ${type}`);
+      }
+      map.set(requestType, handler);
+    }
   }
   
   /**

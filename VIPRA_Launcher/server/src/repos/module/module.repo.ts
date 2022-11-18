@@ -66,7 +66,7 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
       await writeFileFromBuffer(`${dirPath}/${data.object.name}.hpp`, data.files.header[0].buffer as Buffer);
       await writeFileFromBuffer(`${dirPath}/${data.object.name}.mm`, data.files.meta[0].buffer as Buffer);
     } else {
-      return { status: Status.BAD_REQUEST, object: null };  
+      return { status: Status.BAD_REQUEST, object: null };
     }
 
     return { status: Status.SUCCESS, object: { object: data.object, dirPath } };
