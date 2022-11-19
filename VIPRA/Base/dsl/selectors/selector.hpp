@@ -2,8 +2,8 @@
 #define SELECTOR_HPP
 
 #include "../simulation_context.hpp"
-#include "../../../pedestrian_set/pedestrian_set.hpp"
-#include "../../../obstacle_set/obstacle_set.hpp"
+#include "../../../Extendable/pedestrian_set/pedestrian_set.hpp"
+#include "../../../Extendable/obstacle_set/obstacle_set.hpp"
 
 /**
  * A selector is used to decide if a pedestrian should be evaluated for a 
