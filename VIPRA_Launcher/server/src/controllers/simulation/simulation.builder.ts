@@ -152,13 +152,9 @@ export class SimulationBuilder {
   private compileMain(buildID : string) : Promise<Status> {
     return this.compilationRunner.compileMain(buildID, this.config.simulation.debugMode)
       .then((result)=>{
-        if (result !== Status.SUCCESS) {
-          this.buildFailed(buildID, 'Unable To Compile Main');
-        }
         return result;
       })
       .catch(()=>{
-        this.buildFailed(buildID, 'Unable To Compile Main');
         return Status.INTERNAL_ERROR;
       });
   }
@@ -285,7 +281,7 @@ export class SimulationBuilder {
   private buildSuccess(buildID : string) : void {
     this.setBuildState(buildID, { ready:true, reason:'Successful Build' });
     this.setSimState({ ready: true, reason: 'Successful Build' });
-    moveFile(`${this.config.vipra.vipraDir}/build/${buildID}/VIPRA`, `${this.config.vipra.vipraDir}/VIPRA`);
+    moveFile(`${this.config.vipra.vipraDir}/build/${buildID}/VIPRA_SIM`, `${this.config.vipra.vipraDir}/VIPRA_SIM`);
     this.buildCleanUp(buildID);
     void this.evSys.emit<string>(EventType.SUCCESS, 'SimBuild', buildID);
   }

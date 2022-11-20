@@ -35,7 +35,7 @@ export class ModuleController extends BaseController<Module> {
         object: {
           compiled: true,
         },
-      });
+      }); 
     });
   }
 

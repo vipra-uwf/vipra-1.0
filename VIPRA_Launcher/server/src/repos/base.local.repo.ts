@@ -85,6 +85,7 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
   found(object : DataType, dirPath : string) : Promise<OperationResult<DataType>> {
     const duplicate = this.objects.get(object.id as unknown as string);
     if (duplicate) {
+      this.postFound(duplicate);
       return Promise.resolve({ status: Status.CONFLICT, object: duplicate.object });
     }
     const obj = { object, dirPath };
