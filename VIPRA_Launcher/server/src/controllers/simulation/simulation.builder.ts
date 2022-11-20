@@ -76,12 +76,15 @@ export class SimulationBuilder {
 
   /**
    * @description Runs initial build of simulation, sets up sim state
+   * @param {FlagMap} flags - command line flags
    */
   public startup() : void {
-    this.setSimState({ ready : false, reason: 'Initial Startup Running' });
-    this.isBuilt = { genMain: false, humanBehavior: false };
-    makeDir(`${this.config.vipra.vipraDir}/build/`);
-    this.compileSimulation();
+    if (!this.config.flags.has(FLAGS.NO_BUILD)) {
+      this.setSimState({ ready : false, reason: 'Initial Startup Running' });
+      this.isBuilt = { genMain: false, humanBehavior: false };
+      makeDir(`${this.config.vipra.vipraDir}/build/`);
+      this.compileSimulation();
+    }
   }
 
   /**

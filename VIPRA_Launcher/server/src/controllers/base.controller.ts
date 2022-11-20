@@ -6,6 +6,7 @@ import { Identifiable, UploadType } from '../types/uploading.types';
 import { Status } from '../types/status';
 import { EventSystem } from './events/eventSystem';
 import { EventData, EventType } from './events/eventTypes';
+import { Config } from '../configuration/config';
 
 type Request = express.Request;
 
@@ -14,7 +15,7 @@ type Request = express.Request;
  */
 export abstract class BaseController<DataType extends Identifiable> {
 
-
+  protected abstract postConstruct() : void;
   protected abstract setupEventHandlers() : void;
   protected abstract setupRequestHandlers() : void;
   protected abstract createUpload(req : Request) : Promise<OperationResult<Partial<UploadType<DataType>>>>;
@@ -23,14 +24,18 @@ export abstract class BaseController<DataType extends Identifiable> {
 
   protected service : BaseService<DataType>;
 
+  protected config : Config;
+
   private type : EventData;
 
-  constructor(type : EventData, evSys : EventSystem, service : BaseService<DataType>) {
+  constructor(type : EventData, evSys : EventSystem, service : BaseService<DataType>, config : Config) {
     this.service = service;
+    this.config = config;
     this.evSys = evSys;
     this.type = type;
     this.setupEventHandlers();
     this.setupRequestHandlers();
+    this.postConstruct();
   }
 
   /**

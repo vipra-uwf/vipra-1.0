@@ -1,30 +1,44 @@
+
 import express from 'express';
-import { Status } from 'src/types/status';
-import { uploadBehavior } from 'src/util/filestore';
+import path from 'path';
+import { Status } from '../../types/status';
+import { forAllFilesThatMatchDo, readJsonFile } from '../../util/fileOperations';
+import { uploadBehavior } from '../../util/filestore';
 import { Behavior } from '../../types/behavior/behavior.types';
 import { Nullable, OperationResult } from '../../types/typeDefs';
 import { RepoType, UploadRequest, UploadType } from '../../types/uploading.types';
 import { BaseController } from '../base.controller';
 import { RequestType } from '../events/eventTypes';
+import { Logger } from '../logging/logger';
 
 
 /**
- * @description Controller For Behaviors
+ * @description Controller for Behaviors
  */
 export class BehaviorController extends BaseController<Behavior> {
   /**
-   * @description Sets up event hanlders for Behavior Events
+   * @description Called after the base constructor
    */
-  protected setupEventHandlers(): void {}
+  protected postConstruct(): void {
+    this.findBehaviors();
+  }
 
   /**
-   * @description Sets up request handlers for behaviors
+   * @description Sets up the event handlers for behaviors
+   */
+  protected setupEventHandlers(): void {
+    
+  }
+
+  /**
+   * @description Sets up the request handlers for behaviors
    */
   protected setupRequestHandlers(): void {
     this.evSys.setRequestHandler(RequestType.DATA, 'Behavior', (select : Partial<Behavior>) : Promise<Nullable<Behavior[]>> => {
       return this.service.get(select);
     });
-    this.evSys.setRequestHandler(RequestType.DATA_W_PATH, 'Behavior', (select : Partial<Behavior>) : Promise<Nullable<RepoType<Behavior>[]>> => {
+
+    this.evSys.setRequestHandler(RequestType.DATA_W_PATH, 'Behavior', (select: Partial<Behavior>) : Promise<Nullable<RepoType<Behavior>[]>> => {
       return this.service.getRepo(select);
     });
   }
@@ -47,4 +61,18 @@ export class BehaviorController extends BaseController<Behavior> {
     }
     return { status: Status.BAD_REQUEST, object: null };
   }
+
+  /**
+   * @description Finds all installed behaviors and adds them to the repo
+   */
+  private findBehaviors() : void {
+    forAllFilesThatMatchDo(/.*\.bm/, this.config.behavior.behaviorsDir, (filePath : string)=>{     
+      const behavior : Nullable<Behavior> = readJsonFile<Behavior>(filePath);
+      if (behavior) {
+        Logger.info(`Found Behavior: ${behavior.name} : ${behavior.id} AT: ${filePath}`);
+        void this.service.found(behavior, path.dirname(filePath));
+      }
+    });
+  }
+
 }

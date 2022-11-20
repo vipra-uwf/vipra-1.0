@@ -127,9 +127,9 @@ export class SimController implements ISimController {
    * @param {string} mapID - id of map to get path of
    */
   private async getMap(mapID : string) : Promise<Nullable<string>> {
-    const map = await this.evSys.request<OMap>(RequestType.DATA, 'Map', { id: mapID });
+    const map = await this.evSys.request<OMap>(RequestType.DATA, 'OMap', { id: mapID });
     if (map) {
-      const mapPath = `${this.config.map.mapsDir}/${map.name}/${map.name}.vmap`;
+      const mapPath = `${this.config.map.mapsDir}/${map.name}/${map.name}.omap`;
       if (fileExists(mapPath)) {
         return mapPath;
       }

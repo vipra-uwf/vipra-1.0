@@ -38,6 +38,9 @@ export class EventSystem {
             return handler(data);
           }));
         }
+      } else {
+        evLogger.error(`${Object.values(EventType)[event]} ; TYPE: ${dataType} ; NO HANDLER FOR EVENT`);
+        throw new Error(`No Handler Set For Event: ${event} : ${dataType}`);
       }
     } else {
       evLogger.error(`${Object.values(EventType)[event]} ; TYPE: ${dataType} ; EMITTED WITH NO DATA`);
@@ -72,10 +75,8 @@ export class EventSystem {
    */
   public setRequestHandler(requestType : RequestType, dataType : EventData,  handler : RequestHandler) : void {
 
-    if (this.requestMap.has(dataType)) {
-      const type = Object.values(RequestType)[requestType];
-      evLogger.info(`FAIL: REGISTER: ${dataType} : ${type}`);
-      throw new Error(`Attempt to Set Multiple Request Handlers for: ${dataType} : ${type}`);
+    if (!this.requestMap.has(dataType)) {
+      this.requestMap.set(dataType, new Map());
     }
     const map = this.requestMap.get(dataType);
     if (map) {
@@ -96,11 +97,18 @@ export class EventSystem {
    */
   public subscribe(event : EventType, dataType : EventData, handler : EventHandler) : void {
     evLogger.info(`SUBSCRIBE: ${Object.values(EventType)[event]} ; TYPE: ${dataType}`);
+    if (!this.eventHandlers.has(dataType)) {
+      this.eventHandlers.set(dataType, new Map());
+    }
+
     const typeHandlers = this.eventHandlers.get(dataType) || null;
     if (typeHandlers) {
-      const handlers = typeHandlers.get(event);
-      if (handlers) {
-        handlers.push(handler);
+      if (!typeHandlers.has(event)) {
+        typeHandlers.set(event, []);
+      }
+      const eventHandlers = typeHandlers.get(event);
+      if (eventHandlers) {
+        eventHandlers.push(handler);
       }
     }
   }

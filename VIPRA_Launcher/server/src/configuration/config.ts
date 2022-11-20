@@ -24,4 +24,10 @@ export interface Config {
   map: {
     mapsDir : string;
   };
+  behavior: {
+    behaviorsDir : string;
+  };
+  launcher: {
+    repoDir : string;
+  }
 }

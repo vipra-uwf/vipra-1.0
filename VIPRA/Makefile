@@ -1,6 +1,7 @@
 CPP= g++
 CPP_FLAGS= -std=c++17 -w -fPIE -I/usr/include/antlr4-runtime
 
+EXE_NAME: VIPRA_SIM
 
 ifeq ($(DEBUG_OUTPUT), 1)
 	CPP_FLAGS := $(CPP_FLAGS) -DDEBUG_OUTPUT=1 -g -O0
@@ -28,7 +29,7 @@ module: makeDirs
 	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) -c $(MODULEPATH).cpp -o $(BUILD_DIR)/$(MODULEID).o
 
 simulation: makeDirs
-	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) $(BUILD_DIR)/$(BID)/main.o $(OBJS) $(LDLIBS) -o $(BUILD_DIR)/$(BID)/VIPRA
+	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) $(BUILD_DIR)/$(BID)/main.o $(OBJS) $(LDLIBS) -o $(BUILD_DIR)/$(BID)/$(EXE_NAME)
 
 compileMain: makeDirs
 	./generate_main $(BUILD_DIR)/$(BID)/main.cpp $(MODULEFILE)

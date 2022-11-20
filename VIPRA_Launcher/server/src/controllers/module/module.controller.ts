@@ -1,11 +1,14 @@
 import express from 'express';
+import path from 'path';
 import { Status } from '../../types/status';
 import { Nullable, OperationResult } from '../../types/typeDefs';
 import { RepoType, UploadRequest, UploadType } from '../../types/uploading.types';
 import { uploadModule } from '../../util/filestore';
 import { Module } from '../../types/module/module.types';
 import { BaseController } from '../base.controller';
-import { EventHandler, EventType, RequestType } from '../events/eventTypes';
+import { EventType, RequestType } from '../events/eventTypes';
+import { forAllFilesThatMatchDo, readJsonFile } from '../../util/fileOperations';
+import { Logger } from '../logging/logger';
 
 
 
@@ -14,12 +17,33 @@ import { EventHandler, EventType, RequestType } from '../events/eventTypes';
  * @description Controller for modules
  */
 export class ModuleController extends BaseController<Module> {
+
   /**
    * @description Sets up handlers for events involving Modules
    */
   protected setupEventHandlers(): void {
-    this.evSys.subscribe(EventType.FAIL, 'Module', this.moduleFailHandler);
-    this.evSys.subscribe(EventType.SUCCESS, 'Module', this.moduleBuiltHandler);
+    this.evSys.subscribe(EventType.FAIL, 'Module', (module : Module) : void => {
+      void this.service.update(module.id, {
+        object: {
+          compiled: false,
+        },
+      });
+    });
+    
+    this.evSys.subscribe(EventType.SUCCESS, 'Module', (module : Module) : void => {
+      void this.service.update(module.id, {
+        object: {
+          compiled: true,
+        },
+      });
+    });
+  }
+
+  /**
+   * @description Called after base constructor has finised
+   */
+  protected postConstruct(): void {
+    void this.loadInstalledObjects();
   }
 
   /**
@@ -56,28 +80,19 @@ export class ModuleController extends BaseController<Module> {
     }
     return { status: Status.BAD_REQUEST, object: null };
   }
-  
-  /**
-   * @description Handles Failed Module Compilation
-   * @param {Module} module - module that failed compilation
-   */
-  private moduleFailHandler : EventHandler = (module : Module) : void => {
-    void this.service.update(module.id, {
-      object: {
-        compiled: false,
-      },
-    });
-  };
 
   /**
-   * @description Handles Successful Module Compilation
-   * @param {Module} module - module that was compiled
+   * @description Method for loading installed modules on construction
    */
-  private moduleBuiltHandler : EventHandler = (module : Module) : void => {
-    void this.service.update(module.id, {
-      object: {
-        compiled: true,
-      },
-    });
-  };
+  private loadInstalledObjects(): void {
+    for (const dir of [this.config.modules.modulesDir, this.config.vipra.vipraDir]) {
+      forAllFilesThatMatchDo(/.*\.mm/, dir, (filePath : string)=>{     
+        const module : Nullable<Module> = readJsonFile<Module>(filePath);
+        if (module) {
+          Logger.info(`Found Module: ${module.name} : ${module.id} AT: ${filePath}`);
+          void this.service.found(module, path.dirname(filePath));
+        }
+      });
+    }
+  }
 }

@@ -1,81 +1,67 @@
-import { Status } from '../../types/status';
-import { Full, Nullable, OperationResult } from '../../types/typeDefs';
-import { RepoType, UploadType } from '../../types/uploading.types';
-import { BaseLocalRepo } from '../base.local.repo';
 import { OMap } from '../../types/maps/map.types';
-import { forAllFilesThatMatchDo, makeDir, readJsonFile, writeFileFromBuffer } from '../../util/fileOperations';
-import { Logger } from '../../controllers/logging/logger';
-import path from 'path';
+import { Full, Nullable } from '../../types/typeDefs';
+import { RepoType, UploadType } from '../../types/uploading.types';
+import { makeDir, writeFile, writeFileFromBuffer } from '../../util/fileOperations';
 import { Files } from '../../util/filestore';
+import { BaseLocalRepo } from '../base.local.repo';
 
 
 /**
- * @description Repo for Maps
+ * @description Repo For Obstacle Maps
  */
 export class MapRepo extends BaseLocalRepo<OMap> {
+  /**
+   * @description Called after a map is created, no function
+   */
+  postCreate(): void {}
 
   /**
-   * @description Method called at end of successful create
+   * @description Called after a map is updated, no function
    */
-  postCreate(): void {
-  }
+  postUpdate(): void {}
 
   /**
-   * @description Method Called at end of successful update
+   * @description Called after a map is found, no function
    */
-  postUpdate(): void {
-  }
+  postFound(): void {}
 
   /**
-   * @description Method run on construction to load all installed maps into the repo
+   * @description Called after a map is deleted, no function
    */
-  loadInstalledObjects(): Map<string, RepoType<OMap>> {
-    const maps : Map<string, RepoType<OMap>> = new Map();
-    forAllFilesThatMatchDo(/.*\.vmeta/, this.config.map.mapsDir, (filePath : string)=>{     
-      const map : Nullable<OMap> = readJsonFile<OMap>(filePath);
-      if (map) {
-        Logger.info(`Found map: ${map.name} : ${map.id} AT: ${filePath}`);
-        const mm : RepoType<OMap> = {
-          object : map,
-          dirPath : path.resolve(path.dirname(filePath)),
-        };
-        maps.set(mm.object.id, mm);
-      }
-    });
-    return maps;
-  }
+  postDelete(): void {}
 
   /**
-   * @description Method used to save files to local disk
-   * @param {Full<UploadType<OMap>>} data - uploaded data
+   * @description Saves the files from a map create request
+   * @param {Full<UploadType<OMap>>} object - uploaded object
    */
-  async onNew(data: Full<UploadType<OMap>>): Promise<OperationResult<RepoType<OMap>>> {
-    const dirPath = `${this.config.map.mapsDir}/${data.object.name}`;
+  async saveFiles(object: Full<UploadType<OMap>>): Promise<Nullable<string>> {
+    const dirPath = `${this.config.map.mapsDir}/${object.object.id}`;
     makeDir(dirPath);
-    if (data.files.map && data.files.meta) {
-      await writeFileFromBuffer(`${dirPath}/${data.object.name}.vmap`, data.files.map[0].buffer as Buffer);
-      await writeFileFromBuffer(`${dirPath}/${data.object.name}.vmeta`, data.files.meta[0].buffer as Buffer);
+    if (object.files.map && object.files.meta) {
+      await writeFileFromBuffer(`${dirPath}/${object.object.name}.omap`, object.files.map[0].buffer as Buffer);
+      writeFile(`${dirPath}/${object.object.name}.omm`, JSON.stringify(object.object));
     } else {
-      return { status: Status.BAD_REQUEST, object: null };  
+      return null;
     }
 
-    return { status: Status.SUCCESS, object: { object: data.object, dirPath } };
+    return dirPath;
   }
 
   /**
-   * @description Updates the files on the local filesystem
-   * @param {RepoType<OMap>} object - object being updated
-   * @param {Parital<Files>} files - files uploaded
+   * @description Updates the files for a map
+   * @param {RepoType<OMap>} object - map that was updated
+   * @param {Files} files - updated files
    */
-  async onUpdated(object: RepoType<OMap>, files: Partial<Files>): Promise<Status> {
-    const basePath = `${object.dirPath}/${object.object.name}/${object.object.name}`;
-    if (files.map) {
-      await writeFileFromBuffer(`${basePath}.vmap`, files.map[0].buffer);
+  async updateFiles(object: RepoType<OMap>, files: Files): Promise<Nullable<string>> {
+    const dirPath = `${this.config.modules.modulesDir}/${object.object.id}`;
+    if (files) {
+      if (files.map) {
+        await writeFileFromBuffer(`${dirPath}/${object.object.name}.omap`, files.map[0].buffer);
+      }
+      if (files.meta) {
+        await writeFileFromBuffer(`${dirPath}/${object.object.name}.mm`, files.meta[0].buffer);
+      }
     }
-    if (files.meta) {
-      await writeFileFromBuffer(`${basePath}.vmeta`, files.meta[0].buffer);
-    }
-
-    return Status.SUCCESS;
+    return dirPath;
   }
 }

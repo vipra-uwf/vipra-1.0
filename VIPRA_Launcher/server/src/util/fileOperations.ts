@@ -229,6 +229,35 @@ const readJsonFile = <T>(filePath : string) : Nullable<T> => {
   }
 };
 
+/**
+ * @description Writes a map to a JSON file
+ * @param {string} filePath - file path to save file to
+ * @param {MapType} obj - Map to save
+ */
+const writeMap = <MapType extends Map<any, any>>(filePath : string, obj : MapType) : void => {
+  writeFile(filePath, JSON.stringify(Array.from(obj.entries())));
+};
+
+/**
+ * @description Reads a Map from a JSON file
+ * @param {string} filePath - filepath to map
+ */
+const readMap = <DataType>(filePath : string) : Nullable<Map<string, DataType>> => {
+  try {
+    const map : Map<string, DataType> = new Map();
+    const file = JSON.parse(readFile(filePath) || '{}') as any[][];
+    for (const value of file) {
+      const key = value[0] as string;
+      const obj = value[1] as DataType;
+      map.set(key, obj);
+    }
+
+    return map;
+  } catch (e) {
+    return null;
+  }
+};
+
 export {
   readFile,
   moveFile,
@@ -242,6 +271,8 @@ export {
   readJsonFile,
   writeFileFromBuffer,
   deleteFile,
+  writeMap,
+  readMap,
   forAllFilesThatMatchDo,
   getDirContents,
 };

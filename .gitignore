@@ -16,6 +16,7 @@ output.json
 pedestrian_trajectory.json
 Test
 temp
+VIPRA_SIM
 
 
 # VIPRA Launcher

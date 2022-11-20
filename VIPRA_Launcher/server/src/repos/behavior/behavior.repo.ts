@@ -1,47 +1,79 @@
-import { Status } from '../../types/status';
-import { Full, OperationResult } from '../../types/typeDefs';
-import { RepoType, UploadType } from '../../types/uploading.types';
-import { Files } from '../../util/filestore';
 import { Behavior } from '../../types/behavior/behavior.types';
+import { Full, Nullable } from '../../types/typeDefs';
+import { RepoType, UploadType } from '../../types/uploading.types';
+import { makeDir, writeFile, writeFileFromBuffer } from '../../util/fileOperations';
+import { Files } from '../../util/filestore';
 import { BaseLocalRepo } from '../base.local.repo';
 
 
 /**
- * @description Local Repo for behaviors
+ * @description Repo for Behaviors
  */
 export class BehaviorRepo extends BaseLocalRepo<Behavior> {
   /**
-   *
+   * @description Called after a behavior is created
+   * @param {RepoType<Behavior>} object - created behavior
    */
-  loadInstalledObjects(): Map<string, RepoType<Behavior>> {
-    throw new Error('Method not implemented.');
+  postCreate(): void {
+    
   }
 
   /**
-   *
-   * @param data
+   * @description Called after a behavior is updated
+   * @param {RepoType<Behavior>} object - updated behavior
    */
-  onNew(data: Full<UploadType<Behavior>>): Promise<OperationResult<RepoType<Behavior>>> {
-    throw new Error('Method not implemented.');
+  postUpdate(): void {
+    
   }
 
   /**
-   *
-   * @param object
-   * @param files
+   * @description Called after a behavior is found
+   * @param {RepoType<Behavior>} object - found behavior
    */
-  onUpdated(object: RepoType<Behavior>, files: Partial<Files>): Promise<Status> {
-    throw new Error('Method not implemented.');
+  postFound(): void {
+    
   }
-  
-  /**
-   *
-   */
-  postCreate(): void {}
 
   /**
-   *
+   * @description Called after behaviors are deleted
+   * @param {Behaivor[]} objects - deleted behaviors
    */
-  postUpdate(): void {}
-  
+  postDelete(): void {
+    
+  }
+
+  /**
+   * @description Saves the files uploaded with the behavior
+   * @param {Full<UploadType<Behavior>>} object - uploaded behavior object
+   */
+  async saveFiles(object: Full<UploadType<Behavior>>): Promise<Nullable<string>> {
+    const dirPath = `${this.config.behavior.behaviorsDir}/${object.object.name}`;
+    makeDir(dirPath);
+    if (object.files.map) {
+      await writeFileFromBuffer(`${dirPath}/${object.object.name}.behavior`, object.files.map[0].buffer as Buffer);
+      writeFile(`${dirPath}/${object.object.name}.bmm`, JSON.stringify(object.object));
+    } else {
+      return null;
+    }
+
+    return dirPath;
+  }
+
+  /**
+   * @description Updates a behaviors files with newly uploaded ones
+   * @param {RepoType<Behavior>} object - object that was updated
+   * @param {Files} files - updated files
+   */
+  async updateFiles(object: RepoType<Behavior>, files: Files): Promise<Nullable<string>> {
+    const dirPath = `${this.config.modules.modulesDir}/${object.object.id}`;
+    if (files) {
+      if (files.map) {
+        await writeFileFromBuffer(`${dirPath}/${object.object.name}.omap`, files.map[0].buffer);
+      }
+      if (files.meta) {
+        await writeFileFromBuffer(`${dirPath}/${object.object.name}.mm`, files.meta[0].buffer);
+      }
+    }
+    return dirPath;
+  }
 }

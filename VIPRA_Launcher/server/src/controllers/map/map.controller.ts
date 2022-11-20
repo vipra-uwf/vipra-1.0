@@ -1,29 +1,44 @@
-
 import express from 'express';
+import path from 'path';
 import { OMap } from '../../types/maps/map.types';
 import { Status } from '../../types/status';
 import { Nullable, OperationResult } from '../../types/typeDefs';
-import { UploadRequest, UploadType } from '../../types/uploading.types';
+import { RepoType, UploadRequest, UploadType } from '../../types/uploading.types';
+import { forAllFilesThatMatchDo, readJsonFile } from '../../util/fileOperations';
 import { uploadMap } from '../../util/filestore';
 import { BaseController } from '../base.controller';
 import { RequestType } from '../events/eventTypes';
+import { Logger } from '../logging/logger';
 
 
 /**
- * @description Controller for Maps
+ * @description Controller For Obstacle Maps
  */
 export class MapController extends BaseController<OMap> {
   /**
-   * @description Sets up handlers for events involving Maps
+   * @description Called after the base constructor
    */
-  protected setupEventHandlers(): void {}
+  protected postConstruct(): void {
+    this.findMaps();
+  }
 
   /**
-   * @description Sets up handlers for requests of maps
+   * @description Sets the event handlers for maps
+   */
+  protected setupEventHandlers(): void {
+    
+  }
+
+  /**
+   * @description Sets the request handlers for maps
    */
   protected setupRequestHandlers(): void {
-    this.evSys.setRequestHandler(RequestType.DATA, 'Map', (select : Partial<OMap>) : Promise<Nullable<OMap[]>> => {
+    this.evSys.setRequestHandler(RequestType.DATA, 'OMap', (select : Partial<OMap>) : Promise<Nullable<OMap[]>> => {
       return this.service.get(select);
+    });
+
+    this.evSys.setRequestHandler(RequestType.DATA_W_PATH, 'OMap', (select: Partial<OMap>) : Promise<Nullable<RepoType<OMap>[]>> => {
+      return this.service.getRepo(select);
     });
   }
 
@@ -39,10 +54,22 @@ export class MapController extends BaseController<OMap> {
         object: undefined,
         files: {
           map: (request.files?.map ? request.files?.map : undefined),
-          meta: (request.files?.meta ? request.files?.meta : undefined),
         },
       } };
     }
     return { status: upload, object: null };
+  }
+
+  /**
+   * @description Finds all installed maps and adds them to the repo
+   */
+  private findMaps() : void {
+    forAllFilesThatMatchDo(/.*\.omm/, this.config.map.mapsDir, (filePath : string)=>{     
+      const map : Nullable<OMap> = readJsonFile<OMap>(filePath);
+      if (map) {
+        Logger.info(`Found Map: ${map.name} : ${map.id} AT: ${filePath}`);
+        void this.service.found(map, path.dirname(filePath));
+      }
+    });
   }
 }

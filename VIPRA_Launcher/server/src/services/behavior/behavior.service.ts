@@ -1,6 +1,6 @@
-import { Status } from 'src/types/status';
-import { OperationResult, Full } from 'src/types/typeDefs';
-import { UploadType } from 'src/types/uploading.types';
+import { Status } from '../../types/status';
+import { OperationResult, Full } from '../../types/typeDefs';
+import { UploadType } from '../../types/uploading.types';
 import { Behavior } from '../../types/behavior/behavior.types';
 import { BaseService } from '../base.service';
 
@@ -8,7 +8,7 @@ import { BaseService } from '../base.service';
 /**
  * @description Service 
  */
-export class BehaviorController extends BaseService<Behavior> {
+export class BehaviorService extends BaseService<Behavior> {
   
   
   /**

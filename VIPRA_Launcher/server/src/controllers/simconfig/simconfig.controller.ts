@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'path';
+import { forAllFilesThatMatchDo, readJsonFile } from '../../util/fileOperations';
 import { Module, ModuleParam, ModuleType } from '../../types/module/module.types';
 import { SimConfig } from '../../types/simconfig/simconfig.types';
 import { Status } from '../../types/status';
@@ -7,11 +9,20 @@ import { UploadRequest, UploadType } from '../../types/uploading.types';
 import { getFormData } from '../../util/utilMethods';
 import { BaseController } from '../base.controller';
 import { RequestType } from '../events/eventTypes';
+import { Logger } from '../logging/logger';
+
 
 /**
- * @description Controller for SimConfigs
+ * @description Controller for Simulation Configurations
  */
 export class SimConfigController extends BaseController<SimConfig> {
+  /**
+   * @description Called after the base constructor
+   */
+  protected postConstruct(): void {
+    this.findConfigs();
+  }
+
   /**
    * @description Sets the hanlders for SimConfig events 
    */
@@ -28,7 +39,7 @@ export class SimConfigController extends BaseController<SimConfig> {
   }
 
   /**
-   * @description Checks that a creation request has all required properties
+   * @description Creates an upload object from a request
    * @param {express.Request} req - client request object
    */
   protected async createUpload(req: express.Request): Promise<OperationResult<Partial<UploadType<SimConfig>>>> {
@@ -42,29 +53,7 @@ export class SimConfigController extends BaseController<SimConfig> {
       }
     }
     return { status: Status.BAD_REQUEST, object: null };
-  }
-  
-  /**
-   * @description Request Hanlder for simconfig parameters
-   * @param {Partial<SimConfig>} select - select object for simconfig
-   */
-  private getParams = async (select : Partial<SimConfig>) : Promise<Nullable<ModuleParam[]>> => {
-    const simconfig = await this.service.get(select);
-    if (simconfig) {
-      const params : ModuleParam[] = [];
-      for (const id of Object.values(simconfig[0].modules)) {
-        const module = await this.evSys.request<Module>(RequestType.DATA, 'Module', { id });
-        if (module) {
-          params.concat(module.params);
-        }
-      }
-      return params;
-    } else {
-      return null;
-    }
-  
-  };
-
+  } 
 
   /**
    * @description Creates a simconfig from a request, returns null if the request is missing properties
@@ -100,4 +89,36 @@ export class SimConfigController extends BaseController<SimConfig> {
     return null;
   };
 
+  /**
+   * @description Request Hanlder for simconfig parameters
+   * @param {Partial<SimConfig>} select - select object for simconfig
+   */
+  private getParams = async (select : Partial<SimConfig>) : Promise<Nullable<ModuleParam[]>> => {
+    const simconfig = await this.service.get(select);
+    if (simconfig) {
+      const params : ModuleParam[] = [];
+      for (const id of Object.values(simconfig[0].modules)) {
+        const module = await this.evSys.request<Module>(RequestType.DATA, 'Module', { id });
+        if (module) {
+          params.concat(module.params);
+        }
+      }
+      return params;
+    } else {
+      return null;
+    }
+  };
+
+  /**
+   * @description Finds all installed maps and adds them to the repo
+   */
+  private findConfigs() : void {
+    forAllFilesThatMatchDo(/sim.config/, this.config.simconfig.simconfigDir, (filePath : string)=>{     
+      const config : Nullable<SimConfig> = readJsonFile<SimConfig>(filePath);
+      if (config) {
+        Logger.info(`Found SimConfig: ${config.name} : ${config.id} AT: ${filePath}`);
+        void this.service.found(config, path.dirname(filePath));
+      }
+    });
+  }
 }

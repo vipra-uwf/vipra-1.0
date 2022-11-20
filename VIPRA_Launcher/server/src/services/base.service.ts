@@ -61,6 +61,15 @@ export abstract class BaseService<DataType extends Identifiable> {
     }
     return Promise.resolve({ status: Status.BAD_REQUEST, object: null });
   }
+
+  /**
+   * @description Adds an object that was found on startup to the repo
+   * @param {DataType} object - object that was found
+   * @param {string} dirPath - directory object was found in
+   */
+  found(object : DataType, dirPath : string) : Promise<OperationResult<DataType>> {
+    return this.repo.found(object, dirPath);
+  }
   
   /**
    * @uses checkUpdate

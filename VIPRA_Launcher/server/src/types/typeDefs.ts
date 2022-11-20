@@ -18,6 +18,8 @@ type Full<T> = {
   [P in keyof T]-?: Full<T[P]>;
 };
 
+type StringLiteral<T> = T extends string ? string extends T ? never : T : never;
+
 /**
  * @description Map meant for holding command line arguments
  */
@@ -28,5 +30,6 @@ export {
   OperationResult,
   FlagMap,
   DeepPartial,
+  StringLiteral,
   Full,
 };

@@ -1,4 +1,3 @@
-import { readJsonBuffer } from '../../util/fileOperations';
 import { isMapFull, OMap } from '../../types/maps/map.types';
 import { Status } from '../../types/status';
 import { Full, OperationResult } from '../../types/typeDefs';
@@ -17,11 +16,9 @@ export class MapService extends BaseService<OMap> {
    */
   checkUpload(upload: Partial<UploadType<OMap>>): OperationResult<Full<UploadType<OMap>>> {  
     if (upload.files) {
-      if (upload.files.map && upload.files.meta) {
-        const map = readJsonBuffer<OMap>(upload.files?.meta[0]?.buffer);
-        if (map) {
-          if (isMapFull(map)) {
-            upload.object = map;
+      if (upload.files.map) {
+        if (upload.object) {
+          if (isMapFull(upload.object)) {
             return { status: Status.SUCCESS, object: upload as Full<UploadType<OMap>> };
           }
         }

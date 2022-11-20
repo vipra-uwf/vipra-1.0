@@ -36,7 +36,7 @@ export class ModuleService extends BaseService<Module> {
    * @param {Partial<UploadType<Module>>} upload - uploaded object
    */
   checkUpdate(upload: Partial<UploadType<Module>>): OperationResult<UploadType<Module>> {
-    if (upload.object?.id || upload.object?.name || upload.object?.compiled || upload.object?.type) {
+    if (upload.object?.id || upload.object?.name || upload.object?.type) {
       return { status: Status.BAD_REQUEST, object: null };
     }
     return { status: Status.SUCCESS, object: upload as UploadType<Module> };

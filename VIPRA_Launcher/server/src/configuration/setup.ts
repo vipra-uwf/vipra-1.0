@@ -70,6 +70,12 @@ const initialSetup = () : Config => {
     map : {
       mapsDir: path.resolve(`${__dirname}/../../../../Maps`),
     },
+    behavior: {
+      behaviorsDir: path.resolve(`${__dirname}/../../../../Behaviors`),
+    },
+    launcher : {
+      repoDir: path.resolve(`${__dirname}/`),
+    },
   };
 };
 

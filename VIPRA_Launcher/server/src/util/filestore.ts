@@ -33,7 +33,6 @@ const uploadModule = (req : express.Request) : Promise<Status> => {
 
 const mapFields : multer.Field[] = [
   { name: 'map', maxCount: 1 },
-  { name: 'meta', maxCount: 1 },
 ];
 /**
  * @description Adds uploaded Map files to request

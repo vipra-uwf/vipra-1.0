@@ -2,9 +2,9 @@
 import { Identifiable, RepoType, UploadType } from '../types/uploading.types';
 import { Full, Nullable, OperationResult } from '../types/typeDefs';
 import { Status } from '../types/status';
-import { deleteDir } from '../util/fileOperations';
-import { Files } from '../util/filestore';
+import { deleteDir, readMap, writeMap } from '../util/fileOperations';
 import { Config } from '../configuration/config';
+import { Files } from '../util/filestore';
 
 
 
@@ -13,19 +13,24 @@ import { Config } from '../configuration/config';
  */
 export abstract class BaseLocalRepo<DataType extends Identifiable> {
 
-  abstract loadInstalledObjects() : Map<string, RepoType<DataType>>;
-  abstract onNew(data : Full<UploadType<DataType>>) : Promise<OperationResult<RepoType<DataType>>>;
-  abstract onUpdated(object : RepoType<DataType>, files : Partial<Files>) : Promise<Status>;
-  abstract postCreate() : void;
-  abstract postUpdate() : void;
+  abstract postCreate(object : RepoType<DataType>) : void;
+  abstract postUpdate(object : RepoType<DataType>) : void;
+  abstract postFound(object : RepoType<DataType>) : void;
+  abstract postDelete(objects : DataType[]) : void;
+
+  abstract saveFiles(object : Full<UploadType<DataType>>) : Promise<Nullable<string>>;
+  abstract updateFiles(object : RepoType<DataType>, files : Files) : Promise<Nullable<string>>;
 
   protected config : Config;
 
   protected objects : Map<string, RepoType<DataType>>;
 
-  constructor(config : Config) {
+  protected repoFile : string;
+
+  constructor(typeName : string, config : Config) {
     this.config = config;
-    this.objects = this.loadInstalledObjects();
+    this.repoFile = `${this.config.launcher.repoDir}/${typeName}.json`;
+    this.readRepoFile();
   }
 
   /**
@@ -71,6 +76,24 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
     return ret;
   }
 
+  
+  /**
+   * @description Adds an object that was found on start
+   * @param {DataType} object - object that was found
+   * @param {string} dirPath - directory object was found in
+   */
+  found(object : DataType, dirPath : string) : Promise<OperationResult<DataType>> {
+    const duplicate = this.objects.get(object.id as unknown as string);
+    if (duplicate) {
+      return Promise.resolve({ status: Status.CONFLICT, object: duplicate.object });
+    }
+    const obj = { object, dirPath };
+    this.objects.set(object.id, obj);
+    this.updateRepoFile();
+    this.postFound(obj);
+    return Promise.resolve({ status: Status.SUCCESS, object: object });
+  }
+
   /**
    * @uses saveFiles
    * @description Creates a new object on the repo
@@ -81,15 +104,20 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
     if (duplicate) {
       return { status: Status.CONFLICT, object: duplicate.object };
     }
-    const saved = await this.onNew(upObj);
+
+    // save the files
+    const saved = await this.saveFiles(upObj);
     if (saved) {
-      if (saved.object) {
-        this.objects.set(upObj.object.id as unknown as string, saved.object);
-        this.postCreate();
-        return { status: Status.CREATED, object: saved.object.object };    
-      }
+      // add object to map
+      this.objects.set(upObj.object.id as unknown as string, {
+        object: upObj.object as unknown as DataType,
+        dirPath: saved,
+      });
+      this.updateRepoFile();
+      return { status: Status.CREATED, object: upObj.object as unknown as DataType };
     }
-    return { status: saved.status, object: null };
+
+    return { status: Status.INTERNAL_ERROR, object: null };
   }
 
   /**
@@ -103,10 +131,12 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
         return select[key as keyof Partial<DataType>] === value[1].object[key as keyof DataType];
       })) {
         if (await deleteDir(value[1].dirPath, true) === Status.SUCCESS) {
+          this.objects.delete(value[1].object.id);
           ret.push(value[1].object);
         }
       }
     }
+    this.postDelete(ret);
     return { status: Status.SUCCESS, object: ret };
   }
 
@@ -118,18 +148,37 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
    */
   async update(id : string, object : UploadType<DataType>) : Promise<OperationResult<DataType>> {
 
-    let repoObj : Nullable<RepoType<DataType>> = this.objects.get(id) || null;
+    const repoObj : Nullable<RepoType<DataType>> = this.objects.get(id) || null;
     
     if (repoObj) {
-      repoObj = { ...repoObj, ...object.object };
-      const updatedFiles = await this.onUpdated(repoObj, object.files);
-      if (updatedFiles !== Status.SUCCESS) {
-        return { status: updatedFiles, object: null };
+      repoObj.object = { ...repoObj.object, ...object.object };
+      const updatedFiles = await this.updateFiles(repoObj, object.files);
+      if (!updatedFiles) {
+        return { status: Status.INTERNAL_ERROR, object: null };
       }
 
-      this.postUpdate();
+      this.postUpdate(repoObj);
       return { status: Status.SUCCESS, object: repoObj.object };      
     }
-    return { status: Status.BAD_REQUEST, object: null };      
+    return { status: Status.BAD_REQUEST, object: null };   
+  }
+
+  /**
+   * @description Updates the repo file with all of the current objects
+   */
+  private updateRepoFile() : void {
+    writeMap<Map<string, RepoType<DataType>>>(this.repoFile, this.objects);
+  }
+
+  /**
+   * @description Reads the saved objects from the repo file
+   */
+  private readRepoFile() : void {
+    const temp = readMap<RepoType<DataType>>(this.repoFile);
+    if (temp) {
+      this.objects = temp;
+    } else {
+      this.objects = new Map<string, RepoType<DataType>>();
+    }
   }
 }

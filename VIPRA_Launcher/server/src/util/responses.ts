@@ -2,6 +2,7 @@ import express from 'express';
 import { OperationResult } from '../types/typeDefs';
 
 import { Status } from '../types/status';
+import { Logger } from '../controllers/logging/logger';
 
 
 /**
@@ -99,6 +100,10 @@ const switchDataResponse = (result : OperationResult<unknown>, response : expres
  */
 const switchCreateResponse = (result : OperationResult<unknown>, response : express.Response) : void => {
   switch (result.status) {
+    case Status.SUCCESS:
+      Logger.warn('Create Request Resulted in SUCCESS status when CREATED should be used!');
+      respondData(result.object, response);
+      break;
     case Status.CREATED:
       respondData(result.object, response);
       break;
@@ -116,7 +121,7 @@ const switchCreateResponse = (result : OperationResult<unknown>, response : expr
       break;
     case Status.INTERNAL_ERROR:
       respondUnknownError(response);
-      break;    
+      break;
   }
 };
 
