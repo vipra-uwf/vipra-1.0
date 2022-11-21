@@ -7,9 +7,9 @@
 #include <vector>
 
 #include "../../../VIPRA/Extendable/pedestrianmodel/pedestrian_dynamics_model.hpp"
-//#include "../../ObstacleSet/airplane_obstacle_set/airplane_obstacle_set.hpp"
+#include "../../ObstacleSet/airplane_obstacle_set/airplane_obstacle_set.hpp"
 #include "../../PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
-//#include "../../Goals/calm_goals/calm_goals.hpp"
+#include "../../Goals/calm_goals/calm_goals.hpp"
 
 class CalmPedestrianModel : public PedestrianDynamicsModel {
  public:
@@ -22,15 +22,17 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
        DimVector update(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
                      Goals& goals, FLOATING_NUMBER time) override;
 
-      void setPedestrianSet(PedestrianSet& pedestrianSet);
-
-      void      initialize(PedestrianSet& pedestrianSet);
-      DimVector update(PedestrianSet& pedestrianSet, FLOATING_NUMBER time);
 
       //Getters and Setters
       FLOATING_NUMBER getPedestrianDistance(CalmPedestrianSet& pedestrianSet, int firstPedestrian, int secondPedestrian);
       std::vector<std::pair<std::string, int>> getNearestNeighbors();
+      DimVector getPropulsionForces();
 
+
+     void calculatePropulsion(CalmPedestrianSet& pedestrianSet, CalmGoals& goals);
+     void calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet);
+     void calculateDistanceMatrices(CalmPedestrianSet& pedestrianSet);
+     void calculateDesiredSpeeds(CalmPedestrianSet& pedestrianSet, CalmGoals& goals);
 
 
  private:
@@ -41,8 +43,8 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
       int                                         currentPriority;
 
-      DimVector                   racePositions;
-      DimVector                   propulsionForces;
+      DimVector                                   racePositions;
+      DimVector                                   propulsionForces;
 
       std::vector<std::pair<std::string, int>>  nearestNeighbors;
       std::vector<FLOATING_NUMBER>              priorities;
@@ -58,23 +60,20 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
       FLOATING_NUMBER*                          obstacleDistanceMatrix;
 
 
-      void                                      calculatePriority();
-      void                                      calculatePropulsion();
-      void                                      calculateBeta();
-      void                                      calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet);
-       
-      inline bool                               neighborDirectionTest(CalmPedestrianSet& pedestrianSet,
-                                                        int firstPedestrianIndex, int secondPedestrianIndex,
-                                                        FLOATING_NUMBER pedestrianDisplacementX, FLOATING_NUMBER pedestrianDisplacementY,
-                                                        FLOATING_NUMBER secondDisplacementX, FLOATING_NUMBER secondDisplacementY);
-
-      inline bool                               neighborSpacialTest(CalmPedestrianSet& pedestrianSet, int firstPedestrianIndex, int secondPedestrianIndex,
-                                                        FLOATING_NUMBER pedestrianDisplacementX, FLOATING_NUMBER pedestrianDisplacementY,
-                                                        FLOATING_NUMBER secondDisplacementX, FLOATING_NUMBER secondDisplacementY,
-                                                        std::string originSet, FLOATING_NUMBER firstShoulderLength);                                                               
+      void                                      calculatePriority(CalmPedestrianSet& pedestrianSet, Goals& goals);
+      void                                      calculateBeta();                                                               
       void                                      raceDetection();
 
-       void calculateDistanceMatrices(CalmPedestrianSet& pedestrianSet);
+     inline bool                               neighborDirectionTest(CalmPedestrianSet& pedestrianSet,
+                                                  int firstPedestrianIndex, int secondPedestrianIndex,
+                                                  FLOATING_NUMBER pedestrianDisplacementX, FLOATING_NUMBER pedestrianDisplacementY,
+                                                  FLOATING_NUMBER secondDisplacementX, FLOATING_NUMBER secondDisplacementY);
+
+     inline bool                               neighborSpacialTest(CalmPedestrianSet& pedestrianSet, int firstPedestrianIndex, int secondPedestrianIndex,
+                                                  FLOATING_NUMBER pedestrianDisplacementX, FLOATING_NUMBER pedestrianDisplacementY,
+                                                  FLOATING_NUMBER secondDisplacementX, FLOATING_NUMBER secondDisplacementY,
+                                                  std::string originSet, FLOATING_NUMBER firstShoulderLength); 
+
        FLOATING_NUMBER getObstacleDistance(int pedIndex, int obsIndex);
 
 };

@@ -1,0 +1,71 @@
+{
+    "input_data_loader": {
+        "params":{
+
+        }
+    },
+    "human_behavior_model": {
+        "params":{
+            "random_seed": "aervoiasenc",
+            "behavior#": "injured_person"
+        }
+    },
+    "output_data_writer": {
+        "params":{
+
+        }
+    },
+    "simulation_output_handler": {
+        "params":{
+            "outputFrequency": 100
+        }
+    },
+    "pedestrian_set": {
+        "params":{
+            "mass": 1.000000,
+            "reaction_time": 0.400000,
+            "desired_speed": 1.000000
+        }
+    },
+    "obstacle_set": {
+        "params":{
+            
+        }
+    },
+    "entity_set_factory": {
+        "params":{
+
+        }
+    },
+    "goals": {
+        "params":{
+
+        }
+    },
+    "pedestrian_dynamics_model": {
+        "params":{
+
+        }
+    },
+    "configuration_reader": {
+        "params":{
+
+        }
+    },
+    "clock": {
+        "params":{
+
+        }
+    },
+    "data": {
+        "params":{
+
+        }
+    },
+    "simulation": {
+        "params":{
+            "time_step": 0.00,
+            "time_step_size": 0.005
+        }
+    }
+}

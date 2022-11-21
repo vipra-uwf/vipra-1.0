@@ -3,3 +3,6 @@
 ./../Base/outputdatawriter/json_timestep_writer/
 ./../../Modules/PedestrianSet/calm_pedestrian_set/
 ./../../Modules/PedestrianDynamicsModel/calm_pedestrian_model/
+./../../Modules/Goals/calm_goals
+./../../Modules/MapLoader/Point_Map_Loader/
+./../../Modules/ObstacleSet/airplane_obstacle_set/
