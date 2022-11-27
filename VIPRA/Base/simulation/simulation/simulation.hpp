@@ -2,11 +2,11 @@
 #define SIMULATION_HPP
 
 #include "../../../Extendable/pedestrianmodel/pedestrian_dynamics_model.hpp"
+#include "../../definitions/state.hpp"
 #include "../../humanbehavior/human_behavior_model.hpp"
 #include "../../policyModel/policy_model.hpp"
+#include "../../simulationoutputhandler/simulation_output_handler.hpp"
 #include "../clock/clock.hpp"
-
-class SimulationOutputHandler;
 
 class Simulation {
  private:
@@ -22,7 +22,9 @@ class Simulation {
            PedestrianDynamicsModel& pedestrianDynamicsModel,
            HumanBehaviorModel&      humanBehaviorModel,
            PolicyModel&             policyModel,
-           SimulationOutputHandler& simulationOutputHandler);
+           OutputDataWriter&        outputDataWriter,
+           SimulationOutputHandler& simulationOutputHandler,
+           Clock&                   clock);
 
   int getTimestep() const;
 };
