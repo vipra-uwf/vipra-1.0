@@ -15,7 +15,7 @@ struct AQuad {
   float  f;
 };
 
-auto compare = [](AQuad* first, AQuad* second) {
+inline auto compare = [](AQuad* first, AQuad* second) {
   return first->f > second->f;
 };
 

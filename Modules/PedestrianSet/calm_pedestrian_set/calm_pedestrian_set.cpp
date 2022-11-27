@@ -14,17 +14,17 @@ void CalmPedestrianSet::configure(const CONFIG_MAP& configMap)
 
 void CalmPedestrianSet::initialize(ENTITY_SET pedestrians)
 {
-
     const auto& peds = pedestrians.at("pedestrians");
     const size_t pedCnt = peds.size();
 
     this->numPedestrians         = pedCnt;
     this->velocities             = DimVector(pedCnt, Dimensions{STARTING_VELOCITY_X, STARTING_VELOCITY_Y});
     this->speedsMetersPerSecond  = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_SPEED);
-    this->massesKg               = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_MASS);
+    this->massesKg               = std::vector<FLOATING_NUMBER>(pedCnt, startMass);
     this->reactionTimes          = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_REACTION_TIME);
-    this->desiredSpeeds          = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_DESIRED_SPEED);
+    this->desiredSpeeds          = std::vector<FLOATING_NUMBER>(pedCnt, startDesired_speed);
     this->shoulderLengths        = std::vector<FLOATING_NUMBER>(pedCnt, STARTING_SHOULDER_WIDTH);
+    this->reactionTimes          = std::vector<FLOATING_NUMBER>(pedCnt, startReaction_time);
 
     setPedestrianCoordinates(peds);
     this->setIds(std::vector<int>(pedCnt, 0));

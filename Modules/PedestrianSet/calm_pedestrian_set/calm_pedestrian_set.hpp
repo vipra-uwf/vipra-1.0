@@ -74,9 +74,9 @@ class CalmPedestrianSet : public PedestrianSet {
 
     std::vector<int>                          ids;
 
-    FLOATING_NUMBER startMass;
-    FLOATING_NUMBER startReaction_time;
-    FLOATING_NUMBER startDesired_speed;
+    FLOATING_NUMBER startMass = 0.0f;
+    FLOATING_NUMBER startReaction_time = 0.0f;
+    FLOATING_NUMBER startDesired_speed = 0.0f;
 
     //Constants used for initializing data
     static constexpr FLOATING_NUMBER STARTING_VELOCITY_X = 0.0f;
