@@ -9,6 +9,12 @@ struct MapType {
   std::string type;
 };
 
+class MapLoaderException : public std::runtime_error {
+ public:
+  MapLoaderException(const std::string& message) : std::runtime_error(message) {}
+  static void Throw(const std::string& message) { throw MapLoaderException(message); }
+};
+
 class MapLoader {
  public:
   virtual ~MapLoader() = default;

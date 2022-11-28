@@ -5,6 +5,12 @@
 #include "../maploader/map_loader.hpp"
 #include "../pedestrianset/pedestrian_set.hpp"
 
+class ObstacleSetException : public std::runtime_error {
+ public:
+  ObstacleSetException(const std::string& message) : std::runtime_error(message) {}
+  static void Throw(const std::string& message) { throw ObstacleSetException(message); }
+};
+
 class ObstacleSet {
  public:
   static const DimVector __empty__;

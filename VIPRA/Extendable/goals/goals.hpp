@@ -6,6 +6,12 @@
 #include "../obstacleset/obstacle_set.hpp"
 #include "../pedestrianset/pedestrian_set.hpp"
 
+class GoalsException : public std::runtime_error {
+ public:
+  GoalsException(const std::string& message) : std::runtime_error(message) {}
+  static void Throw(const std::string& message) { throw GoalsException(message); }
+};
+
 class Goals {
  public:
   static const Dimensions __empty__;
