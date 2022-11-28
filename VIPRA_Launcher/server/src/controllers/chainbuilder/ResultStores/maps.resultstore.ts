@@ -1,26 +1,36 @@
 /**
  * @module ResultStores
  */
+import { EventSystem } from '../../../controllers/events/eventSystem';
+import { OMap } from '../../../types/maps/map.types';
 import { CbResult, ResultStore } from 'typechain';
+import { RequestType } from '../../../controllers/events/eventTypes';
+import { Nullable } from 'typechain/dist/typedefs';
 
 /**
  * @description Result Store for the Maps service
  */
 export class MapsResultStore extends ResultStore {
   
+  private evsys : EventSystem;
+  
+  constructor(name :string, evsys : EventSystem) {
+    super(name);
+    this.evsys = evsys;
+  }
+
   /**
    * @description Returns the result at location
    * @param  {string} locationID - location of result
    * @returns CbResult
    */
-  getResult(): CbResult {
-    // const maps : string[] = this.mc.getAllMaps().map((map)=>{return map.name;});
-    // if (maps) {
-    //   return { error: false, result: JSON.stringify(maps) };
-    // } else {
-    //   return { error: true, result: 'No Map Installed' };
-    // }
-    throw new Error('not implemented');
+  async getResult(): Promise<CbResult> {
+    const maps : Nullable<OMap[]> = await this.evsys.request<OMap[]>(RequestType.DATA, 'OMap', {});
+    if (maps) {
+      return { error: false, result: JSON.stringify(maps) };
+    } else {
+      return { error: true, result: 'No Map Installed' };
+    }
   }
 
   

@@ -25,6 +25,7 @@ export interface Controllers {
   BehaviorController     : BehaviorController
   MapController          : MapController,
   ChainBuilderController : ChainBuilderController,
+  SimController          : SimController,
 }
 
 
@@ -64,5 +65,6 @@ export const getControllers = (config : Config, eventSys : EventSystem) : Contro
     MapController : mapController,
     ChainBuilderController : cbController,
     BehaviorController: behaviorController,
+    SimController : simController,
   };
 };

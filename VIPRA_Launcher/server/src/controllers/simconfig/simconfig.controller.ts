@@ -8,7 +8,7 @@ import { DeepPartial, Nullable, OperationResult } from '../../types/typeDefs';
 import { UploadRequest, UploadType } from '../../types/uploading.types';
 import { getFormData } from '../../util/utilMethods';
 import { BaseController } from '../base.controller';
-import { RequestType } from '../events/eventTypes';
+import { EventHandler, EventType, RequestType } from '../events/eventTypes';
 import { Logger } from '../logging/logger';
 
 
@@ -26,7 +26,9 @@ export class SimConfigController extends BaseController<SimConfig> {
   /**
    * @description Sets the hanlders for SimConfig events 
    */
-  protected setupEventHandlers(): void {}
+  protected setupEventHandlers(): void {
+    this.evSys.subscribe(EventType.FAIL, 'SimConfig', this.failedConfig);
+  }
 
   /**
    * @description Sets the handlers for SimConfig Requests
@@ -121,4 +123,12 @@ export class SimConfigController extends BaseController<SimConfig> {
       }
     });
   }
+
+  /**
+   * @description Handles a SimConfig becoming obsolete
+   * @param {SimConfig} config - config that is now obsolete
+   */
+  private failedConfig : EventHandler = (config : SimConfig) : void =>{
+    void this.service.delete({ id: config.id });
+  };
 }

@@ -34,6 +34,7 @@ export class ChainBuilderController {
   constructor(config : Config, simController : ISimController, evSys : EventSystem) {
     this.evSys = evSys;
     this.config = config;
+    this.baseURL = `${config.app.baseURL}/simulation/`;
     this.simController = simController;
     this.setupServiceRoot();
     this.setupResultStore();
@@ -81,10 +82,9 @@ export class ChainBuilderController {
     const returnValue : CbReturnValue = {
       name: 'simresults',
       type: 'xyz',
-      description: 'Results of simulation run',
+      description: 'Results of a simulation run',
     };
 
-    // TODO request params, emit fail if fails
     const params : Nullable<CbArgument[]> = (await this.evSys.request<ModuleParam[]>(RequestType.DATA, 'SimConfigParams', { id: simconfig.id }))?.map((param) : CbArgument => {
       return {
         chain_name: `${param.name}_href`,
@@ -105,13 +105,13 @@ export class ChainBuilderController {
          * @note The configid for the simconfig is not provided from ChainBuilder, but added in here
          * @param  {CbArgs} args - ChainBuilder Arguments
          */
-        method     : this.serviceMethod(simconfig.id), // TODO
+        method     : this.serviceMethod(simconfig.id),
         server     : ['transient'],
       };
       const newService : Service = new Service(serviceOpts);
       const route : string = `services/${simconfig.name}`;
   
-      this.serviceRoot.addService(newService, route);
+      this.serviceRoot.addService(newService, ['services', simconfig.name]);
       this.serviceMap.set(key, { service: newService, route });
     } else {
       void this.evSys.emit<SimConfig>(EventType.FAIL, 'SimConfig', simconfig);
@@ -125,7 +125,7 @@ export class ChainBuilderController {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private updateService : EventHandler = (simconfig : SimConfig) : void => {
-    
+    throw new Error('Not Implemented');
   };
 
   /**
@@ -135,7 +135,7 @@ export class ChainBuilderController {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private deleteService : EventHandler = (simconfig : SimConfig) : void => {
-
+    throw new Error('Not Implemented');
   };
 
   /**
@@ -156,7 +156,7 @@ export class ChainBuilderController {
       info: serviceInfo,
       arguments: [],
       returnValue: { name: 'maps', type: 'JSON[]', description: 'Array Of all Maps installed on the server' },
-      resultStore: new MapsResultStore('maps'),
+      resultStore: new MapsResultStore('maps', this.evSys),
       /**
        * @description Service method for returning maps (actual logic is in the result store)
        */
@@ -167,7 +167,7 @@ export class ChainBuilderController {
     };
 
     const service : Service = new Service(serviceOpts);
-    this.serviceRoot.addService(service, '/services/maps');
+    this.serviceRoot.addService(service, ['services', 'maps']);
   }
 
   /**
@@ -181,8 +181,8 @@ export class ChainBuilderController {
    * @description Sets up the {@link CBServiceRoot} with default values
    */
   private setupServiceRoot() : void {
-    this.serviceRoot = new CBServiceRoot(`${this.baseURL}chainbuilder/`, { allowStoreSharing: true });
-    this.serviceRoot.addRoute('/services');
+    this.serviceRoot = new CBServiceRoot(`${this.baseURL}/chainbuilder`, { allowStoreSharing: true });
+    this.serviceRoot.addRoute(['services']);
   }
 
   /**

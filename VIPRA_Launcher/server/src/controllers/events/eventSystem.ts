@@ -39,11 +39,10 @@ export class EventSystem {
           }));
         }
       } else {
-        evLogger.error(`${Object.values(EventType)[event]} ; TYPE: ${dataType} ; NO HANDLER FOR EVENT`);
-        throw new Error(`No Handler Set For Event: ${event} : ${dataType}`);
+        evLogger.warn(`NO HANDLER FOR EVENT: ${Object.values(EventType)[event]} ; TYPE: ${dataType}`);
       }
     } else {
-      evLogger.error(`${Object.values(EventType)[event]} ; TYPE: ${dataType} ; EMITTED WITH NO DATA`);
+      evLogger.warn(`EMITTED WITH NO DATA: ${Object.values(EventType)[event]} ; TYPE: ${dataType}`);
     }
   }
 

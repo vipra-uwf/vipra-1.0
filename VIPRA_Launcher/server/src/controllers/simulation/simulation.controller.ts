@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { ISimRunner } from '../../runners/simulation/simulation.runner.interface';
 import { Nullable } from '../../types/typeDefs';
 import { CbArgs } from 'typechain';
@@ -7,6 +8,9 @@ import { ISimController } from './interfaces/simulation.controller.interface';
 import { Config } from '../../configuration/config';
 import { deleteDir, fileExists, makeDir } from '../../util/fileOperations';
 import { OMap } from '../../types/maps/map.types';
+import { RepoType } from '../../types/uploading.types';
+import { FLAGS } from '../../types/flags/flags.types';
+import { Logger } from '../logging/logger';
 
 interface SimInputs {
   mapPath : string;
@@ -42,7 +46,7 @@ export class SimController implements ISimController {
   public async startSim(configID : string, mapID : string, pedsID : string, params : CbArgs): Promise<Nullable<string>> {
 
     const runID : string = crypto.randomUUID();
-    const runDir = `${this.config.vipra.simsDir}/${runID}`;
+    const runDir = `${this.config.vipra.outputDir}/${runID}`;
     const outputPath = `${runDir}/output.file`;
     makeDir(runDir);
     const inputs = await this.getInputs(mapID, pedsID, params, runDir);
@@ -54,21 +58,22 @@ export class SimController implements ISimController {
         return new Promise(resolve=>{
           simPS.on('close', (code : Nullable<number>)=>{
             if (code && code !== 0) {
-              void deleteDir(runDir, false);
+              void deleteDir(runDir, true);
               void this.evSys.emit<string>(EventType.FAIL, 'SimRun', runID);
               resolve(null);
+            } else {
+              void this.evSys.emit<string>(EventType.SUCCESS, 'SimRun', runID);
+              resolve(outputPath);
             }
-            void this.evSys.emit<string>(EventType.SUCCESS, 'SimRun', runID);
-            resolve(outputPath);
           });
         });
       } else {
-        void deleteDir(runDir, false);
+        void deleteDir(runDir, true);
         void this.evSys.emit<string>(EventType.FAIL, 'SimRun', runID);
       }
     }
 
-    void deleteDir(runDir, false);
+    void deleteDir(runDir, true);
     return Promise.resolve(null);
   }
 
@@ -84,7 +89,15 @@ export class SimController implements ISimController {
    * @param {string} buildID - id of build that completed
    */
   private handleNewBuild : EventHandler = () : void => {
-
+    if (this.config.flags.has(FLAGS.DEBUG_RUN)) {
+      const configid = this.config.flags.get(FLAGS.DEBUG_CONFIG);
+      if (configid) {
+        this.startSim(configid, '', '', {})
+          .catch((error : string)=>{
+            Logger.error(`Debug Simulation Run Failed: ${error}`);
+          });
+      }
+    }
   };
 
   /**
@@ -119,6 +132,9 @@ export class SimController implements ISimController {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private writeParams(params : CbArgs, runDir : string) : Nullable<string> {
+    if (this.config.flags.has(FLAGS.DEBUG_PARAMS)) {
+      return this.config.flags.get(FLAGS.DEBUG_PARAMS) || null;
+    }
     return null;
   }
 
@@ -127,9 +143,12 @@ export class SimController implements ISimController {
    * @param {string} mapID - id of map to get path of
    */
   private async getMap(mapID : string) : Promise<Nullable<string>> {
-    const map = await this.evSys.request<OMap>(RequestType.DATA, 'OMap', { id: mapID });
+    if (this.config.flags.has(FLAGS.DEBUG_MAP)) {
+      return this.config.flags.get(FLAGS.DEBUG_MAP) || null;
+    }
+    const map = await this.evSys.request<RepoType<OMap>>(RequestType.DATA_W_PATH, 'OMap', { id: mapID });
     if (map) {
-      const mapPath = `${this.config.map.mapsDir}/${map.name}/${map.name}.omap`;
+      const mapPath = `${map.dirPath}/${map.object.name}.omap`;
       if (fileExists(mapPath)) {
         return mapPath;
       }
@@ -143,6 +162,9 @@ export class SimController implements ISimController {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private getPeds(pedsID : string) : Nullable<string> {
+    if (this.config.flags.has(FLAGS.DEBUG_PEDS)) {
+      return this.config.flags.get(FLAGS.DEBUG_PEDS) || null;
+    }
     return null;
   }
 }

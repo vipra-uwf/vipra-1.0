@@ -10,7 +10,7 @@ import { Status } from '../../types/status';
 import { SimState } from '../../types/simulation/simulation.types';
 import { Nullable } from 'typechain/dist/typedefs';
 import { RepoType } from '../../types/uploading.types';
-import { deleteDir, makeDir, moveFile } from '../../util/fileOperations';
+import { deleteDir, fileExists, makeDir, moveFile } from '../../util/fileOperations';
 import { Logger } from '../logging/logger';
 import { FLAGS } from '../../types/flags/flags.types';
 
@@ -76,6 +76,7 @@ export class SimulationBuilder {
 
   /**
    * @description Runs initial build of simulation, sets up sim state
+   * @note if NO_BUILD is set, an existing simulation will be looked for, if one is found NEW SimBuild is emitted
    * @param {FlagMap} flags - command line flags
    */
   public startup() : void {
@@ -84,6 +85,10 @@ export class SimulationBuilder {
       this.isBuilt = { genMain: false, humanBehavior: false };
       makeDir(`${this.config.vipra.vipraDir}/build/`);
       this.compileSimulation();
+    } else {
+      if (fileExists(`${this.config.vipra.vipraDir}/${this.config.vipra.exeName}`)) {
+        void this.evSys.emit<string>(EventType.NEW, 'SimBuild', 'NOBUILD');
+      }
     }
   }
 
@@ -96,7 +101,7 @@ export class SimulationBuilder {
     
     const mod = await this.evSys.request<RepoType<Module>>(RequestType.DATA_W_PATH, 'Module', { id: module.id });
     if (mod) {
-      const compiled = await this.compilationRunner.buildModule(module, mod.dirPath, false);
+      const compiled = await this.compilationRunner.buildModule(module, mod.dirPath, this.config.simulation.debugMode);
       if (compiled === Status.SUCCESS) {
         this.addedModuleType(module.type);
         void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module);
@@ -234,7 +239,7 @@ export class SimulationBuilder {
   }
 
   /**
-   * @description Builds all installed modules
+   * @description Builds all installed modules in batches of this.config.simulation.maxConcurComps
    * @emits BUILT_MODULE, FAIL_MODULE
    */
   private async compileAllModules() : Promise<void> {
@@ -281,7 +286,7 @@ export class SimulationBuilder {
   private buildSuccess(buildID : string) : void {
     this.setBuildState(buildID, { ready:true, reason:'Successful Build' });
     this.setSimState({ ready: true, reason: 'Successful Build' });
-    moveFile(`${this.config.vipra.vipraDir}/build/${buildID}/VIPRA_SIM`, `${this.config.vipra.vipraDir}/VIPRA_SIM`);
+    moveFile(`${this.config.vipra.vipraDir}/build/${buildID}/${this.config.vipra.exeName}`, `${this.config.vipra.vipraDir}/${this.config.vipra.exeName}`);
     this.buildCleanUp(buildID);
     void this.evSys.emit<string>(EventType.SUCCESS, 'SimBuild', buildID);
   }

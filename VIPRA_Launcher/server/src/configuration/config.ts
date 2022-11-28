@@ -2,13 +2,15 @@
 export interface Config {
   flags : Map<string, string>;
   app: {
+    baseURL : string;
     port : number;
     certDir : string;
   },
   vipra: {
     vipraDir : string;
     behaviorDir : string;
-    simsDir : string;
+    outputDir : string;
+    exeName : string;
   },
   modules: {
     modulesDir : string;

@@ -33,7 +33,7 @@ export class SimRunner implements ISimRunner {
       return null;
     }
   
-    const command : string = `${this.config.vipra.vipraDir}/VIPRA`;
+    const command : string = `${this.config.vipra.vipraDir}/${this.config.vipra.exeName}`;
     const args : string[] =  [`${configDir}/sim.config`, paramsFile, pedestrianFile, mapFile, outputFile];
     const ps = child_process.spawn(command, args);
   
@@ -42,6 +42,9 @@ export class SimRunner implements ISimRunner {
     });
     ps.stdout.on('data', (data : string) => {
       Logger.debug(`runSim: runID: ${runID} ; configID: ${configID} ; ${data}`);
+    });
+    ps.on('error', ()=>{
+      Logger.error(`Sim Run: ${runID} ; Unable to start simulation`);
     });
     
     return ps;

@@ -45,9 +45,10 @@ const getCommandLineArguments = () : Map<string, string> => {
  */
 const initialSetup = () : Config => {
   const flags = getCommandLineArguments();
-  return {
+  const config : Config = {
     flags,
     app: {
+      baseURL: 'https://192.168.1.120',
       certDir: path.resolve(`${__dirname}/../../certs`),
       port: 3000,
     },
@@ -61,7 +62,8 @@ const initialSetup = () : Config => {
     vipra: {
       vipraDir: path.resolve(`${__dirname}/../../../../VIPRA`),
       behaviorDir: path.resolve(`${__dirname}/../../../../VIPRA/Base/dsl`),
-      simsDir: path.resolve(`${__dirname}/../../../../VIPRA/sims`),
+      outputDir: path.resolve(`${__dirname}/../../../../Output`),
+      exeName: 'VIPRA_SIM',
     },
     simulation: {
       debugMode: flags.has(FLAGS.DEBUG_BUILD),
@@ -77,6 +79,13 @@ const initialSetup = () : Config => {
       repoDir: path.resolve(`${__dirname}/`),
     },
   };
+
+  const certs = flags.get(FLAGS.CERTS_DIR);
+  if (certs) {
+    config.app.certDir = certs;
+  }
+  
+  return config;
 };
 
 
@@ -86,8 +95,8 @@ const initialSetup = () : Config => {
  * @param {Config} config - configuration object
  */
 const setupHTTPS = (app : express.Application, config : Config) : https.Server => {
-  const cert = readFile(`${config.app.certDir}/cert.crt`);
-  const key = readFile(`${config.app.certDir}/key.pem`);
+  const cert = readFile(`${config.app.certDir}/local.crt`);
+  const key = readFile(`${config.app.certDir}/local.pem`);
   if (cert && key) {
     return https.createServer({
       key,
