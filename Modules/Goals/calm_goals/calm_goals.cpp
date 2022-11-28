@@ -67,8 +67,11 @@ CalmGoals::disembarkPath(const Dimensions& start, const Dimensions& endGoal, con
 
 const Dimensions&
 CalmGoals::nearestObjective(const std::string& type, const Dimensions& point, const ObstacleSet& obsSet) {
-  const auto&     objectives = obsSet.getObjectsofType(type);
-  const size_t    objCnt = objectives.size();
+  const auto&  objectives = obsSet.getObjectsofType(type);
+  const size_t objCnt = objectives.size();
+  if (objectives.empty()) {
+    GoalsException::Throw("No Objectives of Type: " + type + " In Provided Map");
+  }
   size_t          closest = 0;
   FLOATING_NUMBER minDist = std::numeric_limits<float>::max();
   for (size_t i = 0; i < objCnt; ++i) {
@@ -91,6 +94,10 @@ void
 CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   const auto& coords = pedSet.getPedestrianCoordinates();
   const auto& objectives = obsSet.getObjectsofType(endGoalType);
+
+  if (objectives.empty()) {
+    GoalsException::Throw("No Objectives of Type: " + endGoalType + " In Provided Map");
+  }
 
   if (objectives.size() == 1) {
     // if only one objective, set every end goal as that

@@ -28,7 +28,7 @@ class CalmGoals : public Goals {
   void printGraph();
   void printPaths();
 
- private:
+ protected:
   FLOATING_NUMBER goalRange;
   FLOATING_NUMBER diagonalCost;
   std::string     endGoalType;
