@@ -1,5 +1,5 @@
-import { CbResult, CbArgs } from "../../src/@types/Types";
-import { ResultStore } from "../../src/@types/ResultStore";
+import { CbResult, CbArgs } from "../../src/Types";
+import { ResultStore } from "../../src/ResultStore";
 
 
 class TestResultStore extends ResultStore {

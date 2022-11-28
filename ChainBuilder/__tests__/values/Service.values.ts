@@ -1,4 +1,4 @@
-import { CbMethod, CbResult, CbReturnType, CbServiceInfo, CbServiceOptions } from "../../src/@types/Types";
+import { CbMethod, CbResult, CbReturnValue, CbServiceInfo, CbServiceOptions } from "../../src/Types";
 import { TestResultStore } from "./ResultStore.values";
 
 const goodMethod : CbMethod = (args : { [key: string] : string[] }) : CbResult => {
@@ -19,18 +19,19 @@ const exampleServiceInfo : CbServiceInfo = {
   doc_href   : "example.com"
 }
 
-const exampleReturnValue : CbReturnType = {
+const exampleReturnValue : CbReturnValue = {
   name: "examplevalue",
+  description: 'Example Value',
   type: "string"
 }
 
 const exampleServiceOptions : CbServiceOptions = {
-  info       : exampleServiceInfo,
-  parameters : [],
+  info: exampleServiceInfo,
   returnValue: exampleReturnValue,
   resultStore: new TestResultStore('test'),
-  method     : goodMethod,
-  server     : []
+  method: goodMethod,
+  server: [],
+  arguments: []
 }
 
 

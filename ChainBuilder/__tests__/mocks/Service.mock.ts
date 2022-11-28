@@ -1,8 +1,8 @@
 import express from 'express';
-import { CbServiceOptions } from '../../src/@types/Types';
+import { CbServiceOptions } from '../../src/Types';
 
 export const ServiceMock = ()=>{
-  jest.mock('../../src/@types/Service', () => {
+  jest.mock('../../src/Service', () => {
       return{
           Service: jest.fn().mockImplementation((opts : CbServiceOptions)=>{
               return {

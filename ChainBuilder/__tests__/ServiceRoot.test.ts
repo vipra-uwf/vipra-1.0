@@ -17,7 +17,7 @@ describe("ServiceRoot", ()=>{
 
   it('Should Handle Adding Endpoints', ()=>{
     const sut = new CBServiceRoot('test.com');
-    sut.addRoute('test');
+    sut.addRoute(['test']);
     expect(sut.getNode('test')).not.toBeNull();
     expect(sut.getNode('test/')).not.toBeNull();
     expect(sut.getNode('/test')).not.toBeNull();
@@ -25,7 +25,7 @@ describe("ServiceRoot", ()=>{
 
     expect(sut.getNode('test/route')).toBeNull();
 
-    sut.addRoute('test/route');
+    sut.addRoute(['test','route']);
 
     expect(sut.getNode('test')).not.toBeNull();
     expect(sut.getNode('test/')).not.toBeNull();
@@ -40,13 +40,13 @@ describe("ServiceRoot", ()=>{
     const sut = new CBServiceRoot('test.com');
     const service = new Service(exampleServiceOptions);
     expect((sut.getNode('test/service') as Endpoint)?.getService()).toBeUndefined();
-    sut.addService(service, 'test/service');
+    sut.addService(service, ['test', 'service']);
     expect((sut.getNode('test/service') as Endpoint)?.getService()).not.toBeFalsy();
   });
 
   it('Should Route Requests Correctly', ()=>{
     const sut = new CBServiceRoot('test.com');
-    sut.addRoute('test/route/');
+    sut.addRoute(['test', 'route']);
 
     expect(sut.getNode('test/route?test=test')).not.toBeNull();
   });

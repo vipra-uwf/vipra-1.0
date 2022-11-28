@@ -100,7 +100,7 @@ export class Endpoint implements Node {
     const popped : Nullable<string> = route.shift() || null;
 
     if (popped) {
-      if (popped === '') {
+      if (popped === '' || popped.includes('?')) {
         return this;
       }
       const next = this.links.get(popped);

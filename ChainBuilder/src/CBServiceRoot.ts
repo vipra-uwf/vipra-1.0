@@ -56,10 +56,16 @@ export class CBServiceRoot {
    * @param {string} route - URL route to get endpoint of
    * @returns {Nullable<Endpoint>} Endpoint at route, null if no endpoint
    */
-  public getNode(route : string) : Nullable<Node> {
-    const routeArr : string[] = route.split('/').filter((value)=>{
-      return value !== '';
-    });
+  public getNode(route : string | string[]) : Nullable<Node> {
+    let routeArr : string[];
+    if (typeof(route) === 'string') {
+      routeArr = route.split('/').filter((value)=>{
+        return value !== '';
+      });
+    } else {
+      routeArr = route;
+    }
+    
     const popped : Nullable<string> = routeArr.shift() || null;
 
     if (popped) {
@@ -79,11 +85,9 @@ export class CBServiceRoot {
    * @note If the route has N parts, the route N-1 is created with an empty {@link Endpoint}
    * @param {string} route - Route to create
    */
-  public addRoute(route : string) : void {
-    const routeArr : string[] = route.split('/').filter((value)=>{
-      return value !== '';
-    });
-    const root : Nullable<string> = routeArr.shift() || null;
+  public addRoute(route : string[]) : void {
+    const routeDup : string[] = Object.assign([], route);
+    const root : Nullable<string> = routeDup.shift() || null;
 
     if (root) {
       if (root === 'data') {
@@ -96,7 +100,7 @@ export class CBServiceRoot {
         this.endpoints.set(root, startEP);
       }
 
-      startEP.addRoute(routeArr);
+      startEP.addRoute(routeDup);
 
     } else {
       throw new Error('Attempted To Create an Empty Route');
@@ -111,7 +115,7 @@ export class CBServiceRoot {
    * @param {Service} service - Service to add to the Endpoint
    * @param {string} route - Route to the Endpoint
    */
-  public addService(service : Service, route : string) : void {
+  public addService(service : Service, route : string[]) : void {
     this.addRoute(route);
     const endpoint : Nullable<Endpoint> = this.getNode(route) as Endpoint;
     if (endpoint) {
@@ -128,7 +132,7 @@ export class CBServiceRoot {
    * @param  {string} route - route of service to remove
    * @returns void
    */
-  public removeService(route : string) : void {
+  public removeService(route : string[]) : void {
     const endpoint : Nullable<Endpoint> = this.getNode(route) as Nullable<Endpoint>;
     if (endpoint) {
       endpoint.removeService();
@@ -206,6 +210,7 @@ export class CBServiceRoot {
     if (opts) {
       this.opts = opts;
     } else {
+      this.opts = {};
       this.opts.allowStoreSharing = false;
     }
   }
