@@ -6,18 +6,18 @@ TimestepOutputHandler::configure(const CONFIG_MAP& configMap) {
 }
 
 bool
-TimestepOutputHandler::isOutputCriterionMet(const Simulation&    simulation,
-                                            const PedestrianSet& pedSet,
+TimestepOutputHandler::isOutputCriterionMet(const PedestrianSet& pedSet,
                                             const ObstacleSet&   obsSet,
-                                            const Goals&         goals) {
-  return (simulation.getTimestep() % frequency == 0);
+                                            const Goals&         goals,
+                                            size_t               timestep) {
+  return (timestep % frequency == 0);
 }
 
 void
 TimestepOutputHandler::writeToDocument(OutputDataWriter&    outputDataWriter,
-                                       const Simulation&    simulation,
-                                       const PedestrianSet& pedestrianSet) {
-  outputDataWriter.addFloatValue("NEW_TIMESTEP", 0);
+                                       const PedestrianSet& pedestrianSet,
+                                       size_t               timestep) {
+  outputDataWriter.addFloatValue("NEW_TIMESTEP", timestep);
 
   const auto& coords = pedestrianSet.getPedestrianCoordinates();
 

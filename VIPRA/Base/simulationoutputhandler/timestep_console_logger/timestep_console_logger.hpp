@@ -10,13 +10,10 @@ class TimestepConsoleLogger : public SimulationOutputHandler {
 
  public:
   void configure(const CONFIG_MAP& configMap) override;
-  bool isOutputCriterionMet(const Simulation&,
-                            const PedestrianSet&,
-                            const ObstacleSet&,
-                            const Goals&) override;
+  bool isOutputCriterionMet(const PedestrianSet&, const ObstacleSet&, const Goals&, size_t timestep) override;
   void writeToDocument(OutputDataWriter&    outputDataWriter,
-                       const Simulation&    simulation,
-                       const PedestrianSet& pedestrianSet) override;
+                       const PedestrianSet& pedestrianSet,
+                       size_t               timestep) override;
 };
 
 #endif

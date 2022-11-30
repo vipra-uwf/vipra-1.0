@@ -7,18 +7,18 @@ TimestepConsoleLogger::configure(const CONFIG_MAP& configMap) {
 }
 
 bool
-TimestepConsoleLogger::isOutputCriterionMet(const Simulation&    simulation,
-                                            const PedestrianSet& pedSet,
+TimestepConsoleLogger::isOutputCriterionMet(const PedestrianSet& pedSet,
                                             const ObstacleSet&   obsSet,
-                                            const Goals&         goals) {
-  return (simulation.getTimestep() % frequency == 0);
+                                            const Goals&         goals,
+                                            size_t               timestep) {
+  return (timestep % frequency == 0);
 }
 
 void
 TimestepConsoleLogger::writeToDocument(OutputDataWriter&    outputDataWriter,
-                                       const Simulation&    simulation,
-                                       const PedestrianSet& pedestrianSet) {
-  std::printf("TIMESTEP: %i", simulation.getTimestep());
+                                       const PedestrianSet& pedestrianSet,
+                                       size_t               timestep) {
+  std::printf("TIMESTEP: %i", timestep);
   const auto& coords = pedestrianSet.getPedestrianCoordinates();
   for (int i = 0; i < coords.size(); ++i) {
     std::printf("Pedestrian: %i : X: %f, Y: %f\n", i, coords.at(i).axis[0], coords.at(i).axis[1]);

@@ -9,13 +9,13 @@ class TimestepOutputHandler : public SimulationOutputHandler {
 
  public:
   void configure(const CONFIG_MAP& configMap) override;
-  bool isOutputCriterionMet(const Simulation&    simulation,
-                            const PedestrianSet& pedSet,
+  bool isOutputCriterionMet(const PedestrianSet& pedSet,
                             const ObstacleSet&   obsSet,
-                            const Goals&         goals) override;
+                            const Goals&         goals,
+                            size_t               timestep) override;
   void writeToDocument(OutputDataWriter&    outputDataWriter,
-                       const Simulation&    simulation,
-                       const PedestrianSet& pedestrianSet) override;
+                       const PedestrianSet& pedestrianSet,
+                       size_t               timestep) override;
 };
 
 #endif

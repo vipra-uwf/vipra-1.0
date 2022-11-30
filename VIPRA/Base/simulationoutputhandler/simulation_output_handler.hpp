@@ -6,18 +6,17 @@
 #include "../outputdatawriter/output_data_writer.hpp"
 #include "../simulation/simulation/simulation.hpp"
 
-
 class SimulationOutputHandler {
 
  public:
   virtual ~SimulationOutputHandler() = default;
 
   virtual void configure(const CONFIG_MAP&) = 0;
-  virtual bool isOutputCriterionMet(const Simulation&,
-                                    const PedestrianSet&,
+  virtual bool isOutputCriterionMet(const PedestrianSet&,
                                     const ObstacleSet&,
-                                    const Goals&) = 0;
-  virtual void writeToDocument(OutputDataWriter&, const Simulation&, const PedestrianSet&) = 0;
+                                    const Goals&,
+                                    size_t timestep) = 0;
+  virtual void writeToDocument(OutputDataWriter&, const PedestrianSet&, size_t timestep) = 0;
 };
 
 #endif
