@@ -80,6 +80,11 @@ const initialSetup = () : Config => {
     },
   };
 
+  const vipradir = flags.get(FLAGS.VIPRA_DIR);
+  if (vipradir) {
+    config.vipra.vipraDir = vipradir;
+  }
+
   const certs = flags.get(FLAGS.CERTS_DIR);
   if (certs) {
     config.app.certDir = certs;

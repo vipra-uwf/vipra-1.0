@@ -1,7 +1,6 @@
-
-
 import express from 'express';
 import multer from 'multer';
+import { Nullable } from 'src/types/typeDefs';
 
 const upload = multer();
 
@@ -17,6 +16,23 @@ const getFormData = <FormFields>(req : express.Request) : Promise<Partial<FormFi
   });
 };
 
+/**
+ * @description Checks if a child_process exited with an error
+ * @param {Nullable<number>} code - Return code from process, if it stopped itself
+ * @param {Nullable<NodeJS.Signals>} signal - Return signal from process
+ */
+const errorExit = (code : Nullable<number>, signal : Nullable<NodeJS.Signals>) : boolean => {
+  if ((code && code !== 0)) {
+    return true;
+  }
+  if (signal === 'SIGABRT' || signal === 'SIGBREAK' || signal === 'SIGINT' || signal === 'SIGKILL') {
+    return true;
+  }
+
+  return false;
+};
+
 export {
   getFormData,
+  errorExit,
 };

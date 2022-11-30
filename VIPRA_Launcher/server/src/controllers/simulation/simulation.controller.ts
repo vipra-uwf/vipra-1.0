@@ -11,6 +11,7 @@ import { OMap } from '../../types/maps/map.types';
 import { RepoType } from '../../types/uploading.types';
 import { FLAGS } from '../../types/flags/flags.types';
 import { Logger } from '../logging/logger';
+import { errorExit } from '../../util/utilMethods';
 
 interface SimInputs {
   mapPath : string;
@@ -49,15 +50,17 @@ export class SimController implements ISimController {
     const runDir = `${this.config.vipra.outputDir}/${runID}`;
     const outputPath = `${runDir}/output.file`;
     makeDir(runDir);
+    
     const inputs = await this.getInputs(mapID, pedsID, params, runDir);
     
     if (inputs) {
+      configID = this.config.flags.get(FLAGS.DEBUG_CONFIG) || configID;
       const simPS = this.simRunner.runSim(runID, configID, inputs.mapPath, inputs.pedPath, inputs.paramFile, outputPath);
       if (simPS) {
         void this.evSys.emit<string>(EventType.NEW, 'SimRun', runID);
         return new Promise(resolve=>{
-          simPS.on('close', (code : Nullable<number>)=>{
-            if (code && code !== 0) {
+          simPS.on('close', (code, signal)=>{
+            if (errorExit(code, signal)) {
               void deleteDir(runDir, true);
               void this.evSys.emit<string>(EventType.FAIL, 'SimRun', runID);
               resolve(null);
@@ -81,7 +84,7 @@ export class SimController implements ISimController {
    * @description Sets up the event handlers for SimController
    */
   private setupHandlers() : void {
-    this.evSys.subscribe(EventType.NEW, 'SimBuild', this.handleNewBuild);
+    this.evSys.subscribe(EventType.SUCCESS, 'SimBuild', this.handleNewBuild);
   }
 
   /**
@@ -90,13 +93,10 @@ export class SimController implements ISimController {
    */
   private handleNewBuild : EventHandler = () : void => {
     if (this.config.flags.has(FLAGS.DEBUG_RUN)) {
-      const configid = this.config.flags.get(FLAGS.DEBUG_CONFIG);
-      if (configid) {
-        this.startSim(configid, '', '', {})
-          .catch((error : string)=>{
-            Logger.error(`Debug Simulation Run Failed: ${error}`);
-          });
-      }
+      this.startSim('', '', '', {})
+        .catch((error : string)=>{
+          Logger.error(`Debug Simulation Run Failed: ${error}`);
+        });
     }
   };
 
