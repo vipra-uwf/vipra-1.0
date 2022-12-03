@@ -4,7 +4,7 @@
 
 import express from 'express';
 import { Link } from './internalTypes';
-import { CbParameters, CbReturnValue, CbServiceInfo } from './Types';
+import { CbParameters, CbResponses, CbReturnValue, CbServiceInfo } from './Types';
 
 /**
  * @description Sends a Response with {@link Link}s from an {@link Endpoint}
@@ -47,6 +47,7 @@ const cbRawRespond = (result : string, response : express.Response) : void => {
 
 /**
  * @description Responds to ChainBuilder with the formats a result is available in
+ * @param {string} resultName - name of result
  * @param {string} baseHref - Base URL of the {@link ResultStore} where the result is stored
  * @param {string} resultHash - Location of result in the {@link ResultStore}
  * @param {string[]} formats - The formats available
@@ -56,7 +57,7 @@ const cbFormatRespond = (baseHref : string, resultHash : string, formats : strin
   response.status(200).json({
     methods:['DELETE'],
     links: formats.map((format)=>{
-      return { 'name': format, 'href': `${baseHref}/${resultHash}/${format}` };
+      return { 'href': `${baseHref}/${resultHash}/${format}` };
     }),
     status: 'success',
   });
@@ -79,11 +80,21 @@ const cbErrorRespond = (message : string, response : express.Response) : void =>
  * @description Responds with a {@link Service}'s info
  * @param {CbServiceInfo} info - Service information
  * @param {CbParameter} parameters - Parameters the {@link Service} takes
- * @param {CbResponse} responses - Result Response information
+ * @param {CbResponse} response - Result Response information
  * @param {CbServerOptions[]} server - Server options
  * @param {express.Response} res - Client Response Object
  */
-const cbServiceInfoRespond = (info : CbServiceInfo, parameters : CbParameters, responses : CbReturnValue[], res : express.Response) : void => {
+const cbServiceInfoRespond = (info : CbServiceInfo, parameters : CbParameters, response : CbReturnValue[], res : express.Response) : void => {
+
+  const responses : CbResponses = {};
+
+  response.forEach((resp)=>{
+    responses[resp.name] = {
+      description: resp.description,
+      type: resp.type,
+    };
+  });
+
   res.send(JSON.stringify({
     info,
     methods:['GET', 'POST'],

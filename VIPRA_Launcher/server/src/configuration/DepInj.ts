@@ -28,7 +28,16 @@ export interface Controllers {
   SimController          : SimController,
 }
 
-
+/**
+ * @description Runs start on all Controllers that have it
+ * @param {Controllers} controllers - Controllers to start
+ */
+export const startControllers = (controllers : Controllers) : void => {
+  controllers.ModuleController.start();
+  controllers.MapController.start();
+  controllers.SimConfigController.start();
+  controllers.BehaviorController.start();
+};
 
 /**
  * @description Creates required controllers
@@ -36,7 +45,8 @@ export interface Controllers {
  * @param {EventSystem} eventSys - event system to pass to controllers
  */
 export const getControllers = (config : Config, eventSys : EventSystem) : Controllers => {
-
+  
+  
   const mapRepo             : MapRepo             = new MapRepo('Map', config);
   const mapService          : MapService          = new MapService(config, mapRepo);
   const mapController       : MapController       = new MapController('OMap', eventSys, mapService, config);
@@ -49,14 +59,14 @@ export const getControllers = (config : Config, eventSys : EventSystem) : Contro
   const simconfigService    : SimConfigService    = new SimConfigService(config, simconfigRepo);
   const simconfigController : SimConfigController = new SimConfigController('SimConfig', eventSys, simconfigService, config);
 
-  const behaviorRepo       : BehaviorRepo               = new BehaviorRepo('Behavior', config);
+  const behaviorRepo       : BehaviorRepo         = new BehaviorRepo('Behavior', config);
   const behaviorService    : BehaviorService      = new BehaviorService(config, behaviorRepo);
   const behaviorController : BehaviorController   = new BehaviorController('Behavior', eventSys, behaviorService, config);
-
-  const simbuilder    : SimulationBuilder            = new SimulationBuilder(config, eventSys);
-  const simRunner     : SimRunner                     = new SimRunner(config);
+  
+  const simbuilder    : SimulationBuilder         = new SimulationBuilder(config, eventSys);
+  const simRunner     : SimRunner                 = new SimRunner(config);
   const simController : SimController             = new SimController(simRunner, config, eventSys);
-  const cbController  : ChainBuilderController     = new ChainBuilderController(config, simController, eventSys);
+  const cbController  : ChainBuilderController    = new ChainBuilderController(config, simController, eventSys);
 
   return {
     ModuleController: moduleController,

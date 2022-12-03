@@ -48,7 +48,7 @@ const initialSetup = () : Config => {
   const config : Config = {
     flags,
     app: {
-      baseURL: 'https://192.168.1.120',
+      baseURL: 'https://192.168.56.1:3000',
       certDir: path.resolve(`${__dirname}/../../certs`),
       port: 3000,
     },
@@ -61,6 +61,7 @@ const initialSetup = () : Config => {
     },
     vipra: {
       vipraDir: path.resolve(`${__dirname}/../../../../VIPRA`),
+      baseDir: path.resolve(`${__dirname}/../../../../VIPRA/Base`),
       behaviorDir: path.resolve(`${__dirname}/../../../../VIPRA/Base/dsl`),
       outputDir: path.resolve(`${__dirname}/../../../../Output`),
       exeName: 'VIPRA_SIM',

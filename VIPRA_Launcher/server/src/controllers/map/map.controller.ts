@@ -16,9 +16,10 @@ import { Logger } from '../logging/logger';
  */
 export class MapController extends BaseController<OMap> {
   /**
-   * @description Called after the base constructor
+   * @description Starts the main function of the controller
+   * @note Should only be called after all controllers have been constructed
    */
-  protected postConstruct(): void {
+  public start(): void {
     this.findMaps();
   }
 

@@ -18,8 +18,6 @@ export abstract class ResultStore implements Node {
 
   protected name            : string;
 
-  protected resultName      : string;
-
   protected type            : string;
 
   abstract getResult(locationID : string) : Promise<CbResult> | CbResult;

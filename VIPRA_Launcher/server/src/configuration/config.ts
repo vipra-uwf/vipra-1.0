@@ -8,6 +8,7 @@ export interface Config {
   },
   vipra: {
     vipraDir : string;
+    baseDir : string;
     behaviorDir : string;
     outputDir : string;
     exeName : string;

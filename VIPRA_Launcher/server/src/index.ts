@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 
 import { Config } from './configuration/config';
 import { EventSystem } from './controllers/events/eventSystem';
@@ -7,13 +8,18 @@ import { Module } from './types/module/module.types';
 import { SimConfig } from './types/simconfig/simconfig.types';
 import { initialSetup, setupHTTPS } from './configuration/setup';
 import { createDefaultRouter } from './routes/default.routes';
-import { getControllers } from './configuration/DepInj';
+import { getControllers, startControllers } from './configuration/DepInj';
 import { OMap } from './types/maps/map.types';
 import { Logger } from './controllers/logging/logger';
 import { createSimRouter } from './routes/simulation.routes';
 import { FLAGS } from './types/flags/flags.types';
 
 const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors());
+
 const config : Config = initialSetup();
 const evSys = new EventSystem();
 
@@ -30,6 +36,7 @@ app.use('/simconfig', simconfigRoutes);
 app.use('/simulation', simulationRoutes);
 app.use('*', createDefaultRouter());
 
+startControllers(controllers);
 controllers.SimulationBuilder.startup();
 
 if (!config.flags.has(FLAGS.NO_SERV)) {

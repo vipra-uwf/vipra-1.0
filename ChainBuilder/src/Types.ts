@@ -36,6 +36,8 @@ interface CbArgument {
   sample?: string;
 }
 
+type CbResponses = { [key : string] : { description: string; type:string } };
+
 interface CbReturnValue {
   name : string;
   type : string;
@@ -55,6 +57,7 @@ export {
   CbRootOptions,
   CbServiceInfo,
   CbParameters,
+  CbResponses,
   CbArgument,
   CbMethod,
   CbResult,

@@ -46,7 +46,7 @@ export class SimResultStore extends ResultStore {
    * @param {string} result - file location of the results
    */
   public storeResult(args: CbArgs, result: string): CbResult {
-    const hash : string = crypto.createHash('sha256').update(JSON.stringify(args)).toString();
+    const hash = crypto.createHash('sha256').update(JSON.stringify(args)).digest('hex').toString();
     this.resultMap.set(hash, result);
     return { error: false, result: hash };
   }

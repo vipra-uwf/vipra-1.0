@@ -8,7 +8,7 @@ import { DeepPartial, Nullable, OperationResult } from '../../types/typeDefs';
 import { UploadRequest, UploadType } from '../../types/uploading.types';
 import { getFormData } from '../../util/utilMethods';
 import { BaseController } from '../base.controller';
-import { EventHandler, EventType, RequestType } from '../events/eventTypes';
+import { EventType, RequestType } from '../events/eventTypes';
 import { Logger } from '../logging/logger';
 
 
@@ -16,10 +16,14 @@ import { Logger } from '../logging/logger';
  * @description Controller for Simulation Configurations
  */
 export class SimConfigController extends BaseController<SimConfig> {
+  
+
+  
   /**
-   * @description Called after the base constructor
+   * @description Starts the main function of the controller
+   * @note Should only be called after all controllers have been constructed
    */
-  protected postConstruct(): void {
+  public start(): void {
     this.findConfigs();
   }
 
@@ -27,7 +31,6 @@ export class SimConfigController extends BaseController<SimConfig> {
    * @description Sets the hanlders for SimConfig events 
    */
   protected setupEventHandlers(): void {
-    this.evSys.subscribe(EventType.FAIL, 'SimConfig', this.failedConfig);
   }
 
   /**
@@ -37,7 +40,29 @@ export class SimConfigController extends BaseController<SimConfig> {
     this.evSys.setRequestHandler(RequestType.DATA, 'SimConfig', (select : Partial<SimConfig>) : Promise<Nullable<SimConfig[]>> => {
       return this.service.get(select);
     });
-    this.evSys.setRequestHandler(RequestType.DATA, 'SimConfigParams', this.getParams);
+
+    /**
+     * @description Request Hanlder for simconfig parameters
+     * @note By the event system convention this should return Promise<Nullable<ModuleParam[][]>>, but currently does not
+     * @param {Partial<SimConfig>} select - select object for simconfig
+     */
+    const getParams = async (select : Partial<SimConfig>) : Promise<Nullable<ModuleParam[]>> => {
+      const simconfig = await this.service.get(select);
+      if (simconfig && simconfig?.length > 0) {
+        let params : ModuleParam[] = [];
+        for (const id of Object.values(simconfig[0].modules)) {
+          const module = await this.evSys.request<Module>(RequestType.DATA, 'Module', { id });
+          if (module && module[0]) {
+            params = params.concat(module[0].params);
+          }
+        }
+        return params;
+      } else {
+        return null;
+      }
+    };
+
+    this.evSys.setRequestHandler(RequestType.DATA, 'SimConfigParams', getParams);
   }
 
   /**
@@ -73,7 +98,7 @@ export class SimConfigController extends BaseController<SimConfig> {
       if (config.modules) {
         for (const key of Object.values(ModuleType)) {
           if (request.body[key]) {
-            const modules = await this.evSys.request<Module[]>(RequestType.DATA, 'Module', { id: request.body[key] as string });
+            const modules = await this.evSys.request<Module>(RequestType.DATA, 'Module', { id: request.body[key] as string });
             if (modules) {
               if (modules[0]) {
                 if (modules[0].type === key) {
@@ -91,25 +116,7 @@ export class SimConfigController extends BaseController<SimConfig> {
     return null;
   };
 
-  /**
-   * @description Request Hanlder for simconfig parameters
-   * @param {Partial<SimConfig>} select - select object for simconfig
-   */
-  private getParams = async (select : Partial<SimConfig>) : Promise<Nullable<ModuleParam[]>> => {
-    const simconfig = await this.service.get(select);
-    if (simconfig) {
-      const params : ModuleParam[] = [];
-      for (const id of Object.values(simconfig[0].modules)) {
-        const module = await this.evSys.request<Module>(RequestType.DATA, 'Module', { id });
-        if (module) {
-          params.concat(module.params);
-        }
-      }
-      return params;
-    } else {
-      return null;
-    }
-  };
+  
 
   /**
    * @description Finds all installed maps and adds them to the repo
@@ -119,16 +126,10 @@ export class SimConfigController extends BaseController<SimConfig> {
       const config : Nullable<SimConfig> = readJsonFile<SimConfig>(filePath);
       if (config) {
         Logger.info(`Found SimConfig: ${config.name} : ${config.id} AT: ${filePath}`);
-        void this.service.found(config, path.dirname(filePath));
+        void this.service.found(config, path.dirname(filePath)).then(() => {
+          void this.evSys.emit<SimConfig>(EventType.NEW, 'SimConfig', config);
+        });
       }
     });
   }
-
-  /**
-   * @description Handles a SimConfig becoming obsolete
-   * @param {SimConfig} config - config that is now obsolete
-   */
-  private failedConfig : EventHandler = (config : SimConfig) : void =>{
-    void this.service.delete({ id: config.id });
-  };
 }

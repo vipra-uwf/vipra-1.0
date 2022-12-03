@@ -146,9 +146,9 @@ export class SimController implements ISimController {
     if (this.config.flags.has(FLAGS.DEBUG_MAP)) {
       return this.config.flags.get(FLAGS.DEBUG_MAP) || null;
     }
-    const map = await this.evSys.request<RepoType<OMap>>(RequestType.DATA_W_PATH, 'OMap', { id: mapID });
-    if (map) {
-      const mapPath = `${map.dirPath}/${map.object.name}.omap`;
+    const maps = await this.evSys.request<RepoType<OMap>>(RequestType.DATA_W_PATH, 'OMap', { id: mapID });
+    if (maps && maps[0]) {
+      const mapPath = `${maps[0].dirPath}/${maps[0].object.name}.omap`;
       if (fileExists(mapPath)) {
         return mapPath;
       }

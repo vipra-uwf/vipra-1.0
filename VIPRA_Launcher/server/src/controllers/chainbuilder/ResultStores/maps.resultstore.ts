@@ -25,7 +25,7 @@ export class MapsResultStore extends ResultStore {
    * @returns CbResult
    */
   async getResult(): Promise<CbResult> {
-    const maps : Nullable<OMap[]> = await this.evsys.request<OMap[]>(RequestType.DATA, 'OMap', {});
+    const maps : Nullable<OMap[]> = await this.evsys.request<OMap>(RequestType.DATA, 'OMap', {});
     if (maps) {
       return { error: false, result: JSON.stringify(maps) };
     } else {

@@ -4,15 +4,13 @@
   "description": "Backend for the VIPRA Launcher",
   "main": "index.js",
   "scripts": {
-    "prebuild": "npm run lint",
+    "prebuild": "rm -rf ./dist && npm run lint",
     "build": "tsc -p tsconfig.build.json",
     "prestart": "npm run build",
     "start": "node ./dist/vipralauncher.js flagsfile=./dist/flags.txt",
     "lint": "eslint . --ext .ts --fix",
     "docs": "npx typedoc --options ./typedoc.json",
-    "test": "jest",
-    "quickbuild": "tsc -p tsconfig.build.json",
-    "quickstart": "node ./dist/vipralauncher.js flagsfile=./dist/flags.txt qstart"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",

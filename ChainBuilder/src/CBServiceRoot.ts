@@ -5,7 +5,6 @@
 
 import express from 'express';
 
-
 import { Node } from './Node.interface';
 import { Endpoint } from './Endpoint';
 import { cbErrorRespond } from './Responses';
@@ -13,7 +12,6 @@ import { ResultStore } from './ResultStore';
 import { Service } from './Service';
 import { Nullable } from './typedefs';
 import { CbRootOptions } from './Types';
-
 
 /**
  * @description ChainBuilder Server that handles routing of requests to {@link Endpoint}s and their {@link Service} and/or {@link ResultStore}
@@ -153,6 +151,7 @@ export class CBServiceRoot {
    * @note ResultStores should not be added by themselves, they should be added with their respective {@link Service}
    * @param  {ResultStore} resultStore - ResultStore to add
    * @param  {string} name - Name of the {@link ResultStore}
+   * @param  {CbReturnValue} results - service result type
    */
   private addResultStore(resultStore : ResultStore, name : string) : void {
     if (!this.resultStores.has(name)) {

@@ -17,9 +17,10 @@ import { Logger } from '../logging/logger';
  */
 export class BehaviorController extends BaseController<Behavior> {
   /**
-   * @description Called after the base constructor
+   * @description Starts the main function of the controller
+   * @note Should only be called after all controllers have been constructed
    */
-  protected postConstruct(): void {
+  public start(): void {
     this.findBehaviors();
   }
 

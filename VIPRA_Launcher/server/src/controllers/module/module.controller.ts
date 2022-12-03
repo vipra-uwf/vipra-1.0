@@ -11,8 +11,6 @@ import { forAllFilesThatMatchDo, readJsonFile } from '../../util/fileOperations'
 import { Logger } from '../logging/logger';
 
 
-
-
 /**
  * @description Controller for modules
  */
@@ -40,9 +38,10 @@ export class ModuleController extends BaseController<Module> {
   }
 
   /**
-   * @description Called after base constructor has finised
+   * @description Starts the main function of the controller
+   * @note Should only be called after all controllers have been constructed
    */
-  protected postConstruct(): void {
+  public start(): void {
     void this.loadInstalledObjects();
   }
 
@@ -85,7 +84,7 @@ export class ModuleController extends BaseController<Module> {
    * @description Method for loading installed modules on construction
    */
   private loadInstalledObjects(): void {
-    for (const dir of [this.config.modules.modulesDir, this.config.vipra.vipraDir]) {
+    for (const dir of [this.config.modules.modulesDir, this.config.vipra.baseDir]) {
       forAllFilesThatMatchDo(/.*\.mm/, dir, (filePath : string)=>{     
         const module : Nullable<Module> = readJsonFile<Module>(filePath);
         if (module) {

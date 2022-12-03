@@ -15,7 +15,7 @@ type Request = express.Request;
  */
 export abstract class BaseController<DataType extends Identifiable> {
 
-  protected abstract postConstruct() : void;
+  public abstract start() : void;
   protected abstract setupEventHandlers() : void;
   protected abstract setupRequestHandlers() : void;
   protected abstract createUpload(req : Request) : Promise<OperationResult<Partial<UploadType<DataType>>>>;
@@ -35,7 +35,6 @@ export abstract class BaseController<DataType extends Identifiable> {
     this.type = type;
     this.setupEventHandlers();
     this.setupRequestHandlers();
-    this.postConstruct();
   }
 
   /**

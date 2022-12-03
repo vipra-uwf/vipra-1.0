@@ -49,12 +49,15 @@ export class Service {
       cbServiceInfoRespond(this.info, this.parameters, [this.methodReturn], response);
       return;
     } else {
-      const resultLocation = await this.runService(request);
+      const resultLocation = await this.runService(request)
+        .catch(()=>{
+          return { error: true, result: 'Unkown Error in Service Method' };
+        });
       if (resultLocation.error) {
         cbErrorRespond(resultLocation.result, response);
         return;
       } else {
-        cbResultRespond(this.methodReturn.name, `${this.resultStore.getBaseURL()}/${resultLocation.result}`, response);
+        cbResultRespond(this.methodReturn.name, `${this.resultStore.getBaseURL()}/${resultLocation.result}/`, response);
         return;
       }
     }
@@ -198,5 +201,13 @@ export class Service {
    */
   public getKey() : Protect<string> {
     return this.info.key;
+  }
+
+  /**
+   * @description Returns the return type info for the service
+   * @returns {CbReturnValue}
+   */
+  public getResponses() : CbReturnValue {
+    return this.methodReturn;
   }
 }

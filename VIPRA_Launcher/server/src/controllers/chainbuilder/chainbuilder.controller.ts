@@ -34,8 +34,9 @@ export class ChainBuilderController {
   constructor(config : Config, simController : ISimController, evSys : EventSystem) {
     this.evSys = evSys;
     this.config = config;
-    this.baseURL = `${config.app.baseURL}/simulation/`;
+    this.baseURL = `${config.app.baseURL}/simulation`;
     this.simController = simController;
+    this.serviceMap = new Map();
     this.setupServiceRoot();
     this.setupResultStore();
     this.setupMapsService();
@@ -85,16 +86,17 @@ export class ChainBuilderController {
       description: 'Results of a simulation run',
     };
 
-    const params : Nullable<CbArgument[]> = (await this.evSys.request<ModuleParam[]>(RequestType.DATA, 'SimConfigParams', { id: simconfig.id }))?.map((param) : CbArgument => {
+    const modparams : Nullable<CbArgument[]> = (await this.evSys.request<ModuleParam>(RequestType.DATA, 'SimConfigParams', { id: simconfig.id }))?.map((param) : CbArgument => {
       return {
-        chain_name: `${param.name}_href`,
+        chain_name: `${param.name}`,
         description: param.description,
         type: param.type,
         repeatable: param.multiple,
       };
     }) || null;
     
-    if (params) {
+    if (modparams) {
+      const params = this.addBaseParams(modparams);
       const serviceOpts : CbServiceOptions = {
         info       : serviceInfo,
         arguments  : params,
@@ -191,10 +193,10 @@ export class ChainBuilderController {
    */
   private serviceMethod(id : string) : CbMethod {
     return async (args : CbArgs) : Promise<CbResult> => {
-      const mapID : Nullable<string> = args.map[0] || null;
-      const pedID : Nullable<string> = args.peds[0] || null;
-      if (mapID && pedID) {
-        const result = await this.simController.startSim(id, mapID, pedID, args);
+      const mapID : Nullable<string> = args.mapID[0] || null;
+      const pedsID : Nullable<string> = args.pedsID[0] || null;
+      if (mapID && pedsID) {
+        const result = await this.simController.startSim(id, mapID, pedsID, args);
         if (result) {
           return { error: false, result };
         } else {
@@ -204,5 +206,28 @@ export class ChainBuilderController {
         return { error: true, result: 'Missing Parameters' };
       }
     };
+  }
+
+  /**
+   * @description adds parameters for map, peds etc
+   * @param {CbArgument[]} modParams - parameters from modules
+   */
+  private addBaseParams(modParams : CbArgument[]) : CbArgument[] {
+    const params : CbArgument[] = modParams.concat([
+      {
+        chain_name: 'mapID',
+        type: 'string',
+        description: 'ID For Obstacle Map to use in simulation',
+        repeatable: false,
+      },
+      {
+        chain_name: 'pedsID',
+        type: 'string',
+        description: 'ID of pedestrian initial positions set to use in simulation',
+        repeatable: false,
+      },
+    ]);
+
+    return params;
   }
 }

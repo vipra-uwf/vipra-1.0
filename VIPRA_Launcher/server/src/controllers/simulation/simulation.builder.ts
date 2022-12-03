@@ -100,8 +100,8 @@ export class SimulationBuilder {
   private compileModule : EventHandler = async (module : Module) : Promise<void> => {
     
     const mod = await this.evSys.request<RepoType<Module>>(RequestType.DATA_W_PATH, 'Module', { id: module.id });
-    if (mod) {
-      const compiled = await this.compilationRunner.buildModule(module, mod.dirPath, this.config.simulation.debugMode);
+    if (mod && mod[0]) {
+      const compiled = await this.compilationRunner.buildModule(module, mod[0].dirPath, this.config.simulation.debugMode);
       if (compiled === Status.SUCCESS) {
         this.addedModuleType(module.type);
         void this.evSys.emit<Module>(EventType.SUCCESS, 'Module', module);
@@ -245,10 +245,10 @@ export class SimulationBuilder {
   private async compileAllModules() : Promise<void> {
     const modules = await this.evSys.request<RepoType<Module>[]>(RequestType.DATA_W_PATH, 'Module', {});
 
-    if (modules) {
+    if (modules && modules[0]) {
       let builds : Promise<Status>[] = [];
       let curr = 0;
-      for (const module of modules) {
+      for (const module of modules[0]) {
         if (curr >= this.config.simulation.maxConcurComps) {
           await Promise.all(builds);
           curr = 0;

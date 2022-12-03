@@ -52,16 +52,16 @@ export class EventSystem {
    * @param {EventData} dataType - type of object requested
    * @param {RequestType} type - type of request
    */
-  public async request<DataType>(type : RequestType, dataType : EventData, select : unknown) : Promise<Nullable<DataType>> {
+  public async request<DataType>(type : RequestType, dataType : EventData, select : unknown) : Promise<Nullable<DataType[]>> {
     evLogger.info(`REQUEST : ${Object.values(RequestType)[type]} ; DATATYPE: ${dataType} ; SELECT: ${JSON.stringify(select) || 'NULL'}`);
     const map = this.requestMap.get(dataType) || null;
     if (map) {
       const handler = map.get(type);
       if (handler) {
-        return await handler(select) as Nullable<DataType>;
+        return await handler(select) as Nullable<DataType[]>;
       }
     }
-    evLogger.error(`FAIL: REQUEST: ${type} ; DATATYPE: ${dataType} ; SELECT: ${JSON.stringify(select) || 'NULL'}`);
+    evLogger.error(`NO HANDLER FOR REQUEST: ${Object.values(RequestType)[type]} ; DATATYPE: ${dataType} ; SELECT: ${JSON.stringify(select) || 'NULL'}`);
     return null;
   }
 
@@ -73,7 +73,9 @@ export class EventSystem {
    * @param {RequestHandler} handler - handler for request
    */
   public setRequestHandler(requestType : RequestType, dataType : EventData,  handler : RequestHandler) : void {
-
+    if (!this.isFunction(handler)) {
+      throw new Error(`Attempt To Subscribe Non-Function To: ${Object.values(RequestType)[requestType]} ; TYPE: ${dataType}`);
+    }
     if (!this.requestMap.has(dataType)) {
       this.requestMap.set(dataType, new Map());
     }
@@ -95,6 +97,9 @@ export class EventSystem {
    * @param  {EventHandler} handler - handler function to subscribe
    */
   public subscribe(event : EventType, dataType : EventData, handler : EventHandler) : void {
+    if (! this.isFunction(handler)) {
+      throw new Error(`Attempt To Subscribe Non-Function To: ${Object.values(EventType)[event]} ; TYPE: ${dataType}`);
+    }
     evLogger.info(`SUBSCRIBE: ${Object.values(EventType)[event]} ; TYPE: ${dataType}`);
     if (!this.eventHandlers.has(dataType)) {
       this.eventHandlers.set(dataType, new Map());
@@ -110,5 +115,17 @@ export class EventSystem {
         eventHandlers.push(handler);
       }
     }
+  }
+
+  /**
+   * @description Checks that an object is a function
+   * @param {unknown} functionToCheck - object to check
+   * @returns 
+   */
+  private isFunction(functionToCheck : unknown) : boolean {
+    if (functionToCheck && {}.toString.call(functionToCheck) === '[object Function]') {
+      return true;
+    }
+    return false;
   }
 }
