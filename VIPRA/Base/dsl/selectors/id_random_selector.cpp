@@ -16,7 +16,7 @@ IdRandomSelector::IdRandomSelector(SimulationContext *simulationContext, FLOATIN
 void IdRandomSelector::selectPedestrianIds(const PedestrianSet& pedestrianSet)
 {
     int divisor = static_cast<int>(1.0 / ratio);
-    for (auto pedestrianId: (pedestrianSet->getIds()))
+    for (auto pedestrianId: (pedestrianSet.getIds()))
     {
         int diceRoll = rand() % divisor;
         if (diceRoll == 0)
@@ -29,7 +29,7 @@ void IdRandomSelector::selectPedestrianIds(const PedestrianSet& pedestrianSet)
 
 bool IdRandomSelector::select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals, const PedestrianSet& pedestrianSet)
 {
-    int pedestrianId = pedestrianSet->getIds().at(pedestrianIndex);
+    int pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
     return std::find(selectedPedestrianIds.begin(),
                      selectedPedestrianIds.end(),
                      pedestrianId) != selectedPedestrianIds.end();

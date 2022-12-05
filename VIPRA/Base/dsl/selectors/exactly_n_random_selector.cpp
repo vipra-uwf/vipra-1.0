@@ -15,7 +15,7 @@ ExactlyNRandomSelector::ExactlyNRandomSelector(SimulationContext *simulationCont
 
 void ExactlyNRandomSelector::selectPedestrianIds(const PedestrianSet& pedestrianSet)
 {
-    int numPedestrians = pedestrianSet->getNumPedestrians();
+    int numPedestrians = pedestrianSet.getNumPedestrians();
     while (selectedPedestrianIds.size() < count)
     {
         int pedestrianId = rand() % numPedestrians;
@@ -34,7 +34,7 @@ void ExactlyNRandomSelector::initialize()
 
 bool ExactlyNRandomSelector::select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals, const PedestrianSet& pedestrianSet)
 {
-    int pedestrianId = pedestrianSet->getIds().at(pedestrianIndex);
+    int pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
     return std::find(selectedPedestrianIds.begin(),
                      selectedPedestrianIds.end(),
                      pedestrianId) != selectedPedestrianIds.end();

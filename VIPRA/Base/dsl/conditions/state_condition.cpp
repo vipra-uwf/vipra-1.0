@@ -8,7 +8,7 @@ StateCondition::StateCondition(SimulationContext *simulationContext, int desired
 
 bool StateCondition::evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet)
 {
-    int pedestrianId = pedestrianSet->getIds().at(pedestrianIndex);
+    int pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
 
     int currentState = this->getSimulationContext()->states.at(pedestrianId);
     
