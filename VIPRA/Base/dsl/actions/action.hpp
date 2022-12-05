@@ -2,8 +2,9 @@
 #define ACTION_HPP
 
 #include "../simulation_context.hpp"
-#include "../../../Extendable/pedestrian_set/pedestrian_set.hpp"
-#include "../../../Extendable/obstacle_set/obstacle_set.hpp"
+#include "../../../Extendable/pedestrianset/pedestrian_set.hpp"
+#include "../../../Extendable/obstacleset/obstacle_set.hpp"
+#include "../../../Extendable/goals/goals.hpp"
 
 /**
  * An action is something the pedestrian does, such as stopping movement.

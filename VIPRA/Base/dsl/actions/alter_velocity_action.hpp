@@ -15,7 +15,7 @@ class AlterVelocityAction : public Action {
         AlterVelocityAction(SimulationContext *simulationContext, ALTER_DIRECTION alterDirection,
                             FLOATING_NUMBER factor);
         void performAction(int pedestrianIndex, const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet, const Goals& goals) override;
-        void initialize() override;
+        void initialize(const PedestrianSet& pedestrianSet) override;
 
 private:
         Dimensions computeAlteredDimensions(Dimensions originalDimensions);
