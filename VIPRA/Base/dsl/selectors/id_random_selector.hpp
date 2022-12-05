@@ -19,12 +19,12 @@ class IdRandomSelector: public Selector
         void initialize() override;
 
     protected:
-        bool select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals) override;
+        bool select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals, const PedestrianSet& pedestrianSet) override;
 
     private:
         std::vector<int> selectedPedestrianIds;
         FLOATING_NUMBER ratio;
-        void selectPedestrianIds();
+        void selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };
 
 

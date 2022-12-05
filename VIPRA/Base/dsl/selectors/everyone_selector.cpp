@@ -7,7 +7,7 @@ EveryoneSelector::EveryoneSelector(SimulationContext *simulationContext)
 {
 }
 
-bool EveryoneSelector::select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals)
+bool EveryoneSelector::select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals, const PedestrianSet& pedestrianSet)
 {
     return true;
 }

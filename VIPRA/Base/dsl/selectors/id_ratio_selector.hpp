@@ -13,7 +13,7 @@ class IdRatioSelector: public Selector
 {
     public:
         IdRatioSelector(SimulationContext *simulationContext, FLOATING_NUMBER ratio);
-        bool select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals) override;
+        bool select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals, const PedestrianSet& pedestrianSet) override;
 
     private:
         FLOATING_NUMBER ratio;

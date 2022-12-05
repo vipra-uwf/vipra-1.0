@@ -15,12 +15,12 @@ class ExactlyNRandomSelector: public Selector
         void initialize() override;
 
     protected:
-        bool select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals) override;
+        bool select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals, const PedestrianSet& pedestrianSet) override;
 
     private:
         std::vector<int> selectedPedestrianIds;
         int count;
-        void selectPedestrianIds();
+        void selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };
 
 

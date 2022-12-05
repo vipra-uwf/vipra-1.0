@@ -2,8 +2,9 @@
 #define SELECTOR_HPP
 
 #include "../simulation_context.hpp"
-#include "../../../Extendable/pedestrian_set/pedestrian_set.hpp"
-#include "../../../Extendable/obstacle_set/obstacle_set.hpp"
+#include "../../../Extendable/pedestrianset/pedestrian_set.hpp"
+#include "../../../Extendable/obstacleset/obstacle_set.hpp"
+#include "../../../Extendable/goals/goals.hpp"
 
 /**
  * A selector is used to decide if a pedestrian should be evaluated for a 
@@ -14,7 +15,7 @@ class Selector
 {
     public:
         explicit Selector(SimulationContext *simulationContext);
-        virtual bool select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals) = 0;
+        virtual bool select(int pedestrianIndex, const ObstacleSet& obstacleSet, const Goals& goals, const PedestrianSet& pedestrianSet) = 0;
         virtual void initialize();
 
     protected:
