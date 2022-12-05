@@ -12,7 +12,7 @@ class ElapsedTimeCondition: public Condition
 {
     public:
         ElapsedTimeCondition(SimulationContext *simulationContext, FLOATING_NUMBER desiredElapsedTime);
-        bool evaluate(int pedestrianIndex) override;
+        bool evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) override;
     
     protected:
         FLOATING_NUMBER desiredElapsedTime;

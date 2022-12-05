@@ -2,6 +2,7 @@
 #define CONDITION_HPP
 
 #include "../simulation_context.hpp"
+#include "../../../Extendable/pedestrianset/pedestrian_set.hpp"
 
 /**
  * A condition gets evaluated as a part of a selector or transition. It

@@ -12,7 +12,7 @@ class StateCondition: public Condition
 {
     public:
         StateCondition(SimulationContext *simulationContext, int desiredState);
-        bool evaluate(int pedestrianIndex) override;
+        bool evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) override;
     
     private:
         int desiredState;

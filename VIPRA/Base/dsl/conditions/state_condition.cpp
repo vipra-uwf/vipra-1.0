@@ -6,18 +6,11 @@ StateCondition::StateCondition(SimulationContext *simulationContext, int desired
     this->desiredState = desiredState;
 }
 
-bool StateCondition::evaluate(int pedestrianIndex)
+bool StateCondition::evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet)
 {
-    int pedestrianId = this
-        ->getSimulationContext()
-        ->pedestrianSet
-        ->getIds()
-        .at(pedestrianIndex);
+    int pedestrianId = pedestrianSet->getIds().at(pedestrianIndex);
 
-    int currentState = this
-        ->getSimulationContext()
-        ->states
-        .at(pedestrianId);
+    int currentState = this->getSimulationContext()->states.at(pedestrianId);
     
     return  currentState == this->desiredState;
 }
