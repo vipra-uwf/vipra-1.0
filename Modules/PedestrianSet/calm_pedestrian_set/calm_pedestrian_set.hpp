@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "../../../VIPRA/Extendable/pedestrianset/pedestrian_set.hpp"
+#include "../../../VIPRA/Base/definitions/state.hpp"
 
 class CalmPedestrianSet : public PedestrianSet {
  public:
@@ -54,6 +55,8 @@ class CalmPedestrianSet : public PedestrianSet {
         void setReactionTimes(std::vector<FLOATING_NUMBER>& reactionTimes);
         void setDesiredSpeeds(std::vector<FLOATING_NUMBER>& desiredSpeeds);
         void setShoulderLengths(std::vector<FLOATING_NUMBER>& shoulderLengths);
+
+        void updateState(std::shared_ptr<State> state);
 
 
  private:

@@ -174,3 +174,11 @@ void CalmPedestrianSet::setVelocity(Dimensions&& velocity, size_t index) {
 void CalmPedestrianSet::setPedestrianCoordinates(Dimensions&& coords, size_t index) {
     this->pedestrianCoordinates.at(index) = std::move(coords);
 }
+
+void CalmPedestrianSet::updateState(std::shared_ptr<State> state) {
+    for(int i = 0; i < this->numPedestrians; i++) {
+        this->velocities[i] = state->velocities[i];
+        this->pedestrianCoordinates[i].axis[0] = state->pedestrianCoordinates[i].axis[0];
+        this->pedestrianCoordinates[i].axis[1] = state->pedestrianCoordinates[i].axis[1];
+    }
+}

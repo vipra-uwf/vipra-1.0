@@ -19,8 +19,8 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
        void      configure(const CONFIG_MAP& configMap) override;
        void      initialize(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
                      Goals& goals) override;
-       DimVector update(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
-                     Goals& goals, FLOATING_NUMBER time) override;
+       std::shared_ptr<State> timestep(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
+                     Goals& goals, FLOATING_NUMBER time);
 
 
       //Getters and Setters
@@ -59,10 +59,15 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
       FLOATING_NUMBER*                          pedestrianDistanceMatrix;
       FLOATING_NUMBER*                          obstacleDistanceMatrix;
 
+      std::shared_ptr<State>                    modelState;
+
 
       void                                      calculatePriority(CalmPedestrianSet& pedestrianSet, Goals& goals);
       void                                      calculateBeta();                                                               
       void                                      raceDetection();
+      
+
+      void                                    updateModelState(CalmPedestrianSet& pedestrianSet, FLOATING_NUMBER time);
 
      inline bool                               neighborDirectionTest(CalmPedestrianSet& pedestrianSet,
                                                   int firstPedestrianIndex, int secondPedestrianIndex,

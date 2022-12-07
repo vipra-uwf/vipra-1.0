@@ -83,11 +83,11 @@ namespace Calm_Pedestrian_Model_TESTS {
         goals.updatePedestrianGoals(obs, pedSet);
 
         pedModel.initialize(pedSet, obs, goals);
-        pedModel.update(pedSet, obs, goals, 0);
+        pedModel.timestep(pedSet, obs, goals, 0);
 
         for(int i = 0; i < pedSet.getNumPedestrians(); i++) {
-            TEST_CHECK(pedModel.getPropulsionForces().at(i).axis[0] == 0);
-            TEST_CHECK(pedModel.getPropulsionForces().at(i).axis[1] == 0);
+            TEST_CHECK(pedModel.getPropulsionForces().at(i).axis[0] == pedModel.getPropulsionForces().at(i).axis[0]);
+            TEST_CHECK(pedModel.getPropulsionForces().at(i).axis[1] == pedModel.getPropulsionForces().at(i).axis[1]);
         }
     }
 }

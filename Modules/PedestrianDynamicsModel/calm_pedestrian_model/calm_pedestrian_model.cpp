@@ -10,20 +10,88 @@ void CalmPedestrianModel::initialize(PedestrianSet& pedestrianSet, ObstacleSet& 
     pedestrianSet = static_cast<CalmPedestrianSet&>(pedestrianSet);
     this->pedestrianDistanceMatrix = new FLOATING_NUMBER[pedestrianSet.getNumPedestrians() * pedestrianSet.getNumPedestrians()];
     this->propulsionForces = DimVector(pedestrianSet.getNumPedestrians(), Dimensions{0.0f, 0.0f});
+    this->modelState = std::make_shared<State>(pedestrianSet.getNumPedestrians());
 }
 
-DimVector CalmPedestrianModel::update(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
+std::shared_ptr<State> CalmPedestrianModel::timestep(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
     Goals& goals, FLOATING_NUMBER time){
 
     CalmPedestrianSet calmPedestrianSet = static_cast<CalmPedestrianSet&>(pedestrianSet);
     AirplaneObstacleSet airObstacleSet = static_cast<AirplaneObstacleSet&>(obstacleSet);
     CalmGoals calmGoals = static_cast<CalmGoals&>(goals);
+
+
     calculateDistanceMatrices(calmPedestrianSet);
     calculateNeartestNeighbors(calmPedestrianSet);
     calculateDesiredSpeeds(calmPedestrianSet, calmGoals);
     calculatePropulsion(calmPedestrianSet, calmGoals);
+    updateModelState(calmPedestrianSet, time);
+    
+    return this->modelState;
+}
 
-    return {};
+void CalmPedestrianModel::updateModelState(CalmPedestrianSet& pedestrianSet, FLOATING_NUMBER time) {
+
+    //Need some clarification on why we need this coeff... - NR
+    FLOATING_NUMBER coeff = 0.01; 
+
+    DimVector newVelocities = DimVector(pedestrianSet.getNumPedestrians(), Dimensions{0.0f, 0.0f});
+    DimVector newPositions = DimVector(pedestrianSet.getNumPedestrians(), Dimensions{0.0f, 0.0f});
+
+    Dimensions newVelocity;
+    FLOATING_NUMBER newSpeed;
+    Dimensions newPosition;
+
+    int numPedestrians = pedestrianSet.getNumPedestrians();
+    for (int i = 0; i < numPedestrians; ++i)
+    {
+
+        FLOATING_NUMBER propulsiveX = this->propulsionForces.at(i).axis[0];
+        FLOATING_NUMBER propulsiveY = this->propulsionForces[i].axis[1];
+        FLOATING_NUMBER velocityX = pedestrianSet.getVelocities()[i].axis[0];
+        FLOATING_NUMBER velocityY = pedestrianSet.getVelocities()[i].axis[1];
+        FLOATING_NUMBER mass = pedestrianSet.getMasses()[i];
+        FLOATING_NUMBER desiredSpeed = pedestrianSet.getDesiredSpeeds()[i];
+        FLOATING_NUMBER coordinateX = pedestrianSet.getPedestrianCoordinates()[i].axis[0];
+        FLOATING_NUMBER coordinateY = pedestrianSet.getPedestrianCoordinates()[i].axis[1];
+            
+        newVelocity =
+        (
+            Dimensions
+            {
+                (propulsiveX * (time / mass) + velocityX),
+                (propulsiveY * (time / mass) + velocityY)
+            }
+        );
+        
+        newSpeed = ((newVelocity.axis[0]
+            * newVelocity.axis[0])
+            + (newVelocity.axis[1]
+            * newVelocity.axis[1]));
+
+        if(newSpeed < (desiredSpeed * desiredSpeed))
+        {
+            newPosition =
+                Dimensions
+                {
+                    (coordinateX + (newVelocity.axis[0] * time)),
+                    (coordinateY + (newVelocity.axis[1] * time))   
+                };
+        } else
+        {
+            newPosition =
+                Dimensions
+                {
+                    coordinateX + (newVelocity.axis[0] * (desiredSpeed / (newSpeed+coeff)) * time),
+                    coordinateY + (newVelocity.axis[1] * (desiredSpeed / (newSpeed+coeff)) * time)
+                };
+        }
+
+        this->modelState->velocities[i] = newVelocity;
+        this->modelState->pedestrianCoordinates[i] = newVelocity;
+        this->modelState->affector[i] = Affector::PED_MODEL;
+    }
+
 }
 
 //TODO: Add Goals and ObstacleSet to Algorithm
@@ -219,7 +287,7 @@ inline bool CalmPedestrianModel::neighborSpacialTest(CalmPedestrianSet& pedestri
   return L <= R;
 }
 
-
+//determine pedestrian direction
 void CalmPedestrianModel::calculatePropulsion(CalmPedestrianSet& pedestrianSet, CalmGoals& goals) 
 {
     const DimVector& currentGoals = goals.getAllCurrentGoals();
@@ -245,87 +313,56 @@ void CalmPedestrianModel::calculatePropulsion(CalmPedestrianSet& pedestrianSet, 
             FLOATING_NUMBER velocityY = pedestrianSet.getVelocities()[i].axis[1];
             FLOATING_NUMBER reactionTime = pedestrianSet.getReactionTimes()[i];
 
-            if(goalX == coordinateX && goalY == 0)
-            {
-                if(coordinateY < 0)
-                {
-                    newVelocity =
-                    (
-                        Dimensions
-                        {
-                            0.0,
-                            desiredSpeed
-                        }
-                    );
-                }
-                // Possible bug: We do not check the case where the coordinate is exactly 0
-                // TODO: people on the top half of the plane inexplicably get 1.1 times speed -RG
-                else if(coordinateY > 0)
-                {               
-                    newVelocity =
-                    (
-                        Dimensions
-                        {
-                            0.0,
-                            -1.0f * desiredSpeed
-                        }
-                    );
-                }
-            }
-            else if(goalX == endGoals[i].axis[0] && goalY == 0)
-            {
-                if((coordinateY >= (goalY) + 0.2)
-                || (coordinateY <= (goalY) - 0.2))
-                {
-                    if(coordinateY > 0)
-                    {
-                        newVelocity = 
-                        (
-                            Dimensions
-                            {
-                                xAisleCoefficent *
-                                desiredSpeed,
-                                (-1 * yAisleCoefficent) *
-                                desiredSpeed
-                            }
-                        );
-                    } 
-                    else
-                    {
-                        newVelocity = 
-                        (
-                            Dimensions
-                            {
-                                xAisleCoefficent *
-                                desiredSpeed,
-                                yAisleCoefficent *
-                                desiredSpeed
-                            }
-                        );
-                    }
-                } 
-                else
-                {
-                    newVelocity = 
-                    (
-                        Dimensions
-                        {
-                            desiredSpeed,
-                            0.0
-                        }
-                    );
-                }
-            } 
-            else if(goalX == endGoals[i].axis[0] && goalY == endGoals[i].axis[1])
-            {
+            FLOATING_NUMBER directionX = goalX - coordinateX;
+            FLOATING_NUMBER directionY = goalY - coordinateY;
+
+
+
+            if(directionX <= 0 && directionY <= 0) {
                 newVelocity = 
-                    (
-                        Dimensions
-                        {
-                            0.0, 
-                            desiredSpeed
-                        }
-                    );
+                (
+                    Dimensions
+                    {
+                        -1.0f * desiredSpeed * xAisleCoefficent,
+                        -1.0f * desiredSpeed * yAisleCoefficent
+                    }
+                );
+            } else if(directionX <= 0 && directionY >= 0) {
+                newVelocity = 
+                (
+                    Dimensions
+                    {
+                        -1.0f * desiredSpeed * xAisleCoefficent,
+                        desiredSpeed * yAisleCoefficent
+                    }
+                );
+            } else if(directionX >= 0 && directionY >= 0) {
+                newVelocity = 
+                (
+                    Dimensions
+                    {
+                        desiredSpeed * xAisleCoefficent,
+                        desiredSpeed * yAisleCoefficent
+                    }
+                );
+            } else if(directionX >= 0 && directionY <= 0) {
+                newVelocity = 
+                (
+                    Dimensions
+                    {
+                        desiredSpeed * xAisleCoefficent,
+                        -1.0f * desiredSpeed * yAisleCoefficent
+                    }
+                );
+            } else {
+                newVelocity = 
+                (
+                    Dimensions
+                    {
+                        0.0,
+                        0.0
+                    }
+                );
             }
 
 
@@ -343,6 +380,7 @@ void CalmPedestrianModel::calculatePropulsion(CalmPedestrianSet& pedestrianSet, 
     }
 }
 
+//Change to calculatePropulsion
 void CalmPedestrianModel::calculateDesiredSpeeds(CalmPedestrianSet& pedestrianSet, CalmGoals& goals)
 {
     std::vector<FLOATING_NUMBER> newDesiredSpeeds;
