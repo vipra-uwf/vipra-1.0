@@ -27,7 +27,7 @@ export class CompilationRunner {
   public async buildModule(module : Module, dirPath : string, debug : boolean) : Promise<Status> {
     return new Promise(resolve=>{
       if (fileExists(dirPath)) {
-        const command = `make module -C ${this.config.vipra.vipraDir} MODULEPATH=${dirPath}/${module.name} MODULEID=${module.id} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
+        const command = `make module -B -C ${this.config.vipra.vipraDir} MODULEPATH=${dirPath}/${module.name} MODULEID=${module.id} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
             Logger.error(`buildModule: ${error.message}`);
@@ -69,7 +69,7 @@ export class CompilationRunner {
   public async compileHumanBehavior(debug : boolean) : Promise<Status> {
     return new Promise((resolve) => {
       try {
-        const command : string = `make compile -C ${this.config.vipra.behaviorDir} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
+        const command : string = `make compile -B -C ${this.config.vipra.behaviorDir} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
             Logger.error(`compileHumanBehavior: ${error.message}`);
@@ -113,7 +113,7 @@ export class CompilationRunner {
     return new Promise((resolve) =>{
       try {
         Logger.info('Compiling Generate Main');
-        const command : string = `make generate_main -C ${this.config.vipra.vipraDir} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
+        const command : string = `make generate_main -B -C ${this.config.vipra.vipraDir} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
             Logger.error(`compileGenMain: ${error.message}`);
@@ -159,7 +159,7 @@ export class CompilationRunner {
     return new Promise((resolve) =>{
       try {
         Logger.info('Compiling Main');
-        const command : string = `make compileMain -C ${this.config.vipra.vipraDir} BID=${buildID} MODULEFILE=${this.config.modules.modulesFilePath} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
+        const command : string = `make compileMain -B -C ${this.config.vipra.vipraDir} BID=${buildID} MODULEFILE=${this.config.modules.modulesFilePath} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
             Logger.error(`compileMain: ${error.message}`);
@@ -204,7 +204,7 @@ export class CompilationRunner {
     return new Promise((resolve) =>{
       try {
         Logger.info('Compiling Simulation');
-        const command : string = `make simulation -C ${this.config.vipra.vipraDir} BID=${buildID} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
+        const command : string = `make simulation -B -C ${this.config.vipra.vipraDir} BID=${buildID} ${debug ? 'DEBUG_OUTPUT=1' : ''}`;
         const ps = child_process.exec(command, (error : child_process.ExecException) => {
           if (error) {
             Logger.error(`compileSim: ${error.message}`);

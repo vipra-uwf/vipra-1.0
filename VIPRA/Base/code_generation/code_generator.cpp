@@ -1,8 +1,11 @@
 
+#include <filesystem>
+
 #include "../_pch/pch.hpp"
 #include "../configuration/configuration_reader.hpp"
 
-void setFiles(int, char const*[]);
+void        setFiles(int, char const*[]);
+std::string Log(const std::string& message);
 
 std::string generateGetFiles();
 std::string generateIncludes();
@@ -34,7 +37,7 @@ const std::unordered_map<std::string, std::string> TYPES{
     {"simulation_output_handler", "SimulationOutputHandler"},
     {"pedestrian_set", "PedestrianSet"},
     {"obstacle_set", "ObstacleSet"},
-    {"human_behavior_model", "HumanBehaviorModel"},
+    // {"human_behavior_model", "HumanBehaviorModel"},
     {"configuration_reader", "ConfigurationReader"},
     {"clock", "Clock"},
     {"simulation", "Simulation"},
@@ -101,6 +104,9 @@ generateIncludes() {
   for (const auto& include : includes) {
     generatedIncludes += "#include \"" + include + "\"\n";
   }
+
+  generatedIncludes +=
+      "#include \"" + std::string{std::filesystem::absolute("Base/logging/logging.hpp")} + "\"";
   return generatedIncludes;
 }
 
@@ -133,11 +139,12 @@ generateFunctionOptions(const std::string& type) {
   for (const auto& option : jsonObj[type]) {
     const auto& module = option["object"];
     if (module["compiled"]) {
-      generatedFunction += "\n\tif(id==\"" + module["id"].asString() + "\"){\n\t\t" +
-                           module["className"].asString() + "* " + module["name"].asString() + " = new " +
-                           module["className"].asString() + "();\n\t\t" + module["name"].asString() +
-                           "->configure(*configMap);" + "\n\t\treturn " + module["name"].asString() + ";" +
-                           "\n\t}";
+      generatedFunction += Log("Creating " + type + " Implementation") + "\n\tif(id==\"" +
+                           module["id"].asString() + "\"){\n\t\t" + module["className"].asString() + "* " +
+                           module["name"].asString() + " = new " + module["className"].asString() + "();" +
+                           Log("Configuring " + type + " Module: ID: " + module["id"].asString()) + "\n\t\t" +
+                           module["name"].asString() + "->configure(*configMap);" + "\n\t\treturn " +
+                           module["name"].asString() + ";" + "\n\t}";
     }
   }
 
@@ -171,18 +178,15 @@ generateMain() {
   std::string mainFunction = "";
 
   mainFunction += mainFunctionDefinition();
-
   mainFunction += makeModuleConfigs();
   mainFunction += generateModules();
-
+  mainFunction += Log("Generating Modules");
   mainFunction += initializeModules();
-
+  mainFunction += Log("Setting Up Output Handlers");
   mainFunction += outputSetup();
-
   mainFunction += runSim();
-
+  mainFunction += Log("Simulation CleanUp");
   mainFunction += cleanup();
-
   mainFunction += "\n}";
 
   return mainFunction;
@@ -190,11 +194,14 @@ generateMain() {
 
 std::string
 initializeModules() {
-  return "\n\tmap_loader->initialize();"
-         "\n\tobstacle_set->initialize(map_loader->LoadMap(obstacleFile));"
-         "\n\tpedestrian_set->initialize(input_data_loader->getInputEntities(pedestrianFile));"
+  return Log("Initializing Map Loader") + "\n\tmap_loader->initialize();" + Log("Initializing Obstacle Set") +
+         "\n\tobstacle_set->initialize(map_loader->LoadMap(obstacleFile));" +
+         Log("Initializing Pedestrian Set") +
+         "\n\tpedestrian_set->initialize(input_data_loader->getInputEntities(pedestrianFile));" +
+         Log("Initializing Goals") +
          "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);"
-         "\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);"
+         // + Log("Initializing Human Behavior Model") +"\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);"
+         + Log("Initializing Pedestrian Dynamics Model") +
          "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);";
 }
 
@@ -213,8 +220,8 @@ std::string
 generateModules() {
   std::string str{""};
   for (const auto& [type, className] : TYPES) {
-    str += "\n\t" + className + "* " + type + " = generate" + className + "(simulationJsonConfig[\"" + type +
-           "\"].asString(), " + type + "Config);";
+    str += "\n\t" + className + "* " + type + " = generate" + className +
+           "(simulationJsonConfig[\"modules\"][\"" + type + "\"].asString(), " + type + "Config);";
   }
 
   return str;
@@ -262,17 +269,24 @@ cleanup() {
 
 std::string
 runSim() {
-  return "simulation->run(*goals,"
+  return "\n\tsimulation->run(*goals,"
          "*pedestrian_set,"
          "*obstacle_set,"
          "*pedestrian_dynamics_model,"
-         "*human_behavior_model,"
+         // "*human_behavior_model,"
          "*policy_model,"
-         "*simulation_output_handler);"
+         "*output_data_writer,"
+         "*simulation_output_handler,"
+         "*clock);"
          "\n\toutput_data_writer->writeToDocument();";
 }
 
 std::string
 outputSetup() {
   return "\n\toutput_data_writer->initializeOutputFile(outputFile);";
+}
+
+std::string
+Log(const std::string& message) {
+  return "Debug(\"" + message + "\");\n";
 }

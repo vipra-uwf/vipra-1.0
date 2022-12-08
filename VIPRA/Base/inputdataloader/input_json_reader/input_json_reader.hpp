@@ -1,7 +1,7 @@
 #ifndef INPUT_JSON_READER_HPP
 #define INPUT_JSON_READER_HPP
 
-#include "../../jsoncpp/json/json.h"
+#include "../../../deps/jsoncpp/json/json.h"
 #include "../input_data_loader.hpp"
 
 class InputJSONReader : public InputDataLoader {

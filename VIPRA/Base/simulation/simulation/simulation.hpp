@@ -3,10 +3,12 @@
 
 #include "../../../Extendable/pedestrianmodel/pedestrian_dynamics_model.hpp"
 #include "../../definitions/state.hpp"
-#include "../../humanbehavior/human_behavior_model.hpp"
+// #include "../../humanbehavior/human_behavior_model.hpp"
+#include "../../logging/logging.hpp"
 #include "../../policyModel/policy_model.hpp"
 #include "../../simulationoutputhandler/simulation_output_handler.hpp"
 #include "../clock/clock.hpp"
+
 
 class Simulation {
  private:
@@ -20,7 +22,7 @@ class Simulation {
            PedestrianSet&           pedestrianSet,
            ObstacleSet&             obstacleSet,
            PedestrianDynamicsModel& pedestrianDynamicsModel,
-           HumanBehaviorModel&      humanBehaviorModel,
+           //  HumanBehaviorModel&      humanBehaviorModel,
            PolicyModel&             policyModel,
            OutputDataWriter&        outputDataWriter,
            SimulationOutputHandler& simulationOutputHandler,

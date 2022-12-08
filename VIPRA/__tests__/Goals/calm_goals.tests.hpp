@@ -6,24 +6,39 @@
 #include "../acutest/acutest.h"
 
 #include "../../../Modules/Goals/calm_goals/calm_goals.hpp"
-#include "../../../Modules/MapLoader/Point_Map_Loader/point_map_loader.hpp"
 #include "../../../Modules/ObstacleSet/airplane_obstacle_set/airplane_obstacle_set.hpp"
 #include "../MOCKS/obstacle_set/obstacle_set.mock.hpp"
 #include "../MOCKS/pedestrian_set/pedestrian_set.mock.hpp"
 
 namespace calm_goals_TESTS {
 
-void
-goalsInitialize(void) {
-  CalmGoals           goals;
-  AirplaneObstacleSet obSet;
-  PointMapLoader      loader;
-  PedestrianSetMock   pedSet;
+class CalmGoalsTester : public CalmGoals {
+ public:
+  const Dimensions& testNearestObjective(const std::string& type,
+                                         const Dimensions&  point,
+                                         const ObstacleSet& obsSet) {
+    return nearestObjective(type, point, obsSet);
+  }
 
-  obSet.initialize(loader.LoadMap("../../Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.json"));
+  void testFindNearesetEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
+    return findNearestEndGoal(obsSet, pedSet);
+  }
+
+  void setup(size_t pedCnt) {
+    currentGoals = DimVector(pedCnt);
+    endGoals = DimVector(pedCnt);
+    goalsMet = std::vector<bool>(pedCnt);
+  }
+};
+
+void
+testInitialize(const std::string& pathfinding) {
+  CalmGoalsTester   goals;
+  ObstacleSetMock   obSet;
+  PedestrianSetMock pedSet;
 
   goals.configure(CONFIG_MAP{{"endGoalType", "exits"},
-                             {"pathFinding", "Disembark"},
+                             {"pathFinding", pathfinding},
                              {"diagonalCost", "2.0"},
                              {"goalRange", "0.05"}});
 
@@ -31,20 +46,22 @@ goalsInitialize(void) {
 
   const auto& currents = goals.getAllCurrentGoals();
 
-  TEST_CHECK(std::all_of(currents.begin(), currents.end(), [&](const Dimensions& currGoal) {
-    return currGoal != Dimensions{0, 0, 0};
-  }));
+  TEST_CHECK(std::all_of(
+      currents.begin(), currents.end(), [&](const Dimensions& currGoal) { return currGoal.initialized; }));
+}
+
+void
+goalsInitialize(void) {
+  return;
+  testInitialize("Astar");
+  testInitialize("Disembark");
 }
 
 void
 testUpdate(const std::string& pathfinding) {
-
-  CalmGoals           goals;
-  AirplaneObstacleSet obSet;
-  PointMapLoader      loader;
-  PedestrianSetMock   pedSet;
-
-  obSet.initialize(loader.LoadMap("../../Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.json"));
+  CalmGoalsTester   goals;
+  ObstacleSetMock   obSet;
+  PedestrianSetMock pedSet;
 
   goals.configure(CONFIG_MAP{{"endGoalType", "exits"},
                              {"pathFinding", pathfinding},
@@ -80,14 +97,49 @@ testUpdate(const std::string& pathfinding) {
 
 void
 goalsUpdate(void) {
+  return;
   testUpdate("Disembark");
-  //testUpdate("Astar");
+  testUpdate("Astar");
+}
+
+void
+nearestObjective(void) {
+  CalmGoalsTester goals;
+  ObstacleSetMock obSet;
+  obSet.clear();
+  obSet.addObjects("exits", {{5, 5}, {10, 10}, {1, 1}});
+
+  TEST_CHECK((goals.testNearestObjective("exits", {1.5, 1.5}, obSet) == Dimensions{1, 1}));
+  TEST_CHECK((goals.testNearestObjective("exits", {4, 3}, obSet) == Dimensions{5, 5}));
+  TEST_CHECK((goals.testNearestObjective("exits", {20, 15}, obSet) == Dimensions{10, 10}));
+  TEST_CHECK((goals.testNearestObjective("exits", {-3, 3}, obSet) == Dimensions{1, 1}));
+}
+
+void
+findNearestEndGoal(void) {
+  CalmGoalsTester   goals;
+  ObstacleSetMock   obSet;
+  PedestrianSetMock pedSet;
+  goals.setup(3);
+  goals.configure({{"endGoalType", "exits"},
+                   {"pathFinding", "Disembark"},
+                   {"diagonalCost", "2.0"},
+                   {"goalRange", "0.05"}});
+  obSet.clear();
+  obSet.addObjects("exits", {{5, 5}, {10, 10}, {1, 1}});
+  pedSet.clear();
+  pedSet.setPedestrianCoordinates({{1.5, 1.5}, {20, 15}, {3.75, 4}});
+  goals.testFindNearesetEndGoal(obSet, pedSet);
+
+  TEST_CHECK((goals.getAllEndGoals() == DimVector{{1, 1}, {10, 10}, {5, 5}}));
 }
 
 }  // namespace calm_goals_TESTS
 
 #define calm_goals_tests                                                                                     \
-  {"CALM_GOALS: Goals Initialize Test", calm_goals_TESTS::goalsInitialize}, {                                \
+  {"CALM_GOALS: Find Nearest End Goal Test", calm_goals_TESTS::findNearestEndGoal},                          \
+      {"CALM_GOALS: Nearest Objective Test", calm_goals_TESTS::nearestObjective},                            \
+      {"CALM_GOALS: Goals Initialize Test", calm_goals_TESTS::goalsInitialize}, {                            \
     "CALM_GOALS: Goals Update Test", calm_goals_TESTS::goalsUpdate                                           \
   }
 

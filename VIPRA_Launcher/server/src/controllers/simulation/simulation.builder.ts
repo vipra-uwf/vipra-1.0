@@ -219,6 +219,10 @@ export class SimulationBuilder {
   private compileBehavior(buildID : string) : Promise<Status> {
 
     let genBehavior : Promise<Status> = new Promise(resolve=>resolve(Status.SUCCESS));
+    // TODO remove
+    this.isBuilt.humanBehavior = true;
+    this.moduleTypes.human_behavior_model = 1;
+    return genBehavior;
     if (!this.isBuilt.humanBehavior) {
       genBehavior  = this.compilationRunner.compileHumanBehavior(this.config.simulation.debugMode)
         .then((result)=>{
@@ -243,12 +247,12 @@ export class SimulationBuilder {
    * @emits BUILT_MODULE, FAIL_MODULE
    */
   private async compileAllModules() : Promise<void> {
-    const modules = await this.evSys.request<RepoType<Module>[]>(RequestType.DATA_W_PATH, 'Module', {});
+    const modules = await this.evSys.request<RepoType<Module>>(RequestType.DATA_W_PATH, 'Module', {});
 
-    if (modules && modules[0]) {
+    if (modules) {
       let builds : Promise<Status>[] = [];
       let curr = 0;
-      for (const module of modules[0]) {
+      for (const module of modules) {
         if (curr >= this.config.simulation.maxConcurComps) {
           await Promise.all(builds);
           curr = 0;

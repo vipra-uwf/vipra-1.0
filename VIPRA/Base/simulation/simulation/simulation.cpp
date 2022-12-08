@@ -40,7 +40,7 @@ Simulation::run(Goals&                   goals,
                 PedestrianSet&           pedestrianSet,
                 ObstacleSet&             obstacleSet,
                 PedestrianDynamicsModel& pedestrianDynamicsModel,
-                HumanBehaviorModel&      humanBehaviorModel,
+                // HumanBehaviorModel&      humanBehaviorModel,
                 PolicyModel&             policyModel,
                 OutputDataWriter&        outputDataWriter,
                 SimulationOutputHandler& simulationOutputHandler,
@@ -49,15 +49,19 @@ Simulation::run(Goals&                   goals,
   clock.start();
   const size_t pedCnt = pedestrianSet.getNumPedestrians();
   State        proposedState(pedCnt);
-  while (!goals.isSimulationGoalMet()) {
+  Info("Starting Simulation Loop");
+  while (timestep < 1000) {
+    // while (!goals.isSimulationGoalMet()) {
+    Debug("Timestep: {}", timestep);
     policyModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
-    humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
+    // humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size)};
 
     combineStates(pedCnt, proposedState, pedState);
     pedestrianSet.updateState(pedState);
 
     if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals, timestep)) {
+      Debug("Writing To Document");
       simulationOutputHandler.writeToDocument(outputDataWriter, pedestrianSet, timestep);
     }
 
@@ -67,8 +71,11 @@ Simulation::run(Goals&                   goals,
     std::fill(proposedState.affector.begin(), proposedState.affector.end(), PED_MODEL);
   }
 
+  Info("Simulation Run Complete");
+
   clock.stop();
   clock.printRealEndTime();
   clock.printRealDuration();
   clock.printSimulationDuration();
-}
+
+}  // namespace Vipra

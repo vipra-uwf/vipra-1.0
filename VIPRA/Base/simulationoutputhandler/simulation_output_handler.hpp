@@ -1,10 +1,11 @@
 #ifndef SIMULATION_OUTPUT_HANDLER_HPP
 #define SIMULATION_OUTPUT_HANDLER_HPP
 
+#include "../../Extendable/goals/goals.hpp"
+#include "../../Extendable/obstacleset/obstacle_set.hpp"
 #include "../../Extendable/pedestrianset/pedestrian_set.hpp"
 #include "../definitions/type_definitions.hpp"
 #include "../outputdatawriter/output_data_writer.hpp"
-#include "../simulation/simulation/simulation.hpp"
 
 class SimulationOutputHandler {
 

@@ -39,9 +39,10 @@
     },
     "goals": {
         "params":{
-            "pathFinding": "Astar",
+            "pathFinding": "Disembark",
             "diagonalCost": 2.0,
-            "endGoalType": "exits"
+            "endGoalType": "exits",
+            "goalRange": 0.05
         }
     },
     "pedestrian_dynamics_model": {

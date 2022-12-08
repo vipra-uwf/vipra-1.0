@@ -5,39 +5,71 @@
 
 class PedestrianSetMock : public PedestrianSet {
  public:
-  void configure(const CONFIG_MAP& configMap) override {}
+  void clear() { pedCoords = {}; }
 
-  void initialize(ENTITY_SET pedestrianCount) override {}
+  void configure(const CONFIG_MAP& configMap) override {
+    throw std::runtime_error("Pedestrian Set Mock: configure Not Implemented");
+  }
+
+  void initialize(ENTITY_SET pedestrianCount) override {
+    throw std::runtime_error("Pedestrian Set Mock: initialize Not Implemented");
+  }
 
   const DimVector& getPedestrianCoordinates() const noexcept override { return pedCoords; }
 
   int getNumPedestrians() const noexcept override { return pedCoords.size(); }
 
-  void removePedestrian(size_t pedestrianIndex) override {}
+  void removePedestrian(size_t pedestrianIndex) override {
+    throw std::runtime_error("Pedestrian Set Mock: removePedestrian Not Implemented");
+  }
 
-  const DimVector&                    getVelocities() const noexcept override {}
-  const std::vector<FLOATING_NUMBER>& getSpeeds() const noexcept override {}
-  const std::vector<int>&             getIds() const noexcept override {}
+  const DimVector& getVelocities() const noexcept override {
+    throw std::runtime_error("Pedestrian Set Mock: getVelocities Not Implemented");
+  }
+  const std::vector<FLOATING_NUMBER>& getSpeeds() const noexcept override {
+    throw std::runtime_error("Pedestrian Set Mock: getSpeeds Not Implemented");
+  }
+  const std::vector<int>& getIds() const noexcept override {
+    throw std::runtime_error("Pedestrian Set Mock: getIds Not Implemented");
+  }
 
-  void setNumPedestrians(int numPedestrians) override {}
+  void setNumPedestrians(int numPedestrians) override {
+    throw std::runtime_error("Pedestrian Set Mock: setNumPedestrians Not Implemented");
+  }
 
   void setPedestrianCoordinates(const Dimensions& coords, size_t index) override {
     pedCoords[index] = coords;
   }
-  void setPedestrianCoordinates(Dimensions&& coords, size_t index) override {}
-  void setPedestrianCoordinates(DimVector&& coordinates) noexcept override {}
+  void setPedestrianCoordinates(Dimensions&& coords, size_t index) override { pedCoords[index] = coords; }
+  void setPedestrianCoordinates(DimVector&& coordinates) noexcept override { pedCoords = coordinates; }
   void setPedestrianCoordinates(const DimVector& coordinates) noexcept override { pedCoords = coordinates; }
 
-  void setVelocity(const Dimensions& velocity, size_t index) override {}
-  void setVelocity(Dimensions&& velocity, size_t index) override {}
-  void setVelocities(const DimVector& velocities) noexcept override {}
-  void setVelocities(DimVector&& velocities) noexcept override {}
+  void setVelocity(const Dimensions& velocity, size_t index) override {
+    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
+  }
+  void setVelocity(Dimensions&& velocity, size_t index) override {
+    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
+  }
+  void setVelocities(const DimVector& velocities) noexcept override {
+    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
+  }
+  void setVelocities(DimVector&& velocities) noexcept override {
+    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
+  }
 
-  void setSpeeds(const std::vector<FLOATING_NUMBER>& speedsMetersPerSecond) noexcept override {}
-  void setSpeeds(std::vector<FLOATING_NUMBER>&& speedsMetersPerSecond) noexcept override {}
-  void setSpeed(FLOATING_NUMBER speed, size_t index) override {}
+  void setSpeeds(const std::vector<FLOATING_NUMBER>& speedsMetersPerSecond) noexcept override {
+    throw std::runtime_error("Pedestrian Set Mock: setSpeed Not Implemented");
+  }
+  void setSpeeds(std::vector<FLOATING_NUMBER>&& speedsMetersPerSecond) noexcept override {
+    throw std::runtime_error("Pedestrian Set Mock: setSpeed Not Implemented");
+  }
+  void setSpeed(FLOATING_NUMBER speed, size_t index) override {
+    throw std::runtime_error("Pedestrian Set Mock: setSpeed Not Implemented");
+  }
 
-  void setIds(std::vector<int> ids) override {}
+  void setIds(std::vector<int> ids) override {
+    throw std::runtime_error("Pedestrian Set Mock: setIds Not Implemented");
+  }
 
  private:
   DimVector pedCoords = {

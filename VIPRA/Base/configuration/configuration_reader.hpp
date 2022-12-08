@@ -3,8 +3,9 @@
 
 #include "../_pch/pch.hpp"
 
+#include "../../deps/jsoncpp/json/json.h"
 #include "../definitions/type_definitions.hpp"
-#include "../jsoncpp/json/json.h"
+
 
 class ConfigurationReaderException : public std::exception {
  public:

@@ -10,9 +10,10 @@ enum Affector {
 };
 
 struct State {
-  State(size_t numPeds) : affector(numPeds), velocities(numPeds), pedestrianCoordinates(numPeds) {}
+  State(size_t numPeds) : affector(numPeds, PED_MODEL), velocities(numPeds), pedestrianCoordinates(numPeds) {}
   State(DimVector& velocities, DimVector& pedestrianCoordinates)
-    : affector(velocities.size()), velocities{velocities}, pedestrianCoordinates{pedestrianCoordinates} {}
+    : affector(velocities.size(), PED_MODEL), velocities{velocities}, pedestrianCoordinates{
+                                                                          pedestrianCoordinates} {}
 
   std::vector<Affector> affector;
   DimVector             velocities;

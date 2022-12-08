@@ -1,8 +1,8 @@
 #ifndef POINT_MAP_LOADER_HPP
 #define POINT_MAP_LOADER_HPP
 
-#include "../../../VIPRA/Base/jsoncpp/json/json.h"
 #include "../../../VIPRA/Extendable/maploader/map_loader.hpp"
+#include "../../../VIPRA/deps/jsoncpp/json/json.h"
 
 struct PointMap : public MapType {
   ENTITY_SET entities;

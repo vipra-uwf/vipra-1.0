@@ -1,7 +1,9 @@
 #ifndef PEDESTRIAN_SET_HPP
 #define PEDESTRIAN_SET_HPP
 
+#include "../../Base/definitions/state.hpp"
 #include "../../Base/definitions/type_definitions.hpp"
+
 
 class PedestrianSetException : public std::runtime_error {
  public:
@@ -16,6 +18,8 @@ class PedestrianSet {
   virtual void configure(const CONFIG_MAP& configMap) = 0;
   virtual void initialize(ENTITY_SET pedestrianCount) = 0;
   virtual void removePedestrian(size_t pedestrianIndex) = 0;
+
+  virtual void updateState(std::shared_ptr<State>) = 0;
 
   virtual int                                 getNumPedestrians() const noexcept = 0;
   virtual const DimVector&                    getPedestrianCoordinates() const noexcept = 0;
