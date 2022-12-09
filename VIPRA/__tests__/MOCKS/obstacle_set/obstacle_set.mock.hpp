@@ -1,7 +1,10 @@
 #ifndef OBSTACLE_SET_MOCK_HPP
 #define OBSTACLE_SET_MOCK_HPP
 
-#include "../../../Extendable/obstacleset/obstacle_set.hpp"
+#include <string>
+
+#include "definitions/type_definitions.hpp"
+#include "obstacleset/obstacle_set.hpp"
 
 class ObstacleSetMock : public ObstacleSet {
  public:

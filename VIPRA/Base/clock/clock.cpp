@@ -20,7 +20,7 @@ Clock::stop() {
 void
 Clock::printRealStartTime() {
   std::time_t time = std::chrono::system_clock::to_time_t(this->realStartTime);
-  std::cout << "computation started: " << std::ctime(&time);
+  LJ::Info(simLogger, "computation started: {}", std::ctime(&time));
 }
 
 void
@@ -31,13 +31,13 @@ Clock::calculateRealElapsedSeconds() {
 void
 Clock::printRealDuration() {
   calculateRealElapsedSeconds();
-  std::cout << "elapsed time: " << this->realElapsedSeconds.count() << "s\n";
+  LJ::Info(simLogger, "elapsed time: {}s", this->realElapsedSeconds.count());
 }
 
 void
 Clock::printRealEndTime() {
   std::time_t time = std::chrono::system_clock::to_time_t(this->realEndTime);
-  std::cout << "computation finished: " << std::ctime(&time);
+  LJ::Info(simLogger, "computation finished: {}", std::ctime(&time));
 }
 
 void
@@ -47,7 +47,5 @@ Clock::addSimulationTimeMs(unsigned long milliseconds) {
 
 void
 Clock::printSimulationDuration() {
-
-  std::cout << "simulation duration: " << float(this->simulationElapsedMs) / 1000 << "s"
-            << std::endl;
+  LJ::Info(simLogger, "simulation duration: {:f}s", float(this->simulationElapsedMs) / 1000);
 }

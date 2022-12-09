@@ -1,8 +1,8 @@
 #ifndef JSON_WRITER_HPP
 #define JSON_WRITER_HPP
 
-#include "../../../deps/jsoncpp/json/json.h"
 #include "../output_data_writer.hpp"
+#include "jsoncpp/json/json.h"
 
 class JSONWriter : public OutputDataWriter {
  private:

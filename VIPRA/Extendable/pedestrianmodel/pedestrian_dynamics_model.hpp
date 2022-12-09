@@ -1,12 +1,12 @@
 #ifndef PEDESTRIAN_DYNAMICS_MODEL_HPP
 #define PEDESTRIAN_DYNAMICS_MODEL_HPP
 
-#include "../../Base/definitions/state.hpp"
-#include "../../Base/definitions/type_definitions.hpp"
+#include "definitions/state.hpp"
+#include "definitions/type_definitions.hpp"
 
-#include "../goals/goals.hpp"
-#include "../obstacleset/obstacle_set.hpp"
-#include "../pedestrianset/pedestrian_set.hpp"
+#include "goals/goals.hpp"
+#include "obstacleset/obstacle_set.hpp"
+#include "pedestrianset/pedestrian_set.hpp"
 
 class PedDynamicsException : public std::runtime_error {
  public:

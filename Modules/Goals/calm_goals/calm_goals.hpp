@@ -5,7 +5,7 @@
 #include <limits>
 #include <queue>
 
-#include "../../../VIPRA/Extendable/goals/goals.hpp"
+#include "goals/goals.hpp"
 
 #include "pathfinding.hpp"
 class CalmGoals : public Goals {

@@ -1,10 +1,10 @@
 #ifndef GOALS_HPP
 #define GOALS_HPP
 
-#include "../../Base/definitions/type_definitions.hpp"
+#include "definitions/type_definitions.hpp"
 
-#include "../obstacleset/obstacle_set.hpp"
-#include "../pedestrianset/pedestrian_set.hpp"
+#include "obstacleset/obstacle_set.hpp"
+#include "pedestrianset/pedestrian_set.hpp"
 
 class GoalsException : public std::runtime_error {
  public:

@@ -1,8 +1,8 @@
 #ifndef ADJACENCYGRAPH_HPP
 #define ADJACENCYGRAPH_HPP
 
-#include "../../../VIPRA/Base/definitions/type_definitions.hpp"
-#include "../../../VIPRA/Extendable/obstacleset/obstacle_set.hpp"
+#include "definitions/type_definitions.hpp"
+#include "obstacleset/obstacle_set.hpp"
 #include <optional>
 
 namespace CalmPath {

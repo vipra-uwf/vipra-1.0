@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "../../Base/definitions/type_definitions.hpp"
+#include "definitions/type_definitions.hpp"
 
 struct MapType {
   std::string type;

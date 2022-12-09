@@ -21,8 +21,7 @@ ConfigurationReader::getConfiguration(const std::string& filePath) {
 
   if (!Json::parseFromStream(jsonReader, fileStream, &jsonDocument, &errors)) {
     fileStream.close();
-    ConfigurationReaderException::Error("Unable To Parse Configuration File: " +
-                                        filePath);
+    ConfigurationReaderException::Error("Unable To Parse Configuration File: " + filePath);
   }
   fileStream.close();
 

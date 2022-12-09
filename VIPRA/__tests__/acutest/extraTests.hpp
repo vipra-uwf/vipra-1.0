@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Base/definitions/type_definitions.hpp"
 #include "acutest.h"
+#include "definitions/type_definitions.hpp"
 
 [[nodiscard]] bool
 TEST_FLOAT(float value, float expected, float error) {
@@ -15,4 +15,9 @@ TEST_DIMENSIONS(const Dimensions& value, const Dimensions& expected, float error
           TEST_FLOAT(value.axis[2], expected.axis[2], error));
 }
 
-#define TEST_NO_EXCEPTION(code, check) try { code; } catch (...) { check;}
+#define TEST_NO_EXCEPTION(code, check)                                                                       \
+  try {                                                                                                      \
+    code;                                                                                                    \
+  } catch (...) {                                                                                            \
+    check;                                                                                                   \
+  }

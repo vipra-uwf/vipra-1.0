@@ -3,7 +3,9 @@
 
 #include <chrono>
 
-#include "../../definitions/type_definitions.hpp"
+#include "definitions/type_definitions.hpp"
+#include "logging/logging.hpp"
+
 
 class Clock {
  private:

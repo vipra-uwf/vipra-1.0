@@ -1,11 +1,8 @@
 #ifndef DSL_HUMAN_BEHAVIOR_HPP
 #define DSL_HUMAN_BEHAVIOR_HPP
 
-#include "../_pch/pch.hpp"
-
 #include "generated/BehaviorsBaseVisitor.h"
 #include "human_behavior.hpp"
-
 
 /**
  * An implementation of a Human Behavior that reads in its behaviors from a

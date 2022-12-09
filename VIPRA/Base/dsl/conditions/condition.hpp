@@ -2,24 +2,22 @@
 #define CONDITION_HPP
 
 #include "../simulation_context.hpp"
-#include "../../../Extendable/pedestrianset/pedestrian_set.hpp"
+#include "pedestrianset/pedestrian_set.hpp"
 
 /**
  * A condition gets evaluated as a part of a selector or transition. It
  * evaluates to true or false for a particular pedestrian index.
  */
-class Condition
-{
-    public:
-        explicit Condition(SimulationContext *simulationContext);
-        virtual bool evaluate(int pedestrianIndex) = 0;
+class Condition {
+ public:
+  explicit Condition(SimulationContext* simulationContext);
+  virtual bool evaluate(int pedestrianIndex) = 0;
 
-    protected:
-        SimulationContext *getSimulationContext();
-    
-    private:
-        SimulationContext *simulationContext;
+ protected:
+  SimulationContext* getSimulationContext();
 
+ private:
+  SimulationContext* simulationContext;
 };
 
 #endif

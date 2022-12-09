@@ -1,7 +1,9 @@
 #ifndef TYPE_DEFINITIONS_HPP
 #define TYPE_DEFINITIONS_HPP
 
-#include "../_pch/pch.hpp"
+#include <cmath>
+#include <unordered_map>
+#include <vector>
 
 typedef float FLOATING_NUMBER;
 

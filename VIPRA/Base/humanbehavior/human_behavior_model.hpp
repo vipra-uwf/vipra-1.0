@@ -5,11 +5,11 @@
 #ifndef VIPRA_HUMAN_BEHAVIOR_MODEL_HPP
 #define VIPRA_HUMAN_BEHAVIOR_MODEL_HPP
 
-#include "../../Extendable/goals/goals.hpp"
-#include "../../Extendable/obstacleset/obstacle_set.hpp"
-#include "../../Extendable/pedestrianset/pedestrian_set.hpp"
-#include "../definitions/behavior_definitions.hpp"
-#include "../dsl/human_behavior.hpp"
+#include "definitions/behavior_definitions.hpp"
+#include "dsl/human_behavior.hpp"
+#include "goals/goals.hpp"
+#include "obstacleset/obstacle_set.hpp"
+#include "pedestrianset/pedestrian_set.hpp"
 
 class HumanBehaviorModel {
 

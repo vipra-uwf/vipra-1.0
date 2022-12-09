@@ -1,5 +1,5 @@
 CPP= g++
-CPP_FLAGS= -std=c++17 -w -fPIE -I/usr/include/antlr4-runtime
+CPP_FLAGS= -std=c++17 -w -fPIE 
 
 EXE_NAME= VIPRA_SIM
 
@@ -11,34 +11,29 @@ endif
 
 LDLIBS = -lantlr4-runtime
 
+
 BASE_DIR = ./Base
 BUILD_DIR = ./build
 DEPS_DIR = ./deps
 
+INCLUDES = -I/usr/include/antlr4-runtime -Ideps -IBase -IExtendable
+
 OBJS := $(wildcard $(BUILD_DIR)/*.o) $(wildcard $(BUILD_DIR)/*/*.o)
 OBJS := $(filter-out $(wildcard $(BUILD_DIR)/*/main.o), $(OBJS))
 
-PCH_SOURCE= $(BASE_DIR)/_pch/pch.hpp
-PCH_HEADERS= 
-PCH_OUT= $(PCH_SOURCE).gch
-PCH_INCLUDE= -include $(PCH_SOURCE)
-
 generate_main:
-	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) $(BASE_DIR)/code_generation/code_generator.cpp $(DEPS_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $@
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) $(BASE_DIR)/code_generation/code_generator.cpp $(DEPS_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $@
 
 module: makeDirs
-	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) -c $(MODULEPATH).cpp -o $(BUILD_DIR)/$(MODULEID).o
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) -c $(MODULEPATH).cpp -o $(BUILD_DIR)/$(MODULEID).o
 
 simulation: makeDirs
-	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) $(BUILD_DIR)/$(BID)/main.o $(OBJS) $(LDLIBS) -o $(BUILD_DIR)/$(BID)/$(EXE_NAME)
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) $(BUILD_DIR)/$(BID)/main.o $(OBJS) $(LDLIBS) -o $(BUILD_DIR)/$(BID)/$(EXE_NAME)
 
 compileMain: makeDirs
 	./generate_main $(BUILD_DIR)/$(BID)/main.cpp $(MODULEFILE)
-	$(CPP) $(CPP_FLAGS) -c $(DEPS_DIR)/jsoncpp/jsoncpp.cpp -o $(BUILD_DIR)/jsoncpp.o
-	$(CPP) $(CPP_FLAGS) $(PCH_INCLUDE) -c $(BUILD_DIR)/$(BID)/main.cpp -o $(BUILD_DIR)/$(BID)/main.o
-
-precompileHeaders: $(PCH_SOURCE) $(PCH_HEADERS)
-	$(CPP) $(CPP_FLAGS) $(BASE_DIR)/_pch/pch.hpp
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) -c $(DEPS_DIR)/jsoncpp/jsoncpp.cpp -o $(BUILD_DIR)/jsoncpp.o
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) -c $(BUILD_DIR)/$(BID)/main.cpp -o $(BUILD_DIR)/$(BID)/main.o
 
 makeDirs:
 	mkdir -p $(BUILD_DIR)

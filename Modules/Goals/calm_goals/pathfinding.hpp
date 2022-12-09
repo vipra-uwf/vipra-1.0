@@ -3,6 +3,7 @@
 
 #include "adjacencyGraph.hpp"
 #include <algorithm>
+#include <iostream>
 #include <optional>
 #include <queue>
 #include <vector>

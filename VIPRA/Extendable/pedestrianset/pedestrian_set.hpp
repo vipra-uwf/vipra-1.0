@@ -1,9 +1,12 @@
 #ifndef PEDESTRIAN_SET_HPP
 #define PEDESTRIAN_SET_HPP
 
-#include "../../Base/definitions/state.hpp"
-#include "../../Base/definitions/type_definitions.hpp"
+#include <memory>
+#include <stdexcept>
 
+
+#include "definitions/state.hpp"
+#include "definitions/type_definitions.hpp"
 
 class PedestrianSetException : public std::runtime_error {
  public:

@@ -1,9 +1,10 @@
 #ifndef AIRPLANE_OBSTACLE_SET
 #define AIRPLANE_OBSTACLE_SET
 
-#include "../../../VIPRA/Extendable/obstacleset/obstacle_set.hpp"
-#include "../../../VIPRA/Extendable/pedestrianset/pedestrian_set.hpp"
 #include "../../MapLoader/Point_Map_Loader/point_map_loader.hpp"
+#include "obstacleset/obstacle_set.hpp"
+#include "pedestrianset/pedestrian_set.hpp"
+
 
 class AirplaneObstacleSet : public ObstacleSet {
 

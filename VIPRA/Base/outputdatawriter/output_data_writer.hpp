@@ -1,8 +1,12 @@
 #ifndef OUTPUT_DATA_WRITER_HPP
 #define OUTPUT_DATA_WRITER_HPP
 
-#include "../_pch/pch.hpp"
-#include "../definitions/type_definitions.hpp"
+#include <fstream>
+#include <iostream>
+#include <string>
+
+
+#include "definitions/type_definitions.hpp"
 
 class OutputDataWriterException : public std::exception {
  public:

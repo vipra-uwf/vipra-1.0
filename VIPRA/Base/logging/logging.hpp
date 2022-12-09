@@ -1,25 +1,9 @@
 #ifndef VIPRA_LOGGING_HPP
 #define VIPRA_LOGGING_HPP
 
-#include <iostream>
+#include "lumberjack/loggers/consoleLogger.hpp"
+#include "lumberjack/lumberjack.hpp"
 
-template <typename... P> static void
-Error(const std::string& message, P... params) {
-  std::cerr << message << '\n';
-}
+extern LJ::Logger<LJ::ConsoleLogger> simLogger;
 
-template <typename... P> static void
-Warn(const std::string& message, P... params) {
-  std::cout << message << '\n';
-}
-
-template <typename... P> static void
-Info(const std::string& message, P... params) {
-  std::cout << message << '\n';
-}
-
-template <typename... P> static void
-Debug(const std::string& message, P... params) {
-  std::cout << message << '\n';
-}
 #endif

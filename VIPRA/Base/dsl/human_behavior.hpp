@@ -1,13 +1,12 @@
 #ifndef VIPRA_HUMAN_BEHAVIOR_HPP
 #define VIPRA_HUMAN_BEHAVIOR_HPP
 
-#include "../../Extendable/goals/goals.hpp"
-#include "../../Extendable/obstacleset/obstacle_set.hpp"
-#include "../../Extendable/pedestrianset/pedestrian_set.hpp"
-#include "../_pch/pch.hpp"
-#include "../definitions/type_definitions.hpp"
 #include "actions/action.hpp"
 #include "conditions/condition.hpp"
+#include "definitions/type_definitions.hpp"
+#include "goals/goals.hpp"
+#include "obstacleset/obstacle_set.hpp"
+#include "pedestrianset/pedestrian_set.hpp"
 #include "selectors/selector.hpp"
 #include "simulation_context.hpp"
 #include "transitions/environment_transition.hpp"

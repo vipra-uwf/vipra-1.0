@@ -1,9 +1,11 @@
 #ifndef INPUT_DATALOADER_HPP
 #define INPUT_DATALOADER_HPP
 
-#include "../_pch/pch.hpp"
+#include <fstream>
+#include <iostream>
+#include <string>
 
-#include "../definitions/type_definitions.hpp"
+#include "definitions/type_definitions.hpp"
 
 class InputDataLoaderException : public std::exception {
  public:

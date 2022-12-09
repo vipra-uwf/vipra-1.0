@@ -1,7 +1,7 @@
 #ifndef PEDESTRIAN_SET_MOCK_HPP
 #define PEDESTRIAN_SET_MOCK_HPP
 
-#include "../../../Extendable/pedestrianset/pedestrian_set.hpp"
+#include "pedestrianset/pedestrian_set.hpp"
 
 class PedestrianSetMock : public PedestrianSet {
  public:

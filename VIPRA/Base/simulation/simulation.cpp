@@ -6,6 +6,9 @@ Simulation::configure(const CONFIG_MAP& config) {
   this->timestep_size = std::stof(config.at("time_step_size"));
 }
 
+void
+Simulation::initialize() {}
+
 int
 Simulation::getTimestep() const {
   return this->timestep;
@@ -49,10 +52,10 @@ Simulation::run(Goals&                   goals,
   clock.start();
   const size_t pedCnt = pedestrianSet.getNumPedestrians();
   State        proposedState(pedCnt);
-  Info("Starting Simulation Loop");
+  LJ::Info(simLogger, "Starting Simulation Loop");
   while (timestep < 1000) {
     // while (!goals.isSimulationGoalMet()) {
-    Debug("Timestep: {}", timestep);
+    LJ::Debug(simLogger, "Timestep: {}", timestep);
     policyModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
     // humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size)};
@@ -61,7 +64,7 @@ Simulation::run(Goals&                   goals,
     pedestrianSet.updateState(pedState);
 
     if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals, timestep)) {
-      Debug("Writing To Document");
+      LJ::Debug(simLogger, "Writing To Document");
       simulationOutputHandler.writeToDocument(outputDataWriter, pedestrianSet, timestep);
     }
 
@@ -71,7 +74,7 @@ Simulation::run(Goals&                   goals,
     std::fill(proposedState.affector.begin(), proposedState.affector.end(), PED_MODEL);
   }
 
-  Info("Simulation Run Complete");
+  LJ::Info(simLogger, "Simulation Run Complete");
 
   clock.stop();
   clock.printRealEndTime();

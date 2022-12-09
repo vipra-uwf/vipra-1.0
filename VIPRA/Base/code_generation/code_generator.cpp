@@ -1,8 +1,8 @@
 
-#include <filesystem>
+#include <string>
 
-#include "../_pch/pch.hpp"
-#include "../configuration/configuration_reader.hpp"
+#include "configuration/configuration_reader.hpp"
+#include "lumberjack/lumberjack.hpp"
 
 void        setFiles(int, char const*[]);
 std::string Log(const std::string& message);
@@ -19,6 +19,8 @@ std::string initializeModules();
 std::string mainFunctionDefinition();
 std::string generateModules();
 std::string makeModuleConfigs();
+
+std::string generateLogger();
 
 std::string cleanup();
 std::string runSim();
@@ -58,6 +60,7 @@ main(int argc, char const* argv[]) {
     objectFunctions_Str += generateObjectFunction(className, type);
   }
 
+  std::string logger_Str = generateLogger();
   std::string includes_Str = generateIncludes();
   std::string mainFunction_Str = generateMain();
   std::string getInputFiles_Str = generateGetFiles();
@@ -70,7 +73,7 @@ main(int argc, char const* argv[]) {
     return -1;
   }
 
-  mainFile << includes_Str << functionDecls_Str << getInputFiles_Str << mainFunction_Str
+  mainFile << includes_Str << logger_Str << functionDecls_Str << getInputFiles_Str << mainFunction_Str
            << objectFunctions_Str << extractConfigMap_Str;
 
   mainFile.close();
@@ -105,9 +108,13 @@ generateIncludes() {
     generatedIncludes += "#include \"" + include + "\"\n";
   }
 
-  generatedIncludes +=
-      "#include \"" + std::string{std::filesystem::absolute("Base/logging/logging.hpp")} + "\"";
+  generatedIncludes += "#include \"lumberjack/lumberjack.hpp\"";
   return generatedIncludes;
+}
+
+std::string
+generateLogger() {
+  return "\nLJ::Logger<LJ::ConsoleLogger> simLogger{LJ::DEBUG};";
 }
 
 std::string
@@ -202,7 +209,8 @@ initializeModules() {
          "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);"
          // + Log("Initializing Human Behavior Model") +"\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);"
          + Log("Initializing Pedestrian Dynamics Model") +
-         "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);";
+         "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);" +
+         Log("Initializing Simulation") + "\n\tsimulation->initialize();";
 }
 
 std::string
@@ -288,5 +296,5 @@ outputSetup() {
 
 std::string
 Log(const std::string& message) {
-  return "Debug(\"" + message + "\");\n";
+  return "LJ::Debug(simLogger, \"" + message + "\");\n";
 }

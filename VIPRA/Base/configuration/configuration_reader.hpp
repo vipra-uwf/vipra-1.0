@@ -1,11 +1,12 @@
 #ifndef CONFIGURATION_READER_HPP
 #define CONFIGURATION_READER_HPP
 
-#include "../_pch/pch.hpp"
+#include <fstream>
+#include <iostream>
 
-#include "../../deps/jsoncpp/json/json.h"
-#include "../definitions/type_definitions.hpp"
 
+#include "definitions/type_definitions.hpp"
+#include "jsoncpp/json/json.h"
 
 class ConfigurationReaderException : public std::exception {
  public:

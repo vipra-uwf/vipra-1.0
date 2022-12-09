@@ -1,9 +1,9 @@
 #ifndef OBSTACLE_SET_HPP
 #define OBSTACLE_SET_HPP
 
-#include "../../Base/definitions/type_definitions.hpp"
-#include "../maploader/map_loader.hpp"
-#include "../pedestrianset/pedestrian_set.hpp"
+#include "definitions/type_definitions.hpp"
+#include "maploader/map_loader.hpp"
+#include "pedestrianset/pedestrian_set.hpp"
 
 class ObstacleSetException : public std::runtime_error {
  public:
