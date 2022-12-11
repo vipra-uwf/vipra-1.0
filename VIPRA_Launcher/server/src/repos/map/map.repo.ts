@@ -35,9 +35,9 @@ export class MapRepo extends BaseLocalRepo<OMap> {
    * @param {Full<UploadType<OMap>>} object - uploaded object
    */
   async saveFiles(object: Full<UploadType<OMap>>): Promise<Nullable<string>> {
-    const dirPath = `${this.config.map.mapsDir}/${object.object.id}`;
+    const dirPath = `${this.config.map.mapsDir}/obstacle_maps/${object.object.id}`;
     makeDir(dirPath);
-    if (object.files.map && object.files.meta) {
+    if (object.files.map) {
       await writeFileFromBuffer(`${dirPath}/${object.object.name}.omap`, object.files.map[0].buffer as Buffer);
       writeFile(`${dirPath}/${object.object.name}.omm`, JSON.stringify(object.object));
     } else {
@@ -53,15 +53,12 @@ export class MapRepo extends BaseLocalRepo<OMap> {
    * @param {Files} files - updated files
    */
   async updateFiles(object: RepoType<OMap>, files: Files): Promise<Nullable<string>> {
-    const dirPath = `${this.config.modules.modulesDir}/${object.object.id}`;
     if (files) {
-      if (files.map) {
-        await writeFileFromBuffer(`${dirPath}/${object.object.name}.omap`, files.map[0].buffer);
-      }
-      if (files.meta) {
-        await writeFileFromBuffer(`${dirPath}/${object.object.name}.mm`, files.meta[0].buffer);
+      if (files.pedmap) {
+        await writeFileFromBuffer(`${object.dirPath}/${object.object.name}.omap`, files.pedmap[0].buffer);
       }
     }
-    return dirPath;
+    writeFile(`${object.dirPath}/${object.object.name}.omm`, JSON.stringify(object.object));
+    return object.dirPath;
   }
 }

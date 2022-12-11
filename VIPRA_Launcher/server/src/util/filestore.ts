@@ -68,11 +68,30 @@ const uploadBehavior = (req : express.Request) : Promise<Status> => {
   });
 };
 
+const pedmapFields : multer.Field[] = [
+  { name: 'pedmap', maxCount: 1 },
+];
+/**
+ * @description Adds uploaded behavior file to request
+ * @param {express.Request} req - client request
+ */
+const uploadPedMap = (req : express.Request) : Promise<Status> => {
+  return new Promise<Status>((resolve, reject) => {
+    upload.fields(pedmapFields)(req, {} as express.Response, (error) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(Status.SUCCESS);
+    });
+  });
+};
+
 
 export {
   uploadModule,
   uploadMap,
   uploadBehavior,
+  uploadPedMap,
   File,
   Files,
 };

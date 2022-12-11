@@ -71,7 +71,6 @@ Simulation::run(Goals&                   goals,
     goals.updatePedestrianGoals(obstacleSet, pedestrianSet);
     ++timestep;
     clock.addSimulationTimeMs(this->timestep_size);
-    std::fill(proposedState.affector.begin(), proposedState.affector.end(), PED_MODEL);
   }
 
   LJ::Info(simLogger, "Simulation Run Complete");

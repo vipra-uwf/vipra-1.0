@@ -16,6 +16,9 @@ import { SimRunner }              from '../runners/simulation/simulation.runner'
 import { BehaviorController }     from '../controllers/behavior/behavior.controller';
 import { BehaviorRepo }           from '../repos/behavior/behavior.repo';
 import { BehaviorService }        from '../services/behavior/behavior.service';
+import { PedestrianController }   from '../controllers/pedestrian/pedestrian.controller';
+import { PedestrianRepo }         from '../repos/pedestrian/pedestrian.repo';
+import { PedestrianService }      from '../services/pedestrian/pedestrian.service';
 
 
 export interface Controllers {
@@ -26,6 +29,7 @@ export interface Controllers {
   MapController          : MapController,
   ChainBuilderController : ChainBuilderController,
   SimController          : SimController,
+  PedestrianController   : PedestrianController,
 }
 
 /**
@@ -37,6 +41,7 @@ export const startControllers = (controllers : Controllers) : void => {
   controllers.MapController.start();
   controllers.SimConfigController.start();
   controllers.BehaviorController.start();
+  controllers.PedestrianController.start();
 };
 
 /**
@@ -59,14 +64,18 @@ export const getControllers = (config : Config, eventSys : EventSystem) : Contro
   const simconfigService    : SimConfigService    = new SimConfigService(config, simconfigRepo);
   const simconfigController : SimConfigController = new SimConfigController('SimConfig', eventSys, simconfigService, config);
 
-  const behaviorRepo       : BehaviorRepo         = new BehaviorRepo('Behavior', config);
-  const behaviorService    : BehaviorService      = new BehaviorService(config, behaviorRepo);
-  const behaviorController : BehaviorController   = new BehaviorController('Behavior', eventSys, behaviorService, config);
+  const behaviorRepo        : BehaviorRepo         = new BehaviorRepo('Behavior', config);
+  const behaviorService     : BehaviorService      = new BehaviorService(config, behaviorRepo);
+  const behaviorController  : BehaviorController   = new BehaviorController('Behavior', eventSys, behaviorService, config);
+
+  const pedRepo             : PedestrianRepo       = new PedestrianRepo('PedMap', config);
+  const pedService          : PedestrianService    = new PedestrianService(config, pedRepo);
+  const pedController       : PedestrianController = new PedestrianController('PedMap', eventSys, pedService, config);
   
-  const simbuilder    : SimulationBuilder         = new SimulationBuilder(config, eventSys);
-  const simRunner     : SimRunner                 = new SimRunner(config);
-  const simController : SimController             = new SimController(simRunner, config, eventSys);
-  const cbController  : ChainBuilderController    = new ChainBuilderController(config, simController, eventSys);
+  const simbuilder          : SimulationBuilder         = new SimulationBuilder(config, eventSys);
+  const simRunner           : SimRunner                 = new SimRunner(config);
+  const simController       : SimController             = new SimController(simRunner, config, eventSys);
+  const cbController        : ChainBuilderController    = new ChainBuilderController(config, simController, eventSys);
 
   return {
     ModuleController: moduleController,
@@ -76,5 +85,6 @@ export const getControllers = (config : Config, eventSys : EventSystem) : Contro
     ChainBuilderController : cbController,
     BehaviorController: behaviorController,
     SimController : simController,
+    PedestrianController : pedController,
   };
 };

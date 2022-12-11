@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { Nullable } from 'src/types/typeDefs';
+import { Nullable } from '../types/typeDefs';
 
 const upload = multer();
 

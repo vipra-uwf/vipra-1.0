@@ -13,6 +13,7 @@ import { OMap } from './types/maps/map.types';
 import { Logger } from './controllers/logging/logger';
 import { createSimRouter } from './routes/simulation.routes';
 import { FLAGS } from './types/flags/flags.types';
+import { PedMap } from './types/pedestrian/pedestrian.types';
 
 const app = express();
 
@@ -28,9 +29,11 @@ const controllers = getControllers(config, evSys);
 const mapRoutes = createRouter<OMap>('Map', controllers.MapController);
 const moduleRoutes = createRouter<Module>('Module', controllers.ModuleController);
 const simconfigRoutes = createRouter<SimConfig>('SimConfig', controllers.SimConfigController);
+const pedMapRoutes = createRouter<PedMap>('PedMap', controllers.PedestrianController);
 const simulationRoutes = createSimRouter(controllers.ChainBuilderController);
 
 app.use('/map', mapRoutes);
+app.use('/pedmap', pedMapRoutes);
 app.use('/module', moduleRoutes);
 app.use('/simconfig', simconfigRoutes);
 app.use('/simulation', simulationRoutes);

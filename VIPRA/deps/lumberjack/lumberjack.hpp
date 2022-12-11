@@ -108,6 +108,11 @@ Error(Logger<L>& logger, const std::string& message, params... ps) {
   logger.Log(ERROR, message, ps...);
 }
 
+template <typename L, typename... params> inline static void
+Error(Logger<L>&& logger, const std::string& message, params... ps) {
+  logger.Log(ERROR, message, ps...);
+}
+
 /**
  * @brief Calls the provided Logger with Level WARN
  *
@@ -119,6 +124,10 @@ Error(Logger<L>& logger, const std::string& message, params... ps) {
  */
 template <typename L, typename... params> inline static void
 Warn(Logger<L>& logger, const std::string& message, params... ps) {
+  logger.Log(WARN, message, ps...);
+}
+template <typename L, typename... params> inline static void
+Warn(Logger<L>&& logger, const std::string& message, params... ps) {
   logger.Log(WARN, message, ps...);
 }
 
@@ -135,6 +144,10 @@ template <typename L, typename... params> inline static void
 Info(Logger<L>& logger, const std::string& message, params... ps) {
   logger.Log(INFO, message, ps...);
 }
+template <typename L, typename... params> inline static void
+Info(Logger<L>&& logger, const std::string& message, params... ps) {
+  logger.Log(INFO, message, ps...);
+}
 
 /**
  * @brief Calls the provided Logger with Level DEBUG
@@ -147,6 +160,10 @@ Info(Logger<L>& logger, const std::string& message, params... ps) {
  */
 template <typename L, typename... params> inline static void
 Debug(Logger<L>& logger, const std::string& message, params... ps) {
+  logger.Log(DEBUG, message, ps...);
+}
+template <typename L, typename... params> inline static void
+Debug(Logger<L>&& logger, const std::string& message, params... ps) {
   logger.Log(DEBUG, message, ps...);
 }
 
