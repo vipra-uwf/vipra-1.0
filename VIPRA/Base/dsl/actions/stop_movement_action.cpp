@@ -16,8 +16,8 @@ void StopMovementAction::performAction(int pedestrianIndex, const PedestrianSet&
     if (!actionApplied(pedestrianIndex))
     {
         auto *pedestrianSetObj = dynamic_cast<PedestrianSet *>(pedestrianSet);
-        const_cast<DimsVector&>(pedestrianSetObj->getVelocities()).at(pedestrianIndex) = STOPPED;
+        const_cast<DimVector&>(pedestrianSetObj->getVelocities()).at(pedestrianIndex) = STOPPED;
         const_cast<Dimensions&>(pedestrianSetObj->getSpeeds()).at(pedestrianIndex) = 0;
-        const_cast<DimsVector&>(pedestrianSetObj->getPropulsionForces()).at(pedestrianIndex) = STOPPED;
+        const_cast<DimVector&>(pedestrianSetObj->getPropulsionForces()).at(pedestrianIndex) = STOPPED;
     }
 }

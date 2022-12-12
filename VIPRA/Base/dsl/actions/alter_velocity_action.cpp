@@ -44,9 +44,9 @@ void AlterVelocityAction::performAction(int pedestrianIndex, const PedestrianSet
     // calculated in the precompute() section of the calm_pedestrian_model, and does not look at any previous value
     // of the propulsion force. So to persist our velocity change, we need to modify the original velocity once, but
     // modify the propulsion force every time while this action is active.
-    Dimensions &originalPropulsionForce = const_cast<DimsVector&>(pedestrianSet.getPropulsionForces()).at(pedestrianIndex);
+    Dimensions &originalPropulsionForce = const_cast<DimVector&>(pedestrianSet.getPropulsionForces()).at(pedestrianIndex);
     const Dimensions &newPropulsion = computeAlteredDimensions(originalPropulsionForce);
-    const_cast<DimsVector&>(pedestrianSet.getPropulsionForces()).at(pedestrianIndex) = newPropulsion;
+    const_cast<DimVector&>(pedestrianSet.getPropulsionForces()).at(pedestrianIndex) = newPropulsion;
 
 }
 
