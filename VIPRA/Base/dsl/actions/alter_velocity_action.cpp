@@ -3,7 +3,6 @@
 //
 
 #include "alter_velocity_action.hpp"
-#include "..\..\..\Extendable\pedestrianset\pedestrian_set.hpp"
 
 AlterVelocityAction::AlterVelocityAction(SimulationContext *simulationContext,
                                          ALTER_DIRECTION alterDirection,
