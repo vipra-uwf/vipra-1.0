@@ -41,8 +41,8 @@ Clock::printRealEndTime() {
 }
 
 void
-Clock::addSimulationTimeMs(unsigned long milliseconds) {
-  this->simulationElapsedMs += milliseconds;
+Clock::addSimulationTimeMs(FLOATING_NUMBER seconds) {
+  this->simulationElapsedMs += seconds * 1000;
 }
 
 void

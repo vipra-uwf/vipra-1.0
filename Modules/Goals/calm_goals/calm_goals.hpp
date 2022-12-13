@@ -6,7 +6,7 @@
 #include <queue>
 
 #include "goals/goals.hpp"
-
+#include "logging/logging.hpp"
 #include "pathfinding.hpp"
 class CalmGoals : public Goals {
 

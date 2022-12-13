@@ -6,7 +6,6 @@
 #include "definitions/type_definitions.hpp"
 #include "logging/logging.hpp"
 
-
 class Clock {
  private:
   std::chrono::time_point<std::chrono::system_clock> realStartTime;
@@ -23,7 +22,7 @@ class Clock {
   void printRealStartTime();
   void printRealDuration();
   void printRealEndTime();
-  void addSimulationTimeMs(unsigned long milliseconds);
+  void addSimulationTimeMs(FLOATING_NUMBER seconds);
   void printSimulationDuration();
 
   void configure(const CONFIG_MAP& config);

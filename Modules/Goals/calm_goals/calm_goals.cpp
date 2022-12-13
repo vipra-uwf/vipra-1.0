@@ -26,12 +26,16 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   endGoals = DimVector(pedCnt, {-1, -1});
   goalsMet = std::vector<bool>(pedCnt, false);
   paths = std::vector<std::queue<Dimensions>>(pedCnt);
+  LJ::Debug(simLogger, "CalmGoals: Finding Nearest End Goal");
   findNearestEndGoal(obsSet, pedSet);
 
   if (pathingType == "Astar") {
+    LJ::Debug(simLogger, "CalmGoals: Building Pathing Graph");
     graph.buildGraph(obsSet);
   }
+  LJ::Debug(simLogger, "CalmGoals: Initializing Paths");
   initializePaths(pedSet, obsSet);
+  LJ::Debug(simLogger, "CalmGoals: Finished Initializing");
 }
 
 /**
@@ -46,12 +50,15 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
 
   for (size_t i = 0; i < pedCnt; ++i) {
     if (pathingType == "Astar") {
+      LJ::Debug(simLogger, "CalmGoals: Finding AStar Path for Ped: {}", i);
       paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph, diagonalCost);
     } else if (pathingType == "Disembark") {
+      LJ::Debug(simLogger, "CalmGoals: Finding Disembark Path for Ped: {}", i);
       paths[i] = disembarkPath(coords.at(i), endGoals.at(i), obsSet);
     }
     currentGoals[i] = paths[i].front();
   }
+  LJ::Debug(simLogger, "CalmGoals: Finished Initializing Paths");
 }
 
 std::queue<Dimensions>
@@ -100,8 +107,10 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
   }
 
   if (objectives.size() == 1) {
+    LJ::Debug(simLogger, "CalmGoals: Only One Objective of Type: {}, Filling Goals", endGoalType);
     // if only one objective, set every end goal as that
-    std::fill(endGoals.begin(), endGoals.end(), objectives.at(0));
+    std::fill(endGoals.begin(), endGoals.end(), std::ref(objectives.at(0)));
+    LJ::Debug(simLogger, "Filled Goals");
   } else {
     // otherwise, for each ped coord set the end goal as the nearest objective
     std::transform(coords.begin(), coords.end(), endGoals.begin(), [&](const Dimensions& coord) {
@@ -116,6 +125,7 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
       return goal;
     });
   }
+  LJ::Debug(simLogger, "CalmGoals: Finished Finding Nearest Goals");
 }
 
 /**
@@ -134,9 +144,14 @@ CalmGoals::updatePedestrianGoals(const ObstacleSet& obsSet, const PedestrianSet&
     if (!paths[i].empty()) {
       const Dimensions& currGoal = paths[i].front();
       if (pedCoords.at(i).inside(currGoal, goalRange)) {
+        LJ::Debug(simLogger, "Pedestrian {}, Reached a Goal", i);
         paths[i].pop();
-        currentGoals[i] = paths[i].front();
-        goalsMet[i] = paths[i].empty();
+        if (paths[i].empty()) {
+          LJ::Debug(simLogger, "Pedestrian {}, Reached Their End Goal", i);
+          goalsMet[i] = true;
+        } else {
+          currentGoals[i] = paths[i].front();
+        }
       }
     }
   }
@@ -207,7 +222,15 @@ CalmGoals::isPedestianGoalMet(size_t index) const {
  */
 bool
 CalmGoals::isSimulationGoalMet() const noexcept {
-  return std::all_of(goalsMet.begin(), goalsMet.end(), [](bool met) { return met; });
+  int  cnt = 0;
+  bool passed = std::all_of(goalsMet.begin(), goalsMet.end(), [&cnt](bool met) {
+    ++cnt;
+    return met;
+  });
+  if (passed) {
+    LJ::Debug(simLogger, "{} Pedestrians Have Met Their Goal", cnt);
+  }
+  return passed;
 }
 
 int n = 0;
