@@ -60,6 +60,21 @@ struct f2d {
     }
     throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
   }
+
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  const float& operator[](T index) const {
+    switch (index) {
+      case 0:
+        return x;
+      case 1:
+        return y;
+      case 'x':
+        return x;
+      case 'y':
+        return y;
+    }
+    throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
+  }
 };
 
 struct f3d {
@@ -132,6 +147,44 @@ struct f3d {
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   float& operator[](T index) {
+    switch (index) {
+      case 0:
+        return x;
+      case 1:
+        return y;
+      case 2:
+        return z;
+      case 'x':
+        return x;
+      case 'y':
+        return y;
+      case 'z':
+        return z;
+    }
+    throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  float& operator[](T index) {
+    switch (index) {
+      case 0:
+        return x;
+      case 1:
+        return y;
+      case 2:
+        return z;
+      case 'x':
+        return x;
+      case 'y':
+        return y;
+      case 'z':
+        return z;
+    }
+    throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  const float& operator[](T index) const {
     switch (index) {
       case 0:
         return x;
