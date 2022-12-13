@@ -2,7 +2,7 @@
 #include "point_map_loader.hpp"
 
 void
-PointMapLoader::configure(const CONFIG_MAP& configMap) {}
+PointMapLoader::configure(const VIPRA::ConfigMap& configMap) {}
 
 void
 PointMapLoader::initialize() {}
@@ -29,14 +29,13 @@ PointMapLoader::LoadMap(const std::string& filePath) const {
     inputData->type = "PointMap";
     for (unsigned int i = 0; i < jsonDocument.size(); i++) {
       const std::string type = jsonDocument.getMemberNames()[i];
-      inputData->entities[type] = DimVector{};
+      inputData->entities[type] = VIPRA::f3dVec{};
 
       for (unsigned int j = 0; j < jsonDocument[type].size(); j++) {
-        Dimensions temp{};
-        temp.initialized = true;
+        VIPRA::f3d temp{};
         for (unsigned int k = 0; k < jsonDocument[type][j].size(); ++k) {
           const std::string name = jsonDocument[type][j].getMemberNames()[k];
-          temp.axis[k] = std::stof(jsonDocument[type][j][name].asString());
+          temp[k] = std::stof(jsonDocument[type][j][name].asString());
         }
         inputData->entities[type].push_back(temp);
       }

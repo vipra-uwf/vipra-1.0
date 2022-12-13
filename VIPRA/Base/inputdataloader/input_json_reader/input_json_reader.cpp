@@ -1,18 +1,18 @@
 #include "input_json_reader.hpp"
 
-const ENTITY_SET InputDataLoader::_emptyset_{};
+const VIPRA::EntitySet InputDataLoader::_emptyset_{};
 
 void
-InputJSONReader::configure(const CONFIG_MAP& configMap) {}
+InputJSONReader::configure(const VIPRA::ConfigMap& configMap) {}
 
 /**
  * @throws InputDataLoaderException
- * @brief Gets the ENTITY_SET described by the file at filePath
+ * @brief Gets the VIPRA::EntitySet described by the file at filePath
  * 
  * @param filePath - Absolute path to file
- * @return ENTITY_SET 
+ * @return VIPRA::EntitySet 
  */
-ENTITY_SET
+VIPRA::EntitySet
 InputJSONReader::getInputEntities(const std::string& filePath) {
 
   Json::Value             jsonDocument;
@@ -32,16 +32,16 @@ InputJSONReader::getInputEntities(const std::string& filePath) {
   fileStream.close();
 
   try {
-    ENTITY_SET inputData;
+    VIPRA::EntitySet inputData;
     for (unsigned int i = 0; i < jsonDocument.size(); i++) {
       const std::string type = jsonDocument.getMemberNames()[i];
       inputData[type] = {};
 
       for (unsigned int j = 0; j < jsonDocument[type].size(); j++) {
-        Dimensions temp{};
+        VIPRA::f3d temp{};
         for (unsigned int k = 0; k < jsonDocument[type][j].size(); ++k) {
           const std::string name = jsonDocument[type][j].getMemberNames()[k];
-          temp.axis[k] = std::stof(jsonDocument[type][j][name].asString());
+          temp[k] = std::stof(jsonDocument[type][j][name].asString());
         }
         inputData[type].push_back(temp);
       }

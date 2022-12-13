@@ -22,10 +22,10 @@ class HumanBehaviorModel {
  public:
   HumanBehaviorModel();
   virtual ~HumanBehaviorModel();
-  virtual void configure(const CONFIG_MAP& configMap);
+  virtual void configure(const VIPRA::ConfigMap& configMap);
 
   virtual void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&);
-  void         update(const PedestrianSet&, const ObstacleSet&, const Goals&, FLOATING_NUMBER timestep);
+  void         update(const PedestrianSet&, const ObstacleSet&, const Goals&, float timestep);
 };
 
 #endif  //VIPRA_HUMAN_BEHAVIOR_MODEL_HPP

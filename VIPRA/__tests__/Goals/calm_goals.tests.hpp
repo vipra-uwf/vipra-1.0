@@ -14,8 +14,8 @@ namespace calm_goals_TESTS {
 
 class CalmGoalsTester : public CalmGoals {
  public:
-  const Dimensions& testNearestObjective(const std::string& type,
-                                         const Dimensions&  point,
+  const VIPRA::f3d& testNearestObjective(const std::string& type,
+                                         const VIPRA::f3d&  point,
                                          const ObstacleSet& obsSet) {
     return nearestObjective(type, point, obsSet);
   }
@@ -25,8 +25,8 @@ class CalmGoalsTester : public CalmGoals {
   }
 
   void setup(size_t pedCnt) {
-    currentGoals = DimVector(pedCnt);
-    endGoals = DimVector(pedCnt);
+    currentGoals = VIPRA::f3dVec(pedCnt);
+    endGoals = VIPRA::f3dVec(pedCnt);
     goalsMet = std::vector<bool>(pedCnt);
   }
 };
@@ -37,17 +37,17 @@ testInitialize(const std::string& pathfinding) {
   ObstacleSetMock   obSet;
   PedestrianSetMock pedSet;
 
-  goals.configure(CONFIG_MAP{{"endGoalType", "exits"},
-                             {"pathFinding", pathfinding},
-                             {"diagonalCost", "2.0"},
-                             {"goalRange", "0.05"}});
+  goals.configure(VIPRA::ConfigMap{{"endGoalType", "exits"},
+                                   {"pathFinding", pathfinding},
+                                   {"diagonalCost", "2.0"},
+                                   {"goalRange", "0.05"}});
 
   goals.initialize(obSet, pedSet);
 
   const auto& currents = goals.getAllCurrentGoals();
 
   TEST_CHECK(std::all_of(
-      currents.begin(), currents.end(), [&](const Dimensions& currGoal) { return currGoal.initialized; }));
+      currents.begin(), currents.end(), [&](const VIPRA::f3d& currGoal) { return currGoal.initialized; }));
 }
 
 void
@@ -63,20 +63,20 @@ testUpdate(const std::string& pathfinding) {
   ObstacleSetMock   obSet;
   PedestrianSetMock pedSet;
 
-  goals.configure(CONFIG_MAP{{"endGoalType", "exits"},
-                             {"pathFinding", pathfinding},
-                             {"diagonalCost", "2.0"},
-                             {"goalRange", "0.05"}});
+  goals.configure(VIPRA::ConfigMap{{"endGoalType", "exits"},
+                                   {"pathFinding", pathfinding},
+                                   {"diagonalCost", "2.0"},
+                                   {"goalRange", "0.05"}});
 
   goals.initialize(obSet, pedSet);
 
   const auto& endGoals = goals.getAllEndGoals();
-  TEST_CHECK(std::all_of(endGoals.begin(), endGoals.end(), [&](const Dimensions& endGoal) {
-    return endGoal != Dimensions{0, 0, 0};
+  TEST_CHECK(std::all_of(endGoals.begin(), endGoals.end(), [&](const VIPRA::f3d& endGoal) {
+    return endGoal != VIPRA::f3d{0, 0, 0};
   }));
 
   // check that a goal is updated properly when the pedestrian reaches current goal
-  const Dimensions prevGoal = goals.getCurrentGoal(10);
+  const VIPRA::f3d prevGoal = goals.getCurrentGoal(10);
   pedSet.setPedestrianCoordinates(goals.getCurrentGoal(10), 10);
   goals.updatePedestrianGoals(obSet, pedSet);
   TEST_CHECK(prevGoal != goals.getCurrentGoal(10));
@@ -84,7 +84,7 @@ testUpdate(const std::string& pathfinding) {
   // check that simulation goal is met when all pedestrians reach their goals
   const size_t pedCnt = pedSet.getNumPedestrians();
   for (size_t i = 0; i < pedCnt; ++i) {
-    Dimensions currGoal = goals.getCurrentGoal(i);
+    VIPRA::f3d currGoal = goals.getCurrentGoal(i);
     while (currGoal.initialized) {
       pedSet.setPedestrianCoordinates(currGoal, i);
       goals.updatePedestrianGoals(obSet, pedSet);
@@ -109,10 +109,10 @@ nearestObjective(void) {
   obSet.clear();
   obSet.addObjects("exits", {{5, 5}, {10, 10}, {1, 1}});
 
-  TEST_CHECK((goals.testNearestObjective("exits", {1.5, 1.5}, obSet) == Dimensions{1, 1}));
-  TEST_CHECK((goals.testNearestObjective("exits", {4, 3}, obSet) == Dimensions{5, 5}));
-  TEST_CHECK((goals.testNearestObjective("exits", {20, 15}, obSet) == Dimensions{10, 10}));
-  TEST_CHECK((goals.testNearestObjective("exits", {-3, 3}, obSet) == Dimensions{1, 1}));
+  TEST_CHECK((goals.testNearestObjective("exits", {1.5, 1.5}, obSet) == VIPRA::f3d{1, 1}));
+  TEST_CHECK((goals.testNearestObjective("exits", {4, 3}, obSet) == VIPRA::f3d{5, 5}));
+  TEST_CHECK((goals.testNearestObjective("exits", {20, 15}, obSet) == VIPRA::f3d{10, 10}));
+  TEST_CHECK((goals.testNearestObjective("exits", {-3, 3}, obSet) == VIPRA::f3d{1, 1}));
 }
 
 void
@@ -131,7 +131,7 @@ findNearestEndGoal(void) {
   pedSet.setPedestrianCoordinates({{1.5, 1.5}, {20, 15}, {3.75, 4}});
   goals.testFindNearesetEndGoal(obSet, pedSet);
 
-  TEST_CHECK((goals.getAllEndGoals() == DimVector{{1, 1}, {10, 10}, {5, 5}}));
+  TEST_CHECK((goals.getAllEndGoals() == VIPRA::f3dVec{{1, 1}, {10, 10}, {5, 5}}));
 }
 
 }  // namespace calm_goals_TESTS

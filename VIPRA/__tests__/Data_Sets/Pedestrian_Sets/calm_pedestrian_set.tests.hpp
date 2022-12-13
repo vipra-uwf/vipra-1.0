@@ -12,8 +12,8 @@ LoadProperValuesInPedestrianSet(void) {
   CalmPedestrianSet pedestrianSet;
   size_t            numPedestrians = 3;
 
-  DimVector  pedestrianCoords = {{8, 5}, {4, 2}, {0, 5}};
-  ENTITY_SET pedestrians = {{"pedestrians", pedestrianCoords}};
+  VIPRA::f3dVec    pedestrianCoords = {{8, 5}, {4, 2}, {0, 5}};
+  VIPRA::EntitySet pedestrians = {{"pedestrians", pedestrianCoords}};
 
   pedestrianSet.initialize(pedestrians);
 

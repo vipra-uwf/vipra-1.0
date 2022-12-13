@@ -17,7 +17,7 @@ void
 HumanBehaviorModel::update(const PedestrianSet& pedSet,
                            const ObstacleSet&   obsSet,
                            const Goals&         goals,
-                           FLOATING_NUMBER      timestep) {
+                           float                timestep) {
 
   const size_t pedCnt = pedSet.getNumPedestrians();
 
@@ -47,7 +47,7 @@ HumanBehaviorModel::update(const PedestrianSet& pedSet,
 }
 
 void
-HumanBehaviorModel::configure(const CONFIG_MAP& configMap) {
+HumanBehaviorModel::configure(const VIPRA::ConfigMap& configMap) {
   for (const auto& config : configMap) {
     if (config.first.find("behavior#") != std::string::npos) {
       // This is a behavior, so add it to the human behaviors. The value is the filename.

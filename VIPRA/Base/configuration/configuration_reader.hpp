@@ -4,7 +4,6 @@
 #include <fstream>
 #include <iostream>
 
-
 #include "definitions/type_definitions.hpp"
 #include "jsoncpp/json/json.h"
 
@@ -25,7 +24,7 @@ class ConfigurationReaderException : public std::exception {
 class ConfigurationReader {
  public:
   Json::Value getConfiguration(const std::string& filePath);
-  void        configure(const CONFIG_MAP& config);
+  void        configure(const VIPRA::ConfigMap& config);
 
  private:
 };

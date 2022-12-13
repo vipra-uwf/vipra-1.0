@@ -9,12 +9,12 @@ AirplaneObstacleSet::initialize(const std::unique_ptr<MapType> map) {
 }
 
 void
-AirplaneObstacleSet::configure(const CONFIG_MAP& configMap) {
+AirplaneObstacleSet::configure(const VIPRA::ConfigMap& configMap) {
   configurationMap = configMap;
 }
 
 void
-AirplaneObstacleSet::addObjects(const std::string& type, const std::vector<Dimensions>& locations) {
+AirplaneObstacleSet::addObjects(const std::string& type, const std::vector<VIPRA::f3d>& locations) {
   this->objects[type] = locations;
   for (unsigned int i = 0; i < objectTypes.size(); i++) {
     if (objectTypes.at(i) == type)
@@ -24,7 +24,7 @@ AirplaneObstacleSet::addObjects(const std::string& type, const std::vector<Dimen
 }
 
 void
-AirplaneObstacleSet::setObstacleCoords(const std::vector<Dimensions>& coordinates) {
+AirplaneObstacleSet::setObstacleCoords(const std::vector<VIPRA::f3d>& coordinates) {
   this->objects["obstacles"] = coordinates;
 }
 
@@ -33,13 +33,13 @@ AirplaneObstacleSet::getNumObstacles() const noexcept {
   return this->objects.at("obstacles").size();
 }
 
-const std::vector<Dimensions>&
+const std::vector<VIPRA::f3d>&
 AirplaneObstacleSet::getObstacleCoordinates() const noexcept {
   return this->objects.at("obstacles");
 }
 
-const Dimensions
-AirplaneObstacleSet::NearestObstacle(const Dimensions coordinates, const Dimensions velocity) const {
+const VIPRA::f3d
+AirplaneObstacleSet::NearestObstacle(const VIPRA::f3d coordinates, const VIPRA::f3d velocity) const {
   int min_index = 0;
   for (unsigned int i = 0; i < objects.at("obstacles").size(); i++) {
     if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
@@ -50,26 +50,25 @@ AirplaneObstacleSet::NearestObstacle(const Dimensions coordinates, const Dimensi
   return objects.at("obstacles").at(min_index);
 }
 
-const DimVector
+const VIPRA::f3dVec
 AirplaneObstacleSet::NearestObstacle(const PedestrianSet& PedSet) const {
-    const DimVector& coordinatesVector = PedSet.getPedestrianCoordinates();
-    DimVector nearestObstacleVector;
-    for (unsigned int j = 0; j < coordinatesVector.size(); j++)
-    {
-      Dimensions coordinates = coordinatesVector.at(j);
-      int        min_index = 0;
-      for (int i = 0; i < objects.at("obstacles").size(); i++) {
-        if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
-            coordinates.distanceTo(objects.at("obstacles").at(min_index)))
-          min_index = i;
-      }
-      nearestObstacleVector.push_back(objects.at("obstacles").at(min_index));
+  const VIPRA::f3dVec& coordinatesVector = PedSet.getPedestrianCoordinates();
+  VIPRA::f3dVec        nearestObstacleVector;
+  for (unsigned int j = 0; j < coordinatesVector.size(); j++) {
+    VIPRA::f3d coordinates = coordinatesVector.at(j);
+    int        min_index = 0;
+    for (int i = 0; i < objects.at("obstacles").size(); i++) {
+      if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
+          coordinates.distanceTo(objects.at("obstacles").at(min_index)))
+        min_index = i;
     }
+    nearestObstacleVector.push_back(objects.at("obstacles").at(min_index));
+  }
 
   return nearestObstacleVector;
 }
 
-const std::vector<Dimensions>&
+const std::vector<VIPRA::f3d>&
 AirplaneObstacleSet::getObjectsofType(const std::string& type) const noexcept {
   return objects.at(type);
 }
@@ -79,33 +78,33 @@ AirplaneObstacleSet::getObjectTypes() const noexcept {
   return objectTypes;
 }
 
-const Dimensions
+const VIPRA::f3d
 AirplaneObstacleSet::getDimensions() const noexcept {
-  FLOATING_NUMBER maxX = 0, maxY = 0, maxZ = 0;
+  float maxX = 0, maxY = 0, maxZ = 0;
   for (auto mapIterator : objects) {
     for (unsigned int i = 0; i < mapIterator.second.size(); i++) {
-      Dimensions coordinates = mapIterator.second[i];
+      VIPRA::f3d coordinates = mapIterator.second[i];
 
-      if (coordinates.axis[0] > maxX)
-        maxX = coordinates.axis[0];
-      if (coordinates.axis[1] > maxY)
-        maxY = coordinates.axis[1];
-      if (coordinates.axis[2] > maxZ)
-        maxZ = coordinates.axis[2];
+      if (coordinates.x > maxX)
+        maxX = coordinates.x;
+      if (coordinates.y > maxY)
+        maxY = coordinates.y;
+      if (coordinates.z > maxZ)
+        maxZ = coordinates.z;
     }
   }
-  Dimensions returnDimension(maxX, maxY, maxZ);
+  VIPRA::f3d returnDimension(maxX, maxY, maxZ);
 
   return returnDimension;
 }
 
-const FLOATING_NUMBER
-AirplaneObstacleSet::rayHit(Dimensions point1, Dimensions point2) const noexcept {
+const float
+AirplaneObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const noexcept {
 
   for (unsigned int i = 0; i < objects.at("obstacles").size(); i++) {
-    Dimensions coordinates = objects.at("obstacles")[i];
-    
-    if(coordinates.distanceTo(point1) + coordinates.distanceTo(point1) == point1.distanceTo(point2))
+    VIPRA::f3d coordinates = objects.at("obstacles")[i];
+
+    if (coordinates.distanceTo(point1) + coordinates.distanceTo(point1) == point1.distanceTo(point2))
       return coordinates.distanceTo(point1);
   }
 

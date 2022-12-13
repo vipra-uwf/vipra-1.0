@@ -4,18 +4,14 @@
 
 #include "environment_elapsed_time_condition.hpp"
 
+EnvironmentElapsedTimeCondition::EnvironmentElapsedTimeCondition(SimulationContext* simulationContext,
+                                                                 float              desiredElapsedTime)
+  : ElapsedTimeCondition(simulationContext, desiredElapsedTime) {}
 
-EnvironmentElapsedTimeCondition::EnvironmentElapsedTimeCondition(SimulationContext *simulationContext,
-                                                                 FLOATING_NUMBER desiredElapsedTime)
-        : ElapsedTimeCondition(simulationContext, desiredElapsedTime)
-{
-}
+bool
+EnvironmentElapsedTimeCondition::evaluate(int pedestrianIndex) {
+  float lastTransitionMs = this->getSimulationContext()->elapsedSeconds -
+                           this->getSimulationContext()->environmentTransitionPointSeconds;
 
-bool EnvironmentElapsedTimeCondition::evaluate(int pedestrianIndex)
-{
-    FLOATING_NUMBER lastTransitionMs =
-            this->getSimulationContext()->elapsedSeconds -
-            this->getSimulationContext()->environmentTransitionPointSeconds;
-
-    return lastTransitionMs > this->desiredElapsedTime;
+  return lastTransitionMs > this->desiredElapsedTime;
 }

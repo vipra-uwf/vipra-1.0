@@ -8,14 +8,13 @@
  * the previous transition. It only performs the check based on the shared data
  * in the simulation context.
  */
-class ElapsedTimeCondition: public Condition
-{
-    public:
-        ElapsedTimeCondition(SimulationContext *simulationContext, FLOATING_NUMBER desiredElapsedTime);
-        bool evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) override;
-    
-    protected:
-        FLOATING_NUMBER desiredElapsedTime;
+class ElapsedTimeCondition : public Condition {
+ public:
+  ElapsedTimeCondition(SimulationContext* simulationContext, float desiredElapsedTime);
+  bool evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) override;
+
+ protected:
+  float desiredElapsedTime;
 };
 
 #endif

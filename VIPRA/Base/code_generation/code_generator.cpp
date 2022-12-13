@@ -119,11 +119,11 @@ generateLogger() {
 
 std::string
 generateFunctionDeclarations() {
-  std::string generatedDeclarations = "\nCONFIG_MAP* extractConfigMap(std::string name);";
+  std::string generatedDeclarations = "\nVIPRA::ConfigMap* extractConfigMap(std::string name);";
 
   for (const auto& [type, className] : TYPES) {
     generatedDeclarations +=
-        className + "* generate" + className + "(std::string id, CONFIG_MAP* configMap);\n";
+        className + "* generate" + className + "(std::string id, VIPRA::ConfigMap* configMap);\n";
   }
 
   return generatedDeclarations;
@@ -132,7 +132,7 @@ generateFunctionDeclarations() {
 std::string
 generateObjectFunction(const std::string& className, const std::string& type) {
   std::string generatedFunction = "\n" + className + "* generate" + className +
-                                  "(std::string id, CONFIG_MAP* configMap)\n"
+                                  "(std::string id, VIPRA::ConfigMap* configMap)\n"
                                   "{\n";
 
   generatedFunction += generateFunctionOptions(type);
@@ -161,9 +161,9 @@ generateFunctionOptions(const std::string& type) {
 
 std::string
 generateExtractConfigMap() {
-  return {"\nCONFIG_MAP* extractConfigMap(std::string name)"
+  return {"\nVIPRA::ConfigMap* extractConfigMap(std::string name)"
           "\n{"
-          "\n\tCONFIG_MAP* configMap = new CONFIG_MAP;"
+          "\n\tVIPRA::ConfigMap* configMap = new VIPRA::ConfigMap;"
           "\n\tfor(unsigned int i = 0; i < "
           "moduleParams[name][\"params\"].size(); i++)"
           "\n\t{"
@@ -239,7 +239,7 @@ std::string
 makeModuleConfigs() {
   std::string str{""};
   for (const auto& [type, className] : TYPES) {
-    str += "\n\tCONFIG_MAP* " + type + "Config =  extractConfigMap(\"" + type + "\");";
+    str += "\n\tVIPRA::ConfigMap* " + type + "Config =  extractConfigMap(\"" + type + "\");";
   }
 
   return str;

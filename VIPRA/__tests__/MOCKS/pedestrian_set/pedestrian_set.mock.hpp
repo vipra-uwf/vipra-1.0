@@ -7,15 +7,15 @@ class PedestrianSetMock : public PedestrianSet {
  public:
   void clear() { pedCoords = {}; }
 
-  void configure(const CONFIG_MAP& configMap) override {
+  void configure(const VIPRA::ConfigMap& configMap) override {
     throw std::runtime_error("Pedestrian Set Mock: configure Not Implemented");
   }
 
-  void initialize(ENTITY_SET pedestrianCount) override {
+  void initialize(VIPRA::EntitySet pedestrianCount) override {
     throw std::runtime_error("Pedestrian Set Mock: initialize Not Implemented");
   }
 
-  const DimVector& getPedestrianCoordinates() const noexcept override { return pedCoords; }
+  const VIPRA::f3dVec& getPedestrianCoordinates() const noexcept override { return pedCoords; }
 
   int getNumPedestrians() const noexcept override { return pedCoords.size(); }
 
@@ -23,10 +23,10 @@ class PedestrianSetMock : public PedestrianSet {
     throw std::runtime_error("Pedestrian Set Mock: removePedestrian Not Implemented");
   }
 
-  const DimVector& getVelocities() const noexcept override {
+  const VIPRA::f3dVec& getVelocities() const noexcept override {
     throw std::runtime_error("Pedestrian Set Mock: getVelocities Not Implemented");
   }
-  const std::vector<FLOATING_NUMBER>& getSpeeds() const noexcept override {
+  const std::vector<float>& getSpeeds() const noexcept override {
     throw std::runtime_error("Pedestrian Set Mock: getSpeeds Not Implemented");
   }
   const std::vector<int>& getIds() const noexcept override {
@@ -37,33 +37,35 @@ class PedestrianSetMock : public PedestrianSet {
     throw std::runtime_error("Pedestrian Set Mock: setNumPedestrians Not Implemented");
   }
 
-  void setPedestrianCoordinates(const Dimensions& coords, size_t index) override {
+  void setPedestrianCoordinates(const VIPRA::f3d& coords, size_t index) override {
     pedCoords[index] = coords;
   }
-  void setPedestrianCoordinates(Dimensions&& coords, size_t index) override { pedCoords[index] = coords; }
-  void setPedestrianCoordinates(DimVector&& coordinates) noexcept override { pedCoords = coordinates; }
-  void setPedestrianCoordinates(const DimVector& coordinates) noexcept override { pedCoords = coordinates; }
-
-  void setVelocity(const Dimensions& velocity, size_t index) override {
-    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
-  }
-  void setVelocity(Dimensions&& velocity, size_t index) override {
-    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
-  }
-  void setVelocities(const DimVector& velocities) noexcept override {
-    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
-  }
-  void setVelocities(DimVector&& velocities) noexcept override {
-    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
+  void setPedestrianCoordinates(VIPRA::f3d&& coords, size_t index) override { pedCoords[index] = coords; }
+  void setPedestrianCoordinates(VIPRA::f3dVec&& coordinates) noexcept override { pedCoords = coordinates; }
+  void setPedestrianCoordinates(const VIPRA::f3dVec& coordinates) noexcept override {
+    pedCoords = coordinates;
   }
 
-  void setSpeeds(const std::vector<FLOATING_NUMBER>& speedsMetersPerSecond) noexcept override {
+  void setVelocity(const VIPRA::f3d& velocity, size_t index) override {
+    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
+  }
+  void setVelocity(VIPRA::f3d&& velocity, size_t index) override {
+    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
+  }
+  void setVelocities(const VIPRA::f3dVec& velocities) noexcept override {
+    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
+  }
+  void setVelocities(VIPRA::f3dVec&& velocities) noexcept override {
+    throw std::runtime_error("Pedestrian Set Mock: setVelocity Not Implemented");
+  }
+
+  void setSpeeds(const std::vector<float>& speedsMetersPerSecond) noexcept override {
     throw std::runtime_error("Pedestrian Set Mock: setSpeed Not Implemented");
   }
-  void setSpeeds(std::vector<FLOATING_NUMBER>&& speedsMetersPerSecond) noexcept override {
+  void setSpeeds(std::vector<float>&& speedsMetersPerSecond) noexcept override {
     throw std::runtime_error("Pedestrian Set Mock: setSpeed Not Implemented");
   }
-  void setSpeed(FLOATING_NUMBER speed, size_t index) override {
+  void setSpeed(float speed, size_t index) override {
     throw std::runtime_error("Pedestrian Set Mock: setSpeed Not Implemented");
   }
 
@@ -72,7 +74,7 @@ class PedestrianSetMock : public PedestrianSet {
   }
 
  private:
-  DimVector pedCoords = {
+  VIPRA::f3dVec pedCoords = {
       {0.89, 3.1},       {1.68, 3.1},       {2.47, 3.1},       {3.25, 3.1},       {4.04, 3.1},
       {4.83, 3.1},       {5.62, 3.1},       {6.4, 3.1},        {7.19, 3.1},       {7.98, 3.1},
       {8.76, 3.1},       {9.55, 3.1},       {10.34, 3.1},      {11.13, 3.1},      {11.91, 3.1},

@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 
-
 #include "definitions/type_definitions.hpp"
 
 class OutputDataWriterException : public std::exception {
@@ -26,9 +25,9 @@ class OutputDataWriter {
  public:
   virtual ~OutputDataWriter() = default;
 
-  virtual void configure(const CONFIG_MAP& configMap) = 0;
+  virtual void configure(const VIPRA::ConfigMap& configMap) = 0;
   virtual void initializeOutputFile(const std::string& outputFilePath) = 0;
-  virtual void addFloatValue(const std::string& key, FLOATING_NUMBER value) = 0;
+  virtual void addFloatValue(const std::string& key, float value) = 0;
   virtual void addStringValue(const std::string& key, const std::string& value) = 0;
 
   virtual void writeToDocument() = 0;

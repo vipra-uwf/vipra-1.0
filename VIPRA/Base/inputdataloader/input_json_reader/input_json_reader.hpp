@@ -7,8 +7,8 @@
 class InputJSONReader : public InputDataLoader {
  private:
  public:
-  [[nodiscard]] ENTITY_SET getInputEntities(const std::string& filePath) override;
-  void                     configure(const CONFIG_MAP& configMap) override;
+  [[nodiscard]] VIPRA::EntitySet getInputEntities(const std::string& filePath) override;
+  void                           configure(const VIPRA::ConfigMap& configMap) override;
 };
 
 #endif

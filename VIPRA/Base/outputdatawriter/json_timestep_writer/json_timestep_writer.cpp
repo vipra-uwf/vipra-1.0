@@ -16,7 +16,7 @@ JSONTimestepWriter::getDocument() const {
 }
 
 void
-JSONTimestepWriter::configure(const CONFIG_MAP& configMap) {}
+JSONTimestepWriter::configure(const VIPRA::ConfigMap& configMap) {}
 
 /**
  * @throws OutputDataWriterException
@@ -39,7 +39,7 @@ JSONTimestepWriter::initializeOutputFile(const std::string& outputFilePath) {
  * @param value - value to set key
  */
 void
-JSONTimestepWriter::addFloatValue(const std::string& key, FLOATING_NUMBER value) {
+JSONTimestepWriter::addFloatValue(const std::string& key, float value) {
   if (key == "NEW_TIMESTEP") {
     timestep = value;
     return;

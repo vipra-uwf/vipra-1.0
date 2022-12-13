@@ -5,35 +5,34 @@
 #include "obstacleset/obstacle_set.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 
-
 class AirplaneObstacleSet : public ObstacleSet {
 
  private:
-  DimVector                obstacleCoordinates;
-  CONFIG_MAP               configurationMap;
+  VIPRA::f3dVec            obstacleCoordinates;
+  VIPRA::ConfigMap         configurationMap;
   std::vector<std::string> objectTypes;
-  ENTITY_SET               objects;
+  VIPRA::EntitySet         objects;
 
  public:
-  void configure(const CONFIG_MAP& configMap) override;
+  void configure(const VIPRA::ConfigMap& configMap) override;
 
-  void addObjects(const std::string& type, const DimVector& locations) override;
+  void addObjects(const std::string& type, const VIPRA::f3dVec& locations) override;
 
-  void setObstacleCoords(const DimVector& coordinates) override;
+  void setObstacleCoords(const VIPRA::f3dVec& coordinates) override;
   int  getNumObstacles() const noexcept override;
 
-  const DimVector& getObstacleCoordinates() const noexcept override;
+  const VIPRA::f3dVec& getObstacleCoordinates() const noexcept override;
 
-  const DimVector& getObjectsofType(const std::string& type) const noexcept override;
+  const VIPRA::f3dVec& getObjectsofType(const std::string& type) const noexcept override;
 
   const std::vector<std::string>& getObjectTypes() const noexcept override;
 
-  void             initialize(const std::unique_ptr<MapType>) override;
-  const DimVector  NearestObstacle(const PedestrianSet& PedSet) const override;
-  const Dimensions NearestObstacle(const Dimensions coordinates, const Dimensions velocity) const override;
+  void                initialize(const std::unique_ptr<MapType>) override;
+  const VIPRA::f3dVec NearestObstacle(const PedestrianSet& PedSet) const override;
+  const VIPRA::f3d    NearestObstacle(const VIPRA::f3d coordinates, const VIPRA::f3d velocity) const override;
 
-  const Dimensions      getDimensions() const noexcept override;
-  const FLOATING_NUMBER rayHit(Dimensions, Dimensions) const noexcept override;
+  const VIPRA::f3d getDimensions() const noexcept override;
+  const float      rayHit(VIPRA::f3d, VIPRA::f3d) const noexcept override;
 };
 
 #endif

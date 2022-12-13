@@ -9,11 +9,10 @@
 #include "policyModel/policy_model.hpp"
 #include "simulationoutputhandler/simulation_output_handler.hpp"
 
-
 class Simulation {
 
  public:
-  void configure(const CONFIG_MAP& config);
+  void configure(const VIPRA::ConfigMap& config);
   void initialize();
   void run(Goals&                   goals,
            PedestrianSet&           pedestrianSet,
@@ -28,8 +27,8 @@ class Simulation {
   int getTimestep() const;
 
  private:
-  int             timestep;
-  FLOATING_NUMBER timestep_size;
+  int   timestep;
+  float timestep_size;
 };
 
 #endif

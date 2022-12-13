@@ -12,9 +12,9 @@ class JSONWriter : public OutputDataWriter {
 
  public:
   JSONWriter();
-  void configure(const CONFIG_MAP& configMap) override;
+  void configure(const VIPRA::ConfigMap& configMap) override;
   void initializeOutputFile(const std::string& outputFilePath) override;
-  void addFloatValue(const std::string& key, FLOATING_NUMBER value) override;
+  void addFloatValue(const std::string& key, float value) override;
   void addStringValue(const std::string& key, const std::string& value) override;
   void writeToDocument() override;
 };

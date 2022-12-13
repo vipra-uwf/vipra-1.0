@@ -1,7 +1,7 @@
 #include "simulation.hpp"
 
 void
-Simulation::configure(const CONFIG_MAP& config) {
+Simulation::configure(const VIPRA::ConfigMap& config) {
   this->timestep = 0;
   this->timestep_size = std::stof(config.at("time_step_size"));
 }
@@ -15,10 +15,10 @@ Simulation::getTimestep() const {
 }
 
 inline void
-combineStates(const size_t pedCnt, State& state, std::shared_ptr<State> other) {
+combineStates(const size_t pedCnt, VIPRA::State& state, std::shared_ptr<VIPRA::State> other) {
   other->affector = state.affector;
   for (size_t i = 0; i < pedCnt; ++i) {
-    if (state.affector[i] != PED_MODEL) {
+    if (state.affector[i] != VIPRA::Affector::PED_MODEL) {
       other->pedestrianCoordinates[i] = state.pedestrianCoordinates[i];
       other->velocities[i] = state.velocities[i];
     }
@@ -51,7 +51,7 @@ Simulation::run(Goals&                   goals,
 
   clock.start();
   const size_t pedCnt = pedestrianSet.getNumPedestrians();
-  State        proposedState(pedCnt);
+  VIPRA::State proposedState(pedCnt);
   LJ::Info(simLogger, "Starting Simulation Loop");
   while (timestep < 20000) {
     //while (!goals.isSimulationGoalMet()) {

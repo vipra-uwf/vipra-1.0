@@ -6,16 +6,16 @@ void
 CalmPedestrianModel::initialize(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet, Goals& goals) {
   pedestrianSet = static_cast<CalmPedestrianSet&>(pedestrianSet);
   this->pedestrianDistanceMatrix =
-      new FLOATING_NUMBER[pedestrianSet.getNumPedestrians() * pedestrianSet.getNumPedestrians()];
-  this->propulsionForces = DimVector(pedestrianSet.getNumPedestrians(), Dimensions{0.0f, 0.0f});
-  this->modelState = std::make_shared<State>(pedestrianSet.getNumPedestrians());
+      new float[pedestrianSet.getNumPedestrians() * pedestrianSet.getNumPedestrians()];
+  this->propulsionForces = VIPRA::f3dVec(pedestrianSet.getNumPedestrians(), VIPRA::f3d{0.0f, 0.0f});
+  this->modelState = std::make_shared<VIPRA::State>(pedestrianSet.getNumPedestrians());
 }
 
-std::shared_ptr<State>
-CalmPedestrianModel::timestep(PedestrianSet&  pedestrianSet,
-                              ObstacleSet&    obstacleSet,
-                              Goals&          goals,
-                              FLOATING_NUMBER time) {
+std::shared_ptr<VIPRA::State>
+CalmPedestrianModel::timestep(PedestrianSet& pedestrianSet,
+                              ObstacleSet&   obstacleSet,
+                              Goals&         goals,
+                              float          time) {
 
   CalmPedestrianSet   calmPedestrianSet = static_cast<CalmPedestrianSet&>(pedestrianSet);
   AirplaneObstacleSet airObstacleSet = static_cast<AirplaneObstacleSet&>(obstacleSet);
@@ -31,47 +31,46 @@ CalmPedestrianModel::timestep(PedestrianSet&  pedestrianSet,
 }
 
 void
-CalmPedestrianModel::updateModelState(CalmPedestrianSet& pedestrianSet, FLOATING_NUMBER time) {
+CalmPedestrianModel::updateModelState(CalmPedestrianSet& pedestrianSet, float time) {
 
   //Need some clarification on why we need this coeff... - NR
-  FLOATING_NUMBER coeff = 0.01;
+  float coeff = 0.01;
 
-  DimVector newVelocities = DimVector(pedestrianSet.getNumPedestrians(), Dimensions{0.0f, 0.0f});
-  DimVector newPositions = DimVector(pedestrianSet.getNumPedestrians(), Dimensions{0.0f, 0.0f});
+  VIPRA::f3dVec newVelocities = VIPRA::f3dVec(pedestrianSet.getNumPedestrians(), VIPRA::f3d{0.0f, 0.0f});
+  VIPRA::f3dVec newPositions = VIPRA::f3dVec(pedestrianSet.getNumPedestrians(), VIPRA::f3d{0.0f, 0.0f});
 
-  Dimensions      newVelocity;
-  FLOATING_NUMBER newSpeed;
-  Dimensions      newPosition;
+  VIPRA::f3d newVelocity;
+  float      newSpeed;
+  VIPRA::f3d newPosition;
 
   int numPedestrians = pedestrianSet.getNumPedestrians();
   for (int i = 0; i < numPedestrians; ++i) {
 
-    FLOATING_NUMBER propulsiveX = this->propulsionForces.at(i).axis[0];
-    FLOATING_NUMBER propulsiveY = this->propulsionForces[i].axis[1];
-    FLOATING_NUMBER velocityX = pedestrianSet.getVelocities()[i].axis[0];
-    FLOATING_NUMBER velocityY = pedestrianSet.getVelocities()[i].axis[1];
-    FLOATING_NUMBER mass = pedestrianSet.getMasses()[i];
-    FLOATING_NUMBER desiredSpeed = pedestrianSet.getDesiredSpeeds()[i];
-    FLOATING_NUMBER coordinateX = pedestrianSet.getPedestrianCoordinates()[i].axis[0];
-    FLOATING_NUMBER coordinateY = pedestrianSet.getPedestrianCoordinates()[i].axis[1];
+    float propulsiveX = this->propulsionForces.at(i).x;
+    float propulsiveY = this->propulsionForces[i].y;
+    float velocityX = pedestrianSet.getVelocities()[i].x;
+    float velocityY = pedestrianSet.getVelocities()[i].y;
+    float mass = pedestrianSet.getMasses()[i];
+    float desiredSpeed = pedestrianSet.getDesiredSpeeds()[i];
+    float coordinateX = pedestrianSet.getPedestrianCoordinates()[i].x;
+    float coordinateY = pedestrianSet.getPedestrianCoordinates()[i].y;
 
     newVelocity =
-        (Dimensions{(propulsiveX * (time / mass) + velocityX), (propulsiveY * (time / mass) + velocityY)});
+        (VIPRA::f3d{(propulsiveX * (time / mass) + velocityX), (propulsiveY * (time / mass) + velocityY)});
 
-    newSpeed = ((newVelocity.axis[0] * newVelocity.axis[0]) + (newVelocity.axis[1] * newVelocity.axis[1]));
+    newSpeed = ((newVelocity.x * newVelocity.x) + (newVelocity.y * newVelocity.y));
 
     if (newSpeed < (desiredSpeed * desiredSpeed)) {
-      newPosition = Dimensions{(coordinateX + (newVelocity.axis[0] * time)),
-                               (coordinateY + (newVelocity.axis[1] * time))};
-    } else {
       newPosition =
-          Dimensions{coordinateX + (newVelocity.axis[0] * (desiredSpeed / (newSpeed + coeff)) * time),
-                     coordinateY + (newVelocity.axis[1] * (desiredSpeed / (newSpeed + coeff)) * time)};
+          VIPRA::f3d{(coordinateX + (newVelocity.x * time)), (coordinateY + (newVelocity.y * time))};
+    } else {
+      newPosition = VIPRA::f3d{coordinateX + (newVelocity.x * (desiredSpeed / (newSpeed + coeff)) * time),
+                               coordinateY + (newVelocity.y * (desiredSpeed / (newSpeed + coeff)) * time)};
     }
 
     this->modelState->velocities[i] = newVelocity;
     this->modelState->pedestrianCoordinates[i] = newPosition;
-    this->modelState->affector[i] = Affector::PED_MODEL;
+    this->modelState->affector[i] = VIPRA::Affector::PED_MODEL;
   }
 }
 
@@ -84,13 +83,13 @@ CalmPedestrianModel::calculateDistanceMatrices(CalmPedestrianSet& pedestrianSet)
   int numPedestrians = pedestrianSet.getNumPedestrians();
 
   //Added firstPedestrianCoordinateX and Y to be used in second for loop
-  FLOATING_NUMBER firstPedestrianCoordinateX;
-  FLOATING_NUMBER firstPedestrianCoordinateY;
+  float firstPedestrianCoordinateX;
+  float firstPedestrianCoordinateY;
 
   //Updates pedestrian-to-pedestrian distance matrix and pedestrian-to-object distance matrix
   for (int i = 0; i < numPedestrians; ++i) {
     for (int j = 0; j < i; ++j) {
-      FLOATING_NUMBER distance = pedestrianSet.getPedestrianCoordinates().at(i).distanceTo(
+      float distance = pedestrianSet.getPedestrianCoordinates().at(i).distanceTo(
           pedestrianSet.getPedestrianCoordinates().at(j));
 
       this->pedestrianDistanceMatrix[(i * numPedestrians) + j] = distance;
@@ -105,11 +104,11 @@ CalmPedestrianModel::calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet
 
   std::string originSet, localOriginSet;
 
-  FLOATING_NUMBER nearestDistance, localNearestDistance;
+  float nearestDistance, localNearestDistance;
 
-  FLOATING_NUMBER pedestrianShoulderLength;
+  float pedestrianShoulderLength;
 
-  FLOATING_NUMBER firstPedestrianX, firstPedestrianY, secondPedestrianX, secondPedestrianY;
+  float firstPedestrianX, firstPedestrianY, secondPedestrianX, secondPedestrianY;
 
   int       numPedestrians = pedestrianSet.getNumPedestrians();
   const int NOT_FOUND = -1;
@@ -127,15 +126,15 @@ CalmPedestrianModel::calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet
     pedestrianShoulderLength = pedestrianSet.getShoulderLengths().at(pedestrianIndex);
     ;
 
-    firstPedestrianX = pedestrianSet.getPedestrianCoordinates().at(pedestrianIndex).axis[0];
-    firstPedestrianY = pedestrianSet.getPedestrianCoordinates().at(pedestrianIndex).axis[1];
+    firstPedestrianX = pedestrianSet.getPedestrianCoordinates().at(pedestrianIndex).x;
+    firstPedestrianY = pedestrianSet.getPedestrianCoordinates().at(pedestrianIndex).y;
 
     std::pair<std::string, int> newNearestNeighbor;
 
     for (int j = 0; j < numPedestrians; ++j) {
 
-      secondPedestrianX = pedestrianSet.getPedestrianCoordinates().at(j).axis[0];
-      secondPedestrianY = pedestrianSet.getPedestrianCoordinates().at(j).axis[1];
+      secondPedestrianX = pedestrianSet.getPedestrianCoordinates().at(j).x;
+      secondPedestrianY = pedestrianSet.getPedestrianCoordinates().at(j).y;
 
       if (pedestrianIndex != j && j < numPedestrians &&
           neighborDirectionTest(pedestrianSet,
@@ -155,7 +154,7 @@ CalmPedestrianModel::calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet
                               "P",
                               pedestrianShoulderLength)) {
 
-        FLOATING_NUMBER distance = getPedestrianDistance(pedestrianSet, pedestrianIndex, j);
+        float distance = getPedestrianDistance(pedestrianSet, pedestrianIndex, j);
         if (localNearestIndex == NOT_FOUND || distance < localNearestDistance) {
           localNearestIndex = j;
           localOriginSet = "P";
@@ -178,23 +177,23 @@ inline bool
 CalmPedestrianModel::neighborDirectionTest(CalmPedestrianSet& pedestrianSet,
                                            int                firstPedestrianIndex,
                                            int                secondPedestrianIndex,
-                                           FLOATING_NUMBER    pedestrianDisplacementX,
-                                           FLOATING_NUMBER    pedestrianDisplacementY,
-                                           FLOATING_NUMBER    secondDisplacementX,
-                                           FLOATING_NUMBER    secondDisplacementY) {
-  FLOATING_NUMBER displacementX;
-  FLOATING_NUMBER displacementY;
-  FLOATING_NUMBER directionX;
-  FLOATING_NUMBER directionY;
+                                           float              pedestrianDisplacementX,
+                                           float              pedestrianDisplacementY,
+                                           float              secondDisplacementX,
+                                           float              secondDisplacementY) {
+  float displacementX;
+  float displacementY;
+  float directionX;
+  float directionY;
 
-  FLOATING_NUMBER dotProduct;
+  float dotProduct;
 
   displacementX = (pedestrianDisplacementX - secondDisplacementX);
   displacementY = (pedestrianDisplacementY - secondDisplacementY);
 
-  directionX = (pedestrianSet.getVelocities())[firstPedestrianIndex].axis[0];
+  directionX = (pedestrianSet.getVelocities())[firstPedestrianIndex].x;
 
-  directionY = (pedestrianSet.getVelocities())[firstPedestrianIndex].axis[1];
+  directionY = (pedestrianSet.getVelocities())[firstPedestrianIndex].y;
 
   dotProduct = (displacementX * directionX) + (displacementY * directionY);
 
@@ -205,30 +204,30 @@ inline bool
 CalmPedestrianModel::neighborSpacialTest(CalmPedestrianSet& pedestrianSet,
                                          int                firstPedestrianIndex,
                                          int                secondPedestrianIndex,
-                                         FLOATING_NUMBER    pedestrianDisplacementX,
-                                         FLOATING_NUMBER    pedestrianDisplacementY,
-                                         FLOATING_NUMBER    secondDisplacementX,
-                                         FLOATING_NUMBER    secondDisplacementY,
+                                         float              pedestrianDisplacementX,
+                                         float              pedestrianDisplacementY,
+                                         float              secondDisplacementX,
+                                         float              secondDisplacementY,
                                          std::string        originSet,
-                                         FLOATING_NUMBER    firstShoulderLength) {
-  FLOATING_NUMBER firstPedestrianDirectionX;
-  FLOATING_NUMBER firstPedestrianDirectionY;
+                                         float              firstShoulderLength) {
+  float firstPedestrianDirectionX;
+  float firstPedestrianDirectionY;
 
-  FLOATING_NUMBER secondPedestrianDirectionX;
-  FLOATING_NUMBER secondPedestrianDirectionY;
+  float secondPedestrianDirectionX;
+  float secondPedestrianDirectionY;
 
-  FLOATING_NUMBER secondShoulderLength = 0;
-  FLOATING_NUMBER L;
-  FLOATING_NUMBER R;
+  float secondShoulderLength = 0;
+  float L;
+  float R;
 
   int coordinateIndex;
 
-  firstPedestrianDirectionX = std::fabs((pedestrianSet.getVelocities())[firstPedestrianIndex].axis[0]);
-  firstPedestrianDirectionY = std::fabs((pedestrianSet.getVelocities())[firstPedestrianIndex].axis[1]);
+  firstPedestrianDirectionX = std::fabs((pedestrianSet.getVelocities())[firstPedestrianIndex].x);
+  firstPedestrianDirectionY = std::fabs((pedestrianSet.getVelocities())[firstPedestrianIndex].y);
 
   if (originSet == "P") {
-    secondPedestrianDirectionX = std::fabs((pedestrianSet.getVelocities())[secondPedestrianIndex].axis[0]);
-    secondPedestrianDirectionY = std::fabs((pedestrianSet.getVelocities())[secondPedestrianIndex].axis[1]);
+    secondPedestrianDirectionX = std::fabs((pedestrianSet.getVelocities())[secondPedestrianIndex].x);
+    secondPedestrianDirectionY = std::fabs((pedestrianSet.getVelocities())[secondPedestrianIndex].y);
 
     if (firstPedestrianDirectionX > firstPedestrianDirectionY &&
             secondPedestrianDirectionX > secondPedestrianDirectionY ||
@@ -238,8 +237,8 @@ CalmPedestrianModel::neighborSpacialTest(CalmPedestrianSet& pedestrianSet,
     }
   }
 
-  FLOATING_NUMBER pedestrianDisplacement;
-  FLOATING_NUMBER secondDisplacement;
+  float pedestrianDisplacement;
+  float secondDisplacement;
 
   //Set pedestrianDisplacement to either the X or Y coordinate if
   //directionX is greater than directionY
@@ -262,51 +261,51 @@ CalmPedestrianModel::neighborSpacialTest(CalmPedestrianSet& pedestrianSet,
 //determine pedestrian direction
 void
 CalmPedestrianModel::calculatePropulsion(CalmPedestrianSet& pedestrianSet, CalmGoals& goals) {
-  const DimVector& currentGoals = goals.getAllCurrentGoals();
-  const DimVector& endGoals = goals.getAllEndGoals();
-  FLOATING_NUMBER  xAisleCoefficent = 0.5;
-  FLOATING_NUMBER  yAisleCoefficent = 0.9;
+  const VIPRA::f3dVec& currentGoals = goals.getAllCurrentGoals();
+  const VIPRA::f3dVec& endGoals = goals.getAllEndGoals();
+  float                xAisleCoefficent = 0.5;
+  float                yAisleCoefficent = 0.9;
 
   for (int i = 0; i < pedestrianSet.getNumPedestrians(); ++i) {
 
     if (!goals.isPedestianGoalMet(i)) {
-      Dimensions newVelocity = pedestrianSet.getVelocities().at(i);
-      Dimensions newPropulsiveForce = this->propulsionForces.at(i);
+      VIPRA::f3d newVelocity = pedestrianSet.getVelocities().at(i);
+      VIPRA::f3d newPropulsiveForce = this->propulsionForces.at(i);
 
-      FLOATING_NUMBER goalX = currentGoals[i].axis[0];
-      FLOATING_NUMBER goalY = currentGoals[i].axis[1];
-      FLOATING_NUMBER coordinateX = pedestrianSet.getPedestrianCoordinates()[i].axis[0];
-      FLOATING_NUMBER coordinateY = pedestrianSet.getPedestrianCoordinates()[i].axis[1];
-      FLOATING_NUMBER mass = pedestrianSet.getMasses()[i];
-      FLOATING_NUMBER desiredSpeed = pedestrianSet.getDesiredSpeeds()[i];
-      FLOATING_NUMBER velocityX = pedestrianSet.getVelocities()[i].axis[0];
-      FLOATING_NUMBER velocityY = pedestrianSet.getVelocities()[i].axis[1];
-      FLOATING_NUMBER reactionTime = pedestrianSet.getReactionTimes()[i];
+      float goalX = currentGoals[i].x;
+      float goalY = currentGoals[i].y;
+      float coordinateX = pedestrianSet.getPedestrianCoordinates()[i].x;
+      float coordinateY = pedestrianSet.getPedestrianCoordinates()[i].y;
+      float mass = pedestrianSet.getMasses()[i];
+      float desiredSpeed = pedestrianSet.getDesiredSpeeds()[i];
+      float velocityX = pedestrianSet.getVelocities()[i].x;
+      float velocityY = pedestrianSet.getVelocities()[i].y;
+      float reactionTime = pedestrianSet.getReactionTimes()[i];
 
-      FLOATING_NUMBER directionX = goalX - coordinateX;
-      FLOATING_NUMBER directionY = goalY - coordinateY;
+      float directionX = goalX - coordinateX;
+      float directionY = goalY - coordinateY;
 
-      FLOATING_NUMBER mag = sqrt(directionX * directionX + directionY * directionY);
+      float mag = sqrt(directionX * directionX + directionY * directionY);
 
-      newVelocity = Dimensions{directionX / mag * desiredSpeed, directionY / mag * desiredSpeed};
-      newPropulsiveForce = (Dimensions{(newVelocity.axis[0] - velocityX) * mass / reactionTime,
-                                       (newVelocity.axis[1] - velocityY) * mass / reactionTime});
+      newVelocity = VIPRA::f3d{directionX / mag * desiredSpeed, directionY / mag * desiredSpeed};
+      newPropulsiveForce = (VIPRA::f3d{(newVelocity.x - velocityX) * mass / reactionTime,
+                                       (newVelocity.y - velocityY) * mass / reactionTime});
 
       // if (directionX <= 0 && directionY <= 0) {
       //   newVelocity =
-      //       (Dimensions{-1.0f * desiredSpeed * xAisleCoefficent, -1.0f * desiredSpeed * yAisleCoefficent});
+      //       (VIPRA::f3d{-1.0f * desiredSpeed * xAisleCoefficent, -1.0f * desiredSpeed * yAisleCoefficent});
       // } else if (directionX <= 0 && directionY >= 0) {
-      //   newVelocity = (Dimensions{-1.0f * desiredSpeed * xAisleCoefficent, desiredSpeed * yAisleCoefficent});
+      //   newVelocity = (VIPRA::f3d{-1.0f * desiredSpeed * xAisleCoefficent, desiredSpeed * yAisleCoefficent});
       // } else if (directionX >= 0 && directionY >= 0) {
-      //   newVelocity = (Dimensions{desiredSpeed * xAisleCoefficent, desiredSpeed * yAisleCoefficent});
+      //   newVelocity = (VIPRA::f3d{desiredSpeed * xAisleCoefficent, desiredSpeed * yAisleCoefficent});
       // } else if (directionX >= 0 && directionY <= 0) {
-      //   newVelocity = (Dimensions{desiredSpeed * xAisleCoefficent, -1.0f * desiredSpeed * yAisleCoefficent});
+      //   newVelocity = (VIPRA::f3d{desiredSpeed * xAisleCoefficent, -1.0f * desiredSpeed * yAisleCoefficent});
       // } else {
-      //   newVelocity = (Dimensions{0.0, 0.0});
+      //   newVelocity = (VIPRA::f3d{0.0, 0.0});
       // }
 
-      // newPropulsiveForce = (Dimensions{(newVelocity.axis[0] - velocityX) * mass / reactionTime,
-      //                                  (newVelocity.axis[1] - velocityY) * mass / reactionTime});
+      // newPropulsiveForce = (VIPRA::f3d{(newVelocity.x - velocityX) * mass / reactionTime,
+      //                                  (newVelocity.y - velocityY) * mass / reactionTime});
 
       this->propulsionForces.at(i) = std::move(newPropulsiveForce);
     }
@@ -316,18 +315,18 @@ CalmPedestrianModel::calculatePropulsion(CalmPedestrianSet& pedestrianSet, CalmG
 //Change to calculatePropulsion
 void
 CalmPedestrianModel::calculateDesiredSpeeds(CalmPedestrianSet& pedestrianSet, CalmGoals& goals) {
-  std::vector<FLOATING_NUMBER> newDesiredSpeeds;
-  int                          numPedestrians = pedestrianSet.getNumPedestrians();
-  FLOATING_NUMBER              a = -2.4532;
-  FLOATING_NUMBER              b = 0.138412;
-  FLOATING_NUMBER              c = 0.87436;
+  std::vector<float> newDesiredSpeeds;
+  int                numPedestrians = pedestrianSet.getNumPedestrians();
+  float              a = -2.4532;
+  float              b = 0.138412;
+  float              c = 0.87436;
 
   for (int i = 0; i < numPedestrians; ++i) {
     if (!goals.isPedestianGoalMet(i)) {
       int         nearestNeighborIndex = this->nearestNeighbors[i].second;
       std::string nearestNeighborOrigin = this->nearestNeighbors[i].first;
 
-      FLOATING_NUMBER distanceMinusB = 1;
+      float distanceMinusB = 1;
 
       if (nearestNeighborIndex == -1) {
         distanceMinusB = ((1) - b);  //1 value might need to change
@@ -343,8 +342,7 @@ CalmPedestrianModel::calculateDesiredSpeeds(CalmPedestrianSet& pedestrianSet, Ca
   }
   pedestrianSet.setDesiredSpeeds(newDesiredSpeeds);
 }
-
-FLOATING_NUMBER
+float
 CalmPedestrianModel::getPedestrianDistance(CalmPedestrianSet& pedestrianSet,
                                            int                firstPedestrian,
                                            int                secondPedestrian) {
@@ -362,7 +360,7 @@ CalmPedestrianModel::getPedestrianDistance(CalmPedestrianSet& pedestrianSet,
   }
 }
 
-DimVector
+VIPRA::f3dVec
 CalmPedestrianModel::getPropulsionForces() {
   return this->propulsionForces;
 }
@@ -378,4 +376,4 @@ CalmPedestrianModel::~CalmPedestrianModel() {
 }
 
 void
-CalmPedestrianModel::configure(const CONFIG_MAP& configMap) {}
+CalmPedestrianModel::configure(const VIPRA::ConfigMap& configMap) {}

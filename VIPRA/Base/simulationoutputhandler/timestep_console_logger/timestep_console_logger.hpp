@@ -9,7 +9,7 @@ class TimestepConsoleLogger : public SimulationOutputHandler {
   size_t frequency;
 
  public:
-  void configure(const CONFIG_MAP& configMap) override;
+  void configure(const VIPRA::ConfigMap& configMap) override;
   bool isOutputCriterionMet(const PedestrianSet&, const ObstacleSet&, const Goals&, size_t timestep) override;
   void writeToDocument(OutputDataWriter&    outputDataWriter,
                        const PedestrianSet& pedestrianSet,

@@ -10,12 +10,8 @@
 
 class PolicyModel {
  public:
-  void configure(const CONFIG_MAP& configMap);
-  void timestep(const PedestrianSet&,
-                const ObstacleSet&,
-                const Goals&,
-                FLOATING_NUMBER timestep_size,
-                State&);
+  void configure(const VIPRA::ConfigMap& configMap);
+  void timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, float timestep_size, VIPRA::State&);
 };
 
 #endif

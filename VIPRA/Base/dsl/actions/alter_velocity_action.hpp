@@ -5,25 +5,24 @@
 #ifndef VIPRA_ALTER_VELOCITY_ACTION_HPP
 #define VIPRA_ALTER_VELOCITY_ACTION_HPP
 
-
 #include "action.hpp"
 
 typedef enum { FASTER, SLOWER } ALTER_DIRECTION;
 
 class AlterVelocityAction : public Action {
-    public:
-        AlterVelocityAction(SimulationContext *simulationContext, ALTER_DIRECTION alterDirection,
-                            FLOATING_NUMBER factor);
-        void performAction(int pedestrianIndex, const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet, const Goals& goals) override;
-        void initialize(const PedestrianSet& pedestrianSet) override;
+ public:
+  AlterVelocityAction(SimulationContext* simulationContext, ALTER_DIRECTION alterDirection, float factor);
+  void performAction(int                  pedestrianIndex,
+                     const PedestrianSet& pedestrianSet,
+                     const ObstacleSet&   obstacleSet,
+                     const Goals&         goals) override;
+  void initialize(const PedestrianSet& pedestrianSet) override;
 
-private:
-        Dimensions computeAlteredDimensions(Dimensions originalDimensions);
-        std::vector<bool> actionAppliedStatus;
-        ALTER_DIRECTION alterDirection;
-        FLOATING_NUMBER factor;
-
+ private:
+  VIPRA::f3d        computeAlteredDimensions(VIPRA::f3d originalDimensions);
+  std::vector<bool> actionAppliedStatus;
+  ALTER_DIRECTION   alterDirection;
+  float             factor;
 };
 
-
-#endif //VIPRA_ALTER_VELOCITY_ACTION_HPP
+#endif  //VIPRA_ALTER_VELOCITY_ACTION_HPP

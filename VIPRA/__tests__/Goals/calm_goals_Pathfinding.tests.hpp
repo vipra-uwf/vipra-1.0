@@ -17,7 +17,7 @@ testPathfinding(void) {
   CalmGoals           goals;
   PointMapLoader      loader;
 
-  goals.configure(CONFIG_MAP{
+  goals.configure(VIPRA::ConfigMap{
       {"endGoalType", "exits"}, {"pathFinding", "Astar"}, {"diagonalCost", "2.0"}, {"goalRange", "0.05"}});
 
   obs.initialize(loader.LoadMap("../../Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.json"));

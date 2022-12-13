@@ -6,7 +6,7 @@ JSONWriter::JSONWriter() {
 }
 
 void
-JSONWriter::configure(const CONFIG_MAP& configMap) {}
+JSONWriter::configure(const VIPRA::ConfigMap& configMap) {}
 
 void
 JSONWriter::initializeOutputFile(const std::string& outputFilePath) {
@@ -17,7 +17,7 @@ JSONWriter::initializeOutputFile(const std::string& outputFilePath) {
 }
 
 void
-JSONWriter::addFloatValue(const std::string& key, FLOATING_NUMBER value) {
+JSONWriter::addFloatValue(const std::string& key, float value) {
   if (document[index][key].isNull()) {
     document[index][key] = value;
   } else {

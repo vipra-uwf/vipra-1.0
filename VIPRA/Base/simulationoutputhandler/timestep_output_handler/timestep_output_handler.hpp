@@ -8,7 +8,7 @@ class TimestepOutputHandler : public SimulationOutputHandler {
   size_t frequency;
 
  public:
-  void configure(const CONFIG_MAP& configMap) override;
+  void configure(const VIPRA::ConfigMap& configMap) override;
   bool isOutputCriterionMet(const PedestrianSet& pedSet,
                             const ObstacleSet&   obsSet,
                             const Goals&         goals,

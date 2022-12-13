@@ -23,11 +23,11 @@ class InputDataLoaderException : public std::exception {
 
 class InputDataLoader {
  public:
-  static const ENTITY_SET _emptyset_;
+  static const VIPRA::EntitySet _emptyset_;
   virtual ~InputDataLoader() = default;
 
-  virtual void                     configure(const CONFIG_MAP& configMap) = 0;
-  [[nodiscard]] virtual ENTITY_SET getInputEntities(const std::string& filePath) = 0;
+  virtual void                           configure(const VIPRA::ConfigMap& configMap) = 0;
+  [[nodiscard]] virtual VIPRA::EntitySet getInputEntities(const std::string& filePath) = 0;
 };
 
 #endif

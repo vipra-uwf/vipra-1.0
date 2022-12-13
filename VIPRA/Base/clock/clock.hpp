@@ -22,10 +22,10 @@ class Clock {
   void printRealStartTime();
   void printRealDuration();
   void printRealEndTime();
-  void addSimulationTimeMs(FLOATING_NUMBER seconds);
+  void addSimulationTimeMs(float seconds);
   void printSimulationDuration();
 
-  void configure(const CONFIG_MAP& config);
+  void configure(const VIPRA::ConfigMap& config);
 };
 
 #endif

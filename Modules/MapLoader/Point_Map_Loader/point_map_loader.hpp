@@ -7,12 +7,12 @@
 #include "maploader/map_loader.hpp"
 
 struct PointMap : public MapType {
-  ENTITY_SET entities;
+  VIPRA::EntitySet entities;
 };
 
 class PointMapLoader : public MapLoader {
  public:
-  void                     configure(const CONFIG_MAP& configMap) override;
+  void                     configure(const VIPRA::ConfigMap& configMap) override;
   void                     initialize() override;
   std::unique_ptr<MapType> LoadMap(const std::string& filePath) const override;
 };

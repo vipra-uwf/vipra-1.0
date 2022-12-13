@@ -29,4 +29,4 @@ ConfigurationReader::getConfiguration(const std::string& filePath) {
 }
 
 void
-ConfigurationReader::configure(const CONFIG_MAP& config) {}
+ConfigurationReader::configure(const VIPRA::ConfigMap& config) {}

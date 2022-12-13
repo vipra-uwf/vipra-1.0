@@ -18,12 +18,12 @@ class PedestrianDynamicsModel {
  public:
   virtual ~PedestrianDynamicsModel() = default;
 
-  virtual void configure(const CONFIG_MAP& configMap) = 0;
+  virtual void configure(const VIPRA::ConfigMap& configMap) = 0;
   virtual void initialize(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet, Goals& goals) = 0;
-  virtual std::shared_ptr<State> timestep(PedestrianSet&  pedestrianSet,
-                                          ObstacleSet&    obstacleSet,
-                                          Goals&          goals,
-                                          FLOATING_NUMBER time) = 0;
+  virtual std::shared_ptr<VIPRA::State> timestep(PedestrianSet& pedestrianSet,
+                                                 ObstacleSet&   obstacleSet,
+                                                 Goals&         goals,
+                                                 float          time) = 0;
 };
 
 #endif

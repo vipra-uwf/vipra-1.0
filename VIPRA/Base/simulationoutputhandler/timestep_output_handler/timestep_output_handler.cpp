@@ -1,7 +1,7 @@
 #include "timestep_output_handler.hpp"
 
 void
-TimestepOutputHandler::configure(const CONFIG_MAP& configMap) {
+TimestepOutputHandler::configure(const VIPRA::ConfigMap& configMap) {
   frequency = std::stoi(configMap.at("outputFrequency"));
 }
 
@@ -22,7 +22,7 @@ TimestepOutputHandler::writeToDocument(OutputDataWriter&    outputDataWriter,
   const auto& coords = pedestrianSet.getPedestrianCoordinates();
 
   for (const auto& coord : coords) {
-    outputDataWriter.addFloatValue("x", coord.axis[0]);
-    outputDataWriter.addFloatValue("y", coord.axis[1]);
+    outputDataWriter.addFloatValue("x", coord.x);
+    outputDataWriter.addFloatValue("y", coord.y);
   }
 }

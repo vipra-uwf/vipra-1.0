@@ -2,7 +2,7 @@
 #include "timestep_console_logger.hpp"
 
 void
-TimestepConsoleLogger::configure(const CONFIG_MAP& configMap) {
+TimestepConsoleLogger::configure(const VIPRA::ConfigMap& configMap) {
   frequency = std::stoi(configMap.at("outputFrequency"));
 }
 
@@ -21,6 +21,6 @@ TimestepConsoleLogger::writeToDocument(OutputDataWriter&    outputDataWriter,
   std::printf("TIMESTEP: %i", timestep);
   const auto& coords = pedestrianSet.getPedestrianCoordinates();
   for (int i = 0; i < coords.size(); ++i) {
-    std::printf("Pedestrian: %i : X: %f, Y: %f\n", i, coords.at(i).axis[0], coords.at(i).axis[1]);
+    std::printf("Pedestrian: %i : X: %f, Y: %f\n", i, coords.at(i).x, coords.at(i).y);
   }
 }

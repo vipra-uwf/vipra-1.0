@@ -52,17 +52,17 @@ makeQuad(Quad* node, AQuad* parent, float g, float f, std::vector<AQuad*>& alloc
  */
 inline float
 cost(Quad* first, Quad* goal, float diagonalCost) {
-  float dx = first->center.axis[0] - goal->center.axis[0];
-  float dy = first->center.axis[1] - goal->center.axis[1];
+  float dx = first->center.x - goal->center.x;
+  float dy = first->center.y - goal->center.y;
   float d_max = (dx > dy ? dx : dy);
   float d_min = (dx < dy ? dx : dy);
   return (diagonalCost * d_min) + (d_max - d_min);
 }
 
-inline std::queue<Dimensions>
-constructPath(Dimensions start, Dimensions goal, AQuad* end) {
+inline std::queue<VIPRA::f3d>
+constructPath(VIPRA::f3d start, VIPRA::f3d goal, AQuad* end) {
   // create queue by traversing the path, add the start and end, return
-  std::queue<Dimensions> path;
+  std::queue<VIPRA::f3d> path;
   AQuad*                 iter = end;
   while (iter != nullptr) {
     path.push(iter->node->center);
@@ -78,10 +78,10 @@ constructPath(Dimensions start, Dimensions goal, AQuad* end) {
  * @param start
  * @param end
  * @param graph
- * @return std::queue<Dimensions>
+ * @return std::queue<VIPRA::f3d>
  */
-inline std::queue<Dimensions>
-pathFind(Dimensions start, Dimensions end, const Graph& g, float diagonalCost) {
+inline std::queue<VIPRA::f3d>
+pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& g, float diagonalCost) {
 
   // find grid Quads the start and end reside in (flipped since the path is
   // created in reverse)
@@ -105,7 +105,7 @@ pathFind(Dimensions start, Dimensions end, const Graph& g, float diagonalCost) {
     if (curr->node == last) {
       // if the end node has been found, create the path, delete the created
       // objects, return the path
-      std::queue<Dimensions> path{constructPath(start, end, curr)};
+      std::queue<VIPRA::f3d> path{constructPath(start, end, curr)};
       std::for_each(allocList.begin(), allocList.end(), [](AQuad* ptr) { delete ptr; });
       return path;
     }
@@ -141,7 +141,7 @@ pathFind(Dimensions start, Dimensions end, const Graph& g, float diagonalCost) {
   // no path was found, clear the data, return empty queue
   std::for_each(allocList.begin(), allocList.end(), [](AQuad* ptr) { delete ptr; });
   std::cout << "---------------Returning Empty Path------------------------\n";
-  return std::queue<Dimensions>{};
+  return std::queue<VIPRA::f3d>{};
 }
 
 }  // namespace CalmPath

@@ -5,7 +5,7 @@ Clock::Clock() {
 }
 
 void
-Clock::configure(const CONFIG_MAP& config) {}
+Clock::configure(const VIPRA::ConfigMap& config) {}
 
 void
 Clock::start() {
@@ -41,7 +41,7 @@ Clock::printRealEndTime() {
 }
 
 void
-Clock::addSimulationTimeMs(FLOATING_NUMBER seconds) {
+Clock::addSimulationTimeMs(float seconds) {
   this->simulationElapsedMs += seconds * 1000;
 }
 

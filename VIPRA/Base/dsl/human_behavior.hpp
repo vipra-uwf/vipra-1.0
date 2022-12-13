@@ -26,7 +26,7 @@ class HumanBehavior {
   virtual void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&);
 
   // Track any internal state if it exists
-  virtual void update(FLOATING_NUMBER timestep);
+  virtual void update(float timestep);
 
   // Select a specific pedestrian for this behavior
   virtual bool select(const PedestrianSet& pedestrianSet, int pedestrianIndex);
@@ -35,7 +35,7 @@ class HumanBehavior {
   virtual bool decide(const PedestrianSet& pedestrianSet, int pedestrianIndex);
 
   // Perform the action associated with this behavior
-  virtual void act(const PedestrianSet& pedestrianSet, int pedestrianIndex, FLOATING_NUMBER timestep);
+  virtual void act(const PedestrianSet& pedestrianSet, int pedestrianIndex, float timestep);
 
   // Get the state definitions
   std::vector<std::string> getStateDefinitions();

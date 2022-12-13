@@ -6,7 +6,6 @@
 #include "definitions/type_definitions.hpp"
 #include "selector.hpp"
 
-
 /**
  * Select the pedestrian based on a specified ratio. Useful for behaviors that
  * are selected by a certain percent of the population. This uses a random
@@ -14,8 +13,8 @@
  */
 class IdRandomSelector : public Selector {
  public:
-  IdRandomSelector(SimulationContext* simulationContext, FLOATING_NUMBER ratio);
-  IdRandomSelector(SimulationContext* simulationContext, FLOATING_NUMBER ratio, unsigned int seed);
+  IdRandomSelector(SimulationContext* simulationContext, float ratio);
+  IdRandomSelector(SimulationContext* simulationContext, float ratio, unsigned int seed);
   void initialize() override;
 
  protected:
@@ -26,7 +25,7 @@ class IdRandomSelector : public Selector {
 
  private:
   std::vector<int> selectedPedestrianIds;
-  FLOATING_NUMBER  ratio;
+  float            ratio;
   void             selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };
 

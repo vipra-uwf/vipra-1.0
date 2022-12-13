@@ -16,19 +16,17 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   CalmPedestrianModel();
   ~CalmPedestrianModel();
 
-  void configure(const CONFIG_MAP& configMap) override;
+  void configure(const VIPRA::ConfigMap& configMap) override;
   void initialize(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet, Goals& goals) override;
-  std::shared_ptr<State> timestep(PedestrianSet&  pedestrianSet,
-                                  ObstacleSet&    obstacleSet,
-                                  Goals&          goals,
-                                  FLOATING_NUMBER time);
+  std::shared_ptr<VIPRA::State> timestep(PedestrianSet& pedestrianSet,
+                                         ObstacleSet&   obstacleSet,
+                                         Goals&         goals,
+                                         float          time);
 
   //Getters and Setters
-  FLOATING_NUMBER                          getPedestrianDistance(CalmPedestrianSet& pedestrianSet,
-                                                                 int                firstPedestrian,
-                                                                 int                secondPedestrian);
+  float getPedestrianDistance(CalmPedestrianSet& pedestrianSet, int firstPedestrian, int secondPedestrian);
   std::vector<std::pair<std::string, int>> getNearestNeighbors();
-  DimVector                                getPropulsionForces();
+  VIPRA::f3dVec                            getPropulsionForces();
 
   void calculatePropulsion(CalmPedestrianSet& pedestrianSet, CalmGoals& goals);
   void calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet);
@@ -36,16 +34,16 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   void calculateDesiredSpeeds(CalmPedestrianSet& pedestrianSet, CalmGoals& goals);
 
  private:
-  std::vector<FLOATING_NUMBER> holds;
-  std::vector<bool>            aislePermissions;
+  std::vector<float> holds;
+  std::vector<bool>  aislePermissions;
 
   int currentPriority;
 
-  DimVector racePositions;
-  DimVector propulsionForces;
+  VIPRA::f3dVec racePositions;
+  VIPRA::f3dVec propulsionForces;
 
   std::vector<std::pair<std::string, int>> nearestNeighbors;
-  std::vector<FLOATING_NUMBER>             priorities;
+  std::vector<float>                       priorities;
 
   std::vector<int> raceCounter;
   std::vector<int> opponentIDs;
@@ -54,36 +52,36 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   std::vector<bool> raceFinished;
   std::vector<bool> released;
 
-  FLOATING_NUMBER* pedestrianDistanceMatrix;
-  FLOATING_NUMBER* obstacleDistanceMatrix;
+  float* pedestrianDistanceMatrix;
+  float* obstacleDistanceMatrix;
 
-  std::shared_ptr<State> modelState;
+  std::shared_ptr<VIPRA::State> modelState;
 
   void calculatePriority(CalmPedestrianSet& pedestrianSet, Goals& goals);
   void calculateBeta();
   void raceDetection();
 
-  void updateModelState(CalmPedestrianSet& pedestrianSet, FLOATING_NUMBER time);
+  void updateModelState(CalmPedestrianSet& pedestrianSet, float time);
 
   inline bool neighborDirectionTest(CalmPedestrianSet& pedestrianSet,
                                     int                firstPedestrianIndex,
                                     int                secondPedestrianIndex,
-                                    FLOATING_NUMBER    pedestrianDisplacementX,
-                                    FLOATING_NUMBER    pedestrianDisplacementY,
-                                    FLOATING_NUMBER    secondDisplacementX,
-                                    FLOATING_NUMBER    secondDisplacementY);
+                                    float              pedestrianDisplacementX,
+                                    float              pedestrianDisplacementY,
+                                    float              secondDisplacementX,
+                                    float              secondDisplacementY);
 
   inline bool neighborSpacialTest(CalmPedestrianSet& pedestrianSet,
                                   int                firstPedestrianIndex,
                                   int                secondPedestrianIndex,
-                                  FLOATING_NUMBER    pedestrianDisplacementX,
-                                  FLOATING_NUMBER    pedestrianDisplacementY,
-                                  FLOATING_NUMBER    secondDisplacementX,
-                                  FLOATING_NUMBER    secondDisplacementY,
+                                  float              pedestrianDisplacementX,
+                                  float              pedestrianDisplacementY,
+                                  float              secondDisplacementX,
+                                  float              secondDisplacementY,
                                   std::string        originSet,
-                                  FLOATING_NUMBER    firstShoulderLength);
+                                  float              firstShoulderLength);
 
-  FLOATING_NUMBER getObstacleDistance(int pedIndex, int obsIndex);
+  float getObstacleDistance(int pedIndex, int obsIndex);
 };
 
 #endif

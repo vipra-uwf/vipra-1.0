@@ -1,11 +1,11 @@
 #include "policy_model.hpp"
 
 void
-PolicyModel::configure(const CONFIG_MAP& configMap) {}
+PolicyModel::configure(const VIPRA::ConfigMap& configMap) {}
 
 void
 PolicyModel::timestep(const PedestrianSet&,
                       const ObstacleSet&,
                       const Goals&,
-                      FLOATING_NUMBER timestep_size,
-                      State&          state) {}
+                      float         timestep_size,
+                      VIPRA::State& state) {}

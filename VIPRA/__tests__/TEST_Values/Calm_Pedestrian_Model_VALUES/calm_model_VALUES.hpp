@@ -2,8 +2,9 @@
 
 #include "./../../../Base/definitions/type_definitions.hpp"
 
-const ENTITY_SET CALM_PEDESTRIAN_ENTITY_SET = {{"pedestrians", {
-      {0.89, 3.1},       {1.68, 3.1},       {2.47, 3.1},       {3.25, 3.1},       {4.04, 3.1},
+const VIPRA::EntitySet CALM_PEDESTRIAN_VIPRA::EntitySet = {
+    {"pedestrians",
+     {{0.89, 3.1},       {1.68, 3.1},       {2.47, 3.1},       {3.25, 3.1},       {4.04, 3.1},
       {4.83, 3.1},       {5.62, 3.1},       {6.4, 3.1},        {7.19, 3.1},       {7.98, 3.1},
       {8.76, 3.1},       {9.55, 3.1},       {10.34, 3.1},      {11.13, 3.1},      {11.91, 3.1},
       {12.7, 3.1},       {13.9, 3.1},       {15.09, 3.1},      {15.88, 3.1},      {16.66, 3.1},
@@ -33,7 +34,6 @@ const ENTITY_SET CALM_PEDESTRIAN_ENTITY_SET = {{"pedestrians", {
       {19.43, 2.52},     {20.58, 2.52},     {21.719999, 2.52}, {19.43, 0.41},     {20.58, 0.41},
       {21.719999, 0.41}, {19.43, 0.94},     {20.58, 0.94},     {21.719999, 0.94}}}};
 
-
-
-const CONFIG_MAP CALM_PEDESTRIAN_CONFIG_MAP = {{"mass", "1.000000"}, {"reaction_time", "0.400000"}, {"desired_speed", "1.000000"}};
-
+const VIPRA::ConfigMap CALM_PEDESTRIAN_VIPRA::ConfigMap = {{"mass", "1.000000"},
+                                                           {"reaction_time", "0.400000"},
+                                                           {"desired_speed", "1.000000"}};

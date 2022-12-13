@@ -13,29 +13,29 @@ class ObstacleSetException : public std::runtime_error {
 
 class ObstacleSet {
  public:
-  static const DimVector __empty__;
+  static const VIPRA::f3dVec __empty__;
 
   virtual ~ObstacleSet() = default;
 
-  virtual void configure(const CONFIG_MAP& configMap) = 0;
+  virtual void configure(const VIPRA::ConfigMap& configMap) = 0;
 
   /**/
-  virtual void             initialize(const std::unique_ptr<MapType>) = 0;
-  virtual const DimVector  NearestObstacle(const PedestrianSet& PedSet) const = 0;
-  virtual const Dimensions NearestObstacle(const Dimensions coordinates, const Dimensions velocity) const = 0;
+  virtual void                initialize(const std::unique_ptr<MapType>) = 0;
+  virtual const VIPRA::f3dVec NearestObstacle(const PedestrianSet& PedSet) const = 0;
+  virtual const VIPRA::f3d NearestObstacle(const VIPRA::f3d coordinates, const VIPRA::f3d velocity) const = 0;
   /**/
 
-  virtual void addObjects(const std::string& type, const DimVector& locations) = 0;
-  virtual void setObstacleCoords(const DimVector& coordinates) = 0;
+  virtual void addObjects(const std::string& type, const VIPRA::f3dVec& locations) = 0;
+  virtual void setObstacleCoords(const VIPRA::f3dVec& coordinates) = 0;
 
-  virtual int              getNumObstacles() const noexcept = 0;
-  virtual const DimVector& getObstacleCoordinates() const noexcept = 0;
-  virtual const DimVector& getObjectsofType(const std::string& type) const noexcept = 0;
+  virtual int                  getNumObstacles() const noexcept = 0;
+  virtual const VIPRA::f3dVec& getObstacleCoordinates() const noexcept = 0;
+  virtual const VIPRA::f3dVec& getObjectsofType(const std::string& type) const noexcept = 0;
 
   virtual const std::vector<std::string>& getObjectTypes() const noexcept = 0;
 
-  virtual const Dimensions      getDimensions() const = 0;
-  virtual const FLOATING_NUMBER rayHit(Dimensions, Dimensions) const = 0;
+  virtual const VIPRA::f3d getDimensions() const = 0;
+  virtual const float      rayHit(VIPRA::f3d, VIPRA::f3d) const = 0;
 };
 
 #endif

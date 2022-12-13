@@ -9,10 +9,9 @@ TEST_FLOAT(float value, float expected, float error) {
 }
 
 [[nodiscard]] bool
-TEST_DIMENSIONS(const Dimensions& value, const Dimensions& expected, float error) {
-  return (TEST_FLOAT(value.axis[0], expected.axis[0], error) &&
-          TEST_FLOAT(value.axis[1], expected.axis[1], error) &&
-          TEST_FLOAT(value.axis[2], expected.axis[2], error));
+TEST_DIMENSIONS(const VIPRA::f3d& value, const VIPRA::f3d& expected, float error) {
+  return (TEST_FLOAT(value.x, expected.x, error) && TEST_FLOAT(value.y, expected.y, error) &&
+          TEST_FLOAT(value.z, expected.z, error));
 }
 
 #define TEST_NO_EXCEPTION(code, check)                                                                       \
