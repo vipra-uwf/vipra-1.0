@@ -11,7 +11,7 @@
 class Condition {
  public:
   explicit Condition(SimulationContext* simulationContext);
-  virtual bool evaluate(int pedestrianIndex) = 0;
+  virtual bool evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) = 0;
 
  protected:
   SimulationContext* getSimulationContext();

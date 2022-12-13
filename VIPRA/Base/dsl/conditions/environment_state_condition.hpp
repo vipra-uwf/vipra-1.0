@@ -13,7 +13,7 @@ class EnvironmentStateCondition
 {
     public:
         explicit EnvironmentStateCondition(SimulationContext *simulationContext, int state);
-        bool evaluate(int pedestrianIndex) override;
+        bool evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) override;
 
     private:
         int desiredState;

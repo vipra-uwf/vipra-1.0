@@ -10,7 +10,7 @@
 class EnvironmentElapsedTimeCondition : public ElapsedTimeCondition {
  public:
   EnvironmentElapsedTimeCondition(SimulationContext* simulationContext, float desiredElapsedTime);
-  bool evaluate(int pedestrianIndex) override;
+  bool evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) override;
 };
 
 #endif  //VIPRA_ENVIRONMENT_ELAPSED_TIME_CONDITION_HPP

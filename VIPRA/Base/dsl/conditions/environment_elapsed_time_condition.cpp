@@ -9,7 +9,7 @@ EnvironmentElapsedTimeCondition::EnvironmentElapsedTimeCondition(SimulationConte
   : ElapsedTimeCondition(simulationContext, desiredElapsedTime) {}
 
 bool
-EnvironmentElapsedTimeCondition::evaluate(int pedestrianIndex) {
+EnvironmentElapsedTimeCondition::evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) {
   float lastTransitionMs = this->getSimulationContext()->elapsedSeconds -
                            this->getSimulationContext()->environmentTransitionPointSeconds;
 

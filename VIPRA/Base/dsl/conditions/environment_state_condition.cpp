@@ -11,7 +11,7 @@ EnvironmentStateCondition::EnvironmentStateCondition(SimulationContext *simulati
 
 }
 
-bool EnvironmentStateCondition::evaluate(int pedestrianIndex)
+bool EnvironmentStateCondition::evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet)
 {
     return getSimulationContext()->environmentState == desiredState;
 }

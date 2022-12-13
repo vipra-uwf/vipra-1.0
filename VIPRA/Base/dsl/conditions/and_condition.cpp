@@ -7,10 +7,10 @@ AndCondition::AndCondition(SimulationContext *simulationContext, Condition *lhs,
     this->rhs = rhs;
 }
 
-bool AndCondition::evaluate(int pedestrianIndex)
+bool AndCondition::evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet)
 {
-    bool evaluation = this->lhs->evaluate(pedestrianIndex) && 
-        this->rhs->evaluate(pedestrianIndex);
+    bool evaluation = this->lhs->evaluate(pedestrianIndex, pedestrianSet) && 
+        this->rhs->evaluate(pedestrianIndex, pedestrianSet);
 
     return evaluation;
 }
