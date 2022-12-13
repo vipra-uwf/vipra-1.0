@@ -19,7 +19,7 @@ class Action {
                                    const ObstacleSet&   obstacleSet,
                                    const Goals&         goals) = 0;
   const std::string& getActionName() const;
-  virtual void       initialize();
+  virtual void       initialize(const PedestrianSet& pedestrianSet);
 
  protected:
   virtual bool       actionApplied(int pedestrianIndex);

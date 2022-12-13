@@ -67,5 +67,5 @@ AlterVelocityAction::computeAlteredDimensions(VIPRA::f3d originalDimensions) {
 void
 AlterVelocityAction::initialize(const PedestrianSet& pedestrianSet) {
   actionAppliedStatus.resize(pedestrianSet.getNumPedestrians(), false);
-  Action::initialize();
+  Action::initialize(pedestrianSet);
 }

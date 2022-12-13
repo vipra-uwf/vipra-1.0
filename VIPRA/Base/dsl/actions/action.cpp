@@ -23,7 +23,7 @@ bool Action::actionApplied(int pedestrianIndex)
     return false;
 }
 
-void Action::initialize()
+void Action::initialize(const PedestrianSet& pedestrianSet)
 {
 
 }
