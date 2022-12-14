@@ -206,21 +206,21 @@ struct f3d {
   }
 
   template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  constexpr const f3d& operator*(T multiplier) const noexcept {
-    return f3d{x, y, z} *= multiplier;
-  }
-
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  constexpr const f3d& operator/(T multiplier) noexcept {
-    return f3d{x, y, z} /= multiplier;
-  }
-
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
   constexpr f3d& operator/=(const T& multiplier) noexcept {
     x /= multiplier;
     y /= multiplier;
     z /= multiplier;
     return *this;
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  f3d operator*(T multiplier) const noexcept {
+    return f3d{x, y, z} *= multiplier;
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  f3d operator/(T multiplier) noexcept {
+    return f3d{x, y, z} /= multiplier;
   }
 
   f3d operator+(const f3d& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
