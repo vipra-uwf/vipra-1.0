@@ -39,7 +39,7 @@ const std::unordered_map<std::string, std::string> TYPES{
     {"simulation_output_handler", "SimulationOutputHandler"},
     {"pedestrian_set", "PedestrianSet"},
     {"obstacle_set", "ObstacleSet"},
-    // {"human_behavior_model", "HumanBehaviorModel"},
+    {"human_behavior_model", "HumanBehaviorModel"},
     {"configuration_reader", "ConfigurationReader"},
     {"clock", "Clock"},
     {"simulation", "Simulation"},
@@ -205,10 +205,10 @@ initializeModules() {
          "\n\tobstacle_set->initialize(map_loader->LoadMap(obstacleFile));" +
          Log("Initializing Pedestrian Set") +
          "\n\tpedestrian_set->initialize(input_data_loader->getInputEntities(pedestrianFile));" +
-         Log("Initializing Goals") +
-         "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);"
-         // + Log("Initializing Human Behavior Model") +"\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);"
-         + Log("Initializing Pedestrian Dynamics Model") +
+         Log("Initializing Goals") + "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);" +
+         Log("Initializing Human Behavior Model") +
+         "\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);" +
+         Log("Initializing Pedestrian Dynamics Model") +
          "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);" +
          Log("Initializing Simulation") + "\n\tsimulation->initialize();";
 }
@@ -282,7 +282,7 @@ runSim() {
          "*pedestrian_set,"
          "*obstacle_set,"
          "*pedestrian_dynamics_model,"
-         // "*human_behavior_model,"
+         "*human_behavior_model,"
          "*policy_model,"
          "*output_data_writer,"
          "*simulation_output_handler,"

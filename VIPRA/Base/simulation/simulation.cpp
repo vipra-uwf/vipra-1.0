@@ -43,7 +43,7 @@ Simulation::run(Goals&                   goals,
                 PedestrianSet&           pedestrianSet,
                 ObstacleSet&             obstacleSet,
                 PedestrianDynamicsModel& pedestrianDynamicsModel,
-                // HumanBehaviorModel&      humanBehaviorModel,
+                HumanBehaviorModel&      humanBehaviorModel,
                 PolicyModel&             policyModel,
                 OutputDataWriter&        outputDataWriter,
                 SimulationOutputHandler& simulationOutputHandler,
@@ -57,7 +57,7 @@ Simulation::run(Goals&                   goals,
     //while (!goals.isSimulationGoalMet()) {
     // LJ::Debug(simLogger, "Timestep: {}", timestep);
     policyModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
-    // humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
+    humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size)};
 
     combineStates(pedCnt, proposedState, pedState);

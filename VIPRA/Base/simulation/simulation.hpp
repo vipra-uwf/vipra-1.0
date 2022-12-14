@@ -1,7 +1,7 @@
 #ifndef SIMULATION_HPP
 #define SIMULATION_HPP
 
-// #include "../../humanbehavior/human_behavior_model.hpp"
+#include "behaviorModel/humanbehavior/human_behavior_model.hpp"
 #include "clock/clock.hpp"
 #include "definitions/state.hpp"
 #include "logging/logging.hpp"
@@ -18,7 +18,7 @@ class Simulation {
            PedestrianSet&           pedestrianSet,
            ObstacleSet&             obstacleSet,
            PedestrianDynamicsModel& pedestrianDynamicsModel,
-           //  HumanBehaviorModel&      humanBehaviorModel,
+           HumanBehaviorModel&      humanBehaviorModel,
            PolicyModel&             policyModel,
            OutputDataWriter&        outputDataWriter,
            SimulationOutputHandler& simulationOutputHandler,
