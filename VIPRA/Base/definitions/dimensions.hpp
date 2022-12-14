@@ -57,41 +57,43 @@ struct f2d {
         return x;
       case 'y':
         return y;
-      [[fall_through]]
+      default:
+        throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
     }
-      throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
+    throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   const float& operator[](T index) const {
-      switch (index) {
-        case 0:
-          return x;
-        case 1:
-          return y;
-        case 'x':
-          return x;
-        case 'y':
-          return y;
-        [[fall_through]]
-      }
+    switch (index) {
+      case 0:
+        return x;
+      case 1:
+        return y;
+      case 'x':
+        return x;
+      case 'y':
+        return y;
+      default:
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
+    }
+    throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   constexpr float operator[](T index) const noexcept {
-        static_assert((index == 0 || index == 1 || index == 'x' || index == 'y'),
-                      "VIPRA::f2d operator[] invalid index");
-        switch (index) {
-          case 0:
-            return x;
-          case 1:
-            return y;
-          case 'x':
-            return x;
-          case 'y':
-            return y;
-        }
+    static_assert((index == 0 || index == 1 || index == 'x' || index == 'y'),
+                  "VIPRA::f2d operator[] invalid index");
+    switch (index) {
+      case 0:
+        return x;
+      case 1:
+        return y;
+      case 'x':
+        return x;
+      case 'y':
+        return y;
+    }
   }
 };
 
@@ -109,119 +111,120 @@ struct f3d {
   explicit constexpr f3d(f2d&& other) noexcept : x(other.x), y(other.y), z(0) {}
 
   f3d& operator=(const f3d& other) noexcept {
-        x = other.x;
-        y = other.y;
-        z = other.z;
-        return *this;
+    x = other.x;
+    y = other.y;
+    z = other.z;
+    return *this;
   }
   f3d& operator=(f3d&& other) noexcept {
-        x = other.x;
-        y = other.y;
-        z = other.z;
-        return *this;
+    x = other.x;
+    y = other.y;
+    z = other.z;
+    return *this;
   }
   f3d& operator=(const f2d& other) noexcept {
-        x = other.x;
-        y = other.y;
-        z = 0;
-        return *this;
+    x = other.x;
+    y = other.y;
+    z = 0;
+    return *this;
   }
   f3d& operator=(f2d&& other) noexcept {
-        x = other.x;
-        y = other.y;
-        z = 0;
-        return *this;
+    x = other.x;
+    y = other.y;
+    z = 0;
+    return *this;
   }
 
   float distanceTo(const f2d& other) const noexcept {
-        float dX = other.x - x;
-        float dY = other.y - y;
-        float dZ = 0 - z;
+    float dX = other.x - x;
+    float dY = other.y - y;
+    float dZ = 0 - z;
 
-        dX = dX * dX;
-        dY = dY * dY;
-        dZ = dZ * dZ;
+    dX = dX * dX;
+    dY = dY * dY;
+    dZ = dZ * dZ;
 
-        return sqrt(dX + dY + dZ);
+    return sqrt(dX + dY + dZ);
   }
 
   float distanceTo(const f3d& other) const noexcept {
-        float dX = other.x - x;
-        float dY = other.y - y;
-        float dZ = other.z - z;
+    float dX = other.x - x;
+    float dY = other.y - y;
+    float dZ = other.z - z;
 
-        dX = dX * dX;
-        dY = dY * dY;
-        dZ = dZ * dZ;
+    dX = dX * dX;
+    dY = dY * dY;
+    dZ = dZ * dZ;
 
-        return sqrt(dX + dY + dZ);
+    return sqrt(dX + dY + dZ);
   }
 
   constexpr bool inside(const f3d& other, float sideLength) const noexcept {
-        const float half = sideLength / 2;
-        return (x >= other.x - half && x <= other.x + half && y <= other.y + half && y >= other.y - half &&
-                z <= other.z + half && z >= other.z - half);
+    const float half = sideLength / 2;
+    return (x >= other.x - half && x <= other.x + half && y <= other.y + half && y >= other.y - half &&
+            z <= other.z + half && z >= other.z - half);
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   float& operator[](T index) {
-        switch (index) {
-          case 0:
-            return x;
-          case 1:
-            return y;
-          case 2:
-            return z;
-          case 'x':
-            return x;
-          case 'y':
-            return y;
-          case 'z':
-            return z;
-        [[fall_through]]
-      }
+    switch (index) {
+      case 0:
+        return x;
+      case 1:
+        return y;
+      case 2:
+        return z;
+      case 'x':
+        return x;
+      case 'y':
+        return y;
+      case 'z':
+        return z;
+      default:
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
+    }
+    throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   const float& operator[](T index) const {
-        switch (index) {
-          case 0:
-            return x;
-          case 1:
-            return y;
-          case 2:
-            return z;
-          case 'x':
-            return x;
-          case 'y':
-            return y;
-          case 'z':
-            return z;
-        [[fall_through]]
-      }
+    switch (index) {
+      case 0:
+        return x;
+      case 1:
+        return y;
+      case 2:
+        return z;
+      case 'x':
+        return x;
+      case 'y':
+        return y;
+      case 'z':
+        return z;
+      default:
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
+    }
+    throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   constexpr float operator[](T index) const {
-        static_assert(
-            (index == 0 || index == 1 || index == 2 || index == 'x' || index == 'y' || index == 'z'),
-            "VIPRA::f3d operator[] invalid index");
-        switch (index) {
-          case 0:
-            return x;
-          case 1:
-            return y;
-          case 2:
-            return z;
-          case 'x':
-            return x;
-          case 'y':
-            return y;
-          case 'z':
-            return z;
-        }
+    static_assert((index == 0 || index == 1 || index == 2 || index == 'x' || index == 'y' || index == 'z'),
+                  "VIPRA::f3d operator[] invalid index");
+    switch (index) {
+      case 0:
+        return x;
+      case 1:
+        return y;
+      case 2:
+        return z;
+      case 'x':
+        return x;
+      case 'y':
+        return y;
+      case 'z':
+        return z;
+    }
   }
 };
 
