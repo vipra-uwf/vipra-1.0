@@ -27,25 +27,6 @@ struct f2d {
     return *this;
   }
 
-  constexpr float distanceTo(const f2d& other) const noexcept {
-    float dX = other.x - x;
-    float dY = other.y - y;
-
-    if (dX != 0) {
-      dX = dX * dX;
-    }
-    if (dY != 0) {
-      dY = dY * dY;
-    }
-
-    return sqrt(dX + dY);
-  }
-
-  constexpr bool inside(const f2d& other, float sideLength) const noexcept {
-    const float half = sideLength / 2;
-    return (x >= other.x - half && x <= other.x + half && y <= other.y + half && y >= other.y - half);
-  }
-
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   constexpr float& operator[](T index) {
     switch (index) {
@@ -77,32 +58,75 @@ struct f2d {
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
     }
   }
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  constexpr f2d& operator*=(const T& multiplier) noexcept {
+    x *= multiplier;
+    y *= multiplier;
+    return *this;
+  }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
-  constexpr float operator[](T index) const noexcept {
-    static_assert((index == 0 || index == 1 || index == 'x' || index == 'y'),
-                  "VIPRA::f2d operator[] invalid index");
-    switch (index) {
-      case 0:
-        return x;
-      case 1:
-        return y;
-      case 'x':
-        return x;
-      case 'y':
-        return y;
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  constexpr const f2d& operator*(T multiplier) const noexcept {
+    return f2d{x, y} *= multiplier;
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  constexpr const f2d& operator/(T multiplier) noexcept {
+    return f2d{x, y} /= multiplier;
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  constexpr f2d& operator/=(const T& multiplier) noexcept {
+    x /= multiplier;
+    y /= multiplier;
+    return *this;
+  }
+
+  f2d operator+(const f2d& other) const noexcept { return f2d{x + other.x, y + other.y}; }
+
+  constexpr f2d& operator+=(const f2d& other) noexcept {
+    x += other.x;
+    y += other.y;
+    return *this;
+  }
+
+  constexpr f2d& operator-=(const f2d& other) noexcept {
+    x -= other.x;
+    y -= other.y;
+    return *this;
+  }
+
+  constexpr float distanceTo(const f2d& other) const noexcept {
+    float dX = other.x - x;
+    float dY = other.y - y;
+
+    if (dX != 0) {
+      dX = dX * dX;
     }
+    if (dY != 0) {
+      dY = dY * dY;
+    }
+
+    return sqrt(dX + dY);
+  }
+
+  constexpr bool inside(const f2d& other, float sideLength) const noexcept {
+    const float half = sideLength / 2;
+    return (x >= other.x - half && x <= other.x + half && y <= other.y + half && y >= other.y - half);
   }
 };
 
 struct f3d {
-  float x, y, z;
+  float x;
+  float y;
+  float z;
 
   ~f3d() {}
   constexpr f3d() noexcept : x(0), y(0), z(0) {}
   constexpr f3d(float X) noexcept : x(X), y(0), z(0) {}
   constexpr f3d(float X, float Y) noexcept : x(X), y(Y), z(0) {}
   constexpr f3d(float X, float Y, float Z) noexcept : x(X), y(Y), z(Z) {}
+
   constexpr f3d(const f3d& other) noexcept : x(other.x), y(other.y), z(other.z) {}
   constexpr f3d(f3d&& other) noexcept : x(other.x), y(other.y), z(other.z) {}
   explicit constexpr f3d(const f2d& other) noexcept : x(other.x), y(other.y), z(0) {}
@@ -133,36 +157,6 @@ struct f3d {
     return *this;
   }
 
-  constexpr float distanceTo(const f2d& other) const noexcept {
-    float dX = other.x - x;
-    float dY = other.y - y;
-    float dZ = 0 - z;
-
-    dX = dX * dX;
-    dY = dY * dY;
-    dZ = dZ * dZ;
-
-    return sqrt(dX + dY + dZ);
-  }
-
-  constexpr float distanceTo(const f3d& other) const noexcept {
-    float dX = other.x - x;
-    float dY = other.y - y;
-    float dZ = other.z - z;
-
-    dX = dX * dX;
-    dY = dY * dY;
-    dZ = dZ * dZ;
-
-    return sqrt(dX + dY + dZ);
-  }
-
-  constexpr bool inside(const f3d& other, float sideLength) const noexcept {
-    const float half = sideLength / 2;
-    return (x >= other.x - half && x <= other.x + half && y <= other.y + half && y >= other.y - half &&
-            z <= other.z + half && z >= other.z - half);
-  }
-
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   constexpr float& operator[](T index) {
     switch (index) {
@@ -201,6 +195,79 @@ struct f3d {
       default:
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
     }
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  constexpr f3d& operator*=(const T& multiplier) noexcept {
+    x *= multiplier;
+    y *= multiplier;
+    z *= multiplier;
+    return *this;
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  constexpr const f3d& operator*(T multiplier) const noexcept {
+    return f3d{x, y, z} *= multiplier;
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  constexpr const f3d& operator/(T multiplier) noexcept {
+    return f3d{x, y, z} /= multiplier;
+  }
+
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  constexpr f3d& operator/=(const T& multiplier) noexcept {
+    x /= multiplier;
+    y /= multiplier;
+    z /= multiplier;
+    return *this;
+  }
+
+  f3d operator+(const f3d& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
+  f3d operator+(const f2d& other) const noexcept { return f3d{x + other.x, y + other.y, z}; }
+
+  constexpr f3d& operator+=(const f3d& other) noexcept {
+    x += other.x;
+    y += other.y;
+    z += other.z;
+    return *this;
+  }
+
+  constexpr f3d& operator-=(const f3d& other) noexcept {
+    x -= other.x;
+    y -= other.y;
+    z -= other.z;
+    return *this;
+  }
+
+  float distanceTo(const f2d& other) const noexcept {
+    float dX = other.x - x;
+    float dY = other.y - y;
+    float dZ = 0 - z;
+
+    dX = dX * dX;
+    dY = dY * dY;
+    dZ = dZ * dZ;
+
+    return sqrt(dX + dY + dZ);
+  }
+
+  float distanceTo(const f3d& other) const noexcept {
+    float dX = other.x - x;
+    float dY = other.y - y;
+    float dZ = other.z - z;
+
+    dX = dX * dX;
+    dY = dY * dY;
+    dZ = dZ * dZ;
+
+    return sqrt(dX + dY + dZ);
+  }
+
+  constexpr bool inside(const f3d& other, float sideLength) const noexcept {
+    const float half = sideLength / 2;
+    return (x >= other.x - half && x <= other.x + half && y <= other.y + half && y >= other.y - half &&
+            z <= other.z + half && z >= other.z - half);
   }
 };
 
