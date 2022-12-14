@@ -16,16 +16,16 @@ AlterVelocityAction::performAction(int                  pedestrianIndex,
                                    const Goals&         goals) {
   if (!actionApplied(pedestrianIndex)) {
     // Slow down the new velocity
-    VIPRA::f3d& originalVelocity = const_cast<VIPRA::f3d&>(pedestrianSet.getVelocities().at(pedestrianIndex));
+    VIPRA::f3d& originalVelocity = const_cast<VIPRA::f3dVec&>(pedestrianSet.getVelocities()).at(pedestrianIndex);
     const VIPRA::f3d& newVelocity = computeAlteredDimensions(originalVelocity);
 
     // Override the velocity for this pedestrian
-    const_cast<VIPRA::f3d&>(pedestrianSet.getVelocities().at(pedestrianIndex)) = newVelocity;
+    const_cast<VIPRA::f3dVec&>(pedestrianSet.getVelocities()).at(pedestrianIndex) = newVelocity;
 
     // Taken from the CALM pedestrian model
     float newSpeed = ((newVelocity[0] * newVelocity[0]) + (newVelocity[1] * newVelocity[1]));
 
-    const_cast<VIPRA::f3d&>(pedestrianSet.getSpeeds()).at(pedestrianIndex) = newSpeed;
+    const_cast<std::vector<float>&>(pedestrianSet.getSpeeds()).at(pedestrianIndex) = newSpeed;
 
     this->actionAppliedStatus.at(pedestrianIndex) = true;
   }
@@ -46,8 +46,6 @@ AlterVelocityAction::performAction(int                  pedestrianIndex,
 
 VIPRA::f3d
 AlterVelocityAction::computeAlteredDimensions(VIPRA::f3d originalDimensions) {
-  std::vector<float> coordinates(originalDimensions.size());
-
   float multiplier;
   if (alterDirection == FASTER) {
     // Faster
@@ -56,12 +54,8 @@ AlterVelocityAction::computeAlteredDimensions(VIPRA::f3d originalDimensions) {
     // Slower
     multiplier = 1.0F - factor;
   }
-
-  for (int i = 0; i < originalDimensions.size(); ++i) {
-    coordinates.at(i) = originalDimensions.at(i) * multiplier;
-  }
-
-  return VIPRA::f3d{coordinates};
+  originalDimensions *= multiplier;
+  return originalDimensions;
 }
 
 void
