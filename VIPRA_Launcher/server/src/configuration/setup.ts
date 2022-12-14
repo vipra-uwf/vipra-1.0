@@ -62,7 +62,7 @@ const initialSetup = () : Config => {
     vipra: {
       vipraDir: path.resolve(`${__dirname}/../../../../VIPRA`),
       baseDir: path.resolve(`${__dirname}/../../../../VIPRA/Base`),
-      behaviorDir: path.resolve(`${__dirname}/../../../../VIPRA/Base/dsl`),
+      behaviorDir: path.resolve(`${__dirname}/../../../../VIPRA/Base/behaviorModel`),
       outputDir: path.resolve(`${__dirname}/../../../../Output`),
       exeName: 'VIPRA_SIM',
     },

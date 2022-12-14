@@ -2,12 +2,13 @@ CPP= g++
 CPP_FLAGS= -std=c++17 -w -O3 -fPIE -I/usr/include/antlr4-runtime
 LDLIBS = -lantlr4-runtime
 
+DSL_DIR = ./dsl
 BUILD_DIR = ./../../build
-SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
+SRCS = $(wildcard $(DSL_DIR)/*.cpp) $(wildcard $(DSL_DIR)/*/*.cpp) $(wildcard $(DSL_DIR)/*/*/*.cpp)
 OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
-grammar: Behaviors.g4
-	antlr4 -Dlanguage=Cpp -o generated -Dlanguage=Cpp -no-listener -visitor Behaviors.g4
+grammar: $(DSL_DIR)/Behaviors.g4
+	antlr4 -Dlanguage=Cpp -o generated -Dlanguage=Cpp -no-listener -visitor $(DSL_DIR)/Behaviors.g4
 
 compile: $(OBJECTS)
 	echo "Complete"
