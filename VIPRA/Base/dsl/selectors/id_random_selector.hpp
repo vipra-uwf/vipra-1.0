@@ -15,7 +15,7 @@ class IdRandomSelector : public Selector {
  public:
   IdRandomSelector(SimulationContext* simulationContext, float ratio);
   IdRandomSelector(SimulationContext* simulationContext, float ratio, unsigned int seed);
-  void initialize() override;
+  void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&) override;
 
  protected:
   bool select(int                  pedestrianIndex,

@@ -33,7 +33,7 @@ IdRandomSelector::select(int                  pedestrianIndex,
 }
 
 void
-IdRandomSelector::initialize() {
-  Selector::initialize();
-  selectPedestrianIds();
+IdRandomSelector::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet, const Goals& goals) {
+  Selector::initialize(obsSet, pedSet, goals);
+  selectPedestrianIds(pedSet);
 }

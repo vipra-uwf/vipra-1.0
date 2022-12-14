@@ -1,6 +1,8 @@
 #ifndef SIMULATION_CONTEXT_HPP
 #define SIMULATION_CONTEXT_HPP
 
+#include <vector>
+
 /**
  * Holder object for states vector. Used for actions, conditions, and selectors in the DSL.
  */

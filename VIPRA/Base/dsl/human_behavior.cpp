@@ -23,7 +23,7 @@ HumanBehavior::initialize(const ObstacleSet&   obstacleSet,
 
   // Initialize the selectors. These get their pedestrian set from the simulation context.
   for (auto selector : this->selectors) {
-    selector->initialize();
+    selector->initialize(obstacleSet, pedestrianSet, goals);
   }
 
   for (auto action : this->stateActions) {
@@ -40,8 +40,10 @@ HumanBehavior::update(float timestep) {
   for (auto environmentTransition : this->environmentTransitions) {
     int oldState = this->simulationContext.environmentState;
     if (environmentTransition->evaluateTransition()) {
-      LJ::Debug(simLogger,"Environment has transitioned from {} to {}", 
-      this->getEnvironmentStateDefinitions().at(oldState), this->getEnvironmentStateDefinitions().at(this->simulationContext.environmentState));
+      LJ::Debug(simLogger,
+                "Environment has transitioned from {} to {}",
+                this->getEnvironmentStateDefinitions().at(oldState),
+                this->getEnvironmentStateDefinitions().at(this->simulationContext.environmentState));
     }
   }
 }
@@ -72,7 +74,11 @@ HumanBehavior::decide(const PedestrianSet& pedestrianSet, int pedestrianIndex) {
 }
 
 void
-HumanBehavior::act(const PedestrianSet& pedestrianSet, int pedestrianIndex, float timestep, const ObstacleSet& ObstacleSet, const Goals& goals) {
+HumanBehavior::act(const PedestrianSet& pedestrianSet,
+                   int                  pedestrianIndex,
+                   float                timestep,
+                   const ObstacleSet&   ObstacleSet,
+                   const Goals&         goals) {
 
   int pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
 
@@ -84,8 +90,11 @@ HumanBehavior::act(const PedestrianSet& pedestrianSet, int pedestrianIndex, floa
     int oldState = this->simulationContext.states.at(pedestrianId);
     if ((*transition)->evaluateTransition(pedestrianIndex)) {
       int newState = this->simulationContext.states.at(pedestrianId);
-      LJ::Debug(simLogger, "Person with id {} has transitioned from {} to {}",
-       pedestrianId, this->getStateDefinitions().at(oldState), this->getStateDefinitions().at(newState));
+      LJ::Debug(simLogger,
+                "Person with id {} has transitioned from {} to {}",
+                pedestrianId,
+                this->getStateDefinitions().at(oldState),
+                this->getStateDefinitions().at(newState));
       transitioned = true;
     }
   }

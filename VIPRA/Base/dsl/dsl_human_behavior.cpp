@@ -14,7 +14,6 @@
 #include "selectors/id_ratio_selector.hpp"
 #include <antlr4-runtime/support/Any.h>
 
-
 int
 findState(std::vector<std::string> states, const std::string& stateName) {
   for (int i = 0; i < states.size(); ++i) {

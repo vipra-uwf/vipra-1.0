@@ -4,7 +4,6 @@
 #include "definitions/type_definitions.hpp"
 #include "selector.hpp"
 
-
 /**
  * Select every pedestrian for this behavior
  */
