@@ -27,7 +27,7 @@ struct f2d {
     return *this;
   }
 
-  float distanceTo(const f2d& other) const noexcept {
+  constexpr float distanceTo(const f2d& other) const noexcept {
     float dX = other.x - x;
     float dY = other.y - y;
 
@@ -41,13 +41,13 @@ struct f2d {
     return sqrt(dX + dY);
   }
 
-  bool inside(const f2d& other, float sideLength) const noexcept {
+  constexpr bool inside(const f2d& other, float sideLength) const noexcept {
     const float half = sideLength / 2;
     return (x >= other.x - half && x <= other.x + half && y <= other.y + half && y >= other.y - half);
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
-  float& operator[](T index) {
+  constexpr float& operator[](T index) {
     switch (index) {
       case 0:
         return x;
@@ -60,11 +60,10 @@ struct f2d {
       default:
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
     }
-    throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
-  const float& operator[](T index) const {
+  constexpr const float& operator[](T index) const {
     switch (index) {
       case 0:
         return x;
@@ -77,7 +76,6 @@ struct f2d {
       default:
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
     }
-    throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
@@ -135,7 +133,7 @@ struct f3d {
     return *this;
   }
 
-  float distanceTo(const f2d& other) const noexcept {
+  constexpr float distanceTo(const f2d& other) const noexcept {
     float dX = other.x - x;
     float dY = other.y - y;
     float dZ = 0 - z;
@@ -147,7 +145,7 @@ struct f3d {
     return sqrt(dX + dY + dZ);
   }
 
-  float distanceTo(const f3d& other) const noexcept {
+  constexpr float distanceTo(const f3d& other) const noexcept {
     float dX = other.x - x;
     float dY = other.y - y;
     float dZ = other.z - z;
@@ -166,7 +164,7 @@ struct f3d {
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
-  float& operator[](T index) {
+  constexpr float& operator[](T index) {
     switch (index) {
       case 0:
         return x;
@@ -183,11 +181,10 @@ struct f3d {
       default:
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
     }
-    throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
   }
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
-  const float& operator[](T index) const {
+  constexpr const float& operator[](T index) const {
     switch (index) {
       case 0:
         return x;
@@ -203,27 +200,6 @@ struct f3d {
         return z;
       default:
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
-    }
-    throw std::out_of_range("Attempt to access invalid index on VIPRA::f3d");
-  }
-
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
-  constexpr float operator[](T index) const {
-    static_assert((index == 0 || index == 1 || index == 2 || index == 'x' || index == 'y' || index == 'z'),
-                  "VIPRA::f3d operator[] invalid index");
-    switch (index) {
-      case 0:
-        return x;
-      case 1:
-        return y;
-      case 2:
-        return z;
-      case 'x':
-        return x;
-      case 'y':
-        return y;
-      case 'z':
-        return z;
     }
   }
 };
