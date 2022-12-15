@@ -10,9 +10,12 @@ EnvironmentTransition::EnvironmentTransition(SimulationContext* simulationContex
   : Transition(simulationContext, condition, newState) {}
 
 bool
-EnvironmentTransition::evaluateTransition(const PedestrianSet& pedSet) {
+EnvironmentTransition::evaluateTransition(const ObstacleSet&   obsSet,
+                                          const PedestrianSet& pedSet,
+                                          const Goals&         goals,
+                                          int                  pedestrianIndex) {
   bool transitioned = false;
-  if (this->condition->evaluate(0, pedSet)) {
+  if (this->condition->evaluate(obsSet, pedSet, goals, 0)) {
     this->simulationContext->environmentState = newState;
     this->simulationContext->environmentTransitionPointSeconds = this->simulationContext->elapsedSeconds;
     transitioned = true;

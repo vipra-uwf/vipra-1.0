@@ -1,9 +1,9 @@
 #ifndef SIMULATION_HPP
 #define SIMULATION_HPP
 
-#include "behaviorModel/humanbehavior/human_behavior_model.hpp"
 #include "clock/clock.hpp"
 #include "definitions/state.hpp"
+#include "humanbehavior/human_behavior_model.hpp"
 #include "logging/logging.hpp"
 #include "pedestrianmodel/pedestrian_dynamics_model.hpp"
 #include "policyModel/policy_model.hpp"

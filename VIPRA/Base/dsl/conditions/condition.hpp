@@ -2,6 +2,8 @@
 #define CONDITION_HPP
 
 #include "../simulation_context.hpp"
+#include "goals/goals.hpp"
+#include "obstacleset/obstacle_set.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 
 /**
@@ -11,7 +13,7 @@
 class Condition {
  public:
   explicit Condition(SimulationContext* simulationContext);
-  virtual bool evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) = 0;
+  virtual bool evaluate(const ObstacleSet&, const PedestrianSet&, const Goals&, int pedestrianIndex) = 0;
 
  protected:
   SimulationContext* getSimulationContext();

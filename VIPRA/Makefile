@@ -39,3 +39,11 @@ makeDirs:
 	mkdir -p $(BUILD_DIR)
 
 PHONY: makeDirs
+
+testGenMain:
+	cmake -B genbuild .
+	cmake --build genbuild
+
+testGenSim:
+	cmake -B simbuild . -DGEN_MAIN=OFF
+	cmake --build simbuild

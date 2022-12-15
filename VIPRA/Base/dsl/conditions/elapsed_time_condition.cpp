@@ -7,7 +7,10 @@ ElapsedTimeCondition::ElapsedTimeCondition(SimulationContext* simulationContext,
 }
 
 bool
-ElapsedTimeCondition::evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) {
+ElapsedTimeCondition::evaluate(const ObstacleSet&   obsSet,
+                               const PedestrianSet& pedestrianSet,
+                               const Goals&         goals,
+                               int                  pedestrianIndex) {
   int   pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
   float lastTransitionMs = this->getSimulationContext()->elapsedSeconds -
                            this->getSimulationContext()->transitionPointSeconds.at(pedestrianId);

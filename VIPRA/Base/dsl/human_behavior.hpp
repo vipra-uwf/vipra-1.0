@@ -5,13 +5,13 @@
 #include "conditions/condition.hpp"
 #include "definitions/type_definitions.hpp"
 #include "goals/goals.hpp"
+#include "logging/logging.hpp"
 #include "obstacleset/obstacle_set.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 #include "selectors/selector.hpp"
 #include "simulation_context.hpp"
 #include "transitions/environment_transition.hpp"
 #include "transitions/pedestrian_transition.hpp"
-#include "logging/logging.hpp"
 
 /**
  * Describes a specific human behavior. Implementations can either define the behavior directly in C++ or use a DSL.
@@ -27,16 +27,29 @@ class HumanBehavior {
   virtual void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&);
 
   // Track any internal state if it exists
-  virtual void update(float timestep);
+  virtual void update(const PedestrianSet& pedestrianSet,
+                      float                timestep,
+                      const ObstacleSet&   obstacleSet,
+                      const Goals&         goals);
 
   // Select a specific pedestrian for this behavior
-  virtual bool select(const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet, const Goals& goals, int pedestrianIndex);
+  virtual bool select(const PedestrianSet& pedestrianSet,
+                      const ObstacleSet&   obstacleSet,
+                      const Goals&         goals,
+                      int                  pedestrianIndex);
 
   // Tell the simulation whether or not this behavior will decide their speed (or anything else for that matter).
-  virtual bool decide(const PedestrianSet& pedestrianSet, int pedestrianIndex);
+  virtual bool decide(const PedestrianSet& pedestrianSet,
+                      const ObstacleSet&   obstacleSet,
+                      const Goals&         goals,
+                      int                  pedestrianIndex);
 
   // Perform the action associated with this behavior
-  virtual void act(const PedestrianSet& pedestrianSet, int pedestrianIndex, float timestep, const ObstacleSet& ObstacleSet, const Goals& goals);
+  virtual void act(const PedestrianSet& pedestrianSet,
+                   int                  pedestrianIndex,
+                   float                timestep,
+                   const ObstacleSet&   obstacleSet,
+                   const Goals&         goals);
 
   // Get the state definitions
   std::vector<std::string> getStateDefinitions();

@@ -3,6 +3,8 @@
 
 #include "../conditions/condition.hpp"
 #include "../simulation_context.hpp"
+#include "goals/goals.hpp"
+#include "obstacleset/obstacle_set.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 #include "transition.hpp"
 
@@ -13,7 +15,7 @@
 class PedestrianTransition : public Transition {
  public:
   PedestrianTransition(SimulationContext* simulationContext, Condition* condition, int newState);
-  bool evaluateTransition(const PedestrianSet&, int pedestrianIndex);
+  bool evaluateTransition(const ObstacleSet&, const PedestrianSet&, const Goals&, int pedestrianIndex);
 };
 
 #endif

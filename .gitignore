@@ -17,6 +17,8 @@ pedestrian_trajectory.json
 Test
 temp
 VIPRA_SIM
+simbuild
+genbuild
 
 
 # VIPRA Launcher

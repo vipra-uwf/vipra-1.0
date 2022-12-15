@@ -4,14 +4,13 @@
 
 #include "environment_state_condition.hpp"
 
+EnvironmentStateCondition::EnvironmentStateCondition(SimulationContext* simulationContext, int state)
+  : Condition(simulationContext), desiredState(state) {}
 
-EnvironmentStateCondition::EnvironmentStateCondition(SimulationContext *simulationContext, int state)
-    : Condition(simulationContext), desiredState(state)
-{
-
-}
-
-bool EnvironmentStateCondition::evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet)
-{
-    return getSimulationContext()->environmentState == desiredState;
+bool
+EnvironmentStateCondition::evaluate(const ObstacleSet&   obsSet,
+                                    const PedestrianSet& pedestrianSet,
+                                    const Goals&         goals,
+                                    int                  pedestrianIndex) {
+  return getSimulationContext()->environmentState == desiredState;
 }

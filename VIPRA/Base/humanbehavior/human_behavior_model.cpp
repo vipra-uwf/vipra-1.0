@@ -14,15 +14,16 @@ HumanBehaviorModel::~HumanBehaviorModel() {
 }
 
 void
-HumanBehaviorModel::update(const PedestrianSet& pedSet,
-                           const ObstacleSet&   obsSet,
-                           const Goals&         goals,
-                           float                timestep) {
+HumanBehaviorModel::timestep(const PedestrianSet& pedSet,
+                             const ObstacleSet&   obsSet,
+                             const Goals&         goals,
+                             float                timestep,
+                             VIPRA::State&        state) {
 
   const size_t pedCnt = pedSet.getNumPedestrians();
 
   for (auto humanBehavior : this->humanBehaviors) {
-    humanBehavior->update(timestep);
+    humanBehavior->update(pedSet, timestep, obsSet, goals);
   }
 
   // Iterate through the pedestrian list and apply our behavior to it.
@@ -33,7 +34,7 @@ HumanBehaviorModel::update(const PedestrianSet& pedSet,
         humanBehavior->act(pedSet, i, timestep, obsSet, goals);
 
         // Decide if this person is under the influence of the human behavior model
-        if (humanBehavior->decide(pedSet, i)) {
+        if (humanBehavior->decide(pedSet, obsSet, goals, i)) {
           behaviorDecided = true;
         }
       }

@@ -54,8 +54,6 @@ Simulation::run(Goals&                   goals,
   VIPRA::State proposedState(pedCnt);
   LJ::Info(simLogger, "Starting Simulation Loop");
   while (timestep < 20000) {
-    //while (!goals.isSimulationGoalMet()) {
-    // LJ::Debug(simLogger, "Timestep: {}", timestep);
     policyModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
     humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size)};

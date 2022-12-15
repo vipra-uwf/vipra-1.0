@@ -16,7 +16,8 @@ AlterVelocityAction::performAction(int                  pedestrianIndex,
                                    const Goals&         goals) {
   if (!actionApplied(pedestrianIndex)) {
     // Slow down the new velocity
-    VIPRA::f3d& originalVelocity = const_cast<VIPRA::f3dVec&>(pedestrianSet.getVelocities()).at(pedestrianIndex);
+    VIPRA::f3d& originalVelocity =
+        const_cast<VIPRA::f3dVec&>(pedestrianSet.getVelocities()).at(pedestrianIndex);
     const VIPRA::f3d& newVelocity = computeAlteredDimensions(originalVelocity);
 
     // Override the velocity for this pedestrian
@@ -38,10 +39,11 @@ AlterVelocityAction::performAction(int                  pedestrianIndex,
   // calculated in the precompute() section of the calm_pedestrian_model, and does not look at any previous value
   // of the propulsion force. So to persist our velocity change, we need to modify the original velocity once, but
   // modify the propulsion force every time while this action is active.
-  VIPRA::f3d& originalPropulsionForce =
-      const_cast<VIPRA::f3dVec&>(pedestrianSet.getPropulsionForces()).at(pedestrianIndex);
-  const VIPRA::f3d& newPropulsion = computeAlteredDimensions(originalPropulsionForce);
-  const_cast<VIPRA::f3dVec&>(pedestrianSet.getPropulsionForces()).at(pedestrianIndex) = newPropulsion;
+
+  // VIPRA::f3d& originalPropulsionForce =
+  // const_cast<VIPRA::f3dVec&>(pedestrianSet.getPropulsionForces()).at(pedestrianIndex);
+  // const VIPRA::f3d& newPropulsion = computeAlteredDimensions(originalPropulsionForce);
+  // const_cast<VIPRA::f3dVec&>(pedestrianSet.getPropulsionForces()).at(pedestrianIndex) = newPropulsion;
 }
 
 VIPRA::f3d

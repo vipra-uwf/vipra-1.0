@@ -5,19 +5,18 @@
 #ifndef VIPRA_ENVIRONMENT_STATE_CONDITION_HPP
 #define VIPRA_ENVIRONMENT_STATE_CONDITION_HPP
 
-
 #include "condition.hpp"
 
-class EnvironmentStateCondition
-        : public Condition
-{
-    public:
-        explicit EnvironmentStateCondition(SimulationContext *simulationContext, int state);
-        bool evaluate(int pedestrianIndex, const PedestrianSet& pedestrianSet) override;
+class EnvironmentStateCondition : public Condition {
+ public:
+  explicit EnvironmentStateCondition(SimulationContext* simulationContext, int state);
+  bool evaluate(const ObstacleSet&   obsSet,
+                const PedestrianSet& pedestrianSet,
+                const Goals&         goals,
+                int                  pedestrianIndex) override;
 
-    private:
-        int desiredState;
+ private:
+  int desiredState;
 };
 
-
-#endif //VIPRA_ENVIRONMENT_STATE_CONDITION_HPP
+#endif  //VIPRA_ENVIRONMENT_STATE_CONDITION_HPP

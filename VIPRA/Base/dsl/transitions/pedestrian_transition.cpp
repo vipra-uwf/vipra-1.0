@@ -6,11 +6,14 @@ PedestrianTransition::PedestrianTransition(SimulationContext* simulationContext,
   : Transition(simulationContext, condition, newState) {}
 
 bool
-PedestrianTransition::evaluateTransition(const PedestrianSet& pedSet, int pedestrianIndex) {
+PedestrianTransition::evaluateTransition(const ObstacleSet&   obsSet,
+                                         const PedestrianSet& pedSet,
+                                         const Goals&         goals,
+                                         int                  pedestrianIndex) {
   int pedestrianId = pedSet.getIds().at(pedestrianIndex);
 
   bool transitioned = false;
-  if (this->condition->evaluate(pedestrianIndex, pedSet)) {
+  if (this->condition->evaluate(obsSet, pedSet, goals, pedestrianIndex)) {
     this->simulationContext->states.at(pedestrianId) = newState;
     this->simulationContext->transitionPointSeconds.at(pedestrianId) =
         this->simulationContext->elapsedSeconds;

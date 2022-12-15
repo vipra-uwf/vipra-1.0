@@ -1,11 +1,10 @@
 #include "condition.hpp"
 
-Condition::Condition(SimulationContext *simulationContext)
-{
-    this->simulationContext = simulationContext;
+Condition::Condition(SimulationContext* simulationContext) {
+  this->simulationContext = simulationContext;
 }
 
-SimulationContext *Condition::getSimulationContext()
-{
-    return this->simulationContext;
+SimulationContext*
+Condition::getSimulationContext() {
+  return this->simulationContext;
 }

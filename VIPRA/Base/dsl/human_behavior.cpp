@@ -34,12 +34,15 @@ HumanBehavior::initialize(const ObstacleSet&   obstacleSet,
 }
 
 void
-HumanBehavior::update(float timestep) {
+HumanBehavior::update(const PedestrianSet& pedestrianSet,
+                      float                timestep,
+                      const ObstacleSet&   obstacleSet,
+                      const Goals&         goals) {
   this->simulationContext.elapsedSeconds += timestep;
 
   for (auto environmentTransition : this->environmentTransitions) {
     int oldState = this->simulationContext.environmentState;
-    if (environmentTransition->evaluateTransition()) {
+    if (environmentTransition->evaluateTransition(obstacleSet, pedestrianSet, goals, 0)) {
       LJ::Debug(simLogger,
                 "Environment has transitioned from {} to {}",
                 this->getEnvironmentStateDefinitions().at(oldState),
@@ -63,11 +66,14 @@ HumanBehavior::select(const PedestrianSet& pedestrianSet,
 }
 
 bool
-HumanBehavior::decide(const PedestrianSet& pedestrianSet, int pedestrianIndex) {
+HumanBehavior::decide(const PedestrianSet& pedestrianSet,
+                      const ObstacleSet&   obstacleSet,
+                      const Goals&         goals,
+                      int                  pedestrianIndex) {
   bool decided = false;
   for (auto decider = this->getDeciders().begin(); !decided && decider != this->getDeciders().end();
        ++decider) {
-    decided = (*decider)->evaluate(pedestrianIndex, pedestrianSet);
+    decided = (*decider)->evaluate(obstacleSet, pedestrianSet, goals, pedestrianIndex);
   }
 
   return decided;
@@ -77,7 +83,7 @@ void
 HumanBehavior::act(const PedestrianSet& pedestrianSet,
                    int                  pedestrianIndex,
                    float                timestep,
-                   const ObstacleSet&   ObstacleSet,
+                   const ObstacleSet&   obstacleSet,
                    const Goals&         goals) {
 
   int pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
@@ -88,7 +94,7 @@ HumanBehavior::act(const PedestrianSet& pedestrianSet,
        !transitioned && transition != this->getTransitions().end();
        ++transition) {
     int oldState = this->simulationContext.states.at(pedestrianId);
-    if ((*transition)->evaluateTransition(pedestrianIndex)) {
+    if ((*transition)->evaluateTransition(obstacleSet, pedestrianSet, goals, pedestrianIndex)) {
       int newState = this->simulationContext.states.at(pedestrianId);
       LJ::Debug(simLogger,
                 "Person with id {} has transitioned from {} to {}",
@@ -102,7 +108,7 @@ HumanBehavior::act(const PedestrianSet& pedestrianSet,
   for (size_t state = 0; state < this->getStateActions().size(); ++state) {
     if (this->simulationContext.states.at(pedestrianId) == state &&
         this->getStateActions().at(state) != nullptr) {
-      this->getStateActions().at(state)->performAction(pedestrianIndex, pedestrianSet, ObstacleSet, goals);
+      this->getStateActions().at(state)->performAction(pedestrianIndex, pedestrianSet, obstacleSet, goals);
     }
   }
 }

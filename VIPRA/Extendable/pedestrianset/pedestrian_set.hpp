@@ -26,7 +26,6 @@ class PedestrianSet {
   virtual int                       getNumPedestrians() const noexcept = 0;
   virtual const VIPRA::f3dVec&      getPedestrianCoordinates() const noexcept = 0;
   virtual const VIPRA::f3dVec&      getVelocities() const noexcept = 0;
-  virtual const VIPRA::f3dVec&      getPropulsionForces() const noexcept = 0;
   virtual const std::vector<float>& getSpeeds() const noexcept = 0;
   virtual const std::vector<int>&   getIds() const noexcept = 0;
 

@@ -1,0 +1,5 @@
+add_subdirectory(Goals)
+add_subdirectory(MapLoader)
+add_subdirectory(ObstacleSet)
+add_subdirectory(PedestrianDynamicsModel)
+add_subdirectory(PedestrianSet)
