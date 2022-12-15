@@ -61,6 +61,8 @@ else()
   add_subdirectory(${BASE_DIR})
   add_subdirectory(${MODULES_DIR} build)
 
+  set_target_properties(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../ )
+
 
 endif(GEN_MAIN)
 
