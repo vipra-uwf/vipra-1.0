@@ -17,7 +17,7 @@ class CalmPedestrianSet : public PedestrianSet {
   void initialize(VIPRA::EntitySet pedestrianCount) override;
   void removePedestrian(size_t pedestrianIndex) override;
 
-  [[nodiscard]] int                     getNumPedestrians() const noexcept override;
+  [[nodiscard]] size_t                  getNumPedestrians() const noexcept override;
   [[nodiscard]] const std::vector<int>& getIds() const noexcept override;
 
   [[nodiscard]] const VIPRA::f3dVec&      getPedestrianCoordinates() const noexcept override;

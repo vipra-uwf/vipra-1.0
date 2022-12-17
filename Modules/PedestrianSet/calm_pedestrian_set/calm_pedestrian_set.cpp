@@ -45,7 +45,7 @@ CalmPedestrianSet::removePedestrian(size_t pedestrianIndex) {
   this->ids.erase(this->ids.begin() + pedestrianIndex);
 }
 
-int
+size_t
 CalmPedestrianSet::getNumPedestrians() const noexcept {
   return this->pedestrianCoordinates.size();
 }

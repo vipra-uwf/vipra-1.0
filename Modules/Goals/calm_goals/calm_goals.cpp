@@ -19,7 +19,7 @@ CalmGoals::configure(const VIPRA::ConfigMap& configMap) {
  */
 void
 CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
-  int pedCnt = pedSet.getNumPedestrians();
+  size_t pedCnt = pedSet.getNumPedestrians();
   currentGoals = VIPRA::f3dVec(pedCnt);
   endGoals = VIPRA::f3dVec(pedCnt, VIPRA::f3d{-1, -1});
   goalsMet = std::vector<bool>(pedCnt, false);

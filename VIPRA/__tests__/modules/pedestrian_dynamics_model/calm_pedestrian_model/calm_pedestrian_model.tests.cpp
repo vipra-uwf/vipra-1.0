@@ -82,7 +82,7 @@ TEST(Calm_Ped_Model, Model_Calculates_Correct_Propulsion) {
   pedModel.initialize(pedSet, obs, goals);
   pedModel.timestep(pedSet, obs, goals, 0);
 
-  for (int i = 0; i < pedSet.getNumPedestrians(); i++) {
+  for (size_t i = 0; i < pedSet.getNumPedestrians(); i++) {
     EXPECT_EQ(pedModel.getPropulsionForces().at(i).x, pedModel.getPropulsionForces().at(i).x);
     EXPECT_EQ(pedModel.getPropulsionForces().at(i).y, pedModel.getPropulsionForces().at(i).y);
   }

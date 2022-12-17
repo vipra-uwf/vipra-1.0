@@ -64,6 +64,8 @@ else()
 
 endif(GEN_MAIN)
 
+target_compile_options(${PROJECT_NAME} PUBLIC -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wundef -Werror -Wno-unused)
+
 target_include_directories(
   ${PROJECT_NAME}
   PRIVATE

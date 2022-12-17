@@ -17,13 +17,13 @@ struct Quad {
   VIPRA::f3d         center;
   float              size;
   bool               traversable;
-  Quad*              tl;
-  Quad*              tr;
-  Quad*              bl;
-  Quad*              br;
+  Quad*              topleft;
+  Quad*              topright;
+  Quad*              botleft;
+  Quad*              botright;
   std::vector<Quad*> adj;
-  Quad(VIPRA::f3d center, float size, bool traversable, Quad* tl, Quad* tr, Quad* bl, Quad* br)
-    : center(center), size(size), traversable(traversable), tl(tl), tr(tr), bl(bl), br(br) {}
+  Quad(VIPRA::f3d middle, float sz, bool travable, Quad* tl, Quad* tr, Quad* bl, Quad* br)
+    : center(middle), size(sz), traversable(travable), topleft(tl), topright(tr), botleft(bl), botright(br) {}
 };
 
 class Graph {
@@ -50,15 +50,15 @@ class Graph {
       curr = next;
       if (coords.x < curr->center.x) {
         if (coords.y < curr->center.y) {
-          next = curr->bl;
+          next = curr->botleft;
         } else {
-          next = curr->tl;
+          next = curr->topleft;
         }
       } else {
         if (coords.y < curr->center.y) {
-          next = curr->br;
+          next = curr->botright;
         } else {
-          next = curr->tr;
+          next = curr->topright;
         }
       }
     }
@@ -73,10 +73,10 @@ class Graph {
  protected:
   void cleanQuad(Quad* node) {
     if (node != nullptr) {
-      cleanQuad(node->bl);
-      cleanQuad(node->tl);
-      cleanQuad(node->br);
-      cleanQuad(node->tr);
+      cleanQuad(node->botleft);
+      cleanQuad(node->topleft);
+      cleanQuad(node->botright);
+      cleanQuad(node->topright);
       delete node;
     }
   }
@@ -85,10 +85,10 @@ class Graph {
     if (curr == nullptr)
       return;
 
-    buildAdjacencies(curr->tl);
-    buildAdjacencies(curr->tr);
-    buildAdjacencies(curr->bl);
-    buildAdjacencies(curr->br);
+    buildAdjacencies(curr->topleft);
+    buildAdjacencies(curr->topright);
+    buildAdjacencies(curr->botleft);
+    buildAdjacencies(curr->botright);
 
     getAdjacencies(curr, root);
   }
@@ -102,10 +102,10 @@ class Graph {
     if (to == nullptr || !from->traversable)
       return;
 
-    getAdjacencies(from, to->tl);
-    getAdjacencies(from, to->tr);
-    getAdjacencies(from, to->bl);
-    getAdjacencies(from, to->br);
+    getAdjacencies(from, to->topleft);
+    getAdjacencies(from, to->topright);
+    getAdjacencies(from, to->botleft);
+    getAdjacencies(from, to->botright);
 
     // travel along line between nodes
     // check if grid at point is traversable
@@ -139,7 +139,7 @@ class Graph {
       // ++n;
       // Quad*      curr = from;
       // VIPRA::f3d checkPoint;
-      // while (curr != nullptr && curr->traversable) {
+      // while (curr != nullptr && curr->toprightaversable) {
       //   auto intersect = quadEdgeIntersect(curr, from->center, to->center);
       //   if (intersect.has_value()) {
       //     checkPoint.x =

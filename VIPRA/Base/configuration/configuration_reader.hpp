@@ -7,17 +7,10 @@
 #include "definitions/type_definitions.hpp"
 #include "jsoncpp/json/json.h"
 
-class ConfigurationReaderException : public std::exception {
+class ConfigurationReaderException : public std::runtime_error {
  public:
-  ConfigurationReaderException(const std::string& message) : message(message) {}
-
-  static void Error(const std::string& message) {
-    std::cerr << message << std::endl;
-    throw ConfigurationReaderException(message);
-  }
-
- private:
-  std::string message;
+  ConfigurationReaderException(const std::string& message) : std::runtime_error(message) {}
+  static void Throw(const std::string& message) { throw ConfigurationReaderException(message); }
 };
 
 class ConfigurationReader {

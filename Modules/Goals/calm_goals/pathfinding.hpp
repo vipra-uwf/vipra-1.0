@@ -16,16 +16,17 @@ struct AQuad {
   float  f;
 };
 
-inline auto compare = [](AQuad* first, AQuad* second) {
-  return first->f > second->f;
+class QuadCompare {
+ public:
+  bool operator()(AQuad* first, AQuad* second) { return first->f > second->f; }
 };
 
 /**
  * @brief priority queue with custom search function
  */
-struct pQueue : public std::priority_queue<AQuad*, std::vector<AQuad*>, decltype(compare)> {
+struct pQueue : public std::priority_queue<AQuad*, std::vector<AQuad*>, QuadCompare> {
 
-  pQueue() : std::priority_queue<AQuad*, std::vector<AQuad*>, decltype(compare)>(compare) {}
+  pQueue() : std::priority_queue<AQuad*, std::vector<AQuad*>, QuadCompare>() {}
 
   std::optional<AQuad*> search(AQuad* node) {
     auto a = std::find_if(c.begin(), c.end(), [&](AQuad* n) { return node->node == n->node; });
@@ -81,12 +82,12 @@ constructPath(VIPRA::f3d goal, AQuad* end) {
  * @return std::queue<VIPRA::f3d>
  */
 inline std::queue<VIPRA::f3d>
-pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& g, float diagonalCost) {
+pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& graph, float diagonalCost) {
 
   // find grid Quads the start and end reside in (flipped since the path is
   // created in reverse)
-  Quad* first = g.search(end);
-  Quad* last = g.search(start);
+  Quad* first = graph.search(end);
+  Quad* last = graph.search(start);
 
   // create datastructures
   std::vector<AQuad*> allocList;

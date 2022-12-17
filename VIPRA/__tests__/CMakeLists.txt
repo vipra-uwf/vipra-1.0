@@ -10,6 +10,11 @@ set(DEPS_DIR ${CMAKE_CURRENT_LIST_DIR}/../deps deps)
 set(EXTENDABLE_DIR ${CMAKE_CURRENT_LIST_DIR}/../Extendable Extendable)
 
 
+message(STATUS ${BASE_DIR})
+message(STATUS ${MODULES_DIR})
+message(STATUS ${DEPS_DIR})
+message(STATUS ${EXTENDABLE_DIR})
+
 include_directories(
   ${BASE_DIR}
   ${MODULES_DIR}
@@ -33,6 +38,8 @@ add_executable(
   ${PROJECT_NAME}
   Testing.cpp
 )
+
+target_compile_options(${PROJECT_NAME} PUBLIC -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wundef -Werror -Wno-unused)
 
 add_subdirectory(${DEPS_DIR})
 target_link_libraries(

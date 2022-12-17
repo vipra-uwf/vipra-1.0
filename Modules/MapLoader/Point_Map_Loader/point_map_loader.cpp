@@ -44,4 +44,6 @@ PointMapLoader::LoadMap(const std::string& filePath) const {
   } catch (...) {
     MapLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
+  MapLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
+  return {};
 }

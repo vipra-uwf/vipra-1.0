@@ -1,10 +1,12 @@
 #include "passenger_vehicle_obstacle_set.hpp"
 
+VIPRA::f3d makeDimensions(const VIPRA::EntitySet& objects);
+
 VIPRA::f3d
 makeDimensions(const VIPRA::EntitySet& objects) {
   float maxX = 0, maxY = 0, maxZ = 0;
   for (auto mapIterator : objects) {
-    for (unsigned int i = 0; i < mapIterator.second.size(); i++) {
+    for (size_t i = 0; i < mapIterator.second.size(); i++) {
       VIPRA::f3d coordinates = mapIterator.second[i];
       if (coordinates.x > maxX)
         maxX = coordinates.x;
@@ -36,10 +38,10 @@ VIPRA::f3dVec
 PassengerVehicleObstacleSet::nearestObstacle(const PedestrianSet& PedSet) const {
   const VIPRA::f3dVec& coordinatesVector = PedSet.getPedestrianCoordinates();
   VIPRA::f3dVec        nearestObstacleVector;
-  for (unsigned int j = 0; j < coordinatesVector.size(); j++) {
+  for (size_t j = 0; j < coordinatesVector.size(); j++) {
     VIPRA::f3d coordinates = coordinatesVector.at(j);
-    int        min_index = 0;
-    for (int i = 0; i < objects.at("obstacles").size(); i++) {
+    size_t     min_index = 0;
+    for (size_t i = 0; i < objects.at("obstacles").size(); i++) {
       if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
           coordinates.distanceTo(objects.at("obstacles").at(min_index)))
         min_index = i;
@@ -65,8 +67,8 @@ PassengerVehicleObstacleSet::nearestObstacle(const VIPRA::f3d coordinates) const
 VIPRA::f3d
 PassengerVehicleObstacleSet::nearestObstacleInDirection(const VIPRA::f3d coordinates,
                                                         const VIPRA::f3d velocity) const {
-  int min_index = 0;
-  for (unsigned int i = 0; i < objects.at("obstacles").size(); i++) {
+  size_t min_index = 0;
+  for (size_t i = 0; i < objects.at("obstacles").size(); i++) {
     if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
         coordinates.distanceTo(objects.at("obstacles")[min_index]))
       min_index = i;
@@ -93,7 +95,7 @@ PassengerVehicleObstacleSet::getMapDimensions() const noexcept {
 float
 PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const noexcept {
 
-  for (unsigned int i = 0; i < objects.at("obstacles").size(); i++) {
+  for (size_t i = 0; i < objects.at("obstacles").size(); i++) {
     VIPRA::f3d coordinates = objects.at("obstacles")[i];
 
     if (coordinates.distanceTo(point1) + coordinates.distanceTo(point1) == point1.distanceTo(point2))
