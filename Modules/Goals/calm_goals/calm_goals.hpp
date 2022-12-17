@@ -26,9 +26,6 @@ class CalmGoals : public Goals {
   [[nodiscard]] bool isPedestianGoalMet(size_t) const override;
   [[nodiscard]] bool isSimulationGoalMet() const noexcept override;
 
-  void printGraph();
-  void printPaths();
-
  protected:
   float       goalRange;
   float       diagonalCost;

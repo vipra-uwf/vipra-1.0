@@ -1,25 +1,12 @@
-#include "acutest/acutest.h"
 
-#include "./Data_Sets/Pedestrian_Sets/tests.hpp"
+#include <gtest/gtest.h>
 
-#include "./IO/configuration_reader/tests.hpp"
-#include "./IO/input_data_loader/tests.hpp"
-#include "./IO/output_data_writer/tests.hpp"
+#include "logging/logging.hpp"
 
-#include "./Data_Sets/Obstacle_Sets/tests.hpp"
-#include "./Data_Sets/Pedestrian_Sets/tests.hpp"
+LJ::Logger<LJ::ConsoleLogger> simLogger{LJ::ERROR};
 
-#include "./Models/Behavior_Model/tests.hpp"
-#include "./Models/Pedestrian_Model/tests.hpp"
-
-#include "./Types/tests.hpp"
-
-//#include "./Goals/tests.hpp"
-
-TEST_LIST = {INPUT_DATA_LOADER_TESTS,
-             OUTPUT_DATA_WRITER_TESTS,
-             CONFIGURATION_READER_TESTS,
-             TYPES_TESTS,
-             CALM_PEDESTRIAN_SET_TESTS,
-             CALM_PEDESTRIAN_MODEL_TESTS,
-             {NULL, NULL}};
+int
+main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

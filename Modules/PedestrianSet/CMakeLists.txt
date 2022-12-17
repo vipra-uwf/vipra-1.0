@@ -8,7 +8,7 @@ pedset_srcs
 )
 
 target_sources(
-${EXE_NAME}
+${PROJECT_NAME}
 PRIVATE
 ${pedset_srcs}
 )

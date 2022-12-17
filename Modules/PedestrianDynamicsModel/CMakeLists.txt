@@ -8,7 +8,7 @@ file(GLOB
 )
 
 target_sources(
-  ${EXE_NAME}
+  ${PROJECT_NAME}
   PRIVATE
   ${pedmodel_srcs}
 )

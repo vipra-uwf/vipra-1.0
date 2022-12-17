@@ -54,7 +54,7 @@ class CalmPedestrianSet : public PedestrianSet {
   void setDesiredSpeeds(std::vector<float>& desiredSpeeds);
   void setShoulderLengths(std::vector<float>& shoulderLengths);
 
-  void updateState(std::shared_ptr<VIPRA::State> state);
+  void updateState(std::shared_ptr<VIPRA::State> state) override;
 
  private:
   int numPedestrians;

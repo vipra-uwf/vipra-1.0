@@ -10,7 +10,6 @@
 class ConfigurationReaderException : public std::exception {
  public:
   ConfigurationReaderException(const std::string& message) : message(message) {}
-  const std::string& what() { return message; }
 
   static void Error(const std::string& message) {
     std::cerr << message << std::endl;

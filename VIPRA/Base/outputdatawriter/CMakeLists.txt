@@ -9,7 +9,7 @@ file(
 )
 
 target_sources(
-  ${EXE_NAME}
+  ${PROJECT_NAME}
   PRIVATE
   ${outputdatawriter_srcs}
 )

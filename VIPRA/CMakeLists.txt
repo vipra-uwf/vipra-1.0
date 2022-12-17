@@ -13,8 +13,7 @@ set(EXTENDABLE_DIR ./Extendable)
 
 if (GEN_MAIN)
 
-  set(PROJECT_NAME GENERATE_MAIN)
-  set(EXE_NAME generate_main)
+  set(PROJECT_NAME generate_main)
 
   project(
     ${PROJECT_NAME} 
@@ -24,18 +23,17 @@ if (GEN_MAIN)
   )
   
   add_executable(
-    ${EXE_NAME}
+    ${PROJECT_NAME}
     ${BASE_DIR}/code_generation/code_generator.cpp 
     ${DEPS_DIR}/jsoncpp/jsoncpp.cpp 
     ${BASE_DIR}/configuration/configuration_reader.cpp
   )
 
-  set_target_properties(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../ )
+  set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../ )
   
 else()
 
-  set(PROJECT_NAME VIPRA)
-  set(EXE_NAME VIPRA_SIM)
+  set(PROJECT_NAME VIPRA_SIM)
 
   project(
     ${PROJECT_NAME} 
@@ -46,12 +44,12 @@ else()
 
   
   add_executable(
-    ${EXE_NAME}
+    ${PROJECT_NAME}
     main.cpp
     )
   add_subdirectory(${DEPS_DIR})
   target_link_libraries(
-    ${EXE_NAME}
+    ${PROJECT_NAME}
     PRIVATE
     ANTLR4
     jsoncpp
@@ -61,13 +59,13 @@ else()
   add_subdirectory(${BASE_DIR})
   add_subdirectory(${MODULES_DIR} build)
 
-  set_target_properties(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../ )
+  set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../ )
 
 
 endif(GEN_MAIN)
 
 target_include_directories(
-  ${EXE_NAME}
+  ${PROJECT_NAME}
   PRIVATE
   ${DEPS_DIR}
   ${DEPS_DIR}/antlr4-runtime

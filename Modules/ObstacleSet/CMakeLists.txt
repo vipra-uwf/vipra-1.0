@@ -7,7 +7,7 @@ obstacle_srcs
 )
 
 target_sources(
-${EXE_NAME}
+${PROJECT_NAME}
 PRIVATE
 ${obstacle_srcs}
 )

@@ -98,7 +98,7 @@ AirplaneObstacleSet::getDimensions() const noexcept {
   return returnDimension;
 }
 
-const float
+float
 AirplaneObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const noexcept {
 
   for (unsigned int i = 0; i < objects.at("obstacles").size(); i++) {

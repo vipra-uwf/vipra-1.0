@@ -19,6 +19,8 @@ temp
 VIPRA_SIM
 simbuild
 genbuild
+Vipra_tests
+_build
 
 
 # VIPRA Launcher

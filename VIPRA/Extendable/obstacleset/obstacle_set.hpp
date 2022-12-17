@@ -35,7 +35,7 @@ class ObstacleSet {
   virtual const std::vector<std::string>& getObjectTypes() const noexcept = 0;
 
   virtual const VIPRA::f3d getDimensions() const = 0;
-  virtual const float      rayHit(VIPRA::f3d, VIPRA::f3d) const = 0;
+  virtual float            rayHit(VIPRA::f3d, VIPRA::f3d) const = 0;
 };
 
 #endif

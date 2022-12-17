@@ -32,7 +32,7 @@ class AirplaneObstacleSet : public ObstacleSet {
   const VIPRA::f3d    NearestObstacle(const VIPRA::f3d coordinates, const VIPRA::f3d velocity) const override;
 
   const VIPRA::f3d getDimensions() const noexcept override;
-  const float      rayHit(VIPRA::f3d, VIPRA::f3d) const noexcept override;
+  float            rayHit(VIPRA::f3d, VIPRA::f3d) const noexcept override;
 };
 
 #endif

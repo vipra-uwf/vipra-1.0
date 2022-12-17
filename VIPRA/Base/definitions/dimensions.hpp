@@ -269,6 +269,11 @@ struct f3d {
     return (x >= other.x - half && x <= other.x + half && y <= other.y + half && y >= other.y - half &&
             z <= other.z + half && z >= other.z - half);
   }
+
+  constexpr bool operator==(const f3d& other) const noexcept {
+    return (x == other.x && y == other.y && z == other.z);
+  }
+  constexpr bool operator!=(const f3d& other) const noexcept { return !operator==(other); }
 };
 
 typedef std::vector<f2d> f2dVec;
