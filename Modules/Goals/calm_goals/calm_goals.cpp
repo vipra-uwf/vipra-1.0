@@ -21,7 +21,7 @@ void
 CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   int pedCnt = pedSet.getNumPedestrians();
   currentGoals = VIPRA::f3dVec(pedCnt);
-  endGoals = VIPRA::f3dVec(pedCnt, {-1, -1});
+  endGoals = VIPRA::f3dVec(pedCnt, VIPRA::f3d{-1, -1});
   goalsMet = std::vector<bool>(pedCnt, false);
   paths = std::vector<std::queue<VIPRA::f3d>>(pedCnt);
   LJ::Debug(simLogger, "CalmGoals: Finding Nearest End Goal");
@@ -52,7 +52,7 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
       paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph, diagonalCost);
     } else if (pathingType == "Disembark") {
       LJ::Debug(simLogger, "CalmGoals: Finding Disembark Path for Ped: {}", i);
-      paths[i] = disembarkPath(coords.at(i), endGoals.at(i), obsSet);
+      paths[i] = disembarkPath(coords.at(i), obsSet);
     }
     currentGoals[i] = paths[i].front();
   }
@@ -60,13 +60,13 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
 }
 
 std::queue<VIPRA::f3d>
-CalmGoals::disembarkPath(const VIPRA::f3d& start, const VIPRA::f3d& endGoal, const ObstacleSet& obsSet) {
+CalmGoals::disembarkPath(const VIPRA::f3d& start, const ObstacleSet& obsSet) {
   std::queue<VIPRA::f3d> path;
   VIPRA::f3d             aisle = nearestObjective("aisle", start, obsSet);
   path.push(aisle);
   VIPRA::f3d aisleEnd = nearestObjective("endAisle", aisle, obsSet);
   path.push(aisleEnd);
-  path.push(nearestObjective("exits", aisleEnd, obsSet));
+  path.push(nearestObjective("exit", aisleEnd, obsSet));
   return path;
 }
 
@@ -134,14 +134,14 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
  * @param pedSet 
  */
 void
-CalmGoals::updatePedestrianGoals(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
+CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   const size_t         numPeds = pedSet.getNumPedestrians();
   const VIPRA::f3dVec& pedCoords = pedSet.getPedestrianCoordinates();
 
   for (size_t i = 0; i < numPeds; ++i) {
     if (!paths[i].empty()) {
       const VIPRA::f3d& currGoal = paths[i].front();
-      if (pedCoords.at(i).inside(currGoal, goalRange)) {
+      if (inside(pedCoords.at(i), currGoal, goalRange)) {
         LJ::Debug(simLogger, "Pedestrian {}, Reached a Goal", i);
         paths[i].pop();
         if (paths[i].empty()) {
@@ -229,58 +229,4 @@ CalmGoals::isSimulationGoalMet() const noexcept {
     LJ::Debug(simLogger, "{} Pedestrians Have Met Their Goal", cnt);
   }
   return passed;
-}
-
-int n = 0;
-
-void
-printTree(CalmPath::Quad* root) {
-  if (root != nullptr) {
-    fprintf(stderr,
-            "{\"x\":%f , \"y\":%f, \"size\":%f, \"trav\":%s, \"adjacencies\":[\n",
-            root->center.x,
-            root->center.y,
-            root->size,
-            (root->traversable ? "true" : "false"));
-    if (n % 1000 == 0) {
-      for (int i = 0; i < root->adj.size(); ++i) {
-        fprintf(stderr, "\t{\"x\": %f, \"y\": %f}\n", root->adj[i]->center.x, root->adj[i]->center.y);
-        if (i < root->adj.size() - 1) {
-          fprintf(stderr, ",");
-        }
-      }
-    }
-    ++n;
-    fprintf(stderr, "]},\n");
-    printTree(root->tl);
-    printTree(root->tr);
-    printTree(root->bl);
-    printTree(root->br);
-  }
-}
-
-void
-CalmGoals::printGraph() {
-  fprintf(stderr, "\"quads\":[");
-  printTree(graph.getRoot());
-  fprintf(stderr, "]");
-}
-
-void
-CalmGoals::printPaths() {
-  fprintf(stderr, "\"paths\": [");
-  for (auto& path : paths) {
-    if (!path.empty()) {
-      int i = 0;
-      fprintf(stderr, "[");
-      while (!path.empty()) {
-        auto d = path.front();
-        path.pop();
-        fprintf(stderr, "{\"x\":%f, \"y\":%f},\n", d.x, d.y);
-        ++i;
-      }
-      fprintf(stderr, "],");
-    }
-  }
-  fprintf(stderr, "]");
 }

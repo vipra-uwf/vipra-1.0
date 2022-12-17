@@ -17,9 +17,9 @@ CalmPedestrianModel::timestep(PedestrianSet& pedestrianSet,
                               Goals&         goals,
                               float          time) {
 
-  CalmPedestrianSet   calmPedestrianSet = static_cast<CalmPedestrianSet&>(pedestrianSet);
-  AirplaneObstacleSet airObstacleSet = static_cast<AirplaneObstacleSet&>(obstacleSet);
-  CalmGoals           calmGoals = static_cast<CalmGoals&>(goals);
+  CalmPedestrianSet           calmPedestrianSet = static_cast<CalmPedestrianSet&>(pedestrianSet);
+  PassengerVehicleObstacleSet airObstacleSet = static_cast<PassengerVehicleObstacleSet&>(obstacleSet);
+  CalmGoals                   calmGoals = static_cast<CalmGoals&>(goals);
 
   calculateDistanceMatrices(calmPedestrianSet);
   calculateNeartestNeighbors(calmPedestrianSet);

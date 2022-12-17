@@ -44,7 +44,8 @@ const std::unordered_map<std::string, std::string> TYPES{
     {"clock", "Clock"},
     {"simulation", "Simulation"},
     {"policy_model", "PolicyModel"},
-    {"map_loader", "MapLoader"}};
+    {"map_loader", "MapLoader"},
+    {"pedestrian_loader", "PedestrianLoader"}};
 
 int
 main(int argc, char const* argv[]) {

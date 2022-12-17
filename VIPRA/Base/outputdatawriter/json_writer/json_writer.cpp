@@ -12,7 +12,7 @@ void
 JSONWriter::initializeOutputFile(const std::string& outputFilePath) {
   fileStream.open(outputFilePath);
   if (!fileStream.is_open()) {
-    OutputDataWriterException::Error("Unable To Open Output File: " + outputFilePath);
+    OutputDataWriterException::Throw("Unable To Open Output File: " + outputFilePath);
   }
 }
 

@@ -1,11 +1,11 @@
 {
-  "exits": [
+  "exit": [
     {
       "x": 24.2,
       "y": 3.5
     }
   ],
-  "endAisle": [
+  "endOfAisle": [
     {
       "x": 24.1,
       "y": 1.7
@@ -113,7 +113,7 @@
       "y": 1.7
     }
   ],
-  "obstacles": [
+  "obstacle": [
     {
       "x": 0,
       "y": 3.46

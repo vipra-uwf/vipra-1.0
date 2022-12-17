@@ -1,11 +1,11 @@
 {
-    "exits": [
+    "exit": [
         {
             "x": 33.5,
             "y": 1.6
         }
     ],
-    "obstacles": [
+    "obstacle": [
         {
             "x": 0.0,
             "y": 0.47

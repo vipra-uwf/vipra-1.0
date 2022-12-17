@@ -22,12 +22,12 @@ InputJSONReader::getInputEntities(const std::string& filePath) {
 
   fileStream.open(filePath);
   if (!fileStream.is_open()) {
-    InputDataLoaderException::Error("Unable To Open Input File: " + filePath + "\n");
+    InputDataLoaderException::Throw("Unable To Open Input File: " + filePath + "\n");
   }
 
   if (!Json::parseFromStream(jsonReader, fileStream, &jsonDocument, &errors)) {
     fileStream.close();
-    InputDataLoaderException::Error("Unable To Parse Input File: " + filePath + "\n");
+    InputDataLoaderException::Throw("Unable To Parse Input File: " + filePath + "\n");
   }
   fileStream.close();
 
@@ -47,7 +47,7 @@ InputJSONReader::getInputEntities(const std::string& filePath) {
       }
     }
     return inputData;
-  } catch (std::exception ex) {
-    InputDataLoaderException::Error("Unable To Parse Input File: " + filePath + "\n");
+  } catch (...) {
+    InputDataLoaderException::Throw("Unable To Parse Input File: " + filePath + "\n");
   }
 }

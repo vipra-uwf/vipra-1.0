@@ -8,7 +8,7 @@ TEST(Calm_Ped_Set, LoadProperValuesInPedestrianSet) {
   CalmPedestrianSet pedestrianSet;
   size_t            numPedestrians = 3;
 
-  VIPRA::f3dVec    pedestrianCoords = {{8, 5}, {4, 2}, {0, 5}};
+  VIPRA::f3dVec    pedestrianCoords = {VIPRA::f3d{8, 5}, VIPRA::f3d{4, 2}, VIPRA::f3d{0, 5}};
   VIPRA::EntitySet pedestrians = {{"pedestrians", pedestrianCoords}};
 
   pedestrianSet.initialize(pedestrians);

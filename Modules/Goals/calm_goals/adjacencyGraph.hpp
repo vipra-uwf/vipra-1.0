@@ -5,6 +5,13 @@
 #include "obstacleset/obstacle_set.hpp"
 #include <optional>
 
+constexpr bool
+inside(const VIPRA::f3d& point, const VIPRA::f3d& center, float sideLength) noexcept {
+  const float half = sideLength / 2;
+  return (point.x >= center.x - half && point.x <= center.x + half && point.y <= center.y + half &&
+          point.y >= center.y - half && point.z <= center.z + half && point.z >= center.z - half);
+}
+
 namespace CalmPath {
 struct Quad {
   VIPRA::f3d         center;
@@ -29,11 +36,8 @@ class Graph {
 
   void buildGraph(const ObstacleSet& obSet) {
     obs = &obSet;
-    const VIPRA::f3d mapRes = obSet.getDimensions();
-    printf("Constructing Quad Tree\n");
-    root = construct({mapRes.x / 2, mapRes.y / 2}, mapRes.x);
-
-    printf("Building Adjacencies\n");
+    const VIPRA::f3d mapRes = obSet.getMapDimensions();
+    root = construct(VIPRA::f3d{mapRes.x / 2, mapRes.y / 2}, mapRes.x);
     buildAdjacencies(root);
   }
 
@@ -65,8 +69,6 @@ class Graph {
   static constexpr float gridUnit = .1;
   const ObstacleSet*     obs;
   Quad*                  root = nullptr;
-
-  int n = 0;
 
  protected:
   void cleanQuad(Quad* node) {
@@ -108,7 +110,6 @@ class Graph {
     // travel along line between nodes
     // check if grid at point is traversable
     if (to->traversable && from != to) {
-      ++n;
       VIPRA::f3d checkPoint = from->center;
       float      d = (from->center.distanceTo(to->center) / 0.01);
       float      dx = (to->center.x - from->center.x) / d;
@@ -121,7 +122,7 @@ class Graph {
         if (!curr->traversable) {
           return;
         }
-        if (curr == to || checkPoint.inside(to->center, 0.01)) {
+        if (curr == to || inside(checkPoint, to->center, 0.01)) {
           from->adj.push_back(to);
           return;
         }
@@ -161,163 +162,6 @@ class Graph {
     }
   }
 
-  inline std::optional<VIPRA::f3d> checkTop(float             quadX,
-                                            float             quadY,
-                                            float             halfSide,
-                                            const VIPRA::f3d& start,
-                                            const VIPRA::f3d& end) const {
-    return lineIntersect(
-        {quadX - halfSide, quadY + halfSide}, {quadX + halfSide, quadY + halfSide}, start, end);
-  }
-  inline std::optional<VIPRA::f3d> checkBottom(float             quadX,
-                                               float             quadY,
-                                               float             halfSide,
-                                               const VIPRA::f3d& start,
-                                               const VIPRA::f3d& end) const {
-    return lineIntersect(
-        {quadX - halfSide, quadY - halfSide}, {quadX + halfSide, quadY - halfSide}, start, end);
-  }
-  inline std::optional<VIPRA::f3d> checkRight(float             quadX,
-                                              float             quadY,
-                                              float             halfSide,
-                                              const VIPRA::f3d& start,
-                                              const VIPRA::f3d& end) const {
-    return lineIntersect(
-        {quadX + halfSide, quadY + halfSide}, {quadX + halfSide, quadY - halfSide}, start, end);
-  }
-  inline std::optional<VIPRA::f3d> checkLeft(float             quadX,
-                                             float             quadY,
-                                             float             halfSide,
-                                             const VIPRA::f3d& start,
-                                             const VIPRA::f3d& end) const {
-    return lineIntersect(
-        {quadX - halfSide, quadY + halfSide}, {quadX - halfSide, quadY - halfSide}, start, end);
-  }
-
-  std::optional<IntersectPoint> quadEdgeIntersect(Quad*             quad,
-                                                  const VIPRA::f3d& start,
-                                                  const VIPRA::f3d& end) const {
-    float halfSide = quad->size / 2;
-    float quadX = quad->center.x;
-    float quadY = quad->center.y;
-
-    if (end.x >= (quadX - halfSide) && end.x <= (quadX + halfSide)) {
-      // directly above or below
-      if (end.y > quadY) {
-        // above
-        auto inter = checkTop(quadX, quadY, halfSide, start, end);
-        if (inter.has_value()) {
-          return {{inter.value(), VIPRA::f3d{0, 1}}};
-        }
-      } else {
-        // below
-        auto inter = checkBottom(quadX, quadY, halfSide, start, end);
-        if (inter.has_value()) {
-          return {{inter.value(), VIPRA::f3d{0, -1}}};
-        }
-      }
-    }
-
-    if (end.x >= (quadX - halfSide) && end.x <= (quadX + halfSide)) {
-      // directly left or right
-      if (end.x > quadX) {
-        // right
-        auto inter = checkRight(quadX, quadY, halfSide, start, end);
-        if (inter.has_value()) {
-          return {{inter.value(), VIPRA::f3d{1, 0}}};
-        }
-      } else {
-        // left
-        auto inter = checkLeft(quadX, quadY, halfSide, start, end);
-        if (inter.has_value()) {
-          return {{inter.value(), VIPRA::f3d{-1, 0}}};
-        }
-      }
-    }
-
-    if (end.x > quadX) {
-      // to the right, maybe above or below
-      if (end.y > quadY) {
-        // to the right above
-        auto inter = checkTop(quadX, quadY, halfSide, start, end);
-        if (inter.has_value()) {
-          return {{inter.value(), VIPRA::f3d{0, 1}}};
-        } else {
-          inter = checkRight(quadX, quadY, halfSide, start, end);
-          if (inter.has_value()) {
-            return {{inter.value(), VIPRA::f3d{1, 0}}};
-          }
-        }
-      } else {
-        // to the right below
-        auto inter = checkBottom(quadX, quadY, halfSide, start, end);
-        if (inter.has_value()) {
-          return {{inter.value(), VIPRA::f3d{0, -1}}};
-        } else {
-          inter = checkRight(quadX, quadY, halfSide, start, end);
-          if (inter.has_value()) {
-            return {{inter.value(), VIPRA::f3d{1, 0}}};
-          }
-        }
-      }
-    } else {
-      // to the left, maybe above or below
-      if (end.y > quadY) {
-        // to the left above
-        auto inter = checkTop(quadX, quadY, halfSide, start, end);
-        if (inter.has_value()) {
-          return {{inter.value(), VIPRA::f3d{0, 1}}};
-        } else {
-          inter = checkLeft(quadX, quadY, halfSide, start, end);
-          if (inter.has_value()) {
-            return {{inter.value(), VIPRA::f3d{-1, 0}}};
-          }
-        }
-      } else {
-        // to the left below
-        auto inter = checkBottom(quadX, quadY, halfSide, start, end);
-        if (inter.has_value()) {
-          return {{inter.value(), VIPRA::f3d{0, -1}}};
-        } else {
-          inter = checkLeft(quadX, quadY, halfSide, start, end);
-          if (inter.has_value()) {
-            return {{inter.value(), VIPRA::f3d{-1, 0}}};
-          }
-        }
-      }
-    }
-
-    return {};
-  }
-
-  std::optional<VIPRA::f3d> lineIntersect(const VIPRA::f3d& start1,
-                                          const VIPRA::f3d& end1,
-                                          const VIPRA::f3d& start2,
-                                          const VIPRA::f3d& end2) const {
-    float x1 = start1.x;
-    float y1 = start1.y;
-    float x2 = end1.x;
-    float y2 = end1.y;
-
-    float x3 = start2.x;
-    float y3 = start2.y;
-    float x4 = end2.x;
-    float y4 = end2.y;
-
-    float uA =
-        ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-    float uB =
-        ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-
-    if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
-      float intersectX = x1 + (uA * (x2 - x1));
-      float intersectY = y1 + (uA * (y2 - y1));
-      return std::optional<VIPRA::f3d>{VIPRA::f3d{intersectX, intersectY}};
-    } else {
-      return std::optional<VIPRA::f3d>{};
-    }
-  }
-
   Quad* construct(VIPRA::f3d center, float size) {
     if (size <= gridUnit) {
       return nullptr;
@@ -330,11 +174,11 @@ class Graph {
 
     float x = center.x;
     float y = center.y;
-    if (inside(obs->NearestObstacle(center, VIPRA::f3d{0, 0}), center, size)) {
-      tl = construct({x - size / 4, y + size / 4}, size / 2);
-      tr = construct({x + size / 4, y + size / 4}, size / 2);
-      bl = construct({x - size / 4, y - size / 4}, size / 2);
-      br = construct({x + size / 4, y - size / 4}, size / 2);
+    if (inside(obs->nearestObstacle(center), center, size)) {
+      tl = construct(VIPRA::f3d{x - size / 4, y + size / 4}, size / 2);
+      tr = construct(VIPRA::f3d{x + size / 4, y + size / 4}, size / 2);
+      bl = construct(VIPRA::f3d{x - size / 4, y - size / 4}, size / 2);
+      br = construct(VIPRA::f3d{x + size / 4, y - size / 4}, size / 2);
       if (tl != nullptr || tr != nullptr || bl != nullptr || br != nullptr) {
         return new Quad(center, size, true, tl, tr, bl, br);
       } else {
@@ -345,11 +189,168 @@ class Graph {
   }
 
   bool inside(VIPRA::f3d point, VIPRA::f3d center, float size) {
-    VIPRA::f3d tl = {center.x - size / 2, center.y + size / 2};
-    VIPRA::f3d br = {center.x + size / 2, center.y - size / 2};
+    VIPRA::f3d tl{center.x - size / 2, center.y + size / 2};
+    VIPRA::f3d br{center.x + size / 2, center.y - size / 2};
     bool       i = (point.x >= tl.x && point.x <= br.x && point.y <= tl.y && point.y >= br.y);
     return i;
   }
+
+  // inline std::optional<VIPRA::f3d> checkTop(float             quadX,
+  //                                           float             quadY,
+  //                                           float             halfSide,
+  //                                           const VIPRA::f3d& start,
+  //                                           const VIPRA::f3d& end) const {
+  //   return lineIntersect(
+  //       {quadX - halfSide, quadY + halfSide}, {quadX + halfSide, quadY + halfSide}, start, end);
+  // }
+  // inline std::optional<VIPRA::f3d> checkBottom(float             quadX,
+  //                                              float             quadY,
+  //                                              float             halfSide,
+  //                                              const VIPRA::f3d& start,
+  //                                              const VIPRA::f3d& end) const {
+  //   return lineIntersect(
+  //       {quadX - halfSide, quadY - halfSide}, {quadX + halfSide, quadY - halfSide}, start, end);
+  // }
+  // inline std::optional<VIPRA::f3d> checkRight(float             quadX,
+  //                                             float             quadY,
+  //                                             float             halfSide,
+  //                                             const VIPRA::f3d& start,
+  //                                             const VIPRA::f3d& end) const {
+  //   return lineIntersect(
+  //       {quadX + halfSide, quadY + halfSide}, {quadX + halfSide, quadY - halfSide}, start, end);
+  // }
+  // inline std::optional<VIPRA::f3d> checkLeft(float             quadX,
+  //                                            float             quadY,
+  //                                            float             halfSide,
+  //                                            const VIPRA::f3d& start,
+  //                                            const VIPRA::f3d& end) const {
+  //   return lineIntersect(
+  //       {quadX - halfSide, quadY + halfSide}, {quadX - halfSide, quadY - halfSide}, start, end);
+  // }
+
+  // std::optional<IntersectPoint> quadEdgeIntersect(Quad*             quad,
+  //                                                 const VIPRA::f3d& start,
+  //                                                 const VIPRA::f3d& end) const {
+  //   float halfSide = quad->size / 2;
+  //   float quadX = quad->center.x;
+  //   float quadY = quad->center.y;
+
+  //   if (end.x >= (quadX - halfSide) && end.x <= (quadX + halfSide)) {
+  //     // directly above or below
+  //     if (end.y > quadY) {
+  //       // above
+  //       auto inter = checkTop(quadX, quadY, halfSide, start, end);
+  //       if (inter.has_value()) {
+  //         return {{inter.value(), VIPRA::f3d{0, 1}}};
+  //       }
+  //     } else {
+  //       // below
+  //       auto inter = checkBottom(quadX, quadY, halfSide, start, end);
+  //       if (inter.has_value()) {
+  //         return {{inter.value(), VIPRA::f3d{0, -1}}};
+  //       }
+  //     }
+  //   }
+
+  //   if (end.x >= (quadX - halfSide) && end.x <= (quadX + halfSide)) {
+  //     // directly left or right
+  //     if (end.x > quadX) {
+  //       // right
+  //       auto inter = checkRight(quadX, quadY, halfSide, start, end);
+  //       if (inter.has_value()) {
+  //         return {{inter.value(), VIPRA::f3d{1, 0}}};
+  //       }
+  //     } else {
+  //       // left
+  //       auto inter = checkLeft(quadX, quadY, halfSide, start, end);
+  //       if (inter.has_value()) {
+  //         return {{inter.value(), VIPRA::f3d{-1, 0}}};
+  //       }
+  //     }
+  //   }
+
+  //   if (end.x > quadX) {
+  //     // to the right, maybe above or below
+  //     if (end.y > quadY) {
+  //       // to the right above
+  //       auto inter = checkTop(quadX, quadY, halfSide, start, end);
+  //       if (inter.has_value()) {
+  //         return {{inter.value(), VIPRA::f3d{0, 1}}};
+  //       } else {
+  //         inter = checkRight(quadX, quadY, halfSide, start, end);
+  //         if (inter.has_value()) {
+  //           return {{inter.value(), VIPRA::f3d{1, 0}}};
+  //         }
+  //       }
+  //     } else {
+  //       // to the right below
+  //       auto inter = checkBottom(quadX, quadY, halfSide, start, end);
+  //       if (inter.has_value()) {
+  //         return {{inter.value(), VIPRA::f3d{0, -1}}};
+  //       } else {
+  //         inter = checkRight(quadX, quadY, halfSide, start, end);
+  //         if (inter.has_value()) {
+  //           return {{inter.value(), VIPRA::f3d{1, 0}}};
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     // to the left, maybe above or below
+  //     if (end.y > quadY) {
+  //       // to the left above
+  //       auto inter = checkTop(quadX, quadY, halfSide, start, end);
+  //       if (inter.has_value()) {
+  //         return {{inter.value(), VIPRA::f3d{0, 1}}};
+  //       } else {
+  //         inter = checkLeft(quadX, quadY, halfSide, start, end);
+  //         if (inter.has_value()) {
+  //           return {{inter.value(), VIPRA::f3d{-1, 0}}};
+  //         }
+  //       }
+  //     } else {
+  //       // to the left below
+  //       auto inter = checkBottom(quadX, quadY, halfSide, start, end);
+  //       if (inter.has_value()) {
+  //         return {{inter.value(), VIPRA::f3d{0, -1}}};
+  //       } else {
+  //         inter = checkLeft(quadX, quadY, halfSide, start, end);
+  //         if (inter.has_value()) {
+  //           return {{inter.value(), VIPRA::f3d{-1, 0}}};
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   return {};
+  // }
+
+  // std::optional<VIPRA::f3d> lineIntersect(const VIPRA::f3d& start1,
+  //                                         const VIPRA::f3d& end1,
+  //                                         const VIPRA::f3d& start2,
+  //                                         const VIPRA::f3d& end2) const {
+  //   float x1 = start1.x;
+  //   float y1 = start1.y;
+  //   float x2 = end1.x;
+  //   float y2 = end1.y;
+
+  //   float x3 = start2.x;
+  //   float y3 = start2.y;
+  //   float x4 = end2.x;
+  //   float y4 = end2.y;
+
+  //   float uA =
+  //       ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+  //   float uB =
+  //       ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+
+  //   if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+  //     float intersectX = x1 + (uA * (x2 - x1));
+  //     float intersectY = y1 + (uA * (y2 - y1));
+  //     return std::optional<VIPRA::f3d>{VIPRA::f3d{intersectX, intersectY}};
+  //   } else {
+  //     return std::optional<VIPRA::f3d>{};
+  //   }
+  // }
 };
 }  // namespace CalmPath
 #endif

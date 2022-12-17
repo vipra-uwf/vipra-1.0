@@ -6,9 +6,9 @@
 #include <math.h>
 #include <vector>
 
-#include "../../Goals/calm_goals/calm_goals.hpp"
-#include "../../ObstacleSet/airplane_obstacle_set/airplane_obstacle_set.hpp"
-#include "../../PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
+#include "Goals/calm_goals/calm_goals.hpp"
+#include "ObstacleSet/passenger_vehicle_obstacle_set/passenger_vehicle_obstacle_set.hpp"
+#include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
 #include "pedestrianmodel/pedestrian_dynamics_model.hpp"
 
 class CalmPedestrianModel : public PedestrianDynamicsModel {

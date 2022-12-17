@@ -7,18 +7,10 @@
 
 #include "definitions/type_definitions.hpp"
 
-class OutputDataWriterException : public std::exception {
+class OutputDataWriterException : public std::runtime_error {
  public:
-  OutputDataWriterException(const std::string& message) : message(message) {}
-  const std::string& what() { return message; }
-
-  static void Error(const std::string& message) {
-    std::cerr << message;
-    throw OutputDataWriterException(message);
-  }
-
- private:
-  std::string message;
+  OutputDataWriterException(const std::string& message) : std::runtime_error(message) {}
+  static void Throw(const std::string& message) { throw OutputDataWriterException(message); }
 };
 
 class OutputDataWriter {

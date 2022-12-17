@@ -14,6 +14,7 @@ export enum ModuleType {
   SIMULATION              = 'simulation',
   MAP_LOADER              = 'map_loader',
   POLICY_MODEL            = 'policy_model',
+  PEDESTRIAN_LOADER       = 'pedestrian_loader',
 }
 
 

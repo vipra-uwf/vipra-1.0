@@ -17,25 +17,21 @@ class ObstacleSet {
 
   virtual ~ObstacleSet() = default;
 
+  virtual void initialize(std::unique_ptr<MapType>) = 0;
   virtual void configure(const VIPRA::ConfigMap& configMap) = 0;
 
-  /**/
-  virtual void                initialize(const std::unique_ptr<MapType>) = 0;
-  virtual const VIPRA::f3dVec NearestObstacle(const PedestrianSet& PedSet) const = 0;
-  virtual const VIPRA::f3d NearestObstacle(const VIPRA::f3d coordinates, const VIPRA::f3d velocity) const = 0;
-  /**/
-
-  virtual void addObjects(const std::string& type, const VIPRA::f3dVec& locations) = 0;
-  virtual void setObstacleCoords(const VIPRA::f3dVec& coordinates) = 0;
-
-  virtual int                  getNumObstacles() const noexcept = 0;
-  virtual const VIPRA::f3dVec& getObstacleCoordinates() const noexcept = 0;
-  virtual const VIPRA::f3dVec& getObjectsofType(const std::string& type) const noexcept = 0;
+  virtual VIPRA::f3d getMapDimensions() const noexcept = 0;
 
   virtual const std::vector<std::string>& getObjectTypes() const noexcept = 0;
+  virtual const VIPRA::f3dVec&            getObjectsofType(const std::string& type) const noexcept = 0;
 
-  virtual const VIPRA::f3d getDimensions() const = 0;
-  virtual float            rayHit(VIPRA::f3d, VIPRA::f3d) const = 0;
+  virtual VIPRA::f3dVec nearestObstacle(const PedestrianSet&) const = 0;
+  virtual VIPRA::f3dVec nearestObstacleInDirection(const PedestrianSet&) const = 0;
+
+  virtual VIPRA::f3d nearestObstacle(VIPRA::f3d) const = 0;
+  virtual VIPRA::f3d nearestObstacleInDirection(const VIPRA::f3d, const VIPRA::f3d) const = 0;
+
+  virtual float rayHit(VIPRA::f3d, VIPRA::f3d) const = 0;
 };
 
 #endif

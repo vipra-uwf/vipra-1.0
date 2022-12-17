@@ -27,7 +27,7 @@ void
 JSONTimestepWriter::initializeOutputFile(const std::string& outputFilePath) {
   fileStream.open(outputFilePath, std::fstream::out | std::fstream::trunc);
   if (!fileStream.is_open()) {
-    OutputDataWriterException::Error("Unable To Open Output File: " + outputFilePath);
+    OutputDataWriterException::Throw("Unable To Open Output File: " + outputFilePath);
   }
 }
 

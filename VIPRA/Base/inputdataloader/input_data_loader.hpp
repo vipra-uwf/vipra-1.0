@@ -7,18 +7,10 @@
 
 #include "definitions/type_definitions.hpp"
 
-class InputDataLoaderException : public std::exception {
+class InputDataLoaderException : public std::runtime_error {
  public:
-  InputDataLoaderException(const std::string& message) : message(message) {}
-  const std::string& what() { return message; }
-
-  static void Error(const std::string& message) {
-    std::cerr << message << std::endl;
-    throw InputDataLoaderException(message);
-  }
-
- private:
-  std::string message;
+  InputDataLoaderException(const std::string& message) : std::runtime_error(message) {}
+  static void Throw(const std::string& message) { throw InputDataLoaderException(message); }
 };
 
 class InputDataLoader {

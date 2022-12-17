@@ -60,7 +60,7 @@ cost(Quad* first, Quad* goal, float diagonalCost) {
 }
 
 inline std::queue<VIPRA::f3d>
-constructPath(VIPRA::f3d start, VIPRA::f3d goal, AQuad* end) {
+constructPath(VIPRA::f3d goal, AQuad* end) {
   // create queue by traversing the path, add the start and end, return
   std::queue<VIPRA::f3d> path;
   AQuad*                 iter = end;
@@ -105,7 +105,7 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& g, float diagonalCost) {
     if (curr->node == last) {
       // if the end node has been found, create the path, delete the created
       // objects, return the path
-      std::queue<VIPRA::f3d> path{constructPath(start, end, curr)};
+      std::queue<VIPRA::f3d> path{constructPath(end, curr)};
       std::for_each(allocList.begin(), allocList.end(), [](AQuad* ptr) { delete ptr; });
       return path;
     }
@@ -140,7 +140,11 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& g, float diagonalCost) {
 
   // no path was found, clear the data, return empty queue
   std::for_each(allocList.begin(), allocList.end(), [](AQuad* ptr) { delete ptr; });
-  std::cout << "---------------Returning Empty Path------------------------\n";
+  LJ::Warn(simLogger,
+           "Calm_Goals: No Path Found for Pedestrian at position: x:{}, y:{}, z:{}",
+           start.x,
+           start.y,
+           start.z);
   return std::queue<VIPRA::f3d>{};
 }
 

@@ -16,12 +16,12 @@ PointMapLoader::LoadMap(const std::string& filePath) const {
 
   fileStream.open(filePath);
   if (!fileStream.is_open()) {
-    throw std::runtime_error("Unable To Open Map File: " + filePath + "\n");
+    MapLoaderException::Throw("Unable To Open Map File: " + filePath + "\n");
   }
 
   if (!Json::parseFromStream(jsonReader, fileStream, &jsonDocument, &errors)) {
     fileStream.close();
-    throw std::runtime_error("Unable To Parse Map File: " + filePath + "\n");
+    MapLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
   fileStream.close();
   try {
@@ -42,6 +42,6 @@ PointMapLoader::LoadMap(const std::string& filePath) const {
     }
     return inputData;
   } catch (...) {
-    throw std::runtime_error("Unable To Parse Map File: " + filePath + "\n");
+    MapLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
 }

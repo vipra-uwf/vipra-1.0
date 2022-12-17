@@ -1,22 +1,20 @@
-#pragma once
-
 #include <gtest/gtest.h>
 
 #include "Goals/calm_goals/calm_goals.hpp"
 #include "MapLoader/Point_Map_Loader/point_map_loader.hpp"
-#include "ObstacleSet/airplane_obstacle_set/airplane_obstacle_set.hpp"
+#include "ObstacleSet/passenger_vehicle_obstacle_set/passenger_vehicle_obstacle_set.hpp"
 #include "PedestrianDynamicsModel/calm_pedestrian_model/calm_pedestrian_model.hpp"
 #include "definitions/state.hpp"
 #include "inputdataloader/input_json_reader/input_json_reader.hpp"
 #include "test_values/calm_model_values.hpp"
 
 TEST(Calm_Ped_Model, Model_Returns_Correct_Distance) {
-  CalmPedestrianSet   pedestrianSet;
-  CalmPedestrianModel pedestrianModel;
-  CalmGoals           goals;
-  AirplaneObstacleSet obs;
-  VIPRA::f3dVec       pedestrianCoords = {{8, 5}, {4, 2}, {0, 5}};
-  VIPRA::EntitySet    pedestrians = {{"pedestrians", pedestrianCoords}};
+  CalmPedestrianSet           pedestrianSet;
+  CalmPedestrianModel         pedestrianModel;
+  CalmGoals                   goals;
+  PassengerVehicleObstacleSet obs;
+  VIPRA::f3dVec               pedestrianCoords = {VIPRA::f3d{8, 5}, VIPRA::f3d{4, 2}, VIPRA::f3d{0, 5}};
+  VIPRA::EntitySet            pedestrians = {{"pedestrians", pedestrianCoords}};
 
   pedestrianSet.initialize(pedestrians);
   pedestrianSet.setPedestrianCoordinates(pedestrianCoords);
@@ -37,14 +35,14 @@ TEST(Calm_Ped_Model, Model_Returns_Correct_Distance) {
 //Third pedestrian's nearest neighbor should be equal to 1 (Second pedestrian) since they are facing both second and first
 //And the second pedestrian is closer
 TEST(Calm_Ped_Model, Model_Returns_Correct_Nearest_Neighbor) {
-  CalmPedestrianSet   pedestrianSet;
-  CalmPedestrianModel pedestrianModel;
-  AirplaneObstacleSet obs;
-  CalmGoals           goals;
-  VIPRA::f3dVec       pedestrianCoords = {{8, 5}, {4, 2}, {0, 5}};
-  VIPRA::f3dVec       velocities = {{3, 4}, {5, 1}, {6, 2}};
-  std::vector<float>  shoulderLengths = {4, 5, 2};
-  VIPRA::EntitySet    pedestrians = {{"pedestrians", pedestrianCoords}};
+  CalmPedestrianSet           pedestrianSet;
+  CalmPedestrianModel         pedestrianModel;
+  PassengerVehicleObstacleSet obs;
+  CalmGoals                   goals;
+  VIPRA::f3dVec               pedestrianCoords = {VIPRA::f3d{8, 5}, VIPRA::f3d{4, 2}, VIPRA::f3d{0, 5}};
+  VIPRA::f3dVec               velocities = {VIPRA::f3d{3, 4}, VIPRA::f3d{5, 1}, VIPRA::f3d{6, 2}};
+  std::vector<float>          shoulderLengths = {4, 5, 2};
+  VIPRA::EntitySet            pedestrians = {{"pedestrians", pedestrianCoords}};
 
   pedestrianSet.initialize(pedestrians);
   pedestrianSet.setPedestrianCoordinates(pedestrianCoords);
@@ -64,11 +62,11 @@ TEST(Calm_Ped_Model, Model_Returns_Correct_Nearest_Neighbor) {
 }
 
 TEST(Calm_Ped_Model, Model_Calculates_Correct_Propulsion) {
-  CalmPedestrianSet   pedSet;
-  CalmPedestrianModel pedModel;
-  CalmGoals           goals;
-  AirplaneObstacleSet obs;
-  PointMapLoader      loader;
+  CalmPedestrianSet           pedSet;
+  CalmPedestrianModel         pedModel;
+  CalmGoals                   goals;
+  PassengerVehicleObstacleSet obs;
+  PointMapLoader              loader;
 
   obs.initialize(loader.LoadMap("../../Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap"));
   pedSet.configure(
