@@ -16,12 +16,12 @@ ConfigurationReader::getConfiguration(const std::string& filePath) {
 
   fileStream.open(filePath);
   if (!fileStream.is_open()) {
-    ConfigurationReaderException::Error("Unable to Open Configuration File: " + filePath);
+    ConfigurationReaderException::Throw("Unable to Open Configuration File: " + filePath);
   }
 
   if (!Json::parseFromStream(jsonReader, fileStream, &jsonDocument, &errors)) {
     fileStream.close();
-    ConfigurationReaderException::Error("Unable To Parse Configuration File: " + filePath);
+    ConfigurationReaderException::Throw("Unable To Parse Configuration File: " + filePath);
   }
   fileStream.close();
 

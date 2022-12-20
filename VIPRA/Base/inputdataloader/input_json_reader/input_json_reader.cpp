@@ -33,13 +33,17 @@ InputJSONReader::getInputEntities(const std::string& filePath) {
 
   try {
     VIPRA::EntitySet inputData;
-    for (unsigned int i = 0; i < jsonDocument.size(); i++) {
+    VIPRA::size      docSize = jsonDocument.size();
+
+    for (Json::ArrayIndex i = 0; i < docSize; ++i) {
       const std::string type = jsonDocument.getMemberNames()[i];
       inputData[type] = {};
 
-      for (unsigned int j = 0; j < jsonDocument[type].size(); j++) {
+      VIPRA::size typeSize = jsonDocument[type].size();
+      for (Json::ArrayIndex j = 0; j < typeSize; j++) {
         VIPRA::f3d temp{};
-        for (unsigned int k = 0; k < jsonDocument[type][j].size(); ++k) {
+
+        for (Json::ArrayIndex k = 0; k < jsonDocument[type][j].size(); ++k) {
           const std::string name = jsonDocument[type][j].getMemberNames()[k];
           temp[k] = std::stof(jsonDocument[type][j][name].asString());
         }
@@ -50,4 +54,6 @@ InputJSONReader::getInputEntities(const std::string& filePath) {
   } catch (...) {
     InputDataLoaderException::Throw("Unable To Parse Input File: " + filePath + "\n");
   }
+  InputDataLoaderException::Throw("Unable To Parse Input File: " + filePath + "\n");
+  return {};
 }

@@ -41,7 +41,7 @@ Clock::printRealEndTime() {
 }
 
 void
-Clock::addSimulationTimeMs(float seconds) {
+Clock::addSimulationTimeMs(VIPRA::delta_t seconds) {
   this->simulationElapsedMs += seconds * 1000;
 }
 

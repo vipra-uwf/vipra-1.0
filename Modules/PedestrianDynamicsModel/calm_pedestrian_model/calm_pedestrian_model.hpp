@@ -11,6 +11,8 @@
 #include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
 #include "pedestrianmodel/pedestrian_dynamics_model.hpp"
 
+#include "definitions/config_map.hpp"
+
 class CalmPedestrianModel : public PedestrianDynamicsModel {
  public:
   CalmPedestrianModel();
@@ -21,12 +23,14 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   std::shared_ptr<VIPRA::State> timestep(PedestrianSet& pedestrianSet,
                                          ObstacleSet&   obstacleSet,
                                          Goals&         goals,
-                                         float          time);
+                                         float          time) override;
 
   //Getters and Setters
-  float getPedestrianDistance(CalmPedestrianSet& pedestrianSet, int firstPedestrian, int secondPedestrian);
-  std::vector<std::pair<std::string, int>> getNearestNeighbors();
-  VIPRA::f3dVec                            getPropulsionForces();
+  float                                           getPedestrianDistance(CalmPedestrianSet& pedestrianSet,
+                                                                        VIPRA::idx         firstPedestrian,
+                                                                        VIPRA::idx         secondPedestrian);
+  std::vector<std::pair<std::string, VIPRA::idx>> getNearestNeighbors();
+  VIPRA::f3dVec                                   getPropulsionForces();
 
   void calculatePropulsion(CalmPedestrianSet& pedestrianSet, CalmGoals& goals);
   void calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet);
@@ -37,17 +41,17 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   std::vector<float> holds;
   std::vector<bool>  aislePermissions;
 
-  int currentPriority;
+  VIPRA::idx currentPriority;
 
   VIPRA::f3dVec racePositions;
   VIPRA::f3dVec propulsionForces;
 
-  std::vector<std::pair<std::string, int>> nearestNeighbors;
-  std::vector<float>                       priorities;
+  std::vector<std::pair<std::string, VIPRA::idx>> nearestNeighbors;
+  std::vector<float>                              priorities;
 
-  std::vector<int> raceCounter;
-  std::vector<int> opponentIDs;
-  std::vector<int> startingAisles;
+  std::vector<int>        raceCounter;
+  std::vector<VIPRA::uid> opponentIDs;
+  std::vector<int>        startingAisles;
 
   std::vector<bool> raceFinished;
   std::vector<bool> released;
@@ -64,16 +68,16 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   void updateModelState(CalmPedestrianSet& pedestrianSet, float time);
 
   inline bool neighborDirectionTest(CalmPedestrianSet& pedestrianSet,
-                                    int                firstPedestrianIndex,
-                                    int                secondPedestrianIndex,
+                                    VIPRA::idx         firstPedestrianIndex,
+                                    VIPRA::idx         secondPedestrianIndex,
                                     float              pedestrianDisplacementX,
                                     float              pedestrianDisplacementY,
                                     float              secondDisplacementX,
                                     float              secondDisplacementY);
 
   inline bool neighborSpacialTest(CalmPedestrianSet& pedestrianSet,
-                                  int                firstPedestrianIndex,
-                                  int                secondPedestrianIndex,
+                                  VIPRA::idx         firstPedestrianIndex,
+                                  VIPRA::idx         secondPedestrianIndex,
                                   float              pedestrianDisplacementX,
                                   float              pedestrianDisplacementY,
                                   float              secondDisplacementX,
@@ -81,7 +85,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
                                   std::string        originSet,
                                   float              firstShoulderLength);
 
-  float getObstacleDistance(int pedIndex, int obsIndex);
+  float getObstacleDistance(VIPRA::idx pedIndex, VIPRA::idx obsIndex);
 };
 
 #endif

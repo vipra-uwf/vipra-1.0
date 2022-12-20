@@ -1,9 +1,9 @@
 #ifndef VIPRA_PEDESTRIAN_LOADER_HPP
 #define VIPRA_PEDESTRIAN_LOADER_HPP
 
-#include <memory>
-
+#include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
+#include <memory>
 
 struct PedMapType {
   std::string type;

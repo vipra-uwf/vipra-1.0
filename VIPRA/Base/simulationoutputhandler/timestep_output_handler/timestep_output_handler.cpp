@@ -2,21 +2,21 @@
 
 void
 TimestepOutputHandler::configure(const VIPRA::ConfigMap& configMap) {
-  frequency = std::stoi(configMap.at("outputFrequency"));
+  frequency = std::stoul(configMap.at("outputFrequency"));
 }
 
 bool
-TimestepOutputHandler::isOutputCriterionMet(const PedestrianSet& pedSet,
-                                            const ObstacleSet&   obsSet,
-                                            const Goals&         goals,
-                                            size_t               timestep) {
+TimestepOutputHandler::isOutputCriterionMet([[maybe_unused]] const PedestrianSet& pedSet,
+                                            [[maybe_unused]] const ObstacleSet&   obsSet,
+                                            [[maybe_unused]] const Goals&         goals,
+                                            VIPRA::t_step                         timestep) {
   return (timestep % frequency == 0);
 }
 
 void
 TimestepOutputHandler::writeToDocument(OutputDataWriter&    outputDataWriter,
                                        const PedestrianSet& pedestrianSet,
-                                       size_t               timestep) {
+                                       VIPRA::t_step        timestep) {
   outputDataWriter.addFloatValue("NEW_TIMESTEP", timestep);
 
   const auto& coords = pedestrianSet.getPedestrianCoordinates();

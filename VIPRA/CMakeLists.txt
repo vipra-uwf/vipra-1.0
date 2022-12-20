@@ -50,10 +50,11 @@ else()
   add_subdirectory(${DEPS_DIR})
   target_link_libraries(
     ${PROJECT_NAME}
-    PRIVATE
+    PUBLIC
     ANTLR4
     jsoncpp
     lumberjack
+    generated_antlr
   )
     
   add_subdirectory(${BASE_DIR})
@@ -66,11 +67,16 @@ endif(GEN_MAIN)
 
 target_compile_options(${PROJECT_NAME} PUBLIC -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wundef -Werror -Wno-unused)
 
+include_directories(
+  SYSTEM
+  ${DEPS_DIR}
+  ${DEPS_DIR}/antlr4-runtime
+)
+
 target_include_directories(
   ${PROJECT_NAME}
   PRIVATE
-  ${DEPS_DIR}
-  ${DEPS_DIR}/antlr4-runtime
+  ${MODULES_DIR}
   ${BASE_DIR}
   ${EXTENDABLE_DIR}
 )

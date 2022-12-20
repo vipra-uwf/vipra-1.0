@@ -4,13 +4,13 @@
 
 #include "alter_velocity_action.hpp"
 
-AlterVelocityAction::AlterVelocityAction(SimulationContext* simulationContext,
-                                         ALTER_DIRECTION    alterDirection,
-                                         float              factor)
-  : Action(simulationContext, "ALTER_VELOCITY"), alterDirection(alterDirection), factor(factor) {}
+AlterVelocityAction::AlterVelocityAction(SimulationContext* simContext,
+                                         ALTER_DIRECTION    alterDir,
+                                         float              vel_factor)
+  : Action(simContext, "ALTER_VELOCITY"), alterDirection(alterDir), factor(vel_factor) {}
 
 void
-AlterVelocityAction::performAction(int                  pedestrianIndex,
+AlterVelocityAction::performAction(VIPRA::idx           pedestrianIndex,
                                    const PedestrianSet& pedestrianSet,
                                    const ObstacleSet&   obstacleSet,
                                    const Goals&         goals) {

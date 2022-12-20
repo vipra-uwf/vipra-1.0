@@ -162,7 +162,7 @@ CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet, con
  * @return const VIPRA::f3d 
  */
 const VIPRA::f3d&
-CalmGoals::getCurrentGoal(size_t index) const {
+CalmGoals::getCurrentGoal(VIPRA::idx index) const {
   if (paths[index].empty()) {
     return VIPRA::__emptyf3d__;
   }
@@ -176,7 +176,7 @@ CalmGoals::getCurrentGoal(size_t index) const {
  * @return const VIPRA::f3d 
  */
 const VIPRA::f3d&
-CalmGoals::getEndGoal(size_t index) const {
+CalmGoals::getEndGoal(VIPRA::idx index) const {
   return endGoals.at(index);
 }
 
@@ -208,7 +208,7 @@ CalmGoals::getAllEndGoals() const noexcept {
  * @return false 
  */
 bool
-CalmGoals::isPedestianGoalMet(size_t index) const {
+CalmGoals::isPedestianGoalMet(VIPRA::idx index) const {
   return goalsMet.at(index);
 }
 
@@ -220,13 +220,6 @@ CalmGoals::isPedestianGoalMet(size_t index) const {
  */
 bool
 CalmGoals::isSimulationGoalMet() const noexcept {
-  int  cnt = 0;
-  bool passed = std::all_of(goalsMet.begin(), goalsMet.end(), [&cnt](bool met) {
-    ++cnt;
-    return met;
-  });
-  if (passed) {
-    LJ::Debug(simLogger, "{} Pedestrians Have Met Their Goal", cnt);
-  }
+  bool passed = std::all_of(goalsMet.begin(), goalsMet.end(), [](bool met) { return met; });
   return passed;
 }

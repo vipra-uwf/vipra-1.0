@@ -14,19 +14,22 @@
 #include "selectors/id_ratio_selector.hpp"
 #include <antlr4-runtime/support/Any.h>
 
-int
+VIPRA::stateUID findState(std::vector<std::string> states, const std::string& stateName);
+
+VIPRA::stateUID
 findState(std::vector<std::string> states, const std::string& stateName) {
-  for (int i = 0; i < states.size(); ++i) {
+  VIPRA::size stateCnt = states.size();
+  for (VIPRA::idx i = 0; i < stateCnt; ++i) {
     if (states.at(i) == stateName) {
       return i;
     }
   }
-
-  return -1;
+  DSL_Exception::Throw("Invalid Behavior State: " + stateName);
+  return 0;
 }
 
-DslHumanBehavior::DslHumanBehavior(const std::string& fileName, unsigned int seed)
-  : HumanBehavior(), seed(seed) {
+DslHumanBehavior::DslHumanBehavior(const std::string& fileName, unsigned int seedNum)
+  : HumanBehavior(), seed(seedNum) {
   std::ifstream dslFile(fileName);
   std::string   line;
 
@@ -59,7 +62,7 @@ DslHumanBehavior::visitIdRatioSelector(BehaviorsParser::IdRatioSelectorContext* 
 
 antlrcpp::Any
 DslHumanBehavior::visitExactlyNRandomSelector(BehaviorsParser::ExactlyNRandomSelectorContext* ctx) {
-  int count = std::atoi(ctx->NUMBER()->getText().c_str());
+  VIPRA::size count = static_cast<VIPRA::size>(std::atoi(ctx->NUMBER()->getText().c_str()));
   this->addSelector(new ExactlyNRandomSelector(this->getSimulationContext(), count, seed));
   std::cout << behavior << ": Added selector for exactly " << count << " random pedestrian(s)" << std::endl;
   return BehaviorsBaseVisitor::visitExactlyNRandomSelector(ctx);
@@ -76,8 +79,8 @@ DslHumanBehavior::visitStateDeclaration(BehaviorsParser::StateDeclarationContext
 
 antlrcpp::Any
 DslHumanBehavior::visitStateActionStopped(BehaviorsParser::StateActionStoppedContext* ctx) {
-  std::string stateName = ctx->pedestrianSelected()->ID(1)->getText();
-  int         state = findState(this->getStateDefinitions(), stateName);
+  std::string     stateName = ctx->pedestrianSelected()->ID(1)->getText();
+  VIPRA::stateUID state = findState(this->getStateDefinitions(), stateName);
   this->addStateAction(state, new StopMovementAction(this->getSimulationContext()));
   std::cout << behavior << ": Added stopped action for state " << stateName << std::endl;
 
@@ -105,8 +108,8 @@ DslHumanBehavior::visitEveryoneSelector(BehaviorsParser::EveryoneSelectorContext
 
 antlrcpp::Any
 DslHumanBehavior::visitInitialStateDeclaration(BehaviorsParser::InitialStateDeclarationContext* ctx) {
-  std::string stateName = ctx->ID(1)->getText();
-  int         stateValue = findState(this->getStateDefinitions(), stateName);
+  std::string     stateName = ctx->ID(1)->getText();
+  VIPRA::stateUID stateValue = findState(this->getStateDefinitions(), stateName);
   this->setInitialState(stateValue);
   std::cout << behavior << ": Set initial state to " << stateName << std::endl;
   return BehaviorsBaseVisitor::visitInitialStateDeclaration(ctx);
@@ -125,8 +128,8 @@ DslHumanBehavior::visitEnvironmentStateDeclaration(BehaviorsParser::EnvironmentS
 antlrcpp::Any
 DslHumanBehavior::visitEnvironmentInitialStateDeclaration(
     BehaviorsParser::EnvironmentInitialStateDeclarationContext* ctx) {
-  std::string stateName = ctx->ID()->getText();
-  int         stateValue = findState(this->getEnvironmentStateDefinitions(), stateName);
+  std::string     stateName = ctx->ID()->getText();
+  VIPRA::stateUID stateValue = findState(this->getEnvironmentStateDefinitions(), stateName);
   this->setInitialEnvironmentState(stateValue);
   std::cout << behavior << ": Set initial environment state to " << stateName << std::endl;
 
@@ -137,20 +140,18 @@ antlrcpp::Any
 DslHumanBehavior::visitStateTransitionElapsedTime(BehaviorsParser::StateTransitionElapsedTimeContext* ctx) {
   float seconds = std::atof(ctx->conditionElapsedTime()->NUMBER()->getText().c_str());
 
-  std::string fromStateName = ctx->pedestrianSelected()->ID(1)->getText();
-  int         fromState = findState(this->getStateDefinitions(), fromStateName);
+  std::string     fromStateName = ctx->pedestrianSelected()->ID(1)->getText();
+  VIPRA::stateUID fromState = findState(this->getStateDefinitions(), fromStateName);
 
-  std::string toStateName = ctx->ID()->getText();
-  int         toState = findState(this->getStateDefinitions(), toStateName);
+  std::string     toStateName = ctx->ID()->getText();
+  VIPRA::stateUID toState = findState(this->getStateDefinitions(), toStateName);
 
-  SimulationContext* simulationContext = this->getSimulationContext();
-  Condition*         fromStateCondition = new StateCondition(simulationContext, fromState);
+  SimulationContext* simContext = this->getSimulationContext();
+  Condition*         fromStateCondition = new StateCondition(simContext, fromState);
   Condition*         transitionCondition = new ElapsedTimeCondition(this->getSimulationContext(), seconds);
 
-  this->addTransition(
-      new PedestrianTransition(simulationContext,
-                               new AndCondition(simulationContext, fromStateCondition, transitionCondition),
-                               toState));
+  this->addTransition(new PedestrianTransition(
+      simContext, new AndCondition(simContext, fromStateCondition, transitionCondition), toState));
 
   std::cout << behavior << ": Added transition from " << fromStateName << " to " << toStateName << " after "
             << seconds << "seconds." << std::endl;
@@ -161,24 +162,23 @@ DslHumanBehavior::visitStateTransitionElapsedTime(BehaviorsParser::StateTransiti
 antlrcpp::Any
 DslHumanBehavior::visitStateTransitionEnvironmentState(
     BehaviorsParser::StateTransitionEnvironmentStateContext* ctx) {
-  std::string fromStateName = ctx->pedestrianSelected()->ID(1)->getText();
-  int         fromState = findState(this->getStateDefinitions(), fromStateName);
+  std::string     fromStateName = ctx->pedestrianSelected()->ID(1)->getText();
+  VIPRA::stateUID fromState = findState(this->getStateDefinitions(), fromStateName);
 
-  std::string toStateName = ctx->ID()->getText();
-  int         toState = findState(this->getStateDefinitions(), toStateName);
+  std::string     toStateName = ctx->ID()->getText();
+  VIPRA::stateUID toState = findState(this->getStateDefinitions(), toStateName);
 
-  std::string environmentStateName = ctx->conditionEnvironmentState()->ID()->getText();
-  int         environmentStateValue = findState(this->getEnvironmentStateDefinitions(), environmentStateName);
+  std::string     environmentStateName = ctx->conditionEnvironmentState()->ID()->getText();
+  VIPRA::stateUID environmentStateValue =
+      findState(this->getEnvironmentStateDefinitions(), environmentStateName);
 
-  SimulationContext* simulationContext = this->getSimulationContext();
-  Condition*         fromStateCondition = new StateCondition(simulationContext, fromState);
+  SimulationContext* simContext = this->getSimulationContext();
+  Condition*         fromStateCondition = new StateCondition(simContext, fromState);
   Condition*         transitionCondition =
       new EnvironmentStateCondition(this->getSimulationContext(), environmentStateValue);
 
-  this->addTransition(
-      new PedestrianTransition(simulationContext,
-                               new AndCondition(simulationContext, fromStateCondition, transitionCondition),
-                               toState));
+  this->addTransition(new PedestrianTransition(
+      simContext, new AndCondition(simContext, fromStateCondition, transitionCondition), toState));
 
   std::cout << behavior << ": Added transition from " << fromStateName << " to " << toStateName
             << " when the environment state is " << environmentStateName << "." << std::endl;
@@ -188,11 +188,11 @@ DslHumanBehavior::visitStateTransitionEnvironmentState(
 
 antlrcpp::Any
 DslHumanBehavior::visitEnvironmentTransition(BehaviorsParser::EnvironmentTransitionContext* ctx) {
-  std::string fromStateName = ctx->ID(0)->getText();
-  int         fromState = findState(this->getEnvironmentStateDefinitions(), fromStateName);
+  std::string     fromStateName = ctx->ID(0)->getText();
+  VIPRA::stateUID fromState = findState(this->getEnvironmentStateDefinitions(), fromStateName);
 
-  std::string toStateName = ctx->ID(1)->getText();
-  int         toState = findState(this->getEnvironmentStateDefinitions(), toStateName);
+  std::string     toStateName = ctx->ID(1)->getText();
+  VIPRA::stateUID toState = findState(this->getEnvironmentStateDefinitions(), toStateName);
 
   float seconds = std::atof(ctx->conditionElapsedTime()->NUMBER()->getText().c_str());
 
@@ -213,7 +213,7 @@ DslHumanBehavior::visitEnvironmentTransition(BehaviorsParser::EnvironmentTransit
 antlrcpp::Any
 DslHumanBehavior::visitStateActionWalkSpeed(BehaviorsParser::StateActionWalkSpeedContext* ctx) {
   std::string     stateName = ctx->pedestrianSelected()->ID(1)->getText();
-  int             state = findState(this->getStateDefinitions(), stateName);
+  VIPRA::stateUID state = findState(this->getStateDefinitions(), stateName);
   float           factor = std::atof(ctx->walkSpeedBehavior()->NUMBER()->getText().c_str()) / 100.0F;
   std::string     fasterOrSlower = ctx->walkSpeedBehavior()->fasterOrSlower()->getText();
   ALTER_DIRECTION alterDirection;

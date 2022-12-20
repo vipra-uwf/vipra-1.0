@@ -1,10 +1,9 @@
 #include "stop_movement_action.hpp"
 
-StopMovementAction::StopMovementAction(SimulationContext* simulationContext)
-  : Action(simulationContext, "STOPPED") {}
+StopMovementAction::StopMovementAction(SimulationContext* simContext) : Action(simContext, "STOPPED") {}
 
 void
-StopMovementAction::performAction(int                  pedestrianIndex,
+StopMovementAction::performAction(VIPRA::idx           pedestrianIndex,
                                   const PedestrianSet& pedestrianSet,
                                   const ObstacleSet&   obstacleSet,
                                   const Goals&         goals) {

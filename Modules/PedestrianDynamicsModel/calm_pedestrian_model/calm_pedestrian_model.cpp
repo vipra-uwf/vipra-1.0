@@ -43,8 +43,8 @@ CalmPedestrianModel::updateModelState(CalmPedestrianSet& pedestrianSet, float ti
   float      newSpeed;
   VIPRA::f3d newPosition;
 
-  int numPedestrians = pedestrianSet.getNumPedestrians();
-  for (int i = 0; i < numPedestrians; ++i) {
+  VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
+  for (VIPRA::idx i = 0; i < numPedestrians; ++i) {
 
     float propulsiveX = this->propulsionForces.at(i).x;
     float propulsiveY = this->propulsionForces[i].y;
@@ -80,15 +80,15 @@ CalmPedestrianModel::calculateDistanceMatrices(CalmPedestrianSet& pedestrianSet)
   // Update the pedestrians since they could have been removed from the
   // simulation at this point. Also update the obstacles just in case they
   // can be removed in the future.
-  int numPedestrians = pedestrianSet.getNumPedestrians();
+  VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
 
   //Added firstPedestrianCoordinateX and Y to be used in second for loop
   float firstPedestrianCoordinateX;
   float firstPedestrianCoordinateY;
 
   //Updates pedestrian-to-pedestrian distance matrix and pedestrian-to-object distance matrix
-  for (int i = 0; i < numPedestrians; ++i) {
-    for (int j = 0; j < i; ++j) {
+  for (VIPRA::idx i = 0; i < numPedestrians; ++i) {
+    for (VIPRA::idx j = 0; j < i; ++j) {
       float distance = pedestrianSet.getPedestrianCoordinates().at(i).distanceTo(
           pedestrianSet.getPedestrianCoordinates().at(j));
 
@@ -100,7 +100,7 @@ CalmPedestrianModel::calculateDistanceMatrices(CalmPedestrianSet& pedestrianSet)
 //TODO: Add Goals and ObstacleSet
 void
 CalmPedestrianModel::calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet) {
-  int nearestIndex, localNearestIndex;
+  VIPRA::idx nearestIndex, localNearestIndex;
 
   std::string originSet, localOriginSet;
 
@@ -110,12 +110,11 @@ CalmPedestrianModel::calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet
 
   float firstPedestrianX, firstPedestrianY, secondPedestrianX, secondPedestrianY;
 
-  int       numPedestrians = pedestrianSet.getNumPedestrians();
-  const int NOT_FOUND = -1;
+  VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
 
-  for (int pedestrianIndex = 0; pedestrianIndex < numPedestrians; ++pedestrianIndex) {
-    nearestIndex = NOT_FOUND;
-    localNearestIndex = NOT_FOUND;
+  for (VIPRA::idx pedestrianIndex = 0; pedestrianIndex < numPedestrians; ++pedestrianIndex) {
+    nearestIndex = VIPRA::idx_INVALID;
+    localNearestIndex = VIPRA::idx_INVALID;
 
     originSet = "P";
     localOriginSet = "P";
@@ -124,14 +123,13 @@ CalmPedestrianModel::calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet
     localNearestDistance = __FLT_MAX__;
 
     pedestrianShoulderLength = pedestrianSet.getShoulderLengths().at(pedestrianIndex);
-    ;
 
     firstPedestrianX = pedestrianSet.getPedestrianCoordinates().at(pedestrianIndex).x;
     firstPedestrianY = pedestrianSet.getPedestrianCoordinates().at(pedestrianIndex).y;
 
-    std::pair<std::string, int> newNearestNeighbor;
+    std::pair<std::string, VIPRA::idx> newNearestNeighbor;
 
-    for (int j = 0; j < numPedestrians; ++j) {
+    for (VIPRA::idx j = 0; j < numPedestrians; ++j) {
 
       secondPedestrianX = pedestrianSet.getPedestrianCoordinates().at(j).x;
       secondPedestrianY = pedestrianSet.getPedestrianCoordinates().at(j).y;
@@ -155,7 +153,7 @@ CalmPedestrianModel::calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet
                               pedestrianShoulderLength)) {
 
         float distance = getPedestrianDistance(pedestrianSet, pedestrianIndex, j);
-        if (localNearestIndex == NOT_FOUND || distance < localNearestDistance) {
+        if (localNearestIndex == VIPRA::idx_INVALID || distance < localNearestDistance) {
           localNearestIndex = j;
           localOriginSet = "P";
           localNearestDistance = distance;
@@ -175,8 +173,8 @@ CalmPedestrianModel::calculateNeartestNeighbors(CalmPedestrianSet& pedestrianSet
 
 inline bool
 CalmPedestrianModel::neighborDirectionTest(CalmPedestrianSet& pedestrianSet,
-                                           int                firstPedestrianIndex,
-                                           int                secondPedestrianIndex,
+                                           VIPRA::idx         firstPedestrianIndex,
+                                           VIPRA::idx         secondPedestrianIndex,
                                            float              pedestrianDisplacementX,
                                            float              pedestrianDisplacementY,
                                            float              secondDisplacementX,
@@ -202,8 +200,8 @@ CalmPedestrianModel::neighborDirectionTest(CalmPedestrianSet& pedestrianSet,
 
 inline bool
 CalmPedestrianModel::neighborSpacialTest(CalmPedestrianSet& pedestrianSet,
-                                         int                firstPedestrianIndex,
-                                         int                secondPedestrianIndex,
+                                         VIPRA::idx         firstPedestrianIndex,
+                                         VIPRA::idx         secondPedestrianIndex,
                                          float              pedestrianDisplacementX,
                                          float              pedestrianDisplacementY,
                                          float              secondDisplacementX,
@@ -229,10 +227,10 @@ CalmPedestrianModel::neighborSpacialTest(CalmPedestrianSet& pedestrianSet,
     secondPedestrianDirectionX = std::fabs((pedestrianSet.getVelocities())[secondPedestrianIndex].x);
     secondPedestrianDirectionY = std::fabs((pedestrianSet.getVelocities())[secondPedestrianIndex].y);
 
-    if (firstPedestrianDirectionX > firstPedestrianDirectionY &&
-            secondPedestrianDirectionX > secondPedestrianDirectionY ||
-        firstPedestrianDirectionY > firstPedestrianDirectionX &&
-            secondPedestrianDirectionY > secondPedestrianDirectionX) {
+    if ((firstPedestrianDirectionX > firstPedestrianDirectionY &&
+         secondPedestrianDirectionX > secondPedestrianDirectionY) ||
+        (firstPedestrianDirectionY > firstPedestrianDirectionX &&
+         secondPedestrianDirectionY > secondPedestrianDirectionX)) {
       secondShoulderLength = pedestrianSet.getShoulderLengths().at(secondPedestrianIndex);
     }
   }
@@ -266,7 +264,7 @@ CalmPedestrianModel::calculatePropulsion(CalmPedestrianSet& pedestrianSet, CalmG
   float                xAisleCoefficent = 0.5;
   float                yAisleCoefficent = 0.9;
 
-  for (int i = 0; i < pedestrianSet.getNumPedestrians(); ++i) {
+  for (VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); ++i) {
 
     if (!goals.isPedestianGoalMet(i)) {
       VIPRA::f3d newVelocity = pedestrianSet.getVelocities().at(i);
@@ -316,19 +314,19 @@ CalmPedestrianModel::calculatePropulsion(CalmPedestrianSet& pedestrianSet, CalmG
 void
 CalmPedestrianModel::calculateDesiredSpeeds(CalmPedestrianSet& pedestrianSet, CalmGoals& goals) {
   std::vector<float> newDesiredSpeeds;
-  int                numPedestrians = pedestrianSet.getNumPedestrians();
+  VIPRA::size        numPedestrians = pedestrianSet.getNumPedestrians();
   float              a = -2.4532;
   float              b = 0.138412;
   float              c = 0.87436;
 
-  for (int i = 0; i < numPedestrians; ++i) {
+  for (VIPRA::idx i = 0; i < numPedestrians; ++i) {
     if (!goals.isPedestianGoalMet(i)) {
-      int         nearestNeighborIndex = this->nearestNeighbors[i].second;
+      VIPRA::idx  nearestNeighborIndex = this->nearestNeighbors[i].second;
       std::string nearestNeighborOrigin = this->nearestNeighbors[i].first;
 
       float distanceMinusB = 1;
 
-      if (nearestNeighborIndex == -1) {
+      if (nearestNeighborIndex == VIPRA::idx_INVALID) {
         distanceMinusB = ((1) - b);  //1 value might need to change
       } else {
         distanceMinusB = (getPedestrianDistance(pedestrianSet, i, nearestNeighborIndex)) - b;
@@ -344,8 +342,8 @@ CalmPedestrianModel::calculateDesiredSpeeds(CalmPedestrianSet& pedestrianSet, Ca
 }
 float
 CalmPedestrianModel::getPedestrianDistance(CalmPedestrianSet& pedestrianSet,
-                                           int                firstPedestrian,
-                                           int                secondPedestrian) {
+                                           VIPRA::idx         firstPedestrian,
+                                           VIPRA::idx         secondPedestrian) {
 
   if (firstPedestrian == secondPedestrian) {
     return 0;
@@ -365,7 +363,7 @@ CalmPedestrianModel::getPropulsionForces() {
   return this->propulsionForces;
 }
 
-std::vector<std::pair<std::string, int>>
+std::vector<std::pair<std::string, VIPRA::idx>>
 CalmPedestrianModel::getNearestNeighbors() {
   return this->nearestNeighbors;
 }

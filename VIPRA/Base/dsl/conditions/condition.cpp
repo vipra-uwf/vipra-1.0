@@ -1,7 +1,7 @@
 #include "condition.hpp"
 
-Condition::Condition(SimulationContext* simulationContext) {
-  this->simulationContext = simulationContext;
+Condition::Condition(SimulationContext* simContext) {
+  this->simulationContext = simContext;
 }
 
 SimulationContext*

@@ -9,15 +9,15 @@ Simulation::configure(const VIPRA::ConfigMap& config) {
 void
 Simulation::initialize() {}
 
-int
+VIPRA::t_step
 Simulation::getTimestep() const {
   return this->timestep;
 }
 
 inline void
-combineStates(const size_t pedCnt, VIPRA::State& state, std::shared_ptr<VIPRA::State> other) {
+combineStates(const VIPRA::size pedCnt, VIPRA::State& state, std::shared_ptr<VIPRA::State> other) {
   other->affector = state.affector;
-  for (size_t i = 0; i < pedCnt; ++i) {
+  for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     if (state.affector[i] != VIPRA::Affector::PED_MODEL) {
       other->pedestrianCoordinates[i] = state.pedestrianCoordinates[i];
       other->velocities[i] = state.velocities[i];
@@ -50,9 +50,11 @@ Simulation::run(Goals&                   goals,
                 Clock&                   clock) {
 
   clock.start();
-  const size_t pedCnt = pedestrianSet.getNumPedestrians();
-  VIPRA::State proposedState(pedCnt);
+  const VIPRA::size pedCnt = pedestrianSet.getNumPedestrians();
+  VIPRA::State      proposedState(pedCnt);
+
   LJ::Info(simLogger, "Starting Simulation Loop");
+
   while (timestep < 20000) {
     policyModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);
     humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, proposedState);

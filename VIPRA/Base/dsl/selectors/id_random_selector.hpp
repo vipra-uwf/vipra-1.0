@@ -18,15 +18,15 @@ class IdRandomSelector : public Selector {
   void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&) override;
 
  protected:
-  bool select(int                  pedestrianIndex,
+  bool select(VIPRA::idx           pedestrianIndex,
               const ObstacleSet&   obstacleSet,
               const Goals&         goals,
               const PedestrianSet& pedestrianSet) override;
 
  private:
-  std::vector<int> selectedPedestrianIds;
-  float            ratio;
-  void             selectPedestrianIds(const PedestrianSet& pedestrianSet);
+  std::vector<VIPRA::uid> selectedPedestrianIds;
+  float                   ratio;
+  void                    selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };
 
 #endif  //ID_RANDOM_SELECTOR_HPP

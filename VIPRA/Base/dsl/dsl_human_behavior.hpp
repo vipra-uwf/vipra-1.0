@@ -4,6 +4,12 @@
 #include "generated/BehaviorsBaseVisitor.h"
 #include "human_behavior.hpp"
 
+class DSL_Exception : public std::runtime_error {
+ public:
+  DSL_Exception(const std::string& message) : std::runtime_error(message) {}
+  static void Throw(const std::string& message) { throw DSL_Exception(message); }
+};
+
 /**
  * An implementation of a Human Behavior that reads in its behaviors from a
  * behavior file. It is also an implementation of a BehaviorsVisitor, which is

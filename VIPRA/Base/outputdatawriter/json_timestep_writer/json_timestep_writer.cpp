@@ -69,7 +69,7 @@ JSONTimestepWriter::addFloatValue(const std::string& key, float value) {
 void
 JSONTimestepWriter::addStringValue(const std::string& key, const std::string& value) {
   if (key == "NEW_TIMESTEP") {
-    timestep = std::stoi(value);
+    timestep = static_cast<VIPRA::t_step>(std::stoi(value));
     return;
   }
   auto& currTS = document["timesteps"][std::to_string(timestep)];

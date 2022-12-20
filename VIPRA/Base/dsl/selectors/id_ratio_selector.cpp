@@ -1,19 +1,18 @@
 #include "id_ratio_selector.hpp"
 #include <iostream>
 
-IdRatioSelector::IdRatioSelector(SimulationContext* simulationContext, float ratio)
-  : Selector(simulationContext) {
-  this->ratio = ratio;
+IdRatioSelector::IdRatioSelector(SimulationContext* simContext, float selectRatio) : Selector(simContext) {
+  this->ratio = selectRatio;
 }
 
 bool
-IdRatioSelector::select(int                  pedestrianIndex,
+IdRatioSelector::select(VIPRA::idx           pedestrianIndex,
                         const ObstacleSet&   obstacleSet,
                         const Goals&         goals,
                         const PedestrianSet& pedestrianSet) {
-  int pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
+  VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
 
-  static const int divisor = static_cast<int>(1.0 / this->ratio);
+  const int divisor = (1.0 / this->ratio);
 
   bool condition = pedestrianId % divisor == 0;
 

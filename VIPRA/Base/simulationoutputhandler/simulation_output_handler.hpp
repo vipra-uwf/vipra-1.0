@@ -1,6 +1,7 @@
 #ifndef SIMULATION_OUTPUT_HANDLER_HPP
 #define SIMULATION_OUTPUT_HANDLER_HPP
 
+#include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
 #include "goals/goals.hpp"
 #include "obstacleset/obstacle_set.hpp"
@@ -16,8 +17,8 @@ class SimulationOutputHandler {
   virtual bool isOutputCriterionMet(const PedestrianSet&,
                                     const ObstacleSet&,
                                     const Goals&,
-                                    size_t timestep) = 0;
-  virtual void writeToDocument(OutputDataWriter&, const PedestrianSet&, size_t timestep) = 0;
+                                    VIPRA::t_step timestep) = 0;
+  virtual void writeToDocument(OutputDataWriter&, const PedestrianSet&, VIPRA::t_step timestep) = 0;
 };
 
 #endif

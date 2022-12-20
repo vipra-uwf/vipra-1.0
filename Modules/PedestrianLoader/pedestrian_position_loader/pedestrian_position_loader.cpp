@@ -43,4 +43,6 @@ PedestrianPositionLoader::LoadPedestrians(const std::string& filePath) const {
   } catch (...) {
     PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
+  PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
+  return {};
 }

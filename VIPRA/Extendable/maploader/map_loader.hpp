@@ -1,9 +1,9 @@
 #ifndef MAP_LOADER_HPP
 #define MAP_LOADER_HPP
 
-#include <memory>
-
+#include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
+#include <memory>
 
 struct MapType {
   std::string type;

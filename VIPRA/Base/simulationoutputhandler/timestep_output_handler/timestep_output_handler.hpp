@@ -5,17 +5,17 @@
 
 class TimestepOutputHandler : public SimulationOutputHandler {
  private:
-  size_t frequency;
+  VIPRA::t_step frequency;
 
  public:
   void configure(const VIPRA::ConfigMap& configMap) override;
   bool isOutputCriterionMet(const PedestrianSet& pedSet,
                             const ObstacleSet&   obsSet,
                             const Goals&         goals,
-                            size_t               timestep) override;
+                            VIPRA::t_step        timestep) override;
   void writeToDocument(OutputDataWriter&    outputDataWriter,
                        const PedestrianSet& pedestrianSet,
-                       size_t               timestep) override;
+                       VIPRA::t_step        timestep) override;
 };
 
 #endif

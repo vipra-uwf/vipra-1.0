@@ -6,9 +6,9 @@
 
 class JSONWriter : public OutputDataWriter {
  private:
-  std::ofstream fileStream;
-  Json::Value   document;
-  int           index = 0;
+  std::ofstream    fileStream;
+  Json::Value      document;
+  Json::ArrayIndex index = 0;
 
  public:
   JSONWriter();

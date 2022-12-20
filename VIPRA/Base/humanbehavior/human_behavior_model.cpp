@@ -17,17 +17,17 @@ void
 HumanBehaviorModel::timestep(const PedestrianSet& pedSet,
                              const ObstacleSet&   obsSet,
                              const Goals&         goals,
-                             float                timestep,
+                             VIPRA::delta_t       timestep,
                              VIPRA::State&        state) {
 
-  const size_t pedCnt = pedSet.getNumPedestrians();
+  const VIPRA::size pedCnt = pedSet.getNumPedestrians();
 
   for (auto humanBehavior : this->humanBehaviors) {
     humanBehavior->update(pedSet, timestep, obsSet, goals);
   }
 
   // Iterate through the pedestrian list and apply our behavior to it.
-  for (int i = 0; i < pedCnt; ++i) {
+  for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     bool behaviorDecided = false;
     for (auto humanBehavior : this->humanBehaviors) {
       if (humanBehavior->select(pedSet, obsSet, goals, i)) {
@@ -58,7 +58,7 @@ HumanBehaviorModel::configure(const VIPRA::ConfigMap& configMap) {
 
     if (config.first == "random_seed") {
       // Override the seed value for deterministic runs.
-      this->seed = atoi(config.second.c_str());
+      this->seed = static_cast<unsigned int>(atoi(config.second.c_str()));
     }
   }
 }

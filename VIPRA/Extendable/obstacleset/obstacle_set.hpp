@@ -1,6 +1,6 @@
 #ifndef OBSTACLE_SET_HPP
 #define OBSTACLE_SET_HPP
-
+#include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
 #include "maploader/map_loader.hpp"
 #include "pedestrianset/pedestrian_set.hpp"

@@ -5,7 +5,6 @@
 #include <limits>
 #include <queue>
 
-#include "definitions/dimensions.hpp"
 #include "goals/goals.hpp"
 #include "logging/logging.hpp"
 #include "pathfinding.hpp"
@@ -17,13 +16,13 @@ class CalmGoals : public Goals {
 
   void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&) override;
 
-  [[nodiscard]] const VIPRA::f3d& getCurrentGoal(size_t index) const override;
-  [[nodiscard]] const VIPRA::f3d& getEndGoal(size_t index) const override;
+  [[nodiscard]] const VIPRA::f3d& getCurrentGoal(VIPRA::idx) const override;
+  [[nodiscard]] const VIPRA::f3d& getEndGoal(VIPRA::idx) const override;
 
   [[nodiscard]] const VIPRA::f3dVec& getAllCurrentGoals() const noexcept override;
   [[nodiscard]] const VIPRA::f3dVec& getAllEndGoals() const noexcept override;
 
-  [[nodiscard]] bool isPedestianGoalMet(size_t) const override;
+  [[nodiscard]] bool isPedestianGoalMet(VIPRA::idx) const override;
   [[nodiscard]] bool isSimulationGoalMet() const noexcept override;
 
  protected:

@@ -1,6 +1,7 @@
 #ifndef PEDESTRIAN_DYNAMICS_MODEL_HPP
 #define PEDESTRIAN_DYNAMICS_MODEL_HPP
 
+#include "definitions/config_map.hpp"
 #include "definitions/state.hpp"
 #include "definitions/type_definitions.hpp"
 
@@ -18,12 +19,9 @@ class PedestrianDynamicsModel {
  public:
   virtual ~PedestrianDynamicsModel() = default;
 
-  virtual void configure(const VIPRA::ConfigMap& configMap) = 0;
-  virtual void initialize(PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet, Goals& goals) = 0;
-  virtual std::shared_ptr<VIPRA::State> timestep(PedestrianSet& pedestrianSet,
-                                                 ObstacleSet&   obstacleSet,
-                                                 Goals&         goals,
-                                                 float          time) = 0;
+  virtual void                          configure(const VIPRA::ConfigMap& configMap) = 0;
+  virtual void                          initialize(PedestrianSet&, ObstacleSet&, Goals&) = 0;
+  virtual std::shared_ptr<VIPRA::State> timestep(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::delta_t) = 0;
 };
 
 #endif

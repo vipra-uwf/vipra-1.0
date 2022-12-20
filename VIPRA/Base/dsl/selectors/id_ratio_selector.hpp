@@ -12,7 +12,7 @@
 class IdRatioSelector : public Selector {
  public:
   IdRatioSelector(SimulationContext* simulationContext, float ratio);
-  bool select(int                  pedestrianIndex,
+  bool select(VIPRA::idx           pedestrianIndex,
               const ObstacleSet&   obstacleSet,
               const Goals&         goals,
               const PedestrianSet& pedestrianSet) override;

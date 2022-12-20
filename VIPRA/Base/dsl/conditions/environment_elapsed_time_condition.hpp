@@ -13,7 +13,7 @@ class EnvironmentElapsedTimeCondition : public ElapsedTimeCondition {
   bool evaluate(const ObstacleSet&   obsSet,
                 const PedestrianSet& pedestrianSet,
                 const Goals&         goals,
-                int                  pedestrianIndex) override;
+                VIPRA::idx           pedestrianIndex) override;
 };
 
 #endif  //VIPRA_ENVIRONMENT_ELAPSED_TIME_CONDITION_HPP

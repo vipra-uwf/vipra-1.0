@@ -5,10 +5,10 @@
 #include "jsoncpp/json/json.h"
 
 class JSONTimestepWriter : public OutputDataWriter {
-  std::ofstream fileStream;
-  Json::Value   document;
-  int           index = 0;
-  int           timestep = 0;
+  std::ofstream    fileStream;
+  Json::Value      document;
+  Json::ArrayIndex index = 0;
+  VIPRA::t_step    timestep = 0;
 
  public:
   JSONTimestepWriter();

@@ -2,6 +2,7 @@
 #define SIMULATION_HPP
 
 #include "clock/clock.hpp"
+#include "definitions/config_map.hpp"
 #include "definitions/state.hpp"
 #include "humanbehavior/human_behavior_model.hpp"
 #include "logging/logging.hpp"
@@ -24,11 +25,11 @@ class Simulation {
            SimulationOutputHandler& simulationOutputHandler,
            Clock&                   clock);
 
-  int getTimestep() const;
+  VIPRA::t_step getTimestep() const;
 
  private:
-  int   timestep;
-  float timestep_size;
+  VIPRA::t_step  timestep;
+  VIPRA::delta_t timestep_size;
 };
 
 #endif

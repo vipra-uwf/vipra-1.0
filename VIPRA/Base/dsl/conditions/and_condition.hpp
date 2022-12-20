@@ -12,7 +12,7 @@ class AndCondition : public Condition {
   bool evaluate(const ObstacleSet&   obsSet,
                 const PedestrianSet& pedestrianSet,
                 const Goals&         goals,
-                int                  pedestrianIndex) override;
+                VIPRA::idx           pedestrianIndex) override;
 
  private:
   Condition* lhs;

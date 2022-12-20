@@ -1,13 +1,15 @@
 
-file(
-  GLOB
-  dsl_srcs
-  *.cpp
-  */*.cpp
-)
+add_subdirectory(actions)
+add_subdirectory(conditions)
+add_subdirectory(selectors)
+add_subdirectory(transitions)
+
+
+add_subdirectory(generated)
 
 target_sources(
   ${PROJECT_NAME}
-  PRIVATE
-  ${dsl_srcs}
+  PUBLIC
+  dsl_human_behavior.cpp
+  human_behavior.cpp
 )

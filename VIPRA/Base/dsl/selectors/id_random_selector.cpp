@@ -2,11 +2,11 @@
 #include <algorithm>
 #include <iostream>
 
-IdRandomSelector::IdRandomSelector(SimulationContext* simulationContext, float ratio)
-  : IdRandomSelector(simulationContext, ratio, time(nullptr)) {}
+IdRandomSelector::IdRandomSelector(SimulationContext* simContext, float selectRatio)
+  : IdRandomSelector(simContext, selectRatio, time(nullptr)) {}
 
-IdRandomSelector::IdRandomSelector(SimulationContext* simulationContext, float ratio, unsigned int seed)
-  : Selector(simulationContext), ratio(ratio) {
+IdRandomSelector::IdRandomSelector(SimulationContext* simContext, float selectRatio, unsigned int seed)
+  : Selector(simContext), ratio(selectRatio) {
   srand(seed);
 }
 
@@ -23,11 +23,11 @@ IdRandomSelector::selectPedestrianIds(const PedestrianSet& pedestrianSet) {
 }
 
 bool
-IdRandomSelector::select(int                  pedestrianIndex,
+IdRandomSelector::select(VIPRA::idx           pedestrianIndex,
                          const ObstacleSet&   obstacleSet,
                          const Goals&         goals,
                          const PedestrianSet& pedestrianSet) {
-  int pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
+  VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
   return std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianId) !=
          selectedPedestrianIds.end();
 }

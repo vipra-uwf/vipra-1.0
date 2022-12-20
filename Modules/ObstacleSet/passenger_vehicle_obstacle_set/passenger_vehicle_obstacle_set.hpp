@@ -6,7 +6,6 @@
 #include "obstacleset/obstacle_set.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 
-
 class PassengerVehicleObstacleSet : public ObstacleSet {
 
  private:

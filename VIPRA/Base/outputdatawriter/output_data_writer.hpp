@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 
+#include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
 
 class OutputDataWriterException : public std::runtime_error {

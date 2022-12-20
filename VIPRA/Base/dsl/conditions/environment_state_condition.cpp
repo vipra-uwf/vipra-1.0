@@ -4,13 +4,13 @@
 
 #include "environment_state_condition.hpp"
 
-EnvironmentStateCondition::EnvironmentStateCondition(SimulationContext* simulationContext, int state)
-  : Condition(simulationContext), desiredState(state) {}
+EnvironmentStateCondition::EnvironmentStateCondition(SimulationContext* simContext, VIPRA::stateUID state)
+  : Condition(simContext), desiredState(state) {}
 
 bool
 EnvironmentStateCondition::evaluate(const ObstacleSet&   obsSet,
                                     const PedestrianSet& pedestrianSet,
                                     const Goals&         goals,
-                                    int                  pedestrianIndex) {
+                                    VIPRA::idx           pedestrianIndex) {
   return getSimulationContext()->environmentState == desiredState;
 }

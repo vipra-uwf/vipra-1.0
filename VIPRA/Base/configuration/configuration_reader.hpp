@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 
+#include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
 #include "jsoncpp/json/json.h"
 

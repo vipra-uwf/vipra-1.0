@@ -3,6 +3,7 @@
 
 #include <fstream>
 
+#include "definitions/entitySet.hpp"
 #include "jsoncpp/json/json.h"
 #include "maploader/map_loader.hpp"
 

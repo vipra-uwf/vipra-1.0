@@ -13,7 +13,10 @@
 class Condition {
  public:
   explicit Condition(SimulationContext* simulationContext);
-  virtual bool evaluate(const ObstacleSet&, const PedestrianSet&, const Goals&, int pedestrianIndex) = 0;
+  virtual bool evaluate(const ObstacleSet&,
+                        const PedestrianSet&,
+                        const Goals&,
+                        VIPRA::idx pedestrianIndex) = 0;
 
  protected:
   SimulationContext* getSimulationContext();

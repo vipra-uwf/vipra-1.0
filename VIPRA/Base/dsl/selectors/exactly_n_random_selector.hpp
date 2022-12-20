@@ -9,19 +9,19 @@
 
 class ExactlyNRandomSelector : public Selector {
  public:
-  ExactlyNRandomSelector(SimulationContext* simulationContext, int count, unsigned int seed);
+  ExactlyNRandomSelector(SimulationContext* simulationContext, VIPRA::size count, unsigned int seed);
   void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&) override;
 
  protected:
-  bool select(int                  pedestrianIndex,
+  bool select(VIPRA::idx           pedestrianIndex,
               const ObstacleSet&   obstacleSet,
               const Goals&         goals,
               const PedestrianSet& pedestrianSet) override;
 
  private:
-  std::vector<int> selectedPedestrianIds;
-  int              count;
-  void             selectPedestrianIds(const PedestrianSet& pedestrianSet);
+  std::vector<VIPRA::uid> selectedPedestrianIds;
+  VIPRA::size             count;
+  void                    selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };
 
 #endif  //VIPRA_EXACTLY_N_RANDOM_SELECTOR_H

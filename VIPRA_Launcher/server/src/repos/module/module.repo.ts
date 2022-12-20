@@ -32,6 +32,7 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
       simulation: [],
       map_loader: [],
       policy_model: [],
+      pedestrian_loader: [],
     };
   }
   

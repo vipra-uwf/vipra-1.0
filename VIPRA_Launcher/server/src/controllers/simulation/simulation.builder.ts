@@ -380,6 +380,7 @@ export class SimulationBuilder {
       simulation : 0, 
       map_loader: 0, 
       policy_model: 0,
+      pedestrian_loader: 0,
     };
   }
 }

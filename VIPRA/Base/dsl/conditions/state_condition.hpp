@@ -14,7 +14,7 @@ class StateCondition : public Condition {
   bool evaluate(const ObstacleSet&   obsSet,
                 const PedestrianSet& pedestrianSet,
                 const Goals&         goals,
-                int                  pedestrianIndex) override;
+                VIPRA::idx           pedestrianIndex) override;
 
  private:
   int desiredState;

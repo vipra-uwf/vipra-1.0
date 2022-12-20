@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "definitions/state.hpp"
+#include "logging/logging.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 
 class CalmPedestrianSet : public PedestrianSet {
@@ -15,30 +16,30 @@ class CalmPedestrianSet : public PedestrianSet {
 
   void configure(const VIPRA::ConfigMap& configMap) override;
   void initialize(VIPRA::EntitySet pedestrianCount) override;
-  void removePedestrian(size_t pedestrianIndex) override;
+  void removePedestrian(VIPRA::idx pedestrianIndex) override;
 
-  [[nodiscard]] size_t                  getNumPedestrians() const noexcept override;
-  [[nodiscard]] const std::vector<int>& getIds() const noexcept override;
+  [[nodiscard]] VIPRA::size                    getNumPedestrians() const noexcept override;
+  [[nodiscard]] const std::vector<VIPRA::uid>& getIds() const noexcept override;
 
   [[nodiscard]] const VIPRA::f3dVec&      getPedestrianCoordinates() const noexcept override;
   [[nodiscard]] const VIPRA::f3dVec&      getVelocities() const noexcept override;
   [[nodiscard]] const VIPRA::f3dVec&      getGoalCoordinates();
   [[nodiscard]] const std::vector<float>& getSpeeds() const noexcept override;
 
-  void setNumPedestrians(int numPedestrians) override;
-  void setIds(std::vector<int> ids) override;
+  void setNumPedestrians(VIPRA::size numPedestrians) override;
+  void setIds(std::vector<VIPRA::uid> ids) override;
 
-  void setPedestrianCoordinates(const VIPRA::f3d& coords, size_t index) override;
-  void setPedestrianCoordinates(VIPRA::f3d&& coords, size_t index) override;
+  void setPedestrianCoordinates(const VIPRA::f3d& coords, VIPRA::idx index) override;
+  void setPedestrianCoordinates(VIPRA::f3d&& coords, VIPRA::idx index) override;
   void setPedestrianCoordinates(const VIPRA::f3dVec& coordinates) noexcept override;
   void setPedestrianCoordinates(VIPRA::f3dVec&& coordinates) noexcept override;
 
-  void setVelocity(const VIPRA::f3d& velocity, size_t index) override;
-  void setVelocity(VIPRA::f3d&& velocity, size_t index) override;
+  void setVelocity(const VIPRA::f3d& velocity, VIPRA::idx index) override;
+  void setVelocity(VIPRA::f3d&& velocity, VIPRA::idx index) override;
   void setVelocities(const VIPRA::f3dVec& velocities) noexcept override;
   void setVelocities(VIPRA::f3dVec&& velocities) noexcept override;
 
-  void setSpeed(float speed, size_t index) override;
+  void setSpeed(float speed, VIPRA::idx index) override;
   void setSpeeds(const std::vector<float>& speedsMetersPerSecond) noexcept override;
   void setSpeeds(std::vector<float>&& speedsMetersPerSecond) noexcept override;
 
@@ -47,7 +48,7 @@ class CalmPedestrianSet : public PedestrianSet {
   [[nodiscard]] const std::vector<float>& getDesiredSpeeds() const noexcept;
   [[nodiscard]] const std::vector<float>& getShoulderLengths() const noexcept;
 
-  [[nodiscard]] const std::vector<int>& getStartingAisles() const noexcept;
+  [[nodiscard]] const std::vector<VIPRA::idx>& getStartingAisles() const noexcept;
 
   void setMasses(std::vector<float>& massesKg);
   void setReactionTimes(std::vector<float>& reactionTimes);
@@ -57,7 +58,7 @@ class CalmPedestrianSet : public PedestrianSet {
   void updateState(std::shared_ptr<VIPRA::State> state) override;
 
  private:
-  int numPedestrians;
+  VIPRA::size numPedestrians;
 
   VIPRA::f3dVec pedestrianCoordinates;
   VIPRA::f3dVec goalCoordinates;
@@ -69,7 +70,7 @@ class CalmPedestrianSet : public PedestrianSet {
   std::vector<float> desiredSpeeds;
   std::vector<float> shoulderLengths;
 
-  std::vector<int> ids;
+  std::vector<VIPRA::uid> ids;
 
   float startMass = 0.0f;
   float startReaction_time = 0.0f;

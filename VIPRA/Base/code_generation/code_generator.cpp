@@ -1,6 +1,8 @@
 
 #include <string>
 
+#include <unordered_map>
+
 #include "configuration/configuration_reader.hpp"
 #include "lumberjack/lumberjack.hpp"
 
@@ -26,6 +28,7 @@ std::string cleanup();
 std::string runSim();
 std::string outputSetup();
 
+bool                     requireCompiled = true;
 std::string              outputFile;
 std::string              optionsFile;
 std::vector<std::string> includes;
@@ -84,13 +87,16 @@ main(int argc, char const* argv[]) {
 
 void
 setFiles(int argc, const char** argv) {
-  if (argc > 3 || argc < 3) {
+  if (argc > 4 || argc < 3) {
     std::cerr << "Usage: generate_main *output file* *options file*\n";
     exit(1);
   }
 
   outputFile = std::string(argv[1]);
   optionsFile = std::string(argv[2]);
+  if (argc == 4) {
+    requireCompiled = (strcmp(argv[3], "-noCompReq") != 0);
+  }
 }
 
 std::string
@@ -99,7 +105,7 @@ generateIncludes() {
   for (const auto& t : TYPES) {
     for (const auto& option : jsonObj[t.first]) {
       const auto& module = option["object"];
-      if (module["compiled"]) {
+      if (!requireCompiled || module["compiled"]) {
         includes.emplace_back(option["dirPath"].asString() + "/" + module["name"].asString() + ".hpp");
       }
     }
@@ -109,6 +115,7 @@ generateIncludes() {
     generatedIncludes += "#include \"" + include + "\"\n";
   }
 
+  generatedIncludes += "#include \"definitions/config_map.hpp\"\n";
   generatedIncludes += "#include \"lumberjack/lumberjack.hpp\"";
   return generatedIncludes;
 }
@@ -146,7 +153,7 @@ generateFunctionOptions(const std::string& type) {
   std::string generatedFunction{""};
   for (const auto& option : jsonObj[type]) {
     const auto& module = option["object"];
-    if (module["compiled"]) {
+    if (!requireCompiled || module["compiled"]) {
       generatedFunction += Log("Creating " + type + " Implementation") + "\n\tif(id==\"" +
                            module["id"].asString() + "\"){\n\t\t" + module["className"].asString() + "* " +
                            module["name"].asString() + " = new " + module["className"].asString() + "();" +
@@ -253,6 +260,7 @@ generateGetFiles() {
           "\nstd::string pedestrianFile;"
           "\nstd::string obstacleFile;"
           "\nstd::string outputFile;"
+          "void getInputFiles(int argc, const char** argv);"
           "\nvoid getInputFiles(int argc, const char** argv){"
           "\n\tif(argc > 6 || argc < 6){"
           "\n\t\tstd::cerr << \"Invalid inputs: Usage: *Config Path* *Params Path* *Pedestrians path* "

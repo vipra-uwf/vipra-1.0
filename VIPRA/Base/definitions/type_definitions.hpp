@@ -1,16 +1,19 @@
 #ifndef TYPE_DEFINITIONS_HPP
 #define TYPE_DEFINITIONS_HPP
 
-#include <cmath>
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include <limits>
 
 #include "definitions/dimensions.hpp"
 
 namespace VIPRA {
-typedef std::unordered_map<std::string, std::string> ConfigMap;
-typedef std::unordered_map<std::string, f3dVec>      EntitySet;
+typedef int64_t  uid;
+typedef uint64_t idx;
+typedef uint64_t size;
+
+typedef uint64_t t_step;
+typedef float    delta_t;
+
+constexpr const idx idx_INVALID = std::numeric_limits<idx>::max();
 }  // namespace VIPRA
 
 #endif

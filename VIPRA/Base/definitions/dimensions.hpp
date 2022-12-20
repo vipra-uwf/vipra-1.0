@@ -3,8 +3,8 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <type_traits>
 #include <vector>
-
 namespace VIPRA {
 
 struct f2d {
@@ -16,18 +16,19 @@ struct f2d {
   constexpr explicit f2d(float X, float Y) noexcept : x(X), y(Y) {}
   constexpr f2d(const f2d& other) noexcept : x(other.x), y(other.y) {}
   constexpr f2d(f2d&& other) noexcept : x(other.x), y(other.y) {}
-  f2d& operator=(const f2d& other) noexcept {
+  constexpr f2d& operator=(const f2d& other) noexcept {
     x = other.x;
     y = other.y;
     return *this;
   }
-  f2d& operator=(f2d&& other) noexcept {
+  constexpr f2d& operator=(f2d&& other) noexcept {
     x = other.x;
     y = other.y;
     return *this;
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  template <typename T,
+            class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
   constexpr float& operator[](T index) {
     switch (index) {
       case 0:
@@ -43,7 +44,8 @@ struct f2d {
     }
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  template <typename T,
+            class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
   constexpr float operator[](T index) const {
     switch (index) {
       case 0:
@@ -132,32 +134,33 @@ struct f3d {
   constexpr f3d(const f2d& other) noexcept : x(other.x), y(other.y), z(0) {}
   constexpr f3d(f2d&& other) noexcept : x(other.x), y(other.y), z(0) {}
 
-  f3d& operator=(const f3d& other) noexcept {
+  constexpr f3d& operator=(const f3d& other) noexcept {
     x = other.x;
     y = other.y;
     z = other.z;
     return *this;
   }
-  f3d& operator=(f3d&& other) noexcept {
+  constexpr f3d& operator=(f3d&& other) noexcept {
     x = other.x;
     y = other.y;
     z = other.z;
     return *this;
   }
-  f3d& operator=(const f2d& other) noexcept {
+  constexpr f3d& operator=(const f2d& other) noexcept {
     x = other.x;
     y = other.y;
     z = 0;
     return *this;
   }
-  f3d& operator=(f2d&& other) noexcept {
+  constexpr f3d& operator=(f2d&& other) noexcept {
     x = other.x;
     y = other.y;
     z = 0;
     return *this;
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  template <typename T,
+            class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
   constexpr float& operator[](T index) {
     switch (index) {
       case 0:
@@ -177,7 +180,8 @@ struct f3d {
     }
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  template <typename T,
+            class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
   constexpr float operator[](T index) const {
     switch (index) {
       case 0:
@@ -197,7 +201,7 @@ struct f3d {
     }
   }
 
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>>
   f3d operator*(T multiplier) const noexcept {
     return f3d{x, y, z} *= multiplier;
   }
@@ -282,7 +286,15 @@ struct f3d {
   constexpr bool operator==(const f3d& other) const noexcept {
     return (x == other.x && y == other.y && z == other.z);
   }
-  constexpr bool operator!=(const f3d& other) const noexcept { return !operator==(other); }
+  constexpr bool operator==(f3d&& other) const noexcept {
+    return (x == other.x && y == other.y && z == other.z);
+  }
+  constexpr bool operator!=(const f3d& other) const noexcept {
+    return (x != other.x || y != other.y || z != other.z);
+  }
+  constexpr bool operator!=(f3d&& other) const noexcept {
+    return (x != other.x || y != other.y || z != other.z);
+  }
 };
 
 typedef std::vector<f2d> f2dVec;

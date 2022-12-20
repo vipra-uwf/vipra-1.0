@@ -3,24 +3,27 @@
 
 void
 TimestepConsoleLogger::configure(const VIPRA::ConfigMap& configMap) {
-  frequency = std::stoi(configMap.at("outputFrequency"));
+  frequency = std::stoul(configMap.at("outputFrequency"));
 }
 
 bool
-TimestepConsoleLogger::isOutputCriterionMet(const PedestrianSet& pedSet,
-                                            const ObstacleSet&   obsSet,
-                                            const Goals&         goals,
-                                            size_t               timestep) {
-  return (timestep % frequency == 0);
+TimestepConsoleLogger::isOutputCriterionMet([[maybe_unused]] const PedestrianSet& pedSet,
+                                            [[maybe_unused]] const ObstacleSet&   obsSet,
+                                            [[maybe_unused]] const Goals&         goals,
+                                            VIPRA::t_step                         currTimestep) {
+  return (currTimestep % frequency == 0);
 }
 
 void
-TimestepConsoleLogger::writeToDocument(OutputDataWriter&    outputDataWriter,
-                                       const PedestrianSet& pedestrianSet,
-                                       size_t               timestep) {
-  std::printf("TIMESTEP: %i", timestep);
-  const auto& coords = pedestrianSet.getPedestrianCoordinates();
-  for (int i = 0; i < coords.size(); ++i) {
-    std::printf("Pedestrian: %i : X: %f, Y: %f\n", i, coords.at(i).x, coords.at(i).y);
+TimestepConsoleLogger::writeToDocument([[maybe_unused]] OutputDataWriter& outputDataWriter,
+                                       const PedestrianSet&               pedestrianSet,
+                                       VIPRA::t_step                      currTimestep) {
+  LJ::Debug(simLogger, "TIMESTEP: {}", currTimestep);
+
+  const auto&       coords = pedestrianSet.getPedestrianCoordinates();
+  const VIPRA::size coordCnt = coords.size();
+
+  for (VIPRA::idx i = 0; i < coordCnt; ++i) {
+    LJ::Debug(simLogger, "Pedestrian {}: x:{}, y:{}, z:{}", i, coords.at(i).x, coords.at(i).y);
   }
 }

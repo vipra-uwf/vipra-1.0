@@ -1,7 +1,7 @@
 #include "selector.hpp"
 
-Selector::Selector(SimulationContext* simulationContext) {
-  this->simulationContext = simulationContext;
+Selector::Selector(SimulationContext* simContext) {
+  this->simulationContext = simContext;
 }
 
 SimulationContext*

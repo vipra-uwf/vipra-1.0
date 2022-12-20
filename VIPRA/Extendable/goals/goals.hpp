@@ -1,8 +1,9 @@
 #ifndef GOALS_HPP
 #define GOALS_HPP
 
+#include "definitions/config_map.hpp"
 #include "definitions/dimensions.hpp"
-
+#include "definitions/type_definitions.hpp"
 #include "obstacleset/obstacle_set.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 
@@ -21,13 +22,13 @@ class Goals {
 
   virtual void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&) = 0;
 
-  virtual const VIPRA::f3d& getCurrentGoal(size_t index) const = 0;
-  virtual const VIPRA::f3d& getEndGoal(size_t index) const = 0;
+  virtual const VIPRA::f3d& getCurrentGoal(VIPRA::idx) const = 0;
+  virtual const VIPRA::f3d& getEndGoal(VIPRA::idx) const = 0;
 
   virtual const VIPRA::f3dVec& getAllCurrentGoals() const noexcept = 0;
   virtual const VIPRA::f3dVec& getAllEndGoals() const noexcept = 0;
 
-  virtual bool isPedestianGoalMet(size_t) const = 0;
+  virtual bool isPedestianGoalMet(VIPRA::idx) const = 0;
   virtual bool isSimulationGoalMet() const noexcept = 0;
 };
 

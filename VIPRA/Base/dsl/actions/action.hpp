@@ -14,7 +14,7 @@ class Action {
   Action(SimulationContext* simulationContext, std::string actionName);
   virtual ~Action() = default;
 
-  virtual void       performAction(int                  pedestrianIndex,
+  virtual void       performAction(VIPRA::idx           pedestrianIndex,
                                    const PedestrianSet& pedestrianSet,
                                    const ObstacleSet&   obstacleSet,
                                    const Goals&         goals) = 0;
@@ -22,7 +22,7 @@ class Action {
   virtual void       initialize(const PedestrianSet& pedestrianSet);
 
  protected:
-  virtual bool       actionApplied(int pedestrianIndex);
+  virtual bool       actionApplied(VIPRA::idx pedestrianIndex);
   SimulationContext* getSimulationContext();
   std::string        actionName;
 

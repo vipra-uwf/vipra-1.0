@@ -14,8 +14,8 @@
  */
 class PedestrianTransition : public Transition {
  public:
-  PedestrianTransition(SimulationContext* simulationContext, Condition* condition, int newState);
-  bool evaluateTransition(const ObstacleSet&, const PedestrianSet&, const Goals&, int pedestrianIndex);
+  PedestrianTransition(SimulationContext* simulationContext, Condition* condition, VIPRA::stateUID newState);
+  bool evaluateTransition(const ObstacleSet&, const PedestrianSet&, const Goals&, VIPRA::idx pedestrianIndex);
 };
 
 #endif

@@ -14,7 +14,7 @@
 class Selector {
  public:
   explicit Selector(SimulationContext* simulationContext);
-  virtual bool select(int                  pedestrianIndex,
+  virtual bool select(VIPRA::idx           pedestrianIndex,
                       const ObstacleSet&   obstacleSet,
                       const Goals&         goals,
                       const PedestrianSet& pedestrianSet) = 0;

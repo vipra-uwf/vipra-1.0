@@ -10,12 +10,12 @@
  */
 class Transition {
  public:
-  Transition(SimulationContext* simulationContext, Condition* condition, int newState);
+  Transition(SimulationContext* simulationContext, Condition* condition, size_t newState);
 
  protected:
   SimulationContext* simulationContext;
   Condition*         condition;
-  int                newState;
+  size_t             newState;
 };
 
 #endif  //VIPRA_TRANSITION_HPP

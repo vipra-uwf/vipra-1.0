@@ -2,9 +2,8 @@
 
 #include <utility>
 
-Action::Action(SimulationContext* simulationContext, std::string actionName)
-  : actionName(std::move(actionName)) {
-  this->simulationContext = simulationContext;
+Action::Action(SimulationContext* simContext, std::string name) : actionName(std::move(name)) {
+  this->simulationContext = simContext;
 }
 
 SimulationContext*
@@ -18,7 +17,7 @@ Action::getActionName() const {
 }
 
 bool
-Action::actionApplied(int pedestrianIndex) {
+Action::actionApplied(VIPRA::idx pedestrianIndex) {
   return false;
 }
 

@@ -3,6 +3,8 @@
 
 #include <chrono>
 
+#include "definitions/config_map.hpp"
+
 #include "definitions/type_definitions.hpp"
 #include "logging/logging.hpp"
 
@@ -22,7 +24,7 @@ class Clock {
   void printRealStartTime();
   void printRealDuration();
   void printRealEndTime();
-  void addSimulationTimeMs(float seconds);
+  void addSimulationTimeMs(VIPRA::delta_t seconds);
   void printSimulationDuration();
 
   void configure(const VIPRA::ConfigMap& config);

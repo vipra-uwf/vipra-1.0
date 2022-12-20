@@ -4,5 +4,5 @@
 
 #include "transition.hpp"
 
-Transition::Transition(SimulationContext* simulationContext, Condition* condition, int newState)
-  : simulationContext(simulationContext), condition(condition), newState(newState) {}
+Transition::Transition(SimulationContext* simContext, Condition* cond, VIPRA::stateUID nextState)
+  : simulationContext(simContext), condition(cond), newState(nextState) {}

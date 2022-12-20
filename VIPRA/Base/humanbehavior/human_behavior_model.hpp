@@ -12,6 +12,8 @@
 #include "obstacleset/obstacle_set.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 
+#include "definitions/config_map.hpp"
+
 class HumanBehaviorModel {
 
  private:
@@ -26,7 +28,7 @@ class HumanBehaviorModel {
   virtual void configure(const VIPRA::ConfigMap& configMap);
 
   virtual void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&);
-  void timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, float timestep, VIPRA::State&);
+  void timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, VIPRA::delta_t, VIPRA::State&);
 };
 
 #endif  //VIPRA_HUMAN_BEHAVIOR_MODEL_HPP

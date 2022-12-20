@@ -12,7 +12,7 @@ typedef enum { FASTER, SLOWER } ALTER_DIRECTION;
 class AlterVelocityAction : public Action {
  public:
   AlterVelocityAction(SimulationContext* simulationContext, ALTER_DIRECTION alterDirection, float factor);
-  void performAction(int                  pedestrianIndex,
+  void performAction(VIPRA::idx           pedestrianIndex,
                      const PedestrianSet& pedestrianSet,
                      const ObstacleSet&   obstacleSet,
                      const Goals&         goals) override;

@@ -5,7 +5,10 @@
 #include <iostream>
 #include <string>
 
+#include "definitions/config_map.hpp"
+#include "definitions/entitySet.hpp"
 #include "definitions/type_definitions.hpp"
+
 
 class InputDataLoaderException : public std::runtime_error {
  public:
