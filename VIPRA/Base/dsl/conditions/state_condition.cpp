@@ -1,6 +1,6 @@
 #include "state_condition.hpp"
 
-StateCondition::StateCondition(SimulationContext* simContext, int desiredStateId) : Condition(simContext) {
+StateCondition::StateCondition(SimulationContext* simContext, VIPRA::stateUID desiredStateId) : Condition(simContext) {
   this->desiredState = desiredStateId;
 }
 
