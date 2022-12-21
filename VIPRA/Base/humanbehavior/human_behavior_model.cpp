@@ -23,18 +23,18 @@ HumanBehaviorModel::timestep(const PedestrianSet&          pedSet,
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
 
   for (auto humanBehavior : this->humanBehaviors) {
-    humanBehavior->update(pedSet, obsSet, goals, timestep);
+    humanBehavior->update(obsSet, pedSet, goals, timestep);
   }
 
   // Iterate through the pedestrian list and apply our behavior to it.
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     bool behaviorDecided = false;
     for (auto humanBehavior : this->humanBehaviors) {
-      if (humanBehavior->select(pedSet, obsSet, goals, i)) {
-        humanBehavior->act(pedSet, obsSet, goals, i, timestep);
+      if (humanBehavior->select(obsSet, pedSet, goals, i)) {
+        humanBehavior->act(obsSet, pedSet, goals, state, i, timestep);
 
         // Decide if this person is under the influence of the human behavior model
-        if (humanBehavior->decide(pedSet, obsSet, goals, i)) {
+        if (humanBehavior->decide(obsSet, pedSet, goals, i)) {
           behaviorDecided = true;
         }
       }

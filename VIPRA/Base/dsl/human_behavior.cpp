@@ -34,10 +34,10 @@ HumanBehavior::initialize(const ObstacleSet&   obstacleSet,
 }
 
 void
-HumanBehavior::update(const PedestrianSet& pedestrianSet,
-                      VIPRA::delta_t       timestep,
-                      const ObstacleSet&   obstacleSet,
-                      const Goals&         goals) {
+HumanBehavior::update(const ObstacleSet&   obstacleSet,
+                      const PedestrianSet& pedestrianSet,
+                      const Goals&         goals,
+                      VIPRA::delta_t       timestep) {
   this->simulationContext.elapsedSeconds += timestep;
 
   for (auto environmentTransition : this->environmentTransitions) {
@@ -52,22 +52,22 @@ HumanBehavior::update(const PedestrianSet& pedestrianSet,
 }
 
 bool
-HumanBehavior::select(const PedestrianSet& pedestrianSet,
-                      const ObstacleSet&   obstacleSet,
+HumanBehavior::select(const ObstacleSet&   obstacleSet,
+                      const PedestrianSet& pedestrianSet,
                       const Goals&         goals,
                       VIPRA::idx           pedestrianIndex) {
   bool selected = false;
   for (auto selector = this->getSelectors().begin(); !selected && selector != this->getSelectors().end();
        selector++) {
-    selected = (*selector)->select(pedestrianIndex, obstacleSet, goals, pedestrianSet);
+    selected = (*selector)->select(obstacleSet, pedestrianSet, goals, pedestrianIndex);
   }
 
   return selected;
 }
 
 bool
-HumanBehavior::decide(const PedestrianSet& pedestrianSet,
-                      const ObstacleSet&   obstacleSet,
+HumanBehavior::decide(const ObstacleSet&   obstacleSet,
+                      const PedestrianSet& pedestrianSet,
                       const Goals&         goals,
                       VIPRA::idx           pedestrianIndex) {
   bool decided = false;
@@ -80,11 +80,12 @@ HumanBehavior::decide(const PedestrianSet& pedestrianSet,
 }
 
 void
-HumanBehavior::act(const PedestrianSet& pedestrianSet,
+HumanBehavior::act(const ObstacleSet&   obstacleSet,
+                   const PedestrianSet& pedestrianSet,
+                   const Goals&         goals,
+                   std::shared_ptr<VIPRA::State> sharedState,
                    VIPRA::idx           pedestrianIndex,
-                   VIPRA::delta_t       timestep,
-                   const ObstacleSet&   obstacleSet,
-                   const Goals&         goals) {
+                   VIPRA::delta_t       timestep) {
 
   VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
 
@@ -108,7 +109,7 @@ HumanBehavior::act(const PedestrianSet& pedestrianSet,
   for (VIPRA::size state = 0; state < this->getStateActions().size(); ++state) {
     if (this->simulationContext.states.at(pedestrianId) == state &&
         this->getStateActions().at(state) != nullptr) {
-      this->getStateActions().at(state)->performAction(pedestrianIndex, pedestrianSet, obstacleSet, goals);
+      this->getStateActions().at(state)->performAction(obstacleSet, pedestrianSet, goals, pedestrianIndex, sharedState);
     }
   }
 }
