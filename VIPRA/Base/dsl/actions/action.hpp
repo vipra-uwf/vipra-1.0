@@ -18,6 +18,7 @@ class Action {
                              const PedestrianSet& pedestrianSet,
                              const Goals&         goals,
                              VIPRA::idx           pedestrianIndex,
+                             VIPRA::delta_t,
                              std::shared_ptr<VIPRA::State>) = 0;
 
   const std::string& getActionName() const;

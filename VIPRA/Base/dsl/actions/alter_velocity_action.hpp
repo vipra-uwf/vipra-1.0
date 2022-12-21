@@ -16,6 +16,7 @@ class AlterVelocityAction : public Action {
                      const PedestrianSet&          pedestrianSet,
                      const Goals&                  goals,
                      VIPRA::idx                    pedestrianIndex,
+                     VIPRA::delta_t                time,
                      std::shared_ptr<VIPRA::State> state) override;
 
   void initialize(const PedestrianSet& pedestrianSet) override;

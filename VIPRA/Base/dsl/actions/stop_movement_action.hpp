@@ -14,6 +14,7 @@ class StopMovementAction : public Action {
                      const PedestrianSet& pedestrianSet,
                      const Goals&         goals,
                      VIPRA::idx           pedestrianIndex,
+                     VIPRA::delta_t       time,
                      std::shared_ptr<VIPRA::State>) override;
 };
 
