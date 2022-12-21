@@ -6,15 +6,14 @@ IdRatioSelector::IdRatioSelector(SimulationContext* simContext, float selectRati
 }
 
 bool
-IdRatioSelector::select(VIPRA::idx           pedestrianIndex,
-                        const ObstacleSet&   obstacleSet,
-                        const Goals&         goals,
-                        const PedestrianSet& pedestrianSet) {
+IdRatioSelector::select([[maybe_unused]] const ObstacleSet& obstacleSet,
+                        const PedestrianSet&                pedestrianSet,
+                        [[maybe_unused]] const Goals&       goals,
+                        VIPRA::idx                          pedestrianIndex) {
+
   VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
 
   const int divisor = (1.0 / this->ratio);
 
-  bool condition = pedestrianId % divisor == 0;
-
-  return condition;
+  return (pedestrianId % divisor == 0);
 }

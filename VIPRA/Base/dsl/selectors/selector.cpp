@@ -10,4 +10,4 @@ Selector::getSimulationContext() {
 }
 
 void
-Selector::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet, const Goals& goals) {}
+Selector::initialize(const ObstacleSet&, const PedestrianSet&, const Goals&) {}

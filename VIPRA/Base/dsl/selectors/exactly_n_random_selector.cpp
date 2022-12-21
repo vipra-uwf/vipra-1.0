@@ -13,16 +13,16 @@ ExactlyNRandomSelector::ExactlyNRandomSelector(SimulationContext* simContext, si
 
 void
 ExactlyNRandomSelector::selectPedestrianIds(const PedestrianSet& pedestrianSet) {
-  // TODO: get index of pedestrian from id
-  // size_t numPedestrians = pedestrianSet.getNumPedestrians();
-  // while (selectedPedestrianIds.size() < count) {
-  //   size_t pedestrianId = static_cast<size_t>(rand()) % numPedestrians;
-  //   if (std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianId) ==
-  //       selectedPedestrianIds.end()) {
-  //     std::cout << "Selecting pedestrian id " << pedestrianId << " for behavior." << std::endl;
-  //     selectedPedestrianIds.push_back(pedestrianId);
-  //   }
-  // }
+  VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
+
+  while (selectedPedestrianIds.size() < count) {
+    VIPRA::uid pedestrianId = static_cast<VIPRA::uid>(rand()) % numPedestrians;
+    if (std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianId) ==
+        selectedPedestrianIds.end()) {
+      LJ::Debug(simLogger, "Selecting pedestrian id: {} for behavior.", pedestrianId);
+      selectedPedestrianIds.push_back(pedestrianId);
+    }
+  }
 }
 
 void
@@ -34,10 +34,10 @@ ExactlyNRandomSelector::initialize(const ObstacleSet&   obsSet,
 }
 
 bool
-ExactlyNRandomSelector::select(VIPRA::idx           pedestrianIndex,
-                               const ObstacleSet&   obstacleSet,
-                               const Goals&         goals,
-                               const PedestrianSet& pedestrianSet) {
+ExactlyNRandomSelector::select([[maybe_unused]] const ObstacleSet& obstacleSet,
+                               const PedestrianSet&                pedestrianSet,
+                               [[maybe_unused]] const Goals&       goals,
+                               VIPRA::idx                          pedestrianIndex) {
   VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
   return std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianId) !=
          selectedPedestrianIds.end();

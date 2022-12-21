@@ -12,21 +12,23 @@ IdRandomSelector::IdRandomSelector(SimulationContext* simContext, float selectRa
 
 void
 IdRandomSelector::selectPedestrianIds(const PedestrianSet& pedestrianSet) {
-  int divisor = static_cast<int>(1.0 / ratio);
-  for (auto pedestrianId : (pedestrianSet.getIds())) {
+  int         divisor = static_cast<int>(1.0 / ratio);
+  const auto& pedestrianIDs{pedestrianSet.getIds()};
+  for (auto pedestrianId : pedestrianIDs) {
     int diceRoll = rand() % divisor;
     if (diceRoll == 0) {
-      std::cout << "Selecting pedestrian id " << pedestrianId << " for behavior." << std::endl;
+      LJ::Debug(simLogger, "Selecting pedestrian id: {} for behavior.", pedestrianId);
       selectedPedestrianIds.push_back(pedestrianId);
     }
   }
 }
 
 bool
-IdRandomSelector::select(VIPRA::idx           pedestrianIndex,
-                         const ObstacleSet&   obstacleSet,
-                         const Goals&         goals,
-                         const PedestrianSet& pedestrianSet) {
+IdRandomSelector::select([[maybe_unused]] const ObstacleSet& obstacleSet,
+                         const PedestrianSet&                pedestrianSet,
+                         [[maybe_unused]] const Goals&       goals,
+                         VIPRA::idx                          pedestrianIndex) {
+
   VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
   return std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianId) !=
          selectedPedestrianIds.end();

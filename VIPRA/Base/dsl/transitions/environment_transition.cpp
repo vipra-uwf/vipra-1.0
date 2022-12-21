@@ -10,16 +10,15 @@ EnvironmentTransition::EnvironmentTransition(SimulationContext* simContext,
   : Transition(simContext, cond, nextState) {}
 
 bool
-EnvironmentTransition::evaluateTransition(const ObstacleSet&   obsSet,
-                                          const PedestrianSet& pedSet,
-                                          const Goals&         goals,
-                                          VIPRA::idx           pedestrianIndex) {
-  bool transitioned = false;
+EnvironmentTransition::evaluateTransition(const ObstacleSet&          obsSet,
+                                          const PedestrianSet&        pedSet,
+                                          const Goals&                goals,
+                                          [[maybe_unused]] VIPRA::idx pedestrianIndex) {
   if (this->condition->evaluate(obsSet, pedSet, goals, 0)) {
     this->simulationContext->environmentState = newState;
     this->simulationContext->environmentTransitionPointSeconds = this->simulationContext->elapsedSeconds;
-    transitioned = true;
+    return true;
   }
 
-  return transitioned;
+  return false;
 }
