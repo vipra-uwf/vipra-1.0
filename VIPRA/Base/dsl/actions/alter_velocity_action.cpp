@@ -10,10 +10,11 @@ AlterVelocityAction::AlterVelocityAction(SimulationContext* simContext,
   : Action(simContext, "ALTER_VELOCITY"), alterDirection(alterDir), factor(vel_factor) {}
 
 void
-AlterVelocityAction::performAction(VIPRA::idx           pedestrianIndex,
-                                   const PedestrianSet& pedestrianSet,
-                                   const ObstacleSet&   obstacleSet,
-                                   const Goals&         goals) {
+AlterVelocityAction::performAction(const ObstacleSet&            obstacleSet,
+                                  const PedestrianSet&          pedestrianSet,
+                                  const Goals&                  goals,
+                                  VIPRA::idx                    pedestrianIndex,
+                                  std::shared_ptr<VIPRA::State> state) {
   if (!actionApplied(pedestrianIndex)) {
     // Slow down the new velocity
     VIPRA::f3d& originalVelocity =

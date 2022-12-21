@@ -3,10 +3,11 @@
 StopMovementAction::StopMovementAction(SimulationContext* simContext) : Action(simContext, "STOPPED") {}
 
 void
-StopMovementAction::performAction(VIPRA::idx           pedestrianIndex,
+StopMovementAction::performAction(const ObstacleSet&   obstacleSet,
                                   const PedestrianSet& pedestrianSet,
-                                  const ObstacleSet&   obstacleSet,
-                                  const Goals&         goals) {
+                                  const Goals&         goals,
+                                  VIPRA::idx           pedestrianIndex,
+                                  std::shared_ptr<VIPRA::State>) {
   static const VIPRA::f3d STOPPED = VIPRA::f3d(0, 0, 0);
 
   if (!actionApplied(pedestrianIndex)) {
