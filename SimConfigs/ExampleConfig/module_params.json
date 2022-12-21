@@ -41,7 +41,7 @@
         "params":{
             "pathFinding": "Disembark",
             "diagonalCost": 2.0,
-            "endGoalType": "exits",
+            "endGoalType": "exit",
             "goalRange": 0.05
         }
     },

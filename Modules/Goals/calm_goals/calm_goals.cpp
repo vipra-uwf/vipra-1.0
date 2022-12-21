@@ -53,6 +53,7 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
     } else if (pathingType == "Disembark") {
       LJ::Debug(simLogger, "CalmGoals: Finding Disembark Path for Ped: {}", i);
       paths[i] = disembarkPath(coords.at(i), obsSet);
+      LJ::Debug(simLogger, "CalmGoals: Found Disembark Path for Ped: {}", i);
     }
     currentGoals[i] = paths[i].front();
   }
@@ -64,7 +65,7 @@ CalmGoals::disembarkPath(const VIPRA::f3d& start, const ObstacleSet& obsSet) {
   std::queue<VIPRA::f3d> path;
   VIPRA::f3d             aisle = nearestObjective("aisle", start, obsSet);
   path.push(aisle);
-  VIPRA::f3d aisleEnd = nearestObjective("endAisle", aisle, obsSet);
+  VIPRA::f3d aisleEnd = nearestObjective("endOfAisle", aisle, obsSet);
   path.push(aisleEnd);
   path.push(nearestObjective("exit", aisleEnd, obsSet));
   return path;

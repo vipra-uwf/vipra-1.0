@@ -22,11 +22,11 @@ makeDimensions(const VIPRA::EntitySet& objects) {
 }
 
 void
-PassengerVehicleObstacleSet::initialize(const std::unique_ptr<MapType> map) {
+PassengerVehicleObstacleSet::initialize(std::unique_ptr<MapType> map) {
   if (map->type != "PointMap") {
     ObstacleSetException::Throw("Improper Map Type, Expected \"PointMap\"");
   }
-  objects = static_cast<const PointMap*>(map.get())->entities;
+  objects = static_cast<PointMap*>(map.get())->entities;
   checkMap();
   mapDimensions = makeDimensions(objects);
 }
@@ -41,12 +41,12 @@ PassengerVehicleObstacleSet::nearestObstacle(const PedestrianSet& PedSet) const 
   for (size_t j = 0; j < coordinatesVector.size(); j++) {
     VIPRA::f3d coordinates = coordinatesVector.at(j);
     size_t     min_index = 0;
-    for (size_t i = 0; i < objects.at("obstacles").size(); i++) {
-      if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
-          coordinates.distanceTo(objects.at("obstacles").at(min_index)))
+    for (size_t i = 0; i < objects.at("obstacle").size(); i++) {
+      if (coordinates.distanceTo(objects.at("obstacle").at(i)) <
+          coordinates.distanceTo(objects.at("obstacle").at(min_index)))
         min_index = i;
     }
-    nearestObstacleVector.push_back(objects.at("obstacles").at(min_index));
+    nearestObstacleVector.push_back(objects.at("obstacle").at(min_index));
   }
 
   return nearestObstacleVector;
@@ -68,13 +68,13 @@ VIPRA::f3d
 PassengerVehicleObstacleSet::nearestObstacleInDirection(const VIPRA::f3d coordinates,
                                                         const VIPRA::f3d velocity) const {
   size_t min_index = 0;
-  for (size_t i = 0; i < objects.at("obstacles").size(); i++) {
-    if (coordinates.distanceTo(objects.at("obstacles").at(i)) <
-        coordinates.distanceTo(objects.at("obstacles")[min_index]))
+  for (size_t i = 0; i < objects.at("obstacle").size(); i++) {
+    if (coordinates.distanceTo(objects.at("obstacle").at(i)) <
+        coordinates.distanceTo(objects.at("obstacle")[min_index]))
       min_index = i;
   }
 
-  return objects.at("obstacles").at(min_index);
+  return objects.at("obstacle").at(min_index);
 }
 
 const std::vector<VIPRA::f3d>&
@@ -95,8 +95,8 @@ PassengerVehicleObstacleSet::getMapDimensions() const noexcept {
 float
 PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const noexcept {
 
-  for (size_t i = 0; i < objects.at("obstacles").size(); i++) {
-    VIPRA::f3d coordinates = objects.at("obstacles")[i];
+  for (size_t i = 0; i < objects.at("obstacle").size(); i++) {
+    VIPRA::f3d coordinates = objects.at("obstacle")[i];
 
     if (coordinates.distanceTo(point1) + coordinates.distanceTo(point1) == point1.distanceTo(point2))
       return coordinates.distanceTo(point1);
@@ -124,8 +124,8 @@ PassengerVehicleObstacleSet::checkMap() const {
     ObstacleSetException::Throw(
         "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"seat\"");
   }
-  if (objects.find("obstacles") == objects.end()) {
+  if (objects.find("obstacle") == objects.end()) {
     ObstacleSetException::Throw(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"obstacles\"");
+        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"obstacle\"");
   }
 }

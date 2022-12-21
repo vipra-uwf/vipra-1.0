@@ -39,11 +39,11 @@ makeDirs:
 	mkdir -p $(BUILD_DIR)
 
 testGenMain:
-	cmake -B genbuild .
-	cmake --build genbuild
+	cmake -B genbuild . -DDEBUG_MODE=ON
+	cmake --build genbuild 
 
 testGenSim:
-	cmake -B simbuild . -DGEN_MAIN=OFF
+	cmake -B simbuild . -DGEN_MAIN=OFF -DDEBUG_MODE=ON
 	cmake --build simbuild
 
 testBuildAll:

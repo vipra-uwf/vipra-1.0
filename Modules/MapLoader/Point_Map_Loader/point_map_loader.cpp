@@ -24,8 +24,8 @@ PointMapLoader::LoadMap(const std::string& filePath) const {
     MapLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
   fileStream.close();
+  auto inputData = std::make_unique<PointMap>();
   try {
-    std::unique_ptr<PointMap> inputData = std::make_unique<PointMap>();
     inputData->type = "PointMap";
     for (unsigned int i = 0; i < jsonDocument.size(); i++) {
       const std::string type = jsonDocument.getMemberNames()[i];
@@ -40,10 +40,8 @@ PointMapLoader::LoadMap(const std::string& filePath) const {
         inputData->entities[type].push_back(temp);
       }
     }
-    return inputData;
   } catch (...) {
     MapLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
-  MapLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
-  return {};
+  return inputData;
 }

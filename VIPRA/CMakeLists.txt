@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 option(GEN_MAIN "Create Generate Main" ON)
+option(DEBUG_MODE "Compile In Debug Mode" OFF)
 
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
@@ -28,8 +29,6 @@ if (GEN_MAIN)
     ${DEPS_DIR}/jsoncpp/jsoncpp.cpp 
     ${BASE_DIR}/configuration/configuration_reader.cpp
   )
-
-  set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../ )
   
 else()
 
@@ -59,13 +58,18 @@ else()
     
   add_subdirectory(${BASE_DIR})
   add_subdirectory(${MODULES_DIR} build)
-
-  set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../ )
-
-
+  
 endif(GEN_MAIN)
 
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../ )
+
 target_compile_options(${PROJECT_NAME} PUBLIC -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wundef -Werror -Wno-unused)
+
+if (DEBUG_MODE)
+  target_compile_options(${PROJECT_NAME} PUBLIC -g -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+  target_link_options(${PROJECT_NAME} PUBLIC -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+endif ()
+
 
 include_directories(
   SYSTEM

@@ -6,6 +6,7 @@
 #include <memory>
 
 struct MapType {
+  virtual ~MapType() = default;
   std::string type;
 };
 

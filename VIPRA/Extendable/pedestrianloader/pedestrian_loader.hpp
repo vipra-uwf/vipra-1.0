@@ -7,6 +7,8 @@
 
 struct PedMapType {
   std::string type;
+  PedMapType(std::string t) : type(std::move(t)) {}
+  virtual ~PedMapType() = default;
 };
 
 class PedestrianLoaderException : public std::runtime_error {

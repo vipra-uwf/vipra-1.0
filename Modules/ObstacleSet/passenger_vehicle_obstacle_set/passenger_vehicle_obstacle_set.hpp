@@ -15,7 +15,7 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
   VIPRA::f3d mapDimensions;
 
  public:
-  void initialize(const std::unique_ptr<MapType>) override;
+  void initialize(std::unique_ptr<MapType>) override;
   void configure(const VIPRA::ConfigMap& configMap) override;
 
   VIPRA::f3d getMapDimensions() const noexcept override;

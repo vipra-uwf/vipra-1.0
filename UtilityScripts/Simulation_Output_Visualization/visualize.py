@@ -19,7 +19,7 @@ obstacles = json.load(obs)
 obsX = []
 obsY = []
 
-for obj in obstacles["obstacles"]:
+for obj in obstacles["obstacle"]:
     obsX.append(float(obj["x"]))
     obsY.append(float(obj["y"]))
 
