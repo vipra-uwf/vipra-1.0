@@ -11,7 +11,11 @@
 class PolicyModel {
  public:
   void configure(const VIPRA::ConfigMap& configMap);
-  void timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, float timestep_size, VIPRA::State&);
+  void timestep(const PedestrianSet&,
+                const ObstacleSet&,
+                const Goals&,
+                std::shared_ptr<VIPRA::State>,
+                VIPRA::delta_t timestep_size);
 };
 
 #endif

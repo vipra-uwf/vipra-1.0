@@ -10,10 +10,11 @@ class StopMovementAction : public Action {
  public:
   explicit StopMovementAction(SimulationContext* simulationContext);
   ~StopMovementAction() override = default;
-  void performAction(VIPRA::idx           pedestrianIndex,
+  void performAction(const ObstacleSet&   obstacleSet,
                      const PedestrianSet& pedestrianSet,
-                     const ObstacleSet&   obstacleSet,
-                     const Goals&         goals) override;
+                     const Goals&         goals,
+                     VIPRA::idx           pedestrianIndex,
+                     std::shared_ptr<VIPRA::State>) override;
 };
 
 #endif

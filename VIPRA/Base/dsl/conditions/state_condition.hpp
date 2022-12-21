@@ -10,14 +10,14 @@
  */
 class StateCondition : public Condition {
  public:
-  StateCondition(SimulationContext* simulationContext, int desiredState);
+  StateCondition(SimulationContext* simulationContext, VIPRA::stateUID desiredState);
   bool evaluate(const ObstacleSet&   obsSet,
                 const PedestrianSet& pedestrianSet,
                 const Goals&         goals,
                 VIPRA::idx           pedestrianIndex) override;
 
  private:
-  int desiredState;
+  VIPRA::stateUID desiredState;
 };
 
 #endif

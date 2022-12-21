@@ -4,8 +4,8 @@ void
 PolicyModel::configure(const VIPRA::ConfigMap& configMap) {}
 
 void
-PolicyModel::timestep(const PedestrianSet&,
-                      const ObstacleSet&,
-                      const Goals&,
-                      float         timestep_size,
-                      VIPRA::State& state) {}
+PolicyModel::timestep(const PedestrianSet&          pedSet,
+                      const ObstacleSet&            obSet,
+                      const Goals&                  goals,
+                      std::shared_ptr<VIPRA::State> state,
+                      VIPRA::delta_t                timestep_size) {}

@@ -29,7 +29,7 @@ struct f2d {
 
   template <typename T,
             class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
-  constexpr float& operator[](T index) {
+  inline constexpr float& operator[](T index) {
     switch (index) {
       case 0:
         return x;
@@ -46,7 +46,7 @@ struct f2d {
 
   template <typename T,
             class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
-  constexpr float operator[](T index) const {
+  inline constexpr float operator[](T index) const {
     switch (index) {
       case 0:
         return x;
@@ -61,44 +61,44 @@ struct f2d {
     }
   }
   template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  constexpr f2d& operator*=(const T& multiplier) noexcept {
+  inline constexpr f2d& operator*=(const T& multiplier) noexcept {
     x *= multiplier;
     y *= multiplier;
     return *this;
   }
 
   template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  constexpr const f2d& operator*(T multiplier) const noexcept {
+  inline constexpr f2d operator*(T multiplier) const noexcept {
     return f2d{x, y} *= multiplier;
   }
 
   template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  constexpr const f2d& operator/(T multiplier) noexcept {
+  inline constexpr f2d operator/(T multiplier) const noexcept {
     return f2d{x, y} /= multiplier;
   }
 
   template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  constexpr f2d& operator/=(const T& multiplier) noexcept {
+  inline constexpr f2d& operator/=(const T& multiplier) noexcept {
     x /= multiplier;
     y /= multiplier;
     return *this;
   }
 
-  f2d operator+(const f2d& other) const noexcept { return f2d{x + other.x, y + other.y}; }
+  inline f2d operator+(const f2d& other) const noexcept { return f2d{x + other.x, y + other.y}; }
 
-  constexpr f2d& operator+=(const f2d& other) noexcept {
+  inline constexpr f2d& operator+=(const f2d& other) noexcept {
     x += other.x;
     y += other.y;
     return *this;
   }
 
-  constexpr f2d& operator-=(const f2d& other) noexcept {
+  inline constexpr f2d& operator-=(const f2d& other) noexcept {
     x -= other.x;
     y -= other.y;
     return *this;
   }
 
-  constexpr float distanceTo(const f2d& other) const noexcept {
+  inline constexpr float distanceTo(const f2d& other) const {
     float dX = other.x - x;
     float dY = other.y - y;
 
@@ -112,23 +112,20 @@ struct f2d {
     return sqrt(dX + dY);
   }
 
-  constexpr bool inside(const f2d& other, float sideLength) const noexcept {
-    const float half = sideLength / 2;
-    return (x >= other.x - half && x <= other.x + half && y <= other.y + half && y >= other.y - half);
-  }
+  inline constexpr bool operator==(const f2d& other) const noexcept { return (x == other.x && y == other.y); }
+  inline constexpr bool operator==(f2d&& other) const noexcept { return (x == other.x && y == other.y); }
+  inline constexpr bool operator!=(const f2d& other) const noexcept { return (x != other.x || y != other.y); }
+  inline constexpr bool operator!=(f2d&& other) const noexcept { return (x != other.x || y != other.y); }
 };
 
 struct f3d {
-  float x;
-  float y;
-  float z;
+  float x, y, z;
 
   ~f3d() {}
   constexpr explicit f3d() noexcept : x(0), y(0), z(0) {}
   constexpr explicit f3d(float X) noexcept : x(X), y(0), z(0) {}
   constexpr explicit f3d(float X, float Y) noexcept : x(X), y(Y), z(0) {}
   constexpr explicit f3d(float X, float Y, float Z) noexcept : x(X), y(Y), z(Z) {}
-
   constexpr f3d(const f3d& other) noexcept : x(other.x), y(other.y), z(other.z) {}
   constexpr f3d(f3d&& other) noexcept : x(other.x), y(other.y), z(other.z) {}
   constexpr f3d(const f2d& other) noexcept : x(other.x), y(other.y), z(0) {}
@@ -161,7 +158,7 @@ struct f3d {
 
   template <typename T,
             class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
-  constexpr float& operator[](T index) {
+  inline constexpr float& operator[](T index) {
     switch (index) {
       case 0:
         return x;
@@ -182,7 +179,7 @@ struct f3d {
 
   template <typename T,
             class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
-  constexpr float operator[](T index) const {
+  inline constexpr float operator[](T index) const {
     switch (index) {
       case 0:
         return x;
@@ -202,11 +199,11 @@ struct f3d {
   }
 
   template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>>
-  f3d operator*(T multiplier) const noexcept {
+  inline constexpr f3d operator*(T multiplier) const noexcept {
     return f3d{x, y, z} *= multiplier;
   }
   template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  constexpr f3d& operator*=(const T& multiplier) noexcept {
+  inline constexpr f3d& operator*=(const T& multiplier) noexcept {
     x *= multiplier;
     y *= multiplier;
     z *= multiplier;
@@ -214,52 +211,52 @@ struct f3d {
   }
 
   template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  f3d operator/(T multiplier) noexcept {
+  inline constexpr f3d operator/(T multiplier) const noexcept {
     return f3d{x, y, z} /= multiplier;
   }
   template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  constexpr f3d& operator/=(const T& multiplier) noexcept {
+  inline constexpr f3d& operator/=(const T& multiplier) noexcept {
     x /= multiplier;
     y /= multiplier;
     z /= multiplier;
     return *this;
   }
 
-  f3d operator-(const f2d& other) const noexcept { return f3d{x - other.x, y - other.y, z}; }
-  f3d operator-(const f3d& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
-  f3d operator-(f3d&& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
+  inline f3d operator-(const f2d& other) const noexcept { return f3d{x - other.x, y - other.y, z}; }
+  inline f3d operator-(const f3d& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
+  inline f3d operator-(f3d&& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
 
-  f3d operator+(const f2d& other) const noexcept { return f3d{x + other.x, y + other.y, z}; }
-  f3d operator+(const f3d& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
-  f3d operator+(f3d&& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
+  inline f3d operator+(const f2d& other) const noexcept { return f3d{x + other.x, y + other.y, z}; }
+  inline f3d operator+(const f3d& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
+  inline f3d operator+(f3d&& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
 
-  constexpr f3d& operator+=(const f3d& other) noexcept {
+  inline constexpr f3d& operator+=(const f3d& other) noexcept {
     x += other.x;
     y += other.y;
     z += other.z;
     return *this;
   }
-  constexpr f3d& operator+=(f3d&& other) noexcept {
+  inline constexpr f3d& operator+=(f3d&& other) noexcept {
     x += other.x;
     y += other.y;
     z += other.z;
     return *this;
   }
 
-  constexpr f3d& operator-=(const f3d& other) noexcept {
+  inline constexpr f3d& operator-=(const f3d& other) noexcept {
     x -= other.x;
     y -= other.y;
     z -= other.z;
     return *this;
   }
-  constexpr f3d& operator-=(f3d&& other) noexcept {
+  inline constexpr f3d& operator-=(f3d&& other) noexcept {
     x -= other.x;
     y -= other.y;
     z -= other.z;
     return *this;
   }
 
-  float distanceTo(const f2d& other) const noexcept {
+  inline constexpr float distanceTo(const f2d& other) const {
     float dX = other.x - x;
     float dY = other.y - y;
     float dZ = 0 - z;
@@ -271,7 +268,7 @@ struct f3d {
     return sqrt(dX + dY + dZ);
   }
 
-  float distanceTo(const f3d& other) const noexcept {
+  inline constexpr float distanceTo(const f3d& other) const {
     float dX = other.x - x;
     float dY = other.y - y;
     float dZ = other.z - z;
@@ -283,16 +280,16 @@ struct f3d {
     return sqrt(dX + dY + dZ);
   }
 
-  constexpr bool operator==(const f3d& other) const noexcept {
+  inline constexpr bool operator==(const f3d& other) const noexcept {
     return (x == other.x && y == other.y && z == other.z);
   }
-  constexpr bool operator==(f3d&& other) const noexcept {
+  inline constexpr bool operator==(f3d&& other) const noexcept {
     return (x == other.x && y == other.y && z == other.z);
   }
-  constexpr bool operator!=(const f3d& other) const noexcept {
+  inline constexpr bool operator!=(const f3d& other) const noexcept {
     return (x != other.x || y != other.y || z != other.z);
   }
-  constexpr bool operator!=(f3d&& other) const noexcept {
+  inline constexpr bool operator!=(f3d&& other) const noexcept {
     return (x != other.x || y != other.y || z != other.z);
   }
 };

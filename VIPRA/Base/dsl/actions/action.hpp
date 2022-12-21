@@ -14,10 +14,12 @@ class Action {
   Action(SimulationContext* simulationContext, std::string actionName);
   virtual ~Action() = default;
 
-  virtual void       performAction(VIPRA::idx           pedestrianIndex,
-                                   const PedestrianSet& pedestrianSet,
-                                   const ObstacleSet&   obstacleSet,
-                                   const Goals&         goals) = 0;
+  virtual void performAction(const ObstacleSet&   obstacleSet,
+                             const PedestrianSet& pedestrianSet,
+                             const Goals&         goals,
+                             VIPRA::idx           pedestrianIndex,
+                             std::shared_ptr<VIPRA::State>) = 0;
+
   const std::string& getActionName() const;
   virtual void       initialize(const PedestrianSet& pedestrianSet);
 

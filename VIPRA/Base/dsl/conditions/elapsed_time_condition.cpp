@@ -11,13 +11,11 @@ ElapsedTimeCondition::evaluate(const ObstacleSet&   obsSet,
                                const PedestrianSet& pedestrianSet,
                                const Goals&         goals,
                                VIPRA::idx           pedestrianIndex) {
-  // TODO: get index from id
-  // VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
-  // float      lastTransitionMs = this->getSimulationContext()->elapsedSeconds -
-  //                          this->getSimulationContext()->transitionPointSeconds.at(pedestrianId);
+  VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
+  float      lastTransitionMs = this->getSimulationContext()->elapsedSeconds -
+                           this->getSimulationContext()->transitionPointSeconds.at(pedestrianId);
 
-  // // std::cout << "last transition ms of pedestrian(" << pedestrianId << ") is " << lastTransitionMs << ". Desired is " << this->desiredElapsedTime << std::endl;
+  // std::cout << "last transition ms of pedestrian(" << pedestrianId << ") is " << lastTransitionMs << ". Desired is " << this->desiredElapsedTime << std::endl;
 
-  // return lastTransitionMs > this->desiredElapsedTime;
-  return false;
+  return lastTransitionMs > this->desiredElapsedTime;
 }

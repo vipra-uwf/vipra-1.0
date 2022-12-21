@@ -10,10 +10,10 @@ StateCondition::evaluate(const ObstacleSet&   obsSet,
                          const Goals&         goals,
                          VIPRA::idx           pedestrianIndex) {
   // TODO: get index from id
-  // VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
+  VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
 
-  // int currentState = this->getSimulationContext()->states.at(pedestrianId);
+  VIPRA::stateUID currentState = this->getSimulationContext()->states.at(pedestrianId);
 
-  // return currentState == this->desiredState;
+  return currentState == this->desiredState;
   return false;
 }

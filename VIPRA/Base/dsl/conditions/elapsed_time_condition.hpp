@@ -10,7 +10,7 @@
  */
 class ElapsedTimeCondition : public Condition {
  public:
-  ElapsedTimeCondition(SimulationContext* simulationContext, float desiredElapsedTime);
+  ElapsedTimeCondition(SimulationContext* simulationContext, VIPRA::delta_t desiredElapsedTime);
   bool evaluate(const ObstacleSet&   obsSet,
                 const PedestrianSet& pedestrianSet,
                 const Goals&         goals,

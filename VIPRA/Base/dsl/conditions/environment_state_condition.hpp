@@ -9,14 +9,14 @@
 
 class EnvironmentStateCondition : public Condition {
  public:
-  explicit EnvironmentStateCondition(SimulationContext* simulationContext, size_t state);
+  explicit EnvironmentStateCondition(SimulationContext* simulationContext, VIPRA::stateUID state);
   bool evaluate(const ObstacleSet&   obsSet,
                 const PedestrianSet& pedestrianSet,
                 const Goals&         goals,
                 VIPRA::idx           pedestrianIndex) override;
 
  private:
-  size_t desiredState;
+  VIPRA::stateUID desiredState;
 };
 
 #endif  //VIPRA_ENVIRONMENT_STATE_CONDITION_HPP
