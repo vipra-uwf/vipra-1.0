@@ -5,10 +5,8 @@ EXPOSE 3001
 WORKDIR /usr/src/VIPRA
 
 RUN apt-get update && apt-get install
-RUN apt-get install -y nano
-RUN apt-get install -y gdb
-RUN apt-get install -y libantlr4-runtime-dev
-RUN npm install -g typescript 
+RUN npm install -g typescript
+RUN apt-get install -y cmake
 
 RUN mkdir /usr/src/VIPRA/certs
 
@@ -23,9 +21,12 @@ COPY ./VIPRA_Launcher ./VIPRA_Launcher
 RUN cd /usr/src/VIPRA/VIPRA_Launcher/server && npm run build
 
 
-COPY ./VIPRA_DEV ./VIPRA_DEV
-COPY ./Example_Maps ./VIPRA_DEV
-COPY ./Example_Modules ./VIPRA_DEV
+COPY ./VIPRA ./VIPRA
+COPY ./Maps ./Maps
+COPY ./Modules ./Modules
+COPY ./SimConfigs ./SimConfigs
+COPY ./Behaviors ./Behaviors
+
 
 RUN openssl req -newkey rsa:4096 \
             -x509 \
@@ -36,5 +37,6 @@ RUN openssl req -newkey rsa:4096 \
             -keyout /usr/src/VIPRA/certs/local.pem \
             -subj "/C=US/ST=FL/L=Tempe/O=UWF/CN=127.0.0.1"
 
+RUN cd /usr/src/VIPRA/VIPRA && make BuildAll
 
 CMD ["/bin/bash"]

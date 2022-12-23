@@ -38,18 +38,32 @@ compileMain: makeDirs
 makeDirs:
 	mkdir -p $(BUILD_DIR)
 
-testGenMain:
+GenMain:
+	cmake -B genbuild . -DDEBUG_MODE=OFF
+	cmake --build genbuild 
+
+GenSim:
+	cmake -B simbuild . -DGEN_MAIN=OFF -DDEBUG_MODE=OFF
+	cmake --build simbuild
+
+DebugGenMain:
 	cmake -B genbuild . -DDEBUG_MODE=ON
 	cmake --build genbuild 
 
-testGenSim:
+DebugGenSim:
 	cmake -B simbuild . -DGEN_MAIN=OFF -DDEBUG_MODE=ON
 	cmake --build simbuild
 
-testBuildAll:
+BuildAll:
 	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild
-	make testGenMain
+	make GenMain
 	./generate_main main.cpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
-	make testGenSim
+	make GenSim
 
-PHONY: makeDirs testGenMain testGenSim testBuildAll
+DebugBuildAll:
+	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild
+	make GenMain
+	./generate_main main.cpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
+	make GenSim
+
+PHONY: makeDirs GenMain GenSim BuildAll DebugBuildAll

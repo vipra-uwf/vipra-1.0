@@ -16,7 +16,7 @@ ExactlyNRandomSelector::selectPedestrianIds(const PedestrianSet& pedestrianSet) 
   VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
 
   while (selectedPedestrianIds.size() < count) {
-    VIPRA::uid pedestrianId = static_cast<VIPRA::uid>(rand()) % numPedestrians;
+    VIPRA::uid pedestrianId = static_cast<VIPRA::uid>(static_cast<VIPRA::size>(rand()) % numPedestrians);
     if (std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianId) ==
         selectedPedestrianIds.end()) {
       LJ::Debug(simLogger, "Selecting pedestrian id: {} for behavior.", pedestrianId);

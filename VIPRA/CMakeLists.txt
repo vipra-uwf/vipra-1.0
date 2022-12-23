@@ -26,10 +26,15 @@ if (GEN_MAIN)
   add_executable(
     ${PROJECT_NAME}
     ${BASE_DIR}/code_generation/code_generator.cpp 
-    ${DEPS_DIR}/jsoncpp/jsoncpp.cpp 
     ${BASE_DIR}/configuration/configuration_reader.cpp
   )
-  
+  add_subdirectory(${DEPS_DIR}/jsoncpp)
+  target_link_libraries(
+    ${PROJECT_NAME}
+    PUBLIC
+    jsoncpp
+  )
+
 else()
 
   set(PROJECT_NAME VIPRA_SIM)
@@ -63,9 +68,9 @@ endif(GEN_MAIN)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../ )
 
-target_compile_options(${PROJECT_NAME} PUBLIC -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wundef -Werror -Wno-unused)
 
 if (DEBUG_MODE)
+  target_compile_options(${PROJECT_NAME} PUBLIC -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wundef -Werror -Wno-unused)
   target_compile_options(${PROJECT_NAME} PUBLIC -g -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
   target_link_options(${PROJECT_NAME} PUBLIC -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
 endif ()

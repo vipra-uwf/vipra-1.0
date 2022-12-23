@@ -21,7 +21,7 @@ findState(std::vector<std::string> states, const std::string& stateName) {
   VIPRA::size stateCnt = states.size();
   for (VIPRA::idx i = 0; i < stateCnt; ++i) {
     if (states.at(i) == stateName) {
-      return i;
+      return static_cast<VIPRA::stateUID>(i);
     }
   }
   DSL_Exception::Throw("Invalid Behavior State: " + stateName);
