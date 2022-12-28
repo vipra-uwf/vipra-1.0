@@ -32,7 +32,9 @@ PassengerVehicleObstacleSet::initialize(std::unique_ptr<MapType> map) {
 }
 
 void
-PassengerVehicleObstacleSet::configure(const VIPRA::ConfigMap& configMap) {}
+PassengerVehicleObstacleSet::configure(const VIPRA::ConfigMap& configMap) {
+  obstacleCollisionDistance = std::stof(configMap.at("obstacleCollisionDistance"));
+}
 
 VIPRA::f3dVec
 PassengerVehicleObstacleSet::nearestObstacle(const PedestrianSet& PedSet) const {
@@ -103,6 +105,17 @@ PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const 
   }
 
   return -1;
+}
+
+bool
+PassengerVehicleObstacleSet::collision(VIPRA::f3d coords) const {
+  return std::any_of(
+      objects.at("obstacle").begin(), objects.at("obstacle").end(), [&](const VIPRA::f3d& obs) {
+        if (obs.distanceTo(coords) < obstacleCollisionDistance) {
+          return true;
+        }
+        return false;
+      });
 }
 
 void

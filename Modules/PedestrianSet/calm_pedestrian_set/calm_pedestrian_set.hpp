@@ -10,6 +10,11 @@
 #include "logging/logging.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 
+struct CalmState : public VIPRA::State {
+  std::vector<float> desiredSpeeds;
+  CalmState(VIPRA::size pedCnt) : VIPRA::State(pedCnt), desiredSpeeds(pedCnt) {}
+};
+
 class CalmPedestrianSet : public PedestrianSet {
  public:
   CalmPedestrianSet();

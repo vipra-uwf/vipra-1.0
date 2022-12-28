@@ -41,11 +41,12 @@ JSONTimestepWriter::initializeOutputFile(const std::string& outputFilePath) {
 void
 JSONTimestepWriter::addFloatValue(const std::string& key, float value) {
   if (key == "NEW_TIMESTEP") {
-    timestep = value;
+    timestep = std::to_string(currTimestep);
+    ++currTimestep;
     return;
   }
 
-  auto& currTS = document["timesteps"][std::to_string(timestep)];
+  auto& currTS = document["timesteps"][timestep];
   if (currTS.isNull()) {
     index = 0;
     currTS[index][key] = value;
@@ -69,10 +70,11 @@ JSONTimestepWriter::addFloatValue(const std::string& key, float value) {
 void
 JSONTimestepWriter::addStringValue(const std::string& key, const std::string& value) {
   if (key == "NEW_TIMESTEP") {
-    timestep = static_cast<VIPRA::t_step>(std::stoi(value));
+    timestep = std::to_string(currTimestep);
+    ++currTimestep;
     return;
   }
-  auto& currTS = document["timesteps"][std::to_string(timestep)];
+  auto& currTS = document["timesteps"][timestep];
   if (currTS.isNull()) {
     index = 0;
     currTS[index][key] = value;
@@ -92,7 +94,17 @@ JSONTimestepWriter::addStringValue(const std::string& key, const std::string& va
  */
 void
 JSONTimestepWriter::writeToDocument() {
-  fileStream << document;
+  const auto timesteps = document["timesteps"].size();
+  fileStream << "{ \"timesteps\": {\n";
+
+  for (Json::ArrayIndex i = 0; i < timesteps; ++i) {
+    fileStream << "\"" + std::to_string(i) + "\":";
+    fileStream << document["timesteps"][std::to_string(i)];
+    if (i < timesteps - 1) {
+      fileStream << ",";
+    }
+  }
+  fileStream << "\n}}";
   fileStream.close();
   document.clear();
 }

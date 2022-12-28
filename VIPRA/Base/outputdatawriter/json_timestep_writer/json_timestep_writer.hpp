@@ -8,7 +8,8 @@ class JSONTimestepWriter : public OutputDataWriter {
   std::ofstream    fileStream;
   Json::Value      document;
   Json::ArrayIndex index = 0;
-  VIPRA::t_step    timestep = 0;
+  std::string      timestep;
+  int              currTimestep = 0;
 
  public:
   JSONTimestepWriter();

@@ -1,6 +1,8 @@
 #ifndef AIRPLANE_OBSTACLE_SET
 #define AIRPLANE_OBSTACLE_SET
 
+#include <algorithm>
+
 #include "MapLoader/Point_Map_Loader/point_map_loader.hpp"
 #include "definitions/dimensions.hpp"
 #include "obstacleset/obstacle_set.hpp"
@@ -13,6 +15,8 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
   std::vector<std::string> objectTypes;
 
   VIPRA::f3d mapDimensions;
+
+  float obstacleCollisionDistance;
 
  public:
   void initialize(std::unique_ptr<MapType>) override;
@@ -30,6 +34,7 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
   VIPRA::f3d nearestObstacleInDirection(const VIPRA::f3d coordinates,
                                         const VIPRA::f3d velocity) const override;
 
+  bool  collision(VIPRA::f3d) const override;
   float rayHit(VIPRA::f3d, VIPRA::f3d) const noexcept override;
 
  private:

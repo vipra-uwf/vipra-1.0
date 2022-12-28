@@ -31,6 +31,7 @@ class ObstacleSet {
   virtual VIPRA::f3d nearestObstacle(VIPRA::f3d) const = 0;
   virtual VIPRA::f3d nearestObstacleInDirection(const VIPRA::f3d, const VIPRA::f3d) const = 0;
 
+  virtual bool  collision(VIPRA::f3d) const = 0;
   virtual float rayHit(VIPRA::f3d, VIPRA::f3d) const = 0;
 };
 

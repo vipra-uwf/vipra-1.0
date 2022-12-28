@@ -62,8 +62,8 @@ BuildAll:
 
 DebugBuildAll:
 	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild
-	make GenMain
+	make DebugGenMain
 	./generate_main main.cpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
-	make GenSim
+	make DebugGenSim
 
 PHONY: makeDirs GenMain GenSim BuildAll DebugBuildAll
