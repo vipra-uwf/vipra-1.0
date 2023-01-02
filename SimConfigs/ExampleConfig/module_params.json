@@ -29,7 +29,7 @@
     },
     "obstacle_set": {
         "params":{
-            "obstacleCollisionDistance": 0.01
+            "obstacleCollisionDistance": 0.05
         }
     },
     "entity_set_factory": {
@@ -42,7 +42,7 @@
             "pathFinding": "Disembark",
             "diagonalCost": 2.0,
             "endGoalType": "exit",
-            "goalRange": 0.05
+            "goalRange": 0.35
         }
     },
     "pedestrian_dynamics_model": {

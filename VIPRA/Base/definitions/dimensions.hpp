@@ -10,7 +10,7 @@ namespace VIPRA {
 struct f2d {
   float x, y;
 
-  ~f2d() {}
+  ~f2d() = default;
   constexpr explicit f2d() noexcept : x(0), y(0) {}
   constexpr explicit f2d(float X) noexcept : x(X), y(0) {}
   constexpr explicit f2d(float X, float Y) noexcept : x(X), y(Y) {}
@@ -99,17 +99,10 @@ struct f2d {
   }
 
   inline constexpr float distanceTo(const f2d& other) const {
-    float dX = other.x - x;
-    float dY = other.y - y;
+    const float dX = other.x - x;
+    const float dY = other.y - y;
 
-    if (dX != 0) {
-      dX = dX * dX;
-    }
-    if (dY != 0) {
-      dY = dY * dY;
-    }
-
-    return sqrt(dX + dY);
+    return sqrt((dX * dX) + (dY * dY));
   }
 
   inline constexpr bool operator==(const f2d& other) const noexcept { return (x == other.x && y == other.y); }
@@ -121,7 +114,7 @@ struct f2d {
 struct f3d {
   float x, y, z;
 
-  ~f3d() {}
+  ~f3d() = default;
   constexpr explicit f3d() noexcept : x(0), y(0), z(0) {}
   constexpr explicit f3d(float X) noexcept : x(X), y(0), z(0) {}
   constexpr explicit f3d(float X, float Y) noexcept : x(X), y(Y), z(0) {}
@@ -198,7 +191,7 @@ struct f3d {
     }
   }
 
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>>
+  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
   inline constexpr f3d operator*(T multiplier) const noexcept {
     return f3d{x, y, z} *= multiplier;
   }
@@ -257,27 +250,19 @@ struct f3d {
   }
 
   inline constexpr float distanceTo(const f2d& other) const {
-    float dX = other.x - x;
-    float dY = other.y - y;
-    float dZ = 0 - z;
+    const float dX = other.x - x;
+    const float dY = other.y - y;
+    const float dZ = 0 - z;
 
-    dX = dX * dX;
-    dY = dY * dY;
-    dZ = dZ * dZ;
-
-    return sqrt(dX + dY + dZ);
+    return sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
   }
 
   inline constexpr float distanceTo(const f3d& other) const {
-    float dX = other.x - x;
-    float dY = other.y - y;
-    float dZ = other.z - z;
+    const float dX = other.x - x;
+    const float dY = other.y - y;
+    const float dZ = other.z - z;
 
-    dX = dX * dX;
-    dY = dY * dY;
-    dZ = dZ * dZ;
-
-    return sqrt(dX + dY + dZ);
+    return sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
   }
 
   inline constexpr bool operator==(const f3d& other) const noexcept {
@@ -291,6 +276,11 @@ struct f3d {
   }
   inline constexpr bool operator!=(f3d&& other) const noexcept {
     return (x != other.x || y != other.y || z != other.z);
+  }
+
+  inline constexpr f3d unit() const {
+    const float mag = sqrt((x * x) + (y * y) + (z * z));
+    return VIPRA::f3d{x, y, z} / mag;
   }
 };
 

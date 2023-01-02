@@ -19,13 +19,13 @@ CalmPedestrianModel::timestep(const PedestrianSet& pedestrianSet,
                               VIPRA::delta_t       timestep) {
 
   calculateDistanceMatrices(static_cast<const CalmPedestrianSet&>(pedestrianSet));
-  calculateNeartestNeighbors(static_cast<const CalmPedestrianSet&>(pedestrianSet));
+  calculateNeartestNeighbors(static_cast<const CalmPedestrianSet&>(pedestrianSet), goals);
   calculateDesiredSpeeds(static_cast<const CalmPedestrianSet&>(pedestrianSet),
                          static_cast<const CalmGoals&>(goals));
   calculatePropulsion(static_cast<const CalmPedestrianSet&>(pedestrianSet),
                       static_cast<const CalmGoals&>(goals));
   updateModelState(static_cast<const CalmPedestrianSet&>(pedestrianSet), timestep);
-  checkForBlockedPaths(pedestrianSet, obstacleSet);
+  checkForBlockedPaths(static_cast<const CalmPedestrianSet&>(pedestrianSet), obstacleSet);
 
   return modelState;
 }
@@ -40,8 +40,8 @@ CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedestrianSet, VI
   VIPRA::f3dVec newPositions = VIPRA::f3dVec(pedestrianSet.getNumPedestrians(), VIPRA::f3d{0.0f, 0.0f});
 
   VIPRA::f3d newVelocity;
-  float      newSpeed;
   VIPRA::f3d newPosition;
+  float      newSpeed;
 
   VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
   for (VIPRA::idx i = 0; i < numPedestrians; ++i) {
@@ -74,20 +74,22 @@ CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedestrianSet, VI
   }
 }
 
-//TODO: Add Goals and ObstacleSet to Algorithm
+/**
+ * @brief Updates pedestrianDistanceMatrix with the coresponding distances between pedestrians
+ * @todo TODO: Add Goals and ObstacleSet to Algorithm
+ */
 void
 CalmPedestrianModel::calculateDistanceMatrices(const CalmPedestrianSet& pedestrianSet) {
   // Update the pedestrians since they could have been removed from the
   // simulation at this point. Also update the obstacles just in case they
   // can be removed in the future.
   VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
+  const auto& pedCoords = pedestrianSet.getPedestrianCoordinates();
 
   //Updates pedestrian-to-pedestrian distance matrix and pedestrian-to-object distance matrix
   for (VIPRA::idx i = 0; i < numPedestrians; ++i) {
     for (VIPRA::idx j = 0; j < i; ++j) {
-      float distance = pedestrianSet.getPedestrianCoordinates().at(i).distanceTo(
-          pedestrianSet.getPedestrianCoordinates().at(j));
-
+      float distance = pedCoords.at(i).distanceTo(pedCoords.at(j));
       pedestrianDistanceMatrix[(i * numPedestrians) + j] = distance;
     }
   }
@@ -95,14 +97,16 @@ CalmPedestrianModel::calculateDistanceMatrices(const CalmPedestrianSet& pedestri
 
 /**
  * @brief If a pedestrian has been moved inside of an obstacle, move them back to their original coordinates, set velocity to zero
- * 
+ * @todo TODO needs to check for shoulders, currently only checks the position of the pedestrian
  * @param pedSet 
  * @param obsSet 
  */
 void
-CalmPedestrianModel::checkForBlockedPaths(const PedestrianSet& pedSet, const ObstacleSet& obsSet) {
+CalmPedestrianModel::checkForBlockedPaths(const CalmPedestrianSet& pedSet, const ObstacleSet& obsSet) {
+
   const auto& pedCoords = pedSet.getPedestrianCoordinates();
-  VIPRA::idx  i = 0;
+
+  VIPRA::idx i = 0;
   std::for_each(modelState->pedestrianCoordinates.begin(),
                 modelState->pedestrianCoordinates.end(),
                 [&](VIPRA::f3d& pos) {
@@ -114,12 +118,16 @@ CalmPedestrianModel::checkForBlockedPaths(const PedestrianSet& pedSet, const Obs
                 });
 }
 
-//TODO: Add Goals and ObstacleSet
+/**
+ * @brief Updates nearestNeighbors with the nearest pedestrian in front of the pedestrian
+ * 
+ * @param pedSet 
+ */
 void
-CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet) {
+CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet, const Goals& goals) {
 
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
-  // const auto&       shoulderLengths = pedSet.getShoulderLengths();
+  const auto&       shoulderLengths = pedSet.getShoulderLengths();
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     float      nearestDist = std::numeric_limits<float>::max();
@@ -129,18 +137,32 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet)
       if (i == j)
         continue;
 
-      if (neighborDirectionTest(pedSet, i, j)) {
-        // && neighborSpacialTest(pedSet, i, j, shoulderLengths.at(i))) {
-        float dist = getPedestrianDistance(pedSet, i, j);
-        if (dist < nearestDist) {
-          nearestDist = dist;
-          nearestIdx = j;
-        }
+      // if (goals.isPedestianGoalMet(i))
+      //   continue;
+
+      if (!neighborDirectionTest(pedSet, i, j))
+        continue;
+
+      if (!neighborSpacialTest(pedSet, i, j, shoulderLengths.at(i)))
+        continue;
+
+      float dist = getPedestrianDistance(pedSet, i, j);
+      if (dist < nearestDist) {
+        nearestDist = dist;
+        nearestIdx = j;
       }
     }
+    nearestNeighbors[i] = nearestIdx;
   }
 }
 
+/**
+ * @brief returns true if pedestrian at secondIdx is infront of firstIdx, infront being in a 180 degree field in the direction of firstIdx's velocity
+ * 
+ * @param pedSet 
+ * @param firstIdx 
+ * @param secondIdx 
+ */
 inline bool
 CalmPedestrianModel::neighborDirectionTest(const CalmPedestrianSet& pedSet,
                                            VIPRA::idx               firstIdx,
@@ -148,96 +170,101 @@ CalmPedestrianModel::neighborDirectionTest(const CalmPedestrianSet& pedSet,
 
 {
   const auto& coords = pedSet.getPedestrianCoordinates();
-  float       displacementX = (coords.at(firstIdx).x - coords.at(secondIdx).x);
-  float       displacementY = (coords.at(firstIdx).y - coords.at(secondIdx).y);
+  VIPRA::f3d  displacement = coords.at(firstIdx) - coords.at(secondIdx);
+  VIPRA::f3d  direction = pedSet.getVelocities()[firstIdx];
 
-  float directionX = (pedSet.getVelocities())[firstIdx].x;
-  float directionY = (pedSet.getVelocities())[firstIdx].y;
+  float result =
+      (displacement.x * direction.x) + (displacement.y * direction.y) + (displacement.z * direction.z);
 
-  return ((displacementX * directionX) + (displacementY * directionY)) <= 0;
+  return result <= 0;
 }
 
+/**
+ * @brief Checks if two pedestrians can pass each other, by checking their shoulder widths
+ * 
+ * @param pedSet 
+ * @param firstPedIdx 
+ * @param secondPedIdx 
+ * @param firstShoulderLength
+ */
 inline bool
 CalmPedestrianModel::neighborSpacialTest(const CalmPedestrianSet& pedSet,
                                          VIPRA::idx               firstPedIdx,
                                          VIPRA::idx               secondPedIdx,
                                          float                    firstShoulderLength) {
-  // float firstPedestrianDirectionX;
-  // float firstPedestrianDirectionY;
 
-  // float secondPedestrianDirectionX;
-  // float secondPedestrianDirectionY;
+  const auto&      velocities = pedSet.getVelocities();
+  const VIPRA::f3d firstPedCoords = pedSet.getPedestrianCoordinates()[firstPedIdx];
+  const VIPRA::f3d secondPedCoords = pedSet.getPedestrianCoordinates()[secondPedIdx];
 
-  // float secondShoulderLength = 0;
-  // float L;
-  // float R;
+  const VIPRA::f3d firstPedDirection = VIPRA::f3d{std::fabs(velocities[firstPedIdx].x),
+                                                  std::fabs(velocities[firstPedIdx].y),
+                                                  std::fabs(velocities[firstPedIdx].z)};
 
-  // int coordinateIndex;
+  const VIPRA::f3d secondPedDirection = VIPRA::f3d{std::fabs(velocities[secondPedIdx].x),
+                                                   std::fabs(velocities[secondPedIdx].y),
+                                                   std::fabs(velocities[secondPedIdx].z)};
 
-  // firstPedestrianDirectionX = std::fabs((pedestrianSet.getVelocities())[firstPedestrianIndex].x);
-  // firstPedestrianDirectionY = std::fabs((pedestrianSet.getVelocities())[firstPedestrianIndex].y);
+  float secondShoulderLength = 0;
 
-  // if (originSet == "P") {
-  //   secondPedestrianDirectionX = std::fabs((pedestrianSet.getVelocities())[secondPedestrianIndex].x);
-  //   secondPedestrianDirectionY = std::fabs((pedestrianSet.getVelocities())[secondPedestrianIndex].y);
+  if ((firstPedDirection.x > firstPedDirection.y && secondPedDirection.x > secondPedDirection.y) ||
+      (firstPedDirection.y > firstPedDirection.x && secondPedDirection.y > secondPedDirection.x)) {
+    secondShoulderLength = pedSet.getShoulderLengths().at(secondPedIdx);
+  }
 
-  //   if ((firstPedestrianDirectionX > firstPedestrianDirectionY &&
-  //        secondPedestrianDirectionX > secondPedestrianDirectionY) ||
-  //       (firstPedestrianDirectionY > firstPedestrianDirectionX &&
-  //        secondPedestrianDirectionY > secondPedestrianDirectionX)) {
-  //     secondShoulderLength = pedestrianSet.getShoulderLengths().at(secondPedestrianIndex);
-  //   }
-  // }
+  float pedestrianDisplacement;
+  float secondDisplacement;
 
-  // float pedestrianDisplacement;
-  // float secondDisplacement;
+  //Set pedestrianDisplacement to either the X or Y coordinate if
+  //directionX is greater than directionY
+  if (firstPedDirection.x > firstPedDirection.y) {
+    pedestrianDisplacement = firstPedCoords.y;
+    secondDisplacement = secondPedCoords.y;
+  } else {
+    pedestrianDisplacement = firstPedCoords.x;
+    secondDisplacement = secondPedCoords.x;
+  }
 
-  // //Set pedestrianDisplacement to either the X or Y coordinate if
-  // //directionX is greater than directionY
-  // if (firstPedestrianDirectionX > firstPedestrianDirectionY) {
-  //   pedestrianDisplacement = pedestrianDisplacementY;
-  //   secondDisplacement = secondDisplacementY;
+  float L =
+      std::max((pedestrianDisplacement - firstShoulderLength), (secondDisplacement - secondShoulderLength));
+  float R =
+      std::min((pedestrianDisplacement + firstShoulderLength), (secondDisplacement + secondShoulderLength));
 
-  // } else {
-  //   pedestrianDisplacement = pedestrianDisplacementX;
-  //   secondDisplacement = secondDisplacementX;
-  // }
-
-  // L = std::max((pedestrianDisplacement - firstShoulderLength), (secondDisplacement - secondShoulderLength));
-
-  // R = std::min((pedestrianDisplacement + firstShoulderLength), (secondDisplacement + secondShoulderLength));
-
-  // return L <= R;
+  return L <= R;
 }
 
-//determine pedestrian direction
+/**
+ * @brief Calculates pedestrian Propulsion force and Updates propulsionForces
+ * 
+ * @param pedestrianSet 
+ * @param goals 
+ */
 void
 CalmPedestrianModel::calculatePropulsion(const CalmPedestrianSet& pedestrianSet, const CalmGoals& goals) {
-  const VIPRA::f3dVec& currentGoals = goals.getAllCurrentGoals();
+  const auto& currentGoals = goals.getAllCurrentGoals();
+  const auto& velocities = pedestrianSet.getVelocities();
+  const auto& coords = pedestrianSet.getPedestrianCoordinates();
+  const auto& masses = pedestrianSet.getMasses();
+  const auto& desiredSpeeds = pedestrianSet.getDesiredSpeeds();
+  const auto& reactionTimes = pedestrianSet.getReactionTimes();
 
   for (VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); ++i) {
+
     if (goals.isPedestianGoalMet(i))
       continue;
 
-    float goalX = currentGoals[i].x;
-    float goalY = currentGoals[i].y;
-    float coordinateX = pedestrianSet.getPedestrianCoordinates()[i].x;
-    float coordinateY = pedestrianSet.getPedestrianCoordinates()[i].y;
-    float mass = pedestrianSet.getMasses()[i];
-    float desiredSpeed = pedestrianSet.getDesiredSpeeds()[i];
-    float velocityX = pedestrianSet.getVelocities()[i].x;
-    float velocityY = pedestrianSet.getVelocities()[i].y;
-    float reactionTime = pedestrianSet.getReactionTimes()[i];
+    VIPRA::f3d velocity = velocities[i];
+    VIPRA::f3d goal = currentGoals[i];
+    VIPRA::f3d coord = coords[i];
+    float      mass = masses[i];
+    float      desiredSpeed = desiredSpeeds[i];
+    float      reactionTime = reactionTimes[i];
 
-    float directionX = goalX - coordinateX;
-    float directionY = goalY - coordinateY;
+    VIPRA::f3d direction = goal - coord;
+    VIPRA::f3d newVelocity = direction.unit() * desiredSpeed;
 
-    float mag = sqrt(directionX * directionX + directionY * directionY);
-
-    VIPRA::f3d newVelocity = VIPRA::f3d{directionX / mag * desiredSpeed, directionY / mag * desiredSpeed};
-
-    propulsionForces.at(i) = (VIPRA::f3d{(newVelocity.x - velocityX) * mass / reactionTime,
-                                         (newVelocity.y - velocityY) * mass / reactionTime});
+    propulsionForces.at(i) = (VIPRA::f3d{(newVelocity.x - velocity.x) * mass / reactionTime,
+                                         (newVelocity.y - velocity.y) * mass / reactionTime});
   }
 }
 
@@ -265,8 +292,10 @@ CalmPedestrianModel::calculateDesiredSpeeds(const CalmPedestrianSet& pedestrianS
         distanceMinusB = (getPedestrianDistance(pedestrianSet, i, nearestNeighborIndex)) - b;
       }
 
-      modelState->desiredSpeeds[i] =
+      float desiredSpeed =
           (0.3 * (c - exp(a * distanceMinusB)));  // Might need to change this depending on goal.
+
+      modelState->desiredSpeeds[i] = desiredSpeed;
     }
   }
 }

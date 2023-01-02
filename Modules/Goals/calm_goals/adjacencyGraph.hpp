@@ -37,7 +37,8 @@ class Graph {
   void buildGraph(const ObstacleSet& obSet) {
     obs = &obSet;
     const VIPRA::f3d mapRes = obSet.getMapDimensions();
-    root = construct(VIPRA::f3d{mapRes.x / 2, mapRes.y / 2}, mapRes.x);
+    float            mapSize = std::max(mapRes.x, mapRes.y);
+    root = construct(VIPRA::f3d{mapSize / 2, mapSize / 2}, mapSize);
     buildAdjacencies(root);
   }
 
@@ -117,7 +118,7 @@ class Graph {
       VIPRA::f3d move{dx, dy};
       Quad*      curr = from;
       while (curr != nullptr && curr != to) {
-        checkPoint = VIPRA::f3d{checkPoint.x + move.x, checkPoint.y + move.y};
+        checkPoint += move;
         curr = search(checkPoint);
         if (!curr->traversable) {
           return;

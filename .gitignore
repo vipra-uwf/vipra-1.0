@@ -42,6 +42,7 @@ odeint-v2
 .vagrant
 .antlr
 .idea
+package-lock.json
 
 # VSCode
 .vscode

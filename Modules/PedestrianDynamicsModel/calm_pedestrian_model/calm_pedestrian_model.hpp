@@ -34,7 +34,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   VIPRA::f3dVec           getPropulsionForces();
 
   void calculatePropulsion(const CalmPedestrianSet&, const CalmGoals&);
-  void calculateNeartestNeighbors(const CalmPedestrianSet&);
+  void calculateNeartestNeighbors(const CalmPedestrianSet&, const Goals&);
   void calculateDistanceMatrices(const CalmPedestrianSet&);
   void calculateDesiredSpeeds(const CalmPedestrianSet&, const CalmGoals&);
 
@@ -80,7 +80,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   float getObstacleDistance(VIPRA::idx pedIndex, VIPRA::idx obsIndex);
 
-  void checkForBlockedPaths(const PedestrianSet&, const ObstacleSet&);
+  void checkForBlockedPaths(const CalmPedestrianSet&, const ObstacleSet&);
 };
 
 #endif

@@ -30,6 +30,7 @@ class Simulation {
  private:
   VIPRA::t_step  timestep;
   VIPRA::delta_t timestep_size;
+  VIPRA::t_step  maxTimeStep;
 };
 
 #endif
