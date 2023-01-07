@@ -13,7 +13,7 @@ typedef uint64_t size;
 typedef uint64_t t_step;
 typedef float    delta_t;
 
-constexpr const idx idx_INVALID = std::numeric_limits<idx>::max();
+static constexpr const idx idx_INVALID = std::numeric_limits<idx>::max();
 }  // namespace VIPRA
 
 #endif

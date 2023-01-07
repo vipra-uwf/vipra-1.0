@@ -20,7 +20,7 @@ CalmPedestrianSet::initialize(VIPRA::EntitySet pedestrians) {
   velocities = VIPRA::f3dVec(pedCnt, VIPRA::f3d{STARTING_VELOCITY_X, STARTING_VELOCITY_Y});
   speedsMetersPerSecond = std::vector<float>(pedCnt, STARTING_SPEED);
   massesKg = std::vector<float>(pedCnt, startMass);
-  reactionTimes = std::vector<float>(pedCnt, STARTING_REACTION_TIME);
+  reactionTimes = std::vector<float>(pedCnt, startReaction_time);
   desiredSpeeds = std::vector<float>(pedCnt, startDesired_speed);
   shoulderLengths = std::vector<float>(pedCnt, STARTING_SHOULDER_WIDTH);
   reactionTimes = std::vector<float>(pedCnt, startReaction_time);

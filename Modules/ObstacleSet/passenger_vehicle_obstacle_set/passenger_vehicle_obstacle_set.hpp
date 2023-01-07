@@ -2,6 +2,7 @@
 #define AIRPLANE_OBSTACLE_SET
 
 #include <algorithm>
+#include <limits>
 
 #include "MapLoader/Point_Map_Loader/point_map_loader.hpp"
 #include "definitions/dimensions.hpp"
@@ -31,8 +32,7 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
   VIPRA::f3dVec nearestObstacleInDirection(const PedestrianSet&) const override;
 
   VIPRA::f3d nearestObstacle(const VIPRA::f3d coordinates) const override;
-  VIPRA::f3d nearestObstacleInDirection(const VIPRA::f3d coordinates,
-                                        const VIPRA::f3d velocity) const override;
+  VIPRA::f3d nearestObstacleInDirection(const VIPRA::f3d coordinates, const VIPRA::f3d velocity) const override;
 
   bool  collision(VIPRA::f3d) const override;
   float rayHit(VIPRA::f3d, VIPRA::f3d) const noexcept override;

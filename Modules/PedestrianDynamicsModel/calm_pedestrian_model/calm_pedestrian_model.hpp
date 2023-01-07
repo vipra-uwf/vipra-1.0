@@ -27,16 +27,16 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
                                          VIPRA::delta_t) override;
 
   //Getters and Setters
-  float                   getPedestrianDistance(const CalmPedestrianSet&,
-                                                VIPRA::idx firstPedestrian,
-                                                VIPRA::idx secondPedestrian);
-  std::vector<VIPRA::idx> getNearestNeighbors();
-  VIPRA::f3dVec           getPropulsionForces();
+  float              getPedestrianDistance(const CalmPedestrianSet&,
+                                           VIPRA::idx firstPedestrian,
+                                           VIPRA::idx secondPedestrian);
+  std::vector<float> getNearestNeighbors();
+  VIPRA::f3dVec      getPropulsionForces();
 
   void calculatePropulsion(const CalmPedestrianSet&, const CalmGoals&);
-  void calculateNeartestNeighbors(const CalmPedestrianSet&, const Goals&);
+  void calculateNeartestNeighbors(const CalmPedestrianSet&, const ObstacleSet&, const Goals&);
   void calculateDistanceMatrices(const CalmPedestrianSet&);
-  void calculateDesiredSpeeds(const CalmPedestrianSet&, const CalmGoals&);
+  void updateDesiredSpeeds(const CalmPedestrianSet&, const CalmGoals&);
 
  private:
   std::vector<float> holds;
@@ -47,9 +47,9 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   VIPRA::f3dVec racePositions;
   VIPRA::f3dVec propulsionForces;
 
-  std::vector<bool>       pathBlocked;
-  std::vector<VIPRA::idx> nearestNeighbors;
-  std::vector<float>      priorities;
+  std::vector<bool>  pathBlocked;
+  std::vector<float> nearestNeighbors;
+  std::vector<float> priorities;
 
   std::vector<int>        raceCounter;
   std::vector<VIPRA::uid> opponentIDs;
@@ -69,18 +69,23 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   void updateModelState(const CalmPedestrianSet&, VIPRA::delta_t);
 
-  inline bool neighborDirectionTest(const CalmPedestrianSet& pedestrianSet,
-                                    VIPRA::idx               firstPedestrianIndex,
-                                    VIPRA::idx               secondPedestrianIndex);
+  inline bool objectDirectionTest(const VIPRA::f3d& pedCoords,
+                                  const VIPRA::f3d& pedVelocity,
+                                  const VIPRA::f3d& objCoords);
 
-  inline bool neighborSpacialTest(const CalmPedestrianSet& pedestrianSet,
-                                  VIPRA::idx               firstPedestrianIndex,
-                                  VIPRA::idx               secondPedestrianIndex,
-                                  float                    firstShoulderLength);
+  inline bool objectSpatialTest(const VIPRA::f3d& pedCoords,
+                                const VIPRA::f3d& pedVelocity,
+                                float             pedShoulderLength,
+                                const VIPRA::f3d& objLeft,
+                                const VIPRA::f3d& objRight);
 
-  float getObstacleDistance(VIPRA::idx pedIndex, VIPRA::idx obsIndex);
+  inline float checkBlockedPath(const VIPRA::f3d&  coords,
+                                const VIPRA::f3d&  velocity,
+                                float              shoulderWidth,
+                                float              checkDistance,
+                                const ObstacleSet& obsSet);
 
-  void checkForBlockedPaths(const CalmPedestrianSet&, const ObstacleSet&);
+  constexpr float calculateDesiredSpeed(float);
 };
 
 #endif

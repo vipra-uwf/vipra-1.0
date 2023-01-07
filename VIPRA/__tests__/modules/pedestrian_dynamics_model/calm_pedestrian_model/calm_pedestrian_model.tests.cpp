@@ -54,11 +54,11 @@ TEST(Calm_Ped_Model, Model_Returns_Correct_Nearest_Neighbor) {
 
   pedestrianModel.initialize(pedestrianSet, obs, goals);
   pedestrianModel.calculateDistanceMatrices(pedestrianSet);
-  pedestrianModel.calculateNeartestNeighbors(pedestrianSet);
+  pedestrianModel.calculateNeartestNeighbors(pedestrianSet, goals);
 
-  EXPECT_EQ(pedestrianModel.getNearestNeighbors().at(0).second, -1);
-  EXPECT_EQ(pedestrianModel.getNearestNeighbors().at(1).second, 0);
-  EXPECT_EQ(pedestrianModel.getNearestNeighbors().at(2).second, 1);
+  EXPECT_EQ(pedestrianModel.getNearestNeighbors().at(0), VIPRA::idx_INVALID);
+  EXPECT_EQ(pedestrianModel.getNearestNeighbors().at(1), 0);
+  EXPECT_EQ(pedestrianModel.getNearestNeighbors().at(2), 1);
 }
 
 TEST(Calm_Ped_Model, Model_Calculates_Correct_Propulsion) {

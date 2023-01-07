@@ -84,7 +84,8 @@ struct f2d {
     return *this;
   }
 
-  inline f2d operator+(const f2d& other) const noexcept { return f2d{x + other.x, y + other.y}; }
+  inline constexpr f2d operator+(const f2d& other) const noexcept { return f2d{x + other.x, y + other.y}; }
+  inline constexpr f2d operator-(const f2d& other) const noexcept { return f2d{x - other.x, y - other.y}; }
 
   inline constexpr f2d& operator+=(const f2d& other) noexcept {
     x += other.x;
@@ -102,7 +103,12 @@ struct f2d {
     const float dX = other.x - x;
     const float dY = other.y - y;
 
-    return sqrt((dX * dX) + (dY * dY));
+    return std::sqrt((dX * dX) + (dY * dY));
+  }
+
+  inline constexpr f2d unit() const {
+    const float mag = std::sqrt((x * x) + (y * y));
+    return VIPRA::f2d{x, y} / mag;
   }
 
   inline constexpr bool operator==(const f2d& other) const noexcept { return (x == other.x && y == other.y); }
@@ -215,13 +221,17 @@ struct f3d {
     return *this;
   }
 
-  inline f3d operator-(const f2d& other) const noexcept { return f3d{x - other.x, y - other.y, z}; }
-  inline f3d operator-(const f3d& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
-  inline f3d operator-(f3d&& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
+  inline constexpr f3d operator-(const f2d& other) const noexcept { return f3d{x - other.x, y - other.y, z}; }
+  inline constexpr f3d operator-(const f3d& other) const noexcept {
+    return f3d{x - other.x, y - other.y, z - other.z};
+  }
+  inline constexpr f3d operator-(f3d&& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
 
-  inline f3d operator+(const f2d& other) const noexcept { return f3d{x + other.x, y + other.y, z}; }
-  inline f3d operator+(const f3d& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
-  inline f3d operator+(f3d&& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
+  inline constexpr f3d operator+(const f2d& other) const noexcept { return f3d{x + other.x, y + other.y, z}; }
+  inline constexpr f3d operator+(const f3d& other) const noexcept {
+    return f3d{x + other.x, y + other.y, z + other.z};
+  }
+  inline constexpr f3d operator+(f3d&& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
 
   inline constexpr f3d& operator+=(const f3d& other) noexcept {
     x += other.x;
@@ -254,7 +264,15 @@ struct f3d {
     const float dY = other.y - y;
     const float dZ = 0 - z;
 
-    return sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
+    return std::sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
+  }
+
+  inline constexpr float distanceToSquared(const f3d& other) const {
+    const float dX = other.x - x;
+    const float dY = other.y - y;
+    const float dZ = other.z - z;
+
+    return (dX * dX) + (dY * dY) + (dZ * dZ);
   }
 
   inline constexpr float distanceTo(const f3d& other) const {
@@ -262,7 +280,7 @@ struct f3d {
     const float dY = other.y - y;
     const float dZ = other.z - z;
 
-    return sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
+    return std::sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
   }
 
   inline constexpr bool operator==(const f3d& other) const noexcept {
@@ -279,9 +297,11 @@ struct f3d {
   }
 
   inline constexpr f3d unit() const {
-    const float mag = sqrt((x * x) + (y * y) + (z * z));
+    const float mag = std::sqrt((x * x) + (y * y) + (z * z));
     return VIPRA::f3d{x, y, z} / mag;
   }
+
+  inline constexpr float magnitude() const { return std::sqrt((x * x) + (y * y) + (z * z)); }
 };
 
 typedef std::vector<f2d> f2dVec;

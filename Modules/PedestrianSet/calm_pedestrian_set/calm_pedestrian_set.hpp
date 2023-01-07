@@ -87,12 +87,8 @@ class CalmPedestrianSet : public PedestrianSet {
 
   static constexpr float STARTING_SPEED = 0.0f;
 
-  static constexpr float STARTING_MASS = 0.0f;
-
-  static constexpr float STARTING_REACTION_TIME = 0.0f;
-  static constexpr float STARTING_DESIRED_SPEED = 0.0f;
   static constexpr float STARTING_PROP_FORCE = 0.0f;
   static constexpr float STARTING_NEAREST_NEIGHBOR = 0.0f;
-  static constexpr float STARTING_SHOULDER_WIDTH = 0.0f;
+  static constexpr float STARTING_SHOULDER_WIDTH = 0.25f;
 };
 #endif

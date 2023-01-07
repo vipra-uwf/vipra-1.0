@@ -96,49 +96,61 @@ PassengerVehicleObstacleSet::getMapDimensions() const noexcept {
 
 float
 PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const noexcept {
+  const auto& obstacles = objects.at("obstacle");
+  float       nearest = std::numeric_limits<float>::max();
 
-  for (size_t i = 0; i < objects.at("obstacle").size(); i++) {
-    VIPRA::f3d coordinates = objects.at("obstacle")[i];
+  for (const auto& obstacle : obstacles) {
+    const VIPRA::f3d vAP = obstacle - point1;
+    const VIPRA::f3d vAB = point2 - point1;
 
-    if (coordinates.distanceTo(point1) + coordinates.distanceTo(point1) == point1.distanceTo(point2))
-      return coordinates.distanceTo(point1);
+    float sqDistanceAB = point1.distanceToSquared(point2);
+    float ABAPproduct = vAB.x * vAP.x + vAB.y * vAP.y;
+    float amount = ABAPproduct / sqDistanceAB;
+
+    VIPRA::f3d intersect =
+        VIPRA::f3d{(amount * (point2.x - point1.x)) + point1.x, (amount * (point2.y - point1.y)) + point1.y};
+
+    if (intersect.distanceTo(obstacle) < obstacleCollisionDistance) {
+      float dist = intersect.distanceTo(point1);
+      if (dist < nearest) {
+        nearest = dist;
+      }
+    }
   }
 
-  return -1;
+  if (nearest == std::numeric_limits<float>::max()) {
+    return -1;
+  }
+  return nearest;
 }
 
 bool
 PassengerVehicleObstacleSet::collision(VIPRA::f3d coords) const {
-  return std::any_of(
-      objects.at("obstacle").begin(), objects.at("obstacle").end(), [&](const VIPRA::f3d& obs) {
-        if (obs.distanceTo(coords) < obstacleCollisionDistance) {
-          return true;
-        }
-        return false;
-      });
+  return std::any_of(objects.at("obstacle").begin(), objects.at("obstacle").end(), [&](const VIPRA::f3d& obs) {
+    if (obs.distanceTo(coords) < obstacleCollisionDistance) {
+      return true;
+    }
+    return false;
+  });
 }
 
 void
 PassengerVehicleObstacleSet::checkMap() const {
   // check that seat, exit, aisle, and endOfAilse exists
   if (objects.find("exit") == objects.end()) {
-    ObstacleSetException::Throw(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"exit\"");
+    ObstacleSetException::Throw("PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"exit\"");
   }
   if (objects.find("endOfAisle") == objects.end()) {
     ObstacleSetException::Throw(
         "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"endOfAisle\"");
   }
   if (objects.find("aisle") == objects.end()) {
-    ObstacleSetException::Throw(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"aisle\"");
+    ObstacleSetException::Throw("PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"aisle\"");
   }
   if (objects.find("seat") == objects.end()) {
-    ObstacleSetException::Throw(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"seat\"");
+    ObstacleSetException::Throw("PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"seat\"");
   }
   if (objects.find("obstacle") == objects.end()) {
-    ObstacleSetException::Throw(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"obstacle\"");
+    ObstacleSetException::Throw("PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"obstacle\"");
   }
 }
