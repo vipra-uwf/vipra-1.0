@@ -6,7 +6,6 @@
 #include "definitions/dimensions.hpp"
 
 namespace VIPRA {
-typedef int64_t  uid;
 typedef uint64_t idx;
 typedef uint64_t size;
 

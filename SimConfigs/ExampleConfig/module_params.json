@@ -22,9 +22,7 @@
     },
     "pedestrian_set": {
         "params":{
-            "mass": 1.000000,
-            "reaction_time": 0.400000,
-            "desired_speed": 1.000000
+
         }
     },
     "obstacle_set": {
@@ -64,7 +62,7 @@
         "params":{
             "time_step": 0.00,
             "time_step_size": 0.005,
-            "max_timestep": 10000
+            "max_timestep": 5000
         }
     }
 }

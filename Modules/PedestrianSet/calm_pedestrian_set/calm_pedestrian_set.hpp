@@ -6,8 +6,10 @@
 #include <string>
 #include <utility>
 
+#include "PedestrianLoader/calm_pedestrian_loader/calm_pedestrian_loader.hpp"
 #include "definitions/state.hpp"
 #include "logging/logging.hpp"
+#include "pedestrianloader/pedestrian_loader.hpp"
 #include "pedestrianset/pedestrian_set.hpp"
 
 struct CalmState : public VIPRA::State {
@@ -19,76 +21,30 @@ class CalmPedestrianSet : public PedestrianSet {
  public:
   CalmPedestrianSet();
 
-  void configure(const VIPRA::ConfigMap& configMap) override;
-  void initialize(VIPRA::EntitySet pedestrianCount) override;
-  void removePedestrian(VIPRA::idx pedestrianIndex) override;
+  void updateState(std::shared_ptr<VIPRA::State>) override;
 
-  [[nodiscard]] VIPRA::size                    getNumPedestrians() const noexcept override;
-  [[nodiscard]] const std::vector<VIPRA::uid>& getIds() const noexcept override;
+  void configure(const VIPRA::ConfigMap&) override;
+  void initialize(std::unique_ptr<VIPRA::PedData>) override;
 
-  [[nodiscard]] const VIPRA::f3dVec&      getPedestrianCoordinates() const noexcept override;
-  [[nodiscard]] const VIPRA::f3dVec&      getVelocities() const noexcept override;
-  [[nodiscard]] const VIPRA::f3dVec&      getGoalCoordinates();
-  [[nodiscard]] const std::vector<float>& getSpeeds() const noexcept override;
+  [[nodiscard]] VIPRA::size getNumPedestrians() const noexcept override;
 
-  void setNumPedestrians(VIPRA::size numPedestrians) override;
-  void setIds(std::vector<VIPRA::uid> ids) override;
-
-  void setPedestrianCoordinates(const VIPRA::f3d& coords, VIPRA::idx index) override;
-  void setPedestrianCoordinates(VIPRA::f3d&& coords, VIPRA::idx index) override;
-  void setPedestrianCoordinates(const VIPRA::f3dVec& coordinates) noexcept override;
-  void setPedestrianCoordinates(VIPRA::f3dVec&& coordinates) noexcept override;
-
-  void setVelocity(const VIPRA::f3d& velocity, VIPRA::idx index) override;
-  void setVelocity(VIPRA::f3d&& velocity, VIPRA::idx index) override;
-  void setVelocities(const VIPRA::f3dVec& velocities) noexcept override;
-  void setVelocities(VIPRA::f3dVec&& velocities) noexcept override;
-
-  void setSpeed(float speed, VIPRA::idx index) override;
-  void setSpeeds(const std::vector<float>& speedsMetersPerSecond) noexcept override;
-  void setSpeeds(std::vector<float>&& speedsMetersPerSecond) noexcept override;
+  [[nodiscard]] const VIPRA::f3dVec& getPedestrianCoordinates() const noexcept override;
+  [[nodiscard]] const VIPRA::f3dVec& getVelocities() const noexcept override;
 
   [[nodiscard]] const std::vector<float>& getMasses() const noexcept;
   [[nodiscard]] const std::vector<float>& getReactionTimes() const noexcept;
   [[nodiscard]] const std::vector<float>& getDesiredSpeeds() const noexcept;
   [[nodiscard]] const std::vector<float>& getShoulderLengths() const noexcept;
 
-  [[nodiscard]] const std::vector<VIPRA::idx>& getStartingAisles() const noexcept;
-
-  void setMasses(std::vector<float>& massesKg);
-  void setReactionTimes(std::vector<float>& reactionTimes);
-  void setDesiredSpeeds(std::vector<float>& desiredSpeeds);
-  void setShoulderLengths(std::vector<float>& shoulderLengths);
-
-  void updateState(std::shared_ptr<VIPRA::State> state) override;
-
  private:
   VIPRA::size numPedestrians;
 
   VIPRA::f3dVec pedestrianCoordinates;
-  VIPRA::f3dVec goalCoordinates;
   VIPRA::f3dVec velocities;
 
-  std::vector<float> speedsMetersPerSecond;
-  std::vector<float> massesKg;
+  std::vector<float> masses;
   std::vector<float> reactionTimes;
   std::vector<float> desiredSpeeds;
   std::vector<float> shoulderLengths;
-
-  std::vector<VIPRA::uid> ids;
-
-  float startMass = 0.0f;
-  float startReaction_time = 0.0f;
-  float startDesired_speed = 0.0f;
-
-  //Constants used for initializing data
-  static constexpr float STARTING_VELOCITY_X = 0.0f;
-  static constexpr float STARTING_VELOCITY_Y = 0.0f;
-
-  static constexpr float STARTING_SPEED = 0.0f;
-
-  static constexpr float STARTING_PROP_FORCE = 0.0f;
-  static constexpr float STARTING_NEAREST_NEIGHBOR = 0.0f;
-  static constexpr float STARTING_SHOULDER_WIDTH = 0.25f;
 };
 #endif

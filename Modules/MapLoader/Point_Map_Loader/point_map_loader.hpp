@@ -7,15 +7,15 @@
 #include "jsoncpp/json/json.h"
 #include "maploader/map_loader.hpp"
 
-struct PointMap : public MapType {
+struct PointMap : public VIPRA::MapData {
   VIPRA::EntitySet entities;
 };
 
 class PointMapLoader : public MapLoader {
  public:
-  void                     configure(const VIPRA::ConfigMap& configMap) override;
-  void                     initialize() override;
-  std::unique_ptr<MapType> LoadMap(const std::string& filePath) const override;
+  void                            configure(const VIPRA::ConfigMap& configMap) override;
+  void                            initialize() override;
+  std::unique_ptr<VIPRA::MapData> LoadMap(const std::string& filePath) const override;
 };
 
 #endif

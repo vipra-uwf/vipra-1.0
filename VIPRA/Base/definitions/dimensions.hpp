@@ -297,6 +297,9 @@ struct f3d {
   }
 
   inline constexpr f3d unit() const {
+    if (x == 0 && y == 0 && z == 0) {
+      return VIPRA::f3d{};
+    }
     const float mag = std::sqrt((x * x) + (y * y) + (z * z));
     return VIPRA::f3d{x, y, z} / mag;
   }

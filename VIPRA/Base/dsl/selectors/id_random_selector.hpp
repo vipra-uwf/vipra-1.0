@@ -24,7 +24,7 @@ class IdRandomSelector : public Selector {
               VIPRA::idx           pedestrianIndex) override;
 
  private:
-  std::vector<VIPRA::uid> selectedPedestrianIds;
+  std::vector<VIPRA::idx> selectedPedestrianIds;
   float                   ratio;
   void                    selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };

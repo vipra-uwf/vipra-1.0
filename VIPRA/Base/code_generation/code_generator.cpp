@@ -34,21 +34,19 @@ std::string              optionsFile;
 std::vector<std::string> includes;
 Json::Value              jsonObj;
 
-const std::unordered_map<std::string, std::string> TYPES{
-    {"pedestrian_dynamics_model", "PedestrianDynamicsModel"},
-    {"goals", "Goals"},
-    {"output_data_writer", "OutputDataWriter"},
-    {"input_data_loader", "InputDataLoader"},
-    {"simulation_output_handler", "SimulationOutputHandler"},
-    {"pedestrian_set", "PedestrianSet"},
-    {"obstacle_set", "ObstacleSet"},
-    {"human_behavior_model", "HumanBehaviorModel"},
-    {"configuration_reader", "ConfigurationReader"},
-    {"clock", "Clock"},
-    {"simulation", "Simulation"},
-    {"policy_model", "PolicyModel"},
-    {"map_loader", "MapLoader"},
-    {"pedestrian_loader", "PedestrianLoader"}};
+const std::unordered_map<std::string, std::string> TYPES{{"pedestrian_dynamics_model", "PedestrianDynamicsModel"},
+                                                         {"goals", "Goals"},
+                                                         {"output_data_writer", "OutputDataWriter"},
+                                                         {"simulation_output_handler", "SimulationOutputHandler"},
+                                                         {"pedestrian_set", "PedestrianSet"},
+                                                         {"obstacle_set", "ObstacleSet"},
+                                                         {"human_behavior_model", "HumanBehaviorModel"},
+                                                         {"configuration_reader", "ConfigurationReader"},
+                                                         {"clock", "Clock"},
+                                                         {"simulation", "Simulation"},
+                                                         {"policy_model", "PolicyModel"},
+                                                         {"map_loader", "MapLoader"},
+                                                         {"pedestrian_loader", "PedestrianLoader"}};
 
 int
 main(int argc, char const* argv[]) {
@@ -162,7 +160,8 @@ generateFunctionOptions(const std::string& type) {
                            module["name"].asString() + ";" + "\n\t}";
     }
   }
-
+  generatedFunction +=
+      "\n\tthrow std::runtime_error(\"No Valid Module of Type: " + type + " Was Chosen. Provided ID: \" + id);";
   generatedFunction += "\n\treturn nullptr;\n}";
   return generatedFunction;
 }
@@ -209,16 +208,17 @@ generateMain() {
 
 std::string
 initializeModules() {
-  return Log("Initializing Map Loader") + "\n\tmap_loader->initialize();" + Log("Initializing Obstacle Set") +
-         "\n\tobstacle_set->initialize(map_loader->LoadMap(obstacleFile));" +
-         Log("Initializing Pedestrian Set") +
-         "\n\tpedestrian_set->initialize(input_data_loader->getInputEntities(pedestrianFile));" +
-         Log("Initializing Goals") + "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);" +
+  return Log("Initializing Map Loader") + "\n\tmap_loader->initialize();\n\t" + Log("Loading Map") +
+         "\n\tauto map = map_loader->LoadMap(obstacleFile);\n\t" + Log("Initializing Obstacle Set") +
+         "\n\tobstacle_set->initialize(std::move(map));\n\t" + Log("Loading Pedestrians") +
+         "\n\tauto peds = pedestrian_loader->LoadPedestrians(pedestrianFile);\n\t" +
+         Log("Initializing Pedestrian Set") + "\n\tpedestrian_set->initialize(std::move(peds));\n\t" +
+         Log("Initializing Goals") + "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" +
          Log("Initializing Human Behavior Model") +
-         "\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);" +
+         "\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);\n\t" +
          Log("Initializing Pedestrian Dynamics Model") +
-         "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);" +
-         Log("Initializing Simulation") + "\n\tsimulation->initialize();";
+         "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +
+         Log("Initializing Simulation") + "\n\tsimulation->initialize();\n\t";
 }
 
 std::string
@@ -236,8 +236,8 @@ std::string
 generateModules() {
   std::string str{""};
   for (const auto& [type, className] : TYPES) {
-    str += "\n\t" + className + "* " + type + " = generate" + className +
-           "(simulationJsonConfig[\"modules\"][\"" + type + "\"].asString(), " + type + "Config);";
+    str += "\n\t" + className + "* " + type + " = generate" + className + "(simulationJsonConfig[\"modules\"][\"" +
+           type + "\"].asString(), " + type + "Config);";
   }
 
   return str;

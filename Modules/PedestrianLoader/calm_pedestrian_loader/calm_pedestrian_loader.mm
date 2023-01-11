@@ -1,8 +1,8 @@
 {
   "id"          : "8oGawQjwJZutb4Us6lDU7R",
-  "name"        : "pedestrian_position_loader",
+  "name"        : "calm_pedestrian_loader",
   "description" : "TODO",
   "params"      : [],
-  "className"   : "PedestrianPositionLoader",
+  "className"   : "CalmPedestrianLoader",
   "type"        : "pedestrian_loader"
 }

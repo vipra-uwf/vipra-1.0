@@ -1,5 +1,5 @@
 file(GLOB
-pedestrian_position_loader_srcs
+calm_pedestrian_loader_srcs
 *.cpp
 *.hpp
 */*.cpp
@@ -9,5 +9,5 @@ pedestrian_position_loader_srcs
 target_sources(
 ${PROJECT_NAME}
 PRIVATE
-${pedestrian_position_loader_srcs}
+${calm_pedestrian_loader_srcs}
 )

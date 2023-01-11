@@ -22,7 +22,7 @@ makeDimensions(const VIPRA::EntitySet& objects) {
 }
 
 void
-PassengerVehicleObstacleSet::initialize(std::unique_ptr<MapType> map) {
+PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map) {
   if (map->type != "PointMap") {
     ObstacleSetException::Throw("Improper Map Type, Expected \"PointMap\"");
   }

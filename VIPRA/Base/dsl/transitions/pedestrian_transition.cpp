@@ -10,12 +10,9 @@ PedestrianTransition::evaluateTransition(const ObstacleSet&   obsSet,
                                          const PedestrianSet& pedSet,
                                          const Goals&         goals,
                                          VIPRA::idx           pedestrianIndex) {
-  VIPRA::uid pedestrianId = pedSet.getIds().at(pedestrianIndex);
-
   if (this->condition->evaluate(obsSet, pedSet, goals, pedestrianIndex)) {
-    this->simulationContext->states.at(pedestrianId) = newState;
-    this->simulationContext->transitionPointSeconds.at(pedestrianId) =
-        this->simulationContext->elapsedSeconds;
+    this->simulationContext->states.at(pedestrianIndex) = newState;
+    this->simulationContext->transitionPointSeconds.at(pedestrianIndex) = this->simulationContext->elapsedSeconds;
     return true;
   }
 

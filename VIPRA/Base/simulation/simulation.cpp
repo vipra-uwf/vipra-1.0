@@ -4,7 +4,7 @@ void
 Simulation::configure(const VIPRA::ConfigMap& config) {
   timestep = 0;
   timestep_size = std::stof(config.at("time_step_size"));
-  maxTimeStep = std::stoi(config.at("max_timestep"));
+  maxTimeStep = static_cast<VIPRA::t_step>(std::stoi(config.at("max_timestep")));
 }
 
 void
@@ -43,17 +43,22 @@ Simulation::run(Goals&                   goals,
   LJ::Info(simLogger, "Starting Simulation Loop");
 
   while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
+    LJ::Debug(simLogger, "Ped Dynamics");
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size)};
     policyModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
+    LJ::Debug(simLogger, "Behavior");
     humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
 
+    LJ::Debug(simLogger, "Update State");
     pedestrianSet.updateState(pedState);
 
+    LJ::Debug(simLogger, "Output");
     if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals, timestep)) {
       LJ::Debug(simLogger, "Writing To Document, Timestep: {}", timestep);
       simulationOutputHandler.writeToDocument(outputDataWriter, pedestrianSet, timestep);
     }
 
+    LJ::Debug(simLogger, "Goals");
     goals.updatePedestrianGoals(obstacleSet, pedestrianSet);
     ++timestep;
     clock.addSimulationTimeMs(timestep_size);

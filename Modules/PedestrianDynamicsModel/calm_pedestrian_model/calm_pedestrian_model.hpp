@@ -27,9 +27,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
                                          VIPRA::delta_t) override;
 
   //Getters and Setters
-  float              getPedestrianDistance(const CalmPedestrianSet&,
-                                           VIPRA::idx firstPedestrian,
-                                           VIPRA::idx secondPedestrian);
+  float getPedestrianDistance(const CalmPedestrianSet&, VIPRA::idx firstPedestrian, VIPRA::idx secondPedestrian);
   std::vector<float> getNearestNeighbors();
   VIPRA::f3dVec      getPropulsionForces();
 
@@ -39,28 +37,9 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   void updateDesiredSpeeds(const CalmPedestrianSet&, const CalmGoals&);
 
  private:
-  std::vector<float> holds;
-  std::vector<bool>  aislePermissions;
-
-  VIPRA::idx currentPriority;
-
-  VIPRA::f3dVec racePositions;
-  VIPRA::f3dVec propulsionForces;
-
-  std::vector<bool>  pathBlocked;
-  std::vector<float> nearestNeighbors;
-  std::vector<float> priorities;
-
-  std::vector<int>        raceCounter;
-  std::vector<VIPRA::uid> opponentIDs;
-  std::vector<int>        startingAisles;
-
-  std::vector<bool> raceFinished;
-  std::vector<bool> released;
-
-  float* pedestrianDistanceMatrix;
-  float* obstacleDistanceMatrix;
-
+  VIPRA::f3dVec              propulsionForces;
+  float*                     pedestrianDistanceMatrix;
+  std::vector<float>         nearestNeighbors;
   std::shared_ptr<CalmState> modelState;
 
   void calculatePriority(const CalmPedestrianSet&, const Goals&);
@@ -85,7 +64,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
                                 float              checkDistance,
                                 const ObstacleSet& obsSet);
 
-  constexpr float calculateDesiredSpeed(float);
+  constexpr float calculateDesiredSpeed(float distance);
 };
 
 #endif

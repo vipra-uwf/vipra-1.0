@@ -5,11 +5,13 @@
 #include "definitions/type_definitions.hpp"
 #include <memory>
 
-struct PedMapType {
+namespace VIPRA {
+struct PedData {
   std::string type;
-  PedMapType(std::string t) : type(std::move(t)) {}
-  virtual ~PedMapType() = default;
+  PedData(std::string t) : type(std::move(t)) {}
+  virtual ~PedData() = default;
 };
+}  // namespace VIPRA
 
 class PedestrianLoaderException : public std::runtime_error {
  public:
@@ -21,9 +23,9 @@ class PedestrianLoader {
  public:
   virtual ~PedestrianLoader() = default;
 
-  virtual void                        configure(const VIPRA::ConfigMap& configMap) = 0;
-  virtual void                        initialize() = 0;
-  virtual std::unique_ptr<PedMapType> LoadPedestrians(const std::string& filePath) const = 0;
+  virtual void                            configure(const VIPRA::ConfigMap& configMap) = 0;
+  virtual void                            initialize() = 0;
+  virtual std::unique_ptr<VIPRA::PedData> LoadPedestrians(const std::string& filePath) const = 0;
 };
 
 #endif

@@ -1,3 +1,3 @@
 
 
-add_subdirectory(pedestrian_position_loader)
+add_subdirectory(calm_pedestrian_loader)

@@ -16,7 +16,7 @@ ExactlyNRandomSelector::selectPedestrianIds(const PedestrianSet& pedestrianSet) 
   VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
 
   while (selectedPedestrianIds.size() < count) {
-    VIPRA::uid pedestrianId = static_cast<VIPRA::uid>(static_cast<VIPRA::size>(rand()) % numPedestrians);
+    VIPRA::idx pedestrianId = static_cast<VIPRA::idx>(static_cast<VIPRA::size>(rand()) % numPedestrians);
     if (std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianId) ==
         selectedPedestrianIds.end()) {
       LJ::Debug(simLogger, "Selecting pedestrian id: {} for behavior.", pedestrianId);
@@ -26,19 +26,17 @@ ExactlyNRandomSelector::selectPedestrianIds(const PedestrianSet& pedestrianSet) 
 }
 
 void
-ExactlyNRandomSelector::initialize(const ObstacleSet&   obsSet,
-                                   const PedestrianSet& pedSet,
-                                   const Goals&         goals) {
-  Selector::initialize(obsSet, pedSet, goals);
+ExactlyNRandomSelector::initialize([[maybe_unused]] const ObstacleSet& obsSet,
+                                   const PedestrianSet&                pedSet,
+                                   [[maybe_unused]] const Goals&       goals) {
   selectPedestrianIds(pedSet);
 }
 
 bool
-ExactlyNRandomSelector::select([[maybe_unused]] const ObstacleSet& obstacleSet,
-                               const PedestrianSet&                pedestrianSet,
-                               [[maybe_unused]] const Goals&       goals,
-                               VIPRA::idx                          pedestrianIndex) {
-  VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
-  return std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianId) !=
+ExactlyNRandomSelector::select([[maybe_unused]] const ObstacleSet&   obstacleSet,
+                               [[maybe_unused]] const PedestrianSet& pedestrianSet,
+                               [[maybe_unused]] const Goals&         goals,
+                               VIPRA::idx                            pedestrianIndex) {
+  return std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianIndex) !=
          selectedPedestrianIds.end();
 }

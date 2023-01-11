@@ -7,17 +7,7 @@ HumanBehavior::HumanBehavior() : initialState(0), initialEnvironmentState(0) {
 }
 
 void
-HumanBehavior::initialize(const ObstacleSet&   obstacleSet,
-                          const PedestrianSet& pedestrianSet,
-                          const Goals&         goals) {
-  // At this point the states have been set up in the constructor, so
-  // initialize the state actions with null pointers to begin with
-  // this->stateActions.resize(this->getStateDefinitions().size(), nullptr);
-
-  size_t numPedestrians = pedestrianSet.getNumPedestrians();
-  // this->simulationContext.states.resize(numPedestrians, this->initialState);
-  // this->simulationContext.transitionPointSeconds.resize(numPedestrians, 0);
-
+HumanBehavior::initialize(const ObstacleSet& obstacleSet, const PedestrianSet& pedestrianSet, const Goals& goals) {
   this->simulationContext.environmentState = this->initialEnvironmentState;
   this->simulationContext.environmentTransitionPointSeconds = 0;
 
@@ -71,8 +61,7 @@ HumanBehavior::decide(const ObstacleSet&   obstacleSet,
                       const Goals&         goals,
                       VIPRA::idx           pedestrianIndex) {
   bool decided = false;
-  for (auto decider = this->getDeciders().begin(); !decided && decider != this->getDeciders().end();
-       ++decider) {
+  for (auto decider = this->getDeciders().begin(); !decided && decider != this->getDeciders().end(); ++decider) {
     decided = (*decider)->evaluate(obstacleSet, pedestrianSet, goals, pedestrianIndex);
   }
 
@@ -87,19 +76,17 @@ HumanBehavior::act(const ObstacleSet&            obstacleSet,
                    VIPRA::idx                    pedestrianIndex,
                    VIPRA::delta_t                timestep) {
 
-  VIPRA::uid pedestrianId = pedestrianSet.getIds().at(pedestrianIndex);
-
   // First phase: set the state transition
   bool transitioned = false;
   for (auto transition = this->getTransitions().begin();
        !transitioned && transition != this->getTransitions().end();
        ++transition) {
-    VIPRA::stateUID oldState = this->simulationContext.states.at(pedestrianId);
+    VIPRA::stateUID oldState = this->simulationContext.states.at(pedestrianIndex);
     if ((*transition)->evaluateTransition(obstacleSet, pedestrianSet, goals, pedestrianIndex)) {
-      VIPRA::stateUID newState = this->simulationContext.states.at(pedestrianId);
+      VIPRA::stateUID newState = this->simulationContext.states.at(pedestrianIndex);
       LJ::Debug(simLogger,
                 "Person with id {} has transitioned from {} to {}",
-                pedestrianId,
+                pedestrianIndex,
                 this->getStateDefinitions().at(oldState),
                 this->getStateDefinitions().at(newState));
       transitioned = true;
@@ -107,7 +94,7 @@ HumanBehavior::act(const ObstacleSet&            obstacleSet,
   }
 
   for (VIPRA::size state = 0; state < this->getStateActions().size(); ++state) {
-    if (this->simulationContext.states.at(pedestrianId) == state &&
+    if (this->simulationContext.states.at(pedestrianIndex) == state &&
         this->getStateActions().at(state) != nullptr) {
       this->getStateActions().at(state)->performAction(
           obstacleSet, pedestrianSet, goals, pedestrianIndex, timestep, sharedState);

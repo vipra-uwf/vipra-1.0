@@ -5,43 +5,20 @@ CalmPedestrianSet::CalmPedestrianSet() {
 }
 
 void
-CalmPedestrianSet::configure(const VIPRA::ConfigMap& configMap) {
-  startMass = std::stof(configMap.at("mass"));
-  startReaction_time = std::stof(configMap.at("reaction_time"));
-  startDesired_speed = std::stof(configMap.at("desired_speed"));
-}
+CalmPedestrianSet::configure(const VIPRA::ConfigMap& configMap) {}
 
 void
-CalmPedestrianSet::initialize(VIPRA::EntitySet pedestrians) {
-  const auto&       peds = pedestrians.at("pedestrians");
-  const VIPRA::size pedCnt = peds.size();
+CalmPedestrianSet::initialize(std::unique_ptr<VIPRA::PedData> pedData) {
+  const auto peds = reinterpret_cast<CalmPedData*>(pedData.release());
+  numPedestrians = peds->positions.size();
 
-  numPedestrians = pedCnt;
-  velocities = VIPRA::f3dVec(pedCnt, VIPRA::f3d{STARTING_VELOCITY_X, STARTING_VELOCITY_Y});
-  speedsMetersPerSecond = std::vector<float>(pedCnt, STARTING_SPEED);
-  massesKg = std::vector<float>(pedCnt, startMass);
-  reactionTimes = std::vector<float>(pedCnt, startReaction_time);
-  desiredSpeeds = std::vector<float>(pedCnt, startDesired_speed);
-  shoulderLengths = std::vector<float>(pedCnt, STARTING_SHOULDER_WIDTH);
-  reactionTimes = std::vector<float>(pedCnt, startReaction_time);
+  pedestrianCoordinates = std::move(peds->positions);
+  masses = std::move(peds->masses);
+  reactionTimes = std::move(peds->reactionTimes);
+  desiredSpeeds = std::move(peds->desiredSpeeds);
+  shoulderLengths = std::move(peds->shoulderLengths);
 
-  setPedestrianCoordinates(peds);
-  setIds(std::vector<VIPRA::uid>(pedCnt, 0));
-  std::iota(ids.begin(), ids.end(), 0);
-}
-
-void
-CalmPedestrianSet::removePedestrian(VIPRA::idx pedestrianIndex) {
-  LJ::Debug(simLogger, "Removing Pedestrian: {}", ids.at(pedestrianIndex));
-  numPedestrians--;
-  velocities.erase(velocities.begin() + static_cast<std::ptrdiff_t>(pedestrianIndex));
-  speedsMetersPerSecond.erase(speedsMetersPerSecond.begin() + static_cast<std::ptrdiff_t>(pedestrianIndex));
-  massesKg.erase(massesKg.begin() + static_cast<std::ptrdiff_t>(pedestrianIndex));
-  reactionTimes.erase(reactionTimes.begin() + static_cast<std::ptrdiff_t>(pedestrianIndex));
-  desiredSpeeds.erase(desiredSpeeds.begin() + static_cast<std::ptrdiff_t>(pedestrianIndex));
-  shoulderLengths.erase(shoulderLengths.begin() + static_cast<std::ptrdiff_t>(pedestrianIndex));
-  goalCoordinates.erase(goalCoordinates.begin() + static_cast<std::ptrdiff_t>(pedestrianIndex));
-  ids.erase(ids.begin() + static_cast<std::ptrdiff_t>(pedestrianIndex));
+  velocities = VIPRA::f3dVec{numPedestrians, VIPRA::f3d{0, 0, 0}};
 }
 
 VIPRA::size
@@ -49,29 +26,19 @@ CalmPedestrianSet::getNumPedestrians() const noexcept {
   return pedestrianCoordinates.size();
 }
 
-const std::vector<VIPRA::uid>&
-CalmPedestrianSet::getIds() const noexcept {
-  return ids;
-}
-
-const std::vector<VIPRA::f3d>&
+const VIPRA::f3dVec&
 CalmPedestrianSet::getPedestrianCoordinates() const noexcept {
   return pedestrianCoordinates;
 }
 
-const std::vector<VIPRA::f3d>&
+const VIPRA::f3dVec&
 CalmPedestrianSet::getVelocities() const noexcept {
   return velocities;
 }
 
 const std::vector<float>&
-CalmPedestrianSet::getSpeeds() const noexcept {
-  return speedsMetersPerSecond;
-}
-
-const std::vector<float>&
 CalmPedestrianSet::getMasses() const noexcept {
-  return massesKg;
+  return masses;
 }
 
 const std::vector<float>&
@@ -90,96 +57,11 @@ CalmPedestrianSet::getShoulderLengths() const noexcept {
 }
 
 void
-CalmPedestrianSet::setNumPedestrians(VIPRA::size numPeds) {
-  numPedestrians = numPeds;
-}
-
-void
-CalmPedestrianSet::setIds(std::vector<VIPRA::uid> IDs) {
-  ids = IDs;
-}
-
-void
-CalmPedestrianSet::setPedestrianCoordinates(const std::vector<VIPRA::f3d>& coords) noexcept {
-  pedestrianCoordinates = coords;
-}
-
-void
-CalmPedestrianSet::setSpeeds(const std::vector<float>& speedsMetersPerSec) noexcept {
-  speedsMetersPerSecond = speedsMetersPerSec;
-}
-
-void
-CalmPedestrianSet::setVelocities(const std::vector<VIPRA::f3d>& vels) noexcept {
-  velocities = vels;
-}
-
-void
-CalmPedestrianSet::setMasses(std::vector<float>& masses) {
-  massesKg = masses;
-}
-
-void
-CalmPedestrianSet::setReactionTimes(std::vector<float>& times) {
-  reactionTimes = times;
-}
-
-void
-CalmPedestrianSet::setDesiredSpeeds(std::vector<float>& speeds) {
-  desiredSpeeds = speeds;
-}
-
-void
-CalmPedestrianSet::setShoulderLengths(std::vector<float>& shldrLengths) {
-  shoulderLengths = shldrLengths;
-}
-
-void
-CalmPedestrianSet::setPedestrianCoordinates(const VIPRA::f3d& coords, VIPRA::idx index) {
-  pedestrianCoordinates.at(index) = coords;
-}
-
-void
-CalmPedestrianSet::setVelocity(const VIPRA::f3d& velocity, VIPRA::idx index) {
-  velocities.at(index) = velocity;
-}
-
-void
-CalmPedestrianSet::setSpeed(float speed, VIPRA::idx index) {
-  speedsMetersPerSecond.at(index) = speed;
-}
-
-void
-CalmPedestrianSet::setPedestrianCoordinates(std::vector<VIPRA::f3d>&& coords) noexcept {
-  pedestrianCoordinates = std::move(coords);
-}
-
-void
-CalmPedestrianSet::setVelocities(std::vector<VIPRA::f3d>&& Velocities) noexcept {
-  velocities = std::move(Velocities);
-}
-
-void
-CalmPedestrianSet::setSpeeds(std::vector<float>&& speedsMetersPerSec) noexcept {
-  speedsMetersPerSecond = std::move(speedsMetersPerSec);
-}
-
-void
-CalmPedestrianSet::setVelocity(VIPRA::f3d&& velocity, VIPRA::idx index) {
-  velocities.at(index) = std::move(velocity);
-}
-
-void
-CalmPedestrianSet::setPedestrianCoordinates(VIPRA::f3d&& coords, VIPRA::idx index) {
-  pedestrianCoordinates.at(index) = std::move(coords);
-}
-
-void
 CalmPedestrianSet::updateState(std::shared_ptr<VIPRA::State> state) {
+  const auto s = reinterpret_cast<CalmState*>(state.get());
   for (VIPRA::idx i = 0; i < numPedestrians; ++i) {
     velocities[i] = state->velocities[i];
-    pedestrianCoordinates[i].x = state->pedestrianCoordinates[i].x;
-    pedestrianCoordinates[i].y = state->pedestrianCoordinates[i].y;
-    desiredSpeeds[i] = reinterpret_cast<CalmState*>(state.get())->desiredSpeeds[i];
+    pedestrianCoordinates[i] = state->pedestrianCoordinates[i];
+    desiredSpeeds[i] = s->desiredSpeeds[i];
   }
 }

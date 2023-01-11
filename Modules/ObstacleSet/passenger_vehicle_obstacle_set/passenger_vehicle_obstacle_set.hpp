@@ -20,7 +20,7 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
   float obstacleCollisionDistance;
 
  public:
-  void initialize(std::unique_ptr<MapType>) override;
+  void initialize(std::unique_ptr<VIPRA::MapData>) override;
   void configure(const VIPRA::ConfigMap& configMap) override;
 
   VIPRA::f3d getMapDimensions() const noexcept override;

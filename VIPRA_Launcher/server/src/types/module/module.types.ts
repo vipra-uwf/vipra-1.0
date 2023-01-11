@@ -4,7 +4,6 @@ export enum ModuleType {
   MODEL                   = 'pedestrian_dynamics_model',
   GOALS                   = 'goals',
   OUTPUT_DATA_WRITER      = 'output_data_writer',
-  INPUT_DATA_LOADER       = 'input_data_loader',
   SIM_OUTPUT_HANDLER      = 'simulation_output_handler',
   PEDESTRIAN_SET          = 'pedestrian_set',
   OBSTACLE_SET            = 'obstacle_set',

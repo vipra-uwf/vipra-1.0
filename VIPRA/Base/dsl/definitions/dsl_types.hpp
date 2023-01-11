@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 namespace VIPRA {
-typedef int64_t stateUID;
+typedef uint64_t stateUID;
 }
 
 #endif

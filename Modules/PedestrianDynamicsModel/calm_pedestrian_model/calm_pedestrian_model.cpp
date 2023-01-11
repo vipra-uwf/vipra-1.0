@@ -24,9 +24,9 @@ inline Line getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& veloci
 CalmPedestrianModel::CalmPedestrianModel() {}
 
 void
-CalmPedestrianModel::initialize(const PedestrianSet& pedestrianSet,
-                                const ObstacleSet&   obstacleSet,
-                                const Goals&         goals) {
+CalmPedestrianModel::initialize(const PedestrianSet&                pedestrianSet,
+                                [[maybe_unused]] const ObstacleSet& obstacleSet,
+                                [[maybe_unused]] const Goals&       goals) {
   pedestrianDistanceMatrix = new float[pedestrianSet.getNumPedestrians() * pedestrianSet.getNumPedestrians()];
   propulsionForces = VIPRA::f3dVec(pedestrianSet.getNumPedestrians(), VIPRA::f3d{0.0f, 0.0f});
   modelState = std::make_shared<CalmState>(pedestrianSet.getNumPedestrians());
@@ -39,12 +39,17 @@ CalmPedestrianModel::timestep(const PedestrianSet& pedestrianSet,
                               const Goals&         goals,
                               VIPRA::delta_t       timestep) {
 
+  LJ::Debug(simLogger, "Calc DM");
   calculateDistanceMatrices(static_cast<const CalmPedestrianSet&>(pedestrianSet));
+  LJ::Debug(simLogger, "Calc NN");
   calculateNeartestNeighbors(static_cast<const CalmPedestrianSet&>(pedestrianSet), obstacleSet, goals);
+  LJ::Debug(simLogger, "Update DS");
   updateDesiredSpeeds(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals));
+  LJ::Debug(simLogger, "Calc Propulsion");
   calculatePropulsion(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals));
+  LJ::Debug(simLogger, "Update State");
   updateModelState(static_cast<const CalmPedestrianSet&>(pedestrianSet), timestep);
-
+  LJ::Debug(simLogger, "Done");
   return modelState;
 }
 
@@ -141,14 +146,18 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
       if (goals.isPedestianGoalMet(j))
         continue;
 
+      LJ::Debug(simLogger, "Direction Test");
       if (!objectDirectionTest(coords.at(i), velocities.at(i), coords.at(j)))
         continue;
 
+      LJ::Debug(simLogger, "Distance");
       float dist = getPedestrianDistance(pedSet, i, j);
       if (dist > nearestDist)
         continue;
 
+      LJ::Debug(simLogger, "Shoulders");
       const Line secondPedShoulders = getShoulderPoints(coords.at(j), velocities.at(j), shoulderLengths.at(j));
+      LJ::Debug(simLogger, "Spatial Test");
       if (!objectSpatialTest(
               coords.at(i), velocities.at(i), shoulderLengths.at(i), secondPedShoulders.p1, secondPedShoulders.p2))
         continue;
@@ -156,6 +165,7 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
       nearestDist = dist;
     }
 
+    LJ::Debug(simLogger, "Blocked Path");
     float obsDist = checkBlockedPath(coords.at(i), velocities.at(i), shoulderLengths.at(i), nearestDist, obsSet);
     if (obsDist != -1 && obsDist < nearestDist) {
       nearestDist = obsDist;
@@ -204,11 +214,15 @@ CalmPedestrianModel::objectSpatialTest(const VIPRA::f3d& pedCoords,
 
   const Line shoulders = getShoulderPoints(pedCoords, pedVelocity, pedShoulderLength);
 
-  const Rect pedCollisionRect = {shoulders.p1,
-                                 shoulders.p1 + (pedVelocity.unit() * 5),
-                                 shoulders.p2 + (pedVelocity.unit() * 5),
-                                 shoulders.p2};
+  LJ::Debug(simLogger, "Rect");
+  const VIPRA::f3d range = (pedVelocity.unit() * 5);
+  const Rect       pedCollisionRect = {shoulders.p1, shoulders.p1 + range, shoulders.p2 + range, shoulders.p2};
 
+  if (pedCollisionRect.p1 == pedCollisionRect.p2) {
+    return false;
+  }
+
+  LJ::Debug(simLogger, "return");
   return lineRectIntersects(pedCollisionRect, objLeft, objRight);
 }
 
@@ -252,7 +266,12 @@ CalmPedestrianModel::checkBlockedPath(const VIPRA::f3d&  coords,
                                       float              shoulderWidth,
                                       float              checkDistance,
                                       const ObstacleSet& obsSet) {
-  const Line  shoulders = getShoulderPoints(coords, velocity, shoulderWidth);
+
+  const Line shoulders = getShoulderPoints(coords, velocity, shoulderWidth);
+  if (shoulders.p1 == shoulders.p2) {
+    return -1;
+  }
+
   const float leftDist = obsSet.rayHit(shoulders.p1, shoulders.p1 + (velocity.unit() * checkDistance));
   const float rightDist = obsSet.rayHit(shoulders.p2, shoulders.p2 + (velocity.unit() * checkDistance));
   if (leftDist == -1) {
@@ -318,7 +337,7 @@ CalmPedestrianModel::~CalmPedestrianModel() {
 }
 
 void
-CalmPedestrianModel::configure(const VIPRA::ConfigMap& configMap) {}
+CalmPedestrianModel::configure([[maybe_unused]] const VIPRA::ConfigMap& configMap) {}
 
 /**
  * @brief returns true if the line intersects any of the sides of rect, also checks if it intersects the rect's internal diagonal
