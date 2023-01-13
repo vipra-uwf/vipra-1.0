@@ -12,7 +12,7 @@ struct Line {
   VIPRA::f3d p2;
 };
 
-inline bool lineRectIntersects(const Rect& rect, const VIPRA::f3d& linep1, const VIPRA::f3d& linep2) noexcept;
+inline bool isPointInRect(const Rect& rect, const VIPRA::f3d& p1) noexcept;
 
 inline bool lineIntersect(const VIPRA::f3d& start1,
                           const VIPRA::f3d& end1,
@@ -39,17 +39,11 @@ CalmPedestrianModel::timestep(const PedestrianSet& pedestrianSet,
                               const Goals&         goals,
                               VIPRA::delta_t       timestep) {
 
-  LJ::Debug(simLogger, "Calc DM");
   calculateDistanceMatrices(static_cast<const CalmPedestrianSet&>(pedestrianSet));
-  LJ::Debug(simLogger, "Calc NN");
   calculateNeartestNeighbors(static_cast<const CalmPedestrianSet&>(pedestrianSet), obstacleSet, goals);
-  LJ::Debug(simLogger, "Update DS");
   updateDesiredSpeeds(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals));
-  LJ::Debug(simLogger, "Calc Propulsion");
   calculatePropulsion(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals));
-  LJ::Debug(simLogger, "Update State");
   updateModelState(static_cast<const CalmPedestrianSet&>(pedestrianSet), timestep);
-  LJ::Debug(simLogger, "Done");
   return modelState;
 }
 
@@ -74,17 +68,16 @@ CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedestrianSet, VI
     float velocityX = pedestrianSet.getVelocities()[i].x;
     float velocityY = pedestrianSet.getVelocities()[i].y;
     float mass = pedestrianSet.getMasses()[i];
-    float desiredSpeed = modelState->desiredSpeeds[i];
+    float desiredSpeed = pedestrianSet.getDesiredSpeeds()[i];
     float coordinateX = pedestrianSet.getPedestrianCoordinates()[i].x;
     float coordinateY = pedestrianSet.getPedestrianCoordinates()[i].y;
 
-    //Use Euler Method to update position and velocity
     newVelocity =
         (VIPRA::f3d{(propulsiveX * (time / mass) + velocityX), (propulsiveY * (time / mass) + velocityY)});
 
     newSpeed = ((newVelocity.x * newVelocity.x) + (newVelocity.y * newVelocity.y));
 
-    if (newSpeed <= (desiredSpeed * desiredSpeed)) {
+    if (newSpeed < (desiredSpeed * desiredSpeed)) {
       newPosition = VIPRA::f3d{(coordinateX + (newVelocity.x * time)), (coordinateY + (newVelocity.y * time))};
     } else {
       newPosition = VIPRA::f3d{coordinateX + (newVelocity.x * (desiredSpeed / (newSpeed + coeff)) * time),
@@ -147,18 +140,14 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
       if (goals.isPedestianGoalMet(j))
         continue;
 
-      LJ::Debug(simLogger, "Direction Test");
       if (!objectDirectionTest(coords.at(i), velocities.at(i), coords.at(j)))
         continue;
 
-      LJ::Debug(simLogger, "Distance");
       float dist = getPedestrianDistance(pedSet, i, j);
       if (dist > nearestDist)
         continue;
 
-      LJ::Debug(simLogger, "Shoulders");
       const Line secondPedShoulders = getShoulderPoints(coords.at(j), velocities.at(j), shoulderLengths.at(j));
-      LJ::Debug(simLogger, "Spatial Test");
       if (!objectSpatialTest(
               coords.at(i), velocities.at(i), shoulderLengths.at(i), secondPedShoulders.p1, secondPedShoulders.p2))
         continue;
@@ -166,7 +155,6 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
       nearestDist = dist;
     }
 
-    LJ::Debug(simLogger, "Blocked Path");
     float obsDist = checkBlockedPath(coords.at(i), velocities.at(i), shoulderLengths.at(i), nearestDist, obsSet);
     if (obsDist != -1 && obsDist < nearestDist) {
       nearestDist = obsDist;
@@ -215,7 +203,6 @@ CalmPedestrianModel::objectSpatialTest(const VIPRA::f3d& pedCoords,
 
   const Line shoulders = getShoulderPoints(pedCoords, pedVelocity, pedShoulderLength);
 
-  LJ::Debug(simLogger, "Rect");
   const VIPRA::f3d range = (pedVelocity.unit() * 5);
   const Rect       pedCollisionRect = {shoulders.p1, shoulders.p1 + range, shoulders.p2 + range, shoulders.p2};
 
@@ -223,8 +210,7 @@ CalmPedestrianModel::objectSpatialTest(const VIPRA::f3d& pedCoords,
     return false;
   }
 
-  LJ::Debug(simLogger, "return");
-  return lineRectIntersects(pedCollisionRect, objLeft, objRight);
+  return isPointInRect(pedCollisionRect, objLeft) || isPointInRect(pedCollisionRect, objRight);
 }
 
 /**
@@ -347,19 +333,17 @@ CalmPedestrianModel::configure([[maybe_unused]] const VIPRA::ConfigMap& configMa
  * @param line 
  */
 inline bool
-lineRectIntersects(const Rect& rect, const VIPRA::f3d& linep1, const VIPRA::f3d& linep2) noexcept {
-  if (lineIntersect(rect.p1, rect.p2, linep1, linep2))
-    return true;
-  if (lineIntersect(rect.p2, rect.p3, linep1, linep2))
-    return true;
-  if (lineIntersect(rect.p3, rect.p4, linep1, linep2))
-    return true;
-  if (lineIntersect(rect.p4, rect.p1, linep1, linep2))
-    return true;
-  if (lineIntersect(rect.p2, rect.p4, linep1, linep2))
-    return true;
+isPointInRect(const Rect& rect, const VIPRA::f3d& p1) noexcept {
+  if (lineIntersect(rect.p1, p1, rect.p2, rect.p3))
+    return false;
+  if (lineIntersect(rect.p1, p1, rect.p3, rect.p4))
+    return false;
+  if (lineIntersect(rect.p3, p1, rect.p1, rect.p2))
+    return false;
+  if (lineIntersect(rect.p3, p1, rect.p4, rect.p1))
+    return false;
 
-  return false;
+  return true;
 }
 
 /**
@@ -375,16 +359,20 @@ lineIntersect(const VIPRA::f3d& start1,
               const VIPRA::f3d& start2,
               const VIPRA::f3d& end2) noexcept {
 
-  const float uA = ((end2.x - start2.x) * (start1.y - start2.y) - (end2.y - start2.y) * (start1.x - start2.x)) /
-                   ((end2.y - start2.y) * (end1.x - start1.x) - (end2.x - start2.x) * (end1.y - start1.y));
-
-  const float uB = ((end1.x - start1.x) * (start1.y - start2.y) - (end1.y - start1.y) * (start1.x - start2.x)) /
-                   ((end2.y - start2.y) * (end1.x - start1.x) - (end2.x - start2.x) * (end1.y - start1.y));
-
-  if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
-    return true;
+  if (start1 == end1 || start2 == end2) {
+    return false;
   }
-  return false;
+
+  const float det = (start2.x - start1.x) * (end2.y - start2.y) * (end2.x - start2.x) * (end1.y - start1.y);
+  if (det == 0) {
+    return false;
+  } else {
+    const float lambda =
+        ((end2.y - start2.y) * (end2.x - start1.x) * (start2.x - end2.x) * (end2.y - start2.y)) / det;
+    const float gamma =
+        ((start1.y - end2.y) * (end2.x - start1.x) * (start2.x - start1.x) * (end2.y - start2.y)) / det;
+    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+  }
 }
 
 /**

@@ -26,9 +26,9 @@ CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
   }
   fileStream.close();
 
+  std::unique_ptr<CalmPedData> inputData = std::make_unique<CalmPedData>();
   try {
     LJ::Debug(simLogger, "CalmPedestrianLoader: Parsed File, Building Pedestrians");
-    std::unique_ptr<CalmPedData> inputData = std::make_unique<CalmPedData>();
     for (unsigned int i = 0; i < jsonDocument.size(); i++) {
       const std::string type = jsonDocument.getMemberNames()[i];
       inputData->positions = VIPRA::f3dVec{};
@@ -59,12 +59,11 @@ CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
         inputData->positions.push_back(position);
       }
     }
-    return inputData;
   } catch (const std::exception& ex) {
     LJ::Debug(simLogger, "CalmPedestrianLoader: Error Building Pedestrians, Error: {}", ex.what());
     PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
   LJ::Debug(simLogger, "CalmPedestrianLoader: Attempt to Return Empty Pedestrians Data");
   PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
-  return {};
+  return inputData;
 }
