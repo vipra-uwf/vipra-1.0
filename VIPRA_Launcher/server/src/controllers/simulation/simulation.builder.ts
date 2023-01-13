@@ -370,7 +370,6 @@ export class SimulationBuilder {
       pedestrian_dynamics_model: 0,
       goals: 0,
       output_data_writer: 0,
-      input_data_loader: 0,
       simulation_output_handler: 0, 
       pedestrian_set: 0, 
       obstacle_set: 0, 

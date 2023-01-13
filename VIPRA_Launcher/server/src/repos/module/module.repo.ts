@@ -22,7 +22,6 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
       pedestrian_dynamics_model: [],
       goals: [],
       output_data_writer: [],
-      input_data_loader: [],
       simulation_output_handler: [],
       pedestrian_set: [],
       obstacle_set: [],
