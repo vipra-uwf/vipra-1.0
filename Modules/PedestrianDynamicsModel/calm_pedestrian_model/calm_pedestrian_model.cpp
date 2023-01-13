@@ -74,16 +74,17 @@ CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedestrianSet, VI
     float velocityX = pedestrianSet.getVelocities()[i].x;
     float velocityY = pedestrianSet.getVelocities()[i].y;
     float mass = pedestrianSet.getMasses()[i];
-    float desiredSpeed = pedestrianSet.getDesiredSpeeds()[i];
+    float desiredSpeed = modelState->desiredSpeeds[i];
     float coordinateX = pedestrianSet.getPedestrianCoordinates()[i].x;
     float coordinateY = pedestrianSet.getPedestrianCoordinates()[i].y;
 
+    //Use Euler Method to update position and velocity
     newVelocity =
         (VIPRA::f3d{(propulsiveX * (time / mass) + velocityX), (propulsiveY * (time / mass) + velocityY)});
 
     newSpeed = ((newVelocity.x * newVelocity.x) + (newVelocity.y * newVelocity.y));
 
-    if (newSpeed < (desiredSpeed * desiredSpeed)) {
+    if (newSpeed <= (desiredSpeed * desiredSpeed)) {
       newPosition = VIPRA::f3d{(coordinateX + (newVelocity.x * time)), (coordinateY + (newVelocity.y * time))};
     } else {
       newPosition = VIPRA::f3d{coordinateX + (newVelocity.x * (desiredSpeed / (newSpeed + coeff)) * time),
