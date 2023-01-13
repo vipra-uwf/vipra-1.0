@@ -31,6 +31,7 @@ CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
     LJ::Debug(simLogger, "CalmPedestrianLoader: Parsed File, Building Pedestrians");
     for (unsigned int i = 0; i < jsonDocument.size(); i++) {
       const std::string type = jsonDocument.getMemberNames()[i];
+      LJ::Debug(simLogger, "Type: {}", type);
       inputData->positions = VIPRA::f3dVec{};
       inputData->masses = std::vector<float>{};
       inputData->desiredSpeeds = std::vector<float>{};
@@ -63,7 +64,5 @@ CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
     LJ::Debug(simLogger, "CalmPedestrianLoader: Error Building Pedestrians, Error: {}", ex.what());
     PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
-  LJ::Debug(simLogger, "CalmPedestrianLoader: Attempt to Return Empty Pedestrians Data");
-  PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   return inputData;
 }
