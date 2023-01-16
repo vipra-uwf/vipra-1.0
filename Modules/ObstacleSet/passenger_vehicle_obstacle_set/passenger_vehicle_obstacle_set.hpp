@@ -18,24 +18,24 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
   VIPRA::f3d mapDimensions;
 
   float obstacleCollisionDistance;
+  float obstacleCollisionDistanceSqrd;
 
  public:
   void initialize(std::unique_ptr<VIPRA::MapData>) override;
   void configure(const VIPRA::ConfigMap& configMap) override;
 
-  VIPRA::f3d getMapDimensions() const noexcept override;
+  [[nodiscard]] VIPRA::f3d getMapDimensions() const override;
 
-  const VIPRA::f3dVec&            getObjectsofType(const std::string& type) const noexcept override;
-  const std::vector<std::string>& getObjectTypes() const noexcept override;
+  [[nodiscard]] const std::vector<std::string>& getObjectTypes() const override;
+  [[nodiscard]] const VIPRA::f3dVec&            getObjectsofType(const std::string& type) const override;
 
-  VIPRA::f3dVec nearestObstacle(const PedestrianSet& PedSet) const override;
-  VIPRA::f3dVec nearestObstacleInDirection(const PedestrianSet&) const override;
+  [[nodiscard]] VIPRA::f3dVec nearestObstacle(const PedestrianSet&) const override;
+  [[nodiscard]] VIPRA::f3dVec nearestObstacleInDirection(const PedestrianSet&) const override;
+  [[nodiscard]] VIPRA::f3d    nearestObstacle(VIPRA::f3d) const override;
+  [[nodiscard]] VIPRA::f3d    nearestObstacleInDirection(const VIPRA::f3d, const VIPRA::f3d) const override;
 
-  VIPRA::f3d nearestObstacle(const VIPRA::f3d coordinates) const override;
-  VIPRA::f3d nearestObstacleInDirection(const VIPRA::f3d coordinates, const VIPRA::f3d velocity) const override;
-
-  bool  collision(VIPRA::f3d) const override;
-  float rayHit(VIPRA::f3d, VIPRA::f3d) const noexcept override;
+  [[nodiscard]] bool  collision(VIPRA::f3d) const override;
+  [[nodiscard]] float rayHit(VIPRA::f3d, VIPRA::f3d) const override;
 
  private:
   void checkMap() const;

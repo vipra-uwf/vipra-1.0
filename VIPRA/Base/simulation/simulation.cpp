@@ -1,5 +1,8 @@
 #include "simulation.hpp"
 
+const VIPRA::f2dVec VIPRA::__emptyf2d_Vec__ = VIPRA::f2dVec{};
+const VIPRA::f3dVec VIPRA::__emptyf3d_Vec__ = VIPRA::f3dVec{};
+
 void
 Simulation::configure(const VIPRA::ConfigMap& config) {
   timestep = 0;
@@ -38,7 +41,6 @@ Simulation::run(Goals&                   goals,
                 OutputDataWriter&        outputDataWriter,
                 SimulationOutputHandler& simulationOutputHandler,
                 Clock&                   clock) {
-
   clock.start();
   LJ::Info(simLogger, "Starting Simulation Loop");
 

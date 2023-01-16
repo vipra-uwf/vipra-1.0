@@ -13,17 +13,15 @@ class ObstacleSetException : public std::runtime_error {
 
 class ObstacleSet {
  public:
-  static const VIPRA::f3dVec __empty__;
-
   virtual ~ObstacleSet() = default;
 
   virtual void initialize(std::unique_ptr<VIPRA::MapData>) = 0;
   virtual void configure(const VIPRA::ConfigMap& configMap) = 0;
 
-  virtual VIPRA::f3d getMapDimensions() const noexcept = 0;
+  virtual VIPRA::f3d getMapDimensions() const = 0;
 
-  virtual const std::vector<std::string>& getObjectTypes() const noexcept = 0;
-  virtual const VIPRA::f3dVec&            getObjectsofType(const std::string& type) const noexcept = 0;
+  virtual const std::vector<std::string>& getObjectTypes() const = 0;
+  virtual const VIPRA::f3dVec&            getObjectsofType(const std::string& type) const = 0;
 
   virtual VIPRA::f3dVec nearestObstacle(const PedestrianSet&) const = 0;
   virtual VIPRA::f3dVec nearestObstacleInDirection(const PedestrianSet&) const = 0;

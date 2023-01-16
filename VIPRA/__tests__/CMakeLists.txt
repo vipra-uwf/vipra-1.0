@@ -4,24 +4,10 @@ project(${PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(BASE_DIR ${CMAKE_CURRENT_LIST_DIR}/../Base Base)
-set(MODULES_DIR ${CMAKE_CURRENT_LIST_DIR}/../../Modules Modules)
-set(DEPS_DIR ${CMAKE_CURRENT_LIST_DIR}/../deps deps)
-set(EXTENDABLE_DIR ${CMAKE_CURRENT_LIST_DIR}/../Extendable Extendable)
-
-
-message(STATUS ${BASE_DIR})
-message(STATUS ${MODULES_DIR})
-message(STATUS ${DEPS_DIR})
-message(STATUS ${EXTENDABLE_DIR})
-
-include_directories(
-  ${BASE_DIR}
-  ${MODULES_DIR}
-  ${DEPS_DIR}
-  ${EXTENDABLE_DIR}
-  .
-)
+set(MODULES_DIR ./../../Modules Modules)
+set(BASE_DIR ./../Base Base)
+set(DEPS_DIR ./../deps deps)
+set(EXTENDABLE_DIR ./../Extendable Extendable)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -39,15 +25,20 @@ add_executable(
   Testing.cpp
 )
 
-target_compile_options(${PROJECT_NAME} PUBLIC -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wundef -Werror -Wno-unused)
+include_directories(
+  SYSTEM
+  ${DEPS_DIR}
+  ${DEPS_DIR}/antlr4-runtime
+)
 
 add_subdirectory(${DEPS_DIR})
 target_link_libraries(
   ${PROJECT_NAME}
   GTest::gtest_main
-  lumberjack
+  ANTLR4
   jsoncpp
-  ANTLR4 
+  lumberjack
+  generated_antlr
 )
 
 include(GoogleTest)
@@ -55,9 +46,17 @@ gtest_discover_tests(${PROJECT_NAME})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR} )
 
+add_subdirectory(${MODULES_DIR})
+add_subdirectory(${BASE_DIR})
+
 add_subdirectory(modules)
 add_subdirectory(base)
 add_subdirectory(human_behavior)
 
-add_subdirectory(${MODULES_DIR})
-add_subdirectory(${BASE_DIR})
+target_include_directories(
+  ${PROJECT_NAME}
+  PRIVATE
+  ${MODULES_DIR}
+  ${BASE_DIR}
+  ${EXTENDABLE_DIR}
+)

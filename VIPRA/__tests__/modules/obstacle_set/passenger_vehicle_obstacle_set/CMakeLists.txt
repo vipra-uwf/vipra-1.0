@@ -1,5 +1,5 @@
 target_sources(
   ${PROJECT_NAME}
   PUBLIC
-  input_json_loader.tests.cpp
+  passenger_vehicle_obstacle_set.tests.cpp
 )

@@ -25,11 +25,11 @@ class Goals {
   virtual const VIPRA::f3d& getCurrentGoal(VIPRA::idx) const = 0;
   virtual const VIPRA::f3d& getEndGoal(VIPRA::idx) const = 0;
 
-  virtual const VIPRA::f3dVec& getAllCurrentGoals() const noexcept = 0;
-  virtual const VIPRA::f3dVec& getAllEndGoals() const noexcept = 0;
+  virtual const VIPRA::f3dVec& getAllCurrentGoals() const = 0;
+  virtual const VIPRA::f3dVec& getAllEndGoals() const = 0;
 
   virtual bool isPedestianGoalMet(VIPRA::idx) const = 0;
-  virtual bool isSimulationGoalMet() const noexcept = 0;
+  virtual bool isSimulationGoalMet() const = 0;
 };
 
 #endif

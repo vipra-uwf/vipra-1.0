@@ -34,9 +34,9 @@ TEST(Dimensions, Parameterized_Constructor_Tests) {
   EXPECT_EQ(sutf3d2.z, 0);
 
   VIPRA::f3d sutf3d3{1, 2, 3};
-  EXPECT_EQ(sutf3d2.x, 1);
-  EXPECT_EQ(sutf3d2.y, 2);
-  EXPECT_EQ(sutf3d2.z, 3);
+  EXPECT_EQ(sutf3d3.x, 1);
+  EXPECT_EQ(sutf3d3.y, 2);
+  EXPECT_EQ(sutf3d3.z, 3);
 }
 
 TEST(Dimensions, CopyMove_Constructor_Tests) {
@@ -100,18 +100,18 @@ TEST(Dimensions, Bracket_Operator_Tests) {
   VIPRA::f2d sutf2d1{1, 2};
   EXPECT_EQ(sutf2d1[0], 1);
   EXPECT_EQ(sutf2d1['x'], 1);
-  EXPECT_EQ(sutf2d1[1], 1);
-  EXPECT_EQ(sutf2d1['y'], 1);
+  EXPECT_EQ(sutf2d1[1], 2);
+  EXPECT_EQ(sutf2d1['y'], 2);
   EXPECT_THROW(sutf2d1[2], std::out_of_range);
   EXPECT_THROW(sutf2d1['z'], std::out_of_range);
 
   VIPRA::f3d sutf3d1{1, 2, 3};
   EXPECT_EQ(sutf3d1[0], 1);
   EXPECT_EQ(sutf3d1['x'], 1);
-  EXPECT_EQ(sutf3d1[1], 1);
-  EXPECT_EQ(sutf3d1['y'], 1);
-  EXPECT_EQ(sutf3d1[2], 1);
-  EXPECT_EQ(sutf3d1['z'], 1);
+  EXPECT_EQ(sutf3d1[1], 2);
+  EXPECT_EQ(sutf3d1['y'], 2);
+  EXPECT_EQ(sutf3d1[2], 3);
+  EXPECT_EQ(sutf3d1['z'], 3);
   EXPECT_THROW(sutf3d1[3], std::out_of_range);
   EXPECT_THROW(sutf3d1['a'], std::out_of_range);
 }
@@ -137,37 +137,37 @@ TEST(Dimensions, Binary_Operators_Tests) {
   // operator-
   VIPRA::f3d sut3{1, 2, 3};
   VIPRA::f3d subTest;
-  subTest = sut1 - VIPRA::f3d{1, 1, 1};
+  subTest = sut3 - VIPRA::f3d{1, 1, 1};
   EXPECT_EQ(subTest.x, 0);
   EXPECT_EQ(subTest.y, 1);
   EXPECT_EQ(subTest.z, 2);
 
   // operator-=
   VIPRA::f3d sut4{1, 2, 3};
-  sut2 -= VIPRA::f3d{1, 1, 1};
-  EXPECT_EQ(sut2.x, 0);
-  EXPECT_EQ(sut2.y, 1);
-  EXPECT_EQ(sut2.z, 2);
+  sut4 -= VIPRA::f3d{1, 1, 1};
+  EXPECT_EQ(sut4.x, 0);
+  EXPECT_EQ(sut4.y, 1);
+  EXPECT_EQ(sut4.z, 2);
 
   // operator*
   VIPRA::f3d sut5{1, 2, 3};
   VIPRA::f3d multTest;
-  multTest = sut1 * 2;
+  multTest = sut5 * 2;
   EXPECT_EQ(multTest.x, 2);
   EXPECT_EQ(multTest.y, 4);
   EXPECT_EQ(multTest.z, 6);
 
   // operator*=
   VIPRA::f3d sut6{1, 2, 3};
-  sut2 *= 2;
-  EXPECT_EQ(sut2.x, 2);
-  EXPECT_EQ(sut2.y, 4);
-  EXPECT_EQ(sut2.z, 6);
+  sut6 *= 2;
+  EXPECT_EQ(sut6.x, 2);
+  EXPECT_EQ(sut6.y, 4);
+  EXPECT_EQ(sut6.z, 6);
 
   // operator/
   VIPRA::f3d sut7{2, 4, 6};
   VIPRA::f3d divTest;
-  divTest = sut1 / 2;
+  divTest = sut7 / 2;
   EXPECT_EQ(divTest.x, 1);
   EXPECT_EQ(divTest.y, 2);
   EXPECT_EQ(divTest.z, 3);
@@ -197,4 +197,17 @@ TEST(Dimensions, Distance_To_Tests) {
 
   EXPECT_NEAR((sut1.distanceTo(sut2)), 1.7320508075689, ERROR);
   EXPECT_NEAR((sut2.distanceTo(sut1)), 1.7320508075689, ERROR);
+}
+
+TEST(Dimensions, __Empty__) {
+  EXPECT_EQ(VIPRA::__emptyf2d__, VIPRA::f2d(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
+  EXPECT_EQ(VIPRA::__emptyf3d__,
+            VIPRA::f3d(std::numeric_limits<float>::max(),
+                       std::numeric_limits<float>::max(),
+                       std::numeric_limits<float>::max()));
+}
+
+TEST(Dimensions, __Empty_Vec__) {
+  EXPECT_EQ(VIPRA::__emptyf2d_Vec__, VIPRA::f2dVec());
+  EXPECT_EQ(VIPRA::__emptyf3d_Vec__, VIPRA::f3dVec());
 }

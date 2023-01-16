@@ -1,5 +1,5 @@
 CPP= g++
-CPP_FLAGS= -std=c++17 -w -fPIE 
+CPP_FLAGS= -std=c++20 -w -fPIE 
 
 EXE_NAME= VIPRA_SIM
 
