@@ -44,6 +44,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   float*                        pedestrianDistanceMatrix;
   std::vector<float>            nearestNeighbors;
+  std::vector<int>              nearestNeighborIndex;
   std::shared_ptr<VIPRA::State> modelState;
 
   void calculatePropulsion(const CalmPedestrianSet&, const CalmGoals&) noexcept;
@@ -54,7 +55,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   void raceDetection();
 
-  void updateModelState(const CalmPedestrianSet&, VIPRA::delta_t) noexcept;
+  void updateModelState(const CalmPedestrianSet&, const CalmGoals&, VIPRA::delta_t) noexcept;
 
   [[nodiscard]] inline float calculateBeta(float) const noexcept;
 

@@ -24,12 +24,15 @@ for obj in obstacles["obstacle"]:
     obsY.append(float(obj["y"]))
 
 
+
+
 ax = plt.gca()
 
 maxStep = len(data["timesteps"])
 
 with imageio.get_writer('output.gif', mode='I') as writer:
     for step in data["timesteps"]:
+        i = 0
         plt.pause(0.25)
         plt.cla()
         ax.set_ylim(-5, 5)
@@ -38,9 +41,15 @@ with imageio.get_writer('output.gif', mode='I') as writer:
         plt.title(step)
         pointsX = []
         pointsY = []
+        ids = []
         for key in data["timesteps"][step]:
             pointsX.append(key["x"])
             pointsY.append(key["y"])
+            ids.append(i)
+            i = i + 1
+        
+        for index in range(0, len(pointsX)):
+            plt.text(pointsX[index], pointsY[index], ids[index], fontsize=5)
         plt.scatter(obsX, obsY, 1)
         plt.scatter(pointsX, pointsY, 2)
         plt.savefig(f'{step}.png')

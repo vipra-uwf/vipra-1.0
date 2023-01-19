@@ -14,6 +14,7 @@ CalmPedestrianModel::initialize(const PedestrianSet&                pedestrianSe
   modelState = std::make_shared<VIPRA::State>(pedestrianSet.getNumPedestrians());
   nearestNeighbors = std::vector<float>(pedestrianSet.getNumPedestrians());
   betas = std::vector<float>(pedestrianSet.getNumPedestrians());
+  nearestNeighborIndex = std::vector<int>(pedestrianSet.getNumPedestrians());
 }
 
 std::shared_ptr<VIPRA::State>
@@ -25,7 +26,7 @@ CalmPedestrianModel::timestep(const PedestrianSet& pedestrianSet,
   calculateNeartestNeighbors(static_cast<const CalmPedestrianSet&>(pedestrianSet), obstacleSet, goals);
   calculateBetas(static_cast<const CalmPedestrianSet&>(pedestrianSet));
   calculatePropulsion(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals));
-  updateModelState(static_cast<const CalmPedestrianSet&>(pedestrianSet), timestep);
+  updateModelState(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals), timestep);
   return modelState;
 }
 
@@ -43,6 +44,7 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
   const auto&       coords = pedSet.getPedestrianCoordinates();
   const auto&       velocities = pedSet.getVelocities();
   const auto&       shoulderLengths = pedSet.getShoulderLengths();
+  int index = 0;
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
 
@@ -63,8 +65,11 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
         continue;
 
       float dist = pedCoords.distanceTo(secondCoords);
-      if (dist < nearestDist)
+      if (dist < nearestDist) {
         nearestDist = dist;
+        index = j;
+      
+      }
     }
 
     // float obsDist = checkBlockedPath(coords.at(i), velocities.at(i), shoulderLengths.at(i), nearestDist, obsSet);
@@ -72,6 +77,7 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
     //   nearestDist = obsDist;
     // }
 
+    nearestNeighborIndex[i] = index;
     nearestNeighbors[i] = nearestDist;
   }
 }
@@ -220,7 +226,7 @@ CalmPedestrianModel::calculatePropulsion(const CalmPedestrianSet& pedestrianSet,
 }
 
 void
-CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, VIPRA::delta_t time) noexcept {
+CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, const CalmGoals& goals, VIPRA::delta_t time) noexcept {
 
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       coords = pedSet.getPedestrianCoordinates();
@@ -243,10 +249,26 @@ CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, VIPRA::de
     //   modelState->velocities[i] = VIPRA::f3d{0, 0, 0};
     // }
 
+  
+
     modelState->pedestrianCoordinates[i] = pedCoord + (modelState->velocities[i] * time);
 
     modelState->affector[i] = VIPRA::Affector::PED_MODEL;
   }
+  for(long unsigned int i = 0; i < pedSet.getNumPedestrians(); i++){
+    LJ::Debug(simLogger, "PedestrianID: {} | DesiredSpeed: {}m/s | Velocity: {}, {}m/s | Acceleration: {}m/s^2 | Distance: {}m | PedIndex: {} | Goals: {}, {} Coords: {}, {}",
+      i,
+      betas[i],
+      modelState->velocities[i].x,
+      modelState->velocities[i].y,
+      (modelState->velocities[i].magnitude() - static_cast<const CalmPedestrianSet&>(pedSet).getVelocities().at(i).magnitude())/0.05,
+      nearestNeighbors[i],
+      nearestNeighborIndex.at(i),
+      goals.getCurrentGoal(i).x,
+      goals.getCurrentGoal(i).y,
+      modelState->pedestrianCoordinates[i].x,
+      modelState->pedestrianCoordinates[i].y);
+    }
 }
 
 // CalmPedestrianModel::~CalmPedestrianModel() {
@@ -333,18 +355,18 @@ CalmPedestrianModel::getShoulderPoints(const VIPRA::f3d& coords,
           (VIPRA::f3d{velocity.y, -velocity.x}.unit() * shoulderWidth) + coords};
 }
 
-bool
-CalmPedestrianModel::checkBehind(const PedestrianSet& pedSet, const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity) {
-  const VIPRA::size pedCnt = pedSet.getNumPedestrians();
-  const auto&       coords = pedSet.getPedestrianCoordinates();
+// bool
+// CalmPedestrianModel::checkBehind(const PedestrianSet& pedSet, const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity) {
+//   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
+//   const auto&       coords = pedSet.getPedestrianCoordinates();
 
-  for (VIPRA::idx i = 0; i < pedCnt; ++i) {
-    for (VIPRA::idx j = 0; j < pedCnt; ++j) {
-      if (i == j)
-        continue;
+//   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
+//     for (VIPRA::idx j = 0; j < pedCnt; ++j) {
+//       if (i == j)
+//         continue;
 
-      if (isPedInFront(pedCoords, -pedVelocity, ))
-    }
-  }
-  return false;
-}
+//       if (isPedInFront(pedCoords, -pedVelocity, ))
+//     }
+//   }
+//   return false;
+// }
