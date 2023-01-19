@@ -46,8 +46,8 @@ Simulation::run(Goals&                   goals,
 
   while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size)};
-    policyModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
-    humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
+    // policyModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
+    // humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
 
     pedestrianSet.updateState(pedState);
 

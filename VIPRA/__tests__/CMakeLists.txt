@@ -53,6 +53,8 @@ add_subdirectory(modules)
 add_subdirectory(base)
 add_subdirectory(human_behavior)
 
+target_compile_options(${PROJECT_NAME} PUBLIC -g -O0)
+
 target_include_directories(
   ${PROJECT_NAME}
   PRIVATE

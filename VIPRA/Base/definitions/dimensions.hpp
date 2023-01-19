@@ -106,6 +106,8 @@ struct f2d {
     return std::sqrt((dX * dX) + (dY * dY));
   }
 
+  inline constexpr f2d operator-() const noexcept { return f2d{-x, -y}; }
+
   inline constexpr f2d unit() const {
     const float mag = std::sqrt((x * x) + (y * y));
     return VIPRA::f2d{x, y} / mag;
@@ -296,14 +298,15 @@ struct f3d {
     return (x != other.x || y != other.y || z != other.z);
   }
 
+  inline constexpr f3d operator-() const noexcept { return f3d{-x, -y, -z}; }
+
   inline constexpr f3d unit() const {
     if (x == 0 && y == 0 && z == 0) {
-      return VIPRA::f3d{};
+      return f3d{0, 0, 0};
     }
-    const float mag = std::sqrt((x * x) + (y * y) + (z * z));
-    return VIPRA::f3d{x, y, z} / mag;
+    return f3d{x, y, z} / magnitude();
   }
-
+  inline constexpr float magnitudeSquared() const { return (x * x) + (y * y) + (z * z); }
   inline constexpr float magnitude() const { return std::sqrt((x * x) + (y * y) + (z * z)); }
 };
 

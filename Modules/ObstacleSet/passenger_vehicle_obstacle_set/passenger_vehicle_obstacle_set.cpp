@@ -134,6 +134,10 @@ PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const 
   const auto& obstacles = objects.at("obstacle");
   float       nearest = std::numeric_limits<float>::max();
 
+  if (point1 == point2) {
+    return -1;
+  }
+
   for (const auto& obstacle : obstacles) {
     const VIPRA::f3d vAP = obstacle - point1;
     const VIPRA::f3d vAB = point2 - point1;

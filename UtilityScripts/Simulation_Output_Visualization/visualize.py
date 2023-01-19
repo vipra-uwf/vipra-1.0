@@ -30,7 +30,7 @@ maxStep = len(data["timesteps"])
 
 with imageio.get_writer('output.gif', mode='I') as writer:
     for step in data["timesteps"]:
-        plt.pause(0.05)
+        plt.pause(0.25)
         plt.cla()
         ax.set_ylim(-5, 5)
         ax.set_xlim(-5, 30)

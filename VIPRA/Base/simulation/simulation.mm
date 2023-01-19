@@ -8,6 +8,12 @@
             "type": "integer",
             "description": "Size of each timestep of the simulation",
             "multiple": false
+        },
+        {
+            "name": "max_timestep",
+            "type": "integer",
+            "description": "Maximum Timestep to run Simulation until",
+            "multiple": false
         }
     ],
     "className"   : "Simulation",

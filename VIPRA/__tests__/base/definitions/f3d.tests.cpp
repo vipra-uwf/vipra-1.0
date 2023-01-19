@@ -116,6 +116,39 @@ TEST(Dimensions, Bracket_Operator_Tests) {
   EXPECT_THROW(sutf3d1['a'], std::out_of_range);
 }
 
+TEST(Dimensions, Unit_Vector) {
+  VIPRA::f3d sut1{0, 0, 0};
+  VIPRA::f3d sut2{1, 0, 0};
+  VIPRA::f3d sut3{0, 1, 0};
+
+  EXPECT_EQ(sut1.unit(), VIPRA::f3d(0, 0, 0));
+  EXPECT_EQ(sut2.unit(), VIPRA::f3d(1, 0, 0));
+  EXPECT_EQ(sut3.unit(), VIPRA::f3d(0, 1, 0));
+
+  VIPRA::f3d sut4 = VIPRA::f3d{1, 1, 0}.unit();
+  EXPECT_NEAR(sut4.x, 1 / std::sqrt(2), 0.001);
+  EXPECT_NEAR(sut4.y, 1 / std::sqrt(2), 0.001);
+}
+
+TEST(Dimensions, Unary_Operators) {
+  VIPRA::f3d sut1{0, 0, 0};
+  VIPRA::f3d sut2{1, 2, 3};
+
+  EXPECT_EQ(-sut1, VIPRA::f3d(0, 0, 0));
+  EXPECT_EQ(-sut2, VIPRA::f3d(-1, -2, -3));
+}
+
+TEST(Dimensions, Magnitude) {
+  VIPRA::f3d sut1{0, 0, 0};
+  VIPRA::f3d sut2{1, 0, 0};
+  VIPRA::f3d sut3{0, 1, 0};
+  VIPRA::f3d sut4{1, 1, 0};
+  EXPECT_NEAR(sut1.magnitude(), 0, 0.01);
+  EXPECT_NEAR(sut2.magnitude(), 1, 0.01);
+  EXPECT_NEAR(sut3.magnitude(), 1, 0.01);
+  EXPECT_NEAR(sut4.magnitude(), std::sqrt(2), 0.01);
+}
+
 // TODO test that +, +=, -, -=, *, *=, /, /= operators work
 
 TEST(Dimensions, Binary_Operators_Tests) {

@@ -58,10 +58,8 @@ CalmPedestrianSet::getShoulderLengths() const noexcept {
 
 void
 CalmPedestrianSet::updateState(std::shared_ptr<VIPRA::State> state) {
-  const auto s = reinterpret_cast<CalmState*>(state.get());
   for (VIPRA::idx i = 0; i < numPedestrians; ++i) {
     velocities[i] = state->velocities[i];
     pedestrianCoordinates[i] = state->pedestrianCoordinates[i];
-    desiredSpeeds[i] = s->desiredSpeeds[i];
   }
 }
