@@ -135,11 +135,14 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
  * @param pedSet 
  */
 void
-CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
+CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet,
+                                 const PedestrianSet&                pedSet,
+                                 VIPRA::delta_t                      d_time) {
   const size_t         numPeds = pedSet.getNumPedestrians();
   const VIPRA::f3dVec& pedCoords = pedSet.getPedestrianCoordinates();
 
   for (size_t i = 0; i < numPeds; ++i) {
+    lastGoalTimes[i] += d_time;
     if (!paths[i].empty()) {
       const VIPRA::f3d& currGoal = paths[i].front();
       if (inside(pedCoords.at(i), currGoal, goalRange)) {
@@ -151,6 +154,7 @@ CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet, con
         } else {
           currentGoals[i] = paths[i].front();
         }
+        lastGoalTimes[i] = 0.0f;
       }
     }
   }
@@ -223,4 +227,9 @@ bool
 CalmGoals::isSimulationGoalMet() const noexcept {
   bool passed = std::all_of(goalsMet.begin(), goalsMet.end(), [](bool met) { return met; });
   return passed;
+}
+
+VIPRA::delta_t
+CalmGoals::timeSinceLastGoal(VIPRA::idx index) const {
+  return lastGoalTimes.at(index);
 }
