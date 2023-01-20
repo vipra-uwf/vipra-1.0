@@ -24,7 +24,8 @@ class PedestrianDynamicsModel {
   virtual std::shared_ptr<VIPRA::State> timestep(const PedestrianSet&,
                                                  const ObstacleSet&,
                                                  const Goals&,
-                                                 VIPRA::delta_t) = 0;
+                                                 VIPRA::delta_t,
+                                                 VIPRA::t_step) = 0;
 };
 
 #endif
