@@ -15,7 +15,82 @@ CalmPedestrianModel::initialize(const PedestrianSet&                pedestrianSe
   nearestNeighbors = std::vector<float>(pedestrianSet.getNumPedestrians());
   betas = std::vector<float>(pedestrianSet.getNumPedestrians());
   nearestNeighborIndex = std::vector<int>(pedestrianSet.getNumPedestrians());
+
+  raceStatuses = std::vector<RaceStatus>(pedestrianSet.getNumPedestrians(), NO_RACE);
+
 }
+
+bool CalmPedestrianModel::checkIfIntersect(const CalmPedestrianSet& pedestrianSet, const int index1, const int index2)
+{
+  const auto& coords = pedestrianSet.getPedestrianCoordinates();
+  auto coord1 = coords[index1];
+  auto coord2 = coords[index2];
+
+  const int xdiff = 0.1, ydiff = 0.2;
+
+  if (coord1.x - xdiff > coord2.x + xdiff || coord2.x - xdiff > coord1.x + xdiff)
+    return false;
+  
+  if (coord1.y - ydiff > coord2.y + ydiff || coord2.y - ydiff > coord1.y + ydiff)
+    return false;
+
+  return true;
+
+}
+
+void CalmPedestrianModel::raceDetection(const CalmPedestrianSet& pedestrianSet, VIPRA::delta_t time)
+{
+  // std::vector<float> speeds = pedestrianSet.getDesiredSpeeds();
+  for(int i = 0; i < pedestrianSet.getNumPedestrians(); i++)
+  {
+    // auto forceMagnitude = propulsionForces[i].magnitude();
+  
+    if(raceStatuses[i] == NO_RACE)
+    {
+      int nearestPed = nearestNeighborIndex[i];
+
+      if(checkIfIntersect(pedestrianSet, i, nearestPed))
+      {
+        raceOpponents[i] = nearestPed;
+        raceOpponents[nearestPed] = i;
+
+        raceStatuses[nearestPed] = IN_RACE;
+        raceStatuses[i] = IN_RACE;
+      }
+    }
+
+    else if(raceStatuses[i] == IN_RACE)
+    {
+      int raceOpp = nearestNeighborIndex[i];
+      raceOpponents[i] = raceOpp;
+      raceOpponents[raceOpp] = i;
+      raceStatuses[raceOpp] = IN_RACE;
+
+      if((pedestrianSet.getPedestrianCoordinates())[i].x > (pedestrianSet.getPedestrianCoordinates())[raceOpp].x)
+      {
+        raceStatuses[i] = WINNER;
+        raceStatuses[raceOpp] = LOSER;
+      }
+      else
+      {
+        raceStatuses[raceOpp] = WINNER;
+        raceStatuses[i] = LOSER;
+      }      
+    }
+
+    else if(raceStatuses[i] != NO_RACE && !checkIfIntersect(pedestrianSet,i,nearestNeighborIndex[i]))
+    {
+      int raceOpp = raceOpponents[i];
+
+      raceStatuses[i] = NO_RACE;
+
+      raceStatuses[raceOpp] = NO_RACE;
+
+    }
+  }
+}
+
+
 
 std::shared_ptr<VIPRA::State>
 CalmPedestrianModel::timestep(const PedestrianSet& pedestrianSet,
@@ -28,6 +103,9 @@ CalmPedestrianModel::timestep(const PedestrianSet& pedestrianSet,
   calculateBetas(static_cast<const CalmPedestrianSet&>(pedestrianSet));
   calculatePropulsion(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals));
   updateModelState(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals), time, timestep);
+
+  raceDetection(static_cast<const CalmPedestrianSet&>(pedestrianSet), time);
+
   return modelState;
 }
 
@@ -236,6 +314,9 @@ CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, const Cal
   const auto&       desiredSpeeds = pedSet.getDesiredSpeeds();
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
+
+    if(raceStatuses[i]==IN_RACE || raceStatuses[i]==LOSER)
+      continue;
 
     const auto& pedCoord = coords.at(i);
     const auto& propulsion = propulsionForces.at(i);
