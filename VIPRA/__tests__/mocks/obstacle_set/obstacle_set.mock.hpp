@@ -2,26 +2,28 @@
 #ifndef VIPRA_OBSTACLE_SET_MOCK_HPP
 #define VIPRA_OBSTACLE_SET_MOCK_HPP
 
+#include <functional>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+#include <memory>
 
 #include "obstacleset/obstacle_set.hpp"
+#include "pedestrianset/pedestrian_set.hpp"
 
 class ObstacleSetMock : public ObstacleSet {
  public:
+  ~ObstacleSetMock() override {}
+  MOCK_METHOD(void, initialize, (std::unique_ptr<VIPRA::MapData>), (override));
   MOCK_METHOD(void, configure, (const VIPRA::ConfigMap& configMap), (override));
-  MOCK_METHOD(void, initialize, (const std::unique_ptr<MapType>), (override));
-  MOCK_METHOD(const VIPRA::f3dVec, NearestObstacle, (const PedestrianSet& PedSet), (const, override));
-  MOCK_METHOD(const VIPRA::f3d,
-              NearestObstacle,
-              (const VIPRA::f3d coordinates, const VIPRA::f3d velocity),
-              (const, override));
-  MOCK_METHOD(void, addObjects, (const std::string& type, const VIPRA::f3dVec& locations), (override));
-  MOCK_METHOD(void, setObstacleCoords, (const VIPRA::f3dVec& coordinates), (override));
-  MOCK_METHOD(int, getNumObstacles, (), (const noexcept override));
-  MOCK_METHOD(const VIPRA::f3dVec&, getObstacleCoordinates, (), (const noexcept override));
-  MOCK_METHOD(const VIPRA::f3dVec&, getObjectsofType, (const std::string& type), (const noexcept override));
-  MOCK_METHOD(const std::vector<std::string>&, getObjectTypes, (), (const noexcept override));
-  MOCK_METHOD(const VIPRA::f3d, getDimensions, (), (const, override));
+  MOCK_METHOD(VIPRA::f3d, getMapDimensions, (), (const, override));
+  MOCK_METHOD(const std::vector<std::string>&, getObjectTypes, (), (const, override));
+  MOCK_METHOD(const VIPRA::f3dVec&, getObjectsofType, (const std::string& type), (const, override));
+  MOCK_METHOD(VIPRA::f3dVec, nearestObstacle, (const PedestrianSet&), (const, override));
+  MOCK_METHOD(VIPRA::f3dVec, nearestObstacleInDirection, (const PedestrianSet&), (const, override));
+  MOCK_METHOD(VIPRA::f3d, nearestObstacle, (VIPRA::f3d), (const, override));
+  MOCK_METHOD(VIPRA::f3d, nearestObstacleInDirection, (VIPRA::f3d, VIPRA::f3d), (const, override));
+  MOCK_METHOD(bool, collision, (VIPRA::f3d), (const, override));
   MOCK_METHOD(float, rayHit, (VIPRA::f3d, VIPRA::f3d), (const, override));
 };
 

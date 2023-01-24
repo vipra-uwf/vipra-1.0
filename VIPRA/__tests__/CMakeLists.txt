@@ -35,6 +35,7 @@ add_subdirectory(${DEPS_DIR})
 target_link_libraries(
   ${PROJECT_NAME}
   GTest::gtest_main
+  gmock_main
   ANTLR4
   jsoncpp
   lumberjack
@@ -58,6 +59,7 @@ target_compile_options(${PROJECT_NAME} PUBLIC -g -O0)
 target_include_directories(
   ${PROJECT_NAME}
   PRIVATE
+  ./
   ${MODULES_DIR}
   ${BASE_DIR}
   ${EXTENDABLE_DIR}

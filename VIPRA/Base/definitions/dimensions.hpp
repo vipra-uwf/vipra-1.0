@@ -27,8 +27,7 @@ struct f2d {
     return *this;
   }
 
-  template <typename T,
-            class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
   inline constexpr float& operator[](T index) {
     switch (index) {
       case 0:
@@ -44,8 +43,7 @@ struct f2d {
     }
   }
 
-  template <typename T,
-            class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
   inline constexpr float operator[](T index) const {
     switch (index) {
       case 0:
@@ -157,8 +155,7 @@ struct f3d {
     return *this;
   }
 
-  template <typename T,
-            class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
   inline constexpr float& operator[](T index) {
     switch (index) {
       case 0:
@@ -178,8 +175,7 @@ struct f3d {
     }
   }
 
-  template <typename T,
-            class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
   inline constexpr float operator[](T index) const {
     switch (index) {
       case 0:
@@ -224,15 +220,11 @@ struct f3d {
   }
 
   inline constexpr f3d operator-(const f2d& other) const noexcept { return f3d{x - other.x, y - other.y, z}; }
-  inline constexpr f3d operator-(const f3d& other) const noexcept {
-    return f3d{x - other.x, y - other.y, z - other.z};
-  }
+  inline constexpr f3d operator-(const f3d& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
   inline constexpr f3d operator-(f3d&& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
 
   inline constexpr f3d operator+(const f2d& other) const noexcept { return f3d{x + other.x, y + other.y, z}; }
-  inline constexpr f3d operator+(const f3d& other) const noexcept {
-    return f3d{x + other.x, y + other.y, z + other.z};
-  }
+  inline constexpr f3d operator+(const f3d& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
   inline constexpr f3d operator+(f3d&& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
 
   inline constexpr f3d& operator+=(const f3d& other) noexcept {
@@ -288,15 +280,11 @@ struct f3d {
   inline constexpr bool operator==(const f3d& other) const noexcept {
     return (x == other.x && y == other.y && z == other.z);
   }
-  inline constexpr bool operator==(f3d&& other) const noexcept {
-    return (x == other.x && y == other.y && z == other.z);
-  }
+  inline constexpr bool operator==(f3d&& other) const noexcept { return (x == other.x && y == other.y && z == other.z); }
   inline constexpr bool operator!=(const f3d& other) const noexcept {
     return (x != other.x || y != other.y || z != other.z);
   }
-  inline constexpr bool operator!=(f3d&& other) const noexcept {
-    return (x != other.x || y != other.y || z != other.z);
-  }
+  inline constexpr bool operator!=(f3d&& other) const noexcept { return (x != other.x || y != other.y || z != other.z); }
 
   inline constexpr f3d operator-() const noexcept { return f3d{-x, -y, -z}; }
 
@@ -313,11 +301,9 @@ struct f3d {
 typedef std::vector<f2d> f2dVec;
 typedef std::vector<f3d> f3dVec;
 
-constexpr const f2d __emptyf2d__ =
-    VIPRA::f2d{std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
-constexpr const f3d __emptyf3d__ = VIPRA::f3d{std::numeric_limits<float>::max(),
-                                              std::numeric_limits<float>::max(),
-                                              std::numeric_limits<float>::max()};
+constexpr const f2d __emptyf2d__ = VIPRA::f2d{std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
+constexpr const f3d __emptyf3d__ =
+    VIPRA::f3d{std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
 
 extern const f2dVec __emptyf2d_Vec__;
 extern const f3dVec __emptyf3d_Vec__;
