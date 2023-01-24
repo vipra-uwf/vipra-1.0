@@ -40,7 +40,7 @@
             "pathFinding": "Disembark",
             "diagonalCost": 2.0,
             "endGoalType": "exit",
-            "goalRange": 0.35
+            "goalRange": 0.05
         }
     },
     "pedestrian_dynamics_model": {
