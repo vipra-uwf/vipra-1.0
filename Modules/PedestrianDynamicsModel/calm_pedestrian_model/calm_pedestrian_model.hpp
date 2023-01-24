@@ -36,7 +36,11 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   void                          configure(const VIPRA::ConfigMap& configMap) override;
   void                          initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) override;
-  std::shared_ptr<VIPRA::State> timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, VIPRA::delta_t, VIPRA::t_step) override;
+  std::shared_ptr<VIPRA::State> timestep(const PedestrianSet&,
+                                         const ObstacleSet&,
+                                         const Goals&,
+                                         VIPRA::delta_t,
+                                         VIPRA::t_step) override;
 
  protected:
   VIPRA::f3dVec      propulsionForces;
@@ -44,7 +48,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   float*                        pedestrianDistanceMatrix;
   std::vector<float>            nearestNeighbors;
-  std::vector<int>              nearestNeighborIndex;
+  std::vector<VIPRA::idx>       nearestNeighborIndex;
   std::shared_ptr<VIPRA::State> modelState;
 
   void calculatePropulsion(const CalmPedestrianSet&, const CalmGoals&) noexcept;

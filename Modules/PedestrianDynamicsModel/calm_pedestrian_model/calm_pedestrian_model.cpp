@@ -14,7 +14,7 @@ CalmPedestrianModel::initialize(const PedestrianSet&                pedestrianSe
   modelState = std::make_shared<VIPRA::State>(pedestrianSet.getNumPedestrians());
   nearestNeighbors = std::vector<float>(pedestrianSet.getNumPedestrians());
   betas = std::vector<float>(pedestrianSet.getNumPedestrians());
-  nearestNeighborIndex = std::vector<int>(pedestrianSet.getNumPedestrians());
+  nearestNeighborIndex = std::vector<VIPRA::idx>(pedestrianSet.getNumPedestrians());
 }
 
 std::shared_ptr<VIPRA::State>
@@ -27,7 +27,8 @@ CalmPedestrianModel::timestep(const PedestrianSet& pedestrianSet,
   calculateNeartestNeighbors(static_cast<const CalmPedestrianSet&>(pedestrianSet), obstacleSet, goals);
   calculateBetas(static_cast<const CalmPedestrianSet&>(pedestrianSet));
   calculatePropulsion(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals));
-  updateModelState(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals), time, timestep);
+  updateModelState(
+      static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals), time, timestep);
   return modelState;
 }
 
@@ -45,7 +46,7 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
   const auto&       coords = pedSet.getPedestrianCoordinates();
   const auto&       velocities = pedSet.getVelocities();
   const auto&       shoulderLengths = pedSet.getShoulderLengths();
-  int index = 0;
+  VIPRA::idx        index = 0;
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
 
@@ -69,7 +70,6 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
       if (dist < nearestDist) {
         nearestDist = dist;
         index = j;
-      
       }
     }
 
@@ -218,16 +218,26 @@ CalmPedestrianModel::calculatePropulsion(const CalmPedestrianSet& pedestrianSet,
     const float       desiredSpeed = desiredSpeeds[i];
     const float       mass = masses[i];
     const float       reactionTime = reactionTimes[i];
+    float             beta = betas[i];
 
-    const VIPRA::f3d direction = goal - coord;
-    const VIPRA::f3d desiredVelocity = direction.unit() * desiredSpeed * betas[i];
+    VIPRA::f3d direction;
 
+    if (beta < 0) {
+      direction = coords.at(nearestNeighborIndex[i]) - coord;
+    } else {
+      direction = goal - coord;
+    }
+
+    VIPRA::f3d desiredVelocity = direction.unit() * desiredSpeed * beta;
     propulsionForces.at(i) = ((desiredVelocity - velocity) * mass) / reactionTime;
   }
 }
 
 void
-CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, const CalmGoals& goals, VIPRA::delta_t time, VIPRA::t_step timestep) noexcept {
+CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet,
+                                      const CalmGoals&         goals,
+                                      VIPRA::delta_t           time,
+                                      VIPRA::t_step            timestep) noexcept {
 
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       coords = pedSet.getPedestrianCoordinates();
@@ -246,56 +256,44 @@ CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, const Cal
     //Use Euler Method to update position and velocity
     modelState->velocities[i] = ((propulsion / mass) * time) + velocity;
 
-    if(goals.timeSinceLastGoal(i) <= 0.1){
+    if (goals.timeSinceLastGoal(i) <= 0.1) {
       this->modelState->velocities[i].x = 0;
       this->modelState->velocities[i].y = 0;
     }
-
-    if(modelState->velocities[i].x <= 0.005 && modelState->velocities[i].x >= -0.005)
-    {
-      this->modelState->velocities[i].x = 0;
-    }
-
-    if(modelState->velocities[i].y <= 0.005 && modelState->velocities[i].y >= -0.005)
-    {
-      this->modelState->velocities[i].y = 0;
-    }
-
-    // if (checkBehind(pedSet, pedCoord, modelState->velocities[i])) {
-    //   modelState->velocities[i] = VIPRA::f3d{0, 0, 0};
-    // }
-
-  
 
     modelState->pedestrianCoordinates[i] = pedCoord + (modelState->velocities[i] * time);
 
     modelState->affector[i] = VIPRA::Affector::PED_MODEL;
   }
   //132-138 3500
-  if(timestep >= 3500 && timestep <= 3505) {
-    LJ::Debug(simLogger, "PedestrianID: {} | DesiredSpeed: {}m/s | Velocity: {}, {}m/s | Distance: {}m | PedIndex: {} | Goals: {}, {} Coords: {}, {}",
-      132,
-      betas[132],
-      modelState->velocities[132].x,
-      modelState->velocities[132].y,
-      nearestNeighbors[132],
-      nearestNeighborIndex.at(132),
-      goals.getCurrentGoal(132).x,
-      goals.getCurrentGoal(132).y,
-      modelState->pedestrianCoordinates[132].x,
-      modelState->pedestrianCoordinates[132].y);
+  if (timestep >= 3500 && timestep <= 3505) {
+    LJ::Debug(simLogger,
+              "PedestrianID: {} | DesiredSpeed: {}m/s | Velocity: {}, {}m/s | Distance: {}m | PedIndex: {} | Goals: {}, {} "
+              "Coords: {}, {}",
+              132,
+              betas[132],
+              modelState->velocities[132].x,
+              modelState->velocities[132].y,
+              nearestNeighbors[132],
+              nearestNeighborIndex.at(132),
+              goals.getCurrentGoal(132).x,
+              goals.getCurrentGoal(132).y,
+              modelState->pedestrianCoordinates[132].x,
+              modelState->pedestrianCoordinates[132].y);
 
-      LJ::Debug(simLogger, "PedestrianID: {} | DesiredSpeed: {}m/s | Velocity: {}, {}m/s | Distance: {}m | PedIndex: {} | Goals: {}, {} Coords: {}, {}",
-      138,
-      betas[138],
-      modelState->velocities[138].x,
-      modelState->velocities[138].y,
-      nearestNeighbors[138],
-      nearestNeighborIndex.at(138),
-      goals.getCurrentGoal(138).x,
-      goals.getCurrentGoal(138).y,
-      modelState->pedestrianCoordinates[138].x,
-      modelState->pedestrianCoordinates[138].y);
+    LJ::Debug(simLogger,
+              "PedestrianID: {} | DesiredSpeed: {}m/s | Velocity: {}, {}m/s | Distance: {}m | PedIndex: {} | Goals: {}, {} "
+              "Coords: {}, {}",
+              138,
+              betas[138],
+              modelState->velocities[138].x,
+              modelState->velocities[138].y,
+              nearestNeighbors[138],
+              nearestNeighborIndex.at(138),
+              goals.getCurrentGoal(138).x,
+              goals.getCurrentGoal(138).y,
+              modelState->pedestrianCoordinates[138].x,
+              modelState->pedestrianCoordinates[138].y);
   }
   // // for(long unsigned int i = 0; i < pedSet.getNumPedestrians(); i++){
   //   LJ::Debug(simLogger, "PedestrianID: {} | DesiredSpeed: {}m/s | Velocity: {}, {}m/s | Distance: {}m | PedIndex: {} | Goals: {}, {} Coords: {}, {}",
@@ -395,19 +393,3 @@ CalmPedestrianModel::getShoulderPoints(const VIPRA::f3d& coords,
   return {(VIPRA::f3d{-velocity.y, velocity.x}.unit() * shoulderWidth) + coords,
           (VIPRA::f3d{velocity.y, -velocity.x}.unit() * shoulderWidth) + coords};
 }
-
-// bool
-// CalmPedestrianModel::checkBehind(const PedestrianSet& pedSet, const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity) {
-//   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
-//   const auto&       coords = pedSet.getPedestrianCoordinates();
-
-//   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
-//     for (VIPRA::idx j = 0; j < pedCnt; ++j) {
-//       if (i == j)
-//         continue;
-
-//       if (isPedInFront(pedCoords, -pedVelocity, ))
-//     }
-//   }
-//   return false;
-// }
