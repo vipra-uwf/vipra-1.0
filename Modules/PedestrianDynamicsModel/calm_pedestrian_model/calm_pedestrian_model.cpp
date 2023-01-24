@@ -14,13 +14,14 @@ CalmPedestrianModel::initialize(const PedestrianSet&                pedestrianSe
   modelState = std::make_shared<VIPRA::State>(pedestrianSet.getNumPedestrians());
   nearestNeighbors = std::vector<float>(pedestrianSet.getNumPedestrians());
   betas = std::vector<float>(pedestrianSet.getNumPedestrians());
-  nearestNeighborIndex = std::vector<int>(pedestrianSet.getNumPedestrians());
+  nearestNeighborIndex = std::vector<VIPRA::idx>(pedestrianSet.getNumPedestrians());
 
   raceStatuses = std::vector<RaceStatus>(pedestrianSet.getNumPedestrians(), NO_RACE);
+  raceOpponents = std::vector<VIPRA::idx>(pedestrianSet.getNumPedestrians());
 
 }
 
-bool CalmPedestrianModel::checkIfIntersect(const CalmPedestrianSet& pedestrianSet, const int index1, const int index2)
+bool CalmPedestrianModel::checkIfIntersect(const CalmPedestrianSet& pedestrianSet, const VIPRA::size index1, const VIPRA::size index2)
 {
   const auto& coords = pedestrianSet.getPedestrianCoordinates();
   auto coord1 = coords[index1];
@@ -41,50 +42,50 @@ bool CalmPedestrianModel::checkIfIntersect(const CalmPedestrianSet& pedestrianSe
 void CalmPedestrianModel::raceDetection(const CalmPedestrianSet& pedestrianSet, VIPRA::delta_t time)
 {
   // std::vector<float> speeds = pedestrianSet.getDesiredSpeeds();
-  for(int i = 0; i < pedestrianSet.getNumPedestrians(); i++)
+  for(VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); i++)
   {
     // auto forceMagnitude = propulsionForces[i].magnitude();
   
-    if(raceStatuses[i] == NO_RACE)
+    if(raceStatuses.at(i) == NO_RACE)
     {
-      int nearestPed = nearestNeighborIndex[i];
+      VIPRA::idx nearestPed = nearestNeighborIndex.at(i);
 
       if(checkIfIntersect(pedestrianSet, i, nearestPed))
       {
-        raceOpponents[i] = nearestPed;
-        raceOpponents[nearestPed] = i;
+        raceOpponents.at(i) = nearestPed;
+        raceOpponents.at(nearestPed) = i;
 
-        raceStatuses[nearestPed] = IN_RACE;
-        raceStatuses[i] = IN_RACE;
+        raceStatuses.at(nearestPed) = IN_RACE;
+        raceStatuses.at(i) = IN_RACE;
       }
     }
 
-    else if(raceStatuses[i] == IN_RACE)
+    else if(raceStatuses.at(i) == IN_RACE)
     {
-      int raceOpp = nearestNeighborIndex[i];
-      raceOpponents[i] = raceOpp;
-      raceOpponents[raceOpp] = i;
-      raceStatuses[raceOpp] = IN_RACE;
+      VIPRA::idx raceOpp = nearestNeighborIndex.at(i);
+      raceOpponents.at(i) = raceOpp;
+      raceOpponents.at(raceOpp) = i;
+      raceStatuses.at(raceOpp) = IN_RACE;
 
-      if((pedestrianSet.getPedestrianCoordinates())[i].x > (pedestrianSet.getPedestrianCoordinates())[raceOpp].x)
+      if((pedestrianSet.getPedestrianCoordinates()).at(i).x > (pedestrianSet.getPedestrianCoordinates()).at(raceOpp).x)
       {
-        raceStatuses[i] = WINNER;
-        raceStatuses[raceOpp] = LOSER;
+        raceStatuses.at(i) = WINNER;
+        raceStatuses.at(raceOpp) = LOSER;
       }
       else
       {
-        raceStatuses[raceOpp] = WINNER;
-        raceStatuses[i] = LOSER;
+        raceStatuses.at(raceOpp) = WINNER;
+        raceStatuses.at(i) = LOSER;
       }      
     }
 
-    else if(raceStatuses[i] != NO_RACE && !checkIfIntersect(pedestrianSet,i,nearestNeighborIndex[i]))
+    else if(raceStatuses.at(i) != NO_RACE && !checkIfIntersect(pedestrianSet,i,nearestNeighborIndex.at(i)))
     {
-      int raceOpp = raceOpponents[i];
+      VIPRA::idx raceOpp = raceOpponents.at(i);
 
-      raceStatuses[i] = NO_RACE;
+      raceStatuses.at(i) = NO_RACE;
 
-      raceStatuses[raceOpp] = NO_RACE;
+      raceStatuses.at(raceOpp) = NO_RACE;
 
     }
   }
@@ -123,7 +124,7 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
   const auto&       coords = pedSet.getPedestrianCoordinates();
   const auto&       velocities = pedSet.getVelocities();
   const auto&       shoulderLengths = pedSet.getShoulderLengths();
-  int index = 0;
+  VIPRA::idx index = 0;
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
 
@@ -316,7 +317,11 @@ CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, const Cal
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
 
     if(raceStatuses[i]==IN_RACE || raceStatuses[i]==LOSER)
+    {
+      modelState->velocities[i] = VIPRA::f3d{0,0,0};
       continue;
+    }
+      
 
     const auto& pedCoord = coords.at(i);
     const auto& propulsion = propulsionForces.at(i);

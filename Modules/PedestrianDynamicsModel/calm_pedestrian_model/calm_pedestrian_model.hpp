@@ -44,12 +44,12 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   float*                        pedestrianDistanceMatrix;
   std::vector<float>            nearestNeighbors;
-  std::vector<int>              nearestNeighborIndex;
+  std::vector<VIPRA::size>      nearestNeighborIndex;
   std::shared_ptr<VIPRA::State> modelState;
 
   enum RaceStatus{NO_RACE, IN_RACE, WINNER, LOSER};
   std::vector<RaceStatus> raceStatuses;
-  std::vector<int> raceOpponents;
+  std::vector<VIPRA::size> raceOpponents;
   // std::vector<int> raceCounter;
 
   void calculatePropulsion(const CalmPedestrianSet&, const CalmGoals&) noexcept;
@@ -59,7 +59,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   void calculateDistanceMatrices(const CalmPedestrianSet&) noexcept;
 
   void raceDetection(const CalmPedestrianSet& pedestrianSet, VIPRA::delta_t time);
-  bool checkIfIntersect(const CalmPedestrianSet& pedestrianSet, const int, const int);
+  bool checkIfIntersect(const CalmPedestrianSet& pedestrianSet, const VIPRA::size, const VIPRA::size);
 
   void updateModelState(const CalmPedestrianSet&, const CalmGoals&, VIPRA::delta_t, VIPRA::t_step) noexcept;
 
