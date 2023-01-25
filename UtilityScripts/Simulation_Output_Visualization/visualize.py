@@ -33,7 +33,7 @@ maxStep = len(data["timesteps"])
 with imageio.get_writer('output.gif', mode='I') as writer:
     for step in data["timesteps"]:
         i = 0
-        plt.pause(0.25)
+        plt.pause(0.05)
         plt.cla()
         ax.set_ylim(-5, 5)
         ax.set_xlim(-5, 30)
@@ -53,6 +53,7 @@ with imageio.get_writer('output.gif', mode='I') as writer:
         plt.scatter(obsX, obsY, 1)
         plt.scatter(pointsX, pointsY, 2)
         plt.savefig(f'{step}.png')
+        #plt.waitforbuttonpress()
         image = imageio.v2.imread(f'{step}.png')
         writer.append_data(image)
         os.remove(f'{step}.png')

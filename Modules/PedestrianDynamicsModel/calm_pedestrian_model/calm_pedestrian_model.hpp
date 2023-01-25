@@ -76,6 +76,10 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
                                          const VIPRA::f3d& secondVel,
                                          const float       secondShoulderLen) const noexcept;
 
+  [[nodiscard]] inline bool isPedInDirectionOfGoal(const VIPRA::f3d& goalCoords,
+                                                   const VIPRA::f3d& pedCoords,
+                                                   const VIPRA::f3d& secondCoords) const noexcept;
+
   [[nodiscard]] inline bool objectDirectionTest(const VIPRA::f3d& pedCoords,
                                                 const VIPRA::f3d& pedVelocity,
                                                 const VIPRA::f3d& objCoords) const noexcept;
