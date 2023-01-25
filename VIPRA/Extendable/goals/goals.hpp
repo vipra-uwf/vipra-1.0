@@ -4,8 +4,8 @@
 #include "definitions/config_map.hpp"
 #include "definitions/dimensions.hpp"
 #include "definitions/type_definitions.hpp"
-#include "obstacleset/obstacle_set.hpp"
-#include "pedestrianset/pedestrian_set.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 class GoalsException : public std::runtime_error {
  public:

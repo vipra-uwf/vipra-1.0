@@ -3,8 +3,8 @@
 
 #include "../simulation_context.hpp"
 #include "goals/goals.hpp"
-#include "obstacleset/obstacle_set.hpp"
-#include "pedestrianset/pedestrian_set.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 /**
  * A condition gets evaluated as a part of a selector or transition. It
@@ -13,10 +13,7 @@
 class Condition {
  public:
   explicit Condition(SimulationContext* simulationContext);
-  virtual bool evaluate(const ObstacleSet&,
-                        const PedestrianSet&,
-                        const Goals&,
-                        VIPRA::idx pedestrianIndex) = 0;
+  virtual bool evaluate(const ObstacleSet&, const PedestrianSet&, const Goals&, VIPRA::idx pedestrianIndex) = 0;
 
  protected:
   SimulationContext* getSimulationContext();

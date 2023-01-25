@@ -4,9 +4,8 @@
 #include "../simulation_context.hpp"
 #include "goals/goals.hpp"
 #include "logging/logging.hpp"
-#include "obstacleset/obstacle_set.hpp"
-#include "pedestrianset/pedestrian_set.hpp"
-
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 /**
  * A selector is used to decide if a pedestrian should be evaluated for a 

@@ -3,7 +3,7 @@
 
 #include <gmock/gmock.h>
 
-#include "pedestrianset/pedestrian_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 class PedestrianSetMock : public PedestrianSet {
  public:

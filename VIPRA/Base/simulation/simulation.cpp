@@ -46,14 +46,14 @@ Simulation::run(Goals&                   goals,
 
   while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, timestep)};
-    // policyModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
-    // humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
+    policyModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
+    humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
 
     pedestrianSet.updateState(pedState);
 
     if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals, timestep)) {
       LJ::Debug(simLogger, "Writing To Document, Timestep: {}", timestep);
-      simulationOutputHandler.writeToDocument(outputDataWriter, pedestrianSet, timestep);
+      simulationOutputHandler.writeOutput(outputDataWriter, pedestrianSet, timestep);
     }
 
     goals.updatePedestrianGoals(obstacleSet, pedestrianSet, timestep);

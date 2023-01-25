@@ -35,7 +35,7 @@ add_subdirectory(${DEPS_DIR})
 target_link_libraries(
   ${PROJECT_NAME}
   GTest::gtest_main
-  gmock_main
+  GTest::gmock_main
   ANTLR4
   jsoncpp
   lumberjack

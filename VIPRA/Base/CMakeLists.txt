@@ -1,10 +1,10 @@
 
 
-add_subdirectory(simulationoutputhandler)
+add_subdirectory(simulation_output_handler)
 add_subdirectory(simulation)
-add_subdirectory(policyModel)
-add_subdirectory(outputdatawriter)
-add_subdirectory(humanbehavior)
+add_subdirectory(policy_model)
+add_subdirectory(output_data_writer)
+add_subdirectory(human_behavior)
 add_subdirectory(configuration)
 add_subdirectory(clock)
 add_subdirectory(dsl)

@@ -8,8 +8,8 @@
 
 #include <memory>
 
-#include "obstacleset/obstacle_set.hpp"
-#include "pedestrianset/pedestrian_set.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 class ObstacleSetMock : public ObstacleSet {
  public:

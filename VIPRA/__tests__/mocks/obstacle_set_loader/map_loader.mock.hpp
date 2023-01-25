@@ -3,7 +3,7 @@
 
 #include <gmock/gmock.h>
 
-#include "maploader/map_loader.hpp"
+#include "map_loader/map_loader.hpp"
 
 // virtual void                            configure(const VIPRA::ConfigMap& configMap) = 0;
 // virtual void                            initialize() = 0;

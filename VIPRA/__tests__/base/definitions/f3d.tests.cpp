@@ -149,8 +149,6 @@ TEST(Dimensions, Magnitude) {
   EXPECT_NEAR(sut4.magnitude(), std::sqrt(2), 0.01);
 }
 
-// TODO test that +, +=, -, -=, *, *=, /, /= operators work
-
 TEST(Dimensions, Binary_Operators_Tests) {
   //operator+
   VIPRA::f3d sut1{1, 2, 3};
@@ -234,10 +232,9 @@ TEST(Dimensions, Distance_To_Tests) {
 
 TEST(Dimensions, __Empty__) {
   EXPECT_EQ(VIPRA::__emptyf2d__, VIPRA::f2d(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
-  EXPECT_EQ(VIPRA::__emptyf3d__,
-            VIPRA::f3d(std::numeric_limits<float>::max(),
-                       std::numeric_limits<float>::max(),
-                       std::numeric_limits<float>::max()));
+  EXPECT_EQ(
+      VIPRA::__emptyf3d__,
+      VIPRA::f3d(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
 }
 
 TEST(Dimensions, __Empty_Vec__) {
