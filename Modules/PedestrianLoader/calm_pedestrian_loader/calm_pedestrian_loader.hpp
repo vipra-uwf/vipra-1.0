@@ -5,7 +5,7 @@
 
 #include "jsoncpp/json/json.h"
 #include "logging/logging.hpp"
-#include "pedestrianloader/pedestrian_loader.hpp"
+#include "pedestrian_loader/pedestrian_loader.hpp"
 
 struct CalmPedData : public VIPRA::PedData {
   CalmPedData()

@@ -1,9 +1,7 @@
 #include "passenger_vehicle_obstacle_set.hpp"
 
 VIPRA::f3d  makeDimensions(const VIPRA::EntitySet& objects);
-inline bool objectDirectionTest(const VIPRA::f3d& pedCoords,
-                                const VIPRA::f3d& pedVelocity,
-                                const VIPRA::f3d& objCoords);
+inline bool objectDirectionTest(const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity, const VIPRA::f3d& objCoords);
 
 VIPRA::f3d
 makeDimensions(const VIPRA::EntitySet& objects) {
@@ -90,8 +88,7 @@ PassengerVehicleObstacleSet::nearestObstacle(const VIPRA::f3d coordinates) const
 }
 
 VIPRA::f3d
-PassengerVehicleObstacleSet::nearestObstacleInDirection(const VIPRA::f3d coordinates,
-                                                        const VIPRA::f3d velocity) const {
+PassengerVehicleObstacleSet::nearestObstacleInDirection(VIPRA::f3d coordinates, VIPRA::f3d velocity) const {
   const auto&       obstacles = objects.at("obstacle");
   const VIPRA::size obsCnt = obstacles.size();
   VIPRA::idx        nearest = VIPRA::idx_INVALID;
@@ -180,8 +177,7 @@ PassengerVehicleObstacleSet::checkMap() const {
     ObstacleSetException::Throw("PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"exit\"");
   }
   if (objects.find("endOfAisle") == objects.end()) {
-    ObstacleSetException::Throw(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"endOfAisle\"");
+    ObstacleSetException::Throw("PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"endOfAisle\"");
   }
   if (objects.find("aisle") == objects.end()) {
     ObstacleSetException::Throw("PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"aisle\"");

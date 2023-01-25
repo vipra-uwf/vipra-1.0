@@ -2,7 +2,7 @@
 #define ADJACENCYGRAPH_HPP
 
 #include "definitions/type_definitions.hpp"
-#include "obstacleset/obstacle_set.hpp"
+#include "obstacle_set/obstacle_set.hpp"
 #include <optional>
 
 constexpr bool

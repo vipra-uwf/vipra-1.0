@@ -9,8 +9,9 @@
 #include "PedestrianLoader/calm_pedestrian_loader/calm_pedestrian_loader.hpp"
 #include "definitions/state.hpp"
 #include "logging/logging.hpp"
-#include "pedestrianloader/pedestrian_loader.hpp"
-#include "pedestrianset/pedestrian_set.hpp"
+#include "pedestrian_loader/pedestrian_loader.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
+
 
 class CalmPedestrianSet : public PedestrianSet {
  public:

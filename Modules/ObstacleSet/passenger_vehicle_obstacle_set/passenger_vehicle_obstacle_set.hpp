@@ -6,8 +6,8 @@
 
 #include "MapLoader/Point_Map_Loader/point_map_loader.hpp"
 #include "definitions/dimensions.hpp"
-#include "obstacleset/obstacle_set.hpp"
-#include "pedestrianset/pedestrian_set.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 class PassengerVehicleObstacleSet : public ObstacleSet {
 
@@ -32,7 +32,7 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
   [[nodiscard]] VIPRA::f3dVec nearestObstacle(const PedestrianSet&) const override;
   [[nodiscard]] VIPRA::f3dVec nearestObstacleInDirection(const PedestrianSet&) const override;
   [[nodiscard]] VIPRA::f3d    nearestObstacle(VIPRA::f3d) const override;
-  [[nodiscard]] VIPRA::f3d    nearestObstacleInDirection(const VIPRA::f3d, const VIPRA::f3d) const override;
+  [[nodiscard]] VIPRA::f3d    nearestObstacleInDirection(VIPRA::f3d, VIPRA::f3d) const override;
 
   [[nodiscard]] bool  collision(VIPRA::f3d) const override;
   [[nodiscard]] float rayHit(VIPRA::f3d, VIPRA::f3d) const override;

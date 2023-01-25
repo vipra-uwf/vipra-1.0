@@ -1,12 +1,15 @@
 #ifndef CALM_GOALS_PATHFINDING_HPP
 #define CALM_GOALS_PATHFINDING_HPP
 
-#include "adjacencyGraph.hpp"
 #include <algorithm>
 #include <iostream>
 #include <optional>
 #include <queue>
 #include <vector>
+
+#include "adjacencyGraph.hpp"
+
+#include "logging/logging.hpp"
 
 namespace CalmPath {
 struct AQuad {
@@ -116,8 +119,7 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& graph, float diagonalCos
     closed_list.push_back(curr);
 
     for (Quad* neighbor : curr->node->adj) {
-      if (!std::any_of(
-              closed_list.begin(), closed_list.end(), [&](AQuad* n) { return n->node == neighbor; })) {
+      if (!std::any_of(closed_list.begin(), closed_list.end(), [&](AQuad* n) { return n->node == neighbor; })) {
         // if the neighbor hasn't been visited yet, calculate it's cost
         float  g = curr->g + neighbor->center.distanceTo(curr->node->center);
         float  f = g + cost(neighbor, last, diagonalCost);
@@ -141,11 +143,7 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& graph, float diagonalCos
 
   // no path was found, clear the data, return empty queue
   std::for_each(allocList.begin(), allocList.end(), [](AQuad* ptr) { delete ptr; });
-  LJ::Warn(simLogger,
-           "Calm_Goals: No Path Found for Pedestrian at position: x:{}, y:{}, z:{}",
-           start.x,
-           start.y,
-           start.z);
+  LJ::Warn(simLogger, "Calm_Goals: No Path Found for Pedestrian at position: x:{}, y:{}, z:{}", start.x, start.y, start.z);
   return std::queue<VIPRA::f3d>{};
 }
 
