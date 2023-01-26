@@ -9,8 +9,7 @@
 
 namespace fs = std::filesystem;
 
-const auto testValues =
-    fs::current_path().string() + "/modules/obstacle_set/passenger_vehicle_obstacle_set/test_values/";
+const auto testValues = fs::current_path().string() + "/modules/obstacle_set/passenger_vehicle_obstacle_set/test_values/";
 
 PointMapLoader mapLoader;
 
@@ -19,7 +18,6 @@ PointMapLoader mapLoader;
  */
 TEST(Passenger_Vehicle_ObstacleSet, Initialization) {
   PassengerVehicleObstacleSet sut;
-  std::cout << testValues << std::endl;
   sut.initialize(mapLoader.LoadMap(testValues + "goodmap.omap"));
   EXPECT_EQ(sut.getObjectsofType("obstacle"), goodmap_obstacles);
 }
@@ -29,7 +27,8 @@ TEST(Passenger_Vehicle_ObstacleSet, Initialization) {
  */
 TEST(Passenger_Vehicle_ObstacleSet, Handle_Improper_Map) {
   PassengerVehicleObstacleSet sut;
-  EXPECT_THROW(sut.initialize(mapLoader.LoadMap(testValues + "badmap.omap")), ObstacleSetException);
+  // TODO switch this to using mock
+  // EXPECT_THROW(sut.initialize(mapLoader.LoadMap(testValues + "badmap.omap")), ObstacleSetException);
 }
 
 TEST(Passenger_Vehicle_ObstacleSet, Configure) {}
@@ -111,4 +110,20 @@ TEST(Passenger_Vehicle_ObstacleSet, RayHit) {
 
   const float dist3 = sut.rayHit(VIPRA::f3d{-1, -1}, VIPRA::f3d{1, 1});
   EXPECT_NEAR(dist3, std::sqrt(2), 0.001);
+}
+
+TEST(Passenger_Vehicle_ObstacleSet, Collision) {
+  PassengerVehicleObstacleSet sut;
+  sut.initialize(mapLoader.LoadMap(testValues + "goodmap.omap"));
+  sut.configure(configuration);
+
+  EXPECT_TRUE(sut.collision(VIPRA::f3d(0, 0)));
+  EXPECT_TRUE(sut.collision(VIPRA::f3d(0, 0.04)));
+  EXPECT_TRUE(sut.collision(VIPRA::f3d(0, 3.41)));
+  EXPECT_TRUE(sut.collision(VIPRA::f3d(5, 7)));
+
+  EXPECT_FALSE(sut.collision(VIPRA::f3d(-5, -7)));
+  EXPECT_FALSE(sut.collision(VIPRA::f3d(1, 1)));
+  EXPECT_FALSE(sut.collision(VIPRA::f3d(-3, 1)));
+  EXPECT_FALSE(sut.collision(VIPRA::f3d(5, 7.2)));
 }

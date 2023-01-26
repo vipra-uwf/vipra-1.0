@@ -12,7 +12,7 @@ class CalmTester : private CalmPedestrianModel {
   CalmTester() : CalmPedestrianModel() {}
 
   bool Test_objectDirectionTest(const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity, const VIPRA::f3d& objCoords) {
-    return objectDirectionTest(pedCoords, pedVelocity, objCoords);
+    return CalmPedestrianModel::objectDirectionTest(pedCoords, pedVelocity, objCoords);
   }
 
   bool Test_objectSpatialTest(const VIPRA::f3d& pedCoords,
@@ -20,7 +20,7 @@ class CalmTester : private CalmPedestrianModel {
                               float             pedShoulderLength,
                               const VIPRA::f3d& objLeft,
                               const VIPRA::f3d& objRight) {
-    return objectSpatialTest(pedCoords, pedVelocity, pedShoulderLength, objLeft, objRight);
+    return CalmPedestrianModel::objectSpatialTest(pedCoords, pedVelocity, pedShoulderLength, objLeft, objRight);
   }
 
   float Test_checkBlockedPath(const VIPRA::f3d&  coords,
@@ -28,20 +28,23 @@ class CalmTester : private CalmPedestrianModel {
                               float              shoulderWidth,
                               float              checkDistance,
                               const ObstacleSet& obsSet) {
-    return checkBlockedPath(coords, velocity, shoulderWidth, checkDistance, obsSet);
+    return CalmPedestrianModel::checkBlockedPath(coords, velocity, shoulderWidth, checkDistance, obsSet);
   }
 
   bool Test_lineIntersect(const VIPRA::f3d& start1,
                           const VIPRA::f3d& end1,
                           const VIPRA::f3d& linep1,
                           const VIPRA::f3d& linep2) noexcept {
-    return lineIntersect(start1, end1, linep1, linep2);
-  }
-  Line Test_getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& velocity, float shoulderWidth) {
-    return getShoulderPoints(coords, velocity, shoulderWidth);
+    return CalmPedestrianModel::lineIntersect(start1, end1, linep1, linep2);
   }
 
-  bool Test_isPointInRect(const Rect& rect, const VIPRA::f3d& p1) noexcept { return isPointInRect(rect, p1); }
+  Line Test_getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& velocity, float shoulderWidth) {
+    return CalmPedestrianModel::getShoulderPoints(coords, velocity, shoulderWidth);
+  }
+
+  bool Test_isPointInRect(const Rect& rect, const VIPRA::f3d& p1) noexcept {
+    return CalmPedestrianModel::isPointInRect(rect, p1);
+  }
 };
 
 TEST(Calm_Ped_Model, Object_Spatial_Test) {

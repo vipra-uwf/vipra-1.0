@@ -58,7 +58,7 @@ target_compile_options(${PROJECT_NAME} PUBLIC -g -O0)
 
 target_include_directories(
   ${PROJECT_NAME}
-  PRIVATE
+  PUBLIC
   ./
   ${MODULES_DIR}
   ${BASE_DIR}

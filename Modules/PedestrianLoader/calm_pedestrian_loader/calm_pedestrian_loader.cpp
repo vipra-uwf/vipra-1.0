@@ -64,5 +64,12 @@ CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
     LJ::Debug(simLogger, "CalmPedestrianLoader: Error Building Pedestrians, Error: {}", ex.what());
     PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
+
+  if (inputData->positions.size() < 1 || inputData->masses.size() < 1 || inputData->desiredSpeeds.size() < 1 ||
+      inputData->reactionTimes.size() < 1) {
+    LJ::Error(simLogger, "CalmPedestrianLoader: Pedestrian File Missing Properties");
+    PedestrianLoaderException::Throw("Pedestrian File Missing Properties: " + filePath + "\n");
+  }
+
   return inputData;
 }

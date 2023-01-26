@@ -5,6 +5,7 @@
 
 #include "definitions/entitySet.hpp"
 #include "jsoncpp/json/json.h"
+#include "logging/logging.hpp"
 #include "map_loader/map_loader.hpp"
 
 struct PointMap : public VIPRA::MapData {

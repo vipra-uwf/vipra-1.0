@@ -27,7 +27,7 @@ struct f2d {
     return *this;
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   inline constexpr float& operator[](T index) {
     switch (index) {
       case 0:
@@ -43,7 +43,7 @@ struct f2d {
     }
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   inline constexpr float operator[](T index) const {
     switch (index) {
       case 0:
@@ -155,7 +155,7 @@ struct f3d {
     return *this;
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   inline constexpr float& operator[](T index) {
     switch (index) {
       case 0:
@@ -175,7 +175,7 @@ struct f3d {
     }
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value || std::is_unsigned<T>::value>::type>
+  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   inline constexpr float operator[](T index) const {
     switch (index) {
       case 0:
