@@ -1,9 +1,9 @@
 
 #include <gtest/gtest.h>
 
-#include "logging/logging.hpp"
+#include <spdlog/spdlog.h>
 
-LJ::Logger<LJ::ConsoleLogger> simLogger{LJ::ERROR};
+spdlog::Logger<spdlog::ConsoleLogger> simLogger{spdlog::error};
 
 int
 main(int argc, char** argv) {

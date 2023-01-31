@@ -6,12 +6,13 @@
 #include <queue>
 
 #include "goals/goals.hpp"
-#include "logging/logging.hpp"
 #include "pathfinding.hpp"
+#include <spdlog/spdlog.h>
+
 class CalmGoals : public Goals {
 
  public:
-  void configure(const VIPRA::ConfigMap& configMap) override;
+  void configure(const VIPRA::Config::Map& configMap) override;
   void initialize(const ObstacleSet&, const PedestrianSet&) override;
 
   void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&, VIPRA::delta_t) override;

@@ -1,8 +1,8 @@
 #include "timestep_output_handler.hpp"
 
 void
-TimestepOutputHandler::configure(const VIPRA::ConfigMap& configMap) {
-  frequency = std::stoul(configMap.at("outputFrequency"));
+TimestepOutputHandler::configure(const VIPRA::Config::Map& configMap) {
+  frequency = configMap["outputFrequency"].asUInt64();
 }
 
 bool

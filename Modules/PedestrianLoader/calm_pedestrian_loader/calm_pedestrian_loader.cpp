@@ -2,7 +2,7 @@
 #include "calm_pedestrian_loader.hpp"
 
 void
-CalmPedestrianLoader::configure(const VIPRA::ConfigMap& configMap) {}
+CalmPedestrianLoader::configure(const VIPRA::Config::Map& configMap) {}
 
 void
 CalmPedestrianLoader::initialize() {}
@@ -21,17 +21,17 @@ CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
 
   if (!Json::parseFromStream(jsonReader, fileStream, &jsonDocument, &errors)) {
     fileStream.close();
-    LJ::Error(simLogger, "CalmPedestrianLoader: Jsoncpp unable to parse file");
+    spdlog::error("CalmPedestrianLoader: Jsoncpp unable to parse file");
     PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
   fileStream.close();
 
   std::unique_ptr<CalmPedData> inputData = std::make_unique<CalmPedData>();
   try {
-    LJ::Debug(simLogger, "CalmPedestrianLoader: Parsed File, Building Pedestrians");
+    spdlog::debug("CalmPedestrianLoader: Parsed File, Building Pedestrians");
     for (unsigned int i = 0; i < jsonDocument.size(); i++) {
       const std::string type = jsonDocument.getMemberNames()[i];
-      LJ::Debug(simLogger, "Type: {}", type);
+      spdlog::debug("Type: {}", type);
       inputData->positions = VIPRA::f3dVec{};
       inputData->masses = std::vector<float>{};
       inputData->desiredSpeeds = std::vector<float>{};
@@ -61,13 +61,13 @@ CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
       }
     }
   } catch (const std::exception& ex) {
-    LJ::Debug(simLogger, "CalmPedestrianLoader: Error Building Pedestrians, Error: {}", ex.what());
+    spdlog::debug("CalmPedestrianLoader: Error Building Pedestrians, Error: {}", ex.what());
     PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
 
   if (inputData->positions.size() < 1 || inputData->masses.size() < 1 || inputData->desiredSpeeds.size() < 1 ||
       inputData->reactionTimes.size() < 1) {
-    LJ::Error(simLogger, "CalmPedestrianLoader: Pedestrian File Missing Properties");
+    spdlog::error("CalmPedestrianLoader: Pedestrian File Missing Properties");
     PedestrianLoaderException::Throw("Pedestrian File Missing Properties: " + filePath + "\n");
   }
 

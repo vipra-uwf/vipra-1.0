@@ -1,7 +1,7 @@
 #include "policy_model.hpp"
 
 void
-PolicyModel::configure(const VIPRA::ConfigMap& configMap) {}
+PolicyModel::configure(const VIPRA::Config::Map& configMap) {}
 
 void
 PolicyModel::timestep(const PedestrianSet&          pedSet,

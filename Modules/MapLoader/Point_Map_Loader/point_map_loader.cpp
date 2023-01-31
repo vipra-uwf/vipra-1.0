@@ -2,7 +2,7 @@
 #include "point_map_loader.hpp"
 
 void
-PointMapLoader::configure(const VIPRA::ConfigMap& configMap) {}
+PointMapLoader::configure(const VIPRA::Config::Map& configMap) {}
 
 void
 PointMapLoader::initialize() {}

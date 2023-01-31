@@ -1,5 +1,5 @@
 CPP= g++
-CPP_FLAGS= -std=c++20 -w -fPIE 
+CPP_FLAGS= -std=c++17 -w -fPIE 
 
 EXE_NAME= VIPRA_SIM
 
@@ -38,31 +38,23 @@ compileMain: makeDirs
 makeDirs:
 	mkdir -p $(BUILD_DIR)
 
-GenMain:
-	cmake -B genbuild . -DDEBUG_MODE=OFF
-	cmake --build genbuild 
-
 GenSim:
-	cmake -B simbuild . -DGEN_MAIN=OFF -DDEBUG_MODE=OFF
+	cmake -B simbuild . -DDEBUG_MODE=OFF
 	cmake --build simbuild
 
-DebugGenMain:
-	cmake -B genbuild . -DDEBUG_MODE=ON
-	cmake --build genbuild 
-
 DebugGenSim:
-	cmake -B simbuild . -DGEN_MAIN=OFF -DDEBUG_MODE=ON
+	cmake -B simbuild . -DDEBUG_MODE=ON
 	cmake --build simbuild
 
 BuildAll:
 	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild
-	make GenMain
+	make generate_main
 	./generate_main main.cpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
 	make GenSim
 
 DebugBuildAll:
 	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild
-	make DebugGenMain
+	make generate_main DEBUG_OUTPUT=1
 	./generate_main main.cpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
 	make DebugGenSim
 

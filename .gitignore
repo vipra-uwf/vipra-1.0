@@ -19,6 +19,7 @@ temp
 VIPRA_SIM
 simbuild
 genbuild
+testBuild
 warnings.txt
 Vipra_tests
 _build

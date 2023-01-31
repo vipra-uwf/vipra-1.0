@@ -10,7 +10,7 @@
 
 class PolicyModel {
  public:
-  void configure(const VIPRA::ConfigMap& configMap);
+  void configure(const VIPRA::Config::Map& configMap);
   void timestep(const PedestrianSet&,
                 const ObstacleSet&,
                 const Goals&,

@@ -5,8 +5,8 @@
 
 #include "definitions/entitySet.hpp"
 #include "jsoncpp/json/json.h"
-#include "logging/logging.hpp"
 #include "map_loader/map_loader.hpp"
+#include <spdlog/spdlog.h>
 
 struct PointMap : public VIPRA::MapData {
   VIPRA::EntitySet entities;
@@ -14,7 +14,7 @@ struct PointMap : public VIPRA::MapData {
 
 class PointMapLoader : public MapLoader {
  public:
-  void                            configure(const VIPRA::ConfigMap& configMap) override;
+  void                            configure(const VIPRA::Config::Map& configMap) override;
   void                            initialize() override;
   std::unique_ptr<VIPRA::MapData> LoadMap(const std::string& filePath) const override;
 };

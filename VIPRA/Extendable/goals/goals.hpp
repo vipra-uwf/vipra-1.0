@@ -17,7 +17,7 @@ class Goals {
  public:
   virtual ~Goals() = default;
 
-  virtual void configure(const VIPRA::ConfigMap& configMap) = 0;
+  virtual void configure(const VIPRA::Config::Map& configMap) = 0;
   virtual void initialize(const ObstacleSet&, const PedestrianSet&) = 0;
 
   virtual void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&, VIPRA::delta_t) = 0;

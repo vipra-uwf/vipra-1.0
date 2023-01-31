@@ -22,7 +22,7 @@ class MapLoader {
  public:
   virtual ~MapLoader() = default;
 
-  virtual void                            configure(const VIPRA::ConfigMap& configMap) = 0;
+  virtual void                            configure(const VIPRA::Config::Map& configMap) = 0;
   virtual void                            initialize() = 0;
   virtual std::unique_ptr<VIPRA::MapData> LoadMap(const std::string& filePath) const = 0;
 };

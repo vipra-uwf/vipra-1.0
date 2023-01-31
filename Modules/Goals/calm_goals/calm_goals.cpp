@@ -4,11 +4,13 @@
 #include "pathfinding.hpp"
 
 void
-CalmGoals::configure(const VIPRA::ConfigMap& configMap) {
-  goalRange = std::stof(configMap.at("goalRange"));
-  endGoalType = configMap.at("endGoalType");
-  pathingType = configMap.at("pathFinding");
-  diagonalCost = (std::stof(configMap.at("diagonalCost")));
+CalmGoals::configure(const VIPRA::Config::Map& configMap) {
+  spdlog::info("Configure Calm Goals");
+  goalRange = configMap["goalRange"].asFloat();
+  endGoalType = configMap["endGoalType"].asString();
+  pathingType = configMap["pathFinding"].asString();
+  diagonalCost = configMap["diagonalCost"].asFloat();
+  spdlog::info("done Configure Calm Goals");
 }
 
 /**
@@ -25,16 +27,16 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   goalsMet = std::vector<bool>(pedCnt, false);
   paths = std::vector<std::queue<VIPRA::f3d>>(pedCnt);
   lastGoalTimes = std::vector<VIPRA::delta_t>(pedCnt, 0.0f);
-  LJ::Debug(simLogger, "CalmGoals: Finding Nearest End Goal");
+  spdlog::debug("CalmGoals: Finding Nearest End Goal");
   findNearestEndGoal(obsSet, pedSet);
 
   if (pathingType == "Astar") {
-    LJ::Debug(simLogger, "CalmGoals: Building Pathing Graph");
+    spdlog::debug("CalmGoals: Building Pathing Graph");
     graph.buildGraph(obsSet);
   }
-  LJ::Debug(simLogger, "CalmGoals: Initializing Paths");
+  spdlog::debug("CalmGoals: Initializing Paths");
   initializePaths(pedSet, obsSet);
-  LJ::Debug(simLogger, "CalmGoals: Finished Initializing");
+  spdlog::debug("CalmGoals: Finished Initializing");
 }
 
 /**
@@ -49,16 +51,16 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     if (pathingType == "Astar") {
-      LJ::Debug(simLogger, "CalmGoals: Finding AStar Path for Ped: {}", i);
+      spdlog::debug("CalmGoals: Finding AStar Path for Ped: {}", i);
       paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph, diagonalCost);
     } else if (pathingType == "Disembark") {
-      LJ::Debug(simLogger, "CalmGoals: Finding Disembark Path for Ped: {}", i);
+      spdlog::debug("CalmGoals: Finding Disembark Path for Ped: {}", i);
       paths[i] = disembarkPath(coords.at(i), obsSet);
-      LJ::Debug(simLogger, "CalmGoals: Found Disembark Path for Ped: {}", i);
+      spdlog::debug("CalmGoals: Found Disembark Path for Ped: {}", i);
     }
     currentGoals[i] = paths[i].front();
   }
-  LJ::Debug(simLogger, "CalmGoals: Finished Initializing Paths");
+  spdlog::debug("CalmGoals: Finished Initializing Paths");
 }
 
 std::queue<VIPRA::f3d>
@@ -107,10 +109,10 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
   }
 
   if (objectives.size() == 1) {
-    LJ::Debug(simLogger, "CalmGoals: Only One Objective of Type: {}, Filling Goals", endGoalType);
+    spdlog::debug("CalmGoals: Only One Objective of Type: {}, Filling Goals", endGoalType);
     // if only one objective, set every end goal as that
     std::fill(endGoals.begin(), endGoals.end(), std::ref(objectives.at(0)));
-    LJ::Debug(simLogger, "Filled Goals");
+    spdlog::debug("Filled Goals");
   } else {
     // otherwise, for each ped coord set the end goal as the nearest objective
     std::transform(coords.begin(), coords.end(), endGoals.begin(), [&](const VIPRA::f3d& coord) {
@@ -125,7 +127,7 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
       return goal;
     });
   }
-  LJ::Debug(simLogger, "CalmGoals: Finished Finding Nearest Goals");
+  spdlog::debug("CalmGoals: Finished Finding Nearest Goals");
 }
 
 /**
@@ -147,10 +149,10 @@ CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet,
     if (!paths[i].empty()) {
       const VIPRA::f3d& currGoal = paths[i].front();
       if (inside(pedCoords.at(i), currGoal, goalRange)) {
-        LJ::Debug(simLogger, "Pedestrian {}, Reached a Goal", i);
+        spdlog::debug("Pedestrian {}, Reached a Goal", i);
         paths[i].pop();
         if (paths[i].empty()) {
-          LJ::Debug(simLogger, "Pedestrian {}, Reached Their End Goal", i);
+          spdlog::debug("Pedestrian {}, Reached Their End Goal", i);
           currentGoals[i] = VIPRA::__emptyf3d__;
           goalsMet[i] = true;
         } else {

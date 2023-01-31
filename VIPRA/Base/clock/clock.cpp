@@ -5,7 +5,7 @@ Clock::Clock() {
 }
 
 void
-Clock::configure(const VIPRA::ConfigMap& config) {}
+Clock::configure(const VIPRA::Config::Map& config) {}
 
 void
 Clock::start() {
@@ -20,7 +20,7 @@ Clock::stop() {
 void
 Clock::printRealStartTime() {
   std::time_t time = std::chrono::system_clock::to_time_t(this->realStartTime);
-  LJ::Info(simLogger, "computation started: {}", std::ctime(&time));
+  spdlog::info("computation started: {}", std::ctime(&time));
 }
 
 void
@@ -31,13 +31,13 @@ Clock::calculateRealElapsedSeconds() {
 void
 Clock::printRealDuration() {
   calculateRealElapsedSeconds();
-  LJ::Info(simLogger, "elapsed time: {}s", this->realElapsedSeconds.count());
+  spdlog::info("elapsed time: {}s", this->realElapsedSeconds.count());
 }
 
 void
 Clock::printRealEndTime() {
   std::time_t time = std::chrono::system_clock::to_time_t(this->realEndTime);
-  LJ::Info(simLogger, "computation finished: {}", std::ctime(&time));
+  spdlog::info("computation finished: {}", std::ctime(&time));
 }
 
 void
@@ -47,5 +47,5 @@ Clock::addSimulationTimeMs(VIPRA::delta_t seconds) {
 
 void
 Clock::printSimulationDuration() {
-  LJ::Info(simLogger, "simulation duration: {:f}s", float(this->simulationElapsedMs) / 1000);
+  spdlog::info("simulation duration: {:f}s", float(this->simulationElapsedMs) / 1000);
 }

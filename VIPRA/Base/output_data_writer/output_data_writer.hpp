@@ -18,7 +18,7 @@ class OutputDataWriter {
  public:
   virtual ~OutputDataWriter() = default;
 
-  virtual void configure(const VIPRA::ConfigMap& configMap) = 0;
+  virtual void configure(const VIPRA::Config::Map& configMap) = 0;
   virtual void initializeOutputFile(const std::string& outputFilePath) = 0;
   virtual void addFloatValue(const std::string& key, float value) = 0;
   virtual void addStringValue(const std::string& key, const std::string& value) = 0;

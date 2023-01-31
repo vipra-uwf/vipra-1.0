@@ -4,7 +4,6 @@
 #include <unordered_map>
 
 #include "configuration/configuration_reader.hpp"
-#include "lumberjack/lumberjack.hpp"
 
 void        setFiles(int, char const*[]);
 std::string Log(const std::string& message);
@@ -21,8 +20,6 @@ std::string initializeModules();
 std::string mainFunctionDefinition();
 std::string generateModules();
 std::string makeModuleConfigs();
-
-std::string generateLogger();
 
 std::string cleanup();
 std::string runSim();
@@ -62,7 +59,6 @@ main(int argc, char const* argv[]) {
     objectFunctions_Str += generateObjectFunction(className, type);
   }
 
-  std::string logger_Str = generateLogger();
   std::string includes_Str = generateIncludes();
   std::string mainFunction_Str = generateMain();
   std::string getInputFiles_Str = generateGetFiles();
@@ -75,8 +71,8 @@ main(int argc, char const* argv[]) {
     return -1;
   }
 
-  mainFile << includes_Str << logger_Str << functionDecls_Str << getInputFiles_Str << mainFunction_Str
-           << objectFunctions_Str << extractConfigMap_Str;
+  mainFile << includes_Str << functionDecls_Str << getInputFiles_Str << mainFunction_Str << objectFunctions_Str
+           << extractConfigMap_Str;
 
   mainFile.close();
 
@@ -114,22 +110,15 @@ generateIncludes() {
   }
 
   generatedIncludes += "#include \"definitions/config_map.hpp\"\n";
-  generatedIncludes += "#include \"lumberjack/lumberjack.hpp\"";
+  generatedIncludes += "#include <spdlog/spdlog.h>\n";
   return generatedIncludes;
 }
-
-std::string
-generateLogger() {
-  return "\nLJ::Logger<LJ::ConsoleLogger> simLogger{LJ::DEBUG};";
-}
-
 std::string
 generateFunctionDeclarations() {
-  std::string generatedDeclarations = "\nVIPRA::ConfigMap* extractConfigMap(std::string name);";
+  std::string generatedDeclarations = "\nVIPRA::Config::Map* extractConfigMap(std::string name);";
 
   for (const auto& [type, className] : TYPES) {
-    generatedDeclarations +=
-        className + "* generate" + className + "(std::string id, VIPRA::ConfigMap* configMap);\n";
+    generatedDeclarations += className + "* generate" + className + "(std::string id, VIPRA::Config::Map* configMap);\n";
   }
 
   return generatedDeclarations;
@@ -138,7 +127,7 @@ generateFunctionDeclarations() {
 std::string
 generateObjectFunction(const std::string& className, const std::string& type) {
   std::string generatedFunction = "\n" + className + "* generate" + className +
-                                  "(std::string id, VIPRA::ConfigMap* configMap)\n"
+                                  "(std::string id, VIPRA::Config::Map* configMap)\n"
                                   "{\n";
 
   generatedFunction += generateFunctionOptions(type);
@@ -152,9 +141,9 @@ generateFunctionOptions(const std::string& type) {
   for (const auto& option : jsonObj[type]) {
     const auto& module = option["object"];
     if (!requireCompiled || module["compiled"]) {
-      generatedFunction += Log("Creating " + type + " Implementation") + "\n\tif(id==\"" +
-                           module["id"].asString() + "\"){\n\t\t" + module["className"].asString() + "* " +
-                           module["name"].asString() + " = new " + module["className"].asString() + "();" +
+      generatedFunction += Log("Creating " + type + " Implementation") + "\n\tif(id==\"" + module["id"].asString() +
+                           "\"){\n\t\t" + module["className"].asString() + "* " + module["name"].asString() + " = new " +
+                           module["className"].asString() + "();" +
                            Log("Configuring " + type + " Module: ID: " + module["id"].asString()) + "\n\t\t" +
                            module["name"].asString() + "->configure(*configMap);" + "\n\t\treturn " +
                            module["name"].asString() + ";" + "\n\t}";
@@ -168,18 +157,14 @@ generateFunctionOptions(const std::string& type) {
 
 std::string
 generateExtractConfigMap() {
-  return {"\nVIPRA::ConfigMap* extractConfigMap(std::string name)"
+  return {"\nVIPRA::Config::Map* extractConfigMap(std::string name)"
           "\n{"
-          "\n\tVIPRA::ConfigMap* configMap = new VIPRA::ConfigMap;"
+          "\n\tVIPRA::Config::Map* configMap = new VIPRA::Config::Map;"
           "\n\tfor(unsigned int i = 0; i < "
-          "moduleParams[name][\"params\"].size(); i++)"
+          "moduleParams[name].size(); i++)"
           "\n\t{"
-          "\n\t\tstd::string attribute = "
-          "moduleParams[name][\"params\"].getMemberNames()[i];"
-          "\n\t\tstd::string value = "
-          "moduleParams[name][\"params\"][attribute].asString();"
-          "\n\tstd::cout << \"ATTRIBUTE: \" << attribute << \" : \" << value "
-          "<< \'\\n\';"
+          "\n\tauto attribute = moduleParams[name].getMemberNames()[i];"
+          "\n\tauto value = moduleParams[name][attribute];"
           "\n\t\t(*configMap)[attribute] = value;"
           "\n\t}"
           "\n"
@@ -192,6 +177,8 @@ generateMain() {
   std::string mainFunction = "";
 
   mainFunction += mainFunctionDefinition();
+  mainFunction += "spdlog::set_level(spdlog::level::info); \n\#ifdef DEBUG_OUTPUT"
+                  "\n\tspdlog::set_level(spdlog::level::debug); \n #endif";
   mainFunction += makeModuleConfigs();
   mainFunction += generateModules();
   mainFunction += Log("Generating Modules");
@@ -211,10 +198,9 @@ initializeModules() {
   return Log("Initializing Map Loader") + "\n\tmap_loader->initialize();\n\t" + Log("Loading Map") +
          "\n\tauto map = map_loader->LoadMap(obstacleFile);\n\t" + Log("Initializing Obstacle Set") +
          "\n\tobstacle_set->initialize(std::move(map));\n\t" + Log("Loading Pedestrians") +
-         "\n\tauto peds = pedestrian_loader->LoadPedestrians(pedestrianFile);\n\t" +
-         Log("Initializing Pedestrian Set") + "\n\tpedestrian_set->initialize(std::move(peds));\n\t" +
-         Log("Initializing Goals") + "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" +
-         Log("Initializing Human Behavior Model") +
+         "\n\tauto peds = pedestrian_loader->LoadPedestrians(pedestrianFile);\n\t" + Log("Initializing Pedestrian Set") +
+         "\n\tpedestrian_set->initialize(std::move(peds));\n\t" + Log("Initializing Goals") +
+         "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" + Log("Initializing Human Behavior Model") +
          "\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);\n\t" +
          Log("Initializing Pedestrian Dynamics Model") +
          "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +
@@ -236,8 +222,8 @@ std::string
 generateModules() {
   std::string str{""};
   for (const auto& [type, className] : TYPES) {
-    str += "\n\t" + className + "* " + type + " = generate" + className + "(simulationJsonConfig[\"modules\"][\"" +
-           type + "\"].asString(), " + type + "Config);";
+    str += "\n\t" + className + "* " + type + " = generate" + className + "(simulationJsonConfig[\"modules\"][\"" + type +
+           "\"].asString(), " + type + "Config);";
   }
 
   return str;
@@ -247,7 +233,7 @@ std::string
 makeModuleConfigs() {
   std::string str{""};
   for (const auto& [type, className] : TYPES) {
-    str += "\n\tVIPRA::ConfigMap* " + type + "Config =  extractConfigMap(\"" + type + "\");";
+    str += "\n\tVIPRA::Config::Map* " + type + "Config =  extractConfigMap(\"" + type + "\");";
   }
 
   return str;
@@ -306,5 +292,5 @@ outputSetup() {
 
 std::string
 Log(const std::string& message) {
-  return "LJ::Debug(simLogger, \"" + message + "\");\n";
+  return "spdlog::info( \"" + message + "\");\n";
 }

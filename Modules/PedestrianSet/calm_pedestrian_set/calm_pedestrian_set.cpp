@@ -5,7 +5,7 @@ CalmPedestrianSet::CalmPedestrianSet() {
 }
 
 void
-CalmPedestrianSet::configure(const VIPRA::ConfigMap& configMap) {}
+CalmPedestrianSet::configure([[maybe_unused]] const VIPRA::Config::Map& configMap) {}
 
 void
 CalmPedestrianSet::initialize(std::unique_ptr<VIPRA::PedData> pedData) {
@@ -19,6 +19,16 @@ CalmPedestrianSet::initialize(std::unique_ptr<VIPRA::PedData> pedData) {
   shoulderLengths = std::move(peds->shoulderLengths);
 
   velocities = VIPRA::f3dVec{numPedestrians, VIPRA::f3d{0, 0, 0}};
+}
+
+VIPRA::f3d
+CalmPedestrianSet::getPedCoords(VIPRA::idx index) const {
+  return pedestrianCoordinates.at(index);
+}
+
+VIPRA::f3d
+CalmPedestrianSet::getPedVelocity(VIPRA::idx index) const {
+  return velocities.at(index);
 }
 
 VIPRA::size

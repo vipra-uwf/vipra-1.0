@@ -1,67 +1,33 @@
 {
-    "input_data_loader": {
-        "params":{
-
-        }
-    },
+    "input_data_loader": {},
     "human_behavior_model": {
-        "params":{
-            "random_seed": "aervoiasenc",
-            "behavior#": "injured_person"
-        }
+        "seed": "testseed",
+        "behaviors": [
+            "injured_person",
+            "disembark",
+            "another_one"
+        ]
     },
-    "output_data_writer": {
-        "params":{
-
-        }
-    },
+    "output_data_writer": {},
     "simulation_output_handler": {
-        "params":{
-            "outputFrequency": 100
-        }
+        "outputFrequency": 100
     },
-    "pedestrian_set": {
-        "params":{
-
-        }
-    },
+    "pedestrian_set": {},
     "obstacle_set": {
-        "params":{
-            "obstacleCollisionDistance": 0.05
-        }
+        "obstacleCollisionDistance": 0.05
     },
-    "entity_set_factory": {
-        "params":{
-
-        }
-    },
+    "entity_set_factory": {},
     "goals": {
-        "params":{
-            "pathFinding": "Disembark",
-            "diagonalCost": 2.0,
-            "endGoalType": "exit",
-            "goalRange": 0.05
-        }
+        "pathFinding": "Disembark",
+        "diagonalCost": 2.0,
+        "endGoalType": "exit",
+        "goalRange": 0.05
     },
-    "pedestrian_dynamics_model": {
-        "params":{
-
-        }
-    },
-    "configuration_reader": {
-        "params":{
-
-        }
-    },
-    "clock": {
-        "params":{
-
-        }
-    },
+    "pedestrian_dynamics_model": {},
+    "configuration_reader": {},
+    "clock": {},
     "simulation": {
-        "params":{
-            "time_step_size": 0.005,
-            "max_timestep": 5000
-        }
+        "time_step_size": 0.005,
+        "max_timestep": 5000
     }
 }

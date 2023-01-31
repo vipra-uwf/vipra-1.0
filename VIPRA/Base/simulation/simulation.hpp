@@ -5,15 +5,16 @@
 #include "definitions/config_map.hpp"
 #include "definitions/state.hpp"
 #include "human_behavior/human_behavior_model.hpp"
-#include "logging/logging.hpp"
 #include "pedestrian_model/pedestrian_dynamics_model.hpp"
 #include "policy_model/policy_model.hpp"
 #include "simulation_output_handler/simulation_output_handler.hpp"
+#include <spdlog/spdlog.h>
+
 
 class Simulation {
 
  public:
-  void configure(const VIPRA::ConfigMap& config);
+  void configure(const VIPRA::Config::Map& config);
   void initialize();
   void run(Goals&                   goals,
            PedestrianSet&           pedestrianSet,

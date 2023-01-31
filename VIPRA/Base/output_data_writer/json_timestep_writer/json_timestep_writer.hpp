@@ -16,7 +16,7 @@ class JSONTimestepWriter : public OutputDataWriter {
 
   const Json::Value& getDocument() const;
 
-  void configure(const VIPRA::ConfigMap& configMap) override;
+  void configure(const VIPRA::Config::Map& configMap) override;
   void initializeOutputFile(const std::string& outputFilePath) override;
   void addFloatValue(const std::string& key, float value) override;
   void addStringValue(const std::string& key, const std::string& value) override;

@@ -9,7 +9,7 @@
 
 class GoalsMock : public Goals {
  public:
-  MOCK_METHOD(void, configure, (const VIPRA::ConfigMap& configMap), (override));
+  MOCK_METHOD(void, configure, (const VIPRA::Config::Map& configMap), (override));
   MOCK_METHOD(void, initialize, (const ObstacleSet&, const PedestrianSet&), (override));
   MOCK_METHOD(void, updatePedestrianGoals, (const ObstacleSet&, const PedestrianSet&, VIPRA::delta_t), (override));
   MOCK_METHOD(bool, isPedestianGoalMet, (VIPRA::idx), (const, override));

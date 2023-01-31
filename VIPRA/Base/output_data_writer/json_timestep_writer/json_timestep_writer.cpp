@@ -16,7 +16,7 @@ JSONTimestepWriter::getDocument() const {
 }
 
 void
-JSONTimestepWriter::configure(const VIPRA::ConfigMap& configMap) {}
+JSONTimestepWriter::configure(const VIPRA::Config::Map& configMap) {}
 
 /**
  * @throws OutputDataWriterException

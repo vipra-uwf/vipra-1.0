@@ -20,7 +20,7 @@ class PedestrianSet {
  public:
   virtual ~PedestrianSet() = default;
 
-  virtual void configure(const VIPRA::ConfigMap& configMap) = 0;
+  virtual void configure(const VIPRA::Config::Map& configMap) = 0;
   virtual void initialize(std::unique_ptr<VIPRA::PedData>) = 0;
 
   virtual void updateState(std::shared_ptr<VIPRA::State>) = 0;
@@ -28,6 +28,9 @@ class PedestrianSet {
   virtual VIPRA::size          getNumPedestrians() const = 0;
   virtual const VIPRA::f3dVec& getPedestrianCoordinates() const = 0;
   virtual const VIPRA::f3dVec& getVelocities() const = 0;
+
+  virtual VIPRA::f3d getPedCoords(VIPRA::idx) const = 0;
+  virtual VIPRA::f3d getPedVelocity(VIPRA::idx) const = 0;
 };
 
 #endif

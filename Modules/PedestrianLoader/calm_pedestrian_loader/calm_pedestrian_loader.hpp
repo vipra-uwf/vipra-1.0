@@ -4,8 +4,8 @@
 #include <fstream>
 
 #include "jsoncpp/json/json.h"
-#include "logging/logging.hpp"
 #include "pedestrian_loader/pedestrian_loader.hpp"
+#include <spdlog/spdlog.h>
 
 struct CalmPedData : public VIPRA::PedData {
   CalmPedData()
@@ -19,7 +19,7 @@ struct CalmPedData : public VIPRA::PedData {
 
 class CalmPedestrianLoader : public PedestrianLoader {
  public:
-  void                            configure(const VIPRA::ConfigMap& configMap) override;
+  void                            configure(const VIPRA::Config::Map& configMap) override;
   void                            initialize() override;
   std::unique_ptr<VIPRA::PedData> LoadPedestrians(const std::string& filePath) const override;
 };

@@ -4,9 +4,8 @@
 #include <chrono>
 
 #include "definitions/config_map.hpp"
-
 #include "definitions/type_definitions.hpp"
-#include "logging/logging.hpp"
+#include <spdlog/spdlog.h>
 
 class Clock {
  private:
@@ -27,7 +26,7 @@ class Clock {
   void addSimulationTimeMs(VIPRA::delta_t seconds);
   void printSimulationDuration();
 
-  void configure(const VIPRA::ConfigMap& config);
+  void configure(const VIPRA::Config::Map& config);
 };
 
 #endif

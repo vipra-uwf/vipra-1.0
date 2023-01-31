@@ -9,7 +9,7 @@
 
 #include "adjacencyGraph.hpp"
 
-#include "logging/logging.hpp"
+#include <spdlog/spdlog.h>
 
 namespace CalmPath {
 struct AQuad {
@@ -143,7 +143,7 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& graph, float diagonalCos
 
   // no path was found, clear the data, return empty queue
   std::for_each(allocList.begin(), allocList.end(), [](AQuad* ptr) { delete ptr; });
-  LJ::Warn(simLogger, "Calm_Goals: No Path Found for Pedestrian at position: x:{}, y:{}, z:{}", start.x, start.y, start.z);
+  spdlog::warn("Calm_Goals: No Path Found for Pedestrian at position: x:{}, y:{}, z:{}", start.x, start.y, start.z);
   return std::queue<VIPRA::f3d>{};
 }
 

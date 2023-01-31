@@ -13,7 +13,7 @@ class SimulationOutputHandler {
  public:
   virtual ~SimulationOutputHandler() = default;
 
-  virtual void configure(const VIPRA::ConfigMap&) = 0;
+  virtual void configure(const VIPRA::Config::Map&) = 0;
   virtual bool isOutputCriterionMet(const PedestrianSet&, const ObstacleSet&, const Goals&, VIPRA::t_step timestep) = 0;
   virtual void writeOutput(OutputDataWriter&, const PedestrianSet&, VIPRA::t_step timestep) = 0;
 };

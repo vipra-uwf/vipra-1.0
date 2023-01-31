@@ -15,7 +15,7 @@ class ObstacleSetMock : public ObstacleSet {
  public:
   ~ObstacleSetMock() override {}
   MOCK_METHOD(void, initialize, (std::unique_ptr<VIPRA::MapData>), (override));
-  MOCK_METHOD(void, configure, (const VIPRA::ConfigMap& configMap), (override));
+  MOCK_METHOD(void, configure, (const VIPRA::Config::Map& configMap), (override));
   MOCK_METHOD(VIPRA::f3d, getMapDimensions, (), (const, override));
   MOCK_METHOD(const std::vector<std::string>&, getObjectTypes, (), (const, override));
   MOCK_METHOD(const VIPRA::f3dVec&, getObjectsofType, (const std::string& type), (const, override));

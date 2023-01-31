@@ -32,8 +32,8 @@ PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map) {
 }
 
 void
-PassengerVehicleObstacleSet::configure(const VIPRA::ConfigMap& configMap) {
-  obstacleCollisionDistance = std::stof(configMap.at("obstacleCollisionDistance"));
+PassengerVehicleObstacleSet::configure(const VIPRA::Config::Map& configMap) {
+  obstacleCollisionDistance = configMap["obstacleCollisionDistance"].asFloat();
   obstacleCollisionDistanceSqrd = obstacleCollisionDistance * obstacleCollisionDistance;
 }
 

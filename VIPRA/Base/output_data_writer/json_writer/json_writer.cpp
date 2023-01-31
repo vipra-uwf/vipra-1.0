@@ -6,7 +6,7 @@ JSONWriter::JSONWriter() {
 }
 
 void
-JSONWriter::configure(const VIPRA::ConfigMap& configMap) {}
+JSONWriter::configure(const VIPRA::Config::Map& configMap) {}
 
 void
 JSONWriter::initializeOutputFile(const std::string& outputFilePath) {

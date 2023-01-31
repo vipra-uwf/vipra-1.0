@@ -14,7 +14,7 @@ TEST(Timestep_Console_Logger, Is_Output_Criterion_Met) {
   PedestrianSetMock     pm;
   ObstacleSetMock       om;
 
-  test.configure(VIPRA::ConfigMap{{"outputFrequency", "100"}});
+  test.configure(VIPRA::Config::Map{{"outputFrequency", "100"}});
 
   EXPECT_TRUE(test.isOutputCriterionMet(pm, om, gm, 0));
   EXPECT_TRUE(test.isOutputCriterionMet(pm, om, gm, 100));
@@ -23,7 +23,7 @@ TEST(Timestep_Console_Logger, Is_Output_Criterion_Met) {
   EXPECT_FALSE(test.isOutputCriterionMet(pm, om, gm, 94));
   EXPECT_FALSE(test.isOutputCriterionMet(pm, om, gm, 2934));
 
-  test.configure(VIPRA::ConfigMap{{"outputFrequency", "6"}});
+  test.configure(VIPRA::Config::Map{{"outputFrequency", "6"}});
 
   EXPECT_TRUE(test.isOutputCriterionMet(pm, om, gm, 0));
   EXPECT_TRUE(test.isOutputCriterionMet(pm, om, gm, 36));

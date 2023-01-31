@@ -37,8 +37,9 @@ TEST(Calm_Goals, Initialize_Disembark) {
   const ObstacleSetMock   obsSet;
   const PedestrianSetMock pedSet;
 
-  test.configure(VIPRA::ConfigMap{
-      {"goalRange", "0.35"}, {"endGoalType", "exit"}, {"pathFinding", "Disembark"}, {"diagonalCost", "2.0"}});
+  const VIPRA::Config::Map config{std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
+                                              "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
+  test.configure(config);
 
   EXPECT_CALL(obsSet, getObjectTypes()).WillRepeatedly(ReturnRef(goodmap_types));
   EXPECT_CALL(obsSet, getObjectsofType("obstacle")).WillRepeatedly(ReturnRef(goodmap_obstacles));
@@ -62,12 +63,12 @@ TEST(Calm_Goals, Initialize_Disembark) {
 
 // test that update pedestrian goals, properly updates to next goal
 TEST(Calm_Goals, Update_Pedestrian_Goals) {
-  CalmGoalsTester         test;
-  const ObstacleSetMock   obsSet;
-  const PedestrianSetMock pedSet;
-
-  test.configure(VIPRA::ConfigMap{
-      {"goalRange", "0.35"}, {"endGoalType", "exit"}, {"pathFinding", "Disembark"}, {"diagonalCost", "2.0"}});
+  CalmGoalsTester          test;
+  const ObstacleSetMock    obsSet;
+  const PedestrianSetMock  pedSet;
+  const VIPRA::Config::Map config{std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
+                                              "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
+  test.configure(config);
 
   EXPECT_CALL(obsSet, getObjectTypes()).WillRepeatedly(ReturnRef(goodmap_types));
   EXPECT_CALL(obsSet, getObjectsofType("obstacle")).WillRepeatedly(ReturnRef(goodmap_obstacles));

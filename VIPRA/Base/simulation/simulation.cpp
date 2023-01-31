@@ -4,10 +4,10 @@ const VIPRA::f2dVec VIPRA::__emptyf2d_Vec__ = VIPRA::f2dVec{};
 const VIPRA::f3dVec VIPRA::__emptyf3d_Vec__ = VIPRA::f3dVec{};
 
 void
-Simulation::configure(const VIPRA::ConfigMap& config) {
+Simulation::configure(const VIPRA::Config::Map& config) {
   timestep = 0;
-  timestep_size = std::stof(config.at("time_step_size"));
-  maxTimeStep = static_cast<VIPRA::t_step>(std::stoi(config.at("max_timestep")));
+  timestep_size = config["time_step_size"].asFloat();
+  maxTimeStep = config["max_timestep"].asUInt64();
 }
 
 void
@@ -42,7 +42,7 @@ Simulation::run(Goals&                   goals,
                 SimulationOutputHandler& simulationOutputHandler,
                 Clock&                   clock) {
   clock.start();
-  LJ::Info(simLogger, "Starting Simulation Loop");
+  spdlog::info("Starting Simulation Loop");
 
   while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, timestep)};
@@ -52,7 +52,7 @@ Simulation::run(Goals&                   goals,
     pedestrianSet.updateState(pedState);
 
     if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals, timestep)) {
-      LJ::Debug(simLogger, "Writing To Document, Timestep: {}", timestep);
+      spdlog::debug("Writing To Document, Timestep: {}", timestep);
       simulationOutputHandler.writeOutput(outputDataWriter, pedestrianSet, timestep);
     }
 
@@ -61,7 +61,7 @@ Simulation::run(Goals&                   goals,
     clock.addSimulationTimeMs(timestep_size);
   }
 
-  LJ::Info(simLogger, "Simulation Run Complete");
+  spdlog::info("Simulation Run Complete");
 
   clock.stop();
   clock.printRealEndTime();
