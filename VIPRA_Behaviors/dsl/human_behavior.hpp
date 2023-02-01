@@ -18,26 +18,19 @@
  */
 class HumanBehavior {
  public:
-  HumanBehavior() = default;
-  ~HumanBehavior() = default;
-
   void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&);
 
-  void timestep(const ObstacleSet&   obstacleSet,
-                const PedestrianSet& pedestrianSet,
-                const Goals&         goals,
-                std::shared_ptr<VIPRA::State>,
-                VIPRA::delta_t);
+  void timestep(const ObstacleSet&, const PedestrianSet&, const Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
 
  private:
   // The definitions of the states as read in by the behavior file.
   std::vector<std::string> stateDefinitions;
   std::vector<std::string> environmentStateDefinitions;
 
-  std::unique_ptr<Selector> selector;
-  std::vector<Transition*>  pedTransitions;
-  std::vector<Transition*>  envTransitions;
-  std::vector<Action*>      stateActions;
+  std::vector<std::unique_ptr<Selector>>   selector;
+  std::vector<std::unique_ptr<Transition>> pedTransitions;
+  std::vector<std::unique_ptr<Transition>> envTransitions;
+  std::vector<std::unique_ptr<Action>>     stateActions;
 
   BehaviorContext context;
 };

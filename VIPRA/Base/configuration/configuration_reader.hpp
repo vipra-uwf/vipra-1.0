@@ -16,8 +16,8 @@ class ConfigurationReaderException : public std::runtime_error {
 
 class ConfigurationReader {
  public:
-  Json::Value getConfiguration(const std::string& filePath);
-  void        configure(const VIPRA::Config::Map& config);
+  VIPRA::Config::Map getConfiguration(const std::string& filePath);
+  void               configure(const VIPRA::Config::Map& config);
 
  private:
 };

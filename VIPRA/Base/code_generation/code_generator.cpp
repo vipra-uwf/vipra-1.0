@@ -21,7 +21,6 @@ std::string mainFunctionDefinition();
 std::string generateModules();
 std::string makeModuleConfigs();
 
-std::string cleanup();
 std::string runSim();
 std::string outputSetup();
 
@@ -29,7 +28,7 @@ bool                     requireCompiled = true;
 std::string              outputFile;
 std::string              optionsFile;
 std::vector<std::string> includes;
-Json::Value              jsonObj;
+VIPRA::Config::Map       jsonObj;
 
 const std::unordered_map<std::string, std::string> TYPES{{"pedestrian_dynamics_model", "PedestrianDynamicsModel"},
                                                          {"goals", "Goals"},
@@ -111,14 +110,16 @@ generateIncludes() {
 
   generatedIncludes += "#include \"definitions/config_map.hpp\"\n";
   generatedIncludes += "#include <spdlog/spdlog.h>\n";
+  generatedIncludes += "#include <memory>\n";
   return generatedIncludes;
 }
 std::string
 generateFunctionDeclarations() {
-  std::string generatedDeclarations = "\nVIPRA::Config::Map* extractConfigMap(std::string name);";
+  std::string generatedDeclarations = "\nVIPRA::Config::Map extractConfigMap(std::string name);";
 
   for (const auto& [type, className] : TYPES) {
-    generatedDeclarations += className + "* generate" + className + "(std::string id, VIPRA::Config::Map* configMap);\n";
+    generatedDeclarations += "std::unique_ptr<" + className + "> generate" + className +
+                             "(std::string id, const VIPRA::Config::Map& configMap);\n";
   }
 
   return generatedDeclarations;
@@ -126,8 +127,8 @@ generateFunctionDeclarations() {
 
 std::string
 generateObjectFunction(const std::string& className, const std::string& type) {
-  std::string generatedFunction = "\n" + className + "* generate" + className +
-                                  "(std::string id, VIPRA::Config::Map* configMap)\n"
+  std::string generatedFunction = "\nstd::unique_ptr<" + className + "> generate" + className +
+                                  "(std::string id, const VIPRA::Config::Map& configMap)\n"
                                   "{\n";
 
   generatedFunction += generateFunctionOptions(type);
@@ -142,10 +143,10 @@ generateFunctionOptions(const std::string& type) {
     const auto& module = option["object"];
     if (!requireCompiled || module["compiled"]) {
       generatedFunction += Log("Creating " + type + " Implementation") + "\n\tif(id==\"" + module["id"].asString() +
-                           "\"){\n\t\t" + module["className"].asString() + "* " + module["name"].asString() + " = new " +
-                           module["className"].asString() + "();" +
+                           "\"){\n\t\tstd::unique_ptr<" + module["className"].asString() + "> " + module["name"].asString() +
+                           " = std::make_unique<" + module["className"].asString() + ">();\n\t\t" +
                            Log("Configuring " + type + " Module: ID: " + module["id"].asString()) + "\n\t\t" +
-                           module["name"].asString() + "->configure(*configMap);" + "\n\t\treturn " +
+                           module["name"].asString() + "->configure(configMap);" + "\n\t\treturn " +
                            module["name"].asString() + ";" + "\n\t}";
     }
   }
@@ -157,15 +158,15 @@ generateFunctionOptions(const std::string& type) {
 
 std::string
 generateExtractConfigMap() {
-  return {"\nVIPRA::Config::Map* extractConfigMap(std::string name)"
+  return {"\nVIPRA::Config::Map extractConfigMap(std::string name)"
           "\n{"
-          "\n\tVIPRA::Config::Map* configMap = new VIPRA::Config::Map;"
+          "\n\tVIPRA::Config::Map configMap;"
           "\n\tfor(unsigned int i = 0; i < "
           "moduleParams[name].size(); i++)"
           "\n\t{"
           "\n\tauto attribute = moduleParams[name].getMemberNames()[i];"
           "\n\tauto value = moduleParams[name][attribute];"
-          "\n\t\t(*configMap)[attribute] = value;"
+          "\n\t\tconfigMap[attribute] = value;"
           "\n\t}"
           "\n"
           "\n\treturn configMap;"
@@ -177,8 +178,10 @@ generateMain() {
   std::string mainFunction = "";
 
   mainFunction += mainFunctionDefinition();
-  mainFunction += "spdlog::set_level(spdlog::level::info); \n\#ifdef DEBUG_OUTPUT"
-                  "\n\tspdlog::set_level(spdlog::level::debug); \n #endif";
+  mainFunction += "\n\#ifdef DEBUG_OUTPUT"
+                  "\n\tspdlog::set_level(spdlog::level::debug);"
+                  "\n\tspdlog::info(\"Set Logging Level To Debug\");"
+                  "\n\#endif";
   mainFunction += makeModuleConfigs();
   mainFunction += generateModules();
   mainFunction += Log("Generating Modules");
@@ -186,8 +189,6 @@ generateMain() {
   mainFunction += Log("Setting Up Output Handlers");
   mainFunction += outputSetup();
   mainFunction += runSim();
-  mainFunction += Log("Simulation CleanUp");
-  mainFunction += cleanup();
   mainFunction += "\n}";
 
   return mainFunction;
@@ -209,8 +210,8 @@ initializeModules() {
 
 std::string
 mainFunctionDefinition() {
-  return "\nJson::Value simulationJsonConfig;"
-         "\nJson::Value moduleParams;"
+  return "\nVIPRA::Config::Map simulationJsonConfig;"
+         "\nVIPRA::Config::Map moduleParams;"
          "\nint main(int argc, const char **argv) {"
          "\n\tgetInputFiles(argc, argv);"
          "\n\tConfigurationReader configurationReader;"
@@ -222,8 +223,8 @@ std::string
 generateModules() {
   std::string str{""};
   for (const auto& [type, className] : TYPES) {
-    str += "\n\t" + className + "* " + type + " = generate" + className + "(simulationJsonConfig[\"modules\"][\"" + type +
-           "\"].asString(), " + type + "Config);";
+    str += "\n\tstd::unique_ptr<" + className + "> " + type + " = generate" + className +
+           "(simulationJsonConfig[\"modules\"][\"" + type + "\"].asString(), " + type + "Config);";
   }
 
   return str;
@@ -233,7 +234,7 @@ std::string
 makeModuleConfigs() {
   std::string str{""};
   for (const auto& [type, className] : TYPES) {
-    str += "\n\tVIPRA::Config::Map* " + type + "Config =  extractConfigMap(\"" + type + "\");";
+    str += "\n\tVIPRA::Config::Map " + type + "Config =  extractConfigMap(\"" + type + "\");";
   }
 
   return str;
@@ -259,16 +260,6 @@ generateGetFiles() {
           "\n\tobstacleFile=argv[4];"
           "\n\toutputFile=argv[5];"
           "\n}"};
-}
-
-std::string
-cleanup() {
-  std::string cleanupStr{""};
-  for (const auto& [type, className] : TYPES) {
-    cleanupStr += "\n\tdelete " + type + ";\n\tdelete " + type + "Config;";
-  }
-
-  return cleanupStr;
 }
 
 std::string

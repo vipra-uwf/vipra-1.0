@@ -1,13 +1,13 @@
 grammar Behavior;
 
-import lexer_rules, selector, condition;
+import lexer_rules, selector, condition, action, declarations;
 
-program: 
-  consideration statement+;
+// TODO add state transitions
 
-
-consideration: 'Consider ' A ID;
+program: statement+;
 
 statement:
-  ped_Selector
+  declaration |
+  ped_Selector |
+  action
   ;

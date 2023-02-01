@@ -21,7 +21,7 @@ INCLUDES = -I/usr/include/antlr4-runtime -Ideps -IBase -IExtendable
 OBJS := $(wildcard $(BUILD_DIR)/*.o) $(wildcard $(BUILD_DIR)/*/*.o)
 OBJS := $(filter-out $(wildcard $(BUILD_DIR)/*/main.o), $(OBJS))
 
-generate_main:
+generate_main: $(BASE_DIR)/code_generation/code_generator.cpp $(DEPS_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp
 	$(CPP) $(CPP_FLAGS) $(INCLUDES) $(BASE_DIR)/code_generation/code_generator.cpp $(DEPS_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $@
 
 module: makeDirs

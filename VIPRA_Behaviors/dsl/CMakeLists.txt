@@ -9,23 +9,23 @@ file(
   */*.cpp
 )
 
-Set(PROJECT_NAME VIPRA_Behaviors)
-project(${PROJECT_NAME})
-add_library(${PROJECT_NAME} ${behavior_srcs})
+Set(LIB_NAME VIPRA_Behaviors)
+project(${LIB_NAME})
+add_library(${LIB_NAME} ${behavior_srcs})
 
 target_link_libraries(
-  ${PROJECT_NAME}
+  ${LIB_NAME}
   PUBLIC
   ANTLR4
   spdlog
 )
 
-target_include_directories(
-  ${PROJECT_NAME}
-  PUBLIC 
+include_directories(
+  SYSTEM
   .
   ${VIPRA_DIR}/Base
   ${VIPRA_DIR}/Extendable
   ${DEPS_DIR}
   )
+  
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)

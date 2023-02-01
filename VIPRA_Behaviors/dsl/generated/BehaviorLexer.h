@@ -13,9 +13,10 @@ class  BehaviorLexer : public antlr4::Lexer {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, A = 12, END = 13, ID = 14, 
-    STATE = 15, NUMBER = 16, PERCENT = 17, COMMENT = 18, LINE_COMMENT = 19, 
-    WS = 20, Direction = 21
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
+    T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
+    A = 21, AndOr = 22, END = 23, ID = 24, STATE = 25, NUMBER = 26, PERCENT = 27, 
+    COMMENT = 28, LINE_COMMENT = 29, WS = 30, Direction = 31
   };
 
   BehaviorLexer(antlr4::CharStream *input);

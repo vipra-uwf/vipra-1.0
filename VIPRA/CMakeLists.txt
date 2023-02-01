@@ -24,20 +24,7 @@ add_executable(
   main.cpp
   )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../)
-
-set(COMP_OPTIONS -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wundef -Werror -Wno-unused)
-
-if (DEBUG_MODE)
-  set(COMP_OPTIONS ${COMP_OPTIONS} -g -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-  target_link_options(${PROJECT_NAME} PUBLIC -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-endif ()
-
-target_compile_options(${PROJECT_NAME} PUBLIC ${COMP_OPTIONS})
-
-add_subdirectory(${BASE_DIR})
 add_subdirectory(${BEHAVIORS_DIR}/dsl dsl)
-add_subdirectory(${MODULES_DIR} modules)
 add_subdirectory(${DEPS_DIR})
 
 target_link_libraries(
@@ -47,17 +34,31 @@ target_link_libraries(
   VIPRA_Behaviors
 )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../)
+
+set(COMP_OPTIONS -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wundef -Werror -Wno-unused)
+
+if (DEBUG_MODE)
+  set(COMP_OPTIONS ${COMP_OPTIONS} -g -DDEBUG_OUTPUT -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+  target_link_options(${PROJECT_NAME} PUBLIC -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+endif ()
+
+target_compile_options(${PROJECT_NAME} PUBLIC ${COMP_OPTIONS})
+
+add_subdirectory(${BASE_DIR})
+add_subdirectory(${MODULES_DIR} modules)
+
 include_directories(
   SYSTEM
+  ${BEHAVIORS_DIR}
   ${DEPS_DIR}
   ${DEPS_DIR}/antlr4-runtime
 )
 
 target_include_directories(
   ${PROJECT_NAME}
-  PRIVATE
+  PUBLIC
   ${MODULES_DIR}
   ${BASE_DIR}
   ${EXTENDABLE_DIR}
-  ${BEHAVIORS_DIR}
 )

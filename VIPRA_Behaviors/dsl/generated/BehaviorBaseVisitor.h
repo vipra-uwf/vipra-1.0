@@ -19,10 +19,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitConsideration(BehaviorParser::ConsiderationContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitStatement(BehaviorParser::StatementContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -56,6 +52,54 @@ public:
   }
 
   virtual antlrcpp::Any visitCondition_State(BehaviorParser::Condition_StateContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCondition_Others_State(BehaviorParser::Condition_Others_StateContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCondition_Env_State(BehaviorParser::Condition_Env_StateContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAction(BehaviorParser::ActionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitConditional_action(BehaviorParser::Conditional_actionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNon_conditional_action(BehaviorParser::Non_conditional_actionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitSub_action(BehaviorParser::Sub_actionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAction_atom(BehaviorParser::Action_atomContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAction_Stop(BehaviorParser::Action_StopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitDeclaration(BehaviorParser::DeclarationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext *ctx) override {
     return visitChildren(ctx);
   }
 

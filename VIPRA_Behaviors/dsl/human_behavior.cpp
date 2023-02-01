@@ -4,8 +4,8 @@ void
 HumanBehavior::initialize(const ObstacleSet&, const PedestrianSet&, const Goals&) {}
 
 void
-HumanBehavior::timestep(const ObstacleSet&   obstacleSet,
-                        const PedestrianSet& pedestrianSet,
-                        const Goals&         goals,
-                        std::shared_ptr<VIPRA::State>,
-                        VIPRA::delta_t) {}
+HumanBehavior::timestep(const ObstacleSet&            obstacleSet,
+                        const PedestrianSet&          pedestrianSet,
+                        const Goals&                  goals,
+                        std::shared_ptr<VIPRA::State> state,
+                        VIPRA::delta_t                time) {}

@@ -10,7 +10,7 @@
  * @param filePath Absolute Path to JSON Configuration file
  * @return Config::Map containing the values of the configuration file
  */
-[[nodiscard]] Json::Value
+[[nodiscard]] VIPRA::Config::Map
 ConfigurationReader::getConfiguration(const std::string& filePath) {
   Json::Value             jsonDocument;
   Json::CharReaderBuilder jsonReader;
@@ -28,7 +28,7 @@ ConfigurationReader::getConfiguration(const std::string& filePath) {
   }
   fileStream.close();
 
-  return jsonDocument;
+  return VIPRA::Config::Map(jsonDocument);
 }
 
 void

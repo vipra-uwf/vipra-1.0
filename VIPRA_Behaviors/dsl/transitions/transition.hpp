@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "conditions/condition.hpp"
+#include "../conditions/condition.hpp"
 
 #include "../definitions/behavior_context.hpp"
 

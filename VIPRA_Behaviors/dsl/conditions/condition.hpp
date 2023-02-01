@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "definitions/behavior_context.hpp"
+#include "../definitions/behavior_context.hpp"
 #include "definitions/type_definitions.hpp"
 #include "goals/goals.hpp"
 #include "obstacle_set/obstacle_set.hpp"
