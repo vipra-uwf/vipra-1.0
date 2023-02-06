@@ -36,13 +36,13 @@ const std::unordered_map<std::string, std::string> TYPES{{"pedestrian_dynamics_m
                                                          {"simulation_output_handler", "SimulationOutputHandler"},
                                                          {"pedestrian_set", "PedestrianSet"},
                                                          {"obstacle_set", "ObstacleSet"},
-                                                         {"human_behavior_model", "HumanBehaviorModel"},
                                                          {"configuration_reader", "ConfigurationReader"},
                                                          {"clock", "Clock"},
                                                          {"simulation", "Simulation"},
                                                          {"policy_model", "PolicyModel"},
                                                          {"map_loader", "MapLoader"},
-                                                         {"pedestrian_loader", "PedestrianLoader"}};
+                                                         {"pedestrian_loader", "PedestrianLoader"},
+                                                         {"human_behavior_model", "HumanBehaviorModel"}};
 
 int
 main(int argc, char const* argv[]) {
@@ -201,10 +201,10 @@ initializeModules() {
          "\n\tobstacle_set->initialize(std::move(map));\n\t" + Log("Loading Pedestrians") +
          "\n\tauto peds = pedestrian_loader->LoadPedestrians(pedestrianFile);\n\t" + Log("Initializing Pedestrian Set") +
          "\n\tpedestrian_set->initialize(std::move(peds));\n\t" + Log("Initializing Goals") +
-         "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" + Log("Initializing Human Behavior Model") +
-         "\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);\n\t" +
-         Log("Initializing Pedestrian Dynamics Model") +
+         "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" + Log("Initializing Pedestrian Dynamics Model") +
          "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +
+         Log("Initializing Human Behavior Model") +
+         "\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);\n\t" +
          Log("Initializing Simulation") + "\n\tsimulation->initialize();\n\t";
 }
 

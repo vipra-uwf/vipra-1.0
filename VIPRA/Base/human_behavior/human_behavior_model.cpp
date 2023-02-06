@@ -7,10 +7,6 @@
 #include <algorithm>
 #include <filesystem>
 
-HumanBehaviorModel::HumanBehaviorModel() {}
-
-HumanBehaviorModel::~HumanBehaviorModel() {}
-
 void
 HumanBehaviorModel::configure(const VIPRA::Config::Map& configMap) {
   seed = configMap["seed"].asUInt();
@@ -19,8 +15,8 @@ HumanBehaviorModel::configure(const VIPRA::Config::Map& configMap) {
 
 void
 HumanBehaviorModel::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet, const Goals& goals) {
-  for (const auto& behavior : humanBehaviors) {
-    behavior->initialize(obsSet, pedSet, goals);
+  for (auto& behavior : humanBehaviors) {
+    behavior.initialize(obsSet, pedSet, goals);
   }
 }
 
@@ -39,15 +35,14 @@ HumanBehaviorModel::loadBehaviors(std::vector<std::string> behaviors) {
   humanBehaviors.resize(behaviors.size());
 
   std::transform(behaviors.begin(), behaviors.end(), humanBehaviors.begin(), [&](const std::string& behaviorName) {
-    const auto filePath =
-        std::filesystem::canonical(std::filesystem::current_path() / "../Behaviors" / (behaviorName + ".behavior"));
+    const auto filePath = std::filesystem::current_path() / "../Behaviors" / (behaviorName + ".behavior");
 
     if (!std::filesystem::exists(filePath)) {
       spdlog::error("Behavior \"{}\" Does NOT Exist at {}", behaviorName, filePath.c_str());
       BehaviorModelException::Throw("Behavior File Doesn't Exist");
     }
 
-    spdlog::info("Loading Behavior: {} at {}", behaviorName, filePath.c_str());
+    spdlog::info("Loading Behavior: {} at {}", behaviorName, std::filesystem::canonical(filePath).c_str());
     return builder.build(filePath, seed);
   });
 

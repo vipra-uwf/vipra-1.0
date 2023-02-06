@@ -22,16 +22,14 @@ project(
 add_executable(
   ${PROJECT_NAME}
   main.cpp
-  )
-
-add_subdirectory(${BEHAVIORS_DIR}/dsl dsl)
-add_subdirectory(${DEPS_DIR})
+)
 
 target_link_libraries(
   ${PROJECT_NAME}
   PUBLIC
-  VIPRA_Dependencies
+  spdlog::spdlog
   VIPRA_Behaviors
+  jsoncpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../)
@@ -47,12 +45,15 @@ target_compile_options(${PROJECT_NAME} PUBLIC ${COMP_OPTIONS})
 
 add_subdirectory(${BASE_DIR})
 add_subdirectory(${MODULES_DIR} modules)
+add_subdirectory(${BEHAVIORS_DIR} behaviors)
+add_subdirectory(${DEPS_DIR}/jsoncpp)
 
 include_directories(
   SYSTEM
-  ${BEHAVIORS_DIR}
+  ${BEHAVIORS_DIR}/include
+  ${DEPS_DIR}/spdlog
+  ${DEPS_DIR}/jsoncpp
   ${DEPS_DIR}
-  ${DEPS_DIR}/antlr4-runtime
 )
 
 target_include_directories(

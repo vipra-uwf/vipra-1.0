@@ -52,7 +52,7 @@ Simulation::run(Goals&                   goals,
     pedestrianSet.updateState(pedState);
 
     if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals, timestep)) {
-      spdlog::debug("Writing To Document, Timestep: {}", timestep);
+      spdlog::info("Writing To Document, Timestep: {}", timestep);
       simulationOutputHandler.writeOutput(outputDataWriter, pedestrianSet, timestep);
     }
 

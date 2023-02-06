@@ -1,0 +1,23 @@
+
+// PARAMETERS: start_time, duration
+
+// -----------------------------------------------------
+
+// The stop action means:
+// set *velocity to 0
+
+// The listen action means:
+// be #listening
+
+// -----------------------------------------------------
+
+Consider an ANNOUNCEMENT_LISTENER.
+
+Everyone is an ANNOUNCEMENT_LISTENER.
+
+The Environment will be #announcing after 10 seconds.
+
+An ANNOUNCEMENT_LISTENER will 
+!stop then !listen 
+given The Environment is #announcing.
+

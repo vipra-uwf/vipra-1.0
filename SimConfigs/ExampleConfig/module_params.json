@@ -4,7 +4,7 @@
         "seed": 123456,
         "behaviors": [
             "injured_person",
-            "test_behavior"
+            "important_announcement"
         ]
     },
     "output_data_writer": {},

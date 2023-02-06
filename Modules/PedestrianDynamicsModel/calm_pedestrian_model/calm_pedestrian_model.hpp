@@ -10,7 +10,7 @@
 #include "Goals/calm_goals/calm_goals.hpp"
 #include "ObstacleSet/passenger_vehicle_obstacle_set/passenger_vehicle_obstacle_set.hpp"
 #include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
-#include "pedestrianmodel/pedestrian_dynamics_model.hpp"
+#include "pedestrian_model/pedestrian_dynamics_model.hpp"
 
 #include "definitions/config_map.hpp"
 
@@ -34,7 +34,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
  public:
   CalmPedestrianModel();
 
-  void                          configure(const VIPRA::ConfigMap& configMap) override;
+  void                          configure(const VIPRA::Config::Map& configMap) override;
   void                          initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) override;
   std::shared_ptr<VIPRA::State> timestep(const PedestrianSet&,
                                          const ObstacleSet&,

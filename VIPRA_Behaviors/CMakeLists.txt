@@ -31,7 +31,6 @@ SET(HEADERS
   ${INCLUDE_DIR}/behavior/behavior_builder.hpp
 )
 
-
 add_library(
   ${LIB_NAME}
   STATIC
@@ -45,6 +44,9 @@ target_include_directories(
   ${GRAMMAR_DIR}
 )
 
+add_subdirectory(${DEPS_DIR}/spdlog sl)
+add_subdirectory(${DEPS_DIR}/antlr4-runtime antlr)
+
 include_directories(
   SYSTEM
   .
@@ -56,5 +58,5 @@ include_directories(
 target_link_libraries(
   ${LIB_NAME}
   ANTLR4
-  spdlog
+  spdlog::spdlog
 )

@@ -3,7 +3,7 @@
 CalmPedestrianModel::CalmPedestrianModel() {}
 
 void
-CalmPedestrianModel::configure([[maybe_unused]] const VIPRA::ConfigMap& configMap) {}
+CalmPedestrianModel::configure([[maybe_unused]] const VIPRA::Config::Map& configMap) {}
 
 void
 CalmPedestrianModel::initialize(const PedestrianSet&                pedestrianSet,
@@ -28,7 +28,7 @@ CalmPedestrianModel::checkIfIntersect(const CalmPedestrianSet& pedestrianSet,
   auto        coord1 = coords[index1];
   auto        coord2 = coords[index2];
 
-  const int xdiff = 0.1, ydiff = 0.2;
+  const float xdiff = 0.1, ydiff = 0.2;
 
   if (coord1.x - xdiff > coord2.x + xdiff || coord2.x - xdiff > coord1.x + xdiff)
     return false;
@@ -89,7 +89,6 @@ CalmPedestrianModel::timestep(const PedestrianSet& pedestrianSet,
                               VIPRA::delta_t       time,
                               VIPRA::t_step        timestep) {
 
-
   calculateNeartestNeighbors(static_cast<const CalmPedestrianSet&>(pedestrianSet), obstacleSet, goals);
   calculateBetas(static_cast<const CalmPedestrianSet&>(pedestrianSet));
   calculatePropulsion(static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals));
@@ -124,7 +123,7 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
     const auto pedCoords = coords.at(i);
     const auto velocity = velocities.at(i);
 
-    float nearestDist = std::numeric_limits<float>::max();
+    float      nearestDist = std::numeric_limits<float>::max();
     VIPRA::idx index = 0;
 
     for (VIPRA::idx j = 0; j < pedCnt; ++j) {
@@ -134,8 +133,8 @@ CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet,
       const auto secondCoords = coords.at(j);
       if (!isPedInFront(pedCoords, velocity, shoulderLengths.at(i), secondCoords, velocities.at(j), shoulderLengths.at(j)))
         continue;
-      
-      if(!isPedInDirectionOfGoal(goals.getCurrentGoal(i), pedCoords, secondCoords))
+
+      if (!isPedInDirectionOfGoal(goals.getCurrentGoal(i), pedCoords, secondCoords))
         continue;
 
       float dist = pedCoords.distanceTo(secondCoords);
@@ -159,7 +158,7 @@ bool
 CalmPedestrianModel::isPedInDirectionOfGoal(const VIPRA::f3d& goalCoords,
                                             const VIPRA::f3d& pedCoords,
                                             const VIPRA::f3d& secondCoords) const noexcept {
-  
+
   const VIPRA::f3d& pedDirection = goalCoords - pedCoords;
   const VIPRA::f3d& secondDirection = secondCoords - pedCoords;
 
@@ -167,7 +166,6 @@ CalmPedestrianModel::isPedInDirectionOfGoal(const VIPRA::f3d& goalCoords,
       (pedDirection.x * secondDirection.x) + (pedDirection.y * secondDirection.y) + (pedDirection.z * secondDirection.z);
 
   return dotProduct > 0;
-
 }
 
 bool
@@ -308,7 +306,6 @@ CalmPedestrianModel::calculatePropulsion(const CalmPedestrianSet& pedestrianSet,
     float             beta = betas[i];
 
     const VIPRA::f3d direction = goal - coord;
-
 
     VIPRA::f3d desiredVelocity = direction.unit() * desiredSpeed * beta;
     propulsionForces.at(i) = ((desiredVelocity - velocity) * mass) / reactionTime;

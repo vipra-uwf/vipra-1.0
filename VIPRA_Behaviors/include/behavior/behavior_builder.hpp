@@ -3,8 +3,8 @@
 
 #include <filesystem>
 
+#include "behavior/human_behavior.hpp"
 #include "generated/BehaviorBaseVisitor.h"
-#include "human_behavior.hpp"
 
 class DSL_Exception : public std::runtime_error {
  public:
