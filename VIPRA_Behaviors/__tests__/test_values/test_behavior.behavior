@@ -1,0 +1,13 @@
+
+PARAMETERS: $start_time, $duration.
+
+// -----------------------------------------------------
+
+// The listen action means:
+//   be #listening
+
+// -----------------------------------------------------
+
+Consider an ANNOUNCEMENT_LISTENER.
+
+Everyone is an ANNOUNCEMENT_LISTENER.
