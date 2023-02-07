@@ -1,14 +1,14 @@
-#include <algorithm>
+#include <numeric>
 
 #include "selectors/selector_everyone.hpp"
 
-Selector_Everyone::Selector_Everyone() : Selector() {}
+void
+Selector_Everyone::initialize(const PedestrianSet& pedSet, const ObstacleSet&, const Goals&) {
+  selectedPeds = std::vector<VIPRA::idx>(pedSet.getNumPedestrians());
+  std::iota(selectedPeds.begin(), selectedPeds.end(), 0);
+}
 
-bool
-Selector_Everyone::select([[maybe_unused]] const ObstacleSet&     obstacleSet,
-                          [[maybe_unused]] const PedestrianSet&   pedestrianSet,
-                          [[maybe_unused]] const Goals&           goals,
-                          [[maybe_unused]] const BehaviorContext& context,
-                          [[maybe_unused]] VIPRA::idx             pedestrianIndex) {
-  return true;
+const std::vector<VIPRA::idx>&
+Selector_Everyone::getSelectedPeds(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&) {
+  return selectedPeds;
 }

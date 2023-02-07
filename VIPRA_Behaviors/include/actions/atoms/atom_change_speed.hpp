@@ -2,14 +2,22 @@
 #define VIPRA_ATOM_CHANGE_SPEED_HPP
 
 #include "actions/action_atom.hpp"
+#include "generated/BehaviorParser.h"
+
+struct ChangeSpeedParams {
+  float change;
+  bool  faster;
+};
+
+ChangeSpeedParams getChangeSpeedParams(BehaviorParser::Action_atomContext*);
 
 class Atom_Change_Speed : public Atom {
  public:
   Atom_Change_Speed() = delete;
 
   Atom_Change_Speed(float, bool);
-  void performAction(const ObstacleSet&,
-                     const PedestrianSet&,
+  void performAction(const PedestrianSet&,
+                     const ObstacleSet&,
                      const Goals&,
                      const BehaviorContext&,
                      VIPRA::idx,

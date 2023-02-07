@@ -10,6 +10,9 @@
 #include <selectors/selector_exactly_N.hpp>
 #include <selectors/selector_percent.hpp>
 
+#include <actions/atoms/atom_change_speed.hpp>
+#include <actions/atoms/atom_stop.hpp>
+
 HumanBehavior&&
 BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fileName, VIPRA::seed seedNum) {
   currentBehavior = HumanBehavior(behaviorName);
@@ -29,14 +32,16 @@ BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fi
 
 void
 BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomContext* atom) {
-
-  std::string atomName = atom->getText();
-  spdlog::debug("Behavior {}: Unconditional Action Adding Atom: {}", currentBehavior.getName(), atomName);
-
-  if (atomName == "!change_speed") {
-    action.addAtom(atomName, 0.1f, true);
-  } else {
-    action.addAtom(atomName);
+  if (atom->action_atom_Percent_Walk_Speed()) {
+    spdlog::debug("Behavior {}: Unconditional Action Adding Atom: Change Speed", currentBehavior.getName());
+    auto params = getChangeSpeedParams(atom);
+    action.addAtom("change_speed", params.change, params.faster);
+    return;
+  }
+  if (atom->action_Stop()) {
+    spdlog::debug("Behavior {}: Unconditional Action Adding Atom: Stop", currentBehavior.getName());
+    action.addAtom("stop");
+    return;
   }
 }
 
@@ -98,7 +103,7 @@ BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) {
 antlrcpp::Any
 BehaviorBuilder::visitSelector_Percent(BehaviorParser::Selector_PercentContext* ctx) {
 
-  spdlog::debug("Adding Selector: Percent to {}", currentBehavior.getName());
+  spdlog::debug("Behavior \"{}\": Adding Selector: \"Percent\"", currentBehavior.getName());
   const float percent = std::stof(ctx->NUMBER()->toString());
   currentBehavior.addSelector<Selector_Percent>(percent);
 
@@ -108,7 +113,7 @@ BehaviorBuilder::visitSelector_Percent(BehaviorParser::Selector_PercentContext* 
 antlrcpp::Any
 BehaviorBuilder::visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly_N_RandomContext* ctx) {
 
-  spdlog::debug("Behavior \"{}\": Adding Selector: \"Exactly N\"");
+  spdlog::debug("Behavior \"{}\": Adding Selector: \"Exactly N\"", currentBehavior.getName());
   const VIPRA::size N = static_cast<VIPRA::size>(std::stoi(ctx->NUMBER()->toString()));
   currentBehavior.addSelector<Selector_Exactly_N>(N, seed);
 
@@ -140,7 +145,7 @@ BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_conditional_actio
   const auto& atoms = ctx->sub_action()->action_atom();
   Action      action;
 
-  spdlog::debug("Behavior {}: Adding Unconditional Action", currentBehavior.getName());
+  spdlog::debug("Behavior \"{}\": Adding Unconditional Action", currentBehavior.getName());
 
   std::for_each(
       atoms.begin(), atoms.end(), [&](BehaviorParser::Action_atomContext* atom) { addAtomToAction(action, atom); });

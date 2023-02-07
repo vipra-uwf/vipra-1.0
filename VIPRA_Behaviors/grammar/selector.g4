@@ -7,11 +7,10 @@ ped_Selector:
     selector_Exactly_N_Random |
     selector_Everyone;
 
-selector_Percent : 'A Random ' NUMBER '% of Pedestrians are' AN ID '.';
+selector_Percent : 'A Random' NUMBER '% of Pedestrians are' AN ID '.';
 
 selector_Exactly_N_Random: 
-'Exactly ' NUMBER ' random pedestrians are ' AN ID '.' | 
-'Exactly ' NUMBER ' random pedestrian is ' AN ID '.'
+'Exactly' NUMBER ('random pedestrians are' | 'random pedestrian is') AN ID '.'
 ;
 
-selector_Everyone: 'Everyone is ' AN ID '.';
+selector_Everyone: 'Everyone is' AN ID '.';

@@ -1,11 +1,18 @@
 
 #include "actions/atoms/atom_change_speed.hpp"
 
+ChangeSpeedParams
+getChangeSpeedParams(BehaviorParser::Action_atomContext* atom) {
+  float change = std::stof(atom->action_atom_Percent_Walk_Speed()->NUMBER()->toString());
+  bool  faster = atom->action_atom_Percent_Walk_Speed()->FASTERorSLOWER()->toString() == "faster";
+  return {change, faster};
+}
+
 Atom_Change_Speed::Atom_Change_Speed(float percent, bool faster) : change(percent), faster(faster) {}
 
 void
-Atom_Change_Speed::performAction(const ObstacleSet&            obstacleSet,
-                                 const PedestrianSet&          pedestrianSet,
+Atom_Change_Speed::performAction(const PedestrianSet&          pedestrianSet,
+                                 const ObstacleSet&            obstacleSet,
                                  const Goals&                  goals,
                                  const BehaviorContext&        context,
                                  VIPRA::idx                    pedIndex,

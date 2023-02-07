@@ -9,8 +9,15 @@
  */
 class Selector_Everyone : public Selector {
  public:
-  explicit Selector_Everyone();
-  bool select(const ObstacleSet&, const PedestrianSet&, const Goals&, const BehaviorContext&, VIPRA::idx) override;
+  Selector_Everyone() = default;
+  void                           initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) override;
+  const std::vector<VIPRA::idx>& getSelectedPeds(const PedestrianSet&,
+                                                 const ObstacleSet&,
+                                                 const Goals&,
+                                                 const BehaviorContext&) override;
+
+ private:
+  std::vector<VIPRA::idx> selectedPeds;
 };
 
 #endif

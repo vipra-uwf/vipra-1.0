@@ -9,14 +9,18 @@
 
 class Selector_Exactly_N : public Selector {
  public:
+  Selector_Exactly_N() = delete;
   Selector_Exactly_N(VIPRA::size count, VIPRA::seed seed);
-  void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&) override;
 
- protected:
-  bool select(const ObstacleSet&, const PedestrianSet&, const Goals&, const BehaviorContext&, VIPRA::idx) override;
+  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) override;
+
+  const std::vector<VIPRA::idx>& getSelectedPeds(const PedestrianSet&,
+                                                 const ObstacleSet&,
+                                                 const Goals&,
+                                                 const BehaviorContext&) override;
 
  private:
-  std::vector<VIPRA::idx> selectedPedestrianIds;
+  std::vector<VIPRA::idx> selectedPeds;
   VIPRA::size             count;
   void                    selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };

@@ -11,28 +11,21 @@ void
 Selector_Exactly_N::selectPedestrianIds(const PedestrianSet& pedestrianSet) {
   VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
 
-  while (selectedPedestrianIds.size() < count) {
+  while (selectedPeds.size() < count) {
     VIPRA::idx pedestrianId = static_cast<VIPRA::idx>(static_cast<VIPRA::size>(rand()) % numPedestrians);
-    if (std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianId) == selectedPedestrianIds.end()) {
-      spdlog::debug("Selecting pedestrian id: {} for behavior.", pedestrianId);
-      selectedPedestrianIds.push_back(pedestrianId);
+    if (std::find(selectedPeds.begin(), selectedPeds.end(), pedestrianId) == selectedPeds.end()) {
+      spdlog::debug("Selecting Pedestrian ID: {} For Behavior", pedestrianId);
+      selectedPeds.push_back(pedestrianId);
     }
   }
 }
 
 void
-Selector_Exactly_N::initialize([[maybe_unused]] const ObstacleSet& obsSet,
-                               const PedestrianSet&                pedSet,
-                               [[maybe_unused]] const Goals&       goals) {
+Selector_Exactly_N::initialize(const PedestrianSet& pedSet, const ObstacleSet&, const Goals&) {
   selectPedestrianIds(pedSet);
 }
 
-bool
-Selector_Exactly_N::select([[maybe_unused]] const ObstacleSet&     obstacleSet,
-                           [[maybe_unused]] const PedestrianSet&   pedestrianSet,
-                           [[maybe_unused]] const Goals&           goals,
-                           [[maybe_unused]] const BehaviorContext& context,
-                           VIPRA::idx                              pedestrianIndex) {
-  return std::find(selectedPedestrianIds.begin(), selectedPedestrianIds.end(), pedestrianIndex) !=
-         selectedPedestrianIds.end();
+const std::vector<VIPRA::idx>&
+Selector_Exactly_N::getSelectedPeds(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&) {
+  return selectedPeds;
 }

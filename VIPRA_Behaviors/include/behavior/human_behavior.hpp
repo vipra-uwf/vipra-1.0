@@ -30,8 +30,11 @@ class HumanBehavior {
 
   const std::string& getName() const noexcept;
 
-  void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&);
-  void timestep(const ObstacleSet&, const PedestrianSet&, const Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
+  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
+  void timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
+
+  void addAction(Action&&);
+  void addParameter(std::string);
 
   template <typename S, typename... P, class = typename std::enable_if<std::is_base_of<Selector, S>::value>::type>
   void addSelector(P... params) {
@@ -47,10 +50,6 @@ class HumanBehavior {
   void addEnvTransition(P... params) {
     envTransitions.emplace_back(std::make_unique<ET>(std::forward<P>(params)...));
   }
-
-  void addAction(Action&&);
-
-  void addParameter(std::string);
 
  private:
   std::string                              name;

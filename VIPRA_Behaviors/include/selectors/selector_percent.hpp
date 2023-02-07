@@ -11,12 +11,20 @@
  */
 class Selector_Percent : public Selector {
  public:
-  Selector_Percent(float ratio);
+  Selector_Percent() = delete;
+  Selector_Percent(float);
 
-  bool select(const ObstacleSet&, const PedestrianSet&, const Goals&, const BehaviorContext&, VIPRA::idx) override;
+  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) override;
+
+  const std::vector<VIPRA::idx>& getSelectedPeds(const PedestrianSet&,
+                                                 const ObstacleSet&,
+                                                 const Goals&,
+                                                 const BehaviorContext&) override;
 
  private:
-  float ratio;
+  float                   ratio;
+  std::vector<VIPRA::idx> selectedPeds;
+  void                    selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };
 
 #endif

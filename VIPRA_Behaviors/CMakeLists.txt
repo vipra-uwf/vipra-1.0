@@ -11,7 +11,6 @@ SET(SRC_DIR ./src)
 SET(LIB_NAME VIPRA_Behaviors)
 project(${LIB_NAME})
 
-
 SET(SRCS
   ${SRC_DIR}/actions/action.cpp
   ${SRC_DIR}/actions/atom_map.cpp
@@ -21,7 +20,6 @@ SET(SRCS
   ${SRC_DIR}/behavior/human_behavior.cpp
   ${SRC_DIR}/conditions/condition_state.cpp
   ${SRC_DIR}/conditions/condition.cpp
-  ${SRC_DIR}/selectors/selector.cpp
   ${SRC_DIR}/selectors/selector_everyone.cpp
   ${SRC_DIR}/selectors/selector_exactly_N.cpp
   ${SRC_DIR}/selectors/selector_percent.cpp

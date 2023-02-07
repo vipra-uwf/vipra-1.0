@@ -15,11 +15,11 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
-    T__26 = 27, ID = 28, STATE = 29, ACTION = 30, ATTRIBUTE = 31, PARAMETER = 32, 
-    NUMBER = 33, COMMENT = 34, LINE_COMMENT = 35, WS = 36, AN = 37, AND = 38, 
-    OR = 39, ANDOR = 40, COMMA = 41, COLON = 42, THE = 43, GIVEN = 44, SET = 45, 
-    PARAMETERS = 46, Direction = 47
+    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, ID = 26, 
+    STATE = 27, ACTION = 28, ATTRIBUTE = 29, PARAMETER = 30, NUMBER = 31, 
+    COMMENT = 32, LINE_COMMENT = 33, WS = 34, AN = 35, AND = 36, OR = 37, 
+    ANDOR = 38, COMMA = 39, COLON = 40, THE = 41, GIVEN = 42, SET = 43, 
+    PARAMETERS = 44, FASTERorSLOWER = 45, Direction = 46
   };
 
   enum {
@@ -390,6 +390,7 @@ public:
     Action_atom_Percent_Walk_SpeedContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *NUMBER();
+    antlr4::tree::TerminalNode *FASTERorSLOWER();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    

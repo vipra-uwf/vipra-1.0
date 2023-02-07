@@ -32,7 +32,7 @@ class HumanBehaviorModel {
   HumanBehaviorModel() = default;
   ~HumanBehaviorModel() = default;
   void configure(const VIPRA::Config::Map& configMap);
-  void initialize(const ObstacleSet&, const PedestrianSet&, const Goals&);
+  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
   void timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
 
  private:

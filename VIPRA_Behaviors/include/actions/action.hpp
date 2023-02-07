@@ -24,8 +24,8 @@ class Action {
   Action(Action&&) noexcept;
   Action& operator=(Action&&) noexcept;
 
-  void performAction(const ObstacleSet&,
-                     const PedestrianSet&,
+  void performAction(const PedestrianSet&,
+                     const ObstacleSet&,
                      const Goals&,
                      const BehaviorContext&,
                      VIPRA::idx,

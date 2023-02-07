@@ -5,8 +5,8 @@
 
 class Atom_Stop : public Atom {
  public:
-  void performAction(const ObstacleSet&,
-                     const PedestrianSet&,
+  void performAction(const PedestrianSet&,
+                     const ObstacleSet&,
                      const Goals&,
                      const BehaviorContext&,
                      VIPRA::idx,

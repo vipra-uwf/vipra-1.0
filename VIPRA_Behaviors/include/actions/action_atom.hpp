@@ -8,8 +8,8 @@
 
 class Atom {
  public:
-  virtual void performAction(const ObstacleSet&,
-                             const PedestrianSet&,
+  virtual void performAction(const PedestrianSet&,
+                             const ObstacleSet&,
                              const Goals&,
                              const BehaviorContext&,
                              VIPRA::idx,

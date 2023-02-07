@@ -4,15 +4,15 @@
 #include <actions/atoms/atom_stop.hpp>
 
 void
-Action::performAction(const ObstacleSet&            obsSet,
-                      const PedestrianSet&          pedSet,
+Action::performAction(const PedestrianSet&          pedSet,
+                      const ObstacleSet&            obsSet,
                       const Goals&                  goals,
                       const BehaviorContext&        context,
                       VIPRA::idx                    pedIdx,
                       VIPRA::delta_t                dT,
                       std::shared_ptr<VIPRA::State> state) {
   std::for_each(atoms.begin(), atoms.end(), [&](std::unique_ptr<Atom>& atom) {
-    atom->performAction(obsSet, pedSet, goals, context, pedIdx, dT, state);
+    atom->performAction(pedSet, obsSet, goals, context, pedIdx, dT, state);
   });
 }
 

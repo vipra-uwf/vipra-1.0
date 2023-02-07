@@ -28,4 +28,4 @@ action_Stop:
   ;
 
 action_atom_Percent_Walk_Speed:
-  '!change_speed' NUMBER '%' ('Faster' | 'Slower');
+  '!change_speed' NUMBER '%' FASTERorSLOWER;

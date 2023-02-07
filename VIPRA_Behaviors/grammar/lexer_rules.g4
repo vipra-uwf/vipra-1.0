@@ -55,3 +55,6 @@ SET: S E T WS;
 PARAMETERS:
   P A R A M E T E R S COLON
   ;
+
+FASTERorSLOWER:
+  (F'aster' | S'lower');

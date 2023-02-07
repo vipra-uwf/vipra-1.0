@@ -2,8 +2,8 @@
 #include "actions/atoms/atom_stop.hpp"
 
 void
-Atom_Stop::performAction(const ObstacleSet&            obsSet,
-                         const PedestrianSet&          pedSet,
+Atom_Stop::performAction(const PedestrianSet&          pedSet,
+                         const ObstacleSet&            obsSet,
                          const Goals&                  goals,
                          const BehaviorContext&        context,
                          VIPRA::idx                    pedIdx,

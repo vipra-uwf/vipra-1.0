@@ -37,8 +37,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../)
 set(COMP_OPTIONS -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wundef -Werror -Wno-unused)
 
 if (DEBUG_MODE)
-  set(COMP_OPTIONS ${COMP_OPTIONS} -g -DDEBUG_OUTPUT -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+  set(CMAKE_BUILD_TYPE Debug)
+  set(COMP_OPTIONS ${COMP_OPTIONS} -DDEBUG_OUTPUT -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
   target_link_options(${PROJECT_NAME} PUBLIC -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+else()
+  set(CMAKE_BUILD_TYPE Release)
 endif ()
 
 target_compile_options(${PROJECT_NAME} PUBLIC ${COMP_OPTIONS})

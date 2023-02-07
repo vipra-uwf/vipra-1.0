@@ -14,18 +14,22 @@ HumanBehaviorModel::configure(const VIPRA::Config::Map& configMap) {
 }
 
 void
-HumanBehaviorModel::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet, const Goals& goals) {
+HumanBehaviorModel::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
   for (auto& behavior : humanBehaviors) {
-    behavior.initialize(obsSet, pedSet, goals);
+    behavior.initialize(pedSet, obsSet, goals);
   }
 }
 
 void
-HumanBehaviorModel::timestep(const PedestrianSet&,
-                             const ObstacleSet&,
-                             const Goals&,
-                             std::shared_ptr<VIPRA::State>,
-                             VIPRA::delta_t) {}
+HumanBehaviorModel::timestep(const PedestrianSet&          pedSet,
+                             const ObstacleSet&            obsSet,
+                             const Goals&                  goals,
+                             std::shared_ptr<VIPRA::State> state,
+                             VIPRA::delta_t                dT) {
+  std::for_each(humanBehaviors.begin(), humanBehaviors.end(), [&](HumanBehavior& behavior) {
+    behavior.timestep(pedSet, obsSet, goals, state, dT);
+  });
+}
 
 void
 HumanBehaviorModel::loadBehaviors(std::vector<std::string> behaviors) {

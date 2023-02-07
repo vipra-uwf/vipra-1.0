@@ -204,7 +204,7 @@ initializeModules() {
          "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" + Log("Initializing Pedestrian Dynamics Model") +
          "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +
          Log("Initializing Human Behavior Model") +
-         "\n\thuman_behavior_model->initialize(*obstacle_set, *pedestrian_set, *goals);\n\t" +
+         "\n\thuman_behavior_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +
          Log("Initializing Simulation") + "\n\tsimulation->initialize();\n\t";
 }
 
