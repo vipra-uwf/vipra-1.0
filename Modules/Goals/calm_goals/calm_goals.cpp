@@ -5,12 +5,12 @@
 
 void
 CalmGoals::configure(const VIPRA::Config::Map& configMap) {
-  spdlog::info("Configure Calm Goals");
+  spdlog::info("CalmGoals: Configuring Calm Goals");
   goalRange = configMap["goalRange"].asFloat();
   endGoalType = configMap["endGoalType"].asString();
   pathingType = configMap["pathFinding"].asString();
   diagonalCost = configMap["diagonalCost"].asFloat();
-  spdlog::info("done Configure Calm Goals");
+  spdlog::info("CalmGoals: Done Configuring Calm Goals");
 }
 
 /**
@@ -112,7 +112,7 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
     spdlog::debug("CalmGoals: Only One Objective of Type: {}, Filling Goals", endGoalType);
     // if only one objective, set every end goal as that
     std::fill(endGoals.begin(), endGoals.end(), std::ref(objectives.at(0)));
-    spdlog::debug("Filled Goals");
+    spdlog::debug("CalmGoals: Filled Goals");
   } else {
     // otherwise, for each ped coord set the end goal as the nearest objective
     std::transform(coords.begin(), coords.end(), endGoals.begin(), [&](const VIPRA::f3d& coord) {

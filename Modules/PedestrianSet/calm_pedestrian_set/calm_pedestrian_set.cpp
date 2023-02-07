@@ -9,7 +9,7 @@ CalmPedestrianSet::configure([[maybe_unused]] const VIPRA::Config::Map& configMa
 
 void
 CalmPedestrianSet::initialize(std::unique_ptr<VIPRA::PedData> pedData) {
-  const auto peds = reinterpret_cast<CalmPedData*>(pedData.release());
+  const auto peds = reinterpret_cast<CalmPedData*>(pedData.get());
   numPedestrians = peds->positions.size();
 
   pedestrianCoordinates = std::move(peds->positions);

@@ -11,5 +11,5 @@ const std::filesystem::path test_values = std::filesystem::current_path() / "tes
 
 TEST(Behavior_Parsing, Parse_Test) {
   BehaviorBuilder builder;
-  HumanBehavior   test = builder.build(test_values / "test_behavior.behavior", 0);
+  HumanBehavior   test = builder.build("test_behavior", test_values / "test_behavior.behavior", 0);
 }

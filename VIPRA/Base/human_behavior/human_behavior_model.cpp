@@ -43,7 +43,7 @@ HumanBehaviorModel::loadBehaviors(std::vector<std::string> behaviors) {
     }
 
     spdlog::info("Loading Behavior: {} at {}", behaviorName, std::filesystem::canonical(filePath).c_str());
-    return builder.build(filePath, seed);
+    return builder.build(behaviorName, filePath, seed);
   });
 
   spdlog::info("Done Loading Behaviors");

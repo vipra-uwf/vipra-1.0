@@ -2,6 +2,10 @@
 
 CalmPedestrianModel::CalmPedestrianModel() {}
 
+CalmPedestrianModel::~CalmPedestrianModel() {
+  delete[] pedestrianDistanceMatrix;
+}
+
 void
 CalmPedestrianModel::configure([[maybe_unused]] const VIPRA::Config::Map& configMap) {}
 

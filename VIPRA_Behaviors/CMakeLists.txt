@@ -7,11 +7,16 @@ SET(GRAMMAR_DIR ./grammar)
 SET(INCLUDE_DIR ./include)
 SET(SRC_DIR ./src)
 
+
 SET(LIB_NAME VIPRA_Behaviors)
 project(${LIB_NAME})
 
 
-SET(SRCS 
+SET(SRCS
+  ${SRC_DIR}/actions/action.cpp
+  ${SRC_DIR}/actions/atom_map.cpp
+  ${SRC_DIR}/actions/atoms/atom_stop.cpp
+  ${SRC_DIR}/actions/atoms/atom_change_speed.cpp
   ${SRC_DIR}/behavior/behavior_builder.cpp
   ${SRC_DIR}/behavior/human_behavior.cpp
   ${SRC_DIR}/conditions/condition_state.cpp

@@ -23,7 +23,9 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   VIPRA::seed   seed;
 
  public:
-  HumanBehavior&& build(const std::filesystem::path&, VIPRA::seed);
+  HumanBehavior&& build(std::string, const std::filesystem::path&, VIPRA::seed);
+
+  void addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
 
   // ------------------------------- TRANSITIONS -----------------------------------------------------------------------------------------
 
@@ -65,15 +67,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   antlrcpp::Any visitConditional_action(BehaviorParser::Conditional_actionContext* ctx) override;
 
-  antlrcpp::Any visitNon_conditional_action(BehaviorParser::Non_conditional_actionContext* ctx) override;
-
-  antlrcpp::Any visitSub_action(BehaviorParser::Sub_actionContext* ctx) override;
-
-  antlrcpp::Any visitAction_atom(BehaviorParser::Action_atomContext* ctx) override;
-
-  antlrcpp::Any visitAction_Stop(BehaviorParser::Action_StopContext* ctx) override;
-
-  antlrcpp::Any visitAction_atom_Percent_Walk_Speed(BehaviorParser::Action_atom_Percent_Walk_SpeedContext* ctx) override;
+  antlrcpp::Any visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext* ctx) override;
 
   // ------------------------------- END ACTIONS -----------------------------------------------------------------------------------------
 

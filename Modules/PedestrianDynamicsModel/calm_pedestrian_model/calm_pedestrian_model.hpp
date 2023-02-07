@@ -32,6 +32,7 @@ struct Line {
 
 class CalmPedestrianModel : public PedestrianDynamicsModel {
  public:
+  ~CalmPedestrianModel();
   CalmPedestrianModel();
 
   void                          configure(const VIPRA::Config::Map& configMap) override;

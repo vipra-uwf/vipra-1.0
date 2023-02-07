@@ -11,8 +11,8 @@
 #include <selectors/selector_percent.hpp>
 
 HumanBehavior&&
-BehaviorBuilder::build(const std::filesystem::path& fileName, VIPRA::seed seedNum) {
-  currentBehavior = HumanBehavior();
+BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fileName, VIPRA::seed seedNum) {
+  currentBehavior = HumanBehavior(behaviorName);
   seed = seedNum;
   std::ifstream dslFile(fileName);
 
@@ -25,6 +25,19 @@ BehaviorBuilder::build(const std::filesystem::path& fileName, VIPRA::seed seedNu
 
   visitProgram(tree);
   return std::move(currentBehavior);
+}
+
+void
+BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomContext* atom) {
+
+  std::string atomName = atom->getText();
+  spdlog::debug("Behavior {}: Unconditional Action Adding Atom: {}", currentBehavior.getName(), atomName);
+
+  if (atomName == "!change_speed") {
+    action.addAtom(atomName, 0.1f, true);
+  } else {
+    action.addAtom(atomName);
+  }
 }
 
 // ------------------------------- TRANSITIONS -----------------------------------------------------------------------------------------
@@ -84,7 +97,8 @@ BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) {
 
 antlrcpp::Any
 BehaviorBuilder::visitSelector_Percent(BehaviorParser::Selector_PercentContext* ctx) {
-  spdlog::debug("Adding Selector: Percent");
+
+  spdlog::debug("Adding Selector: Percent to {}", currentBehavior.getName());
   const float percent = std::stof(ctx->NUMBER()->toString());
   currentBehavior.addSelector<Selector_Percent>(percent);
 
@@ -93,7 +107,8 @@ BehaviorBuilder::visitSelector_Percent(BehaviorParser::Selector_PercentContext* 
 
 antlrcpp::Any
 BehaviorBuilder::visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly_N_RandomContext* ctx) {
-  spdlog::debug("Adding Selector: Exactly N");
+
+  spdlog::debug("Behavior \"{}\": Adding Selector: \"Exactly N\"");
   const VIPRA::size N = static_cast<VIPRA::size>(std::stoi(ctx->NUMBER()->toString()));
   currentBehavior.addSelector<Selector_Exactly_N>(N, seed);
 
@@ -102,7 +117,8 @@ BehaviorBuilder::visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly
 
 antlrcpp::Any
 BehaviorBuilder::visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext* ctx) {
-  spdlog::debug("Adding Selector: Everyone");
+
+  spdlog::debug("Behavior \"{}\": Adding Selector: \"Everyone\"");
   currentBehavior.addSelector<Selector_Everyone>();
 
   return BehaviorBaseVisitor::visitSelector_Everyone(ctx);
@@ -114,32 +130,23 @@ BehaviorBuilder::visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext
 
 antlrcpp::Any
 BehaviorBuilder::visitConditional_action(BehaviorParser::Conditional_actionContext* ctx) {
+
   return BehaviorBaseVisitor::visitConditional_action(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitNon_conditional_action(BehaviorParser::Non_conditional_actionContext* ctx) {
-  return BehaviorBaseVisitor::visitNon_conditional_action(ctx);
-}
+BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext* ctx) {
 
-antlrcpp::Any
-BehaviorBuilder::visitSub_action(BehaviorParser::Sub_actionContext* ctx) {
-  return BehaviorBaseVisitor::visitSub_action(ctx);
-}
+  const auto& atoms = ctx->sub_action()->action_atom();
+  Action      action;
 
-antlrcpp::Any
-BehaviorBuilder::visitAction_atom(BehaviorParser::Action_atomContext* ctx) {
-  return BehaviorBaseVisitor::visitAction_atom(ctx);
-}
+  spdlog::debug("Behavior {}: Adding Unconditional Action", currentBehavior.getName());
 
-antlrcpp::Any
-BehaviorBuilder::visitAction_Stop(BehaviorParser::Action_StopContext* ctx) {
-  return BehaviorBaseVisitor::visitAction_Stop(ctx);
-}
+  std::for_each(
+      atoms.begin(), atoms.end(), [&](BehaviorParser::Action_atomContext* atom) { addAtomToAction(action, atom); });
 
-antlrcpp::Any
-BehaviorBuilder::visitAction_atom_Percent_Walk_Speed(BehaviorParser::Action_atom_Percent_Walk_SpeedContext* ctx) {
-  return BehaviorBaseVisitor::visitAction_atom_Percent_Walk_Speed(ctx);
+  currentBehavior.addAction(std::move(action));
+  return BehaviorBaseVisitor::visitUn_conditional_action(ctx);
 }
 
 // ------------------------------- END ACTIONS -----------------------------------------------------------------------------------------
@@ -163,6 +170,15 @@ BehaviorBuilder::visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx)
 
 antlrcpp::Any
 BehaviorBuilder::visitDecl_Parameters(BehaviorParser::Decl_ParametersContext* ctx) {
+
+  const auto& params = ctx->PARAMETER();
+
+  std::for_each(params.begin(), params.end(), [&](antlr4::tree::TerminalNode* param) {
+    std::string p = param->toString();
+    spdlog::debug("Behavior \"{}\": Adding Param: \"{}\"", currentBehavior.getName(), p);
+    currentBehavior.addParameter(p);
+  });
+
   return BehaviorBaseVisitor::visitDecl_Parameters(ctx);
 }
 

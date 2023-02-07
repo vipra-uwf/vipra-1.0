@@ -52,11 +52,6 @@ THE: T H E WS;
 GIVEN: G I V E N WS;
 SET: S E T WS;
 
-MULTI_ID:
-  ID |
-  ID COMMA MULTI_ID
-  ;
-
 PARAMETERS:
   P A R A M E T E R S COLON
   ;

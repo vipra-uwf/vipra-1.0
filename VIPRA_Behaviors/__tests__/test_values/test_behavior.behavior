@@ -8,6 +8,9 @@ PARAMETERS: $start_time, $duration.
 
 // -----------------------------------------------------
 
-Consider an ANNOUNCEMENT_LISTENER.
+Consider an announcement_listener.
 
-Everyone is an ANNOUNCEMENT_LISTENER.
+Everyone is an announcement_listener.
+
+An announcement_listener will always 
+  !change_speed 10% Faster.

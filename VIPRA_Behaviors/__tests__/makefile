@@ -1,5 +1,8 @@
 
 
 rebuild:
-	cd ../dsl/grammar && make
+	cd ../grammar && make
 	cmake --build build
+
+grammar:
+	cd ../grammar && make

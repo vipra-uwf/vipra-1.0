@@ -2,10 +2,7 @@
     "input_data_loader": {},
     "human_behavior_model": {
         "seed": 123456,
-        "behaviors": [
-            "injured_person",
-            "important_announcement"
-        ]
+        "behaviors": []
     },
     "output_data_writer": {},
     "simulation_output_handler": {
