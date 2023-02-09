@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 set(PROJECT_NAME VIPRA_SIM)
 
 option(DEBUG_MODE "Compile In Debug Mode" OFF)
+option(MOCK_BEHAVIORS "Build Mock Behaviors" OFF)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 set(CMAKE_CXX_STANDARD 17)
@@ -11,6 +12,11 @@ set(BASE_DIR ./Base)
 set(DEPS_DIR ./deps)
 set(EXTENDABLE_DIR ./Extendable)
 set(BEHAVIORS_DIR ./../VIPRA_Behaviors)
+
+
+if (MOCK_BEHAVIORS)
+  add_compile_definitions(MOCK_BEHAVIORS=1)
+endif()
 
 project(
   ${PROJECT_NAME} 
@@ -43,6 +49,7 @@ if (DEBUG_MODE)
 else()
   set(CMAKE_BUILD_TYPE Release)
 endif ()
+
 
 target_compile_options(${PROJECT_NAME} PUBLIC ${COMP_OPTIONS})
 

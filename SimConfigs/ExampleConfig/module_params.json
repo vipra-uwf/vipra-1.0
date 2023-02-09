@@ -2,7 +2,10 @@
     "input_data_loader": {},
     "human_behavior_model": {
         "seed": 123456,
-        "behaviors": []
+        "behaviors": [
+            "luggage_mock",
+            "disembark_mock"
+        ]
     },
     "output_data_writer": {},
     "simulation_output_handler": {
@@ -17,7 +20,7 @@
         "pathFinding": "Disembark",
         "diagonalCost": 2.0,
         "endGoalType": "exit",
-        "goalRange": 0.05
+        "goalRange": 0.5
     },
     "pedestrian_dynamics_model": {},
     "configuration_reader": {},

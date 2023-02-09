@@ -37,6 +37,7 @@ class HumanBehaviorModel {
 
  private:
   void loadBehaviors(std::vector<std::string>);
+  void loadMockBehaviors(const std::vector<std::string>& behaviors);
 };
 
 #endif  //VIPRA_HUMAN_BEHAVIOR_MODEL_HPP

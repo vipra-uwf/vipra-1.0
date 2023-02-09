@@ -344,7 +344,7 @@ CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet,
     //Use Euler Method to update position and velocity
     modelState->velocities[i] = ((propulsion / mass) * time) + velocity;
 
-    if (goals.timeSinceLastGoal(i) <= 0.1) {
+    if (goals.timeSinceLastGoal(i) > 0 && goals.timeSinceLastGoal(i) <= 0.1) {
       this->modelState->velocities[i].x = 0;
       this->modelState->velocities[i].y = 0;
     }

@@ -5,6 +5,7 @@
 #include <generated/BehaviorParser.h>
 
 #include <behavior/behavior_builder.hpp>
+#include <mock_behaviors/mock_behaviors_builder.hpp>
 
 #include <selectors/selector_everyone.hpp>
 #include <selectors/selector_exactly_N.hpp>
@@ -24,25 +25,37 @@ BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fi
   antlr4::CommonTokenStream tokens(&lexer);
   BehaviorParser            parser(&tokens);
 
+  parser.removeErrorListeners();
+  parser.addErrorListener(&errorListener);
+
   BehaviorParser::ProgramContext* tree = parser.program();
 
   visitProgram(tree);
+
   return std::move(currentBehavior);
 }
 
 void
 BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomContext* atom) {
+
   if (atom->action_atom_Percent_Walk_Speed()) {
-    spdlog::debug("Behavior {}: Unconditional Action Adding Atom: Change Speed", currentBehavior.getName());
+    spdlog::debug("Behavior \"{}\": Unconditional Action Adding Atom: \"Change Speed\"", currentBehavior.getName());
     auto params = getChangeSpeedParams(atom);
     action.addAtom("change_speed", params.change, params.faster);
     return;
   }
-  if (atom->action_Stop()) {
-    spdlog::debug("Behavior {}: Unconditional Action Adding Atom: Stop", currentBehavior.getName());
+
+  // ------------ One Word Atoms -----------------
+  std::string atomName = atom->getText();
+
+  if (atomName == "!stop") {
+    spdlog::debug("Behavior \"{}\": Unconditional Action Adding Atom: \"Stop\"", currentBehavior.getName());
     action.addAtom("stop");
     return;
   }
+
+  spdlog::error("Behavior Error: No Atom \"{}\"", atomName);
+  exit(1);
 }
 
 // ------------------------------- TRANSITIONS -----------------------------------------------------------------------------------------

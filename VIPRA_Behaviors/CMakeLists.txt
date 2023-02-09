@@ -17,7 +17,11 @@ SET(SRCS
   ${SRC_DIR}/actions/atoms/atom_stop.cpp
   ${SRC_DIR}/actions/atoms/atom_change_speed.cpp
   ${SRC_DIR}/behavior/behavior_builder.cpp
+  ${SRC_DIR}/behavior/behavior_error_listener.cpp
   ${SRC_DIR}/behavior/human_behavior.cpp
+  ${SRC_DIR}/mock_behaviors/mock_behaviors_builder.cpp
+  ${SRC_DIR}/mock_behaviors/disembark_atom.mock.cpp
+  ${SRC_DIR}/mock_behaviors/luggage_atom.mock.cpp
   ${SRC_DIR}/conditions/condition_state.cpp
   ${SRC_DIR}/conditions/condition.cpp
   ${SRC_DIR}/selectors/selector_everyone.cpp

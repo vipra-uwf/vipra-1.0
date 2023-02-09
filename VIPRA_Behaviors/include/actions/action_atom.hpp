@@ -8,6 +8,7 @@
 
 class Atom {
  public:
+  virtual ~Atom() = default;
   virtual void performAction(const PedestrianSet&,
                              const ObstacleSet&,
                              const Goals&,

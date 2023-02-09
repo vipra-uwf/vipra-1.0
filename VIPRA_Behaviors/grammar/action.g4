@@ -9,11 +9,13 @@ action:
 
 conditional_action: 
   AN ID 'will' sub_action condition '.';
+
 un_conditional_action:
   AN ID 'will always' sub_action '.';
 
+
 sub_action:
-  action_atom ('then' action_atom)*|
+  action_atom ('then' action_atom)*
   ;
 
 action_atom:
@@ -28,4 +30,4 @@ action_Stop:
   ;
 
 action_atom_Percent_Walk_Speed:
-  '!change_speed' NUMBER '%' FASTERorSLOWER;
+  '!walk' NUMBER '%' FASTERorSLOWER;

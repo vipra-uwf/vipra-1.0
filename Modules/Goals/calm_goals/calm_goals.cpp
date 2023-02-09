@@ -26,7 +26,7 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   endGoals = VIPRA::f3dVec(pedCnt, VIPRA::f3d{-1, -1});
   goalsMet = std::vector<bool>(pedCnt, false);
   paths = std::vector<std::queue<VIPRA::f3d>>(pedCnt);
-  lastGoalTimes = std::vector<VIPRA::delta_t>(pedCnt, 0.0f);
+  lastGoalTimes = std::vector<VIPRA::delta_t>(pedCnt, -std::numeric_limits<VIPRA::delta_t>::max());
   spdlog::debug("CalmGoals: Finding Nearest End Goal");
   findNearestEndGoal(obsSet, pedSet);
 

@@ -56,7 +56,7 @@ Simulation::run(Goals&                   goals,
       simulationOutputHandler.writeOutput(outputDataWriter, pedestrianSet, timestep);
     }
 
-    goals.updatePedestrianGoals(obstacleSet, pedestrianSet, timestep);
+    goals.updatePedestrianGoals(obstacleSet, pedestrianSet, timestep_size);
     ++timestep;
     clock.addSimulationTimeMs(timestep_size);
   }

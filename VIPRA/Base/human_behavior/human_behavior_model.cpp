@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <filesystem>
 
+#include <mock_behaviors/mock_behaviors_builder.hpp>
+
 void
 HumanBehaviorModel::configure(const VIPRA::Config::Map& configMap) {
   seed = configMap["seed"].asUInt();
@@ -33,11 +35,14 @@ HumanBehaviorModel::timestep(const PedestrianSet&          pedSet,
 
 void
 HumanBehaviorModel::loadBehaviors(std::vector<std::string> behaviors) {
-  BehaviorBuilder builder;
 
+#ifdef MOCK_BEHAVIORS
+  loadMockBehaviors(behaviors);
+#else
+
+  BehaviorBuilder builder;
   spdlog::info("Loading Behaviors");
   humanBehaviors.resize(behaviors.size());
-
   std::transform(behaviors.begin(), behaviors.end(), humanBehaviors.begin(), [&](const std::string& behaviorName) {
     const auto filePath = std::filesystem::current_path() / "../Behaviors" / (behaviorName + ".behavior");
 
@@ -49,6 +54,21 @@ HumanBehaviorModel::loadBehaviors(std::vector<std::string> behaviors) {
     spdlog::info("Loading Behavior: {} at {}", behaviorName, std::filesystem::canonical(filePath).c_str());
     return builder.build(behaviorName, filePath, seed);
   });
+#endif
 
   spdlog::info("Done Loading Behaviors");
+}
+
+void
+HumanBehaviorModel::loadMockBehaviors(const std::vector<std::string>& behaviors) {
+
+  MockBehaviorBuilder builder;
+  spdlog::info("Loading Mock Behaviors");
+  humanBehaviors.resize(behaviors.size());
+  std::transform(behaviors.begin(), behaviors.end(), humanBehaviors.begin(), [&](const std::string& behaviorName) {
+    spdlog::info("Loading Mock Behavior: {}", behaviorName);
+    return builder.buildMockBehavior(behaviorName);
+  });
+
+  spdlog::info("Done Loading Mock Behaviors");
 }

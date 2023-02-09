@@ -3,8 +3,10 @@
 
 #include <filesystem>
 
-#include "behavior/human_behavior.hpp"
-#include "generated/BehaviorBaseVisitor.h"
+#include <generated/BehaviorBaseVisitor.h>
+
+#include <behavior/behavior_error_listener.hpp>
+#include <behavior/human_behavior.hpp>
 
 class DSL_Exception : public std::runtime_error {
  public:
@@ -14,8 +16,9 @@ class DSL_Exception : public std::runtime_error {
 
 class BehaviorBuilder : public BehaviorBaseVisitor {
  private:
-  HumanBehavior currentBehavior;
-  VIPRA::seed   seed;
+  BehaviorErrorListener errorListener;
+  HumanBehavior         currentBehavior;
+  VIPRA::seed           seed;
 
  public:
   HumanBehavior&& build(std::string, const std::filesystem::path&, VIPRA::seed);

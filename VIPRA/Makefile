@@ -43,7 +43,7 @@ GenSim:
 	cmake --build simbuild
 
 DebugGenSim:
-	cmake -B simbuild . -DDEBUG_MODE=ON
+	cmake -B simbuild . -DDEBUG_MODE=ON -DMOCK_BEHAVIORS=ON
 	cmake --build simbuild
 
 BuildAll:
