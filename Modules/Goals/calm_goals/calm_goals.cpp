@@ -148,7 +148,7 @@ CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet,
     lastGoalTimes[i] += d_time;
     if (!paths[i].empty()) {
       const VIPRA::f3d& currGoal = paths[i].front();
-      if (inside(pedCoords.at(i), currGoal, goalRange)) {
+      if (pedCoords.at(i).distanceTo(currGoal) < goalRange) {
         spdlog::debug("Pedestrian {}, Reached a Goal", i);
         paths[i].pop();
         if (paths[i].empty()) {

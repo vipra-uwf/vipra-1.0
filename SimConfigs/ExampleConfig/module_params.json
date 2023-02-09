@@ -3,8 +3,8 @@
     "human_behavior_model": {
         "seed": 123456,
         "behaviors": [
-            "luggage_mock",
-            "disembark_mock"
+            "#disembark",
+            "#luggage"
         ]
     },
     "output_data_writer": {},
@@ -20,7 +20,7 @@
         "pathFinding": "Disembark",
         "diagonalCost": 2.0,
         "endGoalType": "exit",
-        "goalRange": 0.5
+        "goalRange": 0.3
     },
     "pedestrian_dynamics_model": {},
     "configuration_reader": {},

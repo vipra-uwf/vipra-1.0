@@ -13,12 +13,12 @@
 HumanBehavior behavior;
 
 void
-LuggageBehavior() {
+LuggageBehavior(VIPRA::seed seed) {
   Action action;
 
   action.addAtom("mock_luggage", static_cast<float>(10));
   behavior.addAction(std::move(action));
-  behavior.addSelector<Selector_Exactly_N>(50, 1234);
+  behavior.addSelector<Selector_Exactly_N>(50, seed);
 }
 
 void
@@ -31,12 +31,12 @@ DisembarkBehavior() {
 }
 
 HumanBehavior&&
-MockBehaviorBuilder::buildMockBehavior(const std::string& behaviorName) {
+MockBehaviorBuilder::buildMockBehavior(const std::string& behaviorName, VIPRA::seed seed) {
   behavior = HumanBehavior(behaviorName);
 
-  if (behaviorName == "luggage_mock") {
-    LuggageBehavior();
-  } else if (behaviorName == "disembark_mock") {
+  if (behaviorName == "#luggage") {
+    LuggageBehavior(seed);
+  } else if (behaviorName == "#disembark") {
     DisembarkBehavior();
   } else {
     spdlog::error("Invalid Mock Behavior: {}", behaviorName);

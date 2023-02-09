@@ -15,10 +15,22 @@
 #include <actions/atoms/atom_stop.hpp>
 
 HumanBehavior&&
-BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fileName, VIPRA::seed seedNum) {
+BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& filepath, VIPRA::seed seedNum) {
+
+  if (behaviorName[0] == '#') {
+    spdlog::info("Loading Mock Behavior: {}", behaviorName);
+    return MockBehaviorBuilder::buildMockBehavior(behaviorName, seedNum);
+  }
+
+  if (!std::filesystem::exists(filepath)) {
+    spdlog::error("Behavior \"{}\" Does NOT Exist at {}", behaviorName, filepath.c_str());
+    exit(1);
+  }
+
+  spdlog::info("Loading Behavior: {} at {}", behaviorName, std::filesystem::canonical(filepath).c_str());
   currentBehavior = HumanBehavior(behaviorName);
   seed = seedNum;
-  std::ifstream dslFile(fileName);
+  std::ifstream dslFile(filepath);
 
   antlr4::ANTLRInputStream  input(dslFile);
   BehaviorLexer             lexer(&input);

@@ -5,7 +5,7 @@
 
 class MockBehaviorBuilder {
  public:
-  HumanBehavior&& buildMockBehavior(const std::string&);
+  static HumanBehavior&& buildMockBehavior(const std::string&, VIPRA::seed);
 };
 
 #endif
