@@ -10,6 +10,13 @@ import { BaseLocalRepo } from '../base.local.repo';
  * @description Repo For Obstacle Maps
  */
 export class MapRepo extends BaseLocalRepo<OMap> {
+
+  /**
+   * @description Run Before Super Load
+   */
+  preLoad(): void {
+  }
+
   /**
    * @description Called after a map is created, no function
    */

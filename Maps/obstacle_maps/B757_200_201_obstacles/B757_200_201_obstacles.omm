@@ -1,6 +1,1 @@
-{
-  "id" : "k9ibSxHK6oJd33M0SmlQnITKc",
-  "name" : "B757_200_201_obstacles",
-  "type" : "PointMap",
-  "description" : "A PointMap of an Boeing 757-200 with 201 Seats"
-}
+{"id":"k9ibSxHK6oJd33M0SmlQnITKc","name":"B757_200_201_obstacles","type":"PointMap","description":"A PointMap of an Boeing 757-200 with 201 Seats"}

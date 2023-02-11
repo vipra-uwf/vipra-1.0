@@ -1,10 +1,7 @@
-
-
-import { Config } from '../../configuration/config';
 import { Module, ModuleType } from '../../types/module/module.types';
 import { Full, Nullable } from '../../types/typeDefs';
 import { RepoType, UploadType } from '../../types/uploading.types';
-import { makeDir, writeFile, writeFileFromBuffer } from '../../util/fileOperations';
+import { deleteFile, makeDir, writeFile, writeFileFromBuffer } from '../../util/fileOperations';
 import { Files } from '../../util/filestore';
 import { BaseLocalRepo } from '../base.local.repo';
 
@@ -15,9 +12,12 @@ import { BaseLocalRepo } from '../base.local.repo';
 export class ModuleRepo extends BaseLocalRepo<Module> {
   
   private modulesFile : Record<ModuleType, RepoType<Module>[]>;
-  
-  constructor(typeName : string, config : Config) {
-    super(typeName, config);
+
+  /**
+   * @description Run In Super Constructor
+   */
+  preLoad(): void {
+    deleteFile(this.config.modules.modulesFilePath);
     this.modulesFile = {
       pedestrian_dynamics_model: [],
       goals: [],
@@ -121,7 +121,7 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
   }
 
   /**
-   * @description Writes the file that input into the simulation code generation
+   * @description Writes the file that is input into the simulation code generation for available modules
    */
   private writeModulesFile() : void {
     writeFile(this.config.modules.modulesFilePath, JSON.stringify(this.modulesFile));

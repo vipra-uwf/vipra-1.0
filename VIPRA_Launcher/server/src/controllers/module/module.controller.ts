@@ -89,7 +89,10 @@ export class ModuleController extends BaseController<Module> {
         const module : Nullable<Module> = readJsonFile<Module>(filePath);
         if (module) {
           Logger.info(`Found Module: ${module.name} : ${module.id} AT: ${filePath}`);
-          void this.service.found(module, path.dirname(filePath));
+          this.service.found(module, path.dirname(filePath))
+            .catch((error : string)=>{
+              Logger.error(`Error Loading Module: ${module.name} : ${error}`);
+            });
         }
       });
     }

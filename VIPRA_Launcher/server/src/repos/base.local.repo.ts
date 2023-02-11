@@ -5,6 +5,7 @@ import { Status } from '../types/status';
 import { deleteDir, readMap, writeMap } from '../util/fileOperations';
 import { Config } from '../configuration/config';
 import { Files } from '../util/filestore';
+import { Logger } from '../controllers/logging/logger';
 
 
 
@@ -13,6 +14,7 @@ import { Files } from '../util/filestore';
  */
 export abstract class BaseLocalRepo<DataType extends Identifiable> {
 
+  abstract preLoad() : void;
   abstract postCreate(object : RepoType<DataType>) : void;
   abstract postUpdate(object : RepoType<DataType>) : void;
   abstract postFound(object : RepoType<DataType>) : void;
@@ -30,6 +32,7 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
   constructor(typeName : string, config : Config) {
     this.config = config;
     this.repoFile = `${this.config.launcher.repoDir}/${typeName}.json`;
+    this.preLoad();
     this.readRepoFile();
   }
 
@@ -82,10 +85,10 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
    * @param {DataType} object - object that was found
    * @param {string} dirPath - directory object was found in
    */
-  found(object : DataType, dirPath : string) : Promise<OperationResult<DataType>> {
+  async found(object : DataType, dirPath : string) : Promise<OperationResult<DataType>> {
     const duplicate = this.objects.get(object.id as unknown as string);
     if (duplicate) {
-      this.postFound(duplicate);
+      await this.update(duplicate.object.id, { object: object, files: {} });
       return Promise.resolve({ status: Status.CONFLICT, object: duplicate.object });
     }
     const obj = { object, dirPath };
@@ -153,15 +156,19 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
     
     if (repoObj) {
       repoObj.object = { ...repoObj.object, ...object.object };
-      const updatedFiles = await this.updateFiles(repoObj, object.files);
+      const updatedFiles = await this.updateFiles(repoObj, object.files).catch((error : string)=>{
+        Logger.error(`Error Updating Files: ${repoObj.object.id} : ${error}`);
+        return null;
+      });
       if (!updatedFiles) {
         return { status: Status.INTERNAL_ERROR, object: null };
       }
 
+      this.updateRepoFile();
       this.postUpdate(repoObj);
-      return { status: Status.SUCCESS, object: repoObj.object };      
+      return { status: Status.SUCCESS, object: repoObj.object };
     }
-    return { status: Status.BAD_REQUEST, object: null };   
+    return { status: Status.BAD_REQUEST, object: null };
   }
 
   /**
@@ -178,6 +185,9 @@ export abstract class BaseLocalRepo<DataType extends Identifiable> {
     const temp = readMap<RepoType<DataType>>(this.repoFile);
     if (temp) {
       this.objects = temp;
+      for (const obj of temp) {
+        this.postCreate(obj[1]);
+      }
     } else {
       this.objects = new Map<string, RepoType<DataType>>();
     }

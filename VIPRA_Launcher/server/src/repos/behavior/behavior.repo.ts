@@ -10,6 +10,13 @@ import { BaseLocalRepo } from '../base.local.repo';
  * @description Repo for Behaviors
  */
 export class BehaviorRepo extends BaseLocalRepo<Behavior> {
+
+  /**
+   * @description Run Before Super Load
+   */
+  preLoad(): void {
+  }
+
   /**
    * @description Called after a behavior is created
    * @param {RepoType<Behavior>} object - created behavior

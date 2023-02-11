@@ -12,6 +12,12 @@ import { BaseLocalRepo } from '../base.local.repo';
 export class PedestrianRepo extends BaseLocalRepo<PedMap> {
   
   /**
+   * @description Run Before Super Load
+   */
+  preLoad(): void {
+  }
+
+  /**
    * @description Called after a pedestrian map is created, currently no functionality
    */
   postCreate(): void {}

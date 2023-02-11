@@ -1,6 +1,1 @@
-{
-  "id" : "7nkfpNGGAul5DhCFXQ5wKoW6l",
-  "name" : "a320_144_obstacles",
-  "type" : "PointMap",
-  "description" : "A PointMap of an A320 with 144 Seats"
-}
+{"id":"7nkfpNGGAul5DhCFXQ5wKoW6l","name":"a320_144_obstacles","type":"PointMap","description":"A PointMap of an A320 with 144 Seats"}

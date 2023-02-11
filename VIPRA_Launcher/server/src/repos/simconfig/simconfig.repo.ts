@@ -10,6 +10,14 @@ import { BaseLocalRepo } from '../base.local.repo';
  * @description Local Repo for simconfigs
  */
 export class SimConfigRepo extends BaseLocalRepo<SimConfig> {
+
+  
+  /**
+   * @description Run Before Super Load
+   */
+  preLoad(): void {
+  }
+
   /**
    * @description Called After a simconfig is created, no function
    * @param {RepoType<SimConfig>} object - simconfig created

@@ -1,12 +1,24 @@
-import winston from 'winston';
+import { createLogger, format, transports }  from 'winston';
+const { combine, colorize, timestamp, printf } = format;
+
+// NOTE: the shadow is necessary -RG
+// eslint-disable-next-line @typescript-eslint/no-shadow
+const LogFormat = printf(({ level, message, timestamp }) => {
+  return `${timestamp as string} ${level}: ${message as string}`;
+});
 
 
-export const evLogger = winston.createLogger({
-  transports: [new winston.transports.Console()],
+/**
+ * @description Class to handle logging
+ */
+export const evLogger = createLogger({
   level: 'debug',
-  format: winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm::ss' }),
-    winston.format.align(),
-    winston.format.json(),
+  format: combine(
+    timestamp(),
+    colorize(),
+    LogFormat,
   ),
+  transports: [
+    new transports.Console(),
+  ],
 });
