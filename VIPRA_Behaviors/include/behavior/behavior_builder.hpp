@@ -2,6 +2,7 @@
 #define DSL_HUMAN_BEHAVIOR_HPP
 
 #include <filesystem>
+#include <unordered_map>
 
 #include <generated/BehaviorBaseVisitor.h>
 
@@ -16,13 +17,22 @@ class DSL_Exception : public std::runtime_error {
 
 class BehaviorBuilder : public BehaviorBaseVisitor {
  private:
-  BehaviorErrorListener errorListener;
-  HumanBehavior         currentBehavior;
-  VIPRA::seed           seed;
+  BehaviorErrorListener                            errorListener;
+  HumanBehavior                                    currentBehavior;
+  std::unordered_map<std::string, VIPRA::stateUID> states;
+  VIPRA::stateUID                                  currState;
+  VIPRA::seed                                      seed;
 
  public:
   HumanBehavior&& build(std::string, const std::filesystem::path&, VIPRA::seed);
 
+  VIPRA::stateUID getState(const std::string&);
+
+  Condition buildCondition(BehaviorParser::ConditionContext*);
+
+  void addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
+  void addConditionToAction(Action&, BehaviorParser::ConditionContext*);
+  void addConditionToTransition(Transition&, BehaviorParser::ConditionContext*);
   void addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
 
   // ------------------------------- TRANSITIONS -----------------------------------------------------------------------------------------

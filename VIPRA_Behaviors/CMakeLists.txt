@@ -19,14 +19,17 @@ SET(SRCS
   ${SRC_DIR}/behavior/behavior_builder.cpp
   ${SRC_DIR}/behavior/behavior_error_listener.cpp
   ${SRC_DIR}/behavior/human_behavior.cpp
+  ${SRC_DIR}/conditions/condition.cpp
+  ${SRC_DIR}/conditions/cond_map.cpp
+  ${SRC_DIR}/conditions/subcondition_state.cpp
+  ${SRC_DIR}/conditions/subcondition_elapsed_time.cpp
   ${SRC_DIR}/mock_behaviors/mock_behaviors_builder.cpp
   ${SRC_DIR}/mock_behaviors/disembark_atom.mock.cpp
   ${SRC_DIR}/mock_behaviors/luggage_atom.mock.cpp
-  ${SRC_DIR}/conditions/condition_state.cpp
-  ${SRC_DIR}/conditions/condition.cpp
   ${SRC_DIR}/selectors/selector_everyone.cpp
   ${SRC_DIR}/selectors/selector_exactly_N.cpp
   ${SRC_DIR}/selectors/selector_percent.cpp
+  ${SRC_DIR}/transitions/transition.cpp
   ${GRAMMAR_DIR}/generated/BehaviorVisitor.cpp
   ${GRAMMAR_DIR}/generated/BehaviorLexer.cpp
   ${GRAMMAR_DIR}/generated/BehaviorParser.cpp

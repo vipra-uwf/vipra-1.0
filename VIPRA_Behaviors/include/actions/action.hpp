@@ -3,12 +3,13 @@
 
 #include <spdlog/spdlog.h>
 
-#include "actions/action_atom.hpp"
-#include "actions/atom_map.hpp"
-#include "definitions/behavior_context.hpp"
-#include "goals/goals.hpp"
-#include "obstacle_set/obstacle_set.hpp"
-#include "pedestrian_set/pedestrian_set.hpp"
+#include <actions/action_atom.hpp>
+#include <actions/atom_map.hpp>
+#include <conditions/condition.hpp>
+#include <definitions/behavior_context.hpp>
+#include <goals/goals.hpp>
+#include <obstacle_set/obstacle_set.hpp>
+#include <pedestrian_set/pedestrian_set.hpp>
 
 /**
  * An action is something the pedestrian does, such as stopping movement.
@@ -32,6 +33,8 @@ class Action {
                      VIPRA::delta_t,
                      std::shared_ptr<VIPRA::State>);
 
+  void addCondition(Condition&& condition);
+
   template <typename... P> void addAtom(const std::string& atomName, P... params) {
     auto iter = AtomMap.find(atomName);
     if (iter == AtomMap.end()) {
@@ -46,6 +49,7 @@ class Action {
 
  private:
   std::vector<std::unique_ptr<Atom>> atoms;
+  std::optional<Condition>           condition;
 };
 
 #endif

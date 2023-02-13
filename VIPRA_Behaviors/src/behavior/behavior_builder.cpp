@@ -28,6 +28,8 @@ BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fi
   }
 
   spdlog::info("Loading Behavior: {} at {}", behaviorName, std::filesystem::canonical(filepath).c_str());
+  states.clear();
+  currState = 1;
   currentBehavior = HumanBehavior(behaviorName);
   seed = seedNum;
   std::ifstream dslFile(filepath);
@@ -47,11 +49,67 @@ BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fi
   return std::move(currentBehavior);
 }
 
+VIPRA::stateUID
+BehaviorBuilder::getState(const std::string& state) {
+  if (states.find(state) == states.end()) {
+    states[state] = currState++;
+  }
+
+  return states.at(state);
+}
+
+Condition
+BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond) {
+  Condition condition;
+
+  const auto subConds = cond->sub_condition();
+  std::for_each(subConds.begin(), subConds.end(), [&](BehaviorParser::Sub_conditionContext* subcond) {
+    addSubCondToCondtion(condition, subcond);
+  });
+
+  const auto andor = cond->ANDOR();
+  std::for_each(andor.begin(), andor.end(), [&](antlr4::tree::TerminalNode* andor) {
+    condition.addAndOr(andor->getText() == "and" || andor->getText() == "And" || andor->getText() == "AND");
+  });
+  return condition;
+}
+
+void
+BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
+  if (subcond->condition_State()) {
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: State", currentBehavior.getName());
+    auto object = (subcond->condition_State()->object()->getText() == "Pedestrian");
+    auto state = getState(subcond->condition_State()->STATE()->getText());
+    condition.addSubCondition("state", state, object);
+    return;
+  }
+
+  if (subcond->condition_Time_Elapsed()) {
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Elapsed Time", currentBehavior.getName());
+    VIPRA::delta_t time = std::stof(subcond->condition_Time_Elapsed()->NUMBER()->toString()) * 1000;
+    condition.addSubCondition("elapsed_time", time);
+    return;
+  }
+
+  spdlog::error("Behavior Error: No Valid SubCondition For: \"{}\"", subcond->getText());
+  exit(1);
+}
+
+void
+BehaviorBuilder::addConditionToAction(Action& action, BehaviorParser::ConditionContext* cond) {
+  action.addCondition(buildCondition(cond));
+}
+
+void
+BehaviorBuilder::addConditionToTransition(Transition& transition, BehaviorParser::ConditionContext* cond) {
+  transition.addCondition(buildCondition(cond));
+}
+
 void
 BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomContext* atom) {
 
   if (atom->action_atom_Percent_Walk_Speed()) {
-    spdlog::debug("Behavior \"{}\": Unconditional Action Adding Atom: \"Change Speed\"", currentBehavior.getName());
+    spdlog::debug("Behavior \"{}\": Action Adding Atom: \"Change Speed\"", currentBehavior.getName());
     auto params = getChangeSpeedParams(atom);
     action.addAtom("change_speed", params.change, params.faster);
     return;
@@ -61,7 +119,7 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
   std::string atomName = atom->getText();
 
   if (atomName == "!stop") {
-    spdlog::debug("Behavior \"{}\": Unconditional Action Adding Atom: \"Stop\"", currentBehavior.getName());
+    spdlog::debug("Behavior \"{}\": Action Adding Atom: \"Stop\"", currentBehavior.getName());
     action.addAtom("stop");
     return;
   }
@@ -72,13 +130,31 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
 
 // ------------------------------- TRANSITIONS -----------------------------------------------------------------------------------------
 
+// 'The Environment will' state_Set condition '.';
 antlrcpp::Any
 BehaviorBuilder::visitTransition_Environment(BehaviorParser::Transition_EnvironmentContext* ctx) {
+  const std::string     stateStr = ctx->state_Set()->STATE()->toString();
+  const VIPRA::stateUID newState = getState(stateStr);
+
+  Transition transition(newState);
+  spdlog::debug("Behavior \"{}\": Adding Environment Transition To State:\"{}\"", currentBehavior.getName(), stateStr);
+  addConditionToTransition(transition, ctx->condition());
+
+  currentBehavior.addEnvTransition(std::move(transition));
   return BehaviorBaseVisitor::visitTransition_Environment(ctx);
 }
 
+//AN ID 'will' state_Set condition '.';
 antlrcpp::Any
 BehaviorBuilder::visitTransition_Pedestrian(BehaviorParser::Transition_PedestrianContext* ctx) {
+  const std::string     stateStr = ctx->state_Set()->STATE()->toString();
+  const VIPRA::stateUID newState = getState(ctx->state_Set()->STATE()->toString());
+
+  Transition transition(newState);
+  spdlog::debug("Behavior \"{}\": Adding Pedestrian Transition To State: \"{}\"", currentBehavior.getName(), stateStr);
+  addConditionToTransition(transition, ctx->condition());
+
+  currentBehavior.addPedTransition(std::move(transition));
   return BehaviorBaseVisitor::visitTransition_Pedestrian(ctx);
 }
 
@@ -160,6 +236,17 @@ BehaviorBuilder::visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext
 
 antlrcpp::Any
 BehaviorBuilder::visitConditional_action(BehaviorParser::Conditional_actionContext* ctx) {
+
+  const auto& atoms = ctx->sub_action()->action_atom();
+  Action      action;
+
+  spdlog::debug("Behavior \"{}\": Adding Conditional Action", currentBehavior.getName());
+  addConditionToAction(action, ctx->condition());
+
+  std::for_each(
+      atoms.begin(), atoms.end(), [&](BehaviorParser::Action_atomContext* atom) { addAtomToAction(action, atom); });
+
+  currentBehavior.addAction(std::move(action));
 
   return BehaviorBaseVisitor::visitConditional_action(ctx);
 }

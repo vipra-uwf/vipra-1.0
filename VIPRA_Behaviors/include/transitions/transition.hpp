@@ -13,11 +13,14 @@
  */
 class Transition {
  public:
-  Transition(VIPRA::stateUID newState);
-  virtual bool evaluate() = 0;
+  Transition(VIPRA::stateUID);
+
+  void addCondition(Condition&&);
+  void evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t);
 
  protected:
   VIPRA::stateUID newState;
+  Condition       condition;
 };
 
 #endif  //VIPRA_TRANSITION_HPP

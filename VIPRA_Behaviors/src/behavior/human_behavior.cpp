@@ -14,6 +14,7 @@ HumanBehavior::addAction(Action&& action) {
 
 void
 HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
+  context.pedStates = std::vector<VIPRA::stateUID>(pedSet.getNumPedestrians(), 0);
   selector->initialize(pedSet, obsSet, goals);
 }
 
@@ -23,12 +24,21 @@ HumanBehavior::timestep(const PedestrianSet&          pedSet,
                         const Goals&                  goals,
                         std::shared_ptr<VIPRA::State> state,
                         VIPRA::delta_t                dT) {
-  // TODO evaluate transitions
+
+  std::for_each(envTransitions.begin(), envTransitions.end(), [&](Transition& trans) {
+    trans.evaluate(pedSet, obsSet, goals, context, std::numeric_limits<VIPRA::idx>::max(), dT);
+  });
 
   const auto& selectedPeds = selector->getSelectedPeds(pedSet, obsSet, goals, context);
 
-  std::for_each(pedActions.begin(), pedActions.end(), [&](Action& action) {
-    std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](VIPRA::idx pedIdx) {
+  std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](VIPRA::idx pedIdx) {
+    std::for_each(pedTransitions.begin(), pedTransitions.end(), [&](Transition& trans) {
+      trans.evaluate(pedSet, obsSet, goals, context, pedIdx, dT);
+    });
+  });
+
+  std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](VIPRA::idx pedIdx) {
+    std::for_each(pedActions.begin(), pedActions.end(), [&](Action& action) {
       action.performAction(pedSet, obsSet, goals, context, pedIdx, dT, state);
     });
   });
@@ -37,6 +47,16 @@ HumanBehavior::timestep(const PedestrianSet&          pedSet,
 void
 HumanBehavior::addParameter(std::string param) {
   parameters.emplace_back(param);
+}
+
+void
+HumanBehavior::addPedTransition(Transition&& transition) {
+  pedTransitions.emplace_back(std::move(transition));
+}
+
+void
+HumanBehavior::addEnvTransition(Transition&& transition) {
+  envTransitions.emplace_back(std::move(transition));
 }
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------

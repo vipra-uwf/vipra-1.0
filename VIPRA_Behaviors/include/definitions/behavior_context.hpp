@@ -7,8 +7,8 @@
 #include "dsl_types.hpp"
 
 struct BehaviorContext {
-  VIPRA::stateUID              environmentState;
   VIPRA::delta_t               elapsedTime;
+  VIPRA::stateUID              environmentState = 0;
   std::vector<VIPRA::stateUID> pedStates;
 };
 

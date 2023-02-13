@@ -3,8 +3,7 @@
     "human_behavior_model": {
         "seed": 123456,
         "behaviors": [
-            "#disembark",
-            "#luggage"
+            "always_stop"
         ]
     },
     "output_data_writer": {},

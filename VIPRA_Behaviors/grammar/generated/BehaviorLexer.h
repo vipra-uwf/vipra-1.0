@@ -15,11 +15,11 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, ID = 26, 
-    STATE = 27, ACTION = 28, ATTRIBUTE = 29, PARAMETER = 30, NUMBER = 31, 
-    COMMENT = 32, LINE_COMMENT = 33, WS = 34, AN = 35, AND = 36, OR = 37, 
-    ANDOR = 38, COMMA = 39, COLON = 40, THE = 41, GIVEN = 42, SET = 43, 
-    PARAMETERS = 44, FASTERorSLOWER = 45, Direction = 46
+    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
+    ID = 27, STATE = 28, ACTION = 29, ATTRIBUTE = 30, PARAMETER = 31, NUMBER = 32, 
+    COMMENT = 33, LINE_COMMENT = 34, WS = 35, AN = 36, AND = 37, OR = 38, 
+    ANDOR = 39, COMMA = 40, COLON = 41, THE = 42, GIVEN = 43, SET = 44, 
+    PARAMETERS = 45, FASTERorSLOWER = 46, Direction = 47
   };
 
   BehaviorLexer(antlr4::CharStream *input);

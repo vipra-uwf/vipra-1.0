@@ -11,9 +11,17 @@ Action::performAction(const PedestrianSet&          pedSet,
                       VIPRA::idx                    pedIdx,
                       VIPRA::delta_t                dT,
                       std::shared_ptr<VIPRA::State> state) {
+  if (condition) {
+    condition->evaluate(pedSet, obsSet, goals, context, pedIdx, dT);
+  }
   std::for_each(atoms.begin(), atoms.end(), [&](std::unique_ptr<Atom>& atom) {
     atom->performAction(pedSet, obsSet, goals, context, pedIdx, dT, state);
   });
+}
+
+void
+Action::addCondition(Condition&& cond) {
+  condition = std::move(cond);
 }
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------

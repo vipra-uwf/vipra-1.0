@@ -3,14 +3,25 @@
 
 #include "conditions/condition.hpp"
 
+Condition::Condition(Condition&& other) noexcept
+  : operations(std::move(other.operations)), conditions(std::move(other.conditions)) {}
+
+Condition&
+Condition::operator=(Condition&& other) noexcept {
+  operations = std::move(other.operations);
+  conditions = std::move(other.conditions);
+  return *this;
+}
+
 bool
-Condition::evaluate(const ObstacleSet&     obsSet,
-                    const PedestrianSet&   pedSet,
+Condition::evaluate(const PedestrianSet&   pedSet,
+                    const ObstacleSet&     obsSet,
                     const Goals&           goals,
                     const BehaviorContext& context,
-                    VIPRA::idx             pedIndex) const {
+                    VIPRA::idx             pedIndex,
+                    VIPRA::delta_t         dT) const {
   const VIPRA::size condCnt = conditions.size();
-  bool              result = (*conditions[0])(obsSet, pedSet, goals, context, pedIndex);
+  bool              result = (*conditions[0])(pedSet, obsSet, goals, context, pedIndex, dT);
 
   if (condCnt == 1) {
     return result;
@@ -18,9 +29,9 @@ Condition::evaluate(const ObstacleSet&     obsSet,
 
   for (VIPRA::idx i = 1; i < condCnt; ++i) {
     if (operations[i - 1]) {
-      result = result && (*conditions[i])(obsSet, pedSet, goals, context, pedIndex);
+      result = result && (*conditions[i])(pedSet, obsSet, goals, context, pedIndex, dT);
     } else {
-      result = result || (*conditions[i])(obsSet, pedSet, goals, context, pedIndex);
+      result = result || (*conditions[i])(pedSet, obsSet, goals, context, pedIndex, dT);
     }
   }
 
@@ -28,7 +39,6 @@ Condition::evaluate(const ObstacleSet&     obsSet,
 }
 
 void
-Condition::addSubCondition(bool operation, std::unique_ptr<SubCondition> cond) {
-  operations.emplace_back(operation);
-  conditions.emplace_back(std::move(cond));
+Condition::addAndOr(bool andor) {
+  operations.push_back(andor);
 }

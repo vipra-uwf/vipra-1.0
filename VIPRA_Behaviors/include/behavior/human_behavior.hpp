@@ -34,6 +34,8 @@ class HumanBehavior {
   void timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
 
   void addAction(Action&&);
+  void addPedTransition(Transition&&);
+  void addEnvTransition(Transition&&);
   void addParameter(std::string);
 
   template <typename S, typename... P, class = typename std::enable_if<std::is_base_of<Selector, S>::value>::type>
@@ -41,23 +43,13 @@ class HumanBehavior {
     selector = std::make_unique<S>(std::forward<P>(params)...);
   }
 
-  template <typename PT, typename... P, class = typename std::enable_if<std::is_base_of<Transition, PT>::value>::type>
-  void addPedTransition(P... params) {
-    pedTransitions.emplace_back(std::make_unique<PT>(std::forward<P>(params)...));
-  }
-
-  template <typename ET, typename... P, class = typename std::enable_if<std::is_base_of<Transition, ET>::value>::type>
-  void addEnvTransition(P... params) {
-    envTransitions.emplace_back(std::make_unique<ET>(std::forward<P>(params)...));
-  }
-
  private:
-  std::string                              name;
-  std::unique_ptr<Selector>                selector;
-  std::vector<std::unique_ptr<Transition>> pedTransitions;
-  std::vector<std::unique_ptr<Transition>> envTransitions;
-  std::vector<Action>                      pedActions;
-  BehaviorContext                          context;
+  std::string               name;
+  std::unique_ptr<Selector> selector;
+  std::vector<Transition>   pedTransitions;
+  std::vector<Transition>   envTransitions;
+  std::vector<Action>       pedActions;
+  BehaviorContext           context;
 
   std::vector<std::string> parameters;
 };

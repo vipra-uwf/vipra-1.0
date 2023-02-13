@@ -8,11 +8,13 @@
 
 class SubCondition {
  public:
-  virtual bool operator()(const ObstacleSet&,
-                          const PedestrianSet&,
+  virtual ~SubCondition() = default;
+  virtual bool operator()(const PedestrianSet&,
+                          const ObstacleSet&,
                           const Goals&,
                           const BehaviorContext&,
-                          VIPRA::idx) const = 0;
+                          VIPRA::idx,
+                          VIPRA::delta_t) const = 0;
 };
 
 #endif
