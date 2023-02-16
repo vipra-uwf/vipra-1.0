@@ -2,6 +2,7 @@
 
 #include <behavior/behavior_error_listener.hpp>
 
+namespace Behaviors {
 void
 BehaviorErrorListener::syntaxError(antlr4::Recognizer* recognizer,
                                    antlr4::Token*      offendingSymbol,
@@ -40,3 +41,4 @@ BehaviorErrorListener::reportContextSensitivity(antlr4::Parser*            recog
                                                 size_t                     stopIndex,
                                                 size_t                     prediction,
                                                 antlr4::atn::ATNConfigSet* configs) {}
+}  // namespace Behaviors

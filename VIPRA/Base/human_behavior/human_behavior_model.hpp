@@ -25,8 +25,8 @@ class BehaviorModelException : public std::runtime_error {
 class HumanBehaviorModel {
 
  private:
-  std::vector<HumanBehavior> humanBehaviors;
-  VIPRA::size                seed;
+  std::vector<Behaviors::HumanBehavior> humanBehaviors;
+  VIPRA::size                           seed;
 
  public:
   HumanBehaviorModel() = default;

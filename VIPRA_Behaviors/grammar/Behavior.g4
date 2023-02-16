@@ -1,13 +1,12 @@
 grammar Behavior;
 
-import lexer_rules, transitions, selector, condition, action, declarations;
+import lexer_rules, event, selector, condition, action, declarations;
 
 program: statement+;
 
 statement:
+  event |
   declaration |
   ped_Selector |
-  action |
-  transition_Environment |
-  transition_Pedestrian
+  action 
   ;

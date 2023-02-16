@@ -6,6 +6,7 @@
 #include "obstacle_set/obstacle_set.hpp"
 #include "pedestrian_set/pedestrian_set.hpp"
 
+namespace Behaviors {
 class Atom {
  public:
   virtual ~Atom() = default;
@@ -17,5 +18,6 @@ class Atom {
                              VIPRA::delta_t,
                              std::shared_ptr<VIPRA::State>) = 0;
 };
+}  // namespace Behaviors
 
 #endif

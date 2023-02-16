@@ -8,7 +8,9 @@
 
 #include <behavior/behavior_error_listener.hpp>
 #include <behavior/human_behavior.hpp>
+#include <events/event.hpp>
 
+namespace Behaviors {
 class DSL_Exception : public std::runtime_error {
  public:
   DSL_Exception(const std::string& message) : std::runtime_error(message) {}
@@ -17,31 +19,30 @@ class DSL_Exception : public std::runtime_error {
 
 class BehaviorBuilder : public BehaviorBaseVisitor {
  private:
-  BehaviorErrorListener                            errorListener;
-  HumanBehavior                                    currentBehavior;
-  std::unordered_map<std::string, VIPRA::stateUID> states;
-  VIPRA::stateUID                                  currState;
-  VIPRA::seed                                      seed;
+  BehaviorErrorListener errorListener;
+  HumanBehavior         currentBehavior;
+
+  std::unordered_map<std::string, Behaviors::stateUID> states;
+  std::unordered_map<std::string, Behaviors::Event*>   eventsMap;
+
+  Behaviors::stateUID currState;
+  Behaviors::seed     seed;
+
+  void initialBehaviorSetup(const std::string&, Behaviors::seed);
+
+  Event* getEvent(const std::string&);
+  void   addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
+  void   addConditionToAction(Action&, BehaviorParser::ConditionContext*);
+  void   addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
 
  public:
-  HumanBehavior&& build(std::string, const std::filesystem::path&, VIPRA::seed);
+  BehaviorBuilder();
 
-  VIPRA::stateUID getState(const std::string&);
+  HumanBehavior&& build(std::string, const std::filesystem::path&, Behaviors::seed);
+
+  Behaviors::stateUID getState(const std::string&);
 
   Condition buildCondition(BehaviorParser::ConditionContext*);
-
-  void addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
-  void addConditionToAction(Action&, BehaviorParser::ConditionContext*);
-  void addConditionToTransition(Transition&, BehaviorParser::ConditionContext*);
-  void addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
-
-  // ------------------------------- TRANSITIONS -----------------------------------------------------------------------------------------
-
-  antlrcpp::Any visitTransition_Environment(BehaviorParser::Transition_EnvironmentContext* ctx) override;
-
-  antlrcpp::Any visitTransition_Pedestrian(BehaviorParser::Transition_PedestrianContext* ctx) override;
-
-  // ------------------------------- END TRANSITIONS -----------------------------------------------------------------------------------------
 
   // ------------------------------- CONDITIONS -----------------------------------------------------------------------------------------
 
@@ -55,9 +56,26 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   antlrcpp::Any visitCondition_Others_State(BehaviorParser::Condition_Others_StateContext* ctx) override;
 
-  antlrcpp::Any visitCondition_Time_Elapsed(BehaviorParser::Condition_Time_ElapsedContext* ctx) override;
+  antlrcpp::Any visitCondition_Met_Goal(BehaviorParser::Condition_Met_GoalContext* ctx) override;
+
+  antlrcpp::Any visitCondition_Time_Elapsed_From_Event(
+      BehaviorParser::Condition_Time_Elapsed_From_EventContext* ctx) override;
+
+  antlrcpp::Any visitCondition_Event(BehaviorParser::Condition_EventContext* ctx) override;
+
+  antlrcpp::Any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext* ctx) override;
 
   // ------------------------------- END CONTIDTIONS -----------------------------------------------------------------------------------------
+
+  // ------------------------------- EVENTS -----------------------------------------------------------------------------------------
+
+  antlrcpp::Any visitEvent(BehaviorParser::EventContext* ctx) override;
+
+  antlrcpp::Any visitEvent_Single(BehaviorParser::Event_SingleContext* ctx) override;
+
+  antlrcpp::Any visitEvent_Lasting(BehaviorParser::Event_LastingContext* ctx) override;
+
+  // ------------------------------- END EVENTS -----------------------------------------------------------------------------------------
 
   // ------------------------------- SELECTORS -----------------------------------------------------------------------------------------
 
@@ -91,5 +109,6 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   // ------------------------------- END DECLARATIONS -----------------------------------------------------------------------------------------
 };
+}  // namespace Behaviors
 
 #endif

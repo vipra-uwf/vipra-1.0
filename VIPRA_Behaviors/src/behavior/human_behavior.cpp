@@ -2,6 +2,8 @@
 
 #include <numeric>
 
+namespace Behaviors {
+
 const std::string&
 HumanBehavior::getName() const noexcept {
   return name;
@@ -14,7 +16,7 @@ HumanBehavior::addAction(Action&& action) {
 
 void
 HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
-  context.pedStates = std::vector<VIPRA::stateUID>(pedSet.getNumPedestrians(), 0);
+  context.pedStates = std::vector<Behaviors::stateUID>(pedSet.getNumPedestrians(), 0);
   selector->initialize(pedSet, obsSet, goals);
 }
 
@@ -25,17 +27,9 @@ HumanBehavior::timestep(const PedestrianSet&          pedSet,
                         std::shared_ptr<VIPRA::State> state,
                         VIPRA::delta_t                dT) {
 
-  std::for_each(envTransitions.begin(), envTransitions.end(), [&](Transition& trans) {
-    trans.evaluate(pedSet, obsSet, goals, context, std::numeric_limits<VIPRA::idx>::max(), dT);
-  });
+  std::for_each(events.begin(), events.end(), [&](Event& event) { event.evaluate(pedSet, obsSet, goals, context, dT); });
 
   const auto& selectedPeds = selector->getSelectedPeds(pedSet, obsSet, goals, context);
-
-  std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](VIPRA::idx pedIdx) {
-    std::for_each(pedTransitions.begin(), pedTransitions.end(), [&](Transition& trans) {
-      trans.evaluate(pedSet, obsSet, goals, context, pedIdx, dT);
-    });
-  });
 
   std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](VIPRA::idx pedIdx) {
     std::for_each(pedActions.begin(), pedActions.end(), [&](Action& action) {
@@ -49,33 +43,31 @@ HumanBehavior::addParameter(std::string param) {
   parameters.emplace_back(param);
 }
 
-void
-HumanBehavior::addPedTransition(Transition&& transition) {
-  pedTransitions.emplace_back(std::move(transition));
-}
-
-void
-HumanBehavior::addEnvTransition(Transition&& transition) {
-  envTransitions.emplace_back(std::move(transition));
+Event*
+HumanBehavior::addEvent(Event&& event) {
+  events.emplace_back(std::move(event));
+  return &(events.back());
 }
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------
 
 HumanBehavior::HumanBehavior(std::string behaviorName)
-  : name(behaviorName), selector(nullptr), pedTransitions(), envTransitions(), pedActions(), context() {}
+  : name(behaviorName), context(), parameters(), selector(nullptr), events(), pedActions() {}
 
 HumanBehavior::HumanBehavior(HumanBehavior&& other) noexcept
-  : name(std::move(other.name)), selector(std::move(other.selector)), pedTransitions(std::move(other.pedTransitions)),
-    envTransitions(std::move(other.envTransitions)), pedActions(std::move(other.pedActions)) {}
+  : name(std::move(other.name)), context(std::move(other.context)), parameters(std::move(other.parameters)),
+    selector(std::move(other.selector)), events(std::move(other.events)), pedActions(std::move(other.pedActions)) {}
 
 HumanBehavior&
 HumanBehavior::operator=(HumanBehavior&& other) noexcept {
-  name = std::move(other.name);
-  selector = std::move(other.selector);
-  pedTransitions = std::move(other.pedTransitions);
-  envTransitions = std::move(other.envTransitions);
-  pedActions = std::move(other.pedActions);
+  name = (std::move(other.name));
+  context = (std::move(other.context));
+  parameters = (std::move(other.parameters));
+  selector = (std::move(other.selector));
+  events = (std::move(other.events));
+  pedActions = (std::move(other.pedActions));
   return (*this);
 }
 
 // ------------------------------------------ END CONSTRUCTORS ------------------------------------------------------------------------
+}  // namespace Behaviors

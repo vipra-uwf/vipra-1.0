@@ -2,6 +2,7 @@
 
 #include "selectors/selector_everyone.hpp"
 
+namespace Behaviors {
 void
 Selector_Everyone::initialize(const PedestrianSet& pedSet, const ObstacleSet&, const Goals&) {
   selectedPeds = std::vector<VIPRA::idx>(pedSet.getNumPedestrians());
@@ -12,3 +13,4 @@ const std::vector<VIPRA::idx>&
 Selector_Everyone::getSelectedPeds(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&) {
   return selectedPeds;
 }
+}  // namespace Behaviors

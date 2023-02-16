@@ -10,10 +10,11 @@
 
 #include <mock_behaviors/mock_behaviors_builder.hpp>
 
+namespace Behaviors {
 HumanBehavior behavior;
 
 void
-LuggageBehavior(VIPRA::seed seed) {
+LuggageBehavior(Behaviors::seed seed) {
   Action action;
 
   action.addAtom("mock_luggage", static_cast<float>(10));
@@ -31,7 +32,7 @@ DisembarkBehavior() {
 }
 
 HumanBehavior&&
-MockBehaviorBuilder::buildMockBehavior(const std::string& behaviorName, VIPRA::seed seed) {
+MockBehaviorBuilder::buildMockBehavior(const std::string& behaviorName, Behaviors::seed seed) {
   behavior = HumanBehavior(behaviorName);
 
   if (behaviorName == "#luggage") {
@@ -45,3 +46,4 @@ MockBehaviorBuilder::buildMockBehavior(const std::string& behaviorName, VIPRA::s
 
   return std::move(behavior);
 }
+}  // namespace Behaviors

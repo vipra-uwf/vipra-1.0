@@ -4,6 +4,7 @@
 #include <actions/action_atom.hpp>
 #include <behavior/human_behavior.hpp>
 
+namespace Behaviors {
 class Atom_Luggage_Mock : public Atom {
  public:
   Atom_Luggage_Mock() = delete;
@@ -25,5 +26,6 @@ class Atom_Luggage_Mock : public Atom {
   std::vector<VIPRA::idx> selectedPeds;
   std::vector<bool>       gottenLuggage;
 };
+}  // namespace Behaviors
 
 #endif

@@ -4,6 +4,7 @@
 #include <antlr4-runtime/BaseErrorListener.h>
 #include <antlr4-runtime/Parser.h>
 
+namespace Behaviors {
 class BehaviorErrorListener : public antlr4::BaseErrorListener {
  public:
   void syntaxError(antlr4::Recognizer* recognizer,
@@ -35,5 +36,6 @@ class BehaviorErrorListener : public antlr4::BaseErrorListener {
                                 size_t                     prediction,
                                 antlr4::atn::ATNConfigSet* configs) override;
 };
+}  // namespace Behaviors
 
 #endif

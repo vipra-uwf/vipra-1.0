@@ -4,6 +4,7 @@
 #include "definitions/type_definitions.hpp"
 #include "selector.hpp"
 
+namespace Behaviors {
 /**
  * Select the pedestrian based on a specified ratio. Useful for behaviors that 
  * are selected by a certain percent of the population. This uses an algorithm
@@ -26,5 +27,6 @@ class Selector_Percent : public Selector {
   std::vector<VIPRA::idx> selectedPeds;
   void                    selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };
+}  // namespace Behaviors
 
 #endif

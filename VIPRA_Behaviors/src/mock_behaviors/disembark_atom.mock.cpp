@@ -1,6 +1,7 @@
 
 #include <mock_behaviors/disembark_atom.mock.hpp>
 
+namespace Behaviors {
 void
 Atom_Disembark_Mock::performAction(const PedestrianSet& pedSet,
                                    const ObstacleSet&,
@@ -31,3 +32,4 @@ Atom_Disembark_Mock::performAction(const PedestrianSet& pedSet,
     }
   }
 }
+}  // namespace Behaviors

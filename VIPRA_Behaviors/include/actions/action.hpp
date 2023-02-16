@@ -11,6 +11,7 @@
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 
+namespace Behaviors {
 /**
  * An action is something the pedestrian does, such as stopping movement.
  */
@@ -51,5 +52,6 @@ class Action {
   std::vector<std::unique_ptr<Atom>> atoms;
   std::optional<Condition>           condition;
 };
+}  // namespace Behaviors
 
 #endif

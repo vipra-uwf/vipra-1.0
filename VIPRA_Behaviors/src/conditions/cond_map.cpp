@@ -1,10 +1,19 @@
 
 #include <conditions/condition_map.hpp>
+#include <events/event.hpp>
 
 #include <conditions/subconditions/subcondition_state.hpp>
 #include <conditions/subconditions/subcondition_elapsed_time.hpp>
+#include <conditions/subconditions/subcondition_event.hpp>
+#include <conditions/subconditions/subcondition_event_occurring.hpp>
+#include <conditions/subconditions/subcondition_start.hpp>
 
+namespace Behaviors {
 const std::unordered_map<std::string, std::any> CondMap = {
-    {"state", CondFunc<VIPRA::stateUID, bool>([](VIPRA::stateUID state, bool pedOrEnv) -> std::unique_ptr<SubCondition> {return std::make_unique<SubCondition_State>(state, pedOrEnv);})},
-    {"elapsed_time", CondFunc<VIPRA::delta_t>([](VIPRA::delta_t time) -> std::unique_ptr<SubCondition> {return std::make_unique<SubCondition_Elapsed_Time>(time);})}
+    {"start", CondFunc<>([]() -> std::unique_ptr<SubCondition> {return std::make_unique<SubCondition_Start>();})},
+    {"state", CondFunc<stateUID, bool>([](stateUID state, bool pedOrEnv) -> std::unique_ptr<SubCondition> {return std::make_unique<SubCondition_State>(state, pedOrEnv);})},
+    {"elapsed_time_from_event", CondFunc<VIPRA::delta_t, Event*>([](VIPRA::delta_t time, Event* event) -> std::unique_ptr<SubCondition> {return std::make_unique<SubCondition_Elapsed_Time_From_Event>(time, event);})},
+    {"event", CondFunc<Event*>([](Event* event) -> std::unique_ptr<SubCondition> {return std::make_unique<SubCondition_Event>(event);})},
+    {"event_occurring", CondFunc<Event*>([](Event* event) -> std::unique_ptr<SubCondition> {return std::make_unique<SubCondition_Event_Occurring>(event);})}
 };
+}

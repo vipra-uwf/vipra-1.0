@@ -23,11 +23,15 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTransition_Environment(BehaviorParser::Transition_EnvironmentContext *ctx) override {
+  virtual antlrcpp::Any visitEvent(BehaviorParser::EventContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTransition_Pedestrian(BehaviorParser::Transition_PedestrianContext *ctx) override {
+  virtual antlrcpp::Any visitEvent_Single(BehaviorParser::Event_SingleContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitEvent_Lasting(BehaviorParser::Event_LastingContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -51,7 +55,19 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondition_Time_Elapsed(BehaviorParser::Condition_Time_ElapsedContext *ctx) override {
+  virtual antlrcpp::Any visitCondition_Met_Goal(BehaviorParser::Condition_Met_GoalContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCondition_Time_Elapsed_From_Event(BehaviorParser::Condition_Time_Elapsed_From_EventContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCondition_Event(BehaviorParser::Condition_EventContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext *ctx) override {
     return visitChildren(ctx);
   }
 

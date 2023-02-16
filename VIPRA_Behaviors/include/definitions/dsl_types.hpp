@@ -3,10 +3,9 @@
 
 #include <stdint.h>
 
-namespace VIPRA {
-
+namespace Behaviors {
 typedef uint64_t seed;
 typedef uint64_t stateUID;
-}  // namespace VIPRA
+}  // namespace Behaviors
 
 #endif

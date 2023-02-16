@@ -3,6 +3,7 @@
 
 #include "conditions/condition.hpp"
 
+namespace Behaviors {
 Condition::Condition(Condition&& other) noexcept
   : operations(std::move(other.operations)), conditions(std::move(other.conditions)) {}
 
@@ -21,7 +22,11 @@ Condition::evaluate(const PedestrianSet&   pedSet,
                     VIPRA::idx             pedIndex,
                     VIPRA::delta_t         dT) const {
   const VIPRA::size condCnt = conditions.size();
-  bool              result = (*conditions[0])(pedSet, obsSet, goals, context, pedIndex, dT);
+  if (condCnt == 0) {
+    return false;
+  }
+
+  bool result = (*conditions[0])(pedSet, obsSet, goals, context, pedIndex, dT);
 
   if (condCnt == 1) {
     return result;
@@ -42,3 +47,4 @@ void
 Condition::addAndOr(bool andor) {
   operations.push_back(andor);
 }
+}  // namespace Behaviors

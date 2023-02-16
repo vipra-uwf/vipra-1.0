@@ -8,6 +8,7 @@
 #include "obstacle_set/obstacle_set.hpp"
 #include "pedestrian_set/pedestrian_set.hpp"
 
+namespace Behaviors {
 /**
  * A selector is used to decide if a pedestrian should be evaluated for a 
  * behavior. It has the entire pedestrian set available to help with the 
@@ -23,5 +24,6 @@ class Selector {
 
   virtual void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) = 0;
 };
+}  // namespace Behaviors
 
 #endif

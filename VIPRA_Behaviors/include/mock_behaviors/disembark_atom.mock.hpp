@@ -4,6 +4,7 @@
 #include <actions/action_atom.hpp>
 #include <behavior/human_behavior.hpp>
 
+namespace Behaviors {
 class Atom_Disembark_Mock : public Atom {
  public:
   void performAction(const PedestrianSet&,
@@ -14,5 +15,6 @@ class Atom_Disembark_Mock : public Atom {
                      VIPRA::delta_t,
                      std::shared_ptr<VIPRA::State>) override;
 };
+}  // namespace Behaviors
 
 #endif

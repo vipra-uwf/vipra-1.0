@@ -3,6 +3,7 @@
 
 #include <actions/action_atom.hpp>
 
+namespace Behaviors {
 class Atom_Stop : public Atom {
  public:
   void performAction(const PedestrianSet&,
@@ -13,5 +14,6 @@ class Atom_Stop : public Atom {
                      VIPRA::delta_t,
                      std::shared_ptr<VIPRA::State>) override;
 };
+}  // namespace Behaviors
 
 #endif

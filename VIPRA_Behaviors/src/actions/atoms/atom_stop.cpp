@@ -1,6 +1,7 @@
 
 #include "actions/atoms/atom_stop.hpp"
 
+namespace Behaviors {
 void
 Atom_Stop::performAction(const PedestrianSet&          pedSet,
                          const ObstacleSet&            obsSet,
@@ -12,3 +13,4 @@ Atom_Stop::performAction(const PedestrianSet&          pedSet,
   state->pedestrianCoordinates[pedIdx] = pedSet.getPedCoords(pedIdx);
   state->velocities[pedIdx] = pedSet.getPedVelocity(pedIdx);
 }
+}  // namespace Behaviors

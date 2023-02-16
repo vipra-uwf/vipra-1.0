@@ -3,7 +3,8 @@
 
 #include "selectors/selector_exactly_N.hpp"
 
-Selector_Exactly_N::Selector_Exactly_N(VIPRA::size N, VIPRA::seed seed) : Selector(), count(N) {
+namespace Behaviors {
+Selector_Exactly_N::Selector_Exactly_N(VIPRA::size N, Behaviors::seed seed) : Selector(), count(N) {
   srand(seed);
 }
 
@@ -29,3 +30,4 @@ const std::vector<VIPRA::idx>&
 Selector_Exactly_N::getSelectedPeds(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&) {
   return selectedPeds;
 }
+}  // namespace Behaviors

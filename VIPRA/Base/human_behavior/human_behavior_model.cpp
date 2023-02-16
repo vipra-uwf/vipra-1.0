@@ -28,7 +28,7 @@ HumanBehaviorModel::timestep(const PedestrianSet&          pedSet,
                              const Goals&                  goals,
                              std::shared_ptr<VIPRA::State> state,
                              VIPRA::delta_t                dT) {
-  std::for_each(humanBehaviors.begin(), humanBehaviors.end(), [&](HumanBehavior& behavior) {
+  std::for_each(humanBehaviors.begin(), humanBehaviors.end(), [&](Behaviors::HumanBehavior& behavior) {
     behavior.timestep(pedSet, obsSet, goals, state, dT);
   });
 }
@@ -36,7 +36,7 @@ HumanBehaviorModel::timestep(const PedestrianSet&          pedSet,
 void
 HumanBehaviorModel::loadBehaviors(std::vector<std::string> behaviors) {
 
-  BehaviorBuilder builder;
+  Behaviors::BehaviorBuilder builder;
   spdlog::info("Loading Behaviors");
   humanBehaviors.resize(behaviors.size());
   std::transform(behaviors.begin(), behaviors.end(), humanBehaviors.begin(), [&](const std::string& behaviorName) {

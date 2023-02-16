@@ -23,9 +23,11 @@ public:
 
     virtual antlrcpp::Any visitStatement(BehaviorParser::StatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitTransition_Environment(BehaviorParser::Transition_EnvironmentContext *context) = 0;
+    virtual antlrcpp::Any visitEvent(BehaviorParser::EventContext *context) = 0;
 
-    virtual antlrcpp::Any visitTransition_Pedestrian(BehaviorParser::Transition_PedestrianContext *context) = 0;
+    virtual antlrcpp::Any visitEvent_Single(BehaviorParser::Event_SingleContext *context) = 0;
+
+    virtual antlrcpp::Any visitEvent_Lasting(BehaviorParser::Event_LastingContext *context) = 0;
 
     virtual antlrcpp::Any visitCondition(BehaviorParser::ConditionContext *context) = 0;
 
@@ -37,7 +39,13 @@ public:
 
     virtual antlrcpp::Any visitCondition_Others_State(BehaviorParser::Condition_Others_StateContext *context) = 0;
 
-    virtual antlrcpp::Any visitCondition_Time_Elapsed(BehaviorParser::Condition_Time_ElapsedContext *context) = 0;
+    virtual antlrcpp::Any visitCondition_Met_Goal(BehaviorParser::Condition_Met_GoalContext *context) = 0;
+
+    virtual antlrcpp::Any visitCondition_Time_Elapsed_From_Event(BehaviorParser::Condition_Time_Elapsed_From_EventContext *context) = 0;
+
+    virtual antlrcpp::Any visitCondition_Event(BehaviorParser::Condition_EventContext *context) = 0;
+
+    virtual antlrcpp::Any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext *context) = 0;
 
     virtual antlrcpp::Any visitState_Check(BehaviorParser::State_CheckContext *context) = 0;
 

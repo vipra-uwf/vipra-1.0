@@ -9,6 +9,8 @@ VIPRAsim
 *.out
 *.o
 *.gch
+*.gif
+*.png
 build
 rapidxml
 rapidxml-1.13

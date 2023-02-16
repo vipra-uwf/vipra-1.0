@@ -2,6 +2,7 @@
 
 #include <mock_behaviors/luggage_atom.mock.hpp>
 
+namespace Behaviors {
 Atom_Luggage_Mock::Atom_Luggage_Mock(float timeToGetLuggage) : luggageTime(timeToGetLuggage) {
   spdlog::debug("Setting Luggage Time To: {}s", timeToGetLuggage);
 }
@@ -38,3 +39,4 @@ Atom_Luggage_Mock::performAction(const PedestrianSet& pedSet,
     }
   }
 }
+}  // namespace Behaviors

@@ -23,13 +23,16 @@ SET(SRCS
   ${SRC_DIR}/conditions/cond_map.cpp
   ${SRC_DIR}/conditions/subcondition_state.cpp
   ${SRC_DIR}/conditions/subcondition_elapsed_time.cpp
+  ${SRC_DIR}/conditions/subcondition_event.cpp
+  ${SRC_DIR}/conditions/subcondition_start.cpp
+  ${SRC_DIR}/conditions/subcondition_event_occurring.cpp
   ${SRC_DIR}/mock_behaviors/mock_behaviors_builder.cpp
   ${SRC_DIR}/mock_behaviors/disembark_atom.mock.cpp
   ${SRC_DIR}/mock_behaviors/luggage_atom.mock.cpp
   ${SRC_DIR}/selectors/selector_everyone.cpp
   ${SRC_DIR}/selectors/selector_exactly_N.cpp
   ${SRC_DIR}/selectors/selector_percent.cpp
-  ${SRC_DIR}/transitions/transition.cpp
+  ${SRC_DIR}/events/event.cpp
   ${GRAMMAR_DIR}/generated/BehaviorVisitor.cpp
   ${GRAMMAR_DIR}/generated/BehaviorLexer.cpp
   ${GRAMMAR_DIR}/generated/BehaviorParser.cpp

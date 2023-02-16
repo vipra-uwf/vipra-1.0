@@ -3,6 +3,7 @@
 
 #include "selectors/selector_percent.hpp"
 
+namespace Behaviors {
 Selector_Percent::Selector_Percent(float selectRatio) : Selector(), ratio(selectRatio) {}
 
 void
@@ -28,3 +29,4 @@ const std::vector<VIPRA::idx>&
 Selector_Percent::getSelectedPeds(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&) {
   return selectedPeds;
 }
+}  // namespace Behaviors

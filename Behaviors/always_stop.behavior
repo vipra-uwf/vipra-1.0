@@ -3,6 +3,4 @@ Consider an individual.
 
 Exactly 5 random pedestrians are an individual.
 
-The Environment will be #TEST after 10 seconds.
-
-An individual will !stop given The Environment is #TEST.
+An individual will always !stop.

@@ -1,0 +1,15 @@
+
+The in_seat state means:
+  pedestrian has NOT met any goal
+
+The wait action means:
+ be #waiting
+
+Consider a passenger.
+
+Everyone is a passenger
+
+A passenger will @stop and @wait given
+  there is a pedestrian towards *end_goal that is #waiting.
+  OR
+  there is a pedestrian towards *end_goal that has NOT met any goal.

@@ -30,10 +30,10 @@ fragment Z:[zZ];
 ID: [a-zA-Z_\-]+;
 
 STATE: '#'[a-zA-Z_\-]+;
-ACTION: '!'[a-zA-Z_\-]+;
+ACTION: '@'[a-zA-Z_\-]+;
 ATTRIBUTE: '*'[a-zA-Z_\-]+;
 PARAMETER: '$'[a-zA-Z_\-]+;
-
+EVENT: '!'[a-zA-Z_\-]+;
 
 NUMBER : [0-9]+;
 COMMENT : '/*' .*? '*/'    -> channel(HIDDEN);
@@ -51,6 +51,7 @@ COLON: ':';
 THE: T H E WS;
 GIVEN: G I V E N WS;
 SET: S E T WS;
+WHILE: W H I L E WS;
 
 PARAMETERS:
   P A R A M E T E R S COLON

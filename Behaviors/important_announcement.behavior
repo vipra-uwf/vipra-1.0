@@ -1,23 +1,10 @@
 
-// PARAMETERS: start_time, duration
+Consider an announcement_listener.
 
-// -----------------------------------------------------
+Everyone is an announcement_listener.
 
-// The stop action means:
-// set *velocity to 0
+An !announcement event will occur after 2 seconds from !start and end after 5 seconds from !announcement.
 
-// The listen action means:
-// be #listening
+// An announcement_listener will @stop while an !announcement event is occurring.
 
-// -----------------------------------------------------
-
-Consider an ANNOUNCEMENT_LISTENER.
-
-Everyone is an ANNOUNCEMENT_LISTENER.
-
-The Environment will be #announcing after 10 seconds.
-
-An ANNOUNCEMENT_LISTENER will 
-!stop then !listen 
-given The Environment is #announcing.
-
+An announcement_listener will @stop while an !announcement event is occurring.

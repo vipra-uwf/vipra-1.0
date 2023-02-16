@@ -1,16 +1,14 @@
-//
-// Created by joe on 12/10/21.
-//
 
 #ifndef VIPRA_EXACTLY_N_RANDOM_SELECTOR_H
 #define VIPRA_EXACTLY_N_RANDOM_SELECTOR_H
 
 #include "selector.hpp"
 
+namespace Behaviors {
 class Selector_Exactly_N : public Selector {
  public:
   Selector_Exactly_N() = delete;
-  Selector_Exactly_N(VIPRA::size count, VIPRA::seed seed);
+  Selector_Exactly_N(VIPRA::size count, Behaviors::seed seed);
 
   void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) override;
 
@@ -24,5 +22,6 @@ class Selector_Exactly_N : public Selector {
   VIPRA::size             count;
   void                    selectPedestrianIds(const PedestrianSet& pedestrianSet);
 };
+}  // namespace Behaviors
 
 #endif  //VIPRA_EXACTLY_N_RANDOM_SELECTOR_H

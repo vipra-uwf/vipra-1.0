@@ -14,8 +14,26 @@
 #include <actions/atoms/atom_change_speed.hpp>
 #include <actions/atoms/atom_stop.hpp>
 
+namespace Behaviors {
+
+Condition startCond;
+Event     startEvent("!start");
+
+BehaviorBuilder::BehaviorBuilder() {
+  startCond.addSubCondition("start");
+  startEvent.setStartCondition(std::move(startCond));
+}
+
+/**
+ * @brief Parses the behavior file at filepath, returns the behavior it describes
+ * 
+ * @param behaviorName 
+ * @param filepath 
+ * @param seedNum 
+ * @return HumanBehavior&&
+ */
 HumanBehavior&&
-BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& filepath, VIPRA::seed seedNum) {
+BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& filepath, Behaviors::seed seedNum) {
 
   if (behaviorName[0] == '#') {
     spdlog::info("Loading Mock Behavior: {}", behaviorName);
@@ -28,10 +46,8 @@ BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fi
   }
 
   spdlog::info("Loading Behavior: {} at {}", behaviorName, std::filesystem::canonical(filepath).c_str());
-  states.clear();
-  currState = 1;
-  currentBehavior = HumanBehavior(behaviorName);
-  seed = seedNum;
+  initialBehaviorSetup(behaviorName, seedNum);
+
   std::ifstream dslFile(filepath);
 
   antlr4::ANTLRInputStream  input(dslFile);
@@ -49,7 +65,34 @@ BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fi
   return std::move(currentBehavior);
 }
 
-VIPRA::stateUID
+Behaviors::Event*
+BehaviorBuilder::getEvent(const std::string& evName) {
+  auto ev = eventsMap.find(evName);
+  if (ev == eventsMap.end()) {
+    spdlog::error("Behavior Error: Attempt To Use Event Before It Was Defined: \"{}\"", evName);
+    exit(1);
+  }
+
+  return (*ev).second;
+}
+
+void
+BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, Behaviors::seed seedNum) {
+  states.clear();
+  eventsMap.clear();
+  eventsMap["!start"] = &startEvent;
+  currState = 1;
+  currentBehavior = HumanBehavior(behaviorName);
+  seed = seedNum;
+}
+
+/**
+ * @brief Returns the Behaviors::stateUID associated with a state string, creating a new association if it doesn't exist
+ * 
+ * @param state 
+ * @return Behaviors::stateUID 
+ */
+Behaviors::stateUID
 BehaviorBuilder::getState(const std::string& state) {
   if (states.find(state) == states.end()) {
     states[state] = currState++;
@@ -58,6 +101,12 @@ BehaviorBuilder::getState(const std::string& state) {
   return states.at(state);
 }
 
+/**
+ * @brief Creates a new condition adding all sub_conditions and operations
+ * 
+ * @param cond 
+ * @return Condition
+ */
 Condition
 BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond) {
   Condition condition;
@@ -71,9 +120,16 @@ BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond) {
   std::for_each(andor.begin(), andor.end(), [&](antlr4::tree::TerminalNode* andor) {
     condition.addAndOr(andor->getText() == "and" || andor->getText() == "And" || andor->getText() == "AND");
   });
+
   return condition;
 }
 
+/**
+ * @brief Finds the appropriate subcondition in CondMap and adds it to the condition, along with the parameters from the behavior file
+ * 
+ * @param condition 
+ * @param subcond 
+ */
 void
 BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
   if (subcond->condition_State()) {
@@ -84,10 +140,25 @@ BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_
     return;
   }
 
-  if (subcond->condition_Time_Elapsed()) {
+  if (subcond->condition_Time_Elapsed_From_Event()) {
     spdlog::debug("Behavior \"{}\": Adding SubCondition: Elapsed Time", currentBehavior.getName());
-    VIPRA::delta_t time = std::stof(subcond->condition_Time_Elapsed()->NUMBER()->toString()) * 1000;
-    condition.addSubCondition("elapsed_time", time);
+    VIPRA::delta_t time = std::stof(subcond->condition_Time_Elapsed_From_Event()->NUMBER()->toString());
+    std::string    evName = subcond->condition_Time_Elapsed_From_Event()->EVENT()->toString();
+    condition.addSubCondition("elapsed_time_from_event", time, getEvent(evName));
+    return;
+  }
+
+  if (subcond->condition_Event()) {
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Event", currentBehavior.getName());
+    std::string evName = subcond->condition_Event()->EVENT()->toString();
+    condition.addSubCondition("event", getEvent(evName));
+    return;
+  }
+
+  if (subcond->condition_Event_Occurring()) {
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Event Occurring", currentBehavior.getName());
+    std::string evName = subcond->condition_Event_Occurring()->EVENT()->toString();
+    condition.addSubCondition("event_occurring", getEvent(evName));
     return;
   }
 
@@ -95,21 +166,28 @@ BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_
   exit(1);
 }
 
+/**
+ * @brief Builds a condition from a condition context and adds it to the action
+ * 
+ * @param action 
+ * @param cond 
+ */
 void
 BehaviorBuilder::addConditionToAction(Action& action, BehaviorParser::ConditionContext* cond) {
   action.addCondition(buildCondition(cond));
 }
 
-void
-BehaviorBuilder::addConditionToTransition(Transition& transition, BehaviorParser::ConditionContext* cond) {
-  transition.addCondition(buildCondition(cond));
-}
-
+/**
+ * @brief Creates an action atom and adds it to the action
+ * 
+ * @param action 
+ * @param atom 
+ */
 void
 BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomContext* atom) {
 
   if (atom->action_atom_Percent_Walk_Speed()) {
-    spdlog::debug("Behavior \"{}\": Action Adding Atom: \"Change Speed\"", currentBehavior.getName());
+    spdlog::debug("Behavior \"{}\": Adding Action Atom: \"Change Speed\"", currentBehavior.getName());
     auto params = getChangeSpeedParams(atom);
     action.addAtom("change_speed", params.change, params.faster);
     return;
@@ -118,8 +196,8 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
   // ------------ One Word Atoms -----------------
   std::string atomName = atom->getText();
 
-  if (atomName == "!stop") {
-    spdlog::debug("Behavior \"{}\": Action Adding Atom: \"Stop\"", currentBehavior.getName());
+  if (atomName == "@stop") {
+    spdlog::debug("Behavior \"{}\": Adding Action Atom: \"Stop\"", currentBehavior.getName());
     action.addAtom("stop");
     return;
   }
@@ -127,82 +205,107 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
   spdlog::error("Behavior Error: No Atom \"{}\"", atomName);
   exit(1);
 }
+}  // namespace Behaviors
 
-// ------------------------------- TRANSITIONS -----------------------------------------------------------------------------------------
-
-// 'The Environment will' state_Set condition '.';
-antlrcpp::Any
-BehaviorBuilder::visitTransition_Environment(BehaviorParser::Transition_EnvironmentContext* ctx) {
-  const std::string     stateStr = ctx->state_Set()->STATE()->toString();
-  const VIPRA::stateUID newState = getState(stateStr);
-
-  Transition transition(newState);
-  spdlog::debug("Behavior \"{}\": Adding Environment Transition To State:\"{}\"", currentBehavior.getName(), stateStr);
-  addConditionToTransition(transition, ctx->condition());
-
-  currentBehavior.addEnvTransition(std::move(transition));
-  return BehaviorBaseVisitor::visitTransition_Environment(ctx);
-}
-
-//AN ID 'will' state_Set condition '.';
-antlrcpp::Any
-BehaviorBuilder::visitTransition_Pedestrian(BehaviorParser::Transition_PedestrianContext* ctx) {
-  const std::string     stateStr = ctx->state_Set()->STATE()->toString();
-  const VIPRA::stateUID newState = getState(ctx->state_Set()->STATE()->toString());
-
-  Transition transition(newState);
-  spdlog::debug("Behavior \"{}\": Adding Pedestrian Transition To State: \"{}\"", currentBehavior.getName(), stateStr);
-  addConditionToTransition(transition, ctx->condition());
-
-  currentBehavior.addPedTransition(std::move(transition));
-  return BehaviorBaseVisitor::visitTransition_Pedestrian(ctx);
-}
-
-// ------------------------------- END TRANSITIONS -----------------------------------------------------------------------------------------
+// ------------------------------- ANTLR VISITOR METHODS -----------------------------------------------------------------------------------------
 
 // ------------------------------- CONDITIONS -----------------------------------------------------------------------------------------
 
 antlrcpp::Any
-BehaviorBuilder::visitCondition(BehaviorParser::ConditionContext* ctx) {
+Behaviors::BehaviorBuilder::visitCondition(BehaviorParser::ConditionContext* ctx) {
   return BehaviorBaseVisitor::visitCondition(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitSub_condition(BehaviorParser::Sub_conditionContext* ctx) {
+Behaviors::BehaviorBuilder::visitSub_condition(BehaviorParser::Sub_conditionContext* ctx) {
   return BehaviorBaseVisitor::visitSub_condition(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitCondition_Existance(BehaviorParser::Condition_ExistanceContext* ctx) {
+Behaviors::BehaviorBuilder::visitCondition_Existance(BehaviorParser::Condition_ExistanceContext* ctx) {
   return BehaviorBaseVisitor::visitCondition_Existance(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitCondition_State(BehaviorParser::Condition_StateContext* ctx) {
+Behaviors::BehaviorBuilder::visitCondition_State(BehaviorParser::Condition_StateContext* ctx) {
   return BehaviorBaseVisitor::visitCondition_State(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitCondition_Others_State(BehaviorParser::Condition_Others_StateContext* ctx) {
+Behaviors::BehaviorBuilder::visitCondition_Others_State(BehaviorParser::Condition_Others_StateContext* ctx) {
   return BehaviorBaseVisitor::visitCondition_Others_State(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitCondition_Time_Elapsed(BehaviorParser::Condition_Time_ElapsedContext* ctx) {
-  return BehaviorBaseVisitor::visitCondition_Time_Elapsed(ctx);
+Behaviors::BehaviorBuilder::visitCondition_Met_Goal(BehaviorParser::Condition_Met_GoalContext* ctx) {
+  return BehaviorBaseVisitor::visitCondition_Met_Goal(ctx);
+}
+
+antlrcpp::Any
+Behaviors::BehaviorBuilder::visitCondition_Time_Elapsed_From_Event(
+    BehaviorParser::Condition_Time_Elapsed_From_EventContext* ctx) {
+
+  return BehaviorBaseVisitor::visitCondition_Time_Elapsed_From_Event(ctx);
+}
+
+antlrcpp::Any
+Behaviors::BehaviorBuilder::visitCondition_Event(BehaviorParser::Condition_EventContext* ctx) {
+  // TODO
+  return BehaviorBaseVisitor::visitCondition_Event(ctx);
+}
+
+antlrcpp::Any
+Behaviors::BehaviorBuilder::visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext* ctx) {
+  // TODO
+  return BehaviorBaseVisitor::visitCondition_Event_Occurring(ctx);
 }
 
 // ------------------------------- END CONTIDTIONS -----------------------------------------------------------------------------------------
 
+// ------------------------------- EVENTS -----------------------------------------------------------------------------------------
+
+antlrcpp::Any
+Behaviors::BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) {
+  return BehaviorBaseVisitor::visitEvent(ctx);
+}
+
+antlrcpp::Any
+Behaviors::BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleContext* ctx) {
+  return BehaviorBaseVisitor::visitEvent_Single(ctx);
+}
+
+antlrcpp::Any
+Behaviors::BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingContext* ctx) {
+  std::string      eventName = ctx->EVENT()->toString();
+  Behaviors::Event event(eventName);
+
+  spdlog::debug("Behavior \"{}\": Adding Event: \"{}\"", currentBehavior.getName(), eventName);
+  eventsMap[eventName] = &event;
+
+  auto startCtx = ctx->condition()[0];
+  auto startCond = buildCondition(startCtx);
+  auto endCtx = ctx->condition()[1];
+  auto endCond = buildCondition(endCtx);
+
+  event.setStartCondition(std::move(startCond));
+  event.setEndCondition(std::move(endCond));
+
+  eventsMap[eventName] = currentBehavior.addEvent(std::move(event));
+
+  return BehaviorBaseVisitor::visitEvent_Lasting(ctx);
+}
+
+// ------------------------------- END EVENTS -----------------------------------------------------------------------------------------
+
 // ------------------------------- SELECTORS -----------------------------------------------------------------------------------------
 
 antlrcpp::Any
-BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) {
+Behaviors::BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) {
   return BehaviorBaseVisitor::visitPed_Selector(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitSelector_Percent(BehaviorParser::Selector_PercentContext* ctx) {
+Behaviors::BehaviorBuilder::visitSelector_Percent(BehaviorParser::Selector_PercentContext* ctx) {
 
   spdlog::debug("Behavior \"{}\": Adding Selector: \"Percent\"", currentBehavior.getName());
   const float percent = std::stof(ctx->NUMBER()->toString());
@@ -212,7 +315,7 @@ BehaviorBuilder::visitSelector_Percent(BehaviorParser::Selector_PercentContext* 
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly_N_RandomContext* ctx) {
+Behaviors::BehaviorBuilder::visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly_N_RandomContext* ctx) {
 
   spdlog::debug("Behavior \"{}\": Adding Selector: \"Exactly N\"", currentBehavior.getName());
   const VIPRA::size N = static_cast<VIPRA::size>(std::stoi(ctx->NUMBER()->toString()));
@@ -222,7 +325,7 @@ BehaviorBuilder::visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext* ctx) {
+Behaviors::BehaviorBuilder::visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext* ctx) {
 
   spdlog::debug("Behavior \"{}\": Adding Selector: \"Everyone\"");
   currentBehavior.addSelector<Selector_Everyone>();
@@ -235,7 +338,7 @@ BehaviorBuilder::visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext
 // ------------------------------- ACTIONS -----------------------------------------------------------------------------------------
 
 antlrcpp::Any
-BehaviorBuilder::visitConditional_action(BehaviorParser::Conditional_actionContext* ctx) {
+Behaviors::BehaviorBuilder::visitConditional_action(BehaviorParser::Conditional_actionContext* ctx) {
 
   const auto& atoms = ctx->sub_action()->action_atom();
   Action      action;
@@ -252,7 +355,7 @@ BehaviorBuilder::visitConditional_action(BehaviorParser::Conditional_actionConte
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext* ctx) {
+Behaviors::BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext* ctx) {
 
   const auto& atoms = ctx->sub_action()->action_atom();
   Action      action;
@@ -271,22 +374,22 @@ BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_conditional_actio
 // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
 
 antlrcpp::Any
-BehaviorBuilder::visitDecl_Ped(BehaviorParser::Decl_PedContext* ctx) {
+Behaviors::BehaviorBuilder::visitDecl_Ped(BehaviorParser::Decl_PedContext* ctx) {
   return BehaviorBaseVisitor::visitDecl_Ped(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) {
+Behaviors::BehaviorBuilder::visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) {
   return BehaviorBaseVisitor::visitDecl_Ped_State(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx) {
+Behaviors::BehaviorBuilder::visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx) {
   return BehaviorBaseVisitor::visitDecl_Env_State(ctx);
 }
 
 antlrcpp::Any
-BehaviorBuilder::visitDecl_Parameters(BehaviorParser::Decl_ParametersContext* ctx) {
+Behaviors::BehaviorBuilder::visitDecl_Parameters(BehaviorParser::Decl_ParametersContext* ctx) {
 
   const auto& params = ctx->PARAMETER();
 

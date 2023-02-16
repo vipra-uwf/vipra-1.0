@@ -4,6 +4,7 @@
 #include "definitions/type_definitions.hpp"
 #include "selector.hpp"
 
+namespace Behaviors {
 /**
  * Select every pedestrian for this behavior
  */
@@ -19,5 +20,6 @@ class Selector_Everyone : public Selector {
  private:
   std::vector<VIPRA::idx> selectedPeds;
 };
+}  // namespace Behaviors
 
 #endif

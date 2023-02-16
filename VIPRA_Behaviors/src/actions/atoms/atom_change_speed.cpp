@@ -1,6 +1,7 @@
 
 #include "actions/atoms/atom_change_speed.hpp"
 
+namespace Behaviors {
 ChangeSpeedParams
 getChangeSpeedParams(BehaviorParser::Action_atomContext* atom) {
   float change = std::stof(atom->action_atom_Percent_Walk_Speed()->NUMBER()->toString());
@@ -11,12 +12,12 @@ getChangeSpeedParams(BehaviorParser::Action_atomContext* atom) {
 Atom_Change_Speed::Atom_Change_Speed(float percent, bool faster) : change(percent), faster(faster) {}
 
 void
-Atom_Change_Speed::performAction(const PedestrianSet&          pedestrianSet,
-                                 const ObstacleSet&            obstacleSet,
-                                 const Goals&                  goals,
-                                 const BehaviorContext&        context,
-                                 VIPRA::idx                    pedIndex,
-                                 VIPRA::delta_t                time,
+Atom_Change_Speed::performAction(const PedestrianSet& pedestrianSet,
+                                 const ObstacleSet&,
+                                 const Goals&,
+                                 const BehaviorContext&,
+                                 VIPRA::idx pedIndex,
+                                 VIPRA::delta_t,
                                  std::shared_ptr<VIPRA::State> state) {
 
   VIPRA::f3d originalPos = pedestrianSet.getPedCoords(pedIndex);
@@ -33,3 +34,4 @@ Atom_Change_Speed::computeAlteredDimensions(VIPRA::f3d originalDimensions) {
     return originalDimensions - diff;
   }
 }
+}  // namespace Behaviors

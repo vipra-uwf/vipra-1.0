@@ -14,6 +14,7 @@
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 
+namespace Behaviors {
 class Condition {
  public:
   Condition(const Condition&) = delete;
@@ -31,6 +32,7 @@ class Condition {
     auto iter = CondMap.find(condName);
     if (iter == CondMap.end()) {
       spdlog::error("Invalid SubCondition: {}", condName);
+      exit(1);
       return;
     }
 
@@ -46,5 +48,6 @@ class Condition {
   std::vector<bool>                          operations;
   std::vector<std::unique_ptr<SubCondition>> conditions;
 };
+}  // namespace Behaviors
 
 #endif

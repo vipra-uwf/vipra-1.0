@@ -4,6 +4,7 @@
 #include "actions/action_atom.hpp"
 #include "generated/BehaviorParser.h"
 
+namespace Behaviors {
 struct ChangeSpeedParams {
   float change;
   bool  faster;
@@ -30,5 +31,6 @@ class Atom_Change_Speed : public Atom {
   float change;
   bool  faster;
 };
+}  // namespace Behaviors
 
 #endif
