@@ -5,18 +5,17 @@
 #include <events/event.hpp>
 
 namespace Behaviors {
-class SubCondition_Event : public SubCondition {
+class SubCondition_Event_Occurred : public SubCondition {
  public:
-  SubCondition_Event() = delete;
+  SubCondition_Event_Occurred() = delete;
 
-  SubCondition_Event(Event*);
+  SubCondition_Event_Occurred(Event*);
 
   bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx, VIPRA::delta_t)
       override;
 
  private:
-  bool started;
-  bool returned;
+  bool occurred;
 };
 }  // namespace Behaviors
 

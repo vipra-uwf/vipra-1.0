@@ -54,7 +54,7 @@ Event::getName() const {
 // ---------------------------------- CONSTRUCTORS -----------------------------------------------------------
 
 Event::Event(std::string evName)
-  : name(evName), occurring(), startCondition(), endCondition(), startHandlers(), endHandlers() {}
+  : name(evName), occurring(false), startCondition(), endCondition(), startHandlers(), endHandlers() {}
 
 Event::Event(Event&& other) noexcept
   : name(std::move(other.name)), occurring(other.occurring), startCondition(std::move(other.startCondition)),

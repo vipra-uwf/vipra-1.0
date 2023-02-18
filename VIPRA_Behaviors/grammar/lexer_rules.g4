@@ -58,4 +58,4 @@ PARAMETERS:
   ;
 
 FASTERorSLOWER:
-  (F'aster' | S'lower');
+  F A S T E R WS | S L O W E R WS;

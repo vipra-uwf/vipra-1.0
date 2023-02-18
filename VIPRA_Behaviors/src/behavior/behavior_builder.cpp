@@ -19,11 +19,6 @@ namespace Behaviors {
 Condition startCond;
 Event     startEvent("!start");
 
-BehaviorBuilder::BehaviorBuilder() {
-  startCond.addSubCondition("start");
-  startEvent.setStartCondition(std::move(startCond));
-}
-
 /**
  * @brief Parses the behavior file at filepath, returns the behavior it describes
  * 
@@ -36,7 +31,7 @@ HumanBehavior&&
 BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& filepath, Behaviors::seed seedNum) {
 
   if (behaviorName[0] == '#') {
-    spdlog::info("Loading Mock Behavior: {}", behaviorName);
+    spdlog::debug("Loading Mock Behavior: {}", behaviorName);
     return MockBehaviorBuilder::buildMockBehavior(behaviorName, seedNum);
   }
 
@@ -45,7 +40,7 @@ BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fi
     exit(1);
   }
 
-  spdlog::info("Loading Behavior: {} at {}", behaviorName, std::filesystem::canonical(filepath).c_str());
+  spdlog::debug("Loading Behavior: {} at {}", behaviorName, std::filesystem::canonical(filepath).c_str());
   initialBehaviorSetup(behaviorName, seedNum);
 
   std::ifstream dslFile(filepath);
@@ -80,9 +75,12 @@ void
 BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, Behaviors::seed seedNum) {
   states.clear();
   eventsMap.clear();
-  eventsMap["!start"] = &startEvent;
+  startEvent = Event("!start");
+  startCond.addSubCondition("start");
+  startEvent.setStartCondition(std::move(startCond));
   currState = 1;
   currentBehavior = HumanBehavior(behaviorName);
+  eventsMap["!start"] = currentBehavior.addEvent(std::move(startEvent));
   seed = seedNum;
 }
 
@@ -110,6 +108,11 @@ BehaviorBuilder::getState(const std::string& state) {
 Condition
 BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond) {
   Condition condition;
+
+  if (cond == nullptr) {
+    condition.addSubCondition("start");
+    return condition;
+  }
 
   const auto subConds = cond->sub_condition();
   std::for_each(subConds.begin(), subConds.end(), [&](BehaviorParser::Sub_conditionContext* subcond) {
@@ -141,23 +144,23 @@ BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_
   }
 
   if (subcond->condition_Time_Elapsed_From_Event()) {
-    spdlog::debug("Behavior \"{}\": Adding SubCondition: Elapsed Time", currentBehavior.getName());
     VIPRA::delta_t time = std::stof(subcond->condition_Time_Elapsed_From_Event()->NUMBER()->toString());
     std::string    evName = subcond->condition_Time_Elapsed_From_Event()->EVENT()->toString();
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Elapsed Time From \"{}\" Event", currentBehavior.getName(), evName);
     condition.addSubCondition("elapsed_time_from_event", time, getEvent(evName));
     return;
   }
 
   if (subcond->condition_Event()) {
-    spdlog::debug("Behavior \"{}\": Adding SubCondition: Event", currentBehavior.getName());
     std::string evName = subcond->condition_Event()->EVENT()->toString();
-    condition.addSubCondition("event", getEvent(evName));
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Event \"{}\" Occurred", currentBehavior.getName(), evName);
+    condition.addSubCondition("event_occurred", getEvent(evName));
     return;
   }
 
   if (subcond->condition_Event_Occurring()) {
-    spdlog::debug("Behavior \"{}\": Adding SubCondition: Event Occurring", currentBehavior.getName());
     std::string evName = subcond->condition_Event_Occurring()->EVENT()->toString();
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Event \"{}\" Occurring", currentBehavior.getName(), evName);
     condition.addSubCondition("event_occurring", getEvent(evName));
     return;
   }
@@ -271,24 +274,48 @@ Behaviors::BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) {
 
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleContext* ctx) {
+
+  std::string eventName = ctx->EVENT()->toString();
+
+  if (eventsMap.find(eventName) != eventsMap.end()) {
+    spdlog::error("Behavior \"{}\": Attempt To Redefine Event: \"{}\"", eventName);
+    exit(1);
+  }
+
+  Behaviors::Event event(eventName);
+
+  spdlog::debug("Behavior \"{}\": Adding Single Fire Event: \"{}\"", currentBehavior.getName(), eventName);
+  eventsMap[eventName] = &event;
+
+  auto startCtx = ctx->condition();
+
+  event.setStartCondition(buildCondition(startCtx));
+  event.setEndCondition(buildCondition(nullptr));
+
+  eventsMap[eventName] = currentBehavior.addEvent(std::move(event));
+
   return BehaviorBaseVisitor::visitEvent_Single(ctx);
 }
 
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingContext* ctx) {
-  std::string      eventName = ctx->EVENT()->toString();
+  std::string eventName = ctx->EVENT()->toString();
+
+  if (eventsMap.find(eventName) != eventsMap.end()) {
+    spdlog::error("Behavior \"{}\": Attempt To Redefine Event: \"{}\"", eventName);
+    exit(1);
+  }
+
   Behaviors::Event event(eventName);
 
-  spdlog::debug("Behavior \"{}\": Adding Event: \"{}\"", currentBehavior.getName(), eventName);
+  spdlog::debug("Behavior \"{}\": Adding Lasting Event: \"{}\"", currentBehavior.getName(), eventName);
   eventsMap[eventName] = &event;
 
   auto startCtx = ctx->condition()[0];
-  auto startCond = buildCondition(startCtx);
   auto endCtx = ctx->condition()[1];
-  auto endCond = buildCondition(endCtx);
 
-  event.setStartCondition(std::move(startCond));
-  event.setEndCondition(std::move(endCond));
+  event.setStartCondition(buildCondition(startCtx));
+  event.setEndCondition(buildCondition(endCtx));
 
   eventsMap[eventName] = currentBehavior.addEvent(std::move(event));
 
@@ -327,7 +354,7 @@ Behaviors::BehaviorBuilder::visitSelector_Exactly_N_Random(BehaviorParser::Selec
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext* ctx) {
 
-  spdlog::debug("Behavior \"{}\": Adding Selector: \"Everyone\"");
+  spdlog::debug("Behavior \"{}\": Adding Selector: \"Everyone\"", currentBehavior.getName());
   currentBehavior.addSelector<Selector_Everyone>();
 
   return BehaviorBaseVisitor::visitSelector_Everyone(ctx);

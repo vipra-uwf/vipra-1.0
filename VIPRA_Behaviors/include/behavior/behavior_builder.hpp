@@ -36,8 +36,6 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   void   addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
 
  public:
-  BehaviorBuilder();
-
   HumanBehavior&& build(std::string, const std::filesystem::path&, Behaviors::seed);
 
   Behaviors::stateUID getState(const std::string&);
