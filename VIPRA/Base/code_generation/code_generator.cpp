@@ -42,7 +42,8 @@ const std::unordered_map<std::string, std::string> TYPES{{"pedestrian_dynamics_m
                                                          {"policy_model", "PolicyModel"},
                                                          {"map_loader", "MapLoader"},
                                                          {"pedestrian_loader", "PedestrianLoader"},
-                                                         {"human_behavior_model", "HumanBehaviorModel"}};
+                                                         {"human_behavior_model", "HumanBehaviorModel"},
+                                                         {"configuration_writer", "PedestrianConfigWriter"}};
 
 int
 main(int argc, char const* argv[]) {
@@ -196,10 +197,11 @@ generateMain() {
 
 std::string
 initializeModules() {
+  //Call config writer before pedestrian loader
   return Log("Initializing Map Loader") + "\n\tmap_loader->initialize();\n\t" + Log("Loading Map") +
          "\n\tauto map = map_loader->LoadMap(obstacleFile);\n\t" + Log("Initializing Obstacle Set") +
-         "\n\tobstacle_set->initialize(std::move(map));\n\t" + Log("Loading Pedestrians") +
-         "\n\tauto peds = pedestrian_loader->LoadPedestrians(pedestrianFile);\n\t" + Log("Initializing Pedestrian Set") +
+         "\n\tobstacle_set->initialize(std::move(map));\n\t" + Log("Writing Pedestrian Config And Loading Pedestrians") +
+         "\n\tauto peds = pedestrian_loader->LoadPedestrians(configuration_writer->buildPedestrians(pedestrianFile));\n\t" + Log("Initializing Pedestrian Set") +
          "\n\tpedestrian_set->initialize(std::move(peds));\n\t" + Log("Initializing Goals") +
          "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" + Log("Initializing Pedestrian Dynamics Model") +
          "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +

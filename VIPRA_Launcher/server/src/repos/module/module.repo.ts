@@ -26,6 +26,7 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
       pedestrian_set: [],
       obstacle_set: [],
       human_behavior_model: [],
+      configuration_writer: [],
       configuration_reader: [],
       clock: [],
       simulation: [],

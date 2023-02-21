@@ -8,6 +8,7 @@ export enum ModuleType {
   PEDESTRIAN_SET          = 'pedestrian_set',
   OBSTACLE_SET            = 'obstacle_set',
   HUMAN_BEHAVIOR_MODEL    = 'human_behavior_model',
+  CONFIGURATION_WRITER    = 'configuration_writer',
   CONFIGURATION_READER    = 'configuration_reader',
   CLOCK                   = 'clock',
   SIMULATION              = 'simulation',

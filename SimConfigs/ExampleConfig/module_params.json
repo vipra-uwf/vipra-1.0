@@ -10,6 +10,10 @@
     "simulation_output_handler": {
         "outputFrequency": 100
     },
+    "configuration_writer": {
+        "desiredSpeedMin": 0.80,
+        "desiredSpeedMax": 1.20
+    },
     "pedestrian_set": {},
     "obstacle_set": {
         "obstacleCollisionDistance": 0.05

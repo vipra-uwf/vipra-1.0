@@ -374,6 +374,7 @@ export class SimulationBuilder {
       pedestrian_set: 0, 
       obstacle_set: 0, 
       human_behavior_model: 0,
+      configuration_writer: 0,
       configuration_reader: 0, 
       clock: 0, 
       simulation : 0, 
