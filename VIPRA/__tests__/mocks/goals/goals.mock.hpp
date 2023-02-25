@@ -14,8 +14,8 @@ class GoalsMock : public Goals {
   MOCK_METHOD(void, updatePedestrianGoals, (const ObstacleSet&, const PedestrianSet&, VIPRA::delta_t), (override));
   MOCK_METHOD(bool, isPedestianGoalMet, (VIPRA::idx), (const, override));
   MOCK_METHOD(bool, isSimulationGoalMet, (), (const, override));
-  MOCK_METHOD(VIPRA::f3d&, getCurrentGoal, (VIPRA::idx), (const, override));
-  MOCK_METHOD(VIPRA::f3d&, getEndGoal, (VIPRA::idx), (const, override));
+  MOCK_METHOD(VIPRA::f3d, getCurrentGoal, (VIPRA::idx), (const, override));
+  MOCK_METHOD(VIPRA::f3d, getEndGoal, (VIPRA::idx), (const, override));
   MOCK_METHOD(VIPRA::f3dVec&, getAllCurrentGoals, (), (const, override));
   MOCK_METHOD(VIPRA::f3dVec&, getAllEndGoals, (), (const, override));
   MOCK_METHOD(VIPRA::delta_t, timeSinceLastGoal, (VIPRA::idx), (const, override));

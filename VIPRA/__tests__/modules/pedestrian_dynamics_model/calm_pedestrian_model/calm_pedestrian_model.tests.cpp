@@ -9,7 +9,8 @@
 
 class CalmTester : private CalmPedestrianModel {
  public:
-  CalmTester() : CalmPedestrianModel() {}
+  ~CalmTester() = default;
+  CalmTester() = default;
 
   bool Test_objectDirectionTest(const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity, const VIPRA::f3d& objCoords) {
     return CalmPedestrianModel::objectDirectionTest(pedCoords, pedVelocity, objCoords);

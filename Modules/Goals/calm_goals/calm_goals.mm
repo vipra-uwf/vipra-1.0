@@ -26,6 +26,12 @@
             "type": "string",
             "description": "Which Pathfinding Method to use, currently (Astar, Disembark)",
             "multiple": false
+        },
+        {
+            "name": "quadSize",
+            "type": "float",
+            "description": "Minimum Size for quad tree quads",
+            "multiple": false
         }
     ],
     "className": "CalmGoals",

@@ -1,7 +1,7 @@
 
+#include <iostream>
 
 #include "calm_goals.hpp"
-#include "pathfinding.hpp"
 
 void
 CalmGoals::configure(const VIPRA::Config::Map& configMap) {
@@ -9,6 +9,7 @@ CalmGoals::configure(const VIPRA::Config::Map& configMap) {
   goalRange = configMap["goalRange"].asFloat();
   endGoalType = configMap["endGoalType"].asString();
   pathingType = configMap["pathFinding"].asString();
+  quadSize = configMap["quadSize"].asFloat();
   diagonalCost = configMap["diagonalCost"].asFloat();
   spdlog::info("CalmGoals: Done Configuring Calm Goals");
 }
@@ -22,20 +23,23 @@ CalmGoals::configure(const VIPRA::Config::Map& configMap) {
 void
 CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   VIPRA::size pedCnt = pedSet.getNumPedestrians();
+
   currentGoals = VIPRA::f3dVec(pedCnt);
   endGoals = VIPRA::f3dVec(pedCnt, VIPRA::f3d{-1, -1});
   goalsMet = std::vector<bool>(pedCnt, false);
   paths = std::vector<std::queue<VIPRA::f3d>>(pedCnt);
   lastGoalTimes = std::vector<VIPRA::delta_t>(pedCnt, -std::numeric_limits<VIPRA::delta_t>::max());
+
   spdlog::debug("CalmGoals: Finding Nearest End Goal");
   findNearestEndGoal(obsSet, pedSet);
 
   if (pathingType == "Astar") {
     spdlog::debug("CalmGoals: Building Pathing Graph");
-    graph.buildGraph(obsSet);
+    graph.build(obsSet, quadSize);
   }
   spdlog::debug("CalmGoals: Initializing Paths");
   initializePaths(pedSet, obsSet);
+
   spdlog::debug("CalmGoals: Finished Initializing");
 }
 
@@ -56,7 +60,6 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
     } else if (pathingType == "Disembark") {
       spdlog::debug("CalmGoals: Finding Disembark Path for Ped: {}", i);
       paths[i] = disembarkPath(coords.at(i), obsSet);
-      spdlog::debug("CalmGoals: Found Disembark Path for Ped: {}", i);
     }
     currentGoals[i] = paths[i].front();
   }
@@ -110,11 +113,9 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
 
   if (objectives.size() == 1) {
     spdlog::debug("CalmGoals: Only One Objective of Type: {}, Filling Goals", endGoalType);
-    // if only one objective, set every end goal as that
     std::fill(endGoals.begin(), endGoals.end(), std::ref(objectives.at(0)));
     spdlog::debug("CalmGoals: Filled Goals");
   } else {
-    // otherwise, for each ped coord set the end goal as the nearest objective
     std::transform(coords.begin(), coords.end(), endGoals.begin(), [&](const VIPRA::f3d& coord) {
       VIPRA::f3d goal;
       float      shortest = std::numeric_limits<float>::max();
@@ -165,12 +166,12 @@ CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet,
 }
 
 /**
- * @brief returns the current goal for the pedestrian at index, returns uninitialized VIPRA::f3d if no current goal
+ * @brief returns the current goal for the pedestrian at index, returns VIPRA::__emptyf3d__ if no current goal
  * 
  * @param index 
  * @return const VIPRA::f3d 
  */
-const VIPRA::f3d&
+VIPRA::f3d
 CalmGoals::getCurrentGoal(VIPRA::idx index) const {
   if (paths[index].empty()) {
     return VIPRA::__emptyf3d__;
@@ -184,7 +185,7 @@ CalmGoals::getCurrentGoal(VIPRA::idx index) const {
  * @param index 
  * @return const VIPRA::f3d 
  */
-const VIPRA::f3d&
+VIPRA::f3d
 CalmGoals::getEndGoal(VIPRA::idx index) const {
   return endGoals.at(index);
 }

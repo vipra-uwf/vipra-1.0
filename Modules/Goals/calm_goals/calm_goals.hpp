@@ -6,7 +6,7 @@
 #include <queue>
 
 #include "goals/goals.hpp"
-#include "pathfinding.hpp"
+#include "pathfinding/pathfinding.hpp"
 #include <spdlog/spdlog.h>
 
 class CalmGoals : public Goals {
@@ -17,8 +17,8 @@ class CalmGoals : public Goals {
 
   void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&, VIPRA::delta_t) override;
 
-  [[nodiscard]] const VIPRA::f3d& getCurrentGoal(VIPRA::idx) const override;
-  [[nodiscard]] const VIPRA::f3d& getEndGoal(VIPRA::idx) const override;
+  [[nodiscard]] VIPRA::f3d getCurrentGoal(VIPRA::idx) const override;
+  [[nodiscard]] VIPRA::f3d getEndGoal(VIPRA::idx) const override;
 
   [[nodiscard]] const VIPRA::f3dVec& getAllCurrentGoals() const noexcept override;
   [[nodiscard]] const VIPRA::f3dVec& getAllEndGoals() const noexcept override;
@@ -29,8 +29,10 @@ class CalmGoals : public Goals {
   [[nodiscard]] VIPRA::delta_t timeSinceLastGoal(VIPRA::idx) const override;
 
  protected:
-  float       goalRange;
-  float       diagonalCost;
+  float goalRange;
+  float diagonalCost;
+  float quadSize;
+
   std::string endGoalType;
   std::string pathingType;
 
@@ -39,7 +41,7 @@ class CalmGoals : public Goals {
 
   std::vector<VIPRA::delta_t>         lastGoalTimes;
   std::vector<bool>                   goalsMet;
-  CalmPath::Graph                     graph;
+  CalmPath::QuadTree                  graph;
   std::vector<std::queue<VIPRA::f3d>> paths;
 
   void                                 initializePaths(const PedestrianSet&, const ObstacleSet&);

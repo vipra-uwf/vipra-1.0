@@ -6,6 +6,8 @@ file(
   *.hpp
   */*.cpp
   */*.hpp
+  */*/*.cpp
+  */*/*.hpp
 )
 
 target_sources(

@@ -2,9 +2,7 @@
     "input_data_loader": {},
     "human_behavior_model": {
         "seed": 123456,
-        "behaviors": [
-            "important_announcement"
-        ]
+        "behaviors": []
     },
     "output_data_writer": {},
     "simulation_output_handler": {
@@ -20,10 +18,11 @@
     },
     "entity_set_factory": {},
     "goals": {
-        "pathFinding": "Disembark",
+        "pathFinding": "Astar",
         "diagonalCost": 2.0,
         "endGoalType": "exit",
-        "goalRange": 0.3
+        "quadSize": 0.05,
+        "goalRange": 0.1
     },
     "pedestrian_dynamics_model": {},
     "configuration_reader": {},

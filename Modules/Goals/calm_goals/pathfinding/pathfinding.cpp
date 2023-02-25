@@ -1,17 +1,9 @@
-#ifndef CALM_GOALS_PATHFINDING_HPP
-#define CALM_GOALS_PATHFINDING_HPP
-
-#include <algorithm>
-#include <iostream>
-#include <optional>
-#include <queue>
-#include <vector>
-
-#include "adjacencyGraph.hpp"
-
 #include <spdlog/spdlog.h>
 
+#include "pathfinding.hpp"
+
 namespace CalmPath {
+
 struct AQuad {
   Quad*  node;
   AQuad* parent = nullptr;
@@ -24,36 +16,33 @@ class QuadCompare {
   bool operator()(AQuad* first, AQuad* second) { return first->f > second->f; }
 };
 
-/**
- * @brief priority queue with custom search function
- */
 struct pQueue : public std::priority_queue<AQuad*, std::vector<AQuad*>, QuadCompare> {
-
   pQueue() : std::priority_queue<AQuad*, std::vector<AQuad*>, QuadCompare>() {}
-
-  std::optional<AQuad*> search(AQuad* node) {
-    auto a = std::find_if(c.begin(), c.end(), [&](AQuad* n) { return node->node == n->node; });
-    if (a == c.end()) {
-      return std::nullopt;
-    } else {
-      return std::optional<AQuad*>{*a};
-    }
-  }
+  std::optional<AQuad*> search(AQuad* node);
 };
 
-inline AQuad*
-makeQuad(Quad* node, AQuad* parent, float g, float f, std::vector<AQuad*>& allocator) {
-  allocator.emplace_back(new AQuad{node, parent, g, f});
-  return allocator.at(allocator.size() - 1);
+std::optional<AQuad*>
+pQueue::search(AQuad* node) {
+  auto a = std::find_if(c.begin(), c.end(), [&](AQuad* n) { return node->node == n->node; });
+  if (a == c.end()) {
+    return std::nullopt;
+  } else {
+    return std::optional<AQuad*>{*a};
+  }
 }
 
-/**
- * @brief
- *
- * @param first
- * @param second
- * @return float
- */
+inline std::queue<VIPRA::f3d>
+constructPath(VIPRA::f3d goal, AQuad* end) {
+  std::queue<VIPRA::f3d> path;
+  AQuad*                 iter = end->parent;
+  while (iter != nullptr) {
+    path.push(iter->node->center);
+    iter = iter->parent;
+  }
+  path.push(goal);
+  return path;
+}
+
 inline float
 cost(Quad* first, Quad* goal, float diagonalCost) {
   float dx = first->center.x - goal->center.x;
@@ -63,29 +52,14 @@ cost(Quad* first, Quad* goal, float diagonalCost) {
   return (diagonalCost * d_min) + (d_max - d_min);
 }
 
-inline std::queue<VIPRA::f3d>
-constructPath(VIPRA::f3d goal, AQuad* end) {
-  // create queue by traversing the path, add the start and end, return
-  std::queue<VIPRA::f3d> path;
-  AQuad*                 iter = end;
-  while (iter != nullptr) {
-    path.push(iter->node->center);
-    iter = iter->parent;
-  }
-  path.push(goal);
-  return path;
+inline AQuad*
+makeQuad(Quad* node, AQuad* parent, float g, float f, std::vector<AQuad*>& allocator) {
+  allocator.emplace_back(new AQuad{node, parent, g, f});
+  return allocator.at(allocator.size() - 1);
 }
 
-/**
- * @brief Finds the path for a given start and end node, using A*
- *
- * @param start
- * @param end
- * @param graph
- * @return std::queue<VIPRA::f3d>
- */
-inline std::queue<VIPRA::f3d>
-pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& graph, float diagonalCost) {
+std::queue<VIPRA::f3d>
+pathFind(VIPRA::f3d start, VIPRA::f3d end, const QuadTree& graph, float diagonalCost) {
 
   // find grid Quads the start and end reside in (flipped since the path is
   // created in reverse)
@@ -146,6 +120,4 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, const Graph& graph, float diagonalCos
   spdlog::warn("Calm_Goals: No Path Found for Pedestrian at position: x:{}, y:{}, z:{}", start.x, start.y, start.z);
   return std::queue<VIPRA::f3d>{};
 }
-
 }  // namespace CalmPath
-#endif

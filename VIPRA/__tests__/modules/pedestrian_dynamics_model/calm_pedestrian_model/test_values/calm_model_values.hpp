@@ -1,6 +1,7 @@
 #pragma once
 
-#include "./../../../Base/definitions/type_definitions.hpp"
+#include <definitions/config_map.hpp>
+#include <definitions/entitySet.hpp>
 
 const VIPRA::EntitySet CALM_PEDESTRIAN_VIPRA_EntitySet = {
     {"pedestrians",
@@ -41,5 +42,5 @@ const VIPRA::EntitySet CALM_PEDESTRIAN_VIPRA_EntitySet = {
       VIPRA::f3d{20.58, 2.52},     VIPRA::f3d{21.719999, 2.52}, VIPRA::f3d{19.43, 0.41},     VIPRA::f3d{20.58, 0.41},
       VIPRA::f3d{21.719999, 0.41}, VIPRA::f3d{19.43, 0.94},     VIPRA::f3d{20.58, 0.94},     VIPRA::f3d{21.719999, 0.94}}}};
 
-const VIPRA::Config::Map CALM_PEDESTRIAN_VIPRA_ConfigMap =
-    std::string("\"mass\": \"1.000000\",\"reaction_time\": \"0.400000\",\"desired_speed\": \"1.000000\"");
+const VIPRA::Config::Map CALM_PEDESTRIAN_VIPRA_ConfigMap;
+// =    std::string("\"mass\": \"1.000000\",\"reaction_time\": \"0.400000\",\"desired_speed\": \"1.000000\"");
