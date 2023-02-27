@@ -30,7 +30,6 @@ class CalmGoals : public Goals {
 
  protected:
   float goalRange;
-  float diagonalCost;
   float quadSize;
 
   std::string endGoalType;

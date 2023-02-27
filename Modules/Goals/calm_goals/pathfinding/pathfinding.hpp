@@ -9,7 +9,7 @@
 
 namespace CalmPath {
 
-std::queue<VIPRA::f3d> pathFind(VIPRA::f3d start, VIPRA::f3d end, const QuadTree&, float diagCost);
+std::queue<VIPRA::f3d> pathFind(VIPRA::f3d start, VIPRA::f3d end, const QuadTree&);
 
 }  // namespace CalmPath
 

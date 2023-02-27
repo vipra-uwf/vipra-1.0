@@ -27,7 +27,7 @@ TEST(Calm_Goals_Pathfinding, Pathfinding) {
 
   std::cerr << "{ \"Paths\": [";
   for (const auto& coords : all_peds) {
-    auto t = CalmPath::pathFind(coords, goodmap_exits[0], test, 5.0);
+    auto t = CalmPath::pathFind(coords, goodmap_exits[0], test);
     std::cerr << "{ \"points\": [";
     while (!t.empty()) {
       auto coord = t.front();

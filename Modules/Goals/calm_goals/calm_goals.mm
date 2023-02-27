@@ -10,12 +10,6 @@
             "multiple": false
         },
         {
-            "name": "diagonalCost",
-            "type": "float",
-            "description": "Multiplier For Diagonal Movement Cost",
-            "multiple": false
-        },
-        {
             "name": "goalRange",
             "type": "float",
             "description": "Range from a goal a pedestrian needs to reach before considered reaching a goal",

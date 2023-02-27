@@ -10,7 +10,6 @@ CalmGoals::configure(const VIPRA::Config::Map& configMap) {
   endGoalType = configMap["endGoalType"].asString();
   pathingType = configMap["pathFinding"].asString();
   quadSize = configMap["quadSize"].asFloat();
-  diagonalCost = configMap["diagonalCost"].asFloat();
   spdlog::info("CalmGoals: Done Configuring Calm Goals");
 }
 
@@ -56,7 +55,7 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     if (pathingType == "Astar") {
       spdlog::debug("CalmGoals: Finding AStar Path for Ped: {}", i);
-      paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph, diagonalCost);
+      paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph);
     } else if (pathingType == "Disembark") {
       spdlog::debug("CalmGoals: Finding Disembark Path for Ped: {}", i);
       paths[i] = disembarkPath(coords.at(i), obsSet);

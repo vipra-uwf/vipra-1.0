@@ -44,12 +44,25 @@ constructPath(VIPRA::f3d goal, AQuad* end) {
 }
 
 inline float
-cost(Quad* first, Quad* goal, float diagonalCost) {
+diagonality(float d_min, float d_max) {
+  if (d_max == 0) {
+    return 0;
+  }
+  float rr = (std::abs(d_min) / std::abs(d_max)) - 0.5;
+  float diag = (-5 * (rr * rr)) + 1;
+  if (diag < 0) {
+    diag = 0;
+  }
+  return diag;
+}
+
+inline float
+cost(Quad* first, Quad* goal) {
   float dx = first->center.x - goal->center.x;
   float dy = first->center.y - goal->center.y;
   float d_max = (dx > dy ? dx : dy);
   float d_min = (dx < dy ? dx : dy);
-  return (diagonalCost * d_min) + (d_max - d_min);
+  return d_max - d_min;
 }
 
 inline AQuad*
@@ -59,7 +72,7 @@ makeQuad(Quad* node, AQuad* parent, float g, float f, std::vector<AQuad*>& alloc
 }
 
 std::queue<VIPRA::f3d>
-pathFind(VIPRA::f3d start, VIPRA::f3d end, const QuadTree& graph, float diagonalCost) {
+pathFind(VIPRA::f3d start, VIPRA::f3d end, const QuadTree& graph) {
 
   // find grid Quads the start and end reside in (flipped since the path is
   // created in reverse)
@@ -72,7 +85,7 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, const QuadTree& graph, float diagonal
   std::vector<AQuad*> closed_list{};
 
   // add start first node to "open list"
-  open_list.emplace(makeQuad(first, nullptr, 0, cost(first, last, diagonalCost), allocList));
+  open_list.emplace(makeQuad(first, nullptr, 0, cost(first, last), allocList));
 
   AQuad* curr = nullptr;
 
@@ -96,7 +109,7 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, const QuadTree& graph, float diagonal
       if (!std::any_of(closed_list.begin(), closed_list.end(), [&](AQuad* n) { return n->node == neighbor; })) {
         // if the neighbor hasn't been visited yet, calculate it's cost
         float  g = curr->g + neighbor->center.distanceTo(curr->node->center);
-        float  f = g + cost(neighbor, last, diagonalCost);
+        float  f = g + cost(neighbor, last);
         AQuad* neighborQuad = makeQuad(neighbor, curr, g, f, allocList);
 
         auto found = open_list.search(neighborQuad);
