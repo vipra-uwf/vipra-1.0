@@ -5,7 +5,6 @@
 
 #include "test_values/test_values.hpp"
 
-#include "Goals/calm_goals/pathfinding/quadTree.hpp"
 #include "MapLoader/Point_Map_Loader/point_map_loader.hpp"
 #include "ObstacleSet/passenger_vehicle_obstacle_set/passenger_vehicle_obstacle_set.hpp"
 

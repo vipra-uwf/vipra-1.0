@@ -5,8 +5,6 @@
 #include <queue>
 
 #include "pathing_graph.hpp"
-#include "quad.hpp"
-#include "quadTree.hpp"
 
 namespace CalmPath {
 
