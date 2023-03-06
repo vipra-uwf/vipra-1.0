@@ -11,13 +11,14 @@ struct Quad {
   VIPRA::f3d         center;
   float              size;
   bool               traversable;
+  bool               buffer;
   Quad*              topleft;
   Quad*              topright;
   Quad*              botleft;
   Quad*              botright;
   std::vector<Quad*> adj;
-  Quad(VIPRA::f3d middle, float sz, bool travable, Quad* tl, Quad* tr, Quad* bl, Quad* br)
-    : center(middle), size(sz), traversable(travable), topleft(tl), topright(tr), botleft(bl), botright(br) {}
+  Quad(VIPRA::f3d middle, float sz, bool travable, bool buff, Quad* tl, Quad* tr, Quad* bl, Quad* br)
+    : center(middle), size(sz), traversable(travable), buffer(buff), topleft(tl), topright(tr), botleft(bl), botright(br) {}
 };
 }  // namespace CalmPath
 

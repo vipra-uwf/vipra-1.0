@@ -12,16 +12,16 @@ class QuadTree {
   ~QuadTree();
 
   Quad* search(VIPRA::f3d) const;
-  void  build(const ObstacleSet&, float quadSize);
-  Quad* constructQuad(const ObstacleSet& obsSet, VIPRA::f3d center, float size, float minSize);
+  void  build(const ObstacleSet&, float quadSize, float closestObs);
 
   std::string toString() const;
 
  private:
   Quad* root = nullptr;
 
-  void buildAdjacencies(Quad*);
-  void getAdjacencies(Quad*, Quad*);
+  Quad* constructQuad(const ObstacleSet& obsSet, VIPRA::f3d center, float size, float minSize, float closestObs);
+  void  buildAdjacencies(Quad*);
+  void  getAdjacencies(Quad*, Quad*);
 
   void clean(Quad*);
   bool inside(VIPRA::f3d point, VIPRA::f3d center, float size) const;

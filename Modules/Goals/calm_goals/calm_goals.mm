@@ -26,6 +26,11 @@
             "type": "float",
             "description": "Minimum Size for quad tree quads",
             "multiple": false
+        },{
+            "name": "closestObstacle",
+            "type": "float",
+            "description": "Closest a Quad can be to an obstacle without being considered not traversable",
+            "multiple": false
         }
     ],
     "className": "CalmGoals",

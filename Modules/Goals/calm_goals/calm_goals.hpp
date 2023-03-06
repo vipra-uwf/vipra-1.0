@@ -31,6 +31,7 @@ class CalmGoals : public Goals {
  protected:
   float goalRange;
   float quadSize;
+  float closestObs;
 
   std::string endGoalType;
   std::string pathingType;
@@ -40,7 +41,7 @@ class CalmGoals : public Goals {
 
   std::vector<VIPRA::delta_t>         lastGoalTimes;
   std::vector<bool>                   goalsMet;
-  CalmPath::QuadTree                  graph;
+  CalmPath::PathingGraph              graph;
   std::vector<std::queue<VIPRA::f3d>> paths;
 
   void                                 initializePaths(const PedestrianSet&, const ObstacleSet&);

@@ -4,12 +4,13 @@
 #include <optional>
 #include <queue>
 
+#include "pathing_graph.hpp"
 #include "quad.hpp"
 #include "quadTree.hpp"
 
 namespace CalmPath {
 
-std::queue<VIPRA::f3d> pathFind(VIPRA::f3d start, VIPRA::f3d end, const QuadTree&);
+std::queue<VIPRA::f3d> pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph&);
 
 }  // namespace CalmPath
 

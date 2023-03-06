@@ -43,15 +43,15 @@ QuadTree::search(VIPRA::f3d coord) const {
 }
 
 void
-QuadTree::build(const ObstacleSet& obsSet, float quadSize) {
+QuadTree::build(const ObstacleSet& obsSet, float quadSize, float closestObs) {
   const VIPRA::f3d mapRes = obsSet.getMapDimensions();
   float            mapSize = std::max(mapRes.x, mapRes.y);
-  root = constructQuad(obsSet, VIPRA::f3d{mapSize / 2, mapSize / 2}, mapSize, quadSize);
+  root = constructQuad(obsSet, VIPRA::f3d{mapSize / 2, mapSize / 2}, mapSize, quadSize, closestObs);
   buildAdjacencies(root);
 }
 
 Quad*
-QuadTree::constructQuad(const ObstacleSet& obsSet, VIPRA::f3d center, float size, float minSize) {
+QuadTree::constructQuad(const ObstacleSet& obsSet, VIPRA::f3d center, float size, float minSize, float closestObs) {
   Quad* tl = nullptr;
   Quad* tr = nullptr;
   Quad* bl = nullptr;
@@ -60,19 +60,28 @@ QuadTree::constructQuad(const ObstacleSet& obsSet, VIPRA::f3d center, float size
   float      x = center.x;
   float      y = center.y;
   bool       trav = true;
+  bool       buffer = false;
   const auto nearest = obsSet.nearestObstacle(center);
-  if (inside(nearest, center, size) || nearest.distanceTo(center) <= 0.25) {
+
+  bool ins = inside(nearest, center, size);
+  bool buf = nearest.distanceTo(center) <= closestObs;
+
+  if (buf && !ins) {
+    buffer = true;
+  }
+
+  if (ins || buf) {
     float newsize = size / 2;
-    if (newsize <= minSize) {
+    if (newsize < minSize) {
       trav = false;
     } else {
-      tl = constructQuad(obsSet, VIPRA::f3d{x - newsize / 2, y + newsize / 2}, newsize, minSize);
-      tr = constructQuad(obsSet, VIPRA::f3d{x + newsize / 2, y + newsize / 2}, newsize, minSize);
-      bl = constructQuad(obsSet, VIPRA::f3d{x - newsize / 2, y - newsize / 2}, newsize, minSize);
-      br = constructQuad(obsSet, VIPRA::f3d{x + newsize / 2, y - newsize / 2}, newsize, minSize);
+      tl = constructQuad(obsSet, VIPRA::f3d{x - newsize / 2, y + newsize / 2}, newsize, minSize, closestObs);
+      tr = constructQuad(obsSet, VIPRA::f3d{x + newsize / 2, y + newsize / 2}, newsize, minSize, closestObs);
+      bl = constructQuad(obsSet, VIPRA::f3d{x - newsize / 2, y - newsize / 2}, newsize, minSize, closestObs);
+      br = constructQuad(obsSet, VIPRA::f3d{x + newsize / 2, y - newsize / 2}, newsize, minSize, closestObs);
     }
   }
-  return new Quad(center, size, trav, tl, tr, bl, br);
+  return new Quad(center, size, trav, buffer, tl, tr, bl, br);
 }
 
 void
@@ -131,11 +140,13 @@ QuadTree::inside(VIPRA::f3d point, VIPRA::f3d center, float size) const {
 void
 QuadTree::addQuadToString(Quad* node, std::string& str) const {
   if (node != nullptr) {
-    str += fmt::format("{{\"x\":{} , \"y\":{}, \"size\":{}, \"trav\":{}, \"adj\":[",
+    str += fmt::format("{{\"x\":{} , \"y\":{}, \"size\":{}, \"trav\":{}, \"buffer\":{}, \"adj\":[",
                        node->center.x,
                        node->center.y,
                        node->size,
-                       (node->traversable ? "true" : "false"));
+                       (node->traversable ? "true" : "false"),
+                       (node->buffer ? "true" : "false"));
+
     addAdjToString(node, str);
     str += "]},";
     addQuadToString(node->topleft, str);

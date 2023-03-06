@@ -18,11 +18,11 @@ using ::testing::ReturnRef;
 TEST(Calm_Goals_Pathfinding, Pathfinding) {
   PointMapLoader              loader;
   PassengerVehicleObstacleSet map;
-  CalmPath::QuadTree          test;
+  CalmPath::PathingGraph      test;
   map.initialize(
       loader.LoadMap("/home/rolland/Documents/VIPRA/vipra/Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap"));
 
-  test.build(map, 0.05);
+  test.build(map, 0.1, 0.2);
   spdlog::info("Done Building");
 
   std::cerr << "{ \"Paths\": [";

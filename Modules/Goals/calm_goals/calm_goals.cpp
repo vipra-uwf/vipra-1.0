@@ -10,6 +10,7 @@ CalmGoals::configure(const VIPRA::Config::Map& configMap) {
   endGoalType = configMap["endGoalType"].asString();
   pathingType = configMap["pathFinding"].asString();
   quadSize = configMap["quadSize"].asFloat();
+  closestObs = configMap["closestObstacle"].asFloat();
   spdlog::info("CalmGoals: Done Configuring Calm Goals");
 }
 
@@ -34,7 +35,7 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
 
   if (pathingType == "Astar") {
     spdlog::debug("CalmGoals: Building Pathing Graph");
-    graph.build(obsSet, quadSize);
+    graph.build(obsSet, quadSize, closestObs);
   }
   spdlog::debug("CalmGoals: Initializing Paths");
   initializePaths(pedSet, obsSet);

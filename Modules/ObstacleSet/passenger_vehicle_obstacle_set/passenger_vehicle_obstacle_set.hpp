@@ -10,7 +10,6 @@
 #include "pedestrian_set/pedestrian_set.hpp"
 
 class PassengerVehicleObstacleSet : public ObstacleSet {
-
  private:
   VIPRA::EntitySet         objects;
   std::vector<std::string> objectTypes;
@@ -39,6 +38,8 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
 
  private:
   void checkMap() const;
+
+  void buildQuadTree();
 };
 
 #endif
