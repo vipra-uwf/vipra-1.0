@@ -52,10 +52,12 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   std::vector<VIPRA::idx>       nearestNeighborIndex;
   std::shared_ptr<VIPRA::State> modelState;
 
-  enum RaceStatus { NO_RACE, IN_RACE, WINNER, LOSER };
+  enum RaceStatus { NO_RACE, WAIT };
   std::vector<RaceStatus>  raceStatuses;
   std::vector<VIPRA::size> raceOpponents;
   std::vector<int> raceCounter;
+
+  VIPRA::f3d getGoalIntersection(const CalmPedestrianSet&, const Goals&, VIPRA::idx, VIPRA::idx);
 
   void calculatePropulsion(const CalmPedestrianSet&, const CalmGoals&) noexcept;
   void calculateRepulsion(const CalmPedestrianSet&, const CalmGoals&) noexcept;
@@ -63,8 +65,10 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   void calculateNeartestNeighbors(const CalmPedestrianSet&, const ObstacleSet&, const Goals&) noexcept;
   void calculateDistanceMatrices(const CalmPedestrianSet&) noexcept;
 
-  void raceDetection(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::delta_t time);
   bool checkIfIntersect(const CalmPedestrianSet& pedestrianSet, const VIPRA::size, const VIPRA::size);
+
+  void raceDetection(const CalmPedestrianSet& pedestrianSet, const Goals& goals);
+  bool checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::idx index);
 
   void updateModelState(const CalmPedestrianSet&, const CalmGoals&, VIPRA::delta_t, VIPRA::t_step) noexcept;
 
