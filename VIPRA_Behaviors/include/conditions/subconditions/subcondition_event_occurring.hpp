@@ -15,8 +15,7 @@ class SubCondition_Event_Occurring : public SubCondition {
       override;
 
  private:
-  bool started;
-  bool ended;
+  bool occurring;
 };
 }  // namespace Behaviors
 

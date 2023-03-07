@@ -22,40 +22,6 @@ getIndex(VIPRA::size x, VIPRA::size y, VIPRA::size xCnt) {
   return x + (y * xCnt);
 }
 
-inline bool
-isAdj(VIPRA::f3d first, VIPRA::f3d second, float gridSize) {
-  if (floatEq(first.x, second.x + gridSize)) {
-    if (floatEq(first.y, second.y))
-      return true;
-
-    if (floatEq(first.y + gridSize, second.y))
-      return true;
-
-    if (floatEq(first.y - gridSize, second.y))
-      return true;
-  }
-
-  if (floatEq(first.x, second.x - gridSize)) {
-    if (floatEq(first.y, second.y))
-      return true;
-
-    if (floatEq(first.y + gridSize, second.y))
-      return true;
-
-    if (floatEq(first.y - gridSize, second.y))
-      return true;
-  }
-
-  if (floatEq(first.x, second.x)) {
-    if (floatEq(first.y + gridSize, second.y))
-      return true;
-    if (floatEq(first.y - gridSize, second.y))
-      return true;
-  }
-
-  return false;
-}
-
 void
 PathingGraph::build(const ObstacleSet& obsSet, float gridSz, float obsBufferDist) {
   this->gridSize = gridSz;

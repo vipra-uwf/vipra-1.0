@@ -35,18 +35,18 @@ inline std::queue<VIPRA::f3d>
 constructPath(VIPRA::f3d goal, AGridPoint* end) {
   std::queue<VIPRA::f3d> path;
   AGridPoint*            iter = end->parent;
-  AGridPoint*            prev = end;
+  AGridPoint*            prev = iter;
 
   VIPRA::f3d dif{0, 0, 0};
 
   while (iter != nullptr) {
     auto currDif = iter->node->center - prev->node->center;
     if (currDif != dif) {
-      path.push(iter->node->center);
+      path.push(prev->node->center);
       dif = currDif;
     }
+    prev = iter;
     iter = iter->parent;
-    prev = prev->parent;
   }
 
   path.push(goal);
