@@ -69,6 +69,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   void raceDetection(const CalmPedestrianSet& pedestrianSet, const Goals& goals);
   bool checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::idx index);
+  float shortestDistanceToLineSegment(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
 
   void updateModelState(const CalmPedestrianSet&, const CalmGoals&, VIPRA::delta_t, VIPRA::t_step) noexcept;
 

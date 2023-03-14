@@ -52,21 +52,56 @@ VIPRA::f3d CalmPedestrianModel::getGoalIntersection(const CalmPedestrianSet& ped
   VIPRA::f3d g1 = goals.getCurrentGoal(idx1);
   VIPRA::f3d g2 = goals.getCurrentGoal(idx2);
 
-  if(g1.x < g2.x)
-    return g1;
-  else if(g1.x==g2.x && g1.y < g2.y)
-    return g1;
-  else
-    return g2;
+  float a1 = g1.y - p1.y, b1 = p1.x - g1.x;
+  float a2 = g2.y - p2.y, b2 = p2.x - g2.x;
+  float c1 = a1*p1.x + b1*p1.y;
+  float c2 = a2*p2.x + b2*p2.y;
 
-  float m1 = static_cast<float>(g1.y-p1.y)/static_cast<float>(g1.x-p1.x), m2 = static_cast<float>(g2.y-p2.y)/static_cast<float>(g2.x-p2.x);
-  float c1 = p1.y- (m1*p1.x), c2 = p2.y - (m2*p2.x);
+  float det = a1*b2 - a2*b1;
   
-  float x =  (c1-c2)/(m2-m1), y = m1*x + c1;
+  if(det==0)
+  {
+    if(g1==g2)
+      return g1;
+    else if(g1.distanceTo(p1)+g1.distanceTo(p2) < g2.distanceTo(p1)+g2.distanceTo(p2))
+      return g1;
+    else
+      return g2;
+  }
+  else
+  {
+    float x,y;
+    x = (b2*c1 - b1*c2)/det;
+    y = -(a2*c1 - a1*c2)/det;
+    return VIPRA::f3d(x,y);
+  }
   
-  return VIPRA::f3d(x,y);
 }
 
+float CalmPedestrianModel::shortestDistanceToLineSegment(VIPRA::f3d point, VIPRA::f3d start, VIPRA::f3d end) {
+
+  float dotProd = (end.x - start.x)*(point.x - start.x) + (end.y - start.y)*(point.y - start.y);
+
+  float segLenSq = start.distanceToSquared(end);
+  
+  if(segLenSq == 0)
+    return point.distanceTo(start);
+  
+  float distRat = dotProd/segLenSq;
+  if(distRat >= 1)
+  {
+    if(point.distanceTo(start) < point.distanceTo(end))
+      return point.distanceTo(start);
+    else
+      return point.distanceTo(end);
+  }
+  else
+  {
+    float bX = start.x + distRat*(end.x - start.x);
+    float bY = start.y + distRat*(end.y - start.y);
+    return sqrt((point.x - bX)*(point.x - bX) + (point.y - bY)*(point.y - bY));
+  }
+}
 
 void
 CalmPedestrianModel::raceDetection(const CalmPedestrianSet& pedestrianSet, const Goals& goals) {
@@ -85,7 +120,7 @@ CalmPedestrianModel::raceDetection(const CalmPedestrianSet& pedestrianSet, const
     else
       raceStatuses.at(i) = WAIT;
 
-    // spdlog::debug("Race Status of {} is {}, its x is {}, its y is {} and its dist from aisle is {}.", i, static_cast<int>(raceStatuses.at(i)), pedestrianSet.getPedCoords(i).x, pedestrianSet.getPedCoords(i).y, abs(pedestrianSet.getPedCoords(i).y - 1.7));
+    // spdlog::debug("Race Status of {} is {}, its x is {}, its y is {} and its goal is {}, {}.", i, static_cast<int>(raceStatuses.at(i)), pedestrianSet.getPedCoords(i).x, pedestrianSet.getPedCoords(i).y, goals.getCurrentGoal(i).x, goals.getCurrentGoal(i).y);
     // spdlog::debug("Nearest Neighbour of {} is {}.",i,nearestNeighborIndex.at(i));
   }
   
@@ -93,8 +128,7 @@ CalmPedestrianModel::raceDetection(const CalmPedestrianSet& pedestrianSet, const
 
 bool CalmPedestrianModel::checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::idx index)
 {
-  float aisle = 1.7;
-  float xDistanceError = 0.1;
+  float distErr = 0.2;
   for(VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); i++)
   {
     if(i == index)
@@ -107,25 +141,85 @@ bool CalmPedestrianModel::checkIfHighestPriority(const CalmPedestrianSet& pedest
     auto coords1 = pedestrianSet.getPedCoords(index);
     auto coords2 = pedestrianSet.getPedCoords(i);
 
-    if(abs(coords1.x - coords2.x) < xDistanceError)
+    auto goal1 = goals.getCurrentGoal(index);
+    auto goal2 = goals.getCurrentGoal(i);
+
+    auto endgoal1 = goals.getEndGoal(index);
+    auto endgoal2 = goals.getEndGoal(i);
+
+    if(goal1 == goal2)
     {
-      if(abs(coords1.y - aisle) > abs(coords2.y - aisle))
+      if(coords1.distanceTo(goal1)>coords2.distanceTo(goal2))
         return false;
-      else if(abs(coords1.y - aisle) == abs(coords2.y - aisle))
+      else if(coords1.distanceTo(goal1)==coords2.distanceTo(goal2))
       {
         if(index < i)
           return false;
       }
-      else
-        continue;
+    }
+    else if(lineIntersect(coords1,goal1,coords2,goal2))
+    {
+      auto goalIntersection = getGoalIntersection(pedestrianSet,goals,index,i);
+      // spdlog::debug("The goal intersection with {} is x:{}, y:{}",i,goalIntersection.x,goalIntersection.y);
+      if(coords1.distanceTo(goalIntersection) > coords2.distanceTo(goalIntersection))
+        return false;
+      else if(coords1.distanceTo(goalIntersection) == coords2.distanceTo(goalIntersection))
+      {
+        if(index < i)
+          return false;
+      }
+    }
+    
+    else if(shortestDistanceToLineSegment(goal1, coords2, goal2) <= distErr)
+    {
+      if(coords1.distanceTo(goal1) + coords1.distanceTo(endgoal1) > coords2.distanceTo(goal1) + coords2.distanceTo(endgoal2))
+        return false;
+      else if(coords1.distanceTo(goal1) + coords1.distanceTo(endgoal1) == coords2.distanceTo(goal1) + coords2.distanceTo(endgoal2))
+      {
+        if(index < i)
+          return false;
+      }
+    }
+    else if(shortestDistanceToLineSegment(goal2, coords1, goal1) <= distErr)
+    {
+      if(coords1.distanceTo(goal2) + coords1.distanceTo(endgoal1)> coords2.distanceTo(goal2) + coords2.distanceTo(endgoal2))
+        return false;
+      else if(coords1.distanceTo(goal2) + coords1.distanceTo(endgoal1) == coords2.distanceTo(goal2) + coords2.distanceTo(endgoal2))
+      {
+        if(index < i)
+          return false;
+      }
     }
     else
     {
-      if(coords1.x < coords2.x)
+      if(goal1.distanceTo(goals.getEndGoal(index)) > goal2.distanceTo(goals.getEndGoal(i)))
         return false;
-      else
-        continue;
+      else if(goal1.distanceTo(goals.getEndGoal(index)) == goal2.distanceTo(goals.getEndGoal(i)))
+      {
+        if(index < i)
+          return false;
+      }
     }
+
+    // if(abs(coords1.x - coords2.x) < xDistanceError)
+    // {
+    //   if(abs(coords1.y - aisle) > abs(coords2.y - aisle))
+    //     return false;
+    //   else if(abs(coords1.y - aisle) == abs(coords2.y - aisle))
+    //   {
+    //     if(index < i)
+    //       return false;
+    //   }
+    //   else
+    //     continue;
+    // }
+    // else
+    // {
+    //   if(coords1.x < coords2.x)
+    //     return false;
+    //   else
+    //     continue;
+    // }
   }
   return true;
 }
@@ -459,7 +553,7 @@ CalmPedestrianModel::lineIntersect(const VIPRA::f3d& start1,
   const float det = (end1.x - start1.x) * (end2.y - start2.y) - (end2.x - start2.x) * (end1.y - start1.y);
   if (det == 0) {
     
-    if(start1.distanceTo(start2)+end1.distanceTo(start2)==start1.distanceTo(end1) || abs(start1.distanceTo(start2)-end1.distanceTo(start2))==start1.distanceTo(end1))
+    if(start1.distanceTo(start2)+end1.distanceTo(start2)==start1.distanceTo(end1) || abs(start1.distanceTo(end2)+end1.distanceTo(end2))==start1.distanceTo(end1))
       return true;
 
     return false;
