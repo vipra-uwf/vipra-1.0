@@ -60,6 +60,12 @@ BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fi
   return std::move(currentBehavior);
 }
 
+/**
+ * @brief Gets a pointer to the event with name evName from eventsMap
+ * 
+ * @param evName : name of event to find
+ * @return Behaviors::Event*
+ */
 Behaviors::Event*
 BehaviorBuilder::getEvent(const std::string& evName) {
   auto ev = eventsMap.find(evName);
@@ -71,6 +77,12 @@ BehaviorBuilder::getEvent(const std::string& evName) {
   return (*ev).second;
 }
 
+/**
+ * @brief Cleans and sets up the builder for a new behavior
+ * 
+ * @param behaviorName : name of new behavior
+ * @param seedNum : randomization seed for behavior
+ */
 void
 BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, Behaviors::seed seedNum) {
   states.clear();
@@ -87,7 +99,7 @@ BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, Behaviors
 /**
  * @brief Returns the Behaviors::stateUID associated with a state string, creating a new association if it doesn't exist
  * 
- * @param state 
+ * @param state : name of state
  * @return Behaviors::stateUID 
  */
 Behaviors::stateUID
@@ -199,7 +211,7 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
   // ------------ One Word Atoms -----------------
   std::string atomName = atom->getText();
 
-  if (atomName == "@stop") {
+  if (atom->action_Stop()) {
     spdlog::debug("Behavior \"{}\": Adding Action Atom: \"Stop\"", currentBehavior.getName());
     action.addAtom("stop");
     return;
@@ -253,13 +265,11 @@ Behaviors::BehaviorBuilder::visitCondition_Time_Elapsed_From_Event(
 
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitCondition_Event(BehaviorParser::Condition_EventContext* ctx) {
-  // TODO
   return BehaviorBaseVisitor::visitCondition_Event(ctx);
 }
 
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext* ctx) {
-  // TODO
   return BehaviorBaseVisitor::visitCondition_Event_Occurring(ctx);
 }
 
@@ -272,6 +282,12 @@ Behaviors::BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) {
   return BehaviorBaseVisitor::visitEvent(ctx);
 }
 
+/**
+ * @brief Creates a new single fire event and adds it to the eventsMap
+ * 
+ * @param ctx : antlr context
+ * @return antlrcpp::Any 
+ */
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleContext* ctx) {
 
@@ -297,6 +313,12 @@ Behaviors::BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleContex
   return BehaviorBaseVisitor::visitEvent_Single(ctx);
 }
 
+/**
+ * @brief Creates a lasting event and adds it to the eventsMap
+ * 
+ * @param ctx : antlr context
+ * @return antlrcpp::Any 
+ */
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingContext* ctx) {
   std::string eventName = ctx->EVENT()->toString();

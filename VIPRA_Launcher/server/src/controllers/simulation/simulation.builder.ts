@@ -112,7 +112,7 @@ export class SimulationBuilder {
   };
 
   /**
-   * @description Compiles the Simulation
+   * @description Starts a new full simulation build, returns the build id
    * @emits NEW_SIMULATION_BUILD
    */
   private compileSimulation = () : string => {

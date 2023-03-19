@@ -6,6 +6,11 @@
 namespace Behaviors {
 Selector_Percent::Selector_Percent(float selectRatio) : Selector(), ratio(selectRatio) {}
 
+/**
+ * @brief Selects (numpeds * ratio) pedestrians for the simulation
+ * 
+ * @param pedestrianSet : 
+ */
 void
 Selector_Percent::selectPedestrianIds(const PedestrianSet& pedestrianSet) {
   VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();

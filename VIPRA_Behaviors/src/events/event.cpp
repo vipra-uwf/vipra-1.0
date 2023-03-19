@@ -5,6 +5,15 @@
 
 namespace Behaviors {
 
+/**
+ * @brief Evaluates whether an event should start or end based on its conditions
+ * 
+ * @param pedSet : pedestrian set object
+ * @param obsSet : obstacle set object
+ * @param goals : goals object
+ * @param context : behavior context
+ * @param dT : simulation timestep size
+ */
 void
 Event::evaluate(const PedestrianSet&   pedSet,
                 const ObstacleSet&     obsSet,
@@ -15,24 +24,34 @@ Event::evaluate(const PedestrianSet&   pedSet,
     if (startCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
       spdlog::debug("Event \"{}\" has Started", name);
       occurring = true;
-      std::for_each(startHandlers.begin(), startHandlers.end(), [&](std::function<void()> h) { h(); });
+      std::for_each(startHandlers.begin(), startHandlers.end(), [&](EventHandler handler) { handler(); });
     }
   } else {
     if (endCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
       spdlog::debug("Event \"{}\" has Ended", name);
       occurring = false;
-      std::for_each(endHandlers.begin(), endHandlers.end(), [&](std::function<void()> h) { h(); });
+      std::for_each(endHandlers.begin(), endHandlers.end(), [&](EventHandler handler) { handler(); });
     }
   }
 }
 
+/**
+ * @brief Adds an event handler for when the event starts
+ * 
+ * @param handler : handler function to add
+ */
 void
-Event::onStart(std::function<void()> handler) {
+Event::onStart(EventHandler handler) {
   startHandlers.emplace_back(handler);
 }
 
+/**
+ * @brief Adds an event handler for when the event ends
+ * 
+ * @param handler : handler function to add
+ */
 void
-Event::onEnd(std::function<void()> handler) {
+Event::onEnd(EventHandler handler) {
   endHandlers.emplace_back(handler);
 }
 

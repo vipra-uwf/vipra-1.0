@@ -7,6 +7,10 @@
 #include <mock_behaviors/luggage_atom.mock.hpp>
 
 namespace Behaviors { 
+
+/**
+* @description Map that holds the constructor functions for atoms
+*/
 const std::unordered_map<std::string, std::any> AtomMap = {
     {"stop", AtomFunc<>([]() -> std::unique_ptr<Atom> { return std::make_unique<Atom_Stop>(); })},
     {"change_speed", AtomFunc<float, bool>([](float change, bool faster) -> std::unique_ptr<Atom> { return std::make_unique<Atom_Change_Speed>(change, faster); })},

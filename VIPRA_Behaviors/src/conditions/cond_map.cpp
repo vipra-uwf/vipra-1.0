@@ -9,6 +9,9 @@
 #include <conditions/subconditions/subcondition_start.hpp>
 
 namespace Behaviors {
+    /**
+    * @brief Map that holds the constructor functions for sub conditions
+    */
 const std::unordered_map<std::string, std::any> CondMap = {
     {"start", CondFunc<>([]() -> std::unique_ptr<SubCondition> {return std::make_unique<SubCondition_Start>();})},
     {"state", CondFunc<stateUID, bool>([](stateUID state, bool pedOrEnv) -> std::unique_ptr<SubCondition> {return std::make_unique<SubCondition_State>(state, pedOrEnv);})},

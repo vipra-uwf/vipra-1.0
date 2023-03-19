@@ -9,17 +9,38 @@ HumanBehavior::getName() const noexcept {
   return name;
 }
 
+/**
+ * @brief Adds an action to pedActions
+ * 
+ * @param action : action to add
+ */
 void
 HumanBehavior::addAction(Action&& action) {
   pedActions.emplace_back(std::move(action));
 }
 
+/**
+ * @brief initializes behavior selector
+ * 
+ * @param pedSet : pedestrian set object
+ * @param obsSet : obstacle set object
+ * @param goals : goals object
+ */
 void
 HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
   context.pedStates = std::vector<Behaviors::stateUID>(pedSet.getNumPedestrians(), 0);
   selector->initialize(pedSet, obsSet, goals);
 }
 
+/**
+ * @brief Evaluates behavior events, and performs actions of pedestrians
+ * 
+ * @param pedSet : pedestrian set object
+ * @param obsSet : obstacle set object
+ * @param goals : goals object
+ * @param state : state object to write results to
+ * @param dT : simulation timestep size
+ */
 void
 HumanBehavior::timestep(const PedestrianSet&          pedSet,
                         const ObstacleSet&            obsSet,
@@ -43,6 +64,12 @@ HumanBehavior::addParameter(std::string param) {
   parameters.emplace_back(param);
 }
 
+/**
+ * @brief adds an event to the behavior and returns a pointer to it
+ * 
+ * @param event : event object to add
+ * @return Event* 
+ */
 Event*
 HumanBehavior::addEvent(Event&& event) {
   events.emplace_back(std::move(event));

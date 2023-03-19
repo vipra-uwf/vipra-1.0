@@ -19,9 +19,8 @@
     "entity_set_factory": {},
     "goals": {
         "pathFinding": "Astar",
-        "diagonalCost": 2.0,
         "endGoalType": "exit",
-        "quadSize": 0.05,
+        "quadSize": 0.1,
         "closestObstacle": 0.2,
         "goalRange": 0.1
     },

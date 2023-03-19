@@ -7,6 +7,13 @@
 #include <definitions/behavior_context.hpp>
 
 namespace Behaviors {
+
+typedef std::function<void()> EventHandler;
+
+/**
+   * @brief An Event is something that occurs during a simulation, when an event starts it notifies it's subscribing functions and same when it ends
+   * 
+   */
 class Event {
  public:
   ~Event() = default;
@@ -24,8 +31,8 @@ class Event {
   void setStartCondition(Condition&&);
   void setEndCondition(Condition&&);
 
-  void onStart(std::function<void()>);
-  void onEnd(std::function<void()>);
+  void onStart(EventHandler);
+  void onEnd(EventHandler);
 
   const std::string& getName() const;
 
@@ -36,8 +43,8 @@ class Event {
   Condition startCondition;
   Condition endCondition;
 
-  std::vector<std::function<void()>> startHandlers;
-  std::vector<std::function<void()>> endHandlers;
+  std::vector<EventHandler> startHandlers;
+  std::vector<EventHandler> endHandlers;
 };
 }  // namespace Behaviors
 

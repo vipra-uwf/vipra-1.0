@@ -38,6 +38,13 @@ class HumanBehavior {
   void   addParameter(std::string);
   Event* addEvent(Event&&);
 
+  /**
+   * @brief Constructs a selector of type S in place
+   * 
+   * @tparam S : Selector Type
+   * @tparam P : Selector Constructor Parameter Types list
+   * @param params : parameters to use in selector constructor
+   */
   template <typename S, typename... P, class = typename std::enable_if<std::is_base_of<Selector, S>::value>::type>
   void addSelector(P... params) {
     selector = std::make_unique<S>(std::forward<P>(params)...);

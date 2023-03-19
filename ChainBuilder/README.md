@@ -1,11 +1,21 @@
-# Simple Example: Addition Service
+# TypeChain
+TypeChain is a Typescript library for creating [ChainBuilder](https://www.chain-builder.net/) services
+
+---
+# Contents
+1. Simple Example: Addition Service
+
+
+---
+
+# 1. Simple Example: Addition Service
 1. Creating a CBServiceRoot
 2. Creating a ResultStore
 3. Creating a Service
 4. Putting it together
 5. Creating a HTTP server
 ---
-## 1. Creating a CBServiceRoot
+## 1.1. Creating a CBServiceRoot
 The first step is to create a `CBServiceRoot`, this is what holds services and routes requests.
 - Provide the `CBServiceRoot` Constructor with the base URL for accessing the hosting server
 ```typescript
@@ -14,7 +24,7 @@ const  cbroot : CBServiceRoot = new  CBServiceRoot('example.com:3000');
 ! ChainBuilder requires HTTPS, we are using HTTP for simplicity !
 
 ---
-## 2. Creating a ResultStore
+## 1.2. Creating a ResultStore
 Secondly, a `ResultStore` is needed to keep any results from your service
 
 ```typescript
@@ -31,7 +41,7 @@ A ResultStore has two member functions that need overridden
 In this example both return `CbResult`, as there is no I/O involved.
 However, `storeResult` and `getResult` can return either a `CbResult` or `Promise<CbResult>`
 
-**1. storeResult**
+**1.2.1. storeResult**
 
 `storeResult` is called after each time the service is run, with the `CbArgs` used to run the `Service` and the result.
 
@@ -47,14 +57,13 @@ A `CbResult` is returned:
     return { error : false, result : location };
   }
 ```
-In this example, we run a hash over the arguments and the service results are stored in a `Map<string, string>`.
-With the key being the hash, and the value our result.
+In this example, service results are simply stored in a `Map<string, string>`.
 
-**2. getResult**
+**1.2.2. getResult**
 
-`getResult` is called when ChainBuilder requests a result, `locationID` coming from result in the return value of `storeResult` .
+`getResult` is called when ChainBuilder requests a result, `locationID` coming from result in `storeResult` .
 
-The return value is similar to `storeResult` with the difference that `result` should be the actual resulting value from running the service as opposed to an identifier.
+The return value is similar to `storeResult` with the difference that `result` is the actual resulting value from running the service as opposed to an identifier.
 
 ```typescript
   public getResult(locationID: string): CbResult {
@@ -70,8 +79,8 @@ In this example we access the results Map and return the result.
 If there is no result with at `locationID` in the Map we return that an error has occurred.
 
 ---
-## 3. Creating a Service
-**3.1 Adding Service Information**
+## 1.3. Creating a Service
+**1.3.1 Adding Service Information**
 
 First we will add the front facing information for potential ChainBuilder users of our service.
 
@@ -90,9 +99,7 @@ const info : CbServiceInfo = {
 `key` and `version` are the key values here as ChainBuilder uses these to identify services
 The other values are simply for Human Use.
 
-Duplicate `Service`s hosted on other servers/routes should, ideally, have the same `key` and `version`.
-
-**3.2 Adding Functionality**
+**1.3.2 Adding Functionality**
 
 We need to create the actual functionality of our service using `CbMethod`.
 
@@ -114,7 +121,7 @@ In this example our `CbMethod` expects an `addend`, we do a simple reduce operat
 
 `Service` ensures that the `CbMethod` is called with all of the expected parameters, no missing and no more. It makes NO guarantees that the arguments are of the correct type or count.
 
-**3.3 CbServiceOptions**
+**1.3.3 CbServiceOptions**
 
 `CbServiceOptions` is where the implementation for the service is added
 ```typescript
@@ -134,19 +141,19 @@ const opts : CbServiceOptions = {
       sample: '10',
     },
   ],
-  server: [],
+  server: [CbResultOptions.TRANSIENT],
 };
 ```
 - `info` is the `CbServiceInfo` we created in the step above
 - `returnValue` tells ChainBuilder the name and type of Service results
 	- These are used to connect with other ChainBuilder Services
 - `resultStore` is the `ResultStore` implementation the service uses, in our case a newly constructed `SumResultStore`
-	- `ResultStore`s MAY be reused by multiple services, however it is not advised
+	- `ResultStore`s MAY be reused by multiple services, however it is not advised at the moment
 - `method` is the `CbMethod` the service uses, in our case `sum`
 - `parameters` are the parameters `method` expects to receive
-- `server` server options explained in `TODO` section
+- `server` result options explained in `TODO` section
 
-**3.4 Creating the Service**
+**1.3.4 Creating the Service**
 
 Lastly we put the parts together to create the `Service`
 
@@ -154,7 +161,7 @@ Lastly we put the parts together to create the `Service`
 const addService : Service = new Service(opts);
 ```
 
-## 4. Adding the Service
+## 1.4. Adding the Service
 
 Having created the `Service` we add it to the `CBServiceRoot`
 ```typescript
@@ -162,7 +169,7 @@ cbroot.addService(addService, '/services/example/');
 ```
 In this example the new service can be reached at `example.com/services/example/`
 
-## 5. Creating a HTTP server
+## 1.5. Creating a HTTP server
 
 `CbServerRoot` does not host a HTTP server itself and as such depends on [ExpressJS](https://github.com/expressjs/express)
 To be able to access our `Service` we need to create an simple express app
@@ -183,9 +190,13 @@ Calling `handleChainBuilderRequest` with the request and response from ChainBuil
 in this example HTTP is used as a simplification
 
 ---
-# Full Example: Addition Service 
+# 2. Full Example: Addition Service 
 Below is the Full code for the Addition Service Example
 ```typescript
+import  express  from  'express';
+import { createHash } from  'crypto';
+import { CbArgs, CbResult, CbResultOptions, CbServiceInfo, CbServiceOptions, Service, ResultStore, CBServiceRoot } from  'typechain';
+
 // ---- Creating CBServiceRoot ------------------------------------
 const cbroot : CBServiceRoot = new CBServiceRoot('https://example.com');
 
@@ -252,16 +263,15 @@ const opts : CbServiceOptions = {
 };
 const newService : Service = new Service(opts);
 
-// ---- Adding the New Service ----------------------------
+// ---- Adding the New Service ------------------------------
 cbroot.addService(newService, '/services/test/');
 
-const app = express();
-
+// ---- Creating ExpressJS App ------------------------------
+const  app = express();
 app.use('/', (req : express.Request, res : express.Response)=>{
-  cbroot.handleChainBuilderRequest(req, res);
+	cbroot.handleChainBuilderRequest(req, res);
 });
-
-app.listen(3001, ()=>{
-  console.log('listening');
+app.listen(3000, ()=>{
+	console.log('listening');
 });
 ```

@@ -4,6 +4,18 @@
 #include <actions/atoms/atom_stop.hpp>
 
 namespace Behaviors {
+
+/**
+ * @brief Checks that the action conditions are met, if it is, each atom is run on the pedestrian
+ * 
+ * @param pedSet : pedestrian set module
+ * @param obsSet : obstacle set module
+ * @param goals : goals module
+ * @param context : behavior context
+ * @param pedIdx : index of pedestrian to affect
+ * @param dT : simulation timestep size
+ * @param state : state object to apply changes to
+ */
 void
 Action::performAction(const PedestrianSet&          pedSet,
                       const ObstacleSet&            obsSet,
@@ -24,6 +36,11 @@ Action::performAction(const PedestrianSet&          pedSet,
   }
 }
 
+/**
+ * @brief Sets the condition for the action
+ * 
+ * @param cond : Condition object
+ */
 void
 Action::addCondition(Condition&& cond) {
   condition = std::move(cond);

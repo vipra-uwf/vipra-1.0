@@ -9,8 +9,8 @@
 #include <definitions/behavior_context.hpp>
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
 #include <optional>
+#include <pedestrian_set/pedestrian_set.hpp>
 
 namespace Behaviors {
 /**
@@ -37,6 +37,13 @@ class Action {
 
   void addCondition(Condition&& condition);
 
+  /**
+   * @brief 
+   * 
+   * @tparam P : list of parameter types for atom constructor
+   * @param atomName : name of atom in AtomMap
+   * @param params : list of parameters to forward to atom constructor
+   */
   template <typename... P> void addAtom(const std::string& atomName, P... params) {
     auto iter = AtomMap.find(atomName);
     if (iter == AtomMap.end()) {
@@ -44,8 +51,8 @@ class Action {
       return;
     }
 
-    auto                  func = std::any_cast<std::function<std::unique_ptr<Atom>(P...)>>(iter->second);
-    std::unique_ptr<Atom> atom = func(std::forward<P>(params)...);
+    auto                  atomConstructor = std::any_cast<std::function<std::unique_ptr<Atom>(P...)>>(iter->second);
+    std::unique_ptr<Atom> atom = atomConstructor(std::forward<P>(params)...);
     atoms.emplace_back(std::move(atom));
   }
 

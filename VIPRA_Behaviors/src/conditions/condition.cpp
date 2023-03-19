@@ -14,6 +14,18 @@ Condition::operator=(Condition&& other) noexcept {
   return *this;
 }
 
+/**
+ * @brief Tests whether a condition is met, by running through each sub condition
+ * 
+ * @param pedSet : pedestrian set object
+ * @param obsSet : obstacle set object
+ * @param goals : goals object
+ * @param context : behavior context
+ * @param pedIndex : index of current pedestrian
+ * @param dT : simulation timestep size
+ * @return true 
+ * @return false 
+ */
 bool
 Condition::evaluate(const PedestrianSet&   pedSet,
                     const ObstacleSet&     obsSet,
