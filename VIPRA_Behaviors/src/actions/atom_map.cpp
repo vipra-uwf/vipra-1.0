@@ -9,7 +9,7 @@
 namespace Behaviors { 
 
 /**
-* @description Map that holds the constructor functions for atoms
+* @brief Map that holds the constructor functions for atoms
 */
 const std::unordered_map<std::string, std::any> AtomMap = {
     {"stop", AtomFunc<>([]() -> std::unique_ptr<Atom> { return std::make_unique<Atom_Stop>(); })},

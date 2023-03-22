@@ -4,6 +4,14 @@
 namespace Behaviors {
 SubCondition_State::SubCondition_State(Behaviors::stateUID state, bool pedEnv) : cond_State(state), pedOrEnv(pedEnv) {}
 
+/**
+ * @brief Returns true if the (ped or env) is the proper state, depending on which was chosen at construction
+ * 
+ * @param context : 
+ * @param pedIndex : 
+ * @return true 
+ * @return false 
+ */
 bool
 SubCondition_State::operator()(const PedestrianSet&,
                                const ObstacleSet&,

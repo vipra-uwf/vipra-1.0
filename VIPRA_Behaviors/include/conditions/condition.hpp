@@ -29,7 +29,7 @@ class Condition {
   void addAndOr(bool);
 
   /**
-   * @brief adds a sub condition to the condition
+   * @brief Finds the sub condition constructor function with the provided name in the CondMap, then constructs the sub condition with that function
    * 
    * @tparam P : SubCondition Type
    * @param condName : name of sub condition in the CondMap
@@ -43,7 +43,7 @@ class Condition {
       return;
     }
 
-    auto subCondConstructor = std::any_cast<std::function<std::unique_ptr<SubCondition>(P...)>>(iter->second);
+    auto                          subCondConstructor = std::any_cast<CondFunc<P...>>(iter->second);
     std::unique_ptr<SubCondition> cond = subCondConstructor(std::forward<P>(params)...);
     conditions.emplace_back(std::move(cond));
   }

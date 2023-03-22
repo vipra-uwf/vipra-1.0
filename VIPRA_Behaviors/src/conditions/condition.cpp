@@ -15,7 +15,7 @@ Condition::operator=(Condition&& other) noexcept {
 }
 
 /**
- * @brief Tests whether a condition is met, by running through each sub condition
+ * @brief Tests whether a condition is met, by running through each sub condition sequentially
  * 
  * @param pedSet : pedestrian set object
  * @param obsSet : obstacle set object

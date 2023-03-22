@@ -38,7 +38,7 @@ class Action {
   void addCondition(Condition&& condition);
 
   /**
-   * @brief 
+   * @brief Finds the atom constructor function with the provided name in the AtomMap, then constructs the atom with that function
    * 
    * @tparam P : list of parameter types for atom constructor
    * @param atomName : name of atom in AtomMap
@@ -51,7 +51,7 @@ class Action {
       return;
     }
 
-    auto                  atomConstructor = std::any_cast<std::function<std::unique_ptr<Atom>(P...)>>(iter->second);
+    auto                  atomConstructor = std::any_cast<AtomFunc<P...>>(iter->second);
     std::unique_ptr<Atom> atom = atomConstructor(std::forward<P>(params)...);
     atoms.emplace_back(std::move(atom));
   }

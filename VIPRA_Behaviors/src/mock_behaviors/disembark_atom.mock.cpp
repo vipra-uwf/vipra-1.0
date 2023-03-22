@@ -3,6 +3,16 @@
 
 namespace Behaviors {
 void
+/**
+ * @brief Checks if any pedestrians in front of the current pedestrian has met any goals yet, if they haven't they are stopped
+ * 
+ * @note this doesn't work very well with the A* pathfinding as a pedestrian's first goal may not be the center of the aisle
+ * 
+ * @param pedSet : 
+ * @param goals : 
+ * @param pedIdx : 
+ * @param state : 
+ */
 Atom_Disembark_Mock::performAction(const PedestrianSet& pedSet,
                                    const ObstacleSet&,
                                    const Goals& goals,

@@ -8,6 +8,12 @@ Selector_Exactly_N::Selector_Exactly_N(VIPRA::size N, Behaviors::seed seed) : Se
   srand(seed);
 }
 
+/**
+ * @brief Randomly selects N pedestrians
+ * @note not the best implementation as collisions occur more frequently as N increases
+ * 
+ * @param pedestrianSet : 
+ */
 void
 Selector_Exactly_N::selectPedestrianIds(const PedestrianSet& pedestrianSet) {
   VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
