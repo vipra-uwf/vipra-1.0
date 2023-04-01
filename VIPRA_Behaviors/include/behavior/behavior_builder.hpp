@@ -11,12 +11,6 @@
 #include <events/event.hpp>
 
 namespace Behaviors {
-class DSL_Exception : public std::runtime_error {
- public:
-  DSL_Exception(const std::string& message) : std::runtime_error(message) {}
-  static void Throw(const std::string& message) { throw DSL_Exception(message); }
-};
-
 class BehaviorBuilder : public BehaviorBaseVisitor {
  private:
   BehaviorErrorListener errorListener;
@@ -32,7 +26,6 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   Event* getEvent(const std::string&);
   void   addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
-  void   addConditionToAction(Action&, BehaviorParser::ConditionContext*);
   void   addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
 
  public:
@@ -42,32 +35,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   Condition buildCondition(BehaviorParser::ConditionContext*);
 
-  // ------------------------------- CONDITIONS -----------------------------------------------------------------------------------------
-
-  antlrcpp::Any visitCondition(BehaviorParser::ConditionContext* ctx) override;
-
-  antlrcpp::Any visitSub_condition(BehaviorParser::Sub_conditionContext* ctx) override;
-
-  antlrcpp::Any visitCondition_Existance(BehaviorParser::Condition_ExistanceContext* ctx) override;
-
-  antlrcpp::Any visitCondition_State(BehaviorParser::Condition_StateContext* ctx) override;
-
-  antlrcpp::Any visitCondition_Others_State(BehaviorParser::Condition_Others_StateContext* ctx) override;
-
-  antlrcpp::Any visitCondition_Met_Goal(BehaviorParser::Condition_Met_GoalContext* ctx) override;
-
-  antlrcpp::Any visitCondition_Time_Elapsed_From_Event(
-      BehaviorParser::Condition_Time_Elapsed_From_EventContext* ctx) override;
-
-  antlrcpp::Any visitCondition_Event(BehaviorParser::Condition_EventContext* ctx) override;
-
-  antlrcpp::Any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext* ctx) override;
-
-  // ------------------------------- END CONTIDTIONS -----------------------------------------------------------------------------------------
-
   // ------------------------------- EVENTS -----------------------------------------------------------------------------------------
-
-  antlrcpp::Any visitEvent(BehaviorParser::EventContext* ctx) override;
 
   antlrcpp::Any visitEvent_Single(BehaviorParser::Event_SingleContext* ctx) override;
 
@@ -76,8 +44,6 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   // ------------------------------- END EVENTS -----------------------------------------------------------------------------------------
 
   // ------------------------------- SELECTORS -----------------------------------------------------------------------------------------
-
-  antlrcpp::Any visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) override;
 
   antlrcpp::Any visitSelector_Percent(BehaviorParser::Selector_PercentContext* ctx) override;
 
@@ -97,13 +63,9 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
 
-  antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext* ctx) override;
-
   antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) override;
 
   antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx) override;
-
-  antlrcpp::Any visitDecl_Parameters(BehaviorParser::Decl_ParametersContext* ctx) override;
 
   // ------------------------------- END DECLARATIONS -----------------------------------------------------------------------------------------
 };

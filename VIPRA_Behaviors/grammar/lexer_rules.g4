@@ -1,5 +1,9 @@
 lexer grammar lexer_rules;
 
+COMMENT : '/*' .*? '*/'    -> skip;
+LINE_COMMENT: '//' ~[\r\n]*    -> skip;
+WS : [ \t\r\n]+ -> channel(HIDDEN) ;
+
 fragment A:[aA];
 fragment B:[bB];
 fragment C:[cC];
@@ -27,35 +31,86 @@ fragment X:[xX];
 fragment Y:[yY];
 fragment Z:[zZ];
 
-ID: [a-zA-Z_\-]+;
+COMMA: ',';
+COLON: ':';
+
+// -- Keep These In This Area ------------
 
 STATE: '#'[a-zA-Z_\-]+;
 ACTION: '@'[a-zA-Z_\-]+;
 ATTRIBUTE: '*'[a-zA-Z_\-]+;
 PARAMETER: '$'[a-zA-Z_\-]+;
-EVENT: '!'[a-zA-Z_\-]+;
+EVNT: '!'[a-zA-Z_\-]+;
+OBJECT: '+'[a-zA-Z_\-]+;
 
+// ---------------------------------------
+
+AFTER: A F T E R;
+AND: A N D;
+ALWAYS: A L W A Y S;
+AN: A | A N ;
+ARE: A R E;
+AROUND: A R O U N D;
+
+BEHIND: B E H I N D;
+
+CONSIDER: C O N S I D E R;
+
+DIRECTION: D I R E C T I O N;
+
+END: E N D;
+ENDS: E N D S;
+ENVIRONMENT: E N V I R O N M E N T;
+EVENT: E V E N T;
+EXACLTY: E X A C L T Y;
+EVERYONE: E V E R Y O N E;
+
+FASTER: F A S T E R;
+FROM: F R O M;
+FRONT: F R O N T;
+
+GIVEN: G I V E N;
+
+HAS: H A S;
+
+IN: I N;
+IS: I S;
+
+METERS: M E T E R S;
+
+NORMAL: N O R M A L;
+
+OBSTACLE: O B S T A C L E;
+OCCUR: O C C U R;
+OCCURRED: O C C U R R E D;
+OCCURRING: O C C U R R I N G;
+OF: O F;
+OR: O R;
+
+PEDESTRIAN: P E D E S T R I A N;
+PEDESTRIANS: P E D E S T R I A N S;
+POSSIBLE: P O S S I B L E;
+
+RANDOM: R A N D O M;
+
+SECONDS: S E C O N D S;
+SLOWER: S L O W E R;
+STATES: S T A T E S;
+STARTS: S T A R T S;
+SPEED: S P E E D;
+
+THE: T H E;
+THEN: T H E N;
+THEIR: T H E I R;
+
+WHEN: W H E N;
+WHILE: W H I L E;
+WILL: W I L L;
+WITHIN: W I T H I N;
+
+
+// ---------- Keep The Following At The End Of The File ------------
+
+ID: [a-zA-Z_\-]+;
+FLOAT: [0-9]+'.'[0-9]+;
 NUMBER : [0-9]+;
-COMMENT : '/*' .*? '*/'    -> channel(HIDDEN);
-LINE_COMMENT: '//' ~[\r\n]*    -> channel(HIDDEN);
-WS : [ \t\r\n]+ -> skip ;
-
-
-AN: (A | A N) WS;
-AND: A N D WS;
-OR: O R WS;
-ANDOR: (AND | OR) WS;
-COMMA: ',';
-COLON: ':';
-
-THE: T H E WS;
-GIVEN: G I V E N WS;
-SET: S E T WS;
-WHILE: W H I L E WS;
-
-PARAMETERS:
-  P A R A M E T E R S COLON
-  ;
-
-FASTERorSLOWER:
-  F A S T E R WS | S L O W E R WS;

@@ -17,10 +17,10 @@ namespace Behaviors {
  * @param state : state object to apply changes to
  */
 void
-Action::performAction(const PedestrianSet&          pedSet,
-                      const ObstacleSet&            obsSet,
-                      const Goals&                  goals,
-                      const BehaviorContext&        context,
+Action::performAction(PedestrianSet&                pedSet,
+                      ObstacleSet&                  obsSet,
+                      Goals&                        goals,
+                      BehaviorContext&              context,
                       VIPRA::idx                    pedIdx,
                       VIPRA::delta_t                dT,
                       std::shared_ptr<VIPRA::State> state) {

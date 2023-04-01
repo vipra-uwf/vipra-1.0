@@ -1,6 +1,10 @@
 grammar objects;
 
+import lexer_rules;
+
 object:
-  'The Environment' |
-  'Pedestrian'
+  '+'PEDESTRIAN |
+  '+'OBSTACLE |
+  OBJECT
   ;
+

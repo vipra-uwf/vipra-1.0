@@ -1,12 +1,20 @@
-#ifndef VIPRA_DISEMBARK_MOCK_BEHAVIOR_HPP
-#define VIPRA_DISEMBARK_MOCK_BEHAVIOR_HPP
+#ifndef VIPRA_ATOM_BE_HPP
+#define VIPRA_ATOM_BE_HPP
+
+#include <grammar/generated/BehaviorParser.h>
 
 #include <actions/action_atom.hpp>
-#include <behavior/human_behavior.hpp>
+
+#include <definitions/dsl_types.hpp>
 
 namespace Behaviors {
-class Atom_Disembark_Mock : public Atom {
+
+class Atom_Be : public Atom {
  public:
+  Atom_Be() = delete;
+
+  Atom_Be(stateUID);
+
   void performAction(PedestrianSet&,
                      ObstacleSet&,
                      Goals&,
@@ -14,6 +22,9 @@ class Atom_Disembark_Mock : public Atom {
                      VIPRA::idx,
                      VIPRA::delta_t,
                      std::shared_ptr<VIPRA::State>) override;
+
+ private:
+  stateUID state;
 };
 }  // namespace Behaviors
 

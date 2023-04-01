@@ -9,11 +9,11 @@ namespace Behaviors {
    * @param event : 
    */
 SubCondition_Event_Occurred::SubCondition_Event_Occurred(Event* event) : occurred(false) {
-  event->onStart([&]() { occurred = true; });
+  event->onStart([&](float) { occurred = true; });
 }
 
 /**
- * @brief Returns true if the event has started
+ * @brief Returns true if the event has occurred
  * 
  * @return true 
  * @return false 

@@ -8,7 +8,7 @@
 
 namespace Behaviors {
 
-typedef std::function<void()> EventHandler;
+typedef std::function<void(float)> EventHandler;
 
 /**
    * @brief An Event is something that occurs during a simulation, when an event starts it notifies it's subscribing functions and same when it ends

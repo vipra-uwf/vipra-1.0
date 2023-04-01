@@ -27,10 +27,10 @@ class Action {
   Action(Action&&) noexcept;
   Action& operator=(Action&&) noexcept;
 
-  void performAction(const PedestrianSet&,
-                     const ObstacleSet&,
-                     const Goals&,
-                     const BehaviorContext&,
+  void performAction(PedestrianSet&,
+                     ObstacleSet&,
+                     Goals&,
+                     BehaviorContext&,
                      VIPRA::idx,
                      VIPRA::delta_t,
                      std::shared_ptr<VIPRA::State>);

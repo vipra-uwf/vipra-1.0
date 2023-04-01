@@ -8,7 +8,7 @@ event:
 ;
 
 event_Single:
-  AN EVENT 'event will occur' condition '.';
+  (AN|THE) EVNT (EVENT)? WILL OCCUR condition;
 
 event_Lasting:
-  AN EVENT 'event will occur' condition 'and end' condition '.';
+  (AN|THE) EVNT (EVENT)? WILL OCCUR condition AND END condition;

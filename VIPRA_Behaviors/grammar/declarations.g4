@@ -5,18 +5,14 @@ import lexer_rules;
 declaration:
   decl_Ped |
   decl_Ped_State |
-  decl_Env_State |
-  decl_Parameters
+  decl_Env_State
   ;
 
 decl_Ped:
-  'Consider' AN ID '.';
+  CONSIDER AN ID;
 
 decl_Ped_State:
-  'Possible Pedestrian States Are:' (ID (COMMA ID)*) '.';
+  POSSIBLE PEDESTRIAN STATES ARE (STATE (COMMA? AND? STATE)*);
 
 decl_Env_State:
-  'Possible Environment States Are:' (ID (COMMA ID)*) '.';
-
-decl_Parameters:
-  PARAMETERS (PARAMETER (COMMA PARAMETER)*) '.';
+  POSSIBLE ENVIRONMENT STATES ARE (STATE (COMMA? AND? STATE)*);

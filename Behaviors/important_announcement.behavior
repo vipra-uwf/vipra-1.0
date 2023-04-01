@@ -3,10 +3,10 @@ Consider an announcement_listener.
 
 Everyone is an announcement_listener.
 
-// An !announcement event will occur after 5 seconds from !start.
-// An announcement_listener will @walk 50% slower given an !announcement event has occurred.
+Possible Pedestrian States are #listening, and #normal.
 
-An !announcement event will occur after 5 seconds from !start and end after 10 seconds from !announcement.
-An announcement_listener will @walk 50% slower while an !announcement event is occurring.
+The !announcement event will occur after 2 seconds from !start and end after 5 seconds from !announcement.
 
-// An announcement_listener will @stop while an !announcement event is occurring.
+An announcement_listener will @be set to #listening when an !announcement event starts.
+
+An announcement_listener will @be set to #normal when an !announcement event ends.

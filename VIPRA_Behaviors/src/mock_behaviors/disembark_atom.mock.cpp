@@ -13,10 +13,10 @@ void
  * @param pedIdx : 
  * @param state : 
  */
-Atom_Disembark_Mock::performAction(const PedestrianSet& pedSet,
-                                   const ObstacleSet&,
-                                   const Goals& goals,
-                                   const BehaviorContext&,
+Atom_Disembark_Mock::performAction(PedestrianSet& pedSet,
+                                   ObstacleSet&,
+                                   Goals& goals,
+                                   BehaviorContext&,
                                    VIPRA::idx pedIdx,
                                    VIPRA::delta_t,
                                    std::shared_ptr<VIPRA::State> state) {

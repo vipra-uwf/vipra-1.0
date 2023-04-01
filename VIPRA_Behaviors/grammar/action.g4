@@ -8,19 +8,19 @@ action:
   ;
 
 conditional_action:
-  AN ID 'will' sub_action condition '.';
+  AN ID WILL sub_action condition;
 
 un_conditional_action:
-  AN ID 'will always' sub_action '.';
+  AN ID WILL ALWAYS sub_action;
 
 sub_action:
-  action_atom ('then' action_atom)*
+  action_atom (THEN action_atom)*
   ;
 
 action_atom:
   ACTION |
-  state_Set |
   action_Stop |
+  action_Be |
   action_atom_Percent_Walk_Speed
   ;
 
@@ -29,4 +29,12 @@ action_Stop:
   ;
 
 action_atom_Percent_Walk_Speed:
-  '@walk' NUMBER '%' FASTERorSLOWER;
+  '@walk' FLOAT 'x' THEIR NORMAL SPEED;
+
+action_Push:
+  '@push' ID
+  ;
+
+action_Be:
+  '@be set to' STATE
+  ;

@@ -10,10 +10,10 @@ namespace Behaviors {
 class Atom {
  public:
   virtual ~Atom() = default;
-  virtual void performAction(const PedestrianSet&,
-                             const ObstacleSet&,
-                             const Goals&,
-                             const BehaviorContext&,
+  virtual void performAction(PedestrianSet&,
+                             ObstacleSet&,
+                             Goals&,
+                             BehaviorContext&,
                              VIPRA::idx,
                              VIPRA::delta_t,
                              std::shared_ptr<VIPRA::State>) = 0;

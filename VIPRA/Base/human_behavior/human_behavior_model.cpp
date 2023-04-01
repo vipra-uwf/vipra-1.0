@@ -23,9 +23,9 @@ HumanBehaviorModel::initialize(const PedestrianSet& pedSet, const ObstacleSet& o
 }
 
 void
-HumanBehaviorModel::timestep(const PedestrianSet&          pedSet,
-                             const ObstacleSet&            obsSet,
-                             const Goals&                  goals,
+HumanBehaviorModel::timestep(PedestrianSet&                pedSet,
+                             ObstacleSet&                  obsSet,
+                             Goals&                        goals,
                              std::shared_ptr<VIPRA::State> state,
                              VIPRA::delta_t                dT) {
   std::for_each(humanBehaviors.begin(), humanBehaviors.end(), [&](Behaviors::HumanBehavior& behavior) {

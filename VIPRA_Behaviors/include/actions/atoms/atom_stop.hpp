@@ -6,10 +6,10 @@
 namespace Behaviors {
 class Atom_Stop : public Atom {
  public:
-  void performAction(const PedestrianSet&,
-                     const ObstacleSet&,
-                     const Goals&,
-                     const BehaviorContext&,
+  void performAction(PedestrianSet&,
+                     ObstacleSet&,
+                     Goals&,
+                     BehaviorContext&,
                      VIPRA::idx,
                      VIPRA::delta_t,
                      std::shared_ptr<VIPRA::State>) override;

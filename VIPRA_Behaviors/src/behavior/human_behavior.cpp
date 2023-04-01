@@ -42,12 +42,11 @@ HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet
  * @param dT : simulation timestep size
  */
 void
-HumanBehavior::timestep(const PedestrianSet&          pedSet,
-                        const ObstacleSet&            obsSet,
-                        const Goals&                  goals,
+HumanBehavior::timestep(PedestrianSet&                pedSet,
+                        ObstacleSet&                  obsSet,
+                        Goals&                        goals,
                         std::shared_ptr<VIPRA::State> state,
                         VIPRA::delta_t                dT) {
-
   std::for_each(events.begin(), events.end(), [&](Event& event) { event.evaluate(pedSet, obsSet, goals, context, dT); });
 
   const auto& selectedPeds = selector->getSelectedPeds(pedSet, obsSet, goals, context);
@@ -57,6 +56,8 @@ HumanBehavior::timestep(const PedestrianSet&          pedSet,
       action.performAction(pedSet, obsSet, goals, context, pedIdx, dT, state);
     });
   });
+
+  context.elapsedTime += dT;
 }
 
 void
@@ -74,6 +75,16 @@ Event*
 HumanBehavior::addEvent(Event&& event) {
   events.emplace_back(std::move(event));
   return &(events.back());
+}
+
+size_t
+HumanBehavior::actionCount() const {
+  return pedActions.size();
+}
+
+size_t
+HumanBehavior::eventCount() const {
+  return events.size();
 }
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------

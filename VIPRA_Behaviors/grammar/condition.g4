@@ -1,39 +1,41 @@
 grammar condition;
 
-import lexer_rules, directions, state, objects;
+import lexer_rules, directions, objects;
 
 condition:
-  sub_condition (ANDOR sub_condition)*
+  sub_condition connector*;
+
+connector:
+  or_Connector |
+  and_Connector
   ;
+
+or_Connector:
+  OR sub_condition;
+
+and_Connector:
+  AND sub_condition;
 
 sub_condition:
-  condition_State |
   condition_Time_Elapsed_From_Event |
-  condition_Existance |
-  condition_Event |
-  condition_Event_Occurring
+  condition_Event_Occurred |
+  condition_Event_Occurring |
+  condition_Event_One_Time |
+  condition_Ped_Attr
   ;
 
-condition_Existance:
-  GIVEN 'There is' AN ID Direction |
-  GIVEN 'There is' AN ID Direction condition_Others_State
-  ;
-
-condition_State:
-  GIVEN object 'is' STATE;
-
-condition_Others_State:
-  'That is' STATE;
-
-condition_Met_Goal:
-  'That has ' ('not ')? 'met any goal';
+condition_Ped_Attr:
+  GIVEN THEIR ATTRIBUTE IS (STATE | NUMBER);
 
 condition_Time_Elapsed_From_Event:
-  'after' NUMBER 'seconds from' EVENT
+  AFTER NUMBER SECONDS FROM (AN | THE)? EVNT (EVENT)?
   ;
 
-condition_Event:
-  GIVEN (AN)? EVENT 'event has occurred';
+condition_Event_Occurred:
+  GIVEN (AN | THE)? EVNT (EVENT)? HAS OCCURRED;
 
 condition_Event_Occurring:
-  WHILE (AN)? EVENT 'event is occurring';
+  WHILE (AN | THEN)? EVNT (EVENT)? IS OCCURRING;
+
+condition_Event_One_Time:
+  WHEN (AN | THEN)? EVNT (EVENT)? (ENDS | STARTS);

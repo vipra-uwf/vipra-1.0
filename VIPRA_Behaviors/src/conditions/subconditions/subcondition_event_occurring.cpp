@@ -9,8 +9,8 @@ namespace Behaviors {
    * @param event : 
    */
 SubCondition_Event_Occurring::SubCondition_Event_Occurring(Event* event) : occurring(false) {
-  event->onStart([this]() { this->occurring = true; });
-  event->onEnd([this]() { this->occurring = false; });
+  event->onStart([this](float) { this->occurring = true; });
+  event->onEnd([this](float) { this->occurring = false; });
 }
 
 /**

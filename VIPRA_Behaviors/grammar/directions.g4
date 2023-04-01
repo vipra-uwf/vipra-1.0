@@ -1,9 +1,25 @@
-lexer grammar directions;
+grammar directions;
 
 import lexer_rules;
 
-Direction:
-  'in direction of' ID |
-  'in front' |
-  'behind'
+direction:
+  dir WITHIN NUMBER METERS;
+
+dir:
+  direction_of |
+  infront |
+  behind |
+  around 
   ;
+
+direction_of:
+  IN DIRECTION OF ATTRIBUTE;
+
+infront:
+  IN FRONT;
+
+behind:
+  BEHIND;
+
+around:
+  AROUND;

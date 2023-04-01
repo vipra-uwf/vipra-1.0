@@ -14,14 +14,14 @@ namespace Behaviors {
    * @param state : state object to put result to
    */
 void
-Atom_Stop::performAction(const PedestrianSet&          pedSet,
-                         const ObstacleSet&            obsSet,
-                         const Goals&                  goals,
-                         const BehaviorContext&        context,
-                         VIPRA::idx                    pedIdx,
-                         VIPRA::delta_t                dT,
+Atom_Stop::performAction(PedestrianSet& pedSet,
+                         ObstacleSet&,
+                         Goals&,
+                         BehaviorContext&,
+                         VIPRA::idx pedIdx,
+                         VIPRA::delta_t,
                          std::shared_ptr<VIPRA::State> state) {
   state->pedestrianCoordinates[pedIdx] = pedSet.getPedCoords(pedIdx);
-  state->velocities[pedIdx] = pedSet.getPedVelocity(pedIdx);
+  state->velocities[pedIdx] = VIPRA::f3d{0, 0, 0};
 }
 }  // namespace Behaviors

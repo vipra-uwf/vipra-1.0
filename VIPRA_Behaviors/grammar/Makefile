@@ -1,4 +1,4 @@
-ANTLR_FLAGS = -no-listener -visitor -Werror -Dlanguage=Cpp
+ANTLR_FLAGS = -no-listener -visitor -Werror -Dlanguage=Cpp -long-messages
 GENERATED_DIR = ./generated
 
 grammar: $(wildcard *.g4)

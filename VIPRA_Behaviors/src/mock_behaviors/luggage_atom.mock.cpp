@@ -14,10 +14,10 @@ Atom_Luggage_Mock::construct(const PedestrianSet& pedSet) {
 }
 
 void
-Atom_Luggage_Mock::performAction(const PedestrianSet& pedSet,
-                                 const ObstacleSet&,
-                                 const Goals& goals,
-                                 const BehaviorContext&,
+Atom_Luggage_Mock::performAction(PedestrianSet& pedSet,
+                                 ObstacleSet&,
+                                 Goals& goals,
+                                 BehaviorContext&,
                                  VIPRA::idx pedIdx,
                                  VIPRA::delta_t,
                                  std::shared_ptr<VIPRA::State> state) {

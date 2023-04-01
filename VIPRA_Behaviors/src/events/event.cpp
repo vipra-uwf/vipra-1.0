@@ -24,13 +24,13 @@ Event::evaluate(const PedestrianSet&   pedSet,
     if (startCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
       spdlog::debug("Event \"{}\" has Started", name);
       occurring = true;
-      std::for_each(startHandlers.begin(), startHandlers.end(), [&](EventHandler handler) { handler(); });
+      std::for_each(startHandlers.begin(), startHandlers.end(), [&](EventHandler handler) { handler(context.elapsedTime); });
     }
   } else {
     if (endCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
       spdlog::debug("Event \"{}\" has Ended", name);
       occurring = false;
-      std::for_each(endHandlers.begin(), endHandlers.end(), [&](EventHandler handler) { handler(); });
+      std::for_each(endHandlers.begin(), endHandlers.end(), [&](EventHandler handler) { handler(context.elapsedTime); });
     }
   }
 }

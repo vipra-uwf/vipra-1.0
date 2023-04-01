@@ -45,7 +45,6 @@ An announcement_listener will @walk 50% slower while an !announcement event is o
 ---
 
 
-
 # S. Selectors
 
 `Selectors` Decide which pedestrians "possess" a `Behavior`.
@@ -424,7 +423,7 @@ Add the `SubCondition` source file to `/VIPRA_Behaviors/src/CMakeLists.txt`
 
 example:
 - for our Example `SubCondition`:
-`${SRC_DIR}/conditions/subcondition_example.cpp`
+`${SRC_DIR}/conditions/subconditions/subcondition_example.cpp`
 
 ### C.1.2.6. Add Tests
 
@@ -433,6 +432,55 @@ Add any tests in `/VIPRA_Behaviors/__tests__/subcondition_tests/`
 ### C.1.2.7. Add To Documentation
 
 Add any documentation
+
+
+## C.1.3 Current Sub Conditions
+
+### C.1.3.1 Elapsed Time:
+
+**Parameters:**
+- VIPRA::delta_t : the desired elapsed time
+- Event* : pointer to event to listen to
+
+**Evaluates to True, Given:** An `Event` has started and The elapsed time between the start and the current time step is greater or equal to the desired elapsed time
+
+### C.1.3.2 Event Occurring:
+
+**Parameters:**
+- Event* : pointer to event to listen to
+
+**Evaluates to True, Given:** The event has started and The event has not ended
+
+
+### C.1.3.3. Event One Time:
+
+**Parameters:**
+- bool : true if fire on event start, false if fire on event end
+- Event* : pointer to event to listen to
+
+**Evaluates to True, Given:** The event has triggered the listener and the current simulation time is the same as when the listener was triggered
+
+### C.1.3.4. Event:
+
+**Parameters:**
+- Event* : pointer to the event to listen to
+
+**Evaluates to True, Given:** The event has started
+
+### C.1.3.5. Start:
+
+**Parameters:** none
+
+**Evaluates to True, Given:** Always
+
+
+### C.1.3.6 State:
+
+**Parameters:**
+- Behaviors::stateUID : the state to wait for
+- bool : true if the condition relies on a pedestrian's state, false if the condition relies on a the environment state
+
+**Evaluates to True, Given:** The pedestrian or environments state is the same as the conditions required state
 
 ---
 
@@ -508,23 +556,29 @@ The `Behavior Builder` is what constructs `Behavior` objects from .behavior file
 
 
 
-# N. Needs
+# N. Needs/Wants/Issues
 
-## N.1. General Needs
+## N.1. Needs
 
-### N.1.1. Sub Condition grouping / Operation Order
-We need a way to group sub conditions with the equivalent of parenthesis, to provide more expressive conditions. Currently sub conditions are evaluated in the order they were added
 
-example: 
-`A && (B || C)`
-vs
-`A && B || C`
+### N.1.1. Add Checks
+We may need to add checks that the what behaviors do is reasonable.
+
+For example: Collisions detection, currently the change speed atom can cause pedestrians to fly through walls / go past their goals (only really an issue if they set the speed up to an unreasonable value)
 
 ### N.1.2. Pedestrian Attributes
 We need a way to access pedestrian attributes, such as: state, speed, goal, etc.
 
+example
+```
+// conditional action based on the pedestrians state
+a pedestrian will @stop given their *state is #waiting.
+```
+
 ### N.1.3. Run Time Parameters
-We need a way to provide behaviors parameters at run time (taken from module params)
+We need a way to provide behaviors parameters at run time (taken from module params).
+
+This is needed to allow for parameter sweeps
 
 example
 ```
@@ -537,8 +591,43 @@ The !announcement event will
 	and end after $event_length seconds from !announcement.
 ```
 
-### N.1.4. Custom Action/Condition Definitions
-We need a way for end users to specify `Atoms` and `Sub Conditions` in the `Behavior`
+### N.1.4 Allow Behaviors To Change Goals
+We need a way for behaviors to change pedestrian goals.
+
+This would require updating the Goals module to add a update pathfinding method
+
+example
+```
+a !fire will occur after 5 seconds from !start.
+
+// the @head atom would change their goal and require a re-calc of pathfinding
+a pedestrian will @head towards the +exit nearest to them.
+```
+
+### N.1.5 Personal Events
+We need a way for events to happen to individuals, as opposed to the overall environment.
+
+for example: a pedestrian hurts themselves and now walks slower
+
+### N.1.6. Multiple Selectors
+We need a way to describe multiple types of people in `Behaviors` and how they interact with each other.
+
+Currently `Behaviors` can only have one `Selector`.
+
+With multiple selectors we need to have a way to make sure that pedestrians can only be selected once, if the trait is exclusive.
+
+## N.2. Wants
+
+### N.2.1. Sub Condition grouping / Operation Order
+We may need a way to group sub conditions with the equivalent of parenthesis, to provide more expressive conditions. Currently sub conditions are evaluated in the order they were added
+
+example: 
+`A && (B || C)`
+vs
+`(A && B) || C`
+
+### N.2.2. Custom Action/Condition Definitions
+We may need a way for end users to specify `Atoms` and `Sub Conditions` in the `Behavior`
 
 example:
 ```
@@ -550,9 +639,20 @@ The @wait action means:
 A pedestrian will always @wait.
 ```
 
-### N.1.5. Multiple Selectors
-We need a way to describe multiple types of people in `Behaviors` and how they interact with each other.
+### N.2.3. Behaviors Affect The Environment Physically
+We may need to add the ability for behaviors to add to the environment.
 
-Currently `Behaviors` can only have one `Selector`
+For example: a fire even can "place" fires around the map, then pedestrians can avoid these
+
+Currently behaviors can only change the state of the environment
+
+### N.2.4. Make Everything Case Insensitive
+We may want to make the grammar completely case insensitive
+
+At the least we should make it consistent.
+
+Currently parts are sensitive and others aren't
+
+## N.3 Issues
 
 ---

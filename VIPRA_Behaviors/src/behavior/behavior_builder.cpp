@@ -14,6 +14,10 @@
 #include <actions/atoms/atom_change_speed.hpp>
 #include <actions/atoms/atom_stop.hpp>
 
+#include <definitions/attributes.hpp>
+#include <definitions/directions.hpp>
+#include <definitions/object.hpp>
+
 namespace Behaviors {
 
 Condition startCond;
@@ -56,6 +60,10 @@ BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& fi
   BehaviorParser::ProgramContext* tree = parser.program();
 
   visitProgram(tree);
+
+  if (currentBehavior.actionCount() == 0) {
+    spdlog::warn("Behavior \"{}\" Does Not Contain Any Actions", behaviorName);
+  }
 
   return std::move(currentBehavior);
 }
@@ -105,7 +113,8 @@ BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, Behaviors
 Behaviors::stateUID
 BehaviorBuilder::getState(const std::string& state) {
   if (states.find(state) == states.end()) {
-    states[state] = currState++;
+    spdlog::error("Behavior Error: Attempt To Use non-declared State: \"{}\"", state);
+    exit(1);
   }
 
   return states.at(state);
@@ -126,14 +135,22 @@ BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond) {
     return condition;
   }
 
-  const auto subConds = cond->sub_condition();
-  std::for_each(subConds.begin(), subConds.end(), [&](BehaviorParser::Sub_conditionContext* subcond) {
-    addSubCondToCondtion(condition, subcond);
-  });
+  auto subcond = cond->sub_condition();
+  addSubCondToCondtion(condition, subcond);
 
-  const auto andor = cond->ANDOR();
-  std::for_each(andor.begin(), andor.end(), [&](antlr4::tree::TerminalNode* andor) {
-    condition.addAndOr(andor->getText() == "and" || andor->getText() == "And" || andor->getText() == "AND");
+  const auto connectors = cond->connector();
+  std::for_each(connectors.begin(), connectors.end(), [&](auto connector) {
+    BehaviorParser::Sub_conditionContext* cond;
+
+    if (connector->and_Connector()) {
+      cond = connector->and_Connector()->sub_condition();
+      condition.addAndOr(true);
+    } else {
+      cond = connector->or_Connector()->sub_condition();
+      condition.addAndOr(false);
+    }
+
+    addSubCondToCondtion(condition, cond);
   });
 
   return condition;
@@ -147,49 +164,49 @@ BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond) {
  */
 void
 BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
-  if (subcond->condition_State()) {
-    spdlog::debug("Behavior \"{}\": Adding SubCondition: State", currentBehavior.getName());
-    auto object = (subcond->condition_State()->object()->getText() == "Pedestrian");
-    auto state = getState(subcond->condition_State()->STATE()->getText());
-    condition.addSubCondition("state", state, object);
-    return;
+
+  if (subcond->condition_Ped_Attr()) {
+
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Pedestrian Attribute \"{}\"", currentBehavior.getName());
+    condition.addSubCondition("ped_attribute");
   }
 
   if (subcond->condition_Time_Elapsed_From_Event()) {
     VIPRA::delta_t time = std::stof(subcond->condition_Time_Elapsed_From_Event()->NUMBER()->toString());
-    std::string    evName = subcond->condition_Time_Elapsed_From_Event()->EVENT()->toString();
+    std::string    evName = subcond->condition_Time_Elapsed_From_Event()->EVNT()->toString();
     spdlog::debug("Behavior \"{}\": Adding SubCondition: Elapsed Time From \"{}\" Event", currentBehavior.getName(), evName);
     condition.addSubCondition("elapsed_time_from_event", time, getEvent(evName));
     return;
   }
 
-  if (subcond->condition_Event()) {
-    std::string evName = subcond->condition_Event()->EVENT()->toString();
+  if (subcond->condition_Event_Occurred()) {
+    std::string evName = subcond->condition_Event_Occurred()->EVNT()->toString();
     spdlog::debug("Behavior \"{}\": Adding SubCondition: Event \"{}\" Occurred", currentBehavior.getName(), evName);
     condition.addSubCondition("event_occurred", getEvent(evName));
     return;
   }
 
   if (subcond->condition_Event_Occurring()) {
-    std::string evName = subcond->condition_Event_Occurring()->EVENT()->toString();
+    std::string evName = subcond->condition_Event_Occurring()->EVNT()->toString();
     spdlog::debug("Behavior \"{}\": Adding SubCondition: Event \"{}\" Occurring", currentBehavior.getName(), evName);
     condition.addSubCondition("event_occurring", getEvent(evName));
     return;
   }
 
+  if (subcond->condition_Event_One_Time()) {
+    std::string evName = subcond->condition_Event_One_Time()->EVNT()->toString();
+    bool        onstart = (subcond->condition_Event_One_Time()->STARTS() != nullptr);
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Event \"{}\" {}",
+                  currentBehavior.getName(),
+                  evName,
+                  onstart ? "starts" : "ends");
+
+    condition.addSubCondition("event_one_time", onstart, getEvent(evName));
+    return;
+  }
+
   spdlog::error("Behavior Error: No Valid SubCondition For: \"{}\"", subcond->getText());
   exit(1);
-}
-
-/**
- * @brief Builds a condition from a condition context and adds it to the action
- * 
- * @param action 
- * @param cond 
- */
-void
-BehaviorBuilder::addConditionToAction(Action& action, BehaviorParser::ConditionContext* cond) {
-  action.addCondition(buildCondition(cond));
 }
 
 /**
@@ -203,8 +220,16 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
 
   if (atom->action_atom_Percent_Walk_Speed()) {
     spdlog::debug("Behavior \"{}\": Adding Action Atom: \"Change Speed\"", currentBehavior.getName());
-    auto params = getChangeSpeedParams(atom);
-    action.addAtom("change_speed", params.change, params.faster);
+    float change = getChangeSpeedParams(atom);
+    action.addAtom("change_speed", change);
+    return;
+  }
+
+  if (atom->action_Be()) {
+    auto     stateStr = atom->action_Be()->STATE()->toString();
+    stateUID state = getState(stateStr);
+    spdlog::debug("Behavior \"{}\": Adding Action Atom: \"Be State\" state: {}", currentBehavior.getName(), stateStr);
+    action.addAtom("be", state);
     return;
   }
 
@@ -224,64 +249,6 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
 
 // ------------------------------- ANTLR VISITOR METHODS -----------------------------------------------------------------------------------------
 
-// ------------------------------- CONDITIONS -----------------------------------------------------------------------------------------
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitCondition(BehaviorParser::ConditionContext* ctx) {
-  return BehaviorBaseVisitor::visitCondition(ctx);
-}
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitSub_condition(BehaviorParser::Sub_conditionContext* ctx) {
-  return BehaviorBaseVisitor::visitSub_condition(ctx);
-}
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitCondition_Existance(BehaviorParser::Condition_ExistanceContext* ctx) {
-  return BehaviorBaseVisitor::visitCondition_Existance(ctx);
-}
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitCondition_State(BehaviorParser::Condition_StateContext* ctx) {
-  return BehaviorBaseVisitor::visitCondition_State(ctx);
-}
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitCondition_Others_State(BehaviorParser::Condition_Others_StateContext* ctx) {
-  return BehaviorBaseVisitor::visitCondition_Others_State(ctx);
-}
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitCondition_Met_Goal(BehaviorParser::Condition_Met_GoalContext* ctx) {
-  return BehaviorBaseVisitor::visitCondition_Met_Goal(ctx);
-}
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitCondition_Time_Elapsed_From_Event(
-    BehaviorParser::Condition_Time_Elapsed_From_EventContext* ctx) {
-
-  return BehaviorBaseVisitor::visitCondition_Time_Elapsed_From_Event(ctx);
-}
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitCondition_Event(BehaviorParser::Condition_EventContext* ctx) {
-  return BehaviorBaseVisitor::visitCondition_Event(ctx);
-}
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext* ctx) {
-  return BehaviorBaseVisitor::visitCondition_Event_Occurring(ctx);
-}
-
-// ------------------------------- END CONTIDTIONS -----------------------------------------------------------------------------------------
-
-// ------------------------------- EVENTS -----------------------------------------------------------------------------------------
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) {
-  return BehaviorBaseVisitor::visitEvent(ctx);
-}
-
 /**
  * @brief Creates a new single fire event and adds it to the eventsMap
  * 
@@ -291,7 +258,7 @@ Behaviors::BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) {
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleContext* ctx) {
 
-  std::string eventName = ctx->EVENT()->toString();
+  std::string eventName = ctx->EVNT()->toString();
 
   if (eventsMap.find(eventName) != eventsMap.end()) {
     spdlog::error("Behavior \"{}\": Attempt To Redefine Event: \"{}\"", eventName);
@@ -321,7 +288,7 @@ Behaviors::BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleContex
  */
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingContext* ctx) {
-  std::string eventName = ctx->EVENT()->toString();
+  std::string eventName = ctx->EVNT()->toString();
 
   if (eventsMap.find(eventName) != eventsMap.end()) {
     spdlog::error("Behavior \"{}\": Attempt To Redefine Event: \"{}\"", eventName);
@@ -347,11 +314,6 @@ Behaviors::BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingCont
 // ------------------------------- END EVENTS -----------------------------------------------------------------------------------------
 
 // ------------------------------- SELECTORS -----------------------------------------------------------------------------------------
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) {
-  return BehaviorBaseVisitor::visitPed_Selector(ctx);
-}
 
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitSelector_Percent(BehaviorParser::Selector_PercentContext* ctx) {
@@ -393,7 +355,7 @@ Behaviors::BehaviorBuilder::visitConditional_action(BehaviorParser::Conditional_
   Action      action;
 
   spdlog::debug("Behavior \"{}\": Adding Conditional Action", currentBehavior.getName());
-  addConditionToAction(action, ctx->condition());
+  action.addCondition(buildCondition(ctx->condition()));
 
   std::for_each(
       atoms.begin(), atoms.end(), [&](BehaviorParser::Action_atomContext* atom) { addAtomToAction(action, atom); });
@@ -423,32 +385,31 @@ Behaviors::BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_condit
 // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
 
 antlrcpp::Any
-Behaviors::BehaviorBuilder::visitDecl_Ped(BehaviorParser::Decl_PedContext* ctx) {
-  return BehaviorBaseVisitor::visitDecl_Ped(ctx);
-}
-
-antlrcpp::Any
 Behaviors::BehaviorBuilder::visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) {
+  const auto stateNames = ctx->STATE();
+
+  for (auto state : stateNames) {
+    auto name = state->toString();
+    spdlog::debug("Behavior \"{}\": Adding Pedestrian State {}, id: {}", currentBehavior.getName(), name, currState);
+    states[name] = currState;
+    ++currState;
+  }
+
   return BehaviorBaseVisitor::visitDecl_Ped_State(ctx);
 }
 
 antlrcpp::Any
 Behaviors::BehaviorBuilder::visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx) {
+  const auto stateNames = ctx->STATE();
+
+  for (auto state : stateNames) {
+    auto name = state->toString();
+    spdlog::debug("Behavior \"{}\": Adding Environment State {}, id: {}", currentBehavior.getName(), name, currState);
+    states[name] = currState;
+    ++currState;
+  }
+
   return BehaviorBaseVisitor::visitDecl_Env_State(ctx);
-}
-
-antlrcpp::Any
-Behaviors::BehaviorBuilder::visitDecl_Parameters(BehaviorParser::Decl_ParametersContext* ctx) {
-
-  const auto& params = ctx->PARAMETER();
-
-  std::for_each(params.begin(), params.end(), [&](antlr4::tree::TerminalNode* param) {
-    std::string p = param->toString();
-    spdlog::debug("Behavior \"{}\": Adding Param: \"{}\"", currentBehavior.getName(), p);
-    currentBehavior.addParameter(p);
-  });
-
-  return BehaviorBaseVisitor::visitDecl_Parameters(ctx);
 }
 
 // ------------------------------- END DECLARATIONS -----------------------------------------------------------------------------------------

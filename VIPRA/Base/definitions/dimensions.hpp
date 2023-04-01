@@ -115,6 +115,8 @@ struct f2d {
   inline constexpr bool operator==(f2d&& other) const noexcept { return (x == other.x && y == other.y); }
   inline constexpr bool operator!=(const f2d& other) const noexcept { return (x != other.x || y != other.y); }
   inline constexpr bool operator!=(f2d&& other) const noexcept { return (x != other.x || y != other.y); }
+
+  inline constexpr float dot(const f2d& other) { return (x * other.x) + (y * other.y); }
 };
 
 struct f3d {
@@ -296,6 +298,8 @@ struct f3d {
   }
   inline constexpr float magnitudeSquared() const { return (x * x) + (y * y) + (z * z); }
   inline constexpr float magnitude() const { return std::sqrt((x * x) + (y * y) + (z * z)); }
+
+  inline constexpr float dot(const f3d& other) { return (x * other.x) + (y * other.y) + (z * other.z); }
 };
 
 typedef std::vector<f2d> f2dVec;

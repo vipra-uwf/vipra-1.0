@@ -32,11 +32,14 @@ class HumanBehavior {
   const std::string& getName() const noexcept;
 
   void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
-  void timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
+  void timestep(PedestrianSet&, ObstacleSet&, Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
 
   void   addAction(Action&&);
   void   addParameter(std::string);
   Event* addEvent(Event&&);
+
+  size_t actionCount() const;
+  size_t eventCount() const;
 
   /**
    * @brief Constructs a selector of type S in place

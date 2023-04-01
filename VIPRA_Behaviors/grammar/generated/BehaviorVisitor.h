@@ -31,25 +31,35 @@ public:
 
     virtual antlrcpp::Any visitCondition(BehaviorParser::ConditionContext *context) = 0;
 
+    virtual antlrcpp::Any visitConnector(BehaviorParser::ConnectorContext *context) = 0;
+
+    virtual antlrcpp::Any visitOr_Connector(BehaviorParser::Or_ConnectorContext *context) = 0;
+
+    virtual antlrcpp::Any visitAnd_Connector(BehaviorParser::And_ConnectorContext *context) = 0;
+
     virtual antlrcpp::Any visitSub_condition(BehaviorParser::Sub_conditionContext *context) = 0;
 
-    virtual antlrcpp::Any visitCondition_Existance(BehaviorParser::Condition_ExistanceContext *context) = 0;
-
-    virtual antlrcpp::Any visitCondition_State(BehaviorParser::Condition_StateContext *context) = 0;
-
-    virtual antlrcpp::Any visitCondition_Others_State(BehaviorParser::Condition_Others_StateContext *context) = 0;
-
-    virtual antlrcpp::Any visitCondition_Met_Goal(BehaviorParser::Condition_Met_GoalContext *context) = 0;
+    virtual antlrcpp::Any visitCondition_Ped_Attr(BehaviorParser::Condition_Ped_AttrContext *context) = 0;
 
     virtual antlrcpp::Any visitCondition_Time_Elapsed_From_Event(BehaviorParser::Condition_Time_Elapsed_From_EventContext *context) = 0;
 
-    virtual antlrcpp::Any visitCondition_Event(BehaviorParser::Condition_EventContext *context) = 0;
+    virtual antlrcpp::Any visitCondition_Event_Occurred(BehaviorParser::Condition_Event_OccurredContext *context) = 0;
 
     virtual antlrcpp::Any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext *context) = 0;
 
-    virtual antlrcpp::Any visitState_Check(BehaviorParser::State_CheckContext *context) = 0;
+    virtual antlrcpp::Any visitCondition_Event_One_Time(BehaviorParser::Condition_Event_One_TimeContext *context) = 0;
 
-    virtual antlrcpp::Any visitState_Set(BehaviorParser::State_SetContext *context) = 0;
+    virtual antlrcpp::Any visitDirection(BehaviorParser::DirectionContext *context) = 0;
+
+    virtual antlrcpp::Any visitDir(BehaviorParser::DirContext *context) = 0;
+
+    virtual antlrcpp::Any visitDirection_of(BehaviorParser::Direction_ofContext *context) = 0;
+
+    virtual antlrcpp::Any visitInfront(BehaviorParser::InfrontContext *context) = 0;
+
+    virtual antlrcpp::Any visitBehind(BehaviorParser::BehindContext *context) = 0;
+
+    virtual antlrcpp::Any visitAround(BehaviorParser::AroundContext *context) = 0;
 
     virtual antlrcpp::Any visitObject(BehaviorParser::ObjectContext *context) = 0;
 
@@ -75,6 +85,10 @@ public:
 
     virtual antlrcpp::Any visitAction_atom_Percent_Walk_Speed(BehaviorParser::Action_atom_Percent_Walk_SpeedContext *context) = 0;
 
+    virtual antlrcpp::Any visitAction_Push(BehaviorParser::Action_PushContext *context) = 0;
+
+    virtual antlrcpp::Any visitAction_Be(BehaviorParser::Action_BeContext *context) = 0;
+
     virtual antlrcpp::Any visitDeclaration(BehaviorParser::DeclarationContext *context) = 0;
 
     virtual antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext *context) = 0;
@@ -82,8 +96,6 @@ public:
     virtual antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext *context) = 0;
 
     virtual antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext *context) = 0;
-
-    virtual antlrcpp::Any visitDecl_Parameters(BehaviorParser::Decl_ParametersContext *context) = 0;
 
 
 };

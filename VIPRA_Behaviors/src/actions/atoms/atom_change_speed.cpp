@@ -10,18 +10,17 @@ namespace Behaviors {
  * @param atom : the atom context
  * @return ChangeSpeedParams 
  */
-ChangeSpeedParams
+float
 getChangeSpeedParams(BehaviorParser::Action_atomContext* atom) {
-  float change = std::stof(atom->action_atom_Percent_Walk_Speed()->NUMBER()->toString()) / 100;
-  bool  faster = atom->action_atom_Percent_Walk_Speed()->FASTERorSLOWER()->toString() == "faster";
-  spdlog::debug("Change: {}, Faster: {}", change, (faster ? "True" : "False"));
-  return {change, faster};
+  float change = std::stof(atom->action_atom_Percent_Walk_Speed()->FLOAT()->toString());
+  spdlog::debug("Speed Change: {}", change);
+  return change;
 }
 
-Atom_Change_Speed::Atom_Change_Speed(float percent, bool faster) : change(percent), faster(faster) {}
+Atom_Change_Speed::Atom_Change_Speed(float percent) : change(percent) {}
 
 /**
- * @brief either slows/speeds up a pedestrian based on change and faster
+ * @brief either slows/speeds up a pedestrian based on change
  * 
  * @param pedestrianSet : pedestrian set object
  * @param pedIndex : index of pedestrian to affect
@@ -29,32 +28,16 @@ Atom_Change_Speed::Atom_Change_Speed(float percent, bool faster) : change(percen
  * @param state : state object to put result into
  */
 void
-Atom_Change_Speed::performAction(const PedestrianSet& pedestrianSet,
-                                 const ObstacleSet&,
-                                 const Goals&,
-                                 const BehaviorContext&,
+Atom_Change_Speed::performAction(PedestrianSet& pedestrianSet,
+                                 ObstacleSet&,
+                                 Goals&,
+                                 BehaviorContext&,
                                  VIPRA::idx                    pedIndex,
                                  VIPRA::delta_t                dT,
                                  std::shared_ptr<VIPRA::State> state) {
   VIPRA::f3d originalPos = pedestrianSet.getPedCoords(pedIndex);
+  VIPRA::f3d tempVel = state->velocities[pedIndex] * change;
 
-  state->velocities[pedIndex] = computeAlteredDimensions(state->velocities[pedIndex]);
-  state->pedestrianCoordinates[pedIndex] = originalPos + (state->velocities[pedIndex] * dT);
-}
-
-/**
- * @brief calculates the vector with change applied to it
- * 
- * @param originalDimensions
- * @return VIPRA::f3d 
- */
-VIPRA::f3d
-Atom_Change_Speed::computeAlteredDimensions(VIPRA::f3d originalDimensions) {
-  VIPRA::f3d diff = originalDimensions * change;
-  if (faster) {
-    return originalDimensions + diff;
-  } else {
-    return originalDimensions - diff;
-  }
+  state->pedestrianCoordinates[pedIndex] = originalPos + (tempVel * dT);
 }
 }  // namespace Behaviors

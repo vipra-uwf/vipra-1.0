@@ -39,23 +39,23 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitConnector(BehaviorParser::ConnectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitOr_Connector(BehaviorParser::Or_ConnectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAnd_Connector(BehaviorParser::And_ConnectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitSub_condition(BehaviorParser::Sub_conditionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondition_Existance(BehaviorParser::Condition_ExistanceContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitCondition_State(BehaviorParser::Condition_StateContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitCondition_Others_State(BehaviorParser::Condition_Others_StateContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitCondition_Met_Goal(BehaviorParser::Condition_Met_GoalContext *ctx) override {
+  virtual antlrcpp::Any visitCondition_Ped_Attr(BehaviorParser::Condition_Ped_AttrContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -63,7 +63,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondition_Event(BehaviorParser::Condition_EventContext *ctx) override {
+  virtual antlrcpp::Any visitCondition_Event_Occurred(BehaviorParser::Condition_Event_OccurredContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -71,11 +71,31 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitState_Check(BehaviorParser::State_CheckContext *ctx) override {
+  virtual antlrcpp::Any visitCondition_Event_One_Time(BehaviorParser::Condition_Event_One_TimeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitState_Set(BehaviorParser::State_SetContext *ctx) override {
+  virtual antlrcpp::Any visitDirection(BehaviorParser::DirectionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitDir(BehaviorParser::DirContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitDirection_of(BehaviorParser::Direction_ofContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitInfront(BehaviorParser::InfrontContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitBehind(BehaviorParser::BehindContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAround(BehaviorParser::AroundContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -127,6 +147,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitAction_Push(BehaviorParser::Action_PushContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAction_Be(BehaviorParser::Action_BeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitDeclaration(BehaviorParser::DeclarationContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -140,10 +168,6 @@ public:
   }
 
   virtual antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitDecl_Parameters(BehaviorParser::Decl_ParametersContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -11,7 +11,7 @@ namespace Behaviors {
  */
 SubCondition_Elapsed_Time_From_Event::SubCondition_Elapsed_Time_From_Event(VIPRA::delta_t time, Event* event)
   : elapsedTime(0), requiredTime(time) {
-  event->onStart([&]() { started = true; });
+  event->onStart([&](float) { started = true; });
 }
 
 /**
