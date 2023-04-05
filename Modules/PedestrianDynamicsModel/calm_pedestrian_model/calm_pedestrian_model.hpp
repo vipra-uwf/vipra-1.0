@@ -71,6 +71,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   bool checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::idx index);
   float shortestDistanceToLineSegment(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
 
+  VIPRA::f3d calculateSpeedDensity(const PedestrianSet&);
   void updateModelState(const CalmPedestrianSet&, const CalmGoals&, VIPRA::delta_t, VIPRA::t_step) noexcept;
 
   [[nodiscard]] inline float calculateBeta(float) const noexcept;

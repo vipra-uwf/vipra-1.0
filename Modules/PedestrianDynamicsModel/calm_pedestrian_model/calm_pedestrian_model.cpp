@@ -237,9 +237,70 @@ CalmPedestrianModel::timestep(const PedestrianSet& pedestrianSet,
   updateModelState(
       static_cast<const CalmPedestrianSet&>(pedestrianSet), static_cast<const CalmGoals&>(goals), time, timestep);
 
+  // ---------------- Writing Debug Output ----------------
+  #ifdef DEBUG_OUTPUT
+    if(timestep % 100 == 0)
+    {
+      spdlog::debug("Writing Speed Densities");
+      VIPRA::f3d speedDensity = calculateSpeedDensity(static_cast<const CalmPedestrianSet&>(pedestrianSet));
+      std::ofstream output("speedDensity.csv", std::ios_base::app);
+      if(output.is_open()) {
+        output << speedDensity.x << ", " << speedDensity.y << "\n";
+      }
+      output.close();
+    }
+  #endif
+
   raceDetection(static_cast<const CalmPedestrianSet&>(pedestrianSet), goals);
 
   return modelState;
+}
+
+
+
+
+VIPRA::f3d 
+CalmPedestrianModel::calculateSpeedDensity(const PedestrianSet& pedestrianSet) {
+  const CalmPedestrianSet& pedSet = static_cast<const CalmPedestrianSet&>(pedestrianSet);
+  const VIPRA::size pedCnt = pedSet.getNumPedestrians();
+  //x less than 24.51 and greater than 20.51
+  //y greater than 1.6 and less than 2
+
+  const auto& coords = pedSet.getPedestrianCoordinates();
+  const auto& velocities = pedSet.getVelocities();
+  VIPRA::f3dVec dVelocities = VIPRA::f3dVec();
+  float area = 1.6;
+  int Nt = 0;
+
+  for(VIPRA::idx i = 0; i < pedCnt; ++i) {
+      if(coords.at(i).x < 24.51 && coords.at(i).x > 20.51 &&
+          coords.at(i).y < 2 && coords.at(i).y > 1.6) {
+            dVelocities.push_back(velocities.at(i));
+            Nt++;
+      }
+  }
+
+  VIPRA::f3d meanVelocity = VIPRA::f3d();
+  for(size_t i = 0; i < dVelocities.size(); i++) {
+    meanVelocity.x += dVelocities.at(i).x;
+    meanVelocity.y += dVelocities.at(i).y;
+  }
+  if(dVelocities.size() == 0) {
+    meanVelocity.x = 0;
+    meanVelocity.y = 0;
+  } else {
+    meanVelocity.x /= dVelocities.size();
+    meanVelocity.y /= dVelocities.size();
+  }
+
+
+  float density = Nt / area;
+  spdlog::debug("Mean Velocity: {}, Density: {}", meanVelocity.magnitude(), density);
+
+
+  return VIPRA::f3d{density, meanVelocity.magnitude(), 0};
+
+
 }
 
 /**
