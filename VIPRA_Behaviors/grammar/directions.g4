@@ -13,7 +13,7 @@ dir:
   ;
 
 direction_of:
-  IN DIRECTION OF ATTRIBUTE;
+  IN DIRECTION OF ID;
 
 infront:
   IN FRONT;

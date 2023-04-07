@@ -12,28 +12,33 @@
 
 namespace Behaviors {
 class BehaviorBuilder : public BehaviorBaseVisitor {
+ public:
+  HumanBehavior&& build(std::string, const std::filesystem::path&, Behaviors::seed);
+
  private:
   BehaviorErrorListener errorListener;
   HumanBehavior         currentBehavior;
 
   std::unordered_map<std::string, Behaviors::stateUID> states;
+  std::unordered_map<std::string, Behaviors::typeUID>  types;
   std::unordered_map<std::string, Behaviors::Event*>   eventsMap;
 
   Behaviors::stateUID currState;
-  Behaviors::seed     seed;
+  Behaviors::typeUID  currType;
 
   void initialBehaviorSetup(const std::string&, Behaviors::seed);
+  void endBehaviorCheck();
 
-  Event* getEvent(const std::string&);
-  void   addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
-  void   addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
-
- public:
-  HumanBehavior&& build(std::string, const std::filesystem::path&, Behaviors::seed);
-
-  Behaviors::stateUID getState(const std::string&);
+  void addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
 
   Condition buildCondition(BehaviorParser::ConditionContext*);
+  void      addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
+
+  Selector buildSelector(BehaviorParser::Ped_SelectorContext*);
+
+  Behaviors::stateUID getState(const std::string&);
+  Behaviors::typeUID  getType(const std::string&);
+  Event*              getEvent(const std::string&);
 
   // ------------------------------- EVENTS -----------------------------------------------------------------------------------------
 
@@ -45,11 +50,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   // ------------------------------- SELECTORS -----------------------------------------------------------------------------------------
 
-  antlrcpp::Any visitSelector_Percent(BehaviorParser::Selector_PercentContext* ctx) override;
-
-  antlrcpp::Any visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly_N_RandomContext* ctx) override;
-
-  antlrcpp::Any visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext* ctx) override;
+  antlrcpp::Any visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) override;
 
   // ------------------------------- END SELECTORS -----------------------------------------------------------------------------------------
 
@@ -66,6 +67,8 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) override;
 
   antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx) override;
+
+  antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext* ctx) override;
 
   // ------------------------------- END DECLARATIONS -----------------------------------------------------------------------------------------
 };

@@ -55,10 +55,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondition_Ped_Attr(BehaviorParser::Condition_Ped_AttrContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitCondition_Time_Elapsed_From_Event(BehaviorParser::Condition_Time_Elapsed_From_EventContext *ctx) override {
     return visitChildren(ctx);
   }

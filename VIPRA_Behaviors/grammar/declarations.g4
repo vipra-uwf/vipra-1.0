@@ -9,7 +9,7 @@ declaration:
   ;
 
 decl_Ped:
-  CONSIDER AN ID;
+  CONSIDER AN (ID (COMMA? AND? AN? ID)*);
 
 decl_Ped_State:
   POSSIBLE PEDESTRIAN STATES ARE (STATE (COMMA? AND? STATE)*);

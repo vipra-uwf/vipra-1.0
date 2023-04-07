@@ -7,8 +7,6 @@
 #include <algorithm>
 #include <filesystem>
 
-#include <mock_behaviors/mock_behaviors_builder.hpp>
-
 void
 HumanBehaviorModel::configure(const VIPRA::Config::Map& configMap) {
   seed = configMap["seed"].asUInt();

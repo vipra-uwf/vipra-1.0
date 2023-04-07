@@ -2,7 +2,6 @@
 #include <conditions/condition_map.hpp>
 #include <events/event.hpp>
 
-#include <definitions/attributes.hpp>
 #include <definitions/directions.hpp>
 #include <definitions/object.hpp>
 #include <conditions/subconditions/subcondition_elapsed_time.hpp>

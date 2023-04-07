@@ -15,8 +15,18 @@ HumanBehavior::getName() const noexcept {
  * @param action : action to add
  */
 void
-HumanBehavior::addAction(Action&& action) {
-  pedActions.emplace_back(std::move(action));
+HumanBehavior::addAction(typeUID type, Action&& action) {
+  for (auto& selector : selectors) {
+    if (selector.Type() == type) {
+      selector.addAction(std::forward<Action>(action));
+      return;
+    }
+  }
+}
+
+void
+HumanBehavior::addSelector(Selector&& selector) {
+  selectors.emplace_back(std::move(selector));
 }
 
 /**
@@ -29,7 +39,11 @@ HumanBehavior::addAction(Action&& action) {
 void
 HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
   context.pedStates = std::vector<Behaviors::stateUID>(pedSet.getNumPedestrians(), 0);
-  selector->initialize(pedSet, obsSet, goals);
+  spdlog::debug("Initializing {} Selectors, Seed: {}", selectors.size(), seedNum);
+  for (auto& selector : selectors) {
+    spdlog::debug("Initializing Selector For Type Id: {}", selector.Type());
+    selector.initialize(name, seedNum, pedSet, obsSet, goals);
+  }
 }
 
 /**
@@ -47,22 +61,16 @@ HumanBehavior::timestep(PedestrianSet&                pedSet,
                         Goals&                        goals,
                         std::shared_ptr<VIPRA::State> state,
                         VIPRA::delta_t                dT) {
-  std::for_each(events.begin(), events.end(), [&](Event& event) { event.evaluate(pedSet, obsSet, goals, context, dT); });
 
-  const auto& selectedPeds = selector->getSelectedPeds(pedSet, obsSet, goals, context);
+  for (auto& event : events) {
+    event.evaluate(pedSet, obsSet, goals, context, dT);
+  }
 
-  std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](VIPRA::idx pedIdx) {
-    std::for_each(pedActions.begin(), pedActions.end(), [&](Action& action) {
-      action.performAction(pedSet, obsSet, goals, context, pedIdx, dT, state);
-    });
-  });
+  for (auto& selector : selectors) {
+    selector.timestep(pedSet, obsSet, goals, context, dT, state);
+  }
 
   context.elapsedTime += dT;
-}
-
-void
-HumanBehavior::addParameter(std::string param) {
-  parameters.emplace_back(param);
 }
 
 /**
@@ -78,32 +86,45 @@ HumanBehavior::addEvent(Event&& event) {
 }
 
 size_t
-HumanBehavior::actionCount() const {
-  return pedActions.size();
-}
-
-size_t
 HumanBehavior::eventCount() const {
   return events.size();
 }
 
+size_t
+HumanBehavior::selectorCount() const {
+  return selectors.size();
+}
+
+size_t
+HumanBehavior::actionCount() const {
+  size_t sum = 0;
+  for (const auto& selector : selectors) {
+    sum += selector.actionCount();
+  }
+
+  return sum;
+}
+
+void
+HumanBehavior::setSeed(Behaviors::seed s) {
+  seedNum = s;
+}
+
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------
 
-HumanBehavior::HumanBehavior(std::string behaviorName)
-  : name(behaviorName), context(), parameters(), selector(nullptr), events(), pedActions() {}
+HumanBehavior::HumanBehavior(std::string behaviorName) : seedNum(0), name(behaviorName), context(), selectors(), events() {}
 
 HumanBehavior::HumanBehavior(HumanBehavior&& other) noexcept
-  : name(std::move(other.name)), context(std::move(other.context)), parameters(std::move(other.parameters)),
-    selector(std::move(other.selector)), events(std::move(other.events)), pedActions(std::move(other.pedActions)) {}
+  : seedNum(other.seedNum), name(std::move(other.name)), context(std::move(other.context)),
+    selectors(std::move(other.selectors)), events(std::move(other.events)) {}
 
 HumanBehavior&
 HumanBehavior::operator=(HumanBehavior&& other) noexcept {
+  seedNum = other.seedNum;
   name = (std::move(other.name));
   context = (std::move(other.context));
-  parameters = (std::move(other.parameters));
-  selector = (std::move(other.selector));
+  selectors = (std::move(other.selectors));
   events = (std::move(other.events));
-  pedActions = (std::move(other.pedActions));
   return (*this);
 }
 

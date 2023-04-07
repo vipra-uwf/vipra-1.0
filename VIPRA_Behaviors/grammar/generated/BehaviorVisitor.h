@@ -39,8 +39,6 @@ public:
 
     virtual antlrcpp::Any visitSub_condition(BehaviorParser::Sub_conditionContext *context) = 0;
 
-    virtual antlrcpp::Any visitCondition_Ped_Attr(BehaviorParser::Condition_Ped_AttrContext *context) = 0;
-
     virtual antlrcpp::Any visitCondition_Time_Elapsed_From_Event(BehaviorParser::Condition_Time_Elapsed_From_EventContext *context) = 0;
 
     virtual antlrcpp::Any visitCondition_Event_Occurred(BehaviorParser::Condition_Event_OccurredContext *context) = 0;

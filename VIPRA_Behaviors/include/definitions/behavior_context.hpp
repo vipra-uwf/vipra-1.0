@@ -11,6 +11,7 @@ struct BehaviorContext {
   VIPRA::delta_t                   elapsedTime;
   Behaviors::stateUID              environmentState = 0;
   std::vector<Behaviors::stateUID> pedStates;
+  std::vector<Behaviors::stateUID> types;
 };
 }  // namespace Behaviors
 

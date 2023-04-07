@@ -38,7 +38,6 @@ COLON: ':';
 
 STATE: '#'[a-zA-Z_\-]+;
 ACTION: '@'[a-zA-Z_\-]+;
-ATTRIBUTE: '*'[a-zA-Z_\-]+;
 PARAMETER: '$'[a-zA-Z_\-]+;
 EVNT: '!'[a-zA-Z_\-]+;
 OBJECT: '+'[a-zA-Z_\-]+;
@@ -62,7 +61,7 @@ END: E N D;
 ENDS: E N D S;
 ENVIRONMENT: E N V I R O N M E N T;
 EVENT: E V E N T;
-EXACLTY: E X A C L T Y;
+EXACTLY: E X A C T L Y;
 EVERYONE: E V E R Y O N E;
 
 FASTER: F A S T E R;
@@ -102,6 +101,7 @@ SPEED: S P E E D;
 THE: T H E;
 THEN: T H E N;
 THEIR: T H E I R;
+TYPES: T Y P E S;
 
 WHEN: W H E N;
 WHILE: W H I L E;
@@ -112,5 +112,5 @@ WITHIN: W I T H I N;
 // ---------- Keep The Following At The End Of The File ------------
 
 ID: [a-zA-Z_\-]+;
-FLOAT: [0-9]+'.'[0-9]+;
 NUMBER : [0-9]+;
+FLOAT: [0-9]+'.'[0-9]+;

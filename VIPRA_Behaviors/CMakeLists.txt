@@ -27,14 +27,11 @@ SET(SRCS
   ${SRC_DIR}/conditions/subconditions/subcondition_start.cpp
   ${SRC_DIR}/conditions/subconditions/subcondition_event_occurring.cpp
   ${SRC_DIR}/conditions/subconditions/subcondition_event_one_time.cpp
-  ${SRC_DIR}/mock_behaviors/mock_behaviors_builder.cpp
-  ${SRC_DIR}/mock_behaviors/disembark_atom.mock.cpp
-  ${SRC_DIR}/mock_behaviors/luggage_atom.mock.cpp
+  ${SRC_DIR}/selectors/selector.cpp
   ${SRC_DIR}/selectors/selector_everyone.cpp
   ${SRC_DIR}/selectors/selector_exactly_N.cpp
   ${SRC_DIR}/selectors/selector_percent.cpp
   ${SRC_DIR}/events/event.cpp
-  ${SRC_DIR}/definitions/attributes.cpp
   ${SRC_DIR}/definitions/directions.cpp
   ${SRC_DIR}/definitions/object.cpp
   ${GRAMMAR_DIR}/generated/BehaviorVisitor.cpp

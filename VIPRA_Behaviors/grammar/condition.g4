@@ -20,12 +20,8 @@ sub_condition:
   condition_Time_Elapsed_From_Event |
   condition_Event_Occurred |
   condition_Event_Occurring |
-  condition_Event_One_Time |
-  condition_Ped_Attr
+  condition_Event_One_Time
   ;
-
-condition_Ped_Attr:
-  GIVEN THEIR ATTRIBUTE IS (STATE | NUMBER);
 
 condition_Time_Elapsed_From_Event:
   AFTER NUMBER SECONDS FROM (AN | THE)? EVNT (EVENT)?

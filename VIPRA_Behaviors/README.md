@@ -609,12 +609,29 @@ We need a way for events to happen to individuals, as opposed to the overall env
 
 for example: a pedestrian hurts themselves and now walks slower
 
-### N.1.6. Multiple Selectors
-We need a way to describe multiple types of people in `Behaviors` and how they interact with each other.
+### N.1.6 Exclusive Selectors
 
-Currently `Behaviors` can only have one `Selector`.
+Currently there is no way to make selectors exclusive.
 
-With multiple selectors we need to have a way to make sure that pedestrians can only be selected once, if the trait is exclusive.
+example
+```
+exactly one pedestrian is an example.
+exactly one pedestrian is another_example.
+
+// It is possible these choose the same pedestrian
+// There needs to be a way to choose if a selector is exclusive
+```
+
+
+### N.1.7. Behavior Priorities
+We need a way to say which behaviors take precedence over others.
+
+todo
+
+### N.1.8 Conditional Selectors
+We need a way to select pedestrians based on conditions.
+
+For example: choosing a pedestrians type based on their end goal
 
 ## N.2. Wants
 

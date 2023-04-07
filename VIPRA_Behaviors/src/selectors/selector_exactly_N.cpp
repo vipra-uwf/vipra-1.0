@@ -1,39 +1,21 @@
 
 #include <algorithm>
+#include <cmath>
+#include <random>
 
 #include "selectors/selector_exactly_N.hpp"
 
 namespace Behaviors {
-Selector_Exactly_N::Selector_Exactly_N(VIPRA::size N, Behaviors::seed seed) : Selector(), count(N) {
+std::vector<VIPRA::idx>
+selector_exactly_N::operator()(Behaviors::seed seed, const PedestrianSet& pedSet, const ObstacleSet&, const Goals&) {
   srand(seed);
-}
+  VIPRA::size numPeds = pedSet.getNumPedestrians();
 
-/**
- * @brief Randomly selects N pedestrians
- * @note not the best implementation as collisions occur more frequently as N increases
- * 
- * @param pedestrianSet : 
- */
-void
-Selector_Exactly_N::selectPedestrianIds(const PedestrianSet& pedestrianSet) {
-  VIPRA::size numPedestrians = pedestrianSet.getNumPedestrians();
+  auto selectedPeds = std::vector<VIPRA::idx>(numPeds);
+  std::iota(selectedPeds.begin(), selectedPeds.end(), 0);
+  std::random_shuffle(selectedPeds.begin(), selectedPeds.end());
+  selectedPeds.resize(N);
 
-  while (selectedPeds.size() < count) {
-    VIPRA::idx pedestrianId = static_cast<VIPRA::idx>(static_cast<VIPRA::size>(rand()) % numPedestrians);
-    if (std::find(selectedPeds.begin(), selectedPeds.end(), pedestrianId) == selectedPeds.end()) {
-      spdlog::debug("Selecting Pedestrian ID: {} For Behavior", pedestrianId);
-      selectedPeds.push_back(pedestrianId);
-    }
-  }
-}
-
-void
-Selector_Exactly_N::initialize(const PedestrianSet& pedSet, const ObstacleSet&, const Goals&) {
-  selectPedestrianIds(pedSet);
-}
-
-const std::vector<VIPRA::idx>&
-Selector_Exactly_N::getSelectedPeds(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&) {
   return selectedPeds;
 }
 }  // namespace Behaviors

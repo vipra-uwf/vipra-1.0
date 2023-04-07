@@ -34,34 +34,24 @@ class HumanBehavior {
   void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
   void timestep(PedestrianSet&, ObstacleSet&, Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
 
-  void   addAction(Action&&);
-  void   addParameter(std::string);
+  void   addSelector(Selector&&);
+  void   addAction(typeUID, Action&&);
   Event* addEvent(Event&&);
 
-  size_t actionCount() const;
   size_t eventCount() const;
+  size_t selectorCount() const;
+  size_t actionCount() const;
 
-  /**
-   * @brief Constructs a selector of type S in place
-   * 
-   * @tparam S : Selector Type
-   * @tparam P : Selector Constructor Parameter Types list
-   * @param params : parameters to use in selector constructor
-   */
-  template <typename S, typename... P, class = typename std::enable_if<std::is_base_of<Selector, S>::value>::type>
-  void addSelector(P... params) {
-    selector = std::make_unique<S>(std::forward<P>(params)...);
-  }
+  void setSeed(Behaviors::seed);
 
  private:
-  std::string              name;
-  BehaviorContext          context;
-  std::vector<std::string> parameters;
+  Behaviors::seed seedNum;
 
-  std::unique_ptr<Selector> selector;
+  std::string     name;
+  BehaviorContext context;
 
-  std::vector<Event>  events;
-  std::vector<Action> pedActions;
+  std::vector<Selector> selectors;
+  std::vector<Event>    events;
 };
 }  // namespace Behaviors
 

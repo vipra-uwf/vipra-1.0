@@ -2,26 +2,17 @@
 #ifndef VIPRA_EXACTLY_N_RANDOM_SELECTOR_H
 #define VIPRA_EXACTLY_N_RANDOM_SELECTOR_H
 
-#include "selector.hpp"
+#include <selectors/selector.hpp>
 
 namespace Behaviors {
-class Selector_Exactly_N : public Selector {
- public:
-  Selector_Exactly_N() = delete;
-  Selector_Exactly_N(VIPRA::size count, Behaviors::seed seed);
 
-  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) override;
-
-  const std::vector<VIPRA::idx>& getSelectedPeds(const PedestrianSet&,
-                                                 const ObstacleSet&,
-                                                 const Goals&,
-                                                 const BehaviorContext&) override;
-
- private:
-  std::vector<VIPRA::idx> selectedPeds;
-  VIPRA::size             count;
-  void                    selectPedestrianIds(const PedestrianSet& pedestrianSet);
+struct selector_exactly_N {
+  size_t                  N;
+  std::vector<VIPRA::idx> operator()(Behaviors::seed, const PedestrianSet& pedSet, const ObstacleSet&, const Goals&);
 };
+
+extern const SelectorFunc exactly_N_selector;
+
 }  // namespace Behaviors
 
 #endif  //VIPRA_EXACTLY_N_RANDOM_SELECTOR_H
