@@ -24,7 +24,7 @@ Condition::operator=(Condition&& other) noexcept {
  * @param pedIndex : index of current pedestrian
  * @param dT : simulation timestep size
  * @return true 
- * @return false 
+ * @return false
  */
 bool
 Condition::evaluate(const PedestrianSet&   pedSet,
@@ -38,7 +38,7 @@ Condition::evaluate(const PedestrianSet&   pedSet,
     return false;
   }
 
-  bool result = (*conditions[0])(pedSet, obsSet, goals, context, pedIndex, dT);
+  bool result = conditions[0](pedSet, obsSet, goals, context, pedIndex, dT);
 
   if (condCnt == 1) {
     return result;
@@ -46,13 +46,18 @@ Condition::evaluate(const PedestrianSet&   pedSet,
 
   for (VIPRA::idx i = 1; i < condCnt; ++i) {
     if (operations[i - 1]) {
-      result = result && (*conditions[i])(pedSet, obsSet, goals, context, pedIndex, dT);
+      result = result && conditions[i](pedSet, obsSet, goals, context, pedIndex, dT);
     } else {
-      result = result || (*conditions[i])(pedSet, obsSet, goals, context, pedIndex, dT);
+      result = result || conditions[i](pedSet, obsSet, goals, context, pedIndex, dT);
     }
   }
 
   return result;
+}
+
+void
+Condition::addSubCondition(SubCondition&& condition) {
+  conditions.emplace_back(std::move(condition));
 }
 
 void

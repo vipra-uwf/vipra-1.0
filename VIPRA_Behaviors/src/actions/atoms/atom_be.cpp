@@ -6,8 +6,6 @@
 
 namespace Behaviors {
 
-Atom_Be::Atom_Be(stateUID st) : state(st) {}
-
 /**
  * @brief either slows/speeds up a pedestrian based on change
  * 
@@ -17,16 +15,17 @@ Atom_Be::Atom_Be(stateUID st) : state(st) {}
  * @param state : state object to put result into
  */
 void
-Atom_Be::performAction(PedestrianSet&,
-                       ObstacleSet&,
-                       Goals&,
-                       BehaviorContext& context,
-                       VIPRA::idx       index,
-                       VIPRA::delta_t,
-                       std::shared_ptr<VIPRA::State>) {
+Atom_Be::operator()(PedestrianSet&,
+                    ObstacleSet&,
+                    Goals&,
+                    BehaviorContext& context,
+                    VIPRA::idx       index,
+                    VIPRA::delta_t,
+                    std::shared_ptr<VIPRA::State>) {
   if (context.pedStates[index] != state) {
     spdlog::debug("Setting Pedestrian {} to State: {}", index, state);
     context.pedStates[index] = state;
   }
 }
+
 }  // namespace Behaviors

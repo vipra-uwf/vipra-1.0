@@ -10,8 +10,15 @@
 #include <selectors/selector_exactly_N.hpp>
 #include <selectors/selector_percent.hpp>
 
+#include <actions/atoms/atom_be.hpp>
 #include <actions/atoms/atom_change_speed.hpp>
 #include <actions/atoms/atom_stop.hpp>
+
+#include <conditions/subconditions/subcondition_elapsed_time.hpp>
+#include <conditions/subconditions/subcondition_event.hpp>
+#include <conditions/subconditions/subcondition_event_occurring.hpp>
+#include <conditions/subconditions/subcondition_event_one_time.hpp>
+#include <conditions/subconditions/subcondition_start.hpp>
 
 #include <definitions/directions.hpp>
 #include <definitions/object.hpp>
@@ -88,7 +95,7 @@ BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, Behaviors
   eventsMap.clear();
   types.clear();
   startEvent = Event("!start");
-  startCond.addSubCondition("start");
+  startCond.addSubCondition(SubCondition_Start{});
   startEvent.setStartCondition(std::move(startCond));
   currState = 1;
   currType = 1;
@@ -151,11 +158,6 @@ Condition
 BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond) {
   Condition condition;
 
-  if (cond == nullptr) {
-    condition.addSubCondition("start");
-    return condition;
-  }
-
   auto subcond = cond->sub_condition();
   addSubCondToCondtion(condition, subcond);
 
@@ -190,21 +192,21 @@ BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_
     VIPRA::delta_t time = std::stof(subcond->condition_Time_Elapsed_From_Event()->NUMBER()->toString());
     std::string    evName = subcond->condition_Time_Elapsed_From_Event()->EVNT()->toString();
     spdlog::debug("Behavior \"{}\": Adding SubCondition: Elapsed Time From \"{}\" Event", currentBehavior.getName(), evName);
-    condition.addSubCondition("elapsed_time_from_event", time, getEvent(evName));
+    condition.addSubCondition(SubCondition_Elapsed_Time_From_Event{time, getEvent(evName)});
     return;
   }
 
   if (subcond->condition_Event_Occurred()) {
     std::string evName = subcond->condition_Event_Occurred()->EVNT()->toString();
     spdlog::debug("Behavior \"{}\": Adding SubCondition: Event \"{}\" Occurred", currentBehavior.getName(), evName);
-    condition.addSubCondition("event_occurred", getEvent(evName));
+    condition.addSubCondition(SubCondition_Event_Occurred{getEvent(evName)});
     return;
   }
 
   if (subcond->condition_Event_Occurring()) {
     std::string evName = subcond->condition_Event_Occurring()->EVNT()->toString();
     spdlog::debug("Behavior \"{}\": Adding SubCondition: Event \"{}\" Occurring", currentBehavior.getName(), evName);
-    condition.addSubCondition("event_occurring", getEvent(evName));
+    condition.addSubCondition(SubCondition_Event_Occurring{getEvent(evName)});
     return;
   }
 
@@ -216,7 +218,7 @@ BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_
                   evName,
                   onstart ? "starts" : "ends");
 
-    condition.addSubCondition("event_one_time", onstart, getEvent(evName));
+    condition.addSubCondition(SubCondition_Event_One_Time{onstart, getEvent(evName)});
     return;
   }
 
@@ -235,8 +237,8 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
 
   if (atom->action_atom_Percent_Walk_Speed()) {
     spdlog::debug("Behavior \"{}\": Adding Action Atom: \"Change Speed\"", currentBehavior.getName());
-    float change = getChangeSpeedParams(atom);
-    action.addAtom("change_speed", change);
+    float change = std::stof(atom->action_atom_Percent_Walk_Speed()->FLOAT()->toString());
+    action.addAtom(Atom_Change_Speed{change});
     return;
   }
 
@@ -244,7 +246,7 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
     auto     stateStr = atom->action_Be()->STATE()->toString();
     stateUID state = getState(stateStr);
     spdlog::debug("Behavior \"{}\": Adding Action Atom: \"Be State\" state: {}", currentBehavior.getName(), stateStr);
-    action.addAtom("be", state);
+    action.addAtom(Atom_Be{state});
     return;
   }
 
@@ -253,7 +255,7 @@ BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomCont
 
   if (atom->action_Stop()) {
     spdlog::debug("Behavior \"{}\": Adding Action Atom: \"Stop\"", currentBehavior.getName());
-    action.addAtom("stop");
+    action.addAtom(Atom_Stop{});
     return;
   }
 
@@ -336,22 +338,19 @@ BehaviorBuilder::buildSelector(BehaviorParser::Ped_SelectorContext* ctx) {
 
   if (ctx->selector_Everyone()) {
     spdlog::debug("Behavior \"{}\": Adding Selector: \"Everyone\" For Ped Type: {}", currentBehavior.getName(), typeStr);
-    selector_everyone selectorFunc;
-    return Selector(type, static_cast<SelectorFunc>(selectorFunc));
+    return Selector(type, selector_everyone{});
   }
 
   if (ctx->selector_Exactly_N_Random()) {
     const VIPRA::size N = static_cast<VIPRA::size>(std::stoi(ctx->selector_Exactly_N_Random()->NUMBER()->toString()));
     spdlog::debug("Behavior \"{}\": Adding Selector: \"Exactly N\" For Ped Type: {}", currentBehavior.getName(), typeStr);
-    selector_exactly_N selectorFunc{N};
-    return Selector(type, static_cast<SelectorFunc>(selectorFunc));
+    return Selector(type, selector_exactly_N{N});
   }
 
   if (ctx->selector_Percent()) {
     float percentage = std::stof(ctx->selector_Percent()->NUMBER()->toString()) / 100.0;
     spdlog::debug("Behavior \"{}\": Adding Selector: \"Percent\" For Ped Type: {}", currentBehavior.getName(), typeStr);
-    selector_percent selectorFunc{percentage};
-    return Selector(type, static_cast<SelectorFunc>(selectorFunc));
+    return Selector(type, selector_percent{percentage});
   }
 
   spdlog::error("Behavior Error: Unable To Create Selector For Behavior \"{}\"", currentBehavior.getName());

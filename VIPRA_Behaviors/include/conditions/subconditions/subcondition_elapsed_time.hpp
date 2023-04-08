@@ -6,11 +6,14 @@
 #include <events/event.hpp>
 
 namespace Behaviors {
-class SubCondition_Elapsed_Time_From_Event : public SubCondition {
- public:
+struct SubCondition_Elapsed_Time_From_Event {
   SubCondition_Elapsed_Time_From_Event(VIPRA::delta_t, Event*);
-  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx, VIPRA::delta_t)
-      override;
+  bool operator()(const PedestrianSet&,
+                  const ObstacleSet&,
+                  const Goals&,
+                  const BehaviorContext&,
+                  VIPRA::idx,
+                  VIPRA::delta_t);
 
  private:
   bool           started;

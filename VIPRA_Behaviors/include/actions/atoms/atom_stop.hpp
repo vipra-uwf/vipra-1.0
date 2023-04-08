@@ -1,18 +1,18 @@
 #ifndef VIPRA_ATOM_STOP_HPP
 #define VIPRA_ATOM_STOP_HPP
 
-#include <actions/action_atom.hpp>
+#include <actions/atom.hpp>
 
 namespace Behaviors {
-class Atom_Stop : public Atom {
+struct Atom_Stop {
  public:
-  void performAction(PedestrianSet&,
-                     ObstacleSet&,
-                     Goals&,
-                     BehaviorContext&,
-                     VIPRA::idx,
-                     VIPRA::delta_t,
-                     std::shared_ptr<VIPRA::State>) override;
+  void operator()(PedestrianSet&,
+                  ObstacleSet&,
+                  Goals&,
+                  BehaviorContext&,
+                  VIPRA::idx,
+                  VIPRA::delta_t,
+                  std::shared_ptr<VIPRA::State>);
 };
 }  // namespace Behaviors
 

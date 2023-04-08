@@ -1,6 +1,5 @@
 
 #include <actions/action.hpp>
-#include <actions/atom_map.hpp>
 #include <actions/atoms/atom_stop.hpp>
 
 namespace Behaviors {
@@ -30,9 +29,7 @@ Action::performAction(PedestrianSet&                pedSet,
   }
 
   if (run) {
-    std::for_each(atoms.begin(), atoms.end(), [&](std::unique_ptr<Atom>& atom) {
-      atom->performAction(pedSet, obsSet, goals, context, pedIdx, dT, state);
-    });
+    std::for_each(atoms.begin(), atoms.end(), [&](Atom& atom) { atom(pedSet, obsSet, goals, context, pedIdx, dT, state); });
   }
 }
 
@@ -44,6 +41,11 @@ Action::performAction(PedestrianSet&                pedSet,
 void
 Action::addCondition(Condition&& cond) {
   condition = std::move(cond);
+}
+
+void
+Action::addAtom(Atom&& atom) {
+  atoms.emplace_back(std::move(atom));
 }
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------

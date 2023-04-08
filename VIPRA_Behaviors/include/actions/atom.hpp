@@ -1,5 +1,5 @@
-#ifndef VIPRA_SUB_CONDITION_HPP
-#define VIPRA_SUB_CONDITION_HPP
+#ifndef VIPRA_ACTION_ATOM_HPP
+#define VIPRA_ACTION_ATOM_HPP
 
 #include <functional>
 
@@ -10,8 +10,8 @@
 
 namespace Behaviors {
 
-using SubCondition = std::function<
-    bool(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx, VIPRA::delta_t)>;
+using Atom = std::function<
+    void(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t, std::shared_ptr<VIPRA::State>)>;
 
 }  // namespace Behaviors
 

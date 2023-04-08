@@ -5,14 +5,16 @@
 #include <events/event.hpp>
 
 namespace Behaviors {
-class SubCondition_Event_One_Time : public SubCondition {
- public:
+struct SubCondition_Event_One_Time {
   SubCondition_Event_One_Time() = delete;
-
   SubCondition_Event_One_Time(bool, Event*);
 
-  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx, VIPRA::delta_t)
-      override;
+  bool operator()(const PedestrianSet&,
+                  const ObstacleSet&,
+                  const Goals&,
+                  const BehaviorContext&,
+                  VIPRA::idx,
+                  VIPRA::delta_t);
 
  private:
   bool  run;
