@@ -10,7 +10,17 @@
 #include <behavior/human_behavior.hpp>
 #include <events/event.hpp>
 
+#include <util/caseless_str_comp.hpp>
+
 namespace Behaviors {
+
+typedef std::unordered_map<std::string, Behaviors::stateUID, caseless_str_compare::hash, caseless_str_compare::comp>
+    StateMap;
+typedef std::unordered_map<std::string, Behaviors::typeUID, caseless_str_compare::hash, caseless_str_compare::comp>
+    TypeMap;
+typedef std::unordered_map<std::string, Behaviors::Event*, caseless_str_compare::hash, caseless_str_compare::comp>
+    EventMap;
+
 class BehaviorBuilder : public BehaviorBaseVisitor {
  public:
   HumanBehavior&& build(std::string, const std::filesystem::path&, Behaviors::seed);
@@ -19,14 +29,17 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   BehaviorErrorListener errorListener;
   HumanBehavior         currentBehavior;
 
-  std::unordered_map<std::string, Behaviors::stateUID> states;
-  std::unordered_map<std::string, Behaviors::typeUID>  types;
-  std::unordered_map<std::string, Behaviors::Event*>   eventsMap;
+  StateMap states;
+  TypeMap  types;
+  EventMap eventsMap;
 
   Behaviors::stateUID currState;
   Behaviors::typeUID  currType;
 
   void initialBehaviorSetup(const std::string&, Behaviors::seed);
+  void initializeTypes();
+  void initializeEvents();
+  void initializeStates();
   void endBehaviorCheck();
 
   void addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
@@ -37,8 +50,12 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   Selector buildSelector(BehaviorParser::Ped_SelectorContext*);
 
   Behaviors::stateUID getState(const std::string&);
-  Behaviors::typeUID  getType(const std::string&);
   Event*              getEvent(const std::string&);
+
+  Behaviors::typeUID       getType(const std::string&);
+  Behaviors::typeUID       getGroup(BehaviorParser::Ped_SelectorContext* ctx);
+  Behaviors::pType         getCompositeType(const std::vector<antlr4::tree::TerminalNode*>&);
+  std::vector<std::string> getTypeStrs(const std::vector<antlr4::tree::TerminalNode*>&);
 
   // ------------------------------- EVENTS -----------------------------------------------------------------------------------------
 

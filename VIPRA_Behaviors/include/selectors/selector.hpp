@@ -6,11 +6,13 @@
 
 #include <spdlog/spdlog.h>
 
-#include <actions/action.hpp>
-#include <definitions/behavior_context.hpp>
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
+
+#include <actions/action.hpp>
+#include <definitions/behavior_context.hpp>
+#include <definitions/pedestrian_types.hpp>
 
 namespace Behaviors {
 
@@ -24,7 +26,7 @@ class Selector {
   Selector(const Selector&) = delete;
   Selector& operator=(const Selector&) = delete;
 
-  Selector(typeUID, SelectorFunc&&);
+  Selector(typeUID, pType, SelectorFunc&&);
 
   Selector(Selector&&) noexcept;
   Selector& operator=(Selector&&) noexcept;
@@ -35,15 +37,17 @@ class Selector {
 
   void timestep(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::delta_t, std::shared_ptr<VIPRA::State>);
 
-  void    addAction(Action&&);
-  typeUID Type() const;
+  void addAction(Action&&);
+
+  typeUID Group() const;
+  pType   Type() const;
 
   size_t actionCount() const;
 
  private:
+  typeUID      group;
+  pType        type;
   SelectorFunc selector;
-
-  typeUID type;
 
   std::vector<Action> actions;
 

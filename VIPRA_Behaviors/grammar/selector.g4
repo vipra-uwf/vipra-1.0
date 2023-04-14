@@ -1,17 +1,26 @@
 grammar selector;
 
-import lexer_rules;
+import lexer_rules, common;
+
 
 ped_Selector:
-    (selector_Percent | selector_Exactly_N_Random | selector_Everyone) (ARE | IS) AN ID;
+    selector (ID | PEDESTRIAN | PEDESTRIANS ) (ARE | IS) AN id_list |
+    selector_Everyone
+    ;
 
-selector_Percent: 
-    AN RANDOM NUMBER '%' OF PEDESTRIANS |
-    NUMBER '%' OF PEDESTRIANS
+selector:
+    selector_Percent |
+    selector_Exactly_N_Random
+    ;
+
+selector_Percent:
+    NUMBER '%' OF
     ;
 
 selector_Exactly_N_Random:
-    EXACTLY NUMBER RANDOM (PEDESTRIAN | PEDESTRIANS);
+    EXACTLY NUMBER OF
+    ;
 
 selector_Everyone:
-    EVERYONE;
+    EVERYONE IS AN (ID (COMMA? AND? AN? ID)*)
+    ;

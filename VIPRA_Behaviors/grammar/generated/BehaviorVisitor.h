@@ -63,11 +63,15 @@ public:
 
     virtual antlrcpp::Any visitPed_Selector(BehaviorParser::Ped_SelectorContext *context) = 0;
 
+    virtual antlrcpp::Any visitSelector(BehaviorParser::SelectorContext *context) = 0;
+
     virtual antlrcpp::Any visitSelector_Percent(BehaviorParser::Selector_PercentContext *context) = 0;
 
     virtual antlrcpp::Any visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly_N_RandomContext *context) = 0;
 
     virtual antlrcpp::Any visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext *context) = 0;
+
+    virtual antlrcpp::Any visitId_list(BehaviorParser::Id_listContext *context) = 0;
 
     virtual antlrcpp::Any visitAction(BehaviorParser::ActionContext *context) = 0;
 

@@ -255,6 +255,14 @@ struct f3d {
     return *this;
   }
 
+  inline constexpr float distanceToSquared(const f3d& other) const noexcept {
+    const float dX = other.x - x;
+    const float dY = other.y - y;
+    const float dZ = other.z - z;
+
+    return (dX * dX) + (dY * dY) + (dZ * dZ);
+  }
+
   inline constexpr float distanceTo(const f2d& other) const {
     const float dX = other.x - x;
     const float dY = other.y - y;
@@ -263,15 +271,15 @@ struct f3d {
     return std::sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
   }
 
-  inline constexpr float distanceToSquared(const f3d& other) const {
+  inline constexpr float distanceTo(const f3d& other) const {
     const float dX = other.x - x;
     const float dY = other.y - y;
     const float dZ = other.z - z;
 
-    return (dX * dX) + (dY * dY) + (dZ * dZ);
+    return std::sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
   }
 
-  inline constexpr float distanceTo(const f3d& other) const {
+  inline constexpr float distanceTo(f3d&& other) const {
     const float dX = other.x - x;
     const float dY = other.y - y;
     const float dZ = other.z - z;
@@ -283,6 +291,7 @@ struct f3d {
     return (x == other.x && y == other.y && z == other.z);
   }
   inline constexpr bool operator==(f3d&& other) const noexcept { return (x == other.x && y == other.y && z == other.z); }
+
   inline constexpr bool operator!=(const f3d& other) const noexcept {
     return (x != other.x || y != other.y || z != other.z);
   }
@@ -290,16 +299,16 @@ struct f3d {
 
   inline constexpr f3d operator-() const noexcept { return f3d{-x, -y, -z}; }
 
-  inline constexpr f3d unit() const {
+  inline constexpr f3d unit() const noexcept {
     if (x == 0 && y == 0 && z == 0) {
       return f3d{0, 0, 0};
     }
     return f3d{x, y, z} / magnitude();
   }
-  inline constexpr float magnitudeSquared() const { return (x * x) + (y * y) + (z * z); }
+  inline constexpr float magnitudeSquared() const noexcept { return (x * x) + (y * y) + (z * z); }
   inline constexpr float magnitude() const { return std::sqrt((x * x) + (y * y) + (z * z)); }
 
-  inline constexpr float dot(const f3d& other) { return (x * other.x) + (y * other.y) + (z * other.z); }
+  inline constexpr float dot(const f3d& other) const noexcept { return (x * other.x) + (y * other.y) + (z * other.z); }
 };
 
 typedef std::vector<f2d> f2dVec;

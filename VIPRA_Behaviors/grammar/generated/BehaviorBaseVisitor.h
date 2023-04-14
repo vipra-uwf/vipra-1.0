@@ -103,6 +103,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitSelector(BehaviorParser::SelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitSelector_Percent(BehaviorParser::Selector_PercentContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -112,6 +116,10 @@ public:
   }
 
   virtual antlrcpp::Any visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitId_list(BehaviorParser::Id_listContext *ctx) override {
     return visitChildren(ctx);
   }
 

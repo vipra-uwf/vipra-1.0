@@ -38,9 +38,9 @@ class HumanBehavior {
   void   addAction(typeUID, Action&&);
   Event* addEvent(Event&&);
 
-  size_t eventCount() const;
-  size_t selectorCount() const;
-  size_t actionCount() const;
+  VIPRA::size eventCount() const;
+  VIPRA::size selectorCount() const;
+  VIPRA::size actionCount() const;
 
   void setSeed(Behaviors::seed);
 

@@ -4,26 +4,36 @@
 
 namespace Behaviors {
 
+/**
+ * @brief Returns the name of the behavior
+ * 
+ * @return const std::string& 
+ */
 const std::string&
 HumanBehavior::getName() const noexcept {
   return name;
 }
 
 /**
- * @brief Adds an action to pedActions
+ * @brief Adds an action to the selectors with type
  * 
  * @param action : action to add
  */
 void
 HumanBehavior::addAction(typeUID type, Action&& action) {
   for (auto& selector : selectors) {
-    if (selector.Type() == type) {
+    if (selector.Type().hasType(type)) {
       selector.addAction(std::forward<Action>(action));
       return;
     }
   }
 }
 
+/**
+ * @brief Adds the selector to the behavior
+ * 
+ * @param selector : 
+ */
 void
 HumanBehavior::addSelector(Selector&& selector) {
   selectors.emplace_back(std::move(selector));
@@ -41,7 +51,7 @@ HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet
   context.pedStates = std::vector<Behaviors::stateUID>(pedSet.getNumPedestrians(), 0);
   spdlog::debug("Initializing {} Selectors, Seed: {}", selectors.size(), seedNum);
   for (auto& selector : selectors) {
-    spdlog::debug("Initializing Selector For Type Id: {}", selector.Type());
+    spdlog::debug("Initializing Selector For Type Id: {}", selector.Type().fullType);
     selector.initialize(name, seedNum, pedSet, obsSet, goals);
   }
 }
@@ -85,19 +95,34 @@ HumanBehavior::addEvent(Event&& event) {
   return &(events.back());
 }
 
-size_t
+/**
+ * @brief Returns the number of events the behavior has
+ * 
+ * @return VIPRA::size 
+ */
+VIPRA::size
 HumanBehavior::eventCount() const {
   return events.size();
 }
 
-size_t
+/**
+ * @brief Returns the number of selectors the behavior has
+ * 
+ * @return VIPRA::size 
+ */
+VIPRA::size
 HumanBehavior::selectorCount() const {
   return selectors.size();
 }
 
-size_t
+/**
+ * @brief Returns the number of actions the behavior has
+ * 
+ * @return VIPRA::size 
+ */
+VIPRA::size
 HumanBehavior::actionCount() const {
-  size_t sum = 0;
+  VIPRA::size sum = 0;
   for (const auto& selector : selectors) {
     sum += selector.actionCount();
   }
@@ -105,6 +130,11 @@ HumanBehavior::actionCount() const {
   return sum;
 }
 
+/**
+ * @brief Sets the seed for the behavior
+ * 
+ * @param s : 
+ */
 void
 HumanBehavior::setSeed(Behaviors::seed s) {
   seedNum = s;
@@ -112,7 +142,8 @@ HumanBehavior::setSeed(Behaviors::seed s) {
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------
 
-HumanBehavior::HumanBehavior(std::string behaviorName) : seedNum(0), name(behaviorName), context(), selectors(), events() {}
+HumanBehavior::HumanBehavior(std::string behaviorName)
+  : seedNum(0), name(behaviorName), context(), selectors(), events() {}
 
 HumanBehavior::HumanBehavior(HumanBehavior&& other) noexcept
   : seedNum(other.seedNum), name(std::move(other.name)), context(std::move(other.context)),

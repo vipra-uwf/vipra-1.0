@@ -565,17 +565,15 @@ The `Behavior Builder` is what constructs `Behavior` objects from .behavior file
 
 
 
-# N. Needs/Wants/Issues
-
-## N.1. Needs
+# N. Needs
 
 
-### N.1.1. Add Checks
+## N.1 Add Checks
 We may need to add checks that the what behaviors do is reasonable.
 
 For example: Collisions detection, currently the change speed atom can cause pedestrians to fly through walls / go past their goals (only really an issue if they set the speed up to an unreasonable value)
 
-### N.1.2. Pedestrian Attributes
+## N.2 Pedestrian Attributes
 We need a way to access pedestrian attributes, such as: state, speed, goal, etc.
 
 example
@@ -584,7 +582,7 @@ example
 a pedestrian will @stop given their *state is #waiting.
 ```
 
-### N.1.3. Run Time Parameters
+## N.3. Run Time Parameters
 We need a way to provide behaviors parameters at run time (taken from module params).
 
 This is needed to allow for parameter sweeps
@@ -600,7 +598,7 @@ The !announcement event will
 	and end after $event_length seconds from !announcement.
 ```
 
-### N.1.4 Allow Behaviors To Change Goals
+## N.4 Allow Behaviors To Change Goals
 We need a way for behaviors to change pedestrian goals.
 
 This would require updating the Goals module to add a update pathfinding method
@@ -613,12 +611,12 @@ a !fire will occur after 5 seconds from !start.
 a pedestrian will @head towards the +exit nearest to them.
 ```
 
-### N.1.5 Personal Events
+## N.5 Personal Events
 We need a way for events to happen to individuals, as opposed to the overall environment.
 
 for example: a pedestrian hurts themselves and now walks slower
 
-### N.1.6 Exclusive Selectors
+## N.6 Exclusive Selectors
 
 Currently there is no way to make selectors exclusive.
 
@@ -631,20 +629,24 @@ exactly one pedestrian is another_example.
 // There needs to be a way to choose if a selector is exclusive
 ```
 
-
-### N.1.7. Behavior Priorities
+## N.7. Behavior Priorities
 We need a way to say which behaviors take precedence over others.
 
 todo
 
-### N.1.8 Conditional Selectors
+## N.8. Conditional Selectors
 We need a way to select pedestrians based on conditions.
 
 For example: choosing a pedestrians type based on their end goal
 
-## N.2. Wants
+## N.9. Individual Seeds for Actions/Selectors/Etc.
+We need to think about allowing different seeds for actions selectors and others.
 
-### N.2.1. Sub Condition grouping / Operation Order
+For example: if a user wants to keep the same selected pedestrians but change other random aspects, they currently cannot as everything uses the one behavior seed.
+
+# W. Wants
+
+## W.1. Sub Condition grouping / Operation Order
 We may need a way to group sub conditions with the equivalent of parenthesis, to provide more expressive conditions. Currently sub conditions are evaluated in the order they were added
 
 example: 
@@ -652,7 +654,7 @@ example:
 vs
 `(A && B) || C`
 
-### N.2.2. Custom Action/Condition Definitions
+## W.2. Custom Action/Condition Definitions
 We may need a way for end users to specify `Atoms` and `Sub Conditions` in the `Behavior`
 
 example:
@@ -665,20 +667,13 @@ The @wait action means:
 A pedestrian will always @wait.
 ```
 
-### N.2.3. Behaviors Affect The Environment Physically
+### W.3. Behaviors Affect The Environment Physically
 We may need to add the ability for behaviors to add to the environment.
 
 For example: a fire even can "place" fires around the map, then pedestrians can avoid these
 
 Currently behaviors can only change the state of the environment
 
-### N.2.4. Make Everything Case Insensitive
-We may want to make the grammar completely case insensitive
-
-At the least we should make it consistent.
-
-Currently parts are sensitive and others aren't
-
-## N.3 Issues
+# I. Issues
 
 ---

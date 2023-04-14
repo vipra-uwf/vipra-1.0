@@ -12,7 +12,7 @@ Selector::initialize(const std::string&   behaviorName,
                      const Goals&         goals) {
   selectedPeds = selector(seed, pedSet, obsSet, goals);
   for (auto pedIdx : selectedPeds) {
-    spdlog::debug("Selected Pedestrian ID: {} For Behavior: {} Type ID: {}", pedIdx, behaviorName, type);
+    spdlog::debug("Selected Pedestrian ID: {} For Behavior: {} Type ID: {}", pedIdx, behaviorName, type.fullType);
   }
 }
 
@@ -37,6 +37,11 @@ Selector::addAction(Action&& action) {
 }
 
 typeUID
+Selector::Group() const {
+  return group;
+}
+
+pType
 Selector::Type() const {
   return type;
 }
@@ -48,10 +53,11 @@ Selector::actionCount() const {
 
 // --------------- CONSTRUCTORS ---------------------------------------------------------------
 
-Selector::Selector(typeUID t, SelectorFunc&& func) : selector(std::move(func)), type(t), actions(), selectedPeds() {}
+Selector::Selector(typeUID groupType, pType pedType, SelectorFunc&& func)
+  : group(groupType), type(pedType), selector(std::move(func)), actions(), selectedPeds() {}
 
 Selector::Selector(Selector&& other) noexcept
-  : selector(std::move(other.selector)), type(other.type), actions(std::move(other.actions)),
+  : type(std::move(other.type)), selector(std::move(other.selector)), actions(std::move(other.actions)),
     selectedPeds(std::move(other.selectedPeds)) {}
 
 Selector&

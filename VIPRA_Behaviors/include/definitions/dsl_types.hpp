@@ -6,7 +6,6 @@
 namespace Behaviors {
 typedef uint64_t seed;
 typedef uint64_t stateUID;
-typedef uint64_t typeUID;
 }  // namespace Behaviors
 
 #endif

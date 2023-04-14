@@ -22,6 +22,7 @@
 
 #include <definitions/directions.hpp>
 #include <definitions/object.hpp>
+#include <definitions/pedestrian_types.hpp>
 
 namespace Behaviors {
 
@@ -91,17 +92,37 @@ BehaviorBuilder::getEvent(const std::string& evName) {
  */
 void
 BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, Behaviors::seed seedNum) {
-  states.clear();
+
+  initializeStates();
+  initializeEvents();
+  initializeTypes();
+  currentBehavior = HumanBehavior(behaviorName);
+  currentBehavior.setSeed(seedNum);
+}
+
+void
+BehaviorBuilder::initializeEvents() {
   eventsMap.clear();
-  types.clear();
+
   startEvent = Event("!start");
   startCond.addSubCondition(SubCondition_Start{});
   startEvent.setStartCondition(std::move(startCond));
-  currState = 1;
-  currType = 1;
-  currentBehavior = HumanBehavior(behaviorName);
+
   eventsMap["!start"] = currentBehavior.addEvent(std::move(startEvent));
-  currentBehavior.setSeed(seedNum);
+}
+
+void
+BehaviorBuilder::initializeStates() {
+  states.clear();
+  currState = 1;
+}
+
+void
+BehaviorBuilder::initializeTypes() {
+  types.clear();
+  types["pedestrian"] = 0;
+  types["pedestrians"] = 0;
+  currType = 1;
 }
 
 /**
@@ -138,14 +159,40 @@ BehaviorBuilder::getState(const std::string& state) {
 
 typeUID
 BehaviorBuilder::getType(const std::string& type) {
-
   const auto typeId = types.find(type);
+
   if (typeId == types.end()) {
+    for (auto i : types) {
+      spdlog::info("{}", i.first);
+    }
     spdlog::error("Behavior Error: Attempt To Use Undeclared Pedestrian Type: \"{}\"", type);
     exit(1);
   }
 
   return (*typeId).second;
+}
+
+Behaviors::pType
+BehaviorBuilder::getCompositeType(const std::vector<antlr4::tree::TerminalNode*>& types) {
+  pType type;
+  for (VIPRA::idx i = 0; i < types.size(); ++i) {
+    const std::string tStr = types[i]->toString();
+    auto              tid = getType(tStr);
+    type += tid;
+  }
+
+  return type;
+}
+
+std::vector<std::string>
+BehaviorBuilder::getTypeStrs(const std::vector<antlr4::tree::TerminalNode*>& types) {
+  std::vector<std::string> strs;
+
+  for (auto type : types) {
+    strs.push_back(type->toString());
+  }
+
+  return strs;
 }
 
 /**
@@ -191,7 +238,8 @@ BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_
   if (subcond->condition_Time_Elapsed_From_Event()) {
     VIPRA::delta_t time = std::stof(subcond->condition_Time_Elapsed_From_Event()->NUMBER()->toString());
     std::string    evName = subcond->condition_Time_Elapsed_From_Event()->EVNT()->toString();
-    spdlog::debug("Behavior \"{}\": Adding SubCondition: Elapsed Time From \"{}\" Event", currentBehavior.getName(), evName);
+    spdlog::debug(
+        "Behavior \"{}\": Adding SubCondition: Elapsed Time From \"{}\" Event", currentBehavior.getName(), evName);
     condition.addSubCondition(SubCondition_Elapsed_Time_From_Event{time, getEvent(evName)});
     return;
   }
@@ -331,31 +379,58 @@ BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingContext* ctx) {
 
 // ------------------------------- SELECTORS -----------------------------------------------------------------------------------------
 
+Behaviors::typeUID
+BehaviorBuilder::getGroup(BehaviorParser::Ped_SelectorContext* ctx) {
+  if (ctx->PEDESTRIAN() || ctx->PEDESTRIANS()) {
+    return 0;
+  }
+
+  return getType(ctx->ID()->toString());
+}
+
 Selector
 BehaviorBuilder::buildSelector(BehaviorParser::Ped_SelectorContext* ctx) {
-  std::string typeStr = ctx->ID()->toString();
-  typeUID     type = getType(typeStr);
+
+  typeUID     group = getGroup(ctx);
+  std::string groupStr = (group ? ctx->ID()->toString() : "Pedestrians");
+
+  auto  types = ctx->id_list()->ID();
+  pType compType = getCompositeType(types);
+  auto  typeStrs = getTypeStrs(types);
 
   if (ctx->selector_Everyone()) {
-    spdlog::debug("Behavior \"{}\": Adding Selector: \"Everyone\" For Ped Type: {}", currentBehavior.getName(), typeStr);
-    return Selector(type, selector_everyone{});
+    spdlog::debug("Behavior \"{}\": Adding Selector: \"Everyone\" Is Ped Type: {}",
+                  currentBehavior.getName(),
+                  fmt::join(typeStrs, ", "));
+    return Selector(0, compType, selector_everyone{});
   }
 
-  if (ctx->selector_Exactly_N_Random()) {
-    const VIPRA::size N = static_cast<VIPRA::size>(std::stoi(ctx->selector_Exactly_N_Random()->NUMBER()->toString()));
-    spdlog::debug("Behavior \"{}\": Adding Selector: \"Exactly N\" For Ped Type: {}", currentBehavior.getName(), typeStr);
-    return Selector(type, selector_exactly_N{N});
+  auto selector = ctx->selector();
+
+  if (selector->selector_Exactly_N_Random()) {
+    const VIPRA::size N =
+        static_cast<VIPRA::size>(std::stoi(selector->selector_Exactly_N_Random()->NUMBER()->toString()));
+    spdlog::debug("Behavior \"{}\": Adding Selector: \"Exactly {}\" of {} Are Ped Type: {}",
+                  currentBehavior.getName(),
+                  N,
+                  groupStr,
+                  fmt::join(typeStrs, ", "));
+    return Selector(group, compType, selector_exactly_N{N});
   }
 
-  if (ctx->selector_Percent()) {
-    float percentage = std::stof(ctx->selector_Percent()->NUMBER()->toString()) / 100.0;
-    spdlog::debug("Behavior \"{}\": Adding Selector: \"Percent\" For Ped Type: {}", currentBehavior.getName(), typeStr);
-    return Selector(type, selector_percent{percentage});
+  if (selector->selector_Percent()) {
+    float percentage = std::stof(selector->selector_Percent()->NUMBER()->toString());
+    spdlog::debug("Behavior \"{}\": Adding Selector: \"{} Percent\" of {} Are Ped Type: {}",
+                  currentBehavior.getName(),
+                  percentage,
+                  groupStr,
+                  fmt::join(typeStrs, ", "));
+    return Selector(group, compType, selector_percent{percentage / 100.0f});
   }
 
   spdlog::error("Behavior Error: Unable To Create Selector For Behavior \"{}\"", currentBehavior.getName());
   exit(1);
-  return Selector(0, selector_everyone{});
+  return Selector(group, pType{0}, selector_everyone{});
 }
 
 antlrcpp::Any
@@ -375,9 +450,10 @@ BehaviorBuilder::visitConditional_action(BehaviorParser::Conditional_actionConte
   const auto& atoms = ctx->sub_action()->action_atom();
   Action      action;
 
-  const auto type = getType(ctx->ID()->toString());
+  const auto typeStr = ctx->ID()->toString();
+  const auto type = getType(typeStr);
 
-  spdlog::debug("Behavior \"{}\": Adding Conditional Action", currentBehavior.getName());
+  spdlog::debug("Behavior \"{}\": Adding Conditional Action For {}", currentBehavior.getName(), typeStr);
   action.addCondition(buildCondition(ctx->condition()));
 
   std::for_each(
@@ -445,7 +521,7 @@ BehaviorBuilder::visitDecl_Ped(BehaviorParser::Decl_PedContext* ctx) {
     auto name = type->toString();
     spdlog::debug("Behavior \"{}\": Adding Pedestrian Type {}, id: {}", currentBehavior.getName(), name, currType);
     types[name] = currType;
-    ++currType;
+    currType = currType << 1;
   }
 
   return BehaviorBaseVisitor::visitDecl_Ped(ctx);
