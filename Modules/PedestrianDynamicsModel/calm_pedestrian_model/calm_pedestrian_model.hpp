@@ -55,7 +55,12 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   enum RaceStatus { NO_RACE, WAIT };
   std::vector<RaceStatus>  raceStatuses;
   std::vector<VIPRA::size> raceOpponents;
+  std::vector<std::vector<bool>> inRace;
   std::vector<int> raceCounter;
+
+  std::vector<std::vector<VIPRA::f3d>> intersectionMidpoints;
+  std::vector<Rect> collisionRectangle;
+  VIPRA::f3dVec velDir;
 
   VIPRA::f3d getGoalIntersection(const CalmPedestrianSet&, const Goals&, VIPRA::idx, VIPRA::idx);
 
@@ -65,10 +70,21 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   void calculateNeartestNeighbors(const CalmPedestrianSet&, const ObstacleSet&, const Goals&) noexcept;
   void calculateDistanceMatrices(const CalmPedestrianSet&) noexcept;
 
-  bool checkIfIntersect(const CalmPedestrianSet& pedestrianSet, const VIPRA::size, const VIPRA::size);
+  bool checkIfCollide(const CalmPedestrianSet& pedestrianSet, const Goals&, const VIPRA::size, const VIPRA::size);
+  Rect getCollisionRectangle(const CalmPedestrianSet& pedestrianSet, const Goals&, const VIPRA::idx, const float& shldrlen);
+  bool doRectanglesIntersect(Rect& r1, Rect& r2, VIPRA::idx i1, VIPRA::idx i2);
+  
+  float max(float a, float b);
+  float min(float a, float b);
 
-  void raceDetection(const CalmPedestrianSet& pedestrianSet, const Goals& goals);
-  bool checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::idx index);
+  bool checkIfOnLineSegment(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
+  int orientation(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
+  bool checkIfLineSegmentsIntersect(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
+  void addIntersectionPoints(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3dVec&);
+  VIPRA::f3d getCollisionAreaMidpoint(const CalmPedestrianSet&, const Goals&, const VIPRA::idx, const VIPRA::idx);
+
+  void raceDetection(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::t_step timestep);
+  bool checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::idx index, VIPRA::t_step timestep);
   float shortestDistanceToLineSegment(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
 
   VIPRA::f3d calculateSpeedDensity(const PedestrianSet&);
