@@ -6,6 +6,8 @@
 
 #include <generated/BehaviorBaseVisitor.h>
 
+#include <selectors/subselector.hpp>
+
 #include <behavior/behavior_error_listener.hpp>
 #include <behavior/human_behavior.hpp>
 #include <events/event.hpp>
@@ -47,7 +49,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   Condition buildCondition(BehaviorParser::ConditionContext*);
   void      addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
 
-  Selector buildSelector(BehaviorParser::Ped_SelectorContext*);
+  SubSelector buildSubSelector(BehaviorParser::Ped_SelectorContext*);
 
   Behaviors::stateUID getState(const std::string&);
   Event*              getEvent(const std::string&);

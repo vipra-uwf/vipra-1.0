@@ -7,15 +7,20 @@
 
 namespace Behaviors {
 std::vector<VIPRA::idx>
-selector_exactly_N::operator()(Behaviors::seed seed, const PedestrianSet& pedSet, const ObstacleSet&, const Goals&) {
+selector_exactly_N::operator()(Behaviors::seed                seed,
+                               const std::vector<VIPRA::idx>& group,
+                               const PedestrianSet&,
+                               const ObstacleSet&,
+                               const Goals&) {
+  //TODO add group
   srand(seed);
-  VIPRA::size numPeds = pedSet.getNumPedestrians();
+  auto groupPeds = group;
 
-  auto selectedPeds = std::vector<VIPRA::idx>(numPeds);
-  std::iota(selectedPeds.begin(), selectedPeds.end(), 0);
-  std::random_shuffle(selectedPeds.begin(), selectedPeds.end());
-  selectedPeds.resize(N);
+  spdlog::debug("Selector Exaclty N: Selecting {} Pedestrians", N);
 
-  return selectedPeds;
+  std::random_shuffle(groupPeds.begin(), groupPeds.end());
+  groupPeds.resize(N);
+
+  return groupPeds;
 }
 }  // namespace Behaviors

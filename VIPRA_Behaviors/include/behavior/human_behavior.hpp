@@ -34,8 +34,11 @@ class HumanBehavior {
   void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
   void timestep(PedestrianSet&, ObstacleSet&, Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
 
-  void   addSelector(Selector&&);
-  void   addAction(typeUID, Action&&);
+  void setAllPedTypes(pType);
+  void addSubSelector(SubSelector&&);
+
+  void addAction(typeUID, Action&&);
+
   Event* addEvent(Event&&);
 
   VIPRA::size eventCount() const;
@@ -50,8 +53,12 @@ class HumanBehavior {
   std::string     name;
   BehaviorContext context;
 
-  std::vector<Selector> selectors;
-  std::vector<Event>    events;
+  Selector                         selector;
+  std::vector<Event>               events;
+  std::vector<std::vector<Action>> actions;
+
+  void evaluateEvents(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::delta_t);
+  void applyActions(PedestrianSet&, ObstacleSet&, Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
 };
 }  // namespace Behaviors
 

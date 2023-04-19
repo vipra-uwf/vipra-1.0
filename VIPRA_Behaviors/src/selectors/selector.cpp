@@ -1,71 +1,118 @@
 
+#include <numeric>
 
 #include <selectors/selector.hpp>
 
 namespace Behaviors {
 
+/**
+ * @brief Initializes the pedestrian groups, and runs the sub selectors over them
+ * 
+ * @param behaviorName : 
+ * @param seed : 
+ * @param pedSet : 
+ * @param obsSet : 
+ * @param goals : 
+ */
 void
 Selector::initialize(const std::string&   behaviorName,
                      Behaviors::seed      seed,
+                     BehaviorContext&     context,
                      const PedestrianSet& pedSet,
                      const ObstacleSet&   obsSet,
                      const Goals&         goals) {
-  selectedPeds = selector(seed, pedSet, obsSet, goals);
-  for (auto pedIdx : selectedPeds) {
-    spdlog::debug("Selected Pedestrian ID: {} For Behavior: {} Type ID: {}", pedIdx, behaviorName, type.fullType);
-  }
+  pedGroups.initialize(allTypes, pedSet.getNumPedestrians());
+
+  std::for_each(subSelectors.begin(), subSelectors.end(), [&](SubSelector& selector) {
+    auto selectedPeds = selectPedsFromGroup(selector, seed, pedSet, obsSet, goals, behaviorName);
+    updatePedGroups(selectedPeds, selector, context, behaviorName);
+  });
+
+  pedGroups[0].resize(pedSet.getNumPedestrians());
+  std::iota(pedGroups[0].begin(), pedGroups[0].end(), 0);
+
+  sortGroups();
 }
 
 void
-Selector::timestep(PedestrianSet&                pedSet,
-                   ObstacleSet&                  obsSet,
-                   Goals&                        goals,
-                   BehaviorContext&              context,
-                   VIPRA::delta_t                dT,
-                   std::shared_ptr<VIPRA::State> state) {
+Selector::setAllTypes(pType pedTypes) {
+  allTypes = pedTypes;
+}
 
-  std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](VIPRA::idx pedIdx) {
-    std::for_each(actions.begin(), actions.end(), [&](Action& action) {
-      action.performAction(pedSet, obsSet, goals, context, pedIdx, dT, state);
+void
+Selector::addSubSelector(SubSelector&& subSelector) {
+  subSelectors.emplace_back(subSelector);
+}
+
+VIPRA::size
+Selector::SelectorCount() const {
+  return subSelectors.size();
+}
+
+const GroupsContainer&
+Selector::getGroups() const {
+  return pedGroups;
+}
+
+std::vector<VIPRA::idx>
+Selector::selectPedsFromGroup(SubSelector&         selector,
+                              Behaviors::seed      seed,
+                              const PedestrianSet& pedSet,
+                              const ObstacleSet&   obsSet,
+                              const Goals&         goals,
+                              const std::string&   behaviorName) {
+  const auto& group = pedGroups.getGroup(selector.group);
+  auto        selectedPeds = selector.select(seed, group, pedSet, obsSet, goals);
+
+  if (selectedPeds.size() == 0) {
+    spdlog::warn("Behavior: {}, Starved Selector For Type: {} From Group: {}",
+                 behaviorName,
+                 selector.type.fullType,
+                 selector.group);
+  }
+
+  return selectedPeds;
+}
+
+void
+Selector::updatePedGroups(const std::vector<VIPRA::idx>& selectedPeds,
+                          SubSelector&                   selector,
+                          BehaviorContext&               context,
+                          const std::string&             behaviorName) {
+  std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](auto& pedIdx) {
+    selector.type.forEachType([&](typeUID type) {
+      spdlog::debug("Behavior: {}, Selecting Ped {} for Type: {}", behaviorName, pedIdx, type);
+      context.types[pedIdx] += type;
+      pedGroups.addPed(pedIdx, type);
     });
+
+    if (selector.group == 0) {
+      pedGroups.removePed(pedIdx, selector.group);
+    }
   });
 }
 
 void
-Selector::addAction(Action&& action) {
-  actions.emplace_back(std::move(action));
-}
-
-typeUID
-Selector::Group() const {
-  return group;
-}
-
-pType
-Selector::Type() const {
-  return type;
-}
-
-size_t
-Selector::actionCount() const {
-  return actions.size();
+Selector::sortGroups() {
+  const VIPRA::size groupCnt = pedGroups.size();
+  for (VIPRA::idx i = 1; i < groupCnt; ++i) {
+    std::sort(pedGroups[i].begin(), pedGroups[i].end());
+  }
 }
 
 // --------------- CONSTRUCTORS ---------------------------------------------------------------
 
-Selector::Selector(typeUID groupType, pType pedType, SelectorFunc&& func)
-  : group(groupType), type(pedType), selector(std::move(func)), actions(), selectedPeds() {}
+Selector::Selector() : allTypes(0), subSelectors(), pedGroups() {}
 
 Selector::Selector(Selector&& other) noexcept
-  : type(std::move(other.type)), selector(std::move(other.selector)), actions(std::move(other.actions)),
-    selectedPeds(std::move(other.selectedPeds)) {}
+  : allTypes(std::move(other.allTypes)), subSelectors(std::move(other.subSelectors)),
+    pedGroups(std::move(other.pedGroups)) {}
 
 Selector&
 Selector::operator=(Selector&& other) noexcept {
-  type = other.type;
-  selector = std::move(other.selector);
-  actions = std::move(other.actions);
-  selectedPeds = std::move(other.selectedPeds);
+  subSelectors = std::move(other.subSelectors);
+  pedGroups = std::move(other.pedGroups);
+  allTypes = other.allTypes;
   return *this;
 }
 

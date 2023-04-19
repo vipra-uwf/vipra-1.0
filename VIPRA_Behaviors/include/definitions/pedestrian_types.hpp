@@ -1,6 +1,7 @@
 #ifndef VIPRA_BEHAVIORS_PEDESTRIAN_TYPES_HPP
 #define VIPRA_BEHAVIORS_PEDESTRIAN_TYPES_HPP
 
+#include <functional>
 #include <stdint.h>
 
 namespace Behaviors {
@@ -62,6 +63,17 @@ struct pType {
 
   inline constexpr bool operator==(pType type) const noexcept { return fullType == type.fullType; }
   inline constexpr bool operator!=(pType type) const noexcept { return fullType != type.fullType; }
+
+  void forEachType(std::function<void(typeUID)> func) {
+    typeUID type = fullType;
+    typeUID check = 1;
+    while (check <= type) {
+      if (type & check) {
+        func(check);
+      }
+      check = check << 1;
+    }
+  }
 };
 }  // namespace Behaviors
 

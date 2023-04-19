@@ -59,3 +59,4 @@ target_include_directories(
 )
 
 add_subdirectory(parsing_tests)
+add_subdirectory(selector_tests)

@@ -6,11 +6,11 @@
 #include <memory>
 
 namespace VIPRA {
-  struct PedestrianBuilderData {
-    PedestrianBuilderData() {}
-    virtual ~PedestrianBuilderData() = default;
-  };
-}
+struct PedestrianBuilderData {
+  PedestrianBuilderData() {}
+  virtual ~PedestrianBuilderData() = default;
+};
+}  // namespace VIPRA
 
 class PedestrianConfigWriterException : public std::runtime_error {
  public:
@@ -19,12 +19,12 @@ class PedestrianConfigWriterException : public std::runtime_error {
 };
 
 class PedestrianConfigWriter {
-    public:
+ public:
+  virtual ~PedestrianConfigWriter() = default;
 
-    virtual void configure(const VIPRA::Config::Map& configMap) = 0;
-    virtual void initialize() = 0;
-    virtual std::string buildPedestrians(const std::string& filePath) = 0;
+  virtual void        configure(const VIPRA::Config::Map& configMap) = 0;
+  virtual void        initialize() = 0;
+  virtual std::string buildPedestrians(const std::string& filePath) = 0;
 };
-
 
 #endif

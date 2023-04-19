@@ -13,18 +13,24 @@ namespace Behaviors {
  * @param pedSet : 
  */
 std::vector<VIPRA::idx>
-selector_percent::operator()(Behaviors::seed seed, const PedestrianSet& pedSet, const ObstacleSet&, const Goals&) {
+selector_percent::operator()(Behaviors::seed                seed,
+                             const std::vector<VIPRA::idx>& group,
+                             const PedestrianSet&,
+                             const ObstacleSet&,
+                             const Goals&) {
+  //TODO add group
   srand(seed);
-  VIPRA::size numPeds = pedSet.getNumPedestrians();
+
+  auto groupPeds = group;
+
+  VIPRA::size numPeds = groupPeds.size();
   VIPRA::size count = static_cast<VIPRA::size>(std::floor(numPeds * percentage));
   spdlog::debug("Selector Percent: Selecting {} Pedestrians", count);
 
-  auto selectedPeds = std::vector<VIPRA::idx>(numPeds);
-  std::iota(selectedPeds.begin(), selectedPeds.end(), 0);
-  std::random_shuffle(selectedPeds.begin(), selectedPeds.end());
-  selectedPeds.resize(count);
+  std::random_shuffle(groupPeds.begin(), groupPeds.end());
+  groupPeds.resize(count);
 
-  return selectedPeds;
+  return groupPeds;
 }
 
 }  // namespace Behaviors

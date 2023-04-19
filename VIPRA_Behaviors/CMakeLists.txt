@@ -25,6 +25,7 @@ SET(SRCS
   ${SRC_DIR}/conditions/subconditions/subcondition_start.cpp
   ${SRC_DIR}/conditions/subconditions/subcondition_event_occurring.cpp
   ${SRC_DIR}/conditions/subconditions/subcondition_event_one_time.cpp
+  ${SRC_DIR}/selectors/pedestrian_groups.cpp
   ${SRC_DIR}/selectors/selector.cpp
   ${SRC_DIR}/selectors/selector_everyone.cpp
   ${SRC_DIR}/selectors/selector_exactly_N.cpp

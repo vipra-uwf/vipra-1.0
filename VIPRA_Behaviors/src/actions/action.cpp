@@ -29,7 +29,8 @@ Action::performAction(PedestrianSet&                pedSet,
   }
 
   if (run) {
-    std::for_each(atoms.begin(), atoms.end(), [&](Atom& atom) { atom(pedSet, obsSet, goals, context, pedIdx, dT, state); });
+    std::for_each(
+        atoms.begin(), atoms.end(), [&](Atom& atom) { atom(pedSet, obsSet, goals, context, pedIdx, dT, state); });
   }
 }
 

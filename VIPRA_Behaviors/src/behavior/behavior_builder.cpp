@@ -379,6 +379,12 @@ BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingContext* ctx) {
 
 // ------------------------------- SELECTORS -----------------------------------------------------------------------------------------
 
+/**
+ * @brief Gets the typeUID of the group for a selector
+ * 
+ * @param ctx : 
+ * @return Behaviors::typeUID 
+ */
 Behaviors::typeUID
 BehaviorBuilder::getGroup(BehaviorParser::Ped_SelectorContext* ctx) {
   if (ctx->PEDESTRIAN() || ctx->PEDESTRIANS()) {
@@ -388,8 +394,14 @@ BehaviorBuilder::getGroup(BehaviorParser::Ped_SelectorContext* ctx) {
   return getType(ctx->ID()->toString());
 }
 
-Selector
-BehaviorBuilder::buildSelector(BehaviorParser::Ped_SelectorContext* ctx) {
+/**
+ * @brief Creates a selector from a given context
+ * 
+ * @param ctx : 
+ * @return Selector 
+ */
+SubSelector
+BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContext* ctx) {
 
   typeUID     group = getGroup(ctx);
   std::string groupStr = (group ? ctx->ID()->toString() : "Pedestrians");
@@ -402,7 +414,7 @@ BehaviorBuilder::buildSelector(BehaviorParser::Ped_SelectorContext* ctx) {
     spdlog::debug("Behavior \"{}\": Adding Selector: \"Everyone\" Is Ped Type: {}",
                   currentBehavior.getName(),
                   fmt::join(typeStrs, ", "));
-    return Selector(0, compType, selector_everyone{});
+    return SubSelector{0, compType, selector_everyone{}};
   }
 
   auto selector = ctx->selector();
@@ -415,7 +427,7 @@ BehaviorBuilder::buildSelector(BehaviorParser::Ped_SelectorContext* ctx) {
                   N,
                   groupStr,
                   fmt::join(typeStrs, ", "));
-    return Selector(group, compType, selector_exactly_N{N});
+    return SubSelector{group, compType, selector_exactly_N{N}};
   }
 
   if (selector->selector_Percent()) {
@@ -425,18 +437,18 @@ BehaviorBuilder::buildSelector(BehaviorParser::Ped_SelectorContext* ctx) {
                   percentage,
                   groupStr,
                   fmt::join(typeStrs, ", "));
-    return Selector(group, compType, selector_percent{percentage / 100.0f});
+    return SubSelector{group, compType, selector_percent{percentage / 100.0f}};
   }
 
   spdlog::error("Behavior Error: Unable To Create Selector For Behavior \"{}\"", currentBehavior.getName());
   exit(1);
-  return Selector(group, pType{0}, selector_everyone{});
+  return SubSelector{group, pType{0}, selector_everyone{}};
 }
 
 antlrcpp::Any
 BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) {
 
-  currentBehavior.addSelector(buildSelector(ctx));
+  currentBehavior.addSubSelector(buildSubSelector(ctx));
 
   return BehaviorBaseVisitor::visitPed_Selector(ctx);
 }
@@ -470,9 +482,10 @@ BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_conditional_actio
   const auto& atoms = ctx->sub_action()->action_atom();
   Action      action;
 
-  const auto type = getType(ctx->ID()->toString());
+  const auto typeStr = ctx->ID()->toString();
+  const auto type = getType(typeStr);
 
-  spdlog::debug("Behavior \"{}\": Adding Unconditional Action", currentBehavior.getName());
+  spdlog::debug("Behavior \"{}\": Adding Unconditional Action For {}", currentBehavior.getName(), typeStr);
 
   std::for_each(
       atoms.begin(), atoms.end(), [&](BehaviorParser::Action_atomContext* atom) { addAtomToAction(action, atom); });
@@ -516,14 +529,18 @@ BehaviorBuilder::visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx)
 antlrcpp::Any
 BehaviorBuilder::visitDecl_Ped(BehaviorParser::Decl_PedContext* ctx) {
   const auto typeNames = ctx->ID();
+  pType      allTypes;
 
   for (auto type : typeNames) {
     auto name = type->toString();
     spdlog::debug("Behavior \"{}\": Adding Pedestrian Type {}, id: {}", currentBehavior.getName(), name, currType);
     types[name] = currType;
+    allTypes += currType;
     currType = currType << 1;
   }
 
+  spdlog::debug("Behavior \"{}\": All Types: {}", currentBehavior.getName(), allTypes.fullType);
+  currentBehavior.setAllPedTypes(allTypes);
   return BehaviorBaseVisitor::visitDecl_Ped(ctx);
 }
 

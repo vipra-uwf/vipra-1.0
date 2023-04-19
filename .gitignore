@@ -11,6 +11,7 @@ VIPRAsim
 *.gch
 *.gif
 *.png
+*.csv
 build
 rapidxml
 rapidxml-1.13

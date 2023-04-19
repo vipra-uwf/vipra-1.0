@@ -8,7 +8,11 @@ namespace Behaviors {
 
 struct selector_exactly_N {
   size_t                  N;
-  std::vector<VIPRA::idx> operator()(Behaviors::seed, const PedestrianSet& pedSet, const ObstacleSet&, const Goals&);
+  std::vector<VIPRA::idx> operator()(Behaviors::seed,
+                                     const std::vector<VIPRA::idx>&,
+                                     const PedestrianSet&,
+                                     const ObstacleSet&,
+                                     const Goals&);
 };
 
 extern const SelectorFunc exactly_N_selector;
