@@ -5,7 +5,7 @@ import lexer_rules, common;
 
 ped_Selector:
     selector (ID | PEDESTRIAN | PEDESTRIANS ) (ARE | IS) AN id_list |
-    selector_Everyone
+    selector_Everyone IS AN id_list
     ;
 
 selector:
@@ -22,5 +22,5 @@ selector_Exactly_N_Random:
     ;
 
 selector_Everyone:
-    EVERYONE IS AN (ID (COMMA? AND? AN? ID)*)
+    EVERYONE
     ;

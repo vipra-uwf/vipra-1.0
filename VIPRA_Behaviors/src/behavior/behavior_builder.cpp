@@ -403,9 +403,6 @@ BehaviorBuilder::getGroup(BehaviorParser::Ped_SelectorContext* ctx) {
 SubSelector
 BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContext* ctx) {
 
-  typeUID     group = getGroup(ctx);
-  std::string groupStr = (group ? ctx->ID()->toString() : "Pedestrians");
-
   auto  types = ctx->id_list()->ID();
   pType compType = getCompositeType(types);
   auto  typeStrs = getTypeStrs(types);
@@ -417,7 +414,9 @@ BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContext* ctx) {
     return SubSelector{0, compType, selector_everyone{}};
   }
 
-  auto selector = ctx->selector();
+  auto        selector = ctx->selector();
+  typeUID     group = getGroup(ctx);
+  std::string groupStr = (group ? ctx->ID()->toString() : "Pedestrians");
 
   if (selector->selector_Exactly_N_Random()) {
     const VIPRA::size N =

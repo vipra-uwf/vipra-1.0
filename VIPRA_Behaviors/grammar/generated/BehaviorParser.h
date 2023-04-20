@@ -475,15 +475,6 @@ public:
     Selector_EveryoneContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *EVERYONE();
-    antlr4::tree::TerminalNode *IS();
-    std::vector<antlr4::tree::TerminalNode *> AN();
-    antlr4::tree::TerminalNode* AN(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> ID();
-    antlr4::tree::TerminalNode* ID(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> COMMA();
-    antlr4::tree::TerminalNode* COMMA(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> AND();
-    antlr4::tree::TerminalNode* AND(size_t i);
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
