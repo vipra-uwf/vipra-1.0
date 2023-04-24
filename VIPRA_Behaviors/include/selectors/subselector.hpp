@@ -11,12 +11,13 @@
 #include <definitions/pedestrian_types.hpp>
 
 namespace Behaviors {
-using SelectorFunc = std::function<std::vector<
-    VIPRA::idx>(seed, const std::vector<VIPRA::idx>&, const PedestrianSet&, const ObstacleSet&, const Goals&)>;
+using SelectorFunc = std::function<
+    std::vector<VIPRA::idx>(seed, const std::vector<VIPRA::idx>&, const PedestrianSet&, const ObstacleSet&, const Goals&)>;
 
 struct SubSelector {
   typeUID      group;
   pType        type;
+  bool         required;
   SelectorFunc select;
 };
 }  // namespace Behaviors

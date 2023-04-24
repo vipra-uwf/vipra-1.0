@@ -44,12 +44,12 @@ class Selector {
   std::vector<SubSelector> subSelectors;
   GroupsContainer          pedGroups;
 
-  std::vector<VIPRA::idx> selectPedsFromGroup(SubSelector&,
-                                              Behaviors::seed,
-                                              const PedestrianSet&,
-                                              const ObstacleSet&,
-                                              const Goals&,
-                                              const std::string&);
+  [[nodiscard]] std::vector<VIPRA::idx> selectPedsFromGroup(SubSelector&,
+                                                            Behaviors::seed,
+                                                            const PedestrianSet&,
+                                                            const ObstacleSet&,
+                                                            const Goals&,
+                                                            const std::string&);
 
   void updatePedGroups(const std::vector<VIPRA::idx>&, SubSelector&, BehaviorContext&, const std::string&);
 

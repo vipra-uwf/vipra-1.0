@@ -64,13 +64,20 @@ Selector::selectPedsFromGroup(SubSelector&         selector,
   const auto& group = pedGroups.getGroup(selector.group);
   auto        selectedPeds = selector.select(seed, group, pedSet, obsSet, goals);
 
-  if (selectedPeds.size() == 0) {
-    spdlog::warn("Behavior: {}, Starved Selector For Type: {} From Group: {}",
-                 behaviorName,
-                 selector.type.fullType,
-                 selector.group);
+  if (selectedPeds.size() > 0) {
+    return selectedPeds;
   }
 
+  if (selector.required) {
+    spdlog::error("Behavior: {}, Required Selector Starved For Type: {} From Group: {}",
+                  behaviorName,
+                  selector.type.fullType,
+                  selector.group);
+    exit(1);
+  }
+
+  spdlog::warn(
+      "Behavior: {}, Starved Selector For Type: {} From Group: {}", behaviorName, selector.type.fullType, selector.group);
   return selectedPeds;
 }
 
@@ -105,8 +112,8 @@ Selector::sortGroups() {
 Selector::Selector() : allTypes(0), subSelectors(), pedGroups() {}
 
 Selector::Selector(Selector&& other) noexcept
-  : allTypes(std::move(other.allTypes)), subSelectors(std::move(other.subSelectors)),
-    pedGroups(std::move(other.pedGroups)) {}
+  : allTypes(std::move(other.allTypes)), subSelectors(std::move(other.subSelectors)), pedGroups(std::move(other.pedGroups)) {
+}
 
 Selector&
 Selector::operator=(Selector&& other) noexcept {

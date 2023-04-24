@@ -20,10 +20,10 @@ public:
     EVENT = 31, EXACTLY = 32, EVERY = 33, EVERYONE = 34, FASTER = 35, FROM = 36, 
     FRONT = 37, GIVEN = 38, HAS = 39, IN = 40, IS = 41, METERS = 42, NORMAL = 43, 
     OBSTACLE = 44, OCCUR = 45, OCCURRED = 46, OCCURRING = 47, OF = 48, OR = 49, 
-    PEDESTRIAN = 50, PEDESTRIANS = 51, POSSIBLE = 52, RANDOM = 53, SECONDS = 54, 
-    SLOWER = 55, STATES = 56, STARTS = 57, SPEED = 58, THE = 59, THEN = 60, 
-    THEIR = 61, TYPES = 62, WHEN = 63, WHILE = 64, WILL = 65, WITHIN = 66, 
-    ID = 67, NUMBER = 68, FLOAT = 69
+    PEDESTRIAN = 50, PEDESTRIANS = 51, POSSIBLE = 52, RANDOM = 53, REQUIRED = 54, 
+    SECONDS = 55, SLOWER = 56, STATES = 57, STARTS = 58, SPEED = 59, THE = 60, 
+    THEN = 61, THEIR = 62, TYPES = 63, WHEN = 64, WHILE = 65, WILL = 66, 
+    WITHIN = 67, ID = 68, NUMBER = 69, FLOAT = 70
   };
 
   enum {
@@ -422,6 +422,8 @@ public:
     antlr4::tree::TerminalNode *PEDESTRIANS();
     antlr4::tree::TerminalNode *ARE();
     antlr4::tree::TerminalNode *IS();
+    antlr4::tree::TerminalNode *REQUIRED();
+    antlr4::tree::TerminalNode *COLON();
     Selector_EveryoneContext *selector_Everyone();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

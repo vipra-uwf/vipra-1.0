@@ -4,8 +4,8 @@ import lexer_rules, common;
 
 
 ped_Selector:
-    selector (ID | PEDESTRIAN | PEDESTRIANS ) (ARE | IS) AN id_list |
-    selector_Everyone IS AN id_list
+    (REQUIRED COLON)? selector (ID | PEDESTRIAN | PEDESTRIANS ) (ARE | IS) AN id_list |
+    (REQUIRED COLON)? selector_Everyone IS AN id_list
     ;
 
 selector:

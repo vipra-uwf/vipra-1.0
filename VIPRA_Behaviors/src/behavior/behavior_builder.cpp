@@ -238,8 +238,7 @@ BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_
   if (subcond->condition_Time_Elapsed_From_Event()) {
     VIPRA::delta_t time = std::stof(subcond->condition_Time_Elapsed_From_Event()->NUMBER()->toString());
     std::string    evName = subcond->condition_Time_Elapsed_From_Event()->EVNT()->toString();
-    spdlog::debug(
-        "Behavior \"{}\": Adding SubCondition: Elapsed Time From \"{}\" Event", currentBehavior.getName(), evName);
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Elapsed Time From \"{}\" Event", currentBehavior.getName(), evName);
     condition.addSubCondition(SubCondition_Elapsed_Time_From_Event{time, getEvent(evName)});
     return;
   }
@@ -406,12 +405,13 @@ BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContext* ctx) {
   auto  types = ctx->id_list()->ID();
   pType compType = getCompositeType(types);
   auto  typeStrs = getTypeStrs(types);
+  bool  required = ctx->REQUIRED() != nullptr;
 
   if (ctx->selector_Everyone()) {
     spdlog::debug("Behavior \"{}\": Adding Selector: \"Everyone\" Is Ped Type: {}",
                   currentBehavior.getName(),
                   fmt::join(typeStrs, ", "));
-    return SubSelector{0, compType, selector_everyone{}};
+    return SubSelector{0, compType, required, selector_everyone{}};
   }
 
   auto        selector = ctx->selector();
@@ -419,14 +419,13 @@ BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContext* ctx) {
   std::string groupStr = (group ? ctx->ID()->toString() : "Pedestrians");
 
   if (selector->selector_Exactly_N_Random()) {
-    const VIPRA::size N =
-        static_cast<VIPRA::size>(std::stoi(selector->selector_Exactly_N_Random()->NUMBER()->toString()));
+    const VIPRA::size N = static_cast<VIPRA::size>(std::stoi(selector->selector_Exactly_N_Random()->NUMBER()->toString()));
     spdlog::debug("Behavior \"{}\": Adding Selector: \"Exactly {}\" of {} Are Ped Type: {}",
                   currentBehavior.getName(),
                   N,
                   groupStr,
                   fmt::join(typeStrs, ", "));
-    return SubSelector{group, compType, selector_exactly_N{N}};
+    return SubSelector{group, compType, required, selector_exactly_N{N}};
   }
 
   if (selector->selector_Percent()) {
@@ -436,12 +435,12 @@ BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContext* ctx) {
                   percentage,
                   groupStr,
                   fmt::join(typeStrs, ", "));
-    return SubSelector{group, compType, selector_percent{percentage / 100.0f}};
+    return SubSelector{group, compType, required, selector_percent{percentage / 100.0f}};
   }
 
   spdlog::error("Behavior Error: Unable To Create Selector For Behavior \"{}\"", currentBehavior.getName());
   exit(1);
-  return SubSelector{group, pType{0}, selector_everyone{}};
+  return SubSelector{group, pType{0}, true, selector_everyone{}};
 }
 
 antlrcpp::Any
