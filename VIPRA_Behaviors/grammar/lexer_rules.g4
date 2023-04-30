@@ -101,6 +101,7 @@ STARTS: S T A R T S;
 SPEED: S P E E D;
 
 THE: T H E;
+THAT: T H A T;
 THEN: T H E N;
 THEIR: T H E I R;
 TYPES: T Y P E S;

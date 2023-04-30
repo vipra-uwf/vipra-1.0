@@ -30,6 +30,7 @@ SET(SRCS
   ${SRC_DIR}/selectors/selector_everyone.cpp
   ${SRC_DIR}/selectors/selector_exactly_N.cpp
   ${SRC_DIR}/selectors/selector_percent.cpp
+  ${SRC_DIR}/selectors/subselector.cpp
   ${SRC_DIR}/events/event.cpp
   ${SRC_DIR}/definitions/directions.cpp
   ${SRC_DIR}/definitions/object.cpp

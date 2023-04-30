@@ -156,9 +156,9 @@ HumanBehavior::applyActions(PedestrianSet&                pedSet,
 
   for (VIPRA::idx i = 0; i < groupCnt; ++i) {
     const auto& pedestrians = groups.at(i);
-    std::for_each(pedestrians.begin(), pedestrians.end(), [&](VIPRA::idx pedIdx) {
+    std::for_each(pedestrians.begin(), pedestrians.end(), [&](VIPRA::idx ped) {
       for (auto& action : actions[i]) {
-        action.performAction(pedSet, obsSet, goals, context, pedIdx, dT, state);
+        action.performAction(pedSet, obsSet, goals, context, ped, dT, state);
       }
     });
   }

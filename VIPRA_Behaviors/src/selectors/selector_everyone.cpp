@@ -4,15 +4,16 @@
 
 namespace Behaviors {
 
-std::vector<VIPRA::idx>
+SelectorResult
 selector_everyone::operator()(Behaviors::seed,
-                              const std::vector<VIPRA::idx>& group,
+                              const VIPRA::idxVec&,
+                              const VIPRA::idxVec& group,
                               const PedestrianSet&,
                               const ObstacleSet&,
                               const Goals&) {
-  auto vec = std::vector<VIPRA::idx>(group.size());
+  auto vec = VIPRA::idxVec(group.size());
   std::iota(vec.begin(), vec.end(), 0);
-  return vec;
+  return {false, vec};
 }
 
 }  // namespace Behaviors

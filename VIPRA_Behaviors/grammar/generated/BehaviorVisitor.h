@@ -63,6 +63,8 @@ public:
 
     virtual antlrcpp::Any visitPed_Selector(BehaviorParser::Ped_SelectorContext *context) = 0;
 
+    virtual antlrcpp::Any visitSelector_Cond(BehaviorParser::Selector_CondContext *context) = 0;
+
     virtual antlrcpp::Any visitSelector(BehaviorParser::SelectorContext *context) = 0;
 
     virtual antlrcpp::Any visitSelector_Percent(BehaviorParser::Selector_PercentContext *context) = 0;

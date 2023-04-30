@@ -9,6 +9,11 @@
 #include <definitions/type_definitions.hpp>
 
 namespace Behaviors {
+
+/**
+ * @brief Holds the indexes for pedestrians in each type group
+ * 
+ */
 class GroupsContainer {
  public:
   static constexpr VIPRA::idx Index(typeUID type) {
@@ -26,20 +31,34 @@ class GroupsContainer {
   }
 
   GroupsContainer();
+  ~GroupsContainer() = default;
+
+  GroupsContainer(GroupsContainer&&) noexcept;
+  GroupsContainer(const GroupsContainer&) noexcept;
+  GroupsContainer& operator=(GroupsContainer&&) noexcept;
+  GroupsContainer& operator=(const GroupsContainer&) noexcept;
 
   void initialize(pType, VIPRA::size);
+  void cleanUsed();
 
-  void removePed(VIPRA::idx, typeUID);
-  void movePed(VIPRA::idx, typeUID, typeUID);
+  [[nodiscard]] VIPRA::size size() const;
+
+  [[nodiscard]] const VIPRA::idxVec& at(VIPRA::idx) const;
+  [[nodiscard]] VIPRA::idxVec&       operator[](VIPRA::idx);
+
+  [[nodiscard]] const VIPRA::idxVec& getGroup(typeUID) const;
+
   void addPed(VIPRA::idx, typeUID);
+  void movePed(VIPRA::idx, typeUID, typeUID);
+  void removePed(VIPRA::idx, typeUID);
 
-  [[nodiscard]] VIPRA::size                    size() const;
-  [[nodiscard]] const std::vector<VIPRA::idx>& at(VIPRA::idx) const;
-  [[nodiscard]] const std::vector<VIPRA::idx>& getGroup(typeUID) const;
-  [[nodiscard]] std::vector<VIPRA::idx>&       operator[](VIPRA::idx);
+  void                                   setUsed(VIPRA::idx, typeUID);
+  [[nodiscard]] const std::vector<bool>& getUsed(typeUID) const;
+  [[nodiscard]] bool                     isUsed(VIPRA::idx, typeUID) const;
 
  private:
-  std::vector<std::vector<VIPRA::idx>> groups;
+  std::vector<VIPRA::idxVec>     groups;
+  std::vector<std::vector<bool>> used;
 };
 }  // namespace Behaviors
 

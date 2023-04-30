@@ -11,11 +11,12 @@ namespace Behaviors {
  */
 
 struct selector_everyone {
-  std::vector<VIPRA::idx> operator()(Behaviors::seed,
-                                     const std::vector<VIPRA::idx>&,
-                                     const PedestrianSet&,
-                                     const ObstacleSet&,
-                                     const Goals&);
+  SelectorResult operator()(Behaviors::seed,
+                            const VIPRA::idxVec&,
+                            const VIPRA::idxVec&,
+                            const PedestrianSet&,
+                            const ObstacleSet&,
+                            const Goals&);
 };
 
 }  // namespace Behaviors

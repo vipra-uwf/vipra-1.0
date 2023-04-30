@@ -14,16 +14,12 @@ namespace Behaviors {
 
 class Selector {
  public:
+  Selector();
   ~Selector() = default;
-
   Selector(const Selector&) = delete;
   Selector& operator=(const Selector&) = delete;
-
-  Selector();
   Selector(Selector&&) noexcept;
   Selector& operator=(Selector&&) noexcept;
-
-  Selector(SelectorFunc&&);
 
   void initialize(const std::string&,
                   Behaviors::seed,
@@ -44,14 +40,25 @@ class Selector {
   std::vector<SubSelector> subSelectors;
   GroupsContainer          pedGroups;
 
-  [[nodiscard]] std::vector<VIPRA::idx> selectPedsFromGroup(SubSelector&,
-                                                            Behaviors::seed,
-                                                            const PedestrianSet&,
-                                                            const ObstacleSet&,
-                                                            const Goals&,
-                                                            const std::string&);
+  [[nodiscard]] VIPRA::idxVec selectPedsFromGroup(SubSelector&,
+                                                  Behaviors::seed,
+                                                  const PedestrianSet&,
+                                                  const ObstacleSet&,
+                                                  const Goals&,
+                                                  const std::string&);
 
-  void updatePedGroups(const std::vector<VIPRA::idx>&, SubSelector&, BehaviorContext&, const std::string&);
+  [[nodiscard]] VIPRA::idxVec orderSelectors();
+  [[nodiscard]] VIPRA::idxVec filterUsedPeds(const VIPRA::idxVec&, const std::vector<bool>&) const;
+
+  void runSelectors(const VIPRA::idxVec&,
+                    const std::string&,
+                    Behaviors::seed,
+                    BehaviorContext&,
+                    const PedestrianSet&,
+                    const ObstacleSet&,
+                    const Goals&);
+  void updateUsedPeds(const VIPRA::idxVec&, std::vector<bool>&);
+  void updatePedGroups(const VIPRA::idxVec&, SubSelector&, BehaviorContext&, const std::string&);
 
   void sortGroups();
 };

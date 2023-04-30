@@ -22,8 +22,8 @@ public:
     OBSTACLE = 44, OCCUR = 45, OCCURRED = 46, OCCURRING = 47, OF = 48, OR = 49, 
     PEDESTRIAN = 50, PEDESTRIANS = 51, POSSIBLE = 52, RANDOM = 53, REQUIRED = 54, 
     SECONDS = 55, SLOWER = 56, STATES = 57, STARTS = 58, SPEED = 59, THE = 60, 
-    THEN = 61, THEIR = 62, TYPES = 63, WHEN = 64, WHILE = 65, WILL = 66, 
-    WITHIN = 67, ID = 68, NUMBER = 69, FLOAT = 70
+    THAT = 61, THEN = 62, THEIR = 63, TYPES = 64, WHEN = 65, WHILE = 66, 
+    WILL = 67, WITHIN = 68, ID = 69, NUMBER = 70, FLOAT = 71
   };
 
   enum {
@@ -33,12 +33,12 @@ public:
     RuleCondition_Event_Occurred = 11, RuleCondition_Event_Occurring = 12, 
     RuleCondition_Event_One_Time = 13, RuleDirection = 14, RuleDir = 15, 
     RuleDirection_of = 16, RuleInfront = 17, RuleBehind = 18, RuleAround = 19, 
-    RuleObject = 20, RulePed_Selector = 21, RuleSelector = 22, RuleSelector_Percent = 23, 
-    RuleSelector_Exactly_N_Random = 24, RuleSelector_Everyone = 25, RuleId_list = 26, 
-    RuleAction = 27, RuleConditional_action = 28, RuleUn_conditional_action = 29, 
-    RuleSub_action = 30, RuleAction_atom = 31, RuleAction_Stop = 32, RuleAction_atom_Percent_Walk_Speed = 33, 
-    RuleAction_Push = 34, RuleAction_Be = 35, RuleDeclaration = 36, RuleDecl_Ped = 37, 
-    RuleDecl_Ped_State = 38, RuleDecl_Env_State = 39
+    RuleObject = 20, RulePed_Selector = 21, RuleSelector_Cond = 22, RuleSelector = 23, 
+    RuleSelector_Percent = 24, RuleSelector_Exactly_N_Random = 25, RuleSelector_Everyone = 26, 
+    RuleId_list = 27, RuleAction = 28, RuleConditional_action = 29, RuleUn_conditional_action = 30, 
+    RuleSub_action = 31, RuleAction_atom = 32, RuleAction_Stop = 33, RuleAction_atom_Percent_Walk_Speed = 34, 
+    RuleAction_Push = 35, RuleAction_Be = 36, RuleDeclaration = 37, RuleDecl_Ped = 38, 
+    RuleDecl_Ped_State = 39, RuleDecl_Env_State = 40
   };
 
   BehaviorParser(antlr4::TokenStream *input);
@@ -73,6 +73,7 @@ public:
   class AroundContext;
   class ObjectContext;
   class Ped_SelectorContext;
+  class Selector_CondContext;
   class SelectorContext;
   class Selector_PercentContext;
   class Selector_Exactly_N_RandomContext;
@@ -415,7 +416,6 @@ public:
     Ped_SelectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     SelectorContext *selector();
-    antlr4::tree::TerminalNode *AN();
     Id_listContext *id_list();
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *PEDESTRIAN();
@@ -424,6 +424,8 @@ public:
     antlr4::tree::TerminalNode *IS();
     antlr4::tree::TerminalNode *REQUIRED();
     antlr4::tree::TerminalNode *COLON();
+    Selector_CondContext *selector_Cond();
+    antlr4::tree::TerminalNode *AN();
     Selector_EveryoneContext *selector_Everyone();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -431,6 +433,19 @@ public:
   };
 
   Ped_SelectorContext* ped_Selector();
+
+  class  Selector_CondContext : public antlr4::ParserRuleContext {
+  public:
+    Selector_CondContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *THAT();
+    antlr4::tree::TerminalNode *ARE();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Selector_CondContext* selector_Cond();
 
   class  SelectorContext : public antlr4::ParserRuleContext {
   public:

@@ -50,10 +50,14 @@ An announcement_listener will @walk 50% slower while an !announcement event is o
 
 `Selectors` Decide which pedestrians "possess" a `Behavior`.
 
-`Behaviors` can have multiple selectors.
+`Behaviors` only have one `Selector` but that `Selector` has multiple `SubSelectors`.
+
+## S.1. Sub Selectors
+
+`SubSelectors` are what actually select pedestrians.
 
 ---
-## S.1. Creating A Selector
+## S.2. Creating A Sub Selector
 
 1. Add To Grammar
 2. Create Selector Definition
@@ -62,11 +66,11 @@ An announcement_listener will @walk 50% slower while an !announcement event is o
 5. Add Tests
 6. Add To Documentation
 
-### S.1.1. Add To Grammar
+### S.2.1. Add To Grammar
 
 `Selectors` are added to the grammar in `/VIPRA_Behaviors/grammar/selector.g4`
 
-After defining a new `Selector` grammar rule run `make` in `/VIPRA_Behaviors/grammar/` to update the generated files.
+After defining a new `SubSelector` grammar rule run `make` in `/VIPRA_Behaviors/grammar/` to update the generated files.
 
 example:
 ```
@@ -75,54 +79,76 @@ selector_Example:
 	;
 ```
 
-### S.1.2. Create Selector Function Definition
+### S.2.2. Create Selector Function Definition
 
 Add a header file in `/VIPRA_Behaviors/include/selectors/` and a matching source file in `/VIPRA_Behaviors/src/selectors/`
 
 
 The only rule that `Selector Functions` need to conform to is that they implement
 ```C++
-std::vector<VIPRA::idx> selector_percent::operator()(Behaviors::seed, const PedestrianSet& pedSet, const ObstacleSet&, const Goals&)
+SelectorResult operator()(Behaviors::seed, const std::vector<VIPRA::idx>&, const std::vector<VIPRA::idx>&, const PedestrianSet&, const ObstacleSet&, const Goals&);
 ```
+
+With the Parameters:
+1. Randomization Seed
+2. The Full Group of pedestrians
+3. The Group of pedestrians that can be selected from
+4. The Pedestrian Set
+5. The Obstacle Set
+6. The Goals
+
+
 example:
 ```C++
 // selector_example.hpp
 struct Selector_Example {
   float _f;
-  std::vector<VIPRA::idx> operator()(Behaviors::seed, const PedestrianSet&, const ObstacleSet&, const Goals&);
+  SelectorResult operator()(Behaviors::seed,
+                            const std::vector<VIPRA::idx>&,
+                            const std::vector<VIPRA::idx>&,
+                            const PedestrianSet&,
+                            const ObstacleSet&,
+                            const Goals&);
 };
 
 // selector_example.cpp
-std::vector<VIPRA::idx> operator()(Behaviors::seed, const PedestrianSet&, const ObstacleSet&, const Goals&) {
+SelectorResult operator()(Behaviors::seed,
+                            const std::vector<VIPRA::idx>&,
+                            const std::vector<VIPRA::idx>&,
+                            const PedestrianSet&,
+                            const ObstacleSet&,
+                            const Goals&) {
 	// ... return the selected pedestrians
 }
 
 ```
 
-### S.1.3. Add To BehaviorBuilder
+### S.2.3. Add To BehaviorBuilder
 
 ```C++
-Selector
-BehaviorBuilder::buildSelector(BehaviorParser::Ped_SelectorContext* ctx) {
-  std::string typeStr = ctx->ID()->toString();
-  typeUID     type = getType(typeStr);
+SubSelector
+BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContext* ctx) {
 
-  // ... other selectors ...  
+  // ... Other Sub Selectors ...
 
-  // Check if the current rule context matches our example selector
-  if (ctx->selector_Example()) {
-    float floatParam = std::stof(ctx->selector_Percent()->NUMBER()->toString());
-    spdlog::debug("Behavior \"{}\": Adding Selector: \"Percent\" For Ped Type: {}", currentBehavior.getName(), typeStr);
-    return Selector(type, selector_percent{floatParam});
+  // Add a block that creates the sub selector if the context matches
+  if (selector->selector_Example()) {
+    const VIPRA::size N = static_cast<VIPRA::size>(std::stoi(selector->selector_Example()->NUMBER()->toString()));
+    spdlog::debug("Behavior \"{}\": Adding Selector: \"Example\" {} Are Ped Type: {}",
+                  N,
+                  currentBehavior.getName(),
+                  groupStr,
+                  fmt::join(typeStrs, ", "));
+    return SubSelector{group, compType, required, selector_Example{N}};
   }
-  
-  // ... other selectors ...
-}
+
+  // ... Other Sub Selectors ...
+
 ```
 
 
 
-### S.1.4. Add Source To CMakeLists.txt
+### S.2.4. Add Source To CMakeLists.txt
 
 Add the `Selector` source file to `/VIPRA_Behaviors/src/CMakeLists.txt`
 
@@ -130,11 +156,11 @@ example:
 - for our Example `Selector`:
 `${SRC_DIR}/selectors/selector_example.cpp`
 
-### S.1.5. Add Tests
+### S.2.5. Add Tests
 
 Add any tests in `/VIPRA_Behaviors/__tests__/selector_tests/`
 
-### S.1.6. Add To Documentation
+### S.2.6. Add To Documentation
 
 Add any documentation
 

@@ -22,8 +22,8 @@ public:
     OBSTACLE = 44, OCCUR = 45, OCCURRED = 46, OCCURRING = 47, OF = 48, OR = 49, 
     PEDESTRIAN = 50, PEDESTRIANS = 51, POSSIBLE = 52, RANDOM = 53, REQUIRED = 54, 
     SECONDS = 55, SLOWER = 56, STATES = 57, STARTS = 58, SPEED = 59, THE = 60, 
-    THEN = 61, THEIR = 62, TYPES = 63, WHEN = 64, WHILE = 65, WILL = 66, 
-    WITHIN = 67, ID = 68, NUMBER = 69, FLOAT = 70
+    THAT = 61, THEN = 62, THEIR = 63, TYPES = 64, WHEN = 65, WHILE = 66, 
+    WILL = 67, WITHIN = 68, ID = 69, NUMBER = 70, FLOAT = 71
   };
 
   BehaviorLexer(antlr4::CharStream *input);

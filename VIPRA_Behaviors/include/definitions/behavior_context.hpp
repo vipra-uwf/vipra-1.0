@@ -3,15 +3,17 @@
 
 #include <vector>
 
-#include "definitions/type_definitions.hpp"
-#include "dsl_types.hpp"
+#include <definitions/dsl_types.hpp>
+#include <definitions/pedestrian_types.hpp>
+#include <definitions/type_definitions.hpp>
+
 
 namespace Behaviors {
 struct BehaviorContext {
   VIPRA::delta_t                   elapsedTime;
   Behaviors::stateUID              environmentState = 0;
   std::vector<Behaviors::stateUID> pedStates;
-  std::vector<Behaviors::stateUID> types;
+  std::vector<Behaviors::typeUID>  types;
 };
 }  // namespace Behaviors
 

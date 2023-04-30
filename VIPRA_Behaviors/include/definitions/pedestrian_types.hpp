@@ -64,6 +64,11 @@ struct pType {
   inline constexpr bool operator==(pType type) const noexcept { return fullType == type.fullType; }
   inline constexpr bool operator!=(pType type) const noexcept { return fullType != type.fullType; }
 
+  /**
+   * @brief Loops through each individual type, starting from 1. example(1, 2, 4, 8)
+   * 
+   * @param func : 
+   */
   void forEachType(std::function<void(typeUID)> func) {
     typeUID type = fullType;
     typeUID check = 1;

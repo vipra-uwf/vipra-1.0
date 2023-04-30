@@ -28,17 +28,20 @@ void
 GroupsContainer::initialize(pType allTypes, VIPRA::size pedCnt) {
   VIPRA::size typeCnt = getTypeCount(allTypes);
   groups.resize(typeCnt);
-  groups[0] = std::vector<VIPRA::idx>(pedCnt);
+  groups[0] = VIPRA::idxVec(pedCnt);
   std::iota(groups[0].begin(), groups[0].end(), 0);
+
+  used.resize(typeCnt);
+  used[0] = std::vector<bool>(pedCnt, false);
 }
 
 /**
  * @brief Returns the group with a given type
  * 
  * @param type : 
- * @return const std::vector<VIPRA::idx>& 
+ * @return const VIPRA::idxVec& 
  */
-const std::vector<VIPRA::idx>&
+const VIPRA::idxVec&
 GroupsContainer::getGroup(typeUID type) const {
   return groups.at(Index(type));
 }
@@ -51,7 +54,32 @@ GroupsContainer::getGroup(typeUID type) const {
  */
 void
 GroupsContainer::addPed(VIPRA::idx pedIdx, typeUID type) {
-  groups.at(Index(type)).push_back(pedIdx);
+  const VIPRA::size index = Index(type);
+  groups.at(index).push_back(pedIdx);
+  used.at(index).push_back(false);
+}
+
+void
+GroupsContainer::setUsed(VIPRA::idx pedIdx, typeUID type) {
+  const VIPRA::size index = Index(type);
+  auto&             group = groups.at(index);
+  auto&             used_group = used.at(index);
+
+  for (VIPRA::idx i = 0; i < group.size(); ++i) {
+    if (group[i] == pedIdx) {
+      used_group[i] = true;
+    }
+  }
+}
+
+const std::vector<bool>&
+GroupsContainer::getUsed(typeUID type) const {
+  return used.at(Index(type));
+}
+
+void
+GroupsContainer::cleanUsed() {
+  used.clear();
 }
 
 /**
@@ -71,12 +99,12 @@ GroupsContainer::removePed(VIPRA::idx pedIdx, typeUID type) {
   }
 }
 
-std::vector<VIPRA::idx>&
+VIPRA::idxVec&
 GroupsContainer::operator[](VIPRA::idx index) {
   return groups[index];
 }
 
-const std::vector<VIPRA::idx>&
+const VIPRA::idxVec&
 GroupsContainer::at(VIPRA::idx index) const {
   return groups.at(index);
 }
@@ -93,6 +121,25 @@ GroupsContainer::size() const {
 
 // ---------- CONSTRUCTORS ---------------------------
 
-GroupsContainer::GroupsContainer() : groups() {}
+GroupsContainer::GroupsContainer() : groups(), used() {}
+
+GroupsContainer::GroupsContainer(GroupsContainer&& other) noexcept
+  : groups(std::move(other.groups)), used(std::move(other.used)) {}
+
+GroupsContainer::GroupsContainer(const GroupsContainer& other) noexcept : groups(other.groups), used(other.used) {}
+
+GroupsContainer&
+GroupsContainer::operator=(GroupsContainer&& other) noexcept {
+  groups = std::move(other.groups);
+  used = std::move(other.used);
+  return *this;
+}
+
+GroupsContainer&
+GroupsContainer::operator=(const GroupsContainer& other) noexcept {
+  groups = other.groups;
+  used = other.used;
+  return *this;
+}
 
 }  // namespace Behaviors

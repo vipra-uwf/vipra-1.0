@@ -103,6 +103,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitSelector_Cond(BehaviorParser::Selector_CondContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitSelector(BehaviorParser::SelectorContext *ctx) override {
     return visitChildren(ctx);
   }

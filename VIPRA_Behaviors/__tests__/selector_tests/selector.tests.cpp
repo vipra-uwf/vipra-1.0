@@ -63,8 +63,8 @@ TEST(Selector, No_Dupes) {
 
     Behaviors::Selector test;
     test.setAllTypes(Behaviors::pType{3});
-    test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{1}, Behaviors::selector_percent{0.5f}});
-    test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{2}, Behaviors::selector_percent{0.5f}});
+    test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{1}, false, Behaviors::selector_percent{0.5f}});
+    test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{2}, false, Behaviors::selector_percent{0.5f}});
 
     Behaviors::seed s = rand();
 
@@ -95,9 +95,9 @@ TEST(Selector, SubGroups) {
   test.setAllTypes(Behaviors::pType{7});
 
   VIPRA::size subgroupCnt = static_cast<VIPRA::size>(144 * 0.3 * 0.1);
-  test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{1}, Behaviors::selector_percent{0.3f}});
-  test.addSubSelector(Behaviors::SubSelector{1, Behaviors::pType{2}, Behaviors::selector_percent{0.1f}});
-  test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{4}, Behaviors::selector_percent{0.2f}});
+  test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{1}, false, Behaviors::selector_percent{0.3f}});
+  test.addSubSelector(Behaviors::SubSelector{1, Behaviors::pType{2}, false, Behaviors::selector_percent{0.1f}});
+  test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{4}, false, Behaviors::selector_percent{0.2f}});
 
   test.initialize("test", 123, context, pedSet, obsSet, goals);
 
