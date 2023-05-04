@@ -62,8 +62,6 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   std::vector<Rect> collisionRectangle;
   VIPRA::f3dVec velDir;
 
-  VIPRA::f3d getGoalIntersection(const CalmPedestrianSet&, const Goals&, VIPRA::idx, VIPRA::idx);
-
   void calculatePropulsion(const CalmPedestrianSet&, const CalmGoals&) noexcept;
   void calculateRepulsion(const CalmPedestrianSet&, const CalmGoals&) noexcept;
   void calculateBetas(const CalmPedestrianSet&) noexcept;
@@ -72,7 +70,7 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   bool checkIfCollide(const CalmPedestrianSet& pedestrianSet, const Goals&, const VIPRA::size, const VIPRA::size);
   Rect getCollisionRectangle(const CalmPedestrianSet& pedestrianSet, const Goals&, const VIPRA::idx, const float& shldrlen);
-  bool doRectanglesIntersect(Rect& r1, Rect& r2, VIPRA::idx i1, VIPRA::idx i2);
+  bool doRectanglesIntersect(Rect& r1, Rect& r2);
   
   float max(float a, float b);
   float min(float a, float b);
