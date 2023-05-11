@@ -1,0 +1,5 @@
+Consider an injured_person.
+
+Exactly 2 random pedestrians are an injured_person.
+
+An injured_person will always @walk 0.9x their normal speed.

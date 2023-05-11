@@ -1,0 +1,12 @@
+
+Consider an announcement_listener.
+
+Everyone is an announcement_listener.
+
+Possible Pedestrian States are #listening, and #normal.
+
+The !announcement event will occur after 2 seconds from !start and end after 5 seconds from !announcement.
+
+An announcement_listener will @be set to #listening when an !announcement event starts.
+
+An announcement_listener will @be set to #normal when an !announcement event ends.

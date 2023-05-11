@@ -1,0 +1,16 @@
+
+PARAMETERS: $start_time, $duration.
+
+// -----------------------------------------------------
+
+// The listen action means:
+//   be #listening
+
+// -----------------------------------------------------
+
+Consider an announcement_listener.
+
+Everyone is an announcement_listener.
+
+An announcement_listener will always 
+  !change_speed 10% Faster.

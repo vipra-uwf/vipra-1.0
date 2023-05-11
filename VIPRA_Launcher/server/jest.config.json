@@ -1,0 +1,30 @@
+{
+  "roots": [
+    "."
+  ],
+  "transform": {
+    "^.+\\.(js|jsx|ts|tsx)$": "ts-jest"
+  },
+  "testPathIgnorePatterns": [
+    "/node_modules/",
+    "/__tests__/values/",
+    "/__tests__/mocks/",
+    "/Deprecated/"
+  ],
+  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.ts?$",
+  "moduleFileExtensions": [
+    "ts",
+    "js",
+    "json",
+    "node"
+  ],
+  "collectCoverage": true,
+  "coveragePathIgnorePatterns": [
+    "./src/configuration/*",
+    "./__tests__/mocks",
+    "./__tests__/values",
+    "./src/types"
+  ],
+  "clearMocks": true,
+  "coverageDirectory": "coverage"
+}

@@ -1,0 +1,210 @@
+{
+    "input_data_loader": [
+      {
+        "id": "bQIGJDQw0Fgqo4oC3lH7mQerFGTQry",
+        "name": "input_json_reader",
+        "description": "TODO",
+        "params": [],
+        "className": "INPUTJSONREADER",
+        "type": "input_data_loader",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "human_behavior_model": [
+      {
+        "id": "e3y1yG6PSjrWzsptf6jHdfBElwFugQ",
+        "name": "human_behavior_model",
+        "description": "TODO",
+        "params": [
+          {
+              "name": "random_seed",
+              "type": "string",
+              "description": "String used for seeding random number generation",
+              "repeatable": false
+          }
+      ],
+        "className": "HUMANBEHAVIORMODEL",
+        "type": "human_behavior_model",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "output_data_writer": [
+      {
+        "id": "esBm2A3I0yIbGvzW5bLY0yKHJTzVCj",
+        "name": "json_timestep_writer",
+        "description": "TODO",
+        "params": [],
+        "className": "JSONTIMESTEPWRITER",
+        "type": "output_data_writer",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      },
+      {
+        "id": "f8qt7eLCczzFMjToJBsA5qYUz1A8E6",
+        "name": "json_writer",
+        "description": "TODO",
+        "params": [],
+        "className": "JSONWRITER",
+        "type": "output_data_writer",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "simulation_output_handler": [
+      {
+        "id": "RfH40LtLJjHOlPIEeTj0i6ghBygQsZ",
+        "name": "timestep_console_logger",
+        "description": "TODO",
+        "params": [
+          {
+              "name": "outputFrequency",
+              "type": "integer",
+              "description": "How frequently position samples are taken in the simulation",
+              "repeatable": false
+          }
+      ],
+        "className": "TIMESTEPCONSOLELOGGER",
+        "type": "simulation_output_handler",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      },
+      {
+        "id": "0bQVYYyskvxYq6YW4J67z73UB6GbnU",
+        "name": "timestep_output_handler",
+        "description": "TODO",
+        "params": [
+          {
+              "name": "outputFrequency",
+              "type": "integer",
+              "description": "How frequently position samples are taken in the simulation",
+              "repeatable": false
+          }
+      ],
+        "className": "TIMESTEPOUTPUTHANDLER",
+        "type": "simulation_output_handler",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "pedestrian_set": [
+      {
+        "id": "jLcPe7ZP8G15AFH5vPb6Wz2DrIVT94",
+        "name": "calm_pedestrian_set",
+        "description": "TODO",
+        "params": [],
+        "className": "CALMPEDESTRIANSET",
+        "type": "pedestrian_set",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "obstacle_set": [
+    ],
+    "entity_set_factory": [
+      {
+        "id": "h6fJTJdM5L9q8wjXEvN6Cq8D14MUeX",
+        "name": "calm_entity_set_factory",
+        "description": "TODO",
+        "params": [],
+        "className": "CALMENTITYSETFACTORY",
+        "type": "entity_set_factory",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "goals": [
+      {
+        "id": "Xz59g1o8HcsnMJlKaiYw00wZ19rB7P",
+        "name": "calm_goals",
+        "description": "TODO",
+        "params": [],
+        "className": "CALMGOALS",
+        "type": "goals",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "pedestrian_dynamics_model": [
+      {
+        "id": "VbGjNW5NCkOmKAxvFmz5KwUV2zz469",
+        "name": "calm_pedestrian_model",
+        "description": "TODO",
+        "params": [],
+        "className": "CALMPEDESTRIANMODEL",
+        "type": "pedestrian_dynamics_model",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "configuration_reader": [
+      {
+        "id": "5E4V21CyOwU5iMBfH97qlFDn6DlAlf",
+        "name": "configuration_reader",
+        "description": "TODO",
+        "params": [],
+        "className": "CONFIGURATIONREADER",
+        "type": "configuration_reader",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "clock": [
+      {
+        "id": "NUpICP9g2eBe9GGYBXmx1jofH9TC7k",
+        "name": "clock",
+        "description": "TODO",
+        "params": [],
+        "className": "CLOCK",
+        "type": "clock",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "data": [
+      {
+        "id": "MJk1zG6WMVTwUT82QroZXohn3gnfT4",
+        "name": "data",
+        "description": "TODO",
+        "params": [],
+        "className": "DATA",
+        "type": "data",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ],
+    "simulation": [
+      {
+        "id": "QQgWGHtxsVWT1jIEXbxjKG1HA3iqI0",
+        "name": "simulation",
+        "description": "TODO",
+        "params": [
+          {
+              "name": "time_step_size",
+              "type": "integer",
+              "description": "Size of each timestep of the simulation",
+              "repeatable": false
+          }
+      ],
+        "className": "SIMULATION",
+        "type": "simulation",
+        "dirPath": "successful/path",
+        "includePath": "successful/path",
+        "compiled": false
+      }
+    ]
+  }

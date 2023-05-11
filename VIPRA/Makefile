@@ -1,73 +1,61 @@
-CXX = g++
-NAME = "generated_main"
+CPP= g++
+CPP_FLAGS= -std=c++17 -w -fPIE 
 
-# For Fedora 35, run dnf install antlr4-cpp-runtime-devel
-# For Ubuntu 20.04, run apt install libantlr4-runtime-dev libstdc++-10-dev
-# The include paths are the same for both platforms
-CXXFLAGS = -std=c++11 -g -Wall -O3 -fopenmp -fPIE -I/usr/include/antlr4-runtime
+EXE_NAME= VIPRA_SIM
+
+ifeq ($(DEBUG_OUTPUT), 1)
+	CPP_FLAGS := $(CPP_FLAGS) -DDEBUG_OUTPUT=1 -g -O0
+else
+	CPP_FLAGS := $(CPP_FLAGS) -O3
+endif
+
 LDLIBS = -lantlr4-runtime
 
-BUILD_DIR = build
-SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
-SRCS := $(filter-out code_generation/code_generator.cpp, $(SRCS)) #this gets compiled separately
-OBJECTS = $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
-all: compile
+BASE_DIR = ./Base
+BUILD_DIR = ./build
+DEPS_DIR = ./deps
 
-grammar: Behaviors.g4
-	antlr4 -Dlanguage=Cpp -o dsl/generated -Dlanguage=Cpp -no-listener -visitor Behaviors.g4 
+INCLUDES = -I/usr/include/antlr4-runtime -Ideps -IBase -IExtendable
 
-compile: setup generate_main make_directories main
+OBJS := $(wildcard $(BUILD_DIR)/*.o) $(wildcard $(BUILD_DIR)/*/*.o)
+OBJS := $(filter-out $(wildcard $(BUILD_DIR)/*/main.o), $(OBJS))
 
-generate_main:
-	$(CXX) $(CXXFLAGS) code_generation/code_generator.cpp jsoncpp/jsoncpp.cpp configuration/configuration_reader.cpp -o $@
-	./$@
-	rm ./$@
-	$(eval SRCS := $(NAME).cpp)
-	echo $(OBJECTS)
-	
-main: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(NAME) $^ $(LDLIBS)
-	
-$(BUILD_DIR)/%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+generate_main: $(BASE_DIR)/code_generation/code_generator.cpp $(DEPS_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) $(BASE_DIR)/code_generation/code_generator.cpp $(DEPS_DIR)/jsoncpp/jsoncpp.cpp $(BASE_DIR)/configuration/configuration_reader.cpp -o $@
 
-setup:
-	@test -e rapidxml || git clone --depth=1 --branch=master https://github.com/dwd/rapidxml.git rapidxml
-	@rm -rf ./rapidxml/.git
-	@rm -rf ./rapidxml/test
+module: makeDirs
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) -c $(MODULEPATH).cpp -o $(BUILD_DIR)/$(MODULEID).o
 
-make_directories:
-	@mkdir -p $(BUILD_DIR)
-	@mkdir -p $(BUILD_DIR)/configuration
-	@mkdir -p $(BUILD_DIR)/code_generation
-	@mkdir -p $(BUILD_DIR)/definitions
-	@mkdir -p $(BUILD_DIR)/dsl/actions
-	@mkdir -p $(BUILD_DIR)/dsl/conditions
-	@mkdir -p $(BUILD_DIR)/dsl/generated
-	@mkdir -p $(BUILD_DIR)/dsl/selectors
-	@mkdir -p $(BUILD_DIR)/dsl/transitions
-	@mkdir -p $(BUILD_DIR)/entity_sets
-	@mkdir -p $(BUILD_DIR)/entity_sets/factory
-	@mkdir -p $(BUILD_DIR)/goals
-	@mkdir -p $(BUILD_DIR)/jsoncpp
-	@mkdir -p $(BUILD_DIR)/models
-	@mkdir -p $(BUILD_DIR)/readers
-	@mkdir -p $(BUILD_DIR)/writers
-	@mkdir -p $(BUILD_DIR)/simulation
-	
-.PHONY: make_directories
+simulation: makeDirs
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) $(BUILD_DIR)/$(BID)/main.o $(OBJS) $(LDLIBS) -o $(BUILD_DIR)/$(BID)/$(EXE_NAME)
 
-run: compile # compile if needed & run
-	./$(NAME)
+compileMain: makeDirs
+	./generate_main $(BUILD_DIR)/$(BID)/main.cpp $(MODULEFILE)
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) -c $(DEPS_DIR)/jsoncpp/jsoncpp.cpp -o $(BUILD_DIR)/jsoncpp.o
+	$(CPP) $(CPP_FLAGS) $(INCLUDES) -c $(BUILD_DIR)/$(BID)/main.cpp -o $(BUILD_DIR)/$(BID)/main.o
 
-clean:
-	$(RM) *.o *.exe $(NAME) $(NAME).cpp
-	$(RM) -rf $(BUILD_DIR)
+makeDirs:
+	mkdir -p $(BUILD_DIR)
 
-cc: clean compile # clean compile
+GenSim:
+	cmake -B simbuild . -DDEBUG_MODE=OFF
+	cmake --build simbuild
 
-ccr: clean run # clean & compile & run
+DebugGenSim:
+	cmake -B simbuild . -DDEBUG_MODE=ON -DMOCK_BEHAVIORS=ON
+	cmake --build simbuild
 
-co: #clear output folder
-	$(RM) output_data/*
+BuildAll:
+	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild
+	make generate_main
+	./generate_main main.cpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
+	make GenSim
+
+DebugBuildAll:
+	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild
+	make generate_main DEBUG_OUTPUT=1
+	./generate_main main.cpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
+	make DebugGenSim
+
+PHONY: makeDirs GenMain GenSim BuildAll DebugBuildAll

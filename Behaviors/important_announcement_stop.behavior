@@ -1,0 +1,8 @@
+
+Consider an announcement_listener.
+
+Everyone is an announcement_listener.
+
+An !announcement event will occur after 5 seconds from !start and end after 10 seconds from !announcement.
+
+An announcement_listener will @stop while an !announcement event is occurring.

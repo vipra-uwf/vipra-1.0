@@ -1,0 +1,34 @@
+{
+    "input_data_loader": {},
+    "human_behavior_model": {
+        "seed": 123456,
+        "behaviors": []
+    },
+    "output_data_writer": {},
+    "simulation_output_handler": {
+        "outputFrequency": 100
+    },
+    "configuration_writer": {
+        "desiredSpeedMin": 0.80,
+        "desiredSpeedMax": 1.20
+    },
+    "pedestrian_set": {},
+    "obstacle_set": {
+        "obstacleCollisionDistance": 0.05
+    },
+    "entity_set_factory": {},
+    "goals": {
+        "pathFinding": "Astar",
+        "endGoalType": "exit",
+        "quadSize": 0.1,
+        "closestObstacle": 0.2,
+        "goalRange": 0.1
+    },
+    "pedestrian_dynamics_model": {},
+    "configuration_reader": {},
+    "clock": {},
+    "simulation": {
+        "time_step_size": 0.005,
+        "max_timestep": 5000
+    }
+}
