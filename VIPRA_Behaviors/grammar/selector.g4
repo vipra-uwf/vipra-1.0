@@ -13,8 +13,9 @@ selector_Cond:
 
 selector:
     selector_Percent |
-    selector_Exactly_N_Random
-    ;
+    selector_Exactly_N_Random |
+    selector_Everyone |
+    selector_Area;
 
 selector_Percent:
     NUMBER '%' OF
@@ -27,3 +28,6 @@ selector_Exactly_N_Random:
 selector_Everyone:
     EVERYONE
     ;
+
+selector_Area:
+    EVERYON IN LOC IS AN ID;

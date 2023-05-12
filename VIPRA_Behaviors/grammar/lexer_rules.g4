@@ -117,3 +117,8 @@ WITHIN: W I T H I N;
 ID: [a-zA-Z_\-]+;
 NUMBER : [0-9]+;
 FLOAT: [0-9]+'.'[0-9]+;
+LOC: [a-zA-Z_/-]+;
+L: FLOAT;
+W: FLOAT;
+POINTX: FLOAT;
+POINTY: FLOAT;
