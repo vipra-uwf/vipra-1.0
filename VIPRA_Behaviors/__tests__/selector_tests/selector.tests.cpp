@@ -1,8 +1,8 @@
 
 #include <iostream>
 
-#include <filesystem>
 #include <gtest/gtest.h>
+#include <filesystem>
 
 #include <definitions/../../__tests__/mocks/goals/goals.mock.hpp>
 #include <definitions/../../__tests__/mocks/obstacle_set/obstacle_set.mock.hpp>
@@ -18,34 +18,6 @@
 using ::testing::Return;
 using ::testing::ReturnRef;
 
-TEST(GroupContainer, initialization) {
-
-  Behaviors::pType           test1 = Behaviors::pType{};
-  Behaviors::GroupsContainer sut1;
-  sut1.initialize(test1, 100);
-  EXPECT_EQ(sut1.size(), 1);
-
-  Behaviors::pType           test2 = Behaviors::pType{3};
-  Behaviors::GroupsContainer sut2;
-  sut2.initialize(test2, 100);
-  EXPECT_EQ(sut2.size(), 3);
-
-  Behaviors::pType           test3 = Behaviors::pType{7};
-  Behaviors::GroupsContainer sut3;
-  sut3.initialize(test3, 100);
-  EXPECT_EQ(sut3.size(), 4);
-
-  Behaviors::pType           test4 = Behaviors::pType{15};
-  Behaviors::GroupsContainer sut4;
-  sut4.initialize(test4, 100);
-  EXPECT_EQ(sut4.size(), 5);
-
-  Behaviors::pType           test5 = Behaviors::pType{31};
-  Behaviors::GroupsContainer sut5;
-  sut5.initialize(test5, 100);
-  EXPECT_EQ(sut5.size(), 6);
-}
-
 TEST(Selector, No_Dupes) {
 
   ObstacleSetMock   obsSet;
@@ -57,16 +29,16 @@ TEST(Selector, No_Dupes) {
   srand(0);
   for (int x = 0; x < 5; ++x) {
 
-    Behaviors::BehaviorContext context;
-    context.pedStates = std::vector<Behaviors::stateUID>(pedSet.getNumPedestrians());
-    context.types = std::vector<Behaviors::stateUID>(pedSet.getNumPedestrians());
+    BHVR::BehaviorContext context;
+    context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
+    context.types = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
 
-    Behaviors::Selector test;
-    test.setAllTypes(Behaviors::pType{3});
-    test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{1}, false, Behaviors::selector_percent{0.5f}});
-    test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{2}, false, Behaviors::selector_percent{0.5f}});
+    BHVR::Selector test;
+    test.setAllTypes(BHVR::pType{3});
+    test.addSubSelector(BHVR::SubSelector{0, BHVR::pType{1}, false, BHVR::selector_percent{0.5f}});
+    test.addSubSelector(BHVR::SubSelector{0, BHVR::pType{2}, false, BHVR::selector_percent{0.5f}});
 
-    Behaviors::seed s = rand();
+    BHVR::seed s = rand();
 
     test.initialize("test", s, context, pedSet, obsSet, goals);
 
@@ -87,17 +59,17 @@ TEST(Selector, SubGroups) {
 
   EXPECT_CALL(pedSet, getNumPedestrians()).WillRepeatedly(Return(144));
 
-  Behaviors::BehaviorContext context;
-  context.pedStates = std::vector<Behaviors::stateUID>(pedSet.getNumPedestrians());
-  context.types = std::vector<Behaviors::stateUID>(pedSet.getNumPedestrians());
+  BHVR::BehaviorContext context;
+  context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
+  context.types = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
 
-  Behaviors::Selector test;
-  test.setAllTypes(Behaviors::pType{7});
+  BHVR::Selector test;
+  test.setAllTypes(BHVR::pType{7});
 
   VIPRA::size subgroupCnt = static_cast<VIPRA::size>(144 * 0.3 * 0.1);
-  test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{1}, false, Behaviors::selector_percent{0.3f}});
-  test.addSubSelector(Behaviors::SubSelector{1, Behaviors::pType{2}, false, Behaviors::selector_percent{0.1f}});
-  test.addSubSelector(Behaviors::SubSelector{0, Behaviors::pType{4}, false, Behaviors::selector_percent{0.2f}});
+  test.addSubSelector(BHVR::SubSelector{0, BHVR::pType{1}, false, BHVR::selector_percent{0.3f}});
+  test.addSubSelector(BHVR::SubSelector{1, BHVR::pType{2}, false, BHVR::selector_percent{0.1f}});
+  test.addSubSelector(BHVR::SubSelector{0, BHVR::pType{4}, false, BHVR::selector_percent{0.2f}});
 
   test.initialize("test", 123, context, pedSet, obsSet, goals);
 

@@ -1,9 +1,11 @@
 
 #include <events/event.hpp>
+#include <utility>
+#include "definitions/behavior_context.hpp"
 
 #include <spdlog/spdlog.h>
 
-namespace Behaviors {
+namespace BHVR {
 
 /**
  * @brief Evaluates whether an event should start or end based on its conditions
@@ -14,83 +16,61 @@ namespace Behaviors {
  * @param context : behavior context
  * @param dT : simulation timestep size
  */
-void
-Event::evaluate(const PedestrianSet&   pedSet,
-                const ObstacleSet&     obsSet,
-                const Goals&           goals,
-                const BehaviorContext& context,
-                VIPRA::delta_t         dT) {
-  if (!occurring) {
+void Event::evaluate(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals,
+                     const BehaviorContext& context, VIPRA::delta_t dT) {
+  if (!isOccurring()) {
     if (startCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
-      spdlog::debug("Event \"{}\" has Started", name);
-      occurring = true;
-      std::for_each(startHandlers.begin(), startHandlers.end(), [&](EventHandler handler) { handler(context.elapsedTime); });
-    }
-  } else {
-    if (endCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
-      spdlog::debug("Event \"{}\" has Ended", name);
-      occurring = false;
-      std::for_each(endHandlers.begin(), endHandlers.end(), [&](EventHandler handler) { handler(context.elapsedTime); });
+      spdlog::info("Event \"{}\" has Started", name);
+      started = true;
+      occurred = true;
+      startTime = context.elapsedTime;
+    } else {
+      if (endCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
+        spdlog::info("Event \"{}\" has Ended", name);
+        started = false;
+        ended = true;
+        endTime = context.elapsedTime;
+      }
     }
   }
 }
 
-/**
- * @brief Adds an event handler for when the event starts
- * 
- * @param handler : handler function to add
- */
-void
-Event::onStart(EventHandler handler) {
-  startHandlers.emplace_back(handler);
+bool Event::hasStarted() const {
+  return started;
 }
 
-/**
- * @brief Adds an event handler for when the event ends
- * 
- * @param handler : handler function to add
- */
-void
-Event::onEnd(EventHandler handler) {
-  endHandlers.emplace_back(handler);
+bool Event::hasEnded() const {
+  return ended;
 }
 
-void
-Event::setStartCondition(Condition&& condition) {
-  startCondition = std::move(condition);
+bool Event::isOccurring() const {
+  return started && !ended;
 }
 
-void
-Event::setEndCondition(Condition&& condition) {
-  endCondition = std::move(condition);
+bool Event::hasOccurred() const {
+  return occurred;
 }
 
-const std::string&
-Event::getName() const {
+void Event::setStartCondition(const Condition& condition) {
+  startCondition = condition;
+}
+
+void Event::setEndCondition(const Condition& condition) {
+  endCondition = condition;
+}
+
+float Event::timeSinceLastStart(const BehaviorContext& context) const {
+  return context.elapsedTime - startTime;
+}
+
+const std::string& Event::getName() const {
   return name;
 }
 
 // ---------------------------------- CONSTRUCTORS -----------------------------------------------------------
 
-Event::Event(std::string evName)
-  : name(evName), occurring(false), startCondition(), endCondition(), startHandlers(), endHandlers() {}
-
-Event::Event(Event&& other) noexcept
-  : name(std::move(other.name)), occurring(other.occurring), startCondition(std::move(other.startCondition)),
-    endCondition(std::move(other.endCondition)), startHandlers(std::move(other.startHandlers)),
-    endHandlers(std::move(other.endHandlers)) {}
-
-Event&
-Event::operator=(Event&& other) noexcept {
-  occurring = other.occurring;
-  name = std::move(other.name);
-  startCondition = std::move(other.startCondition);
-  endCondition = std::move(other.endCondition);
-  startHandlers = std::move(other.startHandlers);
-  endHandlers = std::move(other.endHandlers);
-  return (*this);
-}
+Event::Event(std::string evName) : name(std::move(evName)), occurred(false), started(false), ended(false) {}
 
 // ---------------------------------- END CONSTRUCTORS -----------------------------------------------------------
 
-}  // namespace Behaviors
+}  // namespace BHVR

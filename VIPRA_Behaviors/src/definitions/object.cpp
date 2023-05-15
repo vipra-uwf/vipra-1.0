@@ -4,9 +4,8 @@
 #include <behavior/exceptions.hpp>
 #include <definitions/object.hpp>
 
-namespace Behaviors {
-Object
-objectFromContext(BehaviorParser::ObjectContext* ctx) {
+namespace BHVR {
+Object objectFromContext(BehaviorParser::ObjectContext* ctx) {
   if (ctx == nullptr) {
     spdlog::error("ObjectFromContext: Context is null");
     exit(1);
@@ -19,10 +18,12 @@ objectFromContext(BehaviorParser::ObjectContext* ctx) {
 
   if (name == "Pedestrian") {
     return {ObjType::PED, ""};
-  } else if (name == "Obstacle") {
-    return {ObjType::OBSTACLE, ""};
-  } else {
-    return {ObjType::OBJECT, name};
   }
+
+  if (name == "Obstacle") {
+    return {ObjType::OBSTACLE, ""};
+  }
+
+  return {ObjType::OBJECT, name};
 }
-}  // namespace Behaviors
+}  // namespace BHVR

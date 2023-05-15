@@ -3,7 +3,7 @@
 
 #include <selectors/selector.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 
 /**
  * @brief Initializes the pedestrian groups, and runs the sub selectors over them
@@ -14,13 +14,8 @@ namespace Behaviors {
  * @param obsSet : 
  * @param goals : 
  */
-void
-Selector::initialize(const std::string&   behaviorName,
-                     Behaviors::seed      seed,
-                     BehaviorContext&     context,
-                     const PedestrianSet& pedSet,
-                     const ObstacleSet&   obsSet,
-                     const Goals&         goals) {
+void Selector::initialize(const std::string& behaviorName, BHVR::seed seed, BehaviorContext& context,
+                          const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
   pedGroups.initialize(allTypes, pedSet.getNumPedestrians());
 
   auto selectorIdxs = orderSelectors();
@@ -40,14 +35,9 @@ Selector::initialize(const std::string&   behaviorName,
  * @param obsSet : 
  * @param goals : 
  */
-void
-Selector::runSelectors(const VIPRA::idxVec& selectorIdxs,
-                       const std::string&   behaviorName,
-                       Behaviors::seed      seed,
-                       BehaviorContext&     context,
-                       const PedestrianSet& pedSet,
-                       const ObstacleSet&   obsSet,
-                       const Goals&         goals) {
+void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs, const std::string& behaviorName, BHVR::seed seed,
+                            BehaviorContext& context, const PedestrianSet& pedSet, const ObstacleSet& obsSet,
+                            const Goals& goals) {
 
   std::for_each(selectorIdxs.begin(), selectorIdxs.end(), [&](VIPRA::idx index) {
     auto& selector = subSelectors[index];
@@ -70,13 +60,8 @@ Selector::runSelectors(const VIPRA::idxVec& selectorIdxs,
  * @param behaviorName : 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec
-Selector::selectPedsFromGroup(SubSelector&         selector,
-                              Behaviors::seed      seed,
-                              const PedestrianSet& pedSet,
-                              const ObstacleSet&   obsSet,
-                              const Goals&         goals,
-                              const std::string&   behaviorName) {
+VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector& selector, BHVR::seed seed, const PedestrianSet& pedSet,
+                                            const ObstacleSet& obsSet, const Goals& goals, const std::string& behaviorName) {
   const auto& fullGroup = pedGroups.getGroup(selector.group);
   auto        usablegroup = filterUsedPeds(fullGroup, pedGroups.getUsed(selector.group));
   auto        result = selector.selectPeds(seed, fullGroup, usablegroup, pedSet, obsSet, goals);
@@ -106,11 +91,8 @@ Selector::selectPedsFromGroup(SubSelector&         selector,
  * @param context : 
  * @param behaviorName : 
  */
-void
-Selector::updatePedGroups(const VIPRA::idxVec& selectedPeds,
-                          SubSelector&         selector,
-                          BehaviorContext&     context,
-                          const std::string&   behaviorName) {
+void Selector::updatePedGroups(const VIPRA::idxVec& selectedPeds, SubSelector& selector, BehaviorContext& context,
+                               const std::string& behaviorName) {
   std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](auto& pedIdx) {
     selector.type.forEachType([&](typeUID type) {
       spdlog::debug("Behavior: {}, Selecting Ped {} for Type: {}", behaviorName, pedIdx, type);
@@ -129,8 +111,7 @@ Selector::updatePedGroups(const VIPRA::idxVec& selectedPeds,
  * @param used : 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec
-Selector::filterUsedPeds(const VIPRA::idxVec& peds, const std::vector<bool>& used) const {
+VIPRA::idxVec Selector::filterUsedPeds(const VIPRA::idxVec& peds, const std::vector<bool>& used) {
   VIPRA::idxVec ret;
 
   for (VIPRA::idx i = 0; i < peds.size(); ++i) {
@@ -146,8 +127,7 @@ Selector::filterUsedPeds(const VIPRA::idxVec& peds, const std::vector<bool>& use
  * @brief Sorts all of the groups in the selector's group container
  * 
  */
-void
-Selector::sortGroups() {
+void Selector::sortGroups() {
   const VIPRA::size groupCnt = pedGroups.size();
   for (VIPRA::idx i = 1; i < groupCnt; ++i) {
     std::sort(pedGroups[i].begin(), pedGroups[i].end());
@@ -160,8 +140,7 @@ Selector::sortGroups() {
  * 
  * @param order : 
  */
-void
-checkforDuplicates(const VIPRA::idxVec& order) {
+void checkforDuplicates(const VIPRA::idxVec& order) {
   for (VIPRA::idx i = 0; i < order.size(); ++i) {
     for (VIPRA::idx j = i + 1; j < order.size(); ++j) {
       if (order[i] == order[j]) {
@@ -177,8 +156,7 @@ checkforDuplicates(const VIPRA::idxVec& order) {
  * 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec
-Selector::orderSelectors() {
+VIPRA::idxVec Selector::orderSelectors() {
   VIPRA::idxVec order;
 
   for (VIPRA::idx selIdx = 0; selIdx < subSelectors.size(); ++selIdx) {
@@ -209,43 +187,22 @@ Selector::orderSelectors() {
 
 // ----------------- GETTERS/SETTERS --------------------------------------------------------------------
 
-void
-Selector::setAllTypes(pType pedTypes) {
+void Selector::setAllTypes(Ptype pedTypes) {
   allTypes = pedTypes;
 }
 
-void
-Selector::addSubSelector(SubSelector&& subSelector) {
+void Selector::addSubSelector(const SubSelector& subSelector) {
   subSelectors.emplace_back(subSelector);
 }
 
-VIPRA::size
-Selector::SelectorCount() const {
+VIPRA::size Selector::selectorCount() const {
   return subSelectors.size();
 }
 
-const GroupsContainer&
-Selector::getGroups() const {
+const GroupsContainer& Selector::getGroups() const {
   return pedGroups;
 }
 
 // ----------------- END GETTERS/SETTERS --------------------------------------------------------------------
 
-// --------------- CONSTRUCTORS ---------------------------------------------------------------
-
-Selector::Selector() : allTypes(0), subSelectors(), pedGroups() {}
-
-Selector::Selector(Selector&& other) noexcept
-  : allTypes(std::move(other.allTypes)), subSelectors(std::move(other.subSelectors)), pedGroups(std::move(other.pedGroups)) {
-}
-
-Selector&
-Selector::operator=(Selector&& other) noexcept {
-  subSelectors = std::move(other.subSelectors);
-  pedGroups = std::move(other.pedGroups);
-  allTypes = other.allTypes;
-  return *this;
-}
-
-// --------------- END CONSTRUCTORS ---------------------------------------------------------------
-}  // namespace Behaviors
+}  // namespace BHVR

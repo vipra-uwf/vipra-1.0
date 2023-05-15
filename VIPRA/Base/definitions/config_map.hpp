@@ -6,34 +6,28 @@
 #include <string>
 #include <unordered_map>
 
-#include "jsoncpp/json/json.h"
+#include <json/json.h>
 
-#include "definitions/type_definitions.hpp"
+#include <definitions/type_definitions.hpp>
 
-namespace VIPRA {
-namespace Config {
+namespace VIPRA::CONFIG {
 
 class ConfigurationException : public std::runtime_error {
  public:
-  ConfigurationException(const std::string& message) : std::runtime_error{message} {}
-  static void Throw(const std::string& message) { throw ConfigurationException(message); }
+  explicit ConfigurationException(const std::string& message) : std::runtime_error{message} {}
+  static void error(const std::string& message) { throw ConfigurationException(message); }
 };
 
 class Map {
  public:
   ~Map() = default;
-  Map() : document(Json::Value()) {}
-  Map(const Map& other) : document(other.document) {}
-  Map(Map&& other) noexcept : document(std::move(other.document)) {}
-  Map(Json::Value doc) : document(std::move(doc)) {}
-  Map& operator=(const Map& other) noexcept {
-    document = other.document;
-    return *this;
-  }
-  Map& operator=(Map&& other) noexcept {
-    document = other.document;
-    return *this;
-  }
+  Map() = default;
+  Map(const Map& other) = default;
+  Map(Map&& other) noexcept = default;
+  Map& operator=(const Map& other) = default;
+  Map& operator=(Map&& other) noexcept = default;
+
+  explicit Map(Json::Value doc) : document(std::move(doc)) {}
 
   const Json::Value& operator[](const std::string& key) const { return document[key]; }
   Json::Value&       operator[](const std::string& key) { return document[key]; }
@@ -44,7 +38,7 @@ class Map {
 
     for (VIPRA::idx i = 0; i < valCnt; ++i) {
       if (document[key][static_cast<Json::ArrayIndex>(i)].type() != Json::ValueType::stringValue) {
-        ConfigurationException::Throw("Attempt To Get String Vector From Config Value That Doesn't Match That Type, Key: " +
+        ConfigurationException::error("Attempt To Get String Vector From Config Value That Doesn't Match That Type, Key: " +
                                       key);
       }
       ret[i] = document[key][static_cast<Json::ArrayIndex>(i)].asString();
@@ -57,7 +51,6 @@ class Map {
   Json::Value document;
 };
 
-}  // namespace Config
-}  // namespace VIPRA
+}  // namespace VIPRA::CONFIG
 
 #endif

@@ -1,11 +1,11 @@
 #ifndef VIPRA_DSL_TYPES_HPP
 #define VIPRA_DSL_TYPES_HPP
 
-#include <stdint.h>
+#include <cstdint>
 
-namespace Behaviors {
-typedef uint64_t seed;
-typedef uint64_t stateUID;
-}  // namespace Behaviors
+namespace BHVR {
+using seed = uint64_t;
+using stateUID = uint64_t;
+}  // namespace BHVR
 
 #endif

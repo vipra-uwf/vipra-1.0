@@ -1,6 +1,6 @@
 grammar action;
 
-import lexer_rules, condition;
+import lexer_rules, values, condition;
 
 action:
   conditional_action |
@@ -29,7 +29,7 @@ action_Stop:
   ;
 
 action_atom_Percent_Walk_Speed:
-  '@walk' FLOAT 'x' THEIR NORMAL SPEED;
+  '@walk' value_number 'x' THEIR NORMAL SPEED;
 
 action_Push:
   '@push' ID

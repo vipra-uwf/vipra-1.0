@@ -7,7 +7,7 @@
 
 class OutputDataWriterMock : public OutputDataWriter {
  public:
-  MOCK_METHOD(void, configure, (const VIPRA::Config::Map& configMap), (override));
+  MOCK_METHOD(void, configure, (const VIPRA::CONFIG::Map& configMap), (override));
   MOCK_METHOD(void, initializeOutputFile, (const std::string& outputFilePath), (override));
   MOCK_METHOD(void, addFloatValue, (const std::string& key, float value), (override));
   MOCK_METHOD(void, addStringValue, (const std::string& key, const std::string& value), (override));

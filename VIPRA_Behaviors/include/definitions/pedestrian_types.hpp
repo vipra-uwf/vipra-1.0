@@ -1,75 +1,58 @@
-#ifndef VIPRA_BEHAVIORS_PEDESTRIAN_TYPES_HPP
-#define VIPRA_BEHAVIORS_PEDESTRIAN_TYPES_HPP
+#ifndef VIPRA_BHVR_PEDESTRIAN_TYPES_HPP
+#define VIPRA_BHVR_PEDESTRIAN_TYPES_HPP
 
+#include <cstdint>
 #include <functional>
-#include <stdint.h>
 
-namespace Behaviors {
+#include <definitions/type_definitions.hpp>
+
+namespace BHVR {
 
 /**
  * @brief typeUID is used to identify a single pedestrian type, should only be powers of 2
  * 
  */
-typedef uint64_t typeUID;
+using typeUID = uint64_t;
 
 /**
  * @brief Pedestrian Type, used as a composite of typeUIDs
  * 
  */
-struct pType {
+struct Ptype {
   typeUID fullType = 0;
 
-  ~pType() = default;
-  constexpr pType() noexcept : fullType(0) {}
+  ~Ptype() = default;
+  constexpr Ptype() noexcept = default;
 
-  explicit constexpr pType(typeUID id) noexcept : fullType(id) {}
+  explicit constexpr Ptype(typeUID id) noexcept : fullType(id) {}
 
-  constexpr pType(const pType& other) noexcept : fullType(other.fullType) {}
-  constexpr pType(pType&& other) noexcept : fullType(other.fullType) {}
-  constexpr pType& operator=(const pType& other) noexcept {
-    fullType = other.fullType;
-    return *this;
+  constexpr Ptype(const Ptype& other) = default;
+  constexpr Ptype(Ptype&& other) noexcept = default;
+  constexpr Ptype& operator=(const Ptype& other) = default;
+  constexpr Ptype& operator=(Ptype&& other) noexcept = default;
+
+  /**
+   * @brief Returns the number of different types, excluding the base type (0)
+   * 
+   * @return constexpr VIPRA::size 
+   */
+  inline constexpr VIPRA::size typeCount() const {
+    VIPRA::size count = 0;
+    typeUID     check = 1;
+    while (check & fullType) {
+      check = check << 1;
+      ++count;
+    }
+
+    return count;
   }
-  constexpr pType& operator=(pType&& other) noexcept {
-    fullType = other.fullType;
-    return *this;
-  }
-
-  inline constexpr bool isType(typeUID type) const noexcept { return (type & fullType) && ((~type & fullType) == 0); }
-  inline constexpr bool hasType(typeUID type) const noexcept { return type & fullType; }
-
-  inline constexpr pType  operator+(typeUID type) const noexcept { return pType{fullType | type}; }
-  inline constexpr pType& operator+=(typeUID type) noexcept {
-    fullType = (fullType | type);
-    return *this;
-  }
-  inline constexpr pType  operator+(pType type) const noexcept { return pType{fullType | type.fullType}; }
-  inline constexpr pType& operator+=(pType type) noexcept {
-    fullType = (fullType | type.fullType);
-    return *this;
-  }
-
-  inline constexpr pType  operator-(typeUID type) const noexcept { return pType{fullType & ~type}; }
-  inline constexpr pType& operator-=(typeUID type) noexcept {
-    fullType = (fullType & ~type);
-    return *this;
-  }
-
-  inline constexpr pType  operator-(pType type) const noexcept { return pType{fullType & ~type.fullType}; }
-  inline constexpr pType& operator-=(pType type) noexcept {
-    fullType = (fullType & ~type.fullType);
-    return *this;
-  }
-
-  inline constexpr bool operator==(pType type) const noexcept { return fullType == type.fullType; }
-  inline constexpr bool operator!=(pType type) const noexcept { return fullType != type.fullType; }
 
   /**
    * @brief Loops through each individual type, starting from 1. example(1, 2, 4, 8)
    * 
    * @param func : 
    */
-  void forEachType(std::function<void(typeUID)> func) {
+  void forEachType(const std::function<void(typeUID)>& func) const {
     typeUID type = fullType;
     typeUID check = 1;
     while (check <= type) {
@@ -79,7 +62,48 @@ struct pType {
       check = check << 1;
     }
   }
+
+  /**
+   * @brief Checks if the Ptype has the given type
+   * 
+   * @param type : type to check for
+   */
+  inline constexpr bool isType(typeUID type) const noexcept {
+    return ((type & fullType) != 0U) && ((~type & fullType) == 0);
+  }
+  /**
+   * @brief Checks if the Ptype has the given type
+   * 
+   * @param type : type to check for
+   */
+  inline constexpr bool hasType(typeUID type) const noexcept { return (type & fullType) != 0U; }
+
+  inline constexpr Ptype  operator+(typeUID type) const noexcept { return Ptype{fullType | type}; }
+  inline constexpr Ptype& operator+=(typeUID type) noexcept {
+    fullType = (fullType | type);
+    return *this;
+  }
+  inline constexpr Ptype  operator+(Ptype type) const noexcept { return Ptype{fullType | type.fullType}; }
+  inline constexpr Ptype& operator+=(Ptype type) noexcept {
+    fullType = (fullType | type.fullType);
+    return *this;
+  }
+
+  inline constexpr Ptype  operator-(typeUID type) const noexcept { return Ptype{fullType & ~type}; }
+  inline constexpr Ptype& operator-=(typeUID type) noexcept {
+    fullType = (fullType & ~type);
+    return *this;
+  }
+
+  inline constexpr Ptype  operator-(Ptype type) const noexcept { return Ptype{fullType & ~type.fullType}; }
+  inline constexpr Ptype& operator-=(Ptype type) noexcept {
+    fullType = (fullType & ~type.fullType);
+    return *this;
+  }
+
+  inline constexpr bool operator==(Ptype type) const noexcept { return fullType == type.fullType; }
+  inline constexpr bool operator!=(Ptype type) const noexcept { return fullType != type.fullType; }
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef VIPRA_BEHAVIORS_SUB_SELECTOR_HPP
-#define VIPRA_BEHAVIORS_SUB_SELECTOR_HPP
+#ifndef VIPRA_BHVR_SUB_SELECTOR_HPP
+#define VIPRA_BHVR_SUB_SELECTOR_HPP
 
 #include <functional>
 
@@ -13,41 +13,31 @@
 #include <definitions/pedestrian_types.hpp>
 #include <selectors/pedestrian_groups.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 
 struct SelectorResult {
   bool          starved;
   VIPRA::idxVec group;
 };
 
-using SelectorFunc = std::function<SelectorResult(seed,
-                                                  const VIPRA::idxVec&,
-                                                  const VIPRA::idxVec&,
-                                                  const PedestrianSet&,
-                                                  const ObstacleSet&,
-                                                  const Goals&)>;
+using SelectorFunc = std::function<SelectorResult(seed, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&,
+                                                  const ObstacleSet&, const Goals&)>;
 
 class SubSelector {
  public:
+  SubSelector(typeUID, Ptype, bool, SelectorFunc);
   SubSelector() = delete;
   ~SubSelector() = default;
+  SubSelector(SubSelector&&) noexcept = default;
+  SubSelector(const SubSelector&) = default;
+  SubSelector& operator=(SubSelector&&) noexcept = default;
+  SubSelector& operator=(const SubSelector&) = default;
 
-  SubSelector(typeUID, pType, bool, SelectorFunc);
-
-  SubSelector(SubSelector&&) noexcept;
-  SubSelector(const SubSelector&) noexcept;
-  SubSelector& operator=(SubSelector&&) noexcept;
-  SubSelector& operator=(const SubSelector&) noexcept;
-
-  SelectorResult selectPeds(seed,
-                            const VIPRA::idxVec&,
-                            const VIPRA::idxVec&,
-                            const PedestrianSet&,
-                            const ObstacleSet&,
+  SelectorResult selectPeds(seed, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&, const ObstacleSet&,
                             const Goals&);
 
   typeUID group;
-  pType   type;
+  Ptype   type;
   bool    required;
 
  private:
@@ -55,6 +45,6 @@ class SubSelector {
   std::optional<SubCondition> condition;
 };
 
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

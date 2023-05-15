@@ -1,11 +1,11 @@
-#ifndef VIPRA_BEHAVIORS_CASELESS_STR_COMP_HPP
-#define VIPRA_BEHAVIORS_CASELESS_STR_COMP_HPP
+#ifndef VIPRA_BHVR_CASELESS_STR_COMP_HPP
+#define VIPRA_BHVR_CASELESS_STR_COMP_HPP
 
-#include <string.h>
+#include <cstring>
 #include <string>
 
-struct caseless_str_compare {
-  struct comp {
+struct CaselessStrCompare {
+  struct Comp {
     bool operator()(const std::string& str1, const std::string& str2) const {
       const size_t cnt = str1.size();
       if (cnt != str2.size())
@@ -28,7 +28,7 @@ struct caseless_str_compare {
       return true;
     }
   };
-  struct hash {
+  struct Hash {
     size_t operator()(const std::string& str) const {
       std::string temp{str};
       for (char& c : temp) {

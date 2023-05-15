@@ -10,15 +10,15 @@
 
 class OutputDataWriterException : public std::runtime_error {
  public:
-  OutputDataWriterException(const std::string& message) : std::runtime_error(message) {}
-  static void Throw(const std::string& message) { throw OutputDataWriterException(message); }
+  explicit OutputDataWriterException(const std::string& message) : std::runtime_error(message) {}
+  static void error(const std::string& message) { throw OutputDataWriterException(message); }
 };
 
 class OutputDataWriter {
  public:
   virtual ~OutputDataWriter() = default;
 
-  virtual void configure(const VIPRA::Config::Map& configMap) = 0;
+  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
   virtual void initializeOutputFile(const std::string& outputFilePath) = 0;
   virtual void addFloatValue(const std::string& key, float value) = 0;
   virtual void addStringValue(const std::string& key, const std::string& value) = 0;

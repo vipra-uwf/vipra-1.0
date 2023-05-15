@@ -1,9 +1,9 @@
 #ifndef MAP_LOADER_HPP
 #define MAP_LOADER_HPP
 
+#include <memory>
 #include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
-#include <memory>
 
 namespace VIPRA {
 struct MapData {
@@ -22,7 +22,7 @@ class MapLoader {
  public:
   virtual ~MapLoader() = default;
 
-  virtual void                            configure(const VIPRA::Config::Map& configMap) = 0;
+  virtual void                            configure(const VIPRA::CONFIG::Map& configMap) = 0;
   virtual void                            initialize() = 0;
   virtual std::unique_ptr<VIPRA::MapData> LoadMap(const std::string& filePath) const = 0;
 };

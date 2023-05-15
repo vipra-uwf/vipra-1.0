@@ -2,9 +2,8 @@
 
 #include <definitions/directions.hpp>
 
-namespace Behaviors {
-Direction
-directionFromContext(BehaviorParser::DirectionContext* ctx) {
+namespace BHVR {
+Direction directionFromContext(BehaviorParser::DirectionContext* ctx) {
 
   Direction direction;
 
@@ -25,4 +24,4 @@ directionFromContext(BehaviorParser::DirectionContext* ctx) {
 
   return direction;
 }
-}  // namespace Behaviors
+}  // namespace BHVR

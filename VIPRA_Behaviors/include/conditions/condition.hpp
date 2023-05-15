@@ -13,29 +13,27 @@
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 class Condition {
  public:
-  Condition(const Condition&) = delete;
-  Condition& operator=(const Condition&) = delete;
-
   Condition() = default;
   ~Condition() = default;
-
-  Condition(Condition&&) noexcept;
-  Condition& operator=(Condition&&) noexcept;
+  Condition(const Condition&) = default;
+  Condition& operator=(const Condition&) = default;
+  Condition(Condition&&) noexcept = default;
+  Condition& operator=(Condition&&) noexcept = default;
 
   void addAndOr(bool);
 
-  void addSubCondition(SubCondition&&);
+  void addSubCondition(const SubCondition&);
 
-  bool evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx, VIPRA::delta_t)
-      const;
+  bool evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
+                VIPRA::delta_t) const;
 
  private:
   std::vector<bool>         operations;
   std::vector<SubCondition> conditions;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

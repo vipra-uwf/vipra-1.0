@@ -1,7 +1,9 @@
 
+#include <spdlog/spdlog.h>
+
 #include <conditions/subconditions/subcondition_elapsed_time.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 
 /**
  * @brief Constructor, adds start event listener to provided event
@@ -9,33 +11,29 @@ namespace Behaviors {
  * @param time : 
  * @param event : 
  */
-SubCondition_Elapsed_Time_From_Event::SubCondition_Elapsed_Time_From_Event(VIPRA::delta_t time, Event* event)
-  : elapsedTime(0), requiredTime(time) {
-  event->onStart([&](float) { started = true; });
-}
+SubConditionElapsedTimeFromEvent::SubConditionElapsedTimeFromEvent(VIPRA::delta_t time, Event* ev)
+    : requiredTime(time), hasReturned(false), event(ev) {}
 
 /**
  * @brief Returns true if the required simulated time has elapsed from the event starting.
  * 
  * @param dT : 
  * @return true 
- * @return false 
+ * @return false
  */
-bool
-SubCondition_Elapsed_Time_From_Event::operator()(const PedestrianSet&,
-                                                 const ObstacleSet&,
-                                                 const Goals&,
-                                                 const BehaviorContext&,
-                                                 VIPRA::idx,
-                                                 VIPRA::delta_t dT) {
-  if (started) {
-    elapsedTime += dT;
-    if (elapsedTime >= requiredTime) {
-      started = false;
-      elapsedTime = 0;
-      return true;
-    }
+bool SubConditionElapsedTimeFromEvent::operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                                                  const BehaviorContext& context, VIPRA::idx, VIPRA::delta_t) {
+
+  if (hasReturned) {
+    return false;
   }
-  return false;
+
+  bool ret = (event->timeSinceLastStart(context) >= requiredTime);
+  if (ret) {
+    hasReturned = true;
+    ret = false;
+  }
+
+  return ret;
 }
-}  // namespace Behaviors
+}  // namespace BHVR

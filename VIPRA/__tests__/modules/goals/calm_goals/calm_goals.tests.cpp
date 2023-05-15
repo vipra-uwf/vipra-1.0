@@ -37,7 +37,7 @@ TEST(Calm_Goals, Initialize_Disembark) {
   const ObstacleSetMock   obsSet;
   const PedestrianSetMock pedSet;
 
-  const VIPRA::Config::Map config{std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
+  const VIPRA::CONFIG::Map config{std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
                                               "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
   test.configure(config);
 
@@ -66,7 +66,7 @@ TEST(Calm_Goals, Update_Pedestrian_Goals) {
   CalmGoalsTester          test;
   const ObstacleSetMock    obsSet;
   const PedestrianSetMock  pedSet;
-  const VIPRA::Config::Map config{std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
+  const VIPRA::CONFIG::Map config{std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
                                               "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
   test.configure(config);
 
@@ -104,7 +104,7 @@ TEST(Calm_Goals, Update_Pedestrian_Goals) {
   }
   test.updatePedestrianGoals(obsSet, pedSet, 0.05);
   for (const auto currGoal : test.getAllCurrentGoals()) {
-    EXPECT_EQ(currGoal, VIPRA::__emptyf3d__);
+    EXPECT_EQ(currGoal, VIPRA::_emptyf3d_);
   }
 
   // check that all ped goals are met

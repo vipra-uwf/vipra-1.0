@@ -1,8 +1,9 @@
 {
     "input_data_loader": {},
     "human_behavior_model": {
-        "seed": 123456,
-        "behaviors": []
+        "seed": 4525,
+        "behaviors": [
+        ]
     },
     "output_data_writer": {},
     "simulation_output_handler": {
@@ -16,9 +17,8 @@
     "obstacle_set": {
         "obstacleCollisionDistance": 0.05
     },
-    "entity_set_factory": {},
     "goals": {
-        "pathFinding": "Astar",
+        "pathFinding": "Disembark",
         "endGoalType": "exit",
         "quadSize": 0.1,
         "closestObstacle": 0.2,

@@ -1,9 +1,9 @@
-#ifndef VIPRA_BEHAVIORS_DIRECTIONS_HPP
-#define VIPRA_BEHAVIORS_DIRECTIONS_HPP
+#ifndef VIPRA_BHVR_DIRECTIONS_HPP
+#define VIPRA_BHVR_DIRECTIONS_HPP
 
 #include <grammar/generated/BehaviorParser.h>
 
-namespace Behaviors {
+namespace BHVR {
 enum class DirType {
   IN_FRONT,
   TOWARDS,
@@ -17,6 +17,6 @@ struct Direction {
 };
 
 Direction directionFromContext(BehaviorParser::DirectionContext*);
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

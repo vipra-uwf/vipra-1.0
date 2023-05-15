@@ -1,5 +1,5 @@
-#ifndef VIPRA_BEHAVIORS_PEDESTRIAN_GROUPS_HPP
-#define VIPRA_BEHAVIORS_PEDESTRIAN_GROUPS_HPP
+#ifndef VIPRA_BHVR_PEDESTRIAN_GROUPS_HPP
+#define VIPRA_BHVR_PEDESTRIAN_GROUPS_HPP
 
 #include <vector>
 
@@ -8,7 +8,7 @@
 #include <definitions/pedestrian_types.hpp>
 #include <definitions/type_definitions.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 
 /**
  * @brief Holds the indexes for pedestrians in each type group
@@ -16,7 +16,13 @@ namespace Behaviors {
  */
 class GroupsContainer {
  public:
-  static constexpr VIPRA::idx Index(typeUID type) {
+  /**
+  * @brief Gets the index into the container for a given type
+  * 
+  * @param type : 
+  * @return constexpr VIPRA::idx 
+  */
+  static constexpr VIPRA::idx index(typeUID type) {
     if (type == 0)
       return 0;
 
@@ -30,15 +36,14 @@ class GroupsContainer {
     return index;
   }
 
-  GroupsContainer();
+  GroupsContainer() = default;
   ~GroupsContainer() = default;
+  GroupsContainer(const GroupsContainer&) = default;
+  GroupsContainer& operator=(const GroupsContainer&) = default;
+  GroupsContainer(GroupsContainer&&) noexcept = default;
+  GroupsContainer& operator=(GroupsContainer&&) noexcept = default;
 
-  GroupsContainer(GroupsContainer&&) noexcept;
-  GroupsContainer(const GroupsContainer&) noexcept;
-  GroupsContainer& operator=(GroupsContainer&&) noexcept;
-  GroupsContainer& operator=(const GroupsContainer&) noexcept;
-
-  void initialize(pType, VIPRA::size);
+  void initialize(Ptype, VIPRA::size);
   void cleanUsed();
 
   [[nodiscard]] VIPRA::size size() const;
@@ -50,9 +55,9 @@ class GroupsContainer {
 
   void addPed(VIPRA::idx, typeUID);
   void movePed(VIPRA::idx, typeUID, typeUID);
-  void removePed(VIPRA::idx, typeUID);
+  bool removePed(VIPRA::idx, typeUID);
 
-  void                                   setUsed(VIPRA::idx, typeUID);
+  bool                                   setUsed(VIPRA::idx, typeUID);
   [[nodiscard]] const std::vector<bool>& getUsed(typeUID) const;
   [[nodiscard]] bool                     isUsed(VIPRA::idx, typeUID) const;
 
@@ -60,6 +65,6 @@ class GroupsContainer {
   std::vector<VIPRA::idxVec>     groups;
   std::vector<std::vector<bool>> used;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

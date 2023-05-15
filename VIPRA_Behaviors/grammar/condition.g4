@@ -1,6 +1,6 @@
 grammar condition;
 
-import lexer_rules, directions, objects;
+import lexer_rules, values, directions, objects;
 
 condition:
   sub_condition connector*;
@@ -24,7 +24,7 @@ sub_condition:
   ;
 
 condition_Time_Elapsed_From_Event:
-  AFTER NUMBER SECONDS FROM (AN | THE)? EVNT (EVENT)?
+  AFTER value_number SECONDS FROM (AN | THE)? EVNT (EVENT)?
   ;
 
 condition_Event_Occurred:

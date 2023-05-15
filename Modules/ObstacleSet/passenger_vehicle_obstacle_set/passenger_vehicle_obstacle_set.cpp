@@ -3,8 +3,7 @@
 VIPRA::f3d  makeDimensions(const VIPRA::EntitySet& objects);
 inline bool objectDirectionTest(const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity, const VIPRA::f3d& objCoords);
 
-VIPRA::f3d
-makeDimensions(const VIPRA::EntitySet& objects) {
+VIPRA::f3d makeDimensions(const VIPRA::EntitySet& objects) {
   VIPRA::f3d maxDim{0, 0, 0};
   for (auto mapIterator : objects) {
     for (size_t i = 0; i < mapIterator.second.size(); i++) {
@@ -21,8 +20,7 @@ makeDimensions(const VIPRA::EntitySet& objects) {
   return maxDim;
 }
 
-void
-PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map) {
+void PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map) {
   if (map->type != "PointMap") {
     ObstacleSetException::Throw("Improper Map Type, Expected \"PointMap\"");
   }
@@ -31,14 +29,12 @@ PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map) {
   mapDimensions = makeDimensions(objects);
 }
 
-void
-PassengerVehicleObstacleSet::configure(const VIPRA::Config::Map& configMap) {
+void PassengerVehicleObstacleSet::configure(const VIPRA::CONFIG::Map& configMap) {
   obstacleCollisionDistance = configMap["obstacleCollisionDistance"].asFloat();
   obstacleCollisionDistanceSqrd = obstacleCollisionDistance * obstacleCollisionDistance;
 }
 
-VIPRA::f3dVec
-PassengerVehicleObstacleSet::nearestObstacle(const PedestrianSet& PedSet) const {
+VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacle(const PedestrianSet& PedSet) const {
   const VIPRA::f3dVec& coordinatesVector = PedSet.getPedestrianCoordinates();
   VIPRA::f3dVec        nearestObstacleVector;
   for (size_t j = 0; j < coordinatesVector.size(); j++) {
@@ -55,8 +51,7 @@ PassengerVehicleObstacleSet::nearestObstacle(const PedestrianSet& PedSet) const 
   return nearestObstacleVector;
 }
 
-VIPRA::f3dVec
-PassengerVehicleObstacleSet::nearestObstacleInDirection(const PedestrianSet& pedSet) const {
+VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacleInDirection(const PedestrianSet& pedSet) const {
 
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       pedCoords = pedSet.getPedestrianCoordinates();
@@ -70,8 +65,7 @@ PassengerVehicleObstacleSet::nearestObstacleInDirection(const PedestrianSet& ped
   return nearest;
 }
 
-VIPRA::f3d
-PassengerVehicleObstacleSet::nearestObstacle(const VIPRA::f3d coordinates) const {
+VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacle(const VIPRA::f3d coordinates) const {
   const auto&       obs = objects.at("obstacle");
   const VIPRA::size obCnt = obs.size();
   VIPRA::idx        closest = VIPRA::idx_INVALID;
@@ -87,8 +81,7 @@ PassengerVehicleObstacleSet::nearestObstacle(const VIPRA::f3d coordinates) const
   return obs.at(closest);
 }
 
-VIPRA::f3d
-PassengerVehicleObstacleSet::nearestObstacleInDirection(VIPRA::f3d coordinates, VIPRA::f3d velocity) const {
+VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacleInDirection(VIPRA::f3d coordinates, VIPRA::f3d velocity) const {
   const auto&       obstacles = objects.at("obstacle");
   const VIPRA::size obsCnt = obstacles.size();
   VIPRA::idx        nearest = VIPRA::idx_INVALID;
@@ -105,29 +98,25 @@ PassengerVehicleObstacleSet::nearestObstacleInDirection(VIPRA::f3d coordinates, 
   }
 
   if (nearest == VIPRA::idx_INVALID) {
-    return VIPRA::__emptyf3d__;
+    return VIPRA::_emptyf3d_;
   }
 
   return obstacles.at(nearest);
 }
 
-const std::vector<VIPRA::f3d>&
-PassengerVehicleObstacleSet::getObjectsofType(const std::string& type) const {
+const std::vector<VIPRA::f3d>& PassengerVehicleObstacleSet::getObjectsofType(const std::string& type) const {
   return objects.at(type);
 }
 
-const std::vector<std::string>&
-PassengerVehicleObstacleSet::getObjectTypes() const {
+const std::vector<std::string>& PassengerVehicleObstacleSet::getObjectTypes() const {
   return objectTypes;
 }
 
-VIPRA::f3d
-PassengerVehicleObstacleSet::getMapDimensions() const {
+VIPRA::f3d PassengerVehicleObstacleSet::getMapDimensions() const {
   return mapDimensions;
 }
 
-float
-PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const {
+float PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const {
   const auto& obstacles = objects.at("obstacle");
   float       nearest = std::numeric_limits<float>::max();
 
@@ -160,8 +149,7 @@ PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const 
   return nearest;
 }
 
-bool
-PassengerVehicleObstacleSet::collision(VIPRA::f3d coords) const {
+bool PassengerVehicleObstacleSet::collision(VIPRA::f3d coords) const {
   return std::any_of(objects.at("obstacle").begin(), objects.at("obstacle").end(), [&](const VIPRA::f3d& obs) {
     if (obs.distanceTo(coords) < obstacleCollisionDistance) {
       return true;
@@ -170,8 +158,7 @@ PassengerVehicleObstacleSet::collision(VIPRA::f3d coords) const {
   });
 }
 
-void
-PassengerVehicleObstacleSet::checkMap() const {
+void PassengerVehicleObstacleSet::checkMap() const {
   // check that seat, exit, aisle, and endOfAilse exists
   if (objects.find("exit") == objects.end()) {
     ObstacleSetException::Throw("PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"exit\"");
@@ -190,8 +177,7 @@ PassengerVehicleObstacleSet::checkMap() const {
   }
 }
 
-inline bool
-objectDirectionTest(const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity, const VIPRA::f3d& objCoords) {
+inline bool objectDirectionTest(const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity, const VIPRA::f3d& objCoords) {
   const VIPRA::f3d displacement = pedCoords - objCoords;
 
   const float result =

@@ -6,11 +6,12 @@
 #include <string>
 #include <utility>
 
+#include <spdlog/spdlog.h>
 #include "PedestrianLoader/calm_pedestrian_loader/calm_pedestrian_loader.hpp"
 #include "definitions/state.hpp"
 #include "pedestrian_loader/pedestrian_loader.hpp"
 #include "pedestrian_set/pedestrian_set.hpp"
-#include <spdlog/spdlog.h>
+
 
 
 class CalmPedestrianSet : public PedestrianSet {
@@ -19,7 +20,7 @@ class CalmPedestrianSet : public PedestrianSet {
 
   void updateState(std::shared_ptr<VIPRA::State>) override;
 
-  void configure(const VIPRA::Config::Map&) override;
+  void configure(const VIPRA::CONFIG::Map&) override;
   void initialize(std::unique_ptr<VIPRA::PedData>) override;
 
   [[nodiscard]] VIPRA::size getNumPedestrians() const noexcept override;

@@ -14,31 +14,29 @@
 
 #include <util/caseless_str_comp.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 
-typedef std::unordered_map<std::string, Behaviors::stateUID, caseless_str_compare::hash, caseless_str_compare::comp>
-    StateMap;
-typedef std::unordered_map<std::string, Behaviors::typeUID, caseless_str_compare::hash, caseless_str_compare::comp>
-    TypeMap;
-typedef std::unordered_map<std::string, Behaviors::Event*, caseless_str_compare::hash, caseless_str_compare::comp>
-    EventMap;
+using StateMap = std::unordered_map<std::string, BHVR::stateUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
+using TypeMap = std::unordered_map<std::string, BHVR::typeUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
+using EventMap = std::unordered_map<std::string, BHVR::Event*, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
 
 class BehaviorBuilder : public BehaviorBaseVisitor {
  public:
-  HumanBehavior&& build(std::string, const std::filesystem::path&, Behaviors::seed);
+  HumanBehavior build(std::string, const std::filesystem::path&, BHVR::seed);
 
  private:
   BehaviorErrorListener errorListener;
-  HumanBehavior         currentBehavior;
 
   StateMap states;
   TypeMap  types;
   EventMap eventsMap;
 
-  Behaviors::stateUID currState;
-  Behaviors::typeUID  currType;
+  BHVR::stateUID currState;
+  BHVR::typeUID  currType;
 
-  void initialBehaviorSetup(const std::string&, Behaviors::seed);
+  BHVR::seed currSeed;
+
+  void initialBehaviorSetup(const std::string&, BHVR::seed);
   void initializeTypes();
   void initializeEvents();
   void initializeStates();
@@ -51,46 +49,49 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   SubSelector buildSubSelector(BehaviorParser::Ped_SelectorContext*);
 
-  Behaviors::stateUID getState(const std::string&);
-  Event*              getEvent(const std::string&);
+  BHVR::stateUID getState(const std::string&);
+  Event*         getEvent(const std::string&);
 
-  Behaviors::typeUID       getType(const std::string&);
-  Behaviors::typeUID       getGroup(BehaviorParser::Ped_SelectorContext* ctx);
-  Behaviors::pType         getCompositeType(const std::vector<antlr4::tree::TerminalNode*>&);
-  std::vector<std::string> getTypeStrs(const std::vector<antlr4::tree::TerminalNode*>&);
+  BHVR::typeUID                   getType(const std::string&) const;
+  BHVR::typeUID                   getGroup(BehaviorParser::Ped_SelectorContext*) const;
+  BHVR::Ptype                     getCompositeType(const std::vector<antlr4::tree::TerminalNode*>&) const;
+  static std::vector<std::string> getListStrs(const std::vector<antlr4::tree::TerminalNode*>&);
+  float                           getValue(BehaviorParser::Value_numberContext*) const;
+
+  float makeRandomValue(float, float) const;
 
   // ------------------------------- EVENTS -----------------------------------------------------------------------------------------
 
-  antlrcpp::Any visitEvent_Single(BehaviorParser::Event_SingleContext* ctx) override;
+  antlrcpp::Any visitEvent_Single(BehaviorParser::Event_SingleContext*) override;
 
-  antlrcpp::Any visitEvent_Lasting(BehaviorParser::Event_LastingContext* ctx) override;
+  antlrcpp::Any visitEvent_Lasting(BehaviorParser::Event_LastingContext*) override;
 
   // ------------------------------- END EVENTS -----------------------------------------------------------------------------------------
 
   // ------------------------------- SELECTORS -----------------------------------------------------------------------------------------
 
-  antlrcpp::Any visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) override;
+  antlrcpp::Any visitPed_Selector(BehaviorParser::Ped_SelectorContext*) override;
 
   // ------------------------------- END SELECTORS -----------------------------------------------------------------------------------------
 
   // ------------------------------- ACTIONS -----------------------------------------------------------------------------------------
 
-  antlrcpp::Any visitConditional_action(BehaviorParser::Conditional_actionContext* ctx) override;
+  antlrcpp::Any visitConditional_action(BehaviorParser::Conditional_actionContext*) override;
 
-  antlrcpp::Any visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext* ctx) override;
+  antlrcpp::Any visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext*) override;
 
   // ------------------------------- END ACTIONS -----------------------------------------------------------------------------------------
 
   // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
 
-  antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) override;
+  antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext*) override;
 
-  antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx) override;
+  antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext*) override;
 
-  antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext* ctx) override;
+  antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext*) override;
 
   // ------------------------------- END DECLARATIONS -----------------------------------------------------------------------------------------
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

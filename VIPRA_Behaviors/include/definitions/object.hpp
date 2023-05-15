@@ -1,9 +1,9 @@
-#ifndef VIPRA_BEHAVIORS_OBJECT_HPP
-#define VIPRA_BEHAVIORS_OBJECT_HPP
+#ifndef VIPRA_BHVR_OBJECT_HPP
+#define VIPRA_BHVR_OBJECT_HPP
 
 #include <grammar/generated/BehaviorParser.h>
 
-namespace Behaviors {
+namespace BHVR {
 enum class ObjType {
   PED,
   OBSTACLE,
@@ -17,6 +17,6 @@ struct Object {
 
 Object objectFromContext(BehaviorParser::ObjectContext*);
 
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

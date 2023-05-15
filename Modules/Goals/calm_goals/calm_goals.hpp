@@ -5,14 +5,15 @@
 #include <limits>
 #include <queue>
 
+#include <spdlog/spdlog.h>
 #include "goals/goals.hpp"
 #include "pathfinding/pathfinding.hpp"
-#include <spdlog/spdlog.h>
+
 
 class CalmGoals : public Goals {
 
  public:
-  void configure(const VIPRA::Config::Map& configMap) override;
+  void configure(const VIPRA::CONFIG::Map& configMap) override;
   void initialize(const ObstacleSet&, const PedestrianSet&) override;
 
   void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&, VIPRA::delta_t) override;

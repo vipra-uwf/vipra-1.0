@@ -2,7 +2,7 @@
 #include <actions/action.hpp>
 #include <actions/atoms/atom_stop.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 
 /**
  * @brief Checks that the action conditions are met, if it is, each atom is run on the pedestrian
@@ -15,22 +15,15 @@ namespace Behaviors {
  * @param dT : simulation timestep size
  * @param state : state object to apply changes to
  */
-void
-Action::performAction(PedestrianSet&                pedSet,
-                      ObstacleSet&                  obsSet,
-                      Goals&                        goals,
-                      BehaviorContext&              context,
-                      VIPRA::idx                    pedIdx,
-                      VIPRA::delta_t                dT,
-                      std::shared_ptr<VIPRA::State> state) {
+void Action::performAction(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, BehaviorContext& context,
+                           VIPRA::idx pedIdx, VIPRA::delta_t dT, VIPRA::State& state) {
   bool run = true;
   if (condition) {
     run = condition->evaluate(pedSet, obsSet, goals, context, pedIdx, dT);
   }
 
   if (run) {
-    std::for_each(
-        atoms.begin(), atoms.end(), [&](Atom& atom) { atom(pedSet, obsSet, goals, context, pedIdx, dT, state); });
+    std::for_each(atoms.begin(), atoms.end(), [&](Atom& atom) { atom(pedSet, obsSet, goals, context, pedIdx, dT, state); });
   }
 }
 
@@ -39,26 +32,11 @@ Action::performAction(PedestrianSet&                pedSet,
  * 
  * @param cond : Condition object
  */
-void
-Action::addCondition(Condition&& cond) {
-  condition = std::move(cond);
+void Action::addCondition(const Condition& cond) {
+  condition = cond;
 }
 
-void
-Action::addAtom(Atom&& atom) {
-  atoms.emplace_back(std::move(atom));
+void Action::addAtom(const Atom& atom) {
+  atoms.emplace_back(atom);
 }
-
-// ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------
-
-Action::Action(Action&& other) noexcept : atoms(std::move(other.atoms)), condition(std::move(other.condition)) {}
-
-Action&
-Action::operator=(Action&& other) noexcept {
-  atoms = std::move(other.atoms);
-  condition = std::move(other.condition);
-  return (*this);
-}
-
-// ------------------------------------------ END CONSTRUCTORS ------------------------------------------------------------------------
-}  // namespace Behaviors
+}  // namespace BHVR

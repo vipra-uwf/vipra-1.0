@@ -5,21 +5,23 @@
 #include <definitions/dsl_types.hpp>
 #include <events/event.hpp>
 
-namespace Behaviors {
-struct SubCondition_Elapsed_Time_From_Event {
-  SubCondition_Elapsed_Time_From_Event(VIPRA::delta_t, Event*);
-  bool operator()(const PedestrianSet&,
-                  const ObstacleSet&,
-                  const Goals&,
-                  const BehaviorContext&,
-                  VIPRA::idx,
+namespace BHVR {
+class SubConditionElapsedTimeFromEvent {
+ public:
+  SubConditionElapsedTimeFromEvent(VIPRA::delta_t, Event*);
+  SubConditionElapsedTimeFromEvent(const SubConditionElapsedTimeFromEvent&) = default;
+  SubConditionElapsedTimeFromEvent& operator=(const SubConditionElapsedTimeFromEvent&) = default;
+  SubConditionElapsedTimeFromEvent(SubConditionElapsedTimeFromEvent&&) noexcept = default;
+  SubConditionElapsedTimeFromEvent& operator=(SubConditionElapsedTimeFromEvent&&) noexcept = default;
+
+  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
                   VIPRA::delta_t);
 
  private:
-  bool           started;
-  VIPRA::delta_t elapsedTime;
   VIPRA::delta_t requiredTime;
+  bool           hasReturned;
+  const Event*   event;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

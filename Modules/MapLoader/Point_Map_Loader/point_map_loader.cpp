@@ -1,14 +1,11 @@
 
 #include "point_map_loader.hpp"
 
-void
-PointMapLoader::configure(const VIPRA::Config::Map& configMap) {}
+void PointMapLoader::configure(const VIPRA::CONFIG::Map&) {}
 
-void
-PointMapLoader::initialize() {}
+void PointMapLoader::initialize() {}
 
-std::unique_ptr<VIPRA::MapData>
-PointMapLoader::LoadMap(const std::string& filePath) const {
+std::unique_ptr<VIPRA::MapData> PointMapLoader::LoadMap(const std::string& filePath) const {
   Json::Value             jsonDocument;
   Json::CharReaderBuilder jsonReader;
   std::ifstream           fileStream;

@@ -8,13 +8,13 @@
 #include <definitions/type_definitions.hpp>
 
 
-namespace Behaviors {
+namespace BHVR {
 struct BehaviorContext {
-  VIPRA::delta_t                   elapsedTime;
-  Behaviors::stateUID              environmentState = 0;
-  std::vector<Behaviors::stateUID> pedStates;
-  std::vector<Behaviors::typeUID>  types;
+  VIPRA::delta_t              elapsedTime = 0;
+  BHVR::stateUID              environmentState = 0;
+  std::vector<BHVR::stateUID> pedStates;
+  std::vector<BHVR::typeUID>  types;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

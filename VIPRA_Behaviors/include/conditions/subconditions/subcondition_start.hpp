@@ -4,15 +4,12 @@
 #include <definitions/behavior_context.hpp>
 #include <events/event.hpp>
 
-namespace Behaviors {
-struct SubCondition_Start {
-  bool operator()(const PedestrianSet&,
-                  const ObstacleSet&,
-                  const Goals&,
-                  const BehaviorContext&,
-                  VIPRA::idx,
-                  VIPRA::delta_t);
+namespace BHVR {
+class SubConditionStart {
+ public:
+  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
+                  VIPRA::delta_t) const;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

@@ -4,21 +4,23 @@
 #include <conditions/sub_condition.hpp>
 #include <events/event.hpp>
 
-namespace Behaviors {
-struct SubCondition_Event_Occurring {
-  SubCondition_Event_Occurring() = delete;
-  SubCondition_Event_Occurring(Event*);
+namespace BHVR {
+class SubConditionEventOccurring {
+ public:
+  explicit SubConditionEventOccurring(Event*);
+  SubConditionEventOccurring() = delete;
+  SubConditionEventOccurring(const SubConditionEventOccurring&) = default;
+  SubConditionEventOccurring& operator=(const SubConditionEventOccurring&) = default;
+  SubConditionEventOccurring(SubConditionEventOccurring&&) noexcept = default;
+  SubConditionEventOccurring& operator=(SubConditionEventOccurring&&) noexcept = default;
 
-  bool operator()(const PedestrianSet&,
-                  const ObstacleSet&,
-                  const Goals&,
-                  const BehaviorContext&,
-                  VIPRA::idx,
-                  VIPRA::delta_t);
+
+  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
+                  VIPRA::delta_t) const;
 
  private:
-  bool occurring;
+  const Event* event;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

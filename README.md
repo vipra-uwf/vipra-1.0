@@ -30,7 +30,8 @@ There are three main steps for setting up the simulation. *(This is temporary, a
 In `/ChainBuilder/` run:
 
 1. `npm install`
-2. `npm pack`
+2. `npm build`
+3. `npm pack`
 
 ## SE.3. VIPRA Launcher
 
