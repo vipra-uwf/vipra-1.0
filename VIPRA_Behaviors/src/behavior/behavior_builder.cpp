@@ -80,7 +80,6 @@ HumanBehavior BehaviorBuilder::build(std::string behaviorName, const std::filesy
  * @param seedNum : randomization seed for behavior
  */
 void BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, BHVR::seed seedNum) {
-
   currentBehavior = HumanBehavior(behaviorName);
   currentBehavior.setSeed(seedNum);
   currSeed = seedNum;
@@ -93,6 +92,7 @@ void BehaviorBuilder::initializeEvents() {
   eventsMap.clear();
 
   startEvent = Event("!start");
+  startCond = Condition();
   startCond.addSubCondition(SubConditionStart{});
   startEvent.setStartCondition(startCond);
 
@@ -237,7 +237,7 @@ void BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_ato
  * @param evName : name of event to find
  * @return Event*
  */
-Event* BehaviorBuilder::getEvent(const std::string& evName) {
+VIPRA::idx BehaviorBuilder::getEvent(const std::string& evName) {
   auto ev = eventsMap.find(evName);
   if (ev == eventsMap.end()) {
     spdlog::error("Behavior Error: Attempt To Use Event Before It Was Defined: \"{}\"", evName);
@@ -397,7 +397,7 @@ antlrcpp::Any BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleCon
   Event event(eventName);
 
   spdlog::debug(R"(Behavior "{}": Adding Single Fire Event: "{}")", currentBehavior.getName(), eventName);
-  eventsMap[eventName] = &event;
+  eventsMap[eventName] = currentBehavior.eventCount();
 
   auto* startCtx = ctx->condition();
 
@@ -426,12 +426,14 @@ antlrcpp::Any BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingC
   Event event(eventName);
 
   spdlog::debug(R"(Behavior "{}": Adding Lasting Event: "{}")", currentBehavior.getName(), eventName);
-  eventsMap[eventName] = &event;
+  eventsMap[eventName] = currentBehavior.eventCount();
 
   auto* startCtx = ctx->condition()[0];
   auto* endCtx = ctx->condition()[1];
 
+  spdlog::debug(R"(Behavior "{}": Event: "{}" Adding Start Condition)", currentBehavior.getName(), eventName);
   event.setStartCondition(buildCondition(startCtx));
+  spdlog::debug(R"(Behavior "{}": Event: "{}" Adding End Condition)", currentBehavior.getName(), eventName);
   event.setEndCondition(buildCondition(endCtx));
 
   eventsMap[eventName] = currentBehavior.addEvent(event);

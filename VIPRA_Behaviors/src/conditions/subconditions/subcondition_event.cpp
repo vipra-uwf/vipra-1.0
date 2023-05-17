@@ -8,7 +8,7 @@ namespace BHVR {
    * 
    * @param event : 
    */
-SubConditionEventOccurred::SubConditionEventOccurred(Event* ev) : event(ev) {}
+SubConditionEventOccurred::SubConditionEventOccurred(VIPRA::idx ev) : event(ev) {}
 
 /**
  * @brief Returns true if the event has occurred
@@ -16,8 +16,8 @@ SubConditionEventOccurred::SubConditionEventOccurred(Event* ev) : event(ev) {}
  * @return true 
  * @return false 
  */
-bool SubConditionEventOccurred::operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&,
-                                           VIPRA::idx, VIPRA::delta_t) const {
-  return event->hasOccurred();
+bool SubConditionEventOccurred::operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                                           const BehaviorContext& context, VIPRA::idx, VIPRA::delta_t) const {
+  return context.events[event].hasOccurred();
 }
 }  // namespace BHVR

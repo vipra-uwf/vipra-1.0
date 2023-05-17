@@ -35,10 +35,10 @@ class HumanBehavior {
   void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
   void timestep(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::State&, VIPRA::delta_t);
 
-  void   setAllPedTypes(Ptype);
-  void   addSubSelector(const SubSelector&);
-  void   addAction(typeUID, const Action&);
-  Event* addEvent(const Event&);
+  void       setAllPedTypes(Ptype);
+  void       addSubSelector(const SubSelector&);
+  void       addAction(typeUID, const Action&);
+  VIPRA::idx addEvent(const Event&);
 
   VIPRA::size eventCount() const;
   VIPRA::size selectorCount() const;
@@ -53,7 +53,6 @@ class HumanBehavior {
   BehaviorContext context;
 
   Selector                         selector;
-  std::vector<Event>               events;
   std::vector<std::vector<Action>> actions;
 
   void evaluateEvents(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::delta_t);

@@ -31,7 +31,7 @@ condition_Event_Occurred:
   GIVEN (AN | THE)? EVNT (EVENT)? HAS OCCURRED;
 
 condition_Event_Occurring:
-  WHILE (AN | THEN)? EVNT (EVENT)? IS OCCURRING;
+  WHILE (AN | THE)? EVNT (EVENT)? IS OCCURRING;
 
 condition_Event_One_Time:
-  WHEN (AN | THEN)? EVNT (EVENT)? (ENDS | STARTS);
+  WHEN (AN | THE)? EVNT (EVENT)? (ENDS | STARTS);

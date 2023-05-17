@@ -42,7 +42,7 @@ bool Condition::evaluate(const PedestrianSet& pedSet, const ObstacleSet& obsSet,
 }
 
 void Condition::addSubCondition(const SubCondition& condition) {
-  conditions.emplace_back(std::move(condition));
+  conditions.emplace_back(condition);
 }
 
 void Condition::addAndOr(bool andor) {

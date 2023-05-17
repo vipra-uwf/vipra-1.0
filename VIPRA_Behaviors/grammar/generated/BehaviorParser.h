@@ -314,7 +314,7 @@ public:
     antlr4::tree::TerminalNode *OCCURRING();
     antlr4::tree::TerminalNode *EVENT();
     antlr4::tree::TerminalNode *AN();
-    antlr4::tree::TerminalNode *THEN();
+    antlr4::tree::TerminalNode *THE();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -333,7 +333,7 @@ public:
     antlr4::tree::TerminalNode *STARTS();
     antlr4::tree::TerminalNode *EVENT();
     antlr4::tree::TerminalNode *AN();
-    antlr4::tree::TerminalNode *THEN();
+    antlr4::tree::TerminalNode *THE();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

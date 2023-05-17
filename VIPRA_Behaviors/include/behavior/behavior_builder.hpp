@@ -18,7 +18,7 @@ namespace BHVR {
 
 using StateMap = std::unordered_map<std::string, BHVR::stateUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
 using TypeMap = std::unordered_map<std::string, BHVR::typeUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
-using EventMap = std::unordered_map<std::string, BHVR::Event*, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
+using EventMap = std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
 
 class BehaviorBuilder : public BehaviorBaseVisitor {
  public:
@@ -36,11 +36,11 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   BHVR::seed currSeed;
 
-  void initialBehaviorSetup(const std::string&, BHVR::seed);
-  void initializeTypes();
-  void initializeEvents();
-  void initializeStates();
-  void endBehaviorCheck();
+  void        initialBehaviorSetup(const std::string&, BHVR::seed);
+  void        initializeTypes();
+  void        initializeEvents();
+  void        initializeStates();
+  static void endBehaviorCheck();
 
   void addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
 
@@ -50,7 +50,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   SubSelector buildSubSelector(BehaviorParser::Ped_SelectorContext*);
 
   BHVR::stateUID getState(const std::string&);
-  Event*         getEvent(const std::string&);
+  VIPRA::idx     getEvent(const std::string&);
 
   BHVR::typeUID                   getType(const std::string&) const;
   BHVR::typeUID                   getGroup(BehaviorParser::Ped_SelectorContext*) const;

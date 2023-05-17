@@ -1,9 +1,9 @@
 
-#include <events/event.hpp>
 #include <utility>
-#include "definitions/behavior_context.hpp"
 
 #include <spdlog/spdlog.h>
+
+#include <events/event.hpp>
 
 namespace BHVR {
 
@@ -16,22 +16,28 @@ namespace BHVR {
  * @param context : behavior context
  * @param dT : simulation timestep size
  */
-void Event::evaluate(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals,
-                     const BehaviorContext& context, VIPRA::delta_t dT) {
-  if (!isOccurring()) {
-    if (startCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
-      spdlog::info("Event \"{}\" has Started", name);
-      started = true;
-      occurred = true;
-      startTime = context.elapsedTime;
-    } else {
-      if (endCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
-        spdlog::info("Event \"{}\" has Ended", name);
-        started = false;
-        ended = true;
-        endTime = context.elapsedTime;
-      }
+void Event::evaluate(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals, BehaviorContext& context,
+                     VIPRA::delta_t dT) {
+  bool end = endCondition.evaluate(pedSet, obsSet, goals, context, 0, dT);
+
+  if (isOccurring()) {
+    if (end) {
+      spdlog::info("Event \"{}\" has Ended", name);
+      started = false;
+      ended = true;
+      endTime = context.elapsedTime;
     }
+    return;
+  }
+
+  bool start = startCondition.evaluate(pedSet, obsSet, goals, context, 0, dT);
+
+  if (start && !end) {
+    spdlog::info("Event \"{}\" has Started", name);
+    started = true;
+    occurred = true;
+    ended = false;
+    startTime = context.elapsedTime;
   }
 }
 

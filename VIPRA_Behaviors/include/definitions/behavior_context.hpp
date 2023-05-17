@@ -7,13 +7,14 @@
 #include <definitions/pedestrian_types.hpp>
 #include <definitions/type_definitions.hpp>
 
-
 namespace BHVR {
+class Event;
 struct BehaviorContext {
   VIPRA::delta_t              elapsedTime = 0;
   BHVR::stateUID              environmentState = 0;
   std::vector<BHVR::stateUID> pedStates;
   std::vector<BHVR::typeUID>  types;
+  std::vector<BHVR::Event>    events;
 };
 }  // namespace BHVR
 

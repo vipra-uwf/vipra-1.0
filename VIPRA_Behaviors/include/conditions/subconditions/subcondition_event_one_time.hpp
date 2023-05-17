@@ -7,7 +7,7 @@
 namespace BHVR {
 class SubConditionEventOneTime {
  public:
-  SubConditionEventOneTime(bool, Event*);
+  SubConditionEventOneTime(bool, VIPRA::idx);
   SubConditionEventOneTime() = delete;
   SubConditionEventOneTime(const SubConditionEventOneTime&) = default;
   SubConditionEventOneTime& operator=(const SubConditionEventOneTime&) = default;
@@ -19,9 +19,9 @@ class SubConditionEventOneTime {
                   VIPRA::delta_t);
 
  private:
-  bool         onStart;
-  bool         hasReturned;
-  const Event* event;
+  bool       onStart;
+  bool       hasReturned;
+  VIPRA::idx event;
 };
 }  // namespace BHVR
 

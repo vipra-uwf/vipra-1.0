@@ -7,7 +7,7 @@
 namespace BHVR {
 class SubConditionEventOccurring {
  public:
-  explicit SubConditionEventOccurring(Event*);
+  explicit SubConditionEventOccurring(VIPRA::idx);
   SubConditionEventOccurring() = delete;
   SubConditionEventOccurring(const SubConditionEventOccurring&) = default;
   SubConditionEventOccurring& operator=(const SubConditionEventOccurring&) = default;
@@ -19,7 +19,7 @@ class SubConditionEventOccurring {
                   VIPRA::delta_t) const;
 
  private:
-  const Event* event;
+  VIPRA::idx event;
 };
 }  // namespace BHVR
 

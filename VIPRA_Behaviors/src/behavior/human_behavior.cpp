@@ -80,9 +80,9 @@ void HumanBehavior::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& 
  * @param event : event object to add
  * @return Event* 
  */
-Event* HumanBehavior::addEvent(const Event& event) {
-  events.emplace_back(std::move(event));
-  return &(events.back());
+VIPRA::idx HumanBehavior::addEvent(const Event& event) {
+  context.events.emplace_back(event);
+  return context.events.size() - 1;
 }
 
 /**
@@ -91,7 +91,7 @@ Event* HumanBehavior::addEvent(const Event& event) {
  * @return VIPRA::size 
  */
 VIPRA::size HumanBehavior::eventCount() const {
-  return events.size();
+  return context.events.size();
 }
 
 /**
@@ -127,7 +127,7 @@ void HumanBehavior::setSeed(BHVR::seed s) {
 }
 
 void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, VIPRA::delta_t dT) {
-  for (auto& event : events) {
+  for (auto& event : context.events) {
     event.evaluate(pedSet, obsSet, goals, context, dT);
   }
 }

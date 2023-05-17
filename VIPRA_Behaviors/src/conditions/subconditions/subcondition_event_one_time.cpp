@@ -8,7 +8,7 @@ namespace BHVR {
    * 
    * @param event : 
    */
-SubConditionEventOneTime::SubConditionEventOneTime(bool onstart, Event* ev)
+SubConditionEventOneTime::SubConditionEventOneTime(bool onstart, VIPRA::idx ev)
     : onStart(onstart), hasReturned(false), event(ev) {}
 
 /**
@@ -17,15 +17,15 @@ SubConditionEventOneTime::SubConditionEventOneTime(bool onstart, Event* ev)
  * @return true 
  * @return false 
  */
-bool SubConditionEventOneTime::operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&,
-                                          VIPRA::idx, VIPRA::delta_t) {
+bool SubConditionEventOneTime::operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                                          const BehaviorContext& context, VIPRA::idx, VIPRA::delta_t) {
   if (onStart) {
-    if (event->hasStarted() && !hasReturned) {
+    if (context.events[event].hasStarted() && !hasReturned) {
       hasReturned = true;
       return true;
     }
   } else {
-    if (event->hasEnded() && !hasReturned) {
+    if (context.events[event].hasEnded() && !hasReturned) {
       hasReturned = true;
       return true;
     }
