@@ -7,6 +7,7 @@
 #include <vector>
 namespace VIPRA {
 
+// NOLINTNEXTLINE
 struct f2d {
   float x, y;
 
@@ -14,13 +15,9 @@ struct f2d {
   constexpr explicit f2d() noexcept : x(0), y(0) {}
   constexpr explicit f2d(float X) noexcept : x(X), y(0) {}
   constexpr explicit f2d(float X, float Y) noexcept : x(X), y(Y) {}
-  constexpr f2d(const f2d& other) noexcept : x(other.x), y(other.y) {}
-  constexpr f2d(f2d&& other) noexcept : x(other.x), y(other.y) {}
-  constexpr f2d& operator=(const f2d& other) noexcept {
-    x = other.x;
-    y = other.y;
-    return *this;
-  }
+  constexpr f2d(const f2d& other) noexcept = default;
+  constexpr f2d(f2d&& other) noexcept = default;
+  constexpr f2d& operator=(const f2d& other) noexcept = default;
   constexpr f2d& operator=(f2d&& other) noexcept {
     x = other.x;
     y = other.y;
@@ -116,9 +113,10 @@ struct f2d {
   inline constexpr bool operator!=(const f2d& other) const noexcept { return (x != other.x || y != other.y); }
   inline constexpr bool operator!=(f2d&& other) const noexcept { return (x != other.x || y != other.y); }
 
-  inline constexpr float dot(const f2d& other) { return (x * other.x) + (y * other.y); }
+  inline constexpr float dot(const f2d& other) const { return (x * other.x) + (y * other.y); }
 };
 
+// NOLINTNEXTLINE
 struct f3d {
   float x, y, z;
 
@@ -127,23 +125,13 @@ struct f3d {
   constexpr explicit f3d(float X) noexcept : x(X), y(0), z(0) {}
   constexpr explicit f3d(float X, float Y) noexcept : x(X), y(Y), z(0) {}
   constexpr explicit f3d(float X, float Y, float Z) noexcept : x(X), y(Y), z(Z) {}
-  constexpr f3d(const f3d& other) noexcept : x(other.x), y(other.y), z(other.z) {}
+  constexpr f3d(const f3d& other) noexcept = default;
   constexpr f3d(f3d&& other) noexcept : x(other.x), y(other.y), z(other.z) {}
-  constexpr f3d(const f2d& other) noexcept : x(other.x), y(other.y), z(0) {}
-  constexpr f3d(f2d&& other) noexcept : x(other.x), y(other.y), z(0) {}
+  explicit constexpr f3d(const f2d& other) noexcept : x(other.x), y(other.y), z(0) {}
+  explicit constexpr f3d(f2d&& other) noexcept : x(other.x), y(other.y), z(0) {}
 
-  constexpr f3d& operator=(const f3d& other) noexcept {
-    x = other.x;
-    y = other.y;
-    z = other.z;
-    return *this;
-  }
-  constexpr f3d& operator=(f3d&& other) noexcept {
-    x = other.x;
-    y = other.y;
-    z = other.z;
-    return *this;
-  }
+  constexpr f3d& operator=(const f3d& other) noexcept = default;
+  constexpr f3d& operator=(f3d&& other) noexcept = default;
   constexpr f3d& operator=(const f2d& other) noexcept {
     x = other.x;
     y = other.y;
@@ -311,15 +299,16 @@ struct f3d {
   inline constexpr float dot(const f3d& other) const noexcept { return (x * other.x) + (y * other.y) + (z * other.z); }
 };
 
-typedef std::vector<f2d> f2dVec;
-typedef std::vector<f3d> f3dVec;
+using f2dVec = std::vector<f2d>;
+using f3dVec = std::vector<f3d>;
 
-inline constexpr const f2d __emptyf2d__ = VIPRA::f2d{std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
-inline constexpr const f3d __emptyf3d__ =
+inline constexpr const f2d _emptyf2d_ =  // NOLINT
+    VIPRA::f2d{std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
+inline constexpr const f3d _emptyf3d_ =  // NOLINT
     VIPRA::f3d{std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
 
-extern const f2dVec __emptyf2d_Vec__;
-extern const f3dVec __emptyf3d_Vec__;
+extern const f2dVec emptyf2d_vec;  // NOLINT
+extern const f3dVec emptyf3d_vec;  // NOLINT
 }  // namespace VIPRA
 
 #endif

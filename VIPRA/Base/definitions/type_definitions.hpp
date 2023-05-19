@@ -7,15 +7,15 @@
 #include "definitions/dimensions.hpp"
 
 namespace VIPRA {
-typedef uint64_t idx;
-typedef uint64_t size;
+using idx = uint64_t;
+using size = uint64_t;
 
-typedef uint64_t t_step;
-typedef float    delta_t;
+using t_step = uint64_t;
+using delta_t = float;
 
-typedef std::vector<idx> idxVec;
+using idxVec = std::vector<idx>;
 
-static constexpr const idx idx_INVALID = std::numeric_limits<idx>::max();
+static constexpr const idx idx_INVALID = std::numeric_limits<idx>::max();  // NOLINT
 
 }  // namespace VIPRA
 

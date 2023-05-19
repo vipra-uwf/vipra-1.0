@@ -3,16 +3,7 @@
 
 #include "conditions/condition.hpp"
 
-namespace Behaviors {
-Condition::Condition(Condition&& other) noexcept
-  : operations(std::move(other.operations)), conditions(std::move(other.conditions)) {}
-
-Condition&
-Condition::operator=(Condition&& other) noexcept {
-  operations = std::move(other.operations);
-  conditions = std::move(other.conditions);
-  return *this;
-}
+namespace BHVR {
 
 /**
  * @brief Tests whether a condition is met, by running through each sub condition sequentially
@@ -26,13 +17,8 @@ Condition::operator=(Condition&& other) noexcept {
  * @return true 
  * @return false
  */
-bool
-Condition::evaluate(const PedestrianSet&   pedSet,
-                    const ObstacleSet&     obsSet,
-                    const Goals&           goals,
-                    const BehaviorContext& context,
-                    VIPRA::idx             pedIndex,
-                    VIPRA::delta_t         dT) const {
+bool Condition::evaluate(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals,
+                         const BehaviorContext& context, VIPRA::idx pedIndex, VIPRA::delta_t dT) const {
   const VIPRA::size condCnt = conditions.size();
   if (condCnt == 0) {
     return false;
@@ -55,13 +41,11 @@ Condition::evaluate(const PedestrianSet&   pedSet,
   return result;
 }
 
-void
-Condition::addSubCondition(SubCondition&& condition) {
-  conditions.emplace_back(std::move(condition));
+void Condition::addSubCondition(const SubCondition& condition) {
+  conditions.emplace_back(condition);
 }
 
-void
-Condition::addAndOr(bool andor) {
+void Condition::addAndOr(bool andor) {
   operations.push_back(andor);
 }
-}  // namespace Behaviors
+}  // namespace BHVR

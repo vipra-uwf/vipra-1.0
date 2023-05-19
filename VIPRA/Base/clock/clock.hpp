@@ -3,9 +3,10 @@
 
 #include <chrono>
 
+#include <spdlog/spdlog.h>
 #include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
-#include <spdlog/spdlog.h>
+
 
 class Clock {
  private:
@@ -14,7 +15,7 @@ class Clock {
   std::chrono::time_point<std::chrono::system_clock> simulationEndTime;
   std::chrono::duration<double>                      realElapsedSeconds;
   void                                               calculateRealElapsedSeconds();
-  unsigned long                                      simulationElapsedMs;
+  uint64_t                                           simulationElapsedMs;
 
  public:
   Clock();
@@ -24,9 +25,9 @@ class Clock {
   void printRealDuration();
   void printRealEndTime();
   void addSimulationTimeMs(VIPRA::delta_t seconds);
-  void printSimulationDuration();
+  void printSimulationDuration() const;
 
-  void configure(const VIPRA::Config::Map& config);
+  void configure(const VIPRA::CONFIG::Map& config);
 };
 
 #endif

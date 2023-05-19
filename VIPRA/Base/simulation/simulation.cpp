@@ -1,20 +1,14 @@
 #include "simulation.hpp"
 
-const VIPRA::f2dVec VIPRA::__emptyf2d_Vec__ = VIPRA::f2dVec{};
-const VIPRA::f3dVec VIPRA::__emptyf3d_Vec__ = VIPRA::f3dVec{};
-
-void
-Simulation::configure(const VIPRA::Config::Map& config) {
+void Simulation::configure(const VIPRA::CONFIG::Map& config) {
   timestep = 0;
   timestep_size = config["time_step_size"].asFloat();
   maxTimeStep = config["max_timestep"].asUInt64();
 }
 
-void
-Simulation::initialize() {}
+void Simulation::initialize() {}
 
-VIPRA::t_step
-Simulation::getTimestep() const {
+VIPRA::t_step Simulation::getTimestep() const {
   return timestep;
 }
 
@@ -31,23 +25,16 @@ Simulation::getTimestep() const {
  * @param simulationOutputHandler - SimulationOutputHandler implementation
  * @param clock - Clock implementation
  */
-void
-Simulation::run(Goals&                   goals,
-                PedestrianSet&           pedestrianSet,
-                ObstacleSet&             obstacleSet,
-                PedestrianDynamicsModel& pedestrianDynamicsModel,
-                HumanBehaviorModel&      humanBehaviorModel,
-                PolicyModel&             policyModel,
-                OutputDataWriter&        outputDataWriter,
-                SimulationOutputHandler& simulationOutputHandler,
-                Clock&                   clock) {
-  clock.start();
+void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
+                     PedestrianDynamicsModel& pedestrianDynamicsModel, HumanBehaviorModel& humanBehaviorModel,
+                     PolicyModel& policyModel, OutputDataWriter& outputDataWriter,
+                     SimulationOutputHandler& simulationOutputHandler, Clock& clock) {
   spdlog::info("Starting Simulation Loop");
 
   while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, timestep)};
-    policyModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
-    humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
+    policyModel.timestep(pedestrianSet, obstacleSet, goals, *pedState, timestep_size);
+    humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, *pedState, timestep_size);
 
     pedestrianSet.updateState(pedState);
 

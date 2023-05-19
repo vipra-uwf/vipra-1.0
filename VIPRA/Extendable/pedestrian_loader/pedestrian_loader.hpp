@@ -1,9 +1,9 @@
 #ifndef VIPRA_PEDESTRIAN_LOADER_HPP
 #define VIPRA_PEDESTRIAN_LOADER_HPP
 
+#include <memory>
 #include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
-#include <memory>
 
 namespace VIPRA {
 struct PedData {
@@ -23,7 +23,7 @@ class PedestrianLoader {
  public:
   virtual ~PedestrianLoader() = default;
 
-  virtual void                            configure(const VIPRA::Config::Map& configMap) = 0;
+  virtual void                            configure(const VIPRA::CONFIG::Map& configMap) = 0;
   virtual void                            initialize() = 0;
   virtual std::unique_ptr<VIPRA::PedData> LoadPedestrians(const std::string& filePath) const = 0;
 };

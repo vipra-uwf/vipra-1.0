@@ -7,7 +7,7 @@
 #include "definitions/dimensions.hpp"
 
 namespace VIPRA {
-typedef std::unordered_map<std::string, f3dVec> EntitySet;
+using EntitySet = std::unordered_map<std::string, f3dVec>;
 }
 
 #endif

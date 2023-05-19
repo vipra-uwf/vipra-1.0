@@ -1,7 +1,7 @@
 
 #include <actions/atoms/atom_stop.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 /**
    * @brief Stops a pedestrians motion
    * 
@@ -13,15 +13,9 @@ namespace Behaviors {
    * @param dT : simulation timestep size
    * @param state : state object to put result to
    */
-void
-Atom_Stop::operator()(PedestrianSet& pedSet,
-                      ObstacleSet&,
-                      Goals&,
-                      BehaviorContext&,
-                      VIPRA::idx pedIdx,
-                      VIPRA::delta_t,
-                      std::shared_ptr<VIPRA::State> state) {
-  state->pedestrianCoordinates[pedIdx] = pedSet.getPedCoords(pedIdx);
-  state->velocities[pedIdx] = VIPRA::f3d{0, 0, 0};
+void AtomStop::operator()(PedestrianSet& pedSet, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx pedIdx, VIPRA::delta_t,
+                          VIPRA::State& state) const {
+  state.pedestrianCoordinates[pedIdx] = pedSet.getPedCoords(pedIdx);
+  state.velocities[pedIdx] = VIPRA::f3d{0, 0, 0};
 }
-}  // namespace Behaviors
+}  // namespace BHVR

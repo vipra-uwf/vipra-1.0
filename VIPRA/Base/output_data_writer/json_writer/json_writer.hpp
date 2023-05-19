@@ -1,8 +1,9 @@
 #ifndef JSON_WRITER_HPP
 #define JSON_WRITER_HPP
 
+#include <json/json.h>
 #include "../output_data_writer.hpp"
-#include "jsoncpp/json/json.h"
+
 
 class JSONWriter : public OutputDataWriter {
  private:
@@ -12,7 +13,7 @@ class JSONWriter : public OutputDataWriter {
 
  public:
   JSONWriter();
-  void configure(const VIPRA::Config::Map& configMap) override;
+  void configure(const VIPRA::CONFIG::Map& configMap) override;
   void initializeOutputFile(const std::string& outputFilePath) override;
   void addFloatValue(const std::string& key, float value) override;
   void addStringValue(const std::string& key, const std::string& value) override;

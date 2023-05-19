@@ -5,8 +5,7 @@
 #include <selectors/pedestrian_groups.hpp>
 
 namespace {
-inline VIPRA::size
-getTypeCount(Behaviors::pType allTypes) {
+inline VIPRA::size getTypeCount(BHVR::Ptype allTypes) {
   VIPRA::size typeCnt = 1;
   while (allTypes.fullType != 0) {
     allTypes.fullType = allTypes.fullType & (allTypes.fullType - 1);
@@ -16,7 +15,7 @@ getTypeCount(Behaviors::pType allTypes) {
 }
 }  // namespace
 
-namespace Behaviors {
+namespace BHVR {
 
 /**
  * @brief Initializes the groups, starting with all pedestrians in group 0
@@ -24,8 +23,7 @@ namespace Behaviors {
  * @param allTypes : 
  * @param pedCnt : 
  */
-void
-GroupsContainer::initialize(pType allTypes, VIPRA::size pedCnt) {
+void GroupsContainer::initialize(Ptype allTypes, VIPRA::size pedCnt) {
   VIPRA::size typeCnt = getTypeCount(allTypes);
   groups.resize(typeCnt);
   groups[0] = VIPRA::idxVec(pedCnt);
@@ -41,9 +39,8 @@ GroupsContainer::initialize(pType allTypes, VIPRA::size pedCnt) {
  * @param type : 
  * @return const VIPRA::idxVec& 
  */
-const VIPRA::idxVec&
-GroupsContainer::getGroup(typeUID type) const {
-  return groups.at(Index(type));
+const VIPRA::idxVec& GroupsContainer::getGroup(typeUID type) const {
+  return groups.at(index(type));
 }
 
 /**
@@ -52,33 +49,31 @@ GroupsContainer::getGroup(typeUID type) const {
  * @param pedIdx : 
  * @param type : 
  */
-void
-GroupsContainer::addPed(VIPRA::idx pedIdx, typeUID type) {
-  const VIPRA::size index = Index(type);
-  groups.at(index).push_back(pedIdx);
-  used.at(index).push_back(false);
+void GroupsContainer::addPed(VIPRA::idx pedIdx, typeUID type) {
+  const VIPRA::size ndx = index(type);
+  groups.at(ndx).push_back(pedIdx);
+  used.at(ndx).push_back(false);
 }
 
-void
-GroupsContainer::setUsed(VIPRA::idx pedIdx, typeUID type) {
-  const VIPRA::size index = Index(type);
-  auto&             group = groups.at(index);
-  auto&             used_group = used.at(index);
+bool GroupsContainer::setUsed(VIPRA::idx pedIdx, typeUID type) {
+  const VIPRA::size ndx = index(type);
+  auto&             group = groups.at(ndx);
+  auto&             usedGroup = used.at(ndx);
 
   for (VIPRA::idx i = 0; i < group.size(); ++i) {
     if (group[i] == pedIdx) {
-      used_group[i] = true;
+      usedGroup[i] = true;
+      return true;
     }
   }
+  return false;
 }
 
-const std::vector<bool>&
-GroupsContainer::getUsed(typeUID type) const {
-  return used.at(Index(type));
+const std::vector<bool>& GroupsContainer::getUsed(typeUID type) const {
+  return used.at(index(type));
 }
 
-void
-GroupsContainer::cleanUsed() {
+void GroupsContainer::cleanUsed() {
   used.clear();
 }
 
@@ -88,24 +83,22 @@ GroupsContainer::cleanUsed() {
  * @param pedIdx : 
  * @param type : 
  */
-void
-GroupsContainer::removePed(VIPRA::idx pedIdx, typeUID type) {
-  auto& group = groups.at(Index(type));
+bool GroupsContainer::removePed(VIPRA::idx pedIdx, typeUID type) {
+  auto& group = groups.at(index(type));
   for (auto iter = group.begin(); iter != group.end(); ++iter) {
     if (*iter == pedIdx) {
       group.erase(iter);
-      return;
+      return true;
     }
   }
+  return false;
 }
 
-VIPRA::idxVec&
-GroupsContainer::operator[](VIPRA::idx index) {
+VIPRA::idxVec& GroupsContainer::operator[](VIPRA::idx index) {
   return groups[index];
 }
 
-const VIPRA::idxVec&
-GroupsContainer::at(VIPRA::idx index) const {
+const VIPRA::idxVec& GroupsContainer::at(VIPRA::idx index) const {
   return groups.at(index);
 }
 
@@ -114,32 +107,7 @@ GroupsContainer::at(VIPRA::idx index) const {
  * 
  * @return VIPRA::size 
  */
-VIPRA::size
-GroupsContainer::size() const {
+VIPRA::size GroupsContainer::size() const {
   return groups.size();
 }
-
-// ---------- CONSTRUCTORS ---------------------------
-
-GroupsContainer::GroupsContainer() : groups(), used() {}
-
-GroupsContainer::GroupsContainer(GroupsContainer&& other) noexcept
-  : groups(std::move(other.groups)), used(std::move(other.used)) {}
-
-GroupsContainer::GroupsContainer(const GroupsContainer& other) noexcept : groups(other.groups), used(other.used) {}
-
-GroupsContainer&
-GroupsContainer::operator=(GroupsContainer&& other) noexcept {
-  groups = std::move(other.groups);
-  used = std::move(other.used);
-  return *this;
-}
-
-GroupsContainer&
-GroupsContainer::operator=(const GroupsContainer& other) noexcept {
-  groups = other.groups;
-  used = other.used;
-  return *this;
-}
-
-}  // namespace Behaviors
+}  // namespace BHVR

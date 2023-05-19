@@ -28,6 +28,7 @@ Vipra_tests
 _build
 Behavior_Tests
 output.gif
+.cache
 
 
 # VIPRA Launcher

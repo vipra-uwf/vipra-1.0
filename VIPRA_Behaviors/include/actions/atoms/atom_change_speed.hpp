@@ -1,20 +1,14 @@
 #ifndef VIPRA_ATOM_CHANGE_SPEED_HPP
 #define VIPRA_ATOM_CHANGE_SPEED_HPP
 
-#include <actions/atom.hpp>
 #include <generated/BehaviorParser.h>
+#include <actions/atom.hpp>
 
-namespace Behaviors {
-struct Atom_Change_Speed {
+namespace BHVR {
+struct AtomChangeSpeed {
   float change;
-  void  operator()(PedestrianSet&,
-                  ObstacleSet&,
-                  Goals&,
-                  BehaviorContext&,
-                  VIPRA::idx,
-                  VIPRA::delta_t,
-                  std::shared_ptr<VIPRA::State>);
+  void  operator()(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t, VIPRA::State&) const;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

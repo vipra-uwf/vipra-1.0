@@ -231,9 +231,9 @@ TEST(Dimensions, Distance_To_Tests) {
 }
 
 TEST(Dimensions, __Empty__) {
-  EXPECT_EQ(VIPRA::__emptyf2d__, VIPRA::f2d(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
+  EXPECT_EQ(VIPRA::_emptyf2d_, VIPRA::f2d(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
   EXPECT_EQ(
-      VIPRA::__emptyf3d__,
+      VIPRA::_emptyf3d_,
       VIPRA::f3d(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
 }
 

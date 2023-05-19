@@ -5,25 +5,19 @@
 
 #include <selectors/selector_percent.hpp>
 
-namespace Behaviors {
-
+namespace BHVR {
 /**
  * @brief Selects (numpeds * ratio) pedestrians for the simulation
  * 
  * @param pedSet : 
  */
-SelectorResult
-selector_percent::operator()(Behaviors::seed      seed,
-                             const VIPRA::idxVec& fullGroup,
-                             const VIPRA::idxVec& group,
-                             const PedestrianSet&,
-                             const ObstacleSet&,
-                             const Goals&) {
+SelectorResult SelectorPercent::operator()(BHVR::seed seed, const VIPRA::idxVec& fullGroup, const VIPRA::idxVec& group,
+                                           const PedestrianSet&, const ObstacleSet&, const Goals&) const {
   srand(seed);
 
   auto groupPeds = group;
 
-  VIPRA::size count = static_cast<VIPRA::size>(std::floor(fullGroup.size() * percentage));
+  auto count = static_cast<VIPRA::size>(std::floor(fullGroup.size() * percentage));
 
   bool starved = false;
   if (count > group.size()) {
@@ -33,9 +27,9 @@ selector_percent::operator()(Behaviors::seed      seed,
 
   spdlog::debug("Selector Percent: Selecting {} Pedestrians", count);
 
-  std::random_shuffle(groupPeds.begin(), groupPeds.end());
+  std::shuffle(groupPeds.begin(), groupPeds.end(), std::default_random_engine(seed));
   groupPeds.resize(count);
 
   return {starved, groupPeds};
 }
-}  // namespace Behaviors
+}  // namespace BHVR

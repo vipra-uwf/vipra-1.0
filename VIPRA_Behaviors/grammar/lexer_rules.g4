@@ -44,17 +44,19 @@ OBJECT: '+'[a-zA-Z_\-]+;
 
 // ---------------------------------------
 
-AFTER: A F T E R;
+AN: A | A N;
+AT: A T;
 AND: A N D;
-ALWAYS: A L W A Y S;
-AN: A | A N ;
 ARE: A R E;
+AFTER: A F T E R;
+ALWAYS: A L W A Y S;
 AROUND: A R O U N D;
 
 BEHIND: B E H I N D;
 
 CONSIDER: C O N S I D E R;
 
+DECIMAL: D E C I M A L;
 DIRECTION: D I R E C T I O N;
 
 END: E N D;
@@ -74,6 +76,7 @@ GIVEN: G I V E N;
 HAS: H A S;
 
 IN: I N;
+INTEGER: I N T E G E R;
 IS: I S;
 
 METERS: M E T E R S;
@@ -100,11 +103,14 @@ STATES: S T A T E S;
 STARTS: S T A R T S;
 SPEED: S P E E D;
 
+TO: T O;
 THE: T H E;
 THAT: T H A T;
 THEN: T H E N;
 THEIR: T H E I R;
 TYPES: T Y P E S;
+
+VALUE: V A L U E;
 
 WHEN: W H E N;
 WHILE: W H I L E;
@@ -117,3 +123,8 @@ WITHIN: W I T H I N;
 ID: [a-zA-Z_\-]+;
 NUMBER : [0-9]+;
 FLOAT: [0-9]+'.'[0-9]+;
+LOC: [a-zA-Z_/-]+;
+// L: FLOAT;
+// W: FLOAT;
+POINTX: FLOAT;
+POINTY: FLOAT;

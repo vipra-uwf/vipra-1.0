@@ -1,51 +1,52 @@
-#ifndef VIPRA_BEHAVIORS_EVENT_HPP
-#define VIPRA_BEHAVIORS_EVENT_HPP
+#ifndef VIPRA_BHVR_EVENT_HPP
+#define VIPRA_BHVR_EVENT_HPP
 
 #include <functional>
 
 #include <conditions/condition.hpp>
 #include <definitions/behavior_context.hpp>
 
-namespace Behaviors {
-
-typedef std::function<void(float)> EventHandler;
+namespace BHVR {
 
 /**
    * @brief An Event is something that occurs during a simulation, when an event starts it notifies it's subscribing functions and same when it ends
-   * 
+   *
    */
 class Event {
  public:
   ~Event() = default;
+  Event(Event&&) noexcept = default;
+  Event& operator=(Event&&) noexcept = default;
+  Event() = default;
+  Event(const Event&) = default;
+  Event& operator=(const Event&) = default;
 
-  Event() = delete;
-  Event(const Event&) = delete;
-  Event& operator=(const Event&) = delete;
+  explicit Event(std::string);
 
-  Event(std::string);
-  Event(Event&&) noexcept;
-  Event& operator=(Event&&) noexcept;
+  void evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, BehaviorContext&, VIPRA::delta_t);
 
-  void evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::delta_t);
+  void setStartCondition(const Condition&);
+  void setEndCondition(const Condition&);
 
-  void setStartCondition(Condition&&);
-  void setEndCondition(Condition&&);
-
-  void onStart(EventHandler);
-  void onEnd(EventHandler);
+  bool  hasStarted() const;
+  bool  hasEnded() const;
+  bool  isOccurring() const;
+  bool  hasOccurred() const;
+  float timeSinceLastStart(const BehaviorContext&) const;
 
   const std::string& getName() const;
 
  private:
   std::string name;
-  bool        occurring;
+  bool        occurred;
+  bool        started;
+  bool        ended;
+  float       startTime;
+  float       endTime;
 
   Condition startCondition;
   Condition endCondition;
-
-  std::vector<EventHandler> startHandlers;
-  std::vector<EventHandler> endHandlers;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

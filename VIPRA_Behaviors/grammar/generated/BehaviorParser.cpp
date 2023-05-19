@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.7.2
+// Generated from Behavior.g4 by ANTLR 4.12.0
 
 
 #include "BehaviorVisitor.h"
@@ -8,14 +8,238 @@
 
 
 using namespace antlrcpp;
+
 using namespace antlr4;
 
-BehaviorParser::BehaviorParser(TokenStream *input) : Parser(input) {
-  _interpreter = new atn::ParserATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
+namespace {
+
+struct BehaviorParserStaticData final {
+  BehaviorParserStaticData(std::vector<std::string> ruleNames,
+                        std::vector<std::string> literalNames,
+                        std::vector<std::string> symbolicNames)
+      : ruleNames(std::move(ruleNames)), literalNames(std::move(literalNames)),
+        symbolicNames(std::move(symbolicNames)),
+        vocabulary(this->literalNames, this->symbolicNames) {}
+
+  BehaviorParserStaticData(const BehaviorParserStaticData&) = delete;
+  BehaviorParserStaticData(BehaviorParserStaticData&&) = delete;
+  BehaviorParserStaticData& operator=(const BehaviorParserStaticData&) = delete;
+  BehaviorParserStaticData& operator=(BehaviorParserStaticData&&) = delete;
+
+  std::vector<antlr4::dfa::DFA> decisionToDFA;
+  antlr4::atn::PredictionContextCache sharedContextCache;
+  const std::vector<std::string> ruleNames;
+  const std::vector<std::string> literalNames;
+  const std::vector<std::string> symbolicNames;
+  const antlr4::dfa::Vocabulary vocabulary;
+  antlr4::atn::SerializedATNView serializedATN;
+  std::unique_ptr<antlr4::atn::ATN> atn;
+};
+
+::antlr4::internal::OnceFlag behaviorParserOnceFlag;
+BehaviorParserStaticData *behaviorParserStaticData = nullptr;
+
+void behaviorParserInitialize() {
+  assert(behaviorParserStaticData == nullptr);
+  auto staticData = std::make_unique<BehaviorParserStaticData>(
+    std::vector<std::string>{
+      "program", "statement", "event", "event_Single", "event_Lasting", 
+      "condition", "connector", "or_Connector", "and_Connector", "sub_condition", 
+      "condition_Time_Elapsed_From_Event", "condition_Event_Occurred", "condition_Event_Occurring", 
+      "condition_Event_One_Time", "value_number", "number_random", "random_number", 
+      "random_float", "direction", "dir", "direction_of", "infront", "behind", 
+      "around", "object", "ped_Selector", "selector", "selector_Percent", 
+      "selector_Exactly_N_Random", "selector_Everyone", "selector_Area", 
+      "id_list", "action", "conditional_action", "un_conditional_action", 
+      "sub_action", "action_atom", "action_Stop", "action_atom_Percent_Walk_Speed", 
+      "action_Push", "action_Be", "declaration", "decl_Ped", "decl_Ped_State", 
+      "decl_Env_State"
+    },
+    std::vector<std::string>{
+      "", "'.'", "'+'", "'%'", "'@stop'", "'@walk'", "'x'", "'@push'", "'@be set to'", 
+      "", "", "", "','", "':'"
+    },
+    std::vector<std::string>{
+      "", "", "", "", "", "", "", "", "", "COMMENT", "LINE_COMMENT", "WS", 
+      "COMMA", "COLON", "STATE", "ACTION", "PARAMETER", "EVNT", "OBJECT", 
+      "AN", "AT", "AND", "ARE", "AFTER", "ALWAYS", "AROUND", "BEHIND", "CONSIDER", 
+      "DECIMAL", "DIRECTION", "END", "ENDS", "ENVIRONMENT", "EVENT", "EXACTLY", 
+      "EVERY", "EVERYONE", "FASTER", "FROM", "FRONT", "GIVEN", "HAS", "IN", 
+      "INTEGER", "IS", "METERS", "NORMAL", "OBSTACLE", "OCCUR", "OCCURRED", 
+      "OCCURRING", "OF", "OR", "PEDESTRIAN", "PEDESTRIANS", "POSSIBLE", 
+      "RANDOM", "REQUIRED", "SECONDS", "SLOWER", "STATES", "STARTS", "SPEED", 
+      "TO", "THE", "THAT", "THEN", "THEIR", "TYPES", "VALUE", "WHEN", "WHILE", 
+      "WILL", "WITHIN", "ID", "NUMBER", "FLOAT", "LOC", "POINTX", "POINTY"
+    }
+  );
+  static const int32_t serializedATNSegment[] = {
+  	4,1,79,421,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
+  	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,
+  	21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,
+  	28,2,29,7,29,2,30,7,30,2,31,7,31,2,32,7,32,2,33,7,33,2,34,7,34,2,35,7,
+  	35,2,36,7,36,2,37,7,37,2,38,7,38,2,39,7,39,2,40,7,40,2,41,7,41,2,42,7,
+  	42,2,43,7,43,2,44,7,44,1,0,1,0,1,0,4,0,94,8,0,11,0,12,0,95,1,1,1,1,1,
+  	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,110,8,1,1,2,1,2,3,2,114,8,2,
+  	1,3,1,3,1,3,3,3,119,8,3,1,3,1,3,1,3,1,3,1,4,1,4,1,4,3,4,128,8,4,1,4,1,
+  	4,1,4,1,4,1,4,1,4,1,4,1,5,1,5,5,5,139,8,5,10,5,12,5,142,9,5,1,6,1,6,3,
+  	6,146,8,6,1,7,1,7,1,7,1,8,1,8,1,8,1,9,1,9,1,9,1,9,3,9,158,8,9,1,10,1,
+  	10,1,10,1,10,1,10,3,10,165,8,10,1,10,1,10,3,10,169,8,10,1,11,1,11,3,11,
+  	173,8,11,1,11,1,11,3,11,177,8,11,1,11,1,11,1,11,1,12,1,12,3,12,184,8,
+  	12,1,12,1,12,3,12,188,8,12,1,12,1,12,1,12,1,13,1,13,3,13,195,8,13,1,13,
+  	1,13,3,13,199,8,13,1,13,1,13,1,14,1,14,1,14,3,14,206,8,14,1,15,1,15,3,
+  	15,210,8,15,1,16,1,16,1,16,1,16,1,16,1,16,1,17,1,17,1,17,1,17,1,17,1,
+  	17,1,18,1,18,1,18,1,18,1,18,1,19,1,19,1,19,1,19,3,19,233,8,19,1,20,1,
+  	20,1,20,1,20,1,20,1,21,1,21,1,21,1,22,1,22,1,23,1,23,1,24,1,24,1,24,1,
+  	24,1,24,3,24,252,8,24,1,25,1,25,3,25,256,8,25,1,25,1,25,1,25,1,25,3,25,
+  	262,8,25,1,25,1,25,1,25,1,25,3,25,268,8,25,1,25,1,25,1,25,3,25,273,8,
+  	25,1,25,1,25,3,25,277,8,25,1,26,1,26,1,26,1,26,3,26,283,8,26,1,27,1,27,
+  	1,27,1,27,1,28,1,28,1,28,1,28,1,29,1,29,1,30,1,30,1,30,1,30,1,30,1,30,
+  	1,30,1,31,1,31,3,31,304,8,31,1,31,3,31,307,8,31,1,31,3,31,310,8,31,1,
+  	31,5,31,313,8,31,10,31,12,31,316,9,31,1,32,1,32,3,32,320,8,32,1,33,1,
+  	33,1,33,1,33,1,33,1,33,1,34,1,34,1,34,1,34,1,34,1,34,1,35,1,35,1,35,5,
+  	35,337,8,35,10,35,12,35,340,9,35,1,36,1,36,1,36,1,36,3,36,346,8,36,1,
+  	37,1,37,1,38,1,38,1,38,1,38,1,38,1,38,1,38,1,39,1,39,1,39,1,40,1,40,1,
+  	40,1,41,1,41,1,41,1,41,3,41,367,8,41,1,42,1,42,1,42,1,42,3,42,373,8,42,
+  	1,42,3,42,376,8,42,1,42,3,42,379,8,42,1,42,5,42,382,8,42,10,42,12,42,
+  	385,9,42,1,43,1,43,1,43,1,43,1,43,1,43,3,43,393,8,43,1,43,3,43,396,8,
+  	43,1,43,5,43,399,8,43,10,43,12,43,402,9,43,1,44,1,44,1,44,1,44,1,44,1,
+  	44,3,44,410,8,44,1,44,3,44,413,8,44,1,44,5,44,416,8,44,10,44,12,44,419,
+  	9,44,1,44,0,0,45,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,
+  	38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,
+  	84,86,88,0,4,2,0,19,19,64,64,2,0,31,31,61,61,2,0,53,54,74,74,2,0,22,22,
+  	44,44,433,0,90,1,0,0,0,2,109,1,0,0,0,4,113,1,0,0,0,6,115,1,0,0,0,8,124,
+  	1,0,0,0,10,136,1,0,0,0,12,145,1,0,0,0,14,147,1,0,0,0,16,150,1,0,0,0,18,
+  	157,1,0,0,0,20,159,1,0,0,0,22,170,1,0,0,0,24,181,1,0,0,0,26,192,1,0,0,
+  	0,28,205,1,0,0,0,30,209,1,0,0,0,32,211,1,0,0,0,34,217,1,0,0,0,36,223,
+  	1,0,0,0,38,232,1,0,0,0,40,234,1,0,0,0,42,239,1,0,0,0,44,242,1,0,0,0,46,
+  	244,1,0,0,0,48,251,1,0,0,0,50,276,1,0,0,0,52,282,1,0,0,0,54,284,1,0,0,
+  	0,56,288,1,0,0,0,58,292,1,0,0,0,60,294,1,0,0,0,62,301,1,0,0,0,64,319,
+  	1,0,0,0,66,321,1,0,0,0,68,327,1,0,0,0,70,333,1,0,0,0,72,345,1,0,0,0,74,
+  	347,1,0,0,0,76,349,1,0,0,0,78,356,1,0,0,0,80,359,1,0,0,0,82,366,1,0,0,
+  	0,84,368,1,0,0,0,86,386,1,0,0,0,88,403,1,0,0,0,90,91,3,84,42,0,91,93,
+  	5,1,0,0,92,94,3,2,1,0,93,92,1,0,0,0,94,95,1,0,0,0,95,93,1,0,0,0,95,96,
+  	1,0,0,0,96,1,1,0,0,0,97,98,3,4,2,0,98,99,5,1,0,0,99,110,1,0,0,0,100,101,
+  	3,82,41,0,101,102,5,1,0,0,102,110,1,0,0,0,103,104,3,50,25,0,104,105,5,
+  	1,0,0,105,110,1,0,0,0,106,107,3,64,32,0,107,108,5,1,0,0,108,110,1,0,0,
+  	0,109,97,1,0,0,0,109,100,1,0,0,0,109,103,1,0,0,0,109,106,1,0,0,0,110,
+  	3,1,0,0,0,111,114,3,6,3,0,112,114,3,8,4,0,113,111,1,0,0,0,113,112,1,0,
+  	0,0,114,5,1,0,0,0,115,116,7,0,0,0,116,118,5,17,0,0,117,119,5,33,0,0,118,
+  	117,1,0,0,0,118,119,1,0,0,0,119,120,1,0,0,0,120,121,5,72,0,0,121,122,
+  	5,48,0,0,122,123,3,10,5,0,123,7,1,0,0,0,124,125,7,0,0,0,125,127,5,17,
+  	0,0,126,128,5,33,0,0,127,126,1,0,0,0,127,128,1,0,0,0,128,129,1,0,0,0,
+  	129,130,5,72,0,0,130,131,5,48,0,0,131,132,3,10,5,0,132,133,5,21,0,0,133,
+  	134,5,30,0,0,134,135,3,10,5,0,135,9,1,0,0,0,136,140,3,18,9,0,137,139,
+  	3,12,6,0,138,137,1,0,0,0,139,142,1,0,0,0,140,138,1,0,0,0,140,141,1,0,
+  	0,0,141,11,1,0,0,0,142,140,1,0,0,0,143,146,3,14,7,0,144,146,3,16,8,0,
+  	145,143,1,0,0,0,145,144,1,0,0,0,146,13,1,0,0,0,147,148,5,52,0,0,148,149,
+  	3,18,9,0,149,15,1,0,0,0,150,151,5,21,0,0,151,152,3,18,9,0,152,17,1,0,
+  	0,0,153,158,3,20,10,0,154,158,3,22,11,0,155,158,3,24,12,0,156,158,3,26,
+  	13,0,157,153,1,0,0,0,157,154,1,0,0,0,157,155,1,0,0,0,157,156,1,0,0,0,
+  	158,19,1,0,0,0,159,160,5,23,0,0,160,161,3,28,14,0,161,162,5,58,0,0,162,
+  	164,5,38,0,0,163,165,7,0,0,0,164,163,1,0,0,0,164,165,1,0,0,0,165,166,
+  	1,0,0,0,166,168,5,17,0,0,167,169,5,33,0,0,168,167,1,0,0,0,168,169,1,0,
+  	0,0,169,21,1,0,0,0,170,172,5,40,0,0,171,173,7,0,0,0,172,171,1,0,0,0,172,
+  	173,1,0,0,0,173,174,1,0,0,0,174,176,5,17,0,0,175,177,5,33,0,0,176,175,
+  	1,0,0,0,176,177,1,0,0,0,177,178,1,0,0,0,178,179,5,41,0,0,179,180,5,49,
+  	0,0,180,23,1,0,0,0,181,183,5,71,0,0,182,184,7,0,0,0,183,182,1,0,0,0,183,
+  	184,1,0,0,0,184,185,1,0,0,0,185,187,5,17,0,0,186,188,5,33,0,0,187,186,
+  	1,0,0,0,187,188,1,0,0,0,188,189,1,0,0,0,189,190,5,44,0,0,190,191,5,50,
+  	0,0,191,25,1,0,0,0,192,194,5,70,0,0,193,195,7,0,0,0,194,193,1,0,0,0,194,
+  	195,1,0,0,0,195,196,1,0,0,0,196,198,5,17,0,0,197,199,5,33,0,0,198,197,
+  	1,0,0,0,198,199,1,0,0,0,199,200,1,0,0,0,200,201,7,1,0,0,201,27,1,0,0,
+  	0,202,206,5,75,0,0,203,206,5,76,0,0,204,206,3,30,15,0,205,202,1,0,0,0,
+  	205,203,1,0,0,0,205,204,1,0,0,0,206,29,1,0,0,0,207,210,3,34,17,0,208,
+  	210,3,32,16,0,209,207,1,0,0,0,209,208,1,0,0,0,210,31,1,0,0,0,211,212,
+  	5,19,0,0,212,213,5,56,0,0,213,214,5,75,0,0,214,215,5,63,0,0,215,216,5,
+  	75,0,0,216,33,1,0,0,0,217,218,5,19,0,0,218,219,5,56,0,0,219,220,5,76,
+  	0,0,220,221,5,63,0,0,221,222,5,76,0,0,222,35,1,0,0,0,223,224,3,38,19,
+  	0,224,225,5,73,0,0,225,226,5,75,0,0,226,227,5,45,0,0,227,37,1,0,0,0,228,
+  	233,3,40,20,0,229,233,3,42,21,0,230,233,3,44,22,0,231,233,3,46,23,0,232,
+  	228,1,0,0,0,232,229,1,0,0,0,232,230,1,0,0,0,232,231,1,0,0,0,233,39,1,
+  	0,0,0,234,235,5,42,0,0,235,236,5,29,0,0,236,237,5,51,0,0,237,238,5,74,
+  	0,0,238,41,1,0,0,0,239,240,5,42,0,0,240,241,5,39,0,0,241,43,1,0,0,0,242,
+  	243,5,26,0,0,243,45,1,0,0,0,244,245,5,25,0,0,245,47,1,0,0,0,246,247,5,
+  	2,0,0,247,252,5,53,0,0,248,249,5,2,0,0,249,252,5,47,0,0,250,252,5,18,
+  	0,0,251,246,1,0,0,0,251,248,1,0,0,0,251,250,1,0,0,0,252,49,1,0,0,0,253,
+  	254,5,57,0,0,254,256,5,13,0,0,255,253,1,0,0,0,255,256,1,0,0,0,256,257,
+  	1,0,0,0,257,258,3,52,26,0,258,259,7,2,0,0,259,261,7,3,0,0,260,262,5,19,
+  	0,0,261,260,1,0,0,0,261,262,1,0,0,0,262,263,1,0,0,0,263,264,3,62,31,0,
+  	264,277,1,0,0,0,265,266,5,57,0,0,266,268,5,13,0,0,267,265,1,0,0,0,267,
+  	268,1,0,0,0,268,269,1,0,0,0,269,270,3,58,29,0,270,272,5,44,0,0,271,273,
+  	5,19,0,0,272,271,1,0,0,0,272,273,1,0,0,0,273,274,1,0,0,0,274,275,3,62,
+  	31,0,275,277,1,0,0,0,276,255,1,0,0,0,276,267,1,0,0,0,277,51,1,0,0,0,278,
+  	283,3,54,27,0,279,283,3,56,28,0,280,283,3,58,29,0,281,283,3,60,30,0,282,
+  	278,1,0,0,0,282,279,1,0,0,0,282,280,1,0,0,0,282,281,1,0,0,0,283,53,1,
+  	0,0,0,284,285,3,28,14,0,285,286,5,3,0,0,286,287,5,51,0,0,287,55,1,0,0,
+  	0,288,289,5,34,0,0,289,290,3,28,14,0,290,291,5,51,0,0,291,57,1,0,0,0,
+  	292,293,5,36,0,0,293,59,1,0,0,0,294,295,5,36,0,0,295,296,5,42,0,0,296,
+  	297,5,77,0,0,297,298,5,44,0,0,298,299,5,19,0,0,299,300,5,74,0,0,300,61,
+  	1,0,0,0,301,314,5,74,0,0,302,304,5,12,0,0,303,302,1,0,0,0,303,304,1,0,
+  	0,0,304,306,1,0,0,0,305,307,5,21,0,0,306,305,1,0,0,0,306,307,1,0,0,0,
+  	307,309,1,0,0,0,308,310,5,19,0,0,309,308,1,0,0,0,309,310,1,0,0,0,310,
+  	311,1,0,0,0,311,313,5,74,0,0,312,303,1,0,0,0,313,316,1,0,0,0,314,312,
+  	1,0,0,0,314,315,1,0,0,0,315,63,1,0,0,0,316,314,1,0,0,0,317,320,3,66,33,
+  	0,318,320,3,68,34,0,319,317,1,0,0,0,319,318,1,0,0,0,320,65,1,0,0,0,321,
+  	322,5,19,0,0,322,323,5,74,0,0,323,324,5,72,0,0,324,325,3,70,35,0,325,
+  	326,3,10,5,0,326,67,1,0,0,0,327,328,5,19,0,0,328,329,5,74,0,0,329,330,
+  	5,72,0,0,330,331,5,24,0,0,331,332,3,70,35,0,332,69,1,0,0,0,333,338,3,
+  	72,36,0,334,335,5,66,0,0,335,337,3,72,36,0,336,334,1,0,0,0,337,340,1,
+  	0,0,0,338,336,1,0,0,0,338,339,1,0,0,0,339,71,1,0,0,0,340,338,1,0,0,0,
+  	341,346,5,15,0,0,342,346,3,74,37,0,343,346,3,80,40,0,344,346,3,76,38,
+  	0,345,341,1,0,0,0,345,342,1,0,0,0,345,343,1,0,0,0,345,344,1,0,0,0,346,
+  	73,1,0,0,0,347,348,5,4,0,0,348,75,1,0,0,0,349,350,5,5,0,0,350,351,3,28,
+  	14,0,351,352,5,6,0,0,352,353,5,67,0,0,353,354,5,46,0,0,354,355,5,62,0,
+  	0,355,77,1,0,0,0,356,357,5,7,0,0,357,358,5,74,0,0,358,79,1,0,0,0,359,
+  	360,5,8,0,0,360,361,5,14,0,0,361,81,1,0,0,0,362,367,3,84,42,0,363,367,
+  	3,86,43,0,364,367,3,88,44,0,365,367,1,0,0,0,366,362,1,0,0,0,366,363,1,
+  	0,0,0,366,364,1,0,0,0,366,365,1,0,0,0,367,83,1,0,0,0,368,369,5,27,0,0,
+  	369,370,5,19,0,0,370,383,5,74,0,0,371,373,5,12,0,0,372,371,1,0,0,0,372,
+  	373,1,0,0,0,373,375,1,0,0,0,374,376,5,21,0,0,375,374,1,0,0,0,375,376,
+  	1,0,0,0,376,378,1,0,0,0,377,379,5,19,0,0,378,377,1,0,0,0,378,379,1,0,
+  	0,0,379,380,1,0,0,0,380,382,5,74,0,0,381,372,1,0,0,0,382,385,1,0,0,0,
+  	383,381,1,0,0,0,383,384,1,0,0,0,384,85,1,0,0,0,385,383,1,0,0,0,386,387,
+  	5,55,0,0,387,388,5,53,0,0,388,389,5,60,0,0,389,390,5,22,0,0,390,400,5,
+  	14,0,0,391,393,5,12,0,0,392,391,1,0,0,0,392,393,1,0,0,0,393,395,1,0,0,
+  	0,394,396,5,21,0,0,395,394,1,0,0,0,395,396,1,0,0,0,396,397,1,0,0,0,397,
+  	399,5,14,0,0,398,392,1,0,0,0,399,402,1,0,0,0,400,398,1,0,0,0,400,401,
+  	1,0,0,0,401,87,1,0,0,0,402,400,1,0,0,0,403,404,5,55,0,0,404,405,5,32,
+  	0,0,405,406,5,60,0,0,406,407,5,22,0,0,407,417,5,14,0,0,408,410,5,12,0,
+  	0,409,408,1,0,0,0,409,410,1,0,0,0,410,412,1,0,0,0,411,413,5,21,0,0,412,
+  	411,1,0,0,0,412,413,1,0,0,0,413,414,1,0,0,0,414,416,5,14,0,0,415,409,
+  	1,0,0,0,416,419,1,0,0,0,417,415,1,0,0,0,417,418,1,0,0,0,418,89,1,0,0,
+  	0,419,417,1,0,0,0,44,95,109,113,118,127,140,145,157,164,168,172,176,183,
+  	187,194,198,205,209,232,251,255,261,267,272,276,282,303,306,309,314,319,
+  	338,345,366,372,375,378,383,392,395,400,409,412,417
+  };
+  staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
+
+  antlr4::atn::ATNDeserializer deserializer;
+  staticData->atn = deserializer.deserialize(staticData->serializedATN);
+
+  const size_t count = staticData->atn->getNumberOfDecisions();
+  staticData->decisionToDFA.reserve(count);
+  for (size_t i = 0; i < count; i++) { 
+    staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
+  }
+  behaviorParserStaticData = staticData.release();
+}
+
+}
+
+BehaviorParser::BehaviorParser(TokenStream *input) : BehaviorParser(input, antlr4::atn::ParserATNSimulatorOptions()) {}
+
+BehaviorParser::BehaviorParser(TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options) : Parser(input) {
+  BehaviorParser::initialize();
+  _interpreter = new atn::ParserATNSimulator(this, *behaviorParserStaticData->atn, behaviorParserStaticData->decisionToDFA, behaviorParserStaticData->sharedContextCache, options);
 }
 
 BehaviorParser::~BehaviorParser() {
   delete _interpreter;
+}
+
+const atn::ATN& BehaviorParser::getATN() const {
+  return *behaviorParserStaticData->atn;
 }
 
 std::string BehaviorParser::getGrammarFileName() const {
@@ -23,11 +247,15 @@ std::string BehaviorParser::getGrammarFileName() const {
 }
 
 const std::vector<std::string>& BehaviorParser::getRuleNames() const {
-  return _ruleNames;
+  return behaviorParserStaticData->ruleNames;
 }
 
-dfa::Vocabulary& BehaviorParser::getVocabulary() const {
-  return _vocabulary;
+const dfa::Vocabulary& BehaviorParser::getVocabulary() const {
+  return behaviorParserStaticData->vocabulary;
+}
+
+antlr4::atn::SerializedATNView BehaviorParser::getSerializedATN() const {
+  return behaviorParserStaticData->serializedATN;
 }
 
 
@@ -54,7 +282,8 @@ size_t BehaviorParser::ProgramContext::getRuleIndex() const {
   return BehaviorParser::RuleProgram;
 }
 
-antlrcpp::Any BehaviorParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitProgram(this);
   else
@@ -66,33 +295,31 @@ BehaviorParser::ProgramContext* BehaviorParser::program() {
   enterRule(_localctx, 0, BehaviorParser::RuleProgram);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(82);
+    setState(90);
     decl_Ped();
-    setState(83);
+    setState(91);
     match(BehaviorParser::T__0);
-    setState(85); 
+    setState(93); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(84);
+      setState(92);
       statement();
-      setState(87); 
+      setState(95); 
       _errHandler->sync(this);
       _la = _input->LA(1);
-    } while (((((_la - 22) & ~ 0x3fULL) == 0) &&
-      ((1ULL << (_la - 22)) & ((1ULL << (BehaviorParser::AN - 22))
-      | (1ULL << (BehaviorParser::CONSIDER - 22))
-      | (1ULL << (BehaviorParser::EXACTLY - 22))
-      | (1ULL << (BehaviorParser::EVERYONE - 22))
-      | (1ULL << (BehaviorParser::POSSIBLE - 22))
-      | (1ULL << (BehaviorParser::REQUIRED - 22))
-      | (1ULL << (BehaviorParser::THE - 22))
-      | (1ULL << (BehaviorParser::NUMBER - 22)))) != 0));
+    } while ((((_la & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & 180144071128907778) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
+      ((1ULL << (_la - 64)) & 6145) != 0));
    
   }
   catch (RecognitionException &e) {
@@ -131,7 +358,8 @@ size_t BehaviorParser::StatementContext::getRuleIndex() const {
   return BehaviorParser::RuleStatement;
 }
 
-antlrcpp::Any BehaviorParser::StatementContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::StatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitStatement(this);
   else
@@ -142,49 +370,55 @@ BehaviorParser::StatementContext* BehaviorParser::statement() {
   StatementContext *_localctx = _tracker.createInstance<StatementContext>(_ctx, getState());
   enterRule(_localctx, 2, BehaviorParser::RuleStatement);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(101);
+    setState(109);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(89);
+      setState(97);
       event();
-      setState(90);
+      setState(98);
       match(BehaviorParser::T__0);
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(92);
+      setState(100);
       declaration();
-      setState(93);
+      setState(101);
       match(BehaviorParser::T__0);
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(95);
+      setState(103);
       ped_Selector();
-      setState(96);
+      setState(104);
       match(BehaviorParser::T__0);
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(98);
+      setState(106);
       action();
-      setState(99);
+      setState(107);
       match(BehaviorParser::T__0);
       break;
     }
 
+    default:
+      break;
     }
    
   }
@@ -216,7 +450,8 @@ size_t BehaviorParser::EventContext::getRuleIndex() const {
   return BehaviorParser::RuleEvent;
 }
 
-antlrcpp::Any BehaviorParser::EventContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::EventContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitEvent(this);
   else
@@ -227,27 +462,33 @@ BehaviorParser::EventContext* BehaviorParser::event() {
   EventContext *_localctx = _tracker.createInstance<EventContext>(_ctx, getState());
   enterRule(_localctx, 4, BehaviorParser::RuleEvent);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(105);
+    setState(113);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 2, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(103);
+      setState(111);
       event_Single();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(104);
+      setState(112);
       event_Lasting();
       break;
     }
 
+    default:
+      break;
     }
    
   }
@@ -299,7 +540,8 @@ size_t BehaviorParser::Event_SingleContext::getRuleIndex() const {
   return BehaviorParser::RuleEvent_Single;
 }
 
-antlrcpp::Any BehaviorParser::Event_SingleContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Event_SingleContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitEvent_Single(this);
   else
@@ -311,12 +553,16 @@ BehaviorParser::Event_SingleContext* BehaviorParser::event_Single() {
   enterRule(_localctx, 6, BehaviorParser::RuleEvent_Single);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(107);
+    setState(115);
     _la = _input->LA(1);
     if (!(_la == BehaviorParser::AN
 
@@ -327,21 +573,21 @@ BehaviorParser::Event_SingleContext* BehaviorParser::event_Single() {
       _errHandler->reportMatch(this);
       consume();
     }
-    setState(108);
+    setState(116);
     match(BehaviorParser::EVNT);
-    setState(110);
+    setState(118);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::EVENT) {
-      setState(109);
+      setState(117);
       match(BehaviorParser::EVENT);
     }
-    setState(112);
+    setState(120);
     match(BehaviorParser::WILL);
-    setState(113);
+    setState(121);
     match(BehaviorParser::OCCUR);
-    setState(114);
+    setState(122);
     condition();
    
   }
@@ -405,7 +651,8 @@ size_t BehaviorParser::Event_LastingContext::getRuleIndex() const {
   return BehaviorParser::RuleEvent_Lasting;
 }
 
-antlrcpp::Any BehaviorParser::Event_LastingContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Event_LastingContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitEvent_Lasting(this);
   else
@@ -417,12 +664,16 @@ BehaviorParser::Event_LastingContext* BehaviorParser::event_Lasting() {
   enterRule(_localctx, 8, BehaviorParser::RuleEvent_Lasting);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(116);
+    setState(124);
     _la = _input->LA(1);
     if (!(_la == BehaviorParser::AN
 
@@ -433,27 +684,27 @@ BehaviorParser::Event_LastingContext* BehaviorParser::event_Lasting() {
       _errHandler->reportMatch(this);
       consume();
     }
-    setState(117);
+    setState(125);
     match(BehaviorParser::EVNT);
-    setState(119);
+    setState(127);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::EVENT) {
-      setState(118);
+      setState(126);
       match(BehaviorParser::EVENT);
     }
-    setState(121);
+    setState(129);
     match(BehaviorParser::WILL);
-    setState(122);
+    setState(130);
     match(BehaviorParser::OCCUR);
-    setState(123);
+    setState(131);
     condition();
-    setState(124);
+    setState(132);
     match(BehaviorParser::AND);
-    setState(125);
+    setState(133);
     match(BehaviorParser::END);
-    setState(126);
+    setState(134);
     condition();
    
   }
@@ -489,7 +740,8 @@ size_t BehaviorParser::ConditionContext::getRuleIndex() const {
   return BehaviorParser::RuleCondition;
 }
 
-antlrcpp::Any BehaviorParser::ConditionContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::ConditionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitCondition(this);
   else
@@ -500,23 +752,27 @@ BehaviorParser::ConditionContext* BehaviorParser::condition() {
   ConditionContext *_localctx = _tracker.createInstance<ConditionContext>(_ctx, getState());
   enterRule(_localctx, 10, BehaviorParser::RuleCondition);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(128);
+    setState(136);
     sub_condition();
-    setState(132);
+    setState(140);
     _errHandler->sync(this);
     alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
-        setState(129);
+        setState(137);
         connector(); 
       }
-      setState(134);
+      setState(142);
       _errHandler->sync(this);
       alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx);
     }
@@ -550,7 +806,8 @@ size_t BehaviorParser::ConnectorContext::getRuleIndex() const {
   return BehaviorParser::RuleConnector;
 }
 
-antlrcpp::Any BehaviorParser::ConnectorContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::ConnectorContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitConnector(this);
   else
@@ -561,23 +818,27 @@ BehaviorParser::ConnectorContext* BehaviorParser::connector() {
   ConnectorContext *_localctx = _tracker.createInstance<ConnectorContext>(_ctx, getState());
   enterRule(_localctx, 12, BehaviorParser::RuleConnector);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(137);
+    setState(145);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BehaviorParser::OR: {
         enterOuterAlt(_localctx, 1);
-        setState(135);
+        setState(143);
         or_Connector();
         break;
       }
 
       case BehaviorParser::AND: {
         enterOuterAlt(_localctx, 2);
-        setState(136);
+        setState(144);
         and_Connector();
         break;
       }
@@ -615,7 +876,8 @@ size_t BehaviorParser::Or_ConnectorContext::getRuleIndex() const {
   return BehaviorParser::RuleOr_Connector;
 }
 
-antlrcpp::Any BehaviorParser::Or_ConnectorContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Or_ConnectorContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitOr_Connector(this);
   else
@@ -626,14 +888,18 @@ BehaviorParser::Or_ConnectorContext* BehaviorParser::or_Connector() {
   Or_ConnectorContext *_localctx = _tracker.createInstance<Or_ConnectorContext>(_ctx, getState());
   enterRule(_localctx, 14, BehaviorParser::RuleOr_Connector);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(139);
+    setState(147);
     match(BehaviorParser::OR);
-    setState(140);
+    setState(148);
     sub_condition();
    
   }
@@ -665,7 +931,8 @@ size_t BehaviorParser::And_ConnectorContext::getRuleIndex() const {
   return BehaviorParser::RuleAnd_Connector;
 }
 
-antlrcpp::Any BehaviorParser::And_ConnectorContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::And_ConnectorContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitAnd_Connector(this);
   else
@@ -676,14 +943,18 @@ BehaviorParser::And_ConnectorContext* BehaviorParser::and_Connector() {
   And_ConnectorContext *_localctx = _tracker.createInstance<And_ConnectorContext>(_ctx, getState());
   enterRule(_localctx, 16, BehaviorParser::RuleAnd_Connector);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(142);
+    setState(150);
     match(BehaviorParser::AND);
-    setState(143);
+    setState(151);
     sub_condition();
    
   }
@@ -723,7 +994,8 @@ size_t BehaviorParser::Sub_conditionContext::getRuleIndex() const {
   return BehaviorParser::RuleSub_condition;
 }
 
-antlrcpp::Any BehaviorParser::Sub_conditionContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Sub_conditionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitSub_condition(this);
   else
@@ -734,37 +1006,41 @@ BehaviorParser::Sub_conditionContext* BehaviorParser::sub_condition() {
   Sub_conditionContext *_localctx = _tracker.createInstance<Sub_conditionContext>(_ctx, getState());
   enterRule(_localctx, 18, BehaviorParser::RuleSub_condition);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(149);
+    setState(157);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BehaviorParser::AFTER: {
         enterOuterAlt(_localctx, 1);
-        setState(145);
+        setState(153);
         condition_Time_Elapsed_From_Event();
         break;
       }
 
       case BehaviorParser::GIVEN: {
         enterOuterAlt(_localctx, 2);
-        setState(146);
+        setState(154);
         condition_Event_Occurred();
         break;
       }
 
       case BehaviorParser::WHILE: {
         enterOuterAlt(_localctx, 3);
-        setState(147);
+        setState(155);
         condition_Event_Occurring();
         break;
       }
 
       case BehaviorParser::WHEN: {
         enterOuterAlt(_localctx, 4);
-        setState(148);
+        setState(156);
         condition_Event_One_Time();
         break;
       }
@@ -793,8 +1069,8 @@ tree::TerminalNode* BehaviorParser::Condition_Time_Elapsed_From_EventContext::AF
   return getToken(BehaviorParser::AFTER, 0);
 }
 
-tree::TerminalNode* BehaviorParser::Condition_Time_Elapsed_From_EventContext::NUMBER() {
-  return getToken(BehaviorParser::NUMBER, 0);
+BehaviorParser::Value_numberContext* BehaviorParser::Condition_Time_Elapsed_From_EventContext::value_number() {
+  return getRuleContext<BehaviorParser::Value_numberContext>(0);
 }
 
 tree::TerminalNode* BehaviorParser::Condition_Time_Elapsed_From_EventContext::SECONDS() {
@@ -826,7 +1102,8 @@ size_t BehaviorParser::Condition_Time_Elapsed_From_EventContext::getRuleIndex() 
   return BehaviorParser::RuleCondition_Time_Elapsed_From_Event;
 }
 
-antlrcpp::Any BehaviorParser::Condition_Time_Elapsed_From_EventContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Condition_Time_Elapsed_From_EventContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitCondition_Time_Elapsed_From_Event(this);
   else
@@ -838,27 +1115,31 @@ BehaviorParser::Condition_Time_Elapsed_From_EventContext* BehaviorParser::condit
   enterRule(_localctx, 20, BehaviorParser::RuleCondition_Time_Elapsed_From_Event);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(151);
+    setState(159);
     match(BehaviorParser::AFTER);
-    setState(152);
-    match(BehaviorParser::NUMBER);
-    setState(153);
+    setState(160);
+    value_number();
+    setState(161);
     match(BehaviorParser::SECONDS);
-    setState(154);
+    setState(162);
     match(BehaviorParser::FROM);
-    setState(156);
+    setState(164);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::AN
 
     || _la == BehaviorParser::THE) {
-      setState(155);
+      setState(163);
       _la = _input->LA(1);
       if (!(_la == BehaviorParser::AN
 
@@ -870,14 +1151,14 @@ BehaviorParser::Condition_Time_Elapsed_From_EventContext* BehaviorParser::condit
         consume();
       }
     }
-    setState(158);
+    setState(166);
     match(BehaviorParser::EVNT);
-    setState(160);
+    setState(168);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::EVENT) {
-      setState(159);
+      setState(167);
       match(BehaviorParser::EVENT);
     }
    
@@ -930,7 +1211,8 @@ size_t BehaviorParser::Condition_Event_OccurredContext::getRuleIndex() const {
   return BehaviorParser::RuleCondition_Event_Occurred;
 }
 
-antlrcpp::Any BehaviorParser::Condition_Event_OccurredContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Condition_Event_OccurredContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitCondition_Event_Occurred(this);
   else
@@ -942,21 +1224,25 @@ BehaviorParser::Condition_Event_OccurredContext* BehaviorParser::condition_Event
   enterRule(_localctx, 22, BehaviorParser::RuleCondition_Event_Occurred);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(162);
+    setState(170);
     match(BehaviorParser::GIVEN);
-    setState(164);
+    setState(172);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::AN
 
     || _la == BehaviorParser::THE) {
-      setState(163);
+      setState(171);
       _la = _input->LA(1);
       if (!(_la == BehaviorParser::AN
 
@@ -968,19 +1254,19 @@ BehaviorParser::Condition_Event_OccurredContext* BehaviorParser::condition_Event
         consume();
       }
     }
-    setState(166);
+    setState(174);
     match(BehaviorParser::EVNT);
-    setState(168);
+    setState(176);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::EVENT) {
-      setState(167);
+      setState(175);
       match(BehaviorParser::EVENT);
     }
-    setState(170);
+    setState(178);
     match(BehaviorParser::HAS);
-    setState(171);
+    setState(179);
     match(BehaviorParser::OCCURRED);
    
   }
@@ -1023,8 +1309,8 @@ tree::TerminalNode* BehaviorParser::Condition_Event_OccurringContext::AN() {
   return getToken(BehaviorParser::AN, 0);
 }
 
-tree::TerminalNode* BehaviorParser::Condition_Event_OccurringContext::THEN() {
-  return getToken(BehaviorParser::THEN, 0);
+tree::TerminalNode* BehaviorParser::Condition_Event_OccurringContext::THE() {
+  return getToken(BehaviorParser::THE, 0);
 }
 
 
@@ -1032,7 +1318,8 @@ size_t BehaviorParser::Condition_Event_OccurringContext::getRuleIndex() const {
   return BehaviorParser::RuleCondition_Event_Occurring;
 }
 
-antlrcpp::Any BehaviorParser::Condition_Event_OccurringContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Condition_Event_OccurringContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitCondition_Event_Occurring(this);
   else
@@ -1044,25 +1331,29 @@ BehaviorParser::Condition_Event_OccurringContext* BehaviorParser::condition_Even
   enterRule(_localctx, 24, BehaviorParser::RuleCondition_Event_Occurring);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(173);
+    setState(181);
     match(BehaviorParser::WHILE);
-    setState(175);
+    setState(183);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::AN
 
-    || _la == BehaviorParser::THEN) {
-      setState(174);
+    || _la == BehaviorParser::THE) {
+      setState(182);
       _la = _input->LA(1);
       if (!(_la == BehaviorParser::AN
 
-      || _la == BehaviorParser::THEN)) {
+      || _la == BehaviorParser::THE)) {
       _errHandler->recoverInline(this);
       }
       else {
@@ -1070,19 +1361,19 @@ BehaviorParser::Condition_Event_OccurringContext* BehaviorParser::condition_Even
         consume();
       }
     }
-    setState(177);
+    setState(185);
     match(BehaviorParser::EVNT);
-    setState(179);
+    setState(187);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::EVENT) {
-      setState(178);
+      setState(186);
       match(BehaviorParser::EVENT);
     }
-    setState(181);
+    setState(189);
     match(BehaviorParser::IS);
-    setState(182);
+    setState(190);
     match(BehaviorParser::OCCURRING);
    
   }
@@ -1125,8 +1416,8 @@ tree::TerminalNode* BehaviorParser::Condition_Event_One_TimeContext::AN() {
   return getToken(BehaviorParser::AN, 0);
 }
 
-tree::TerminalNode* BehaviorParser::Condition_Event_One_TimeContext::THEN() {
-  return getToken(BehaviorParser::THEN, 0);
+tree::TerminalNode* BehaviorParser::Condition_Event_One_TimeContext::THE() {
+  return getToken(BehaviorParser::THE, 0);
 }
 
 
@@ -1134,7 +1425,8 @@ size_t BehaviorParser::Condition_Event_One_TimeContext::getRuleIndex() const {
   return BehaviorParser::RuleCondition_Event_One_Time;
 }
 
-antlrcpp::Any BehaviorParser::Condition_Event_One_TimeContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Condition_Event_One_TimeContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitCondition_Event_One_Time(this);
   else
@@ -1146,25 +1438,29 @@ BehaviorParser::Condition_Event_One_TimeContext* BehaviorParser::condition_Event
   enterRule(_localctx, 26, BehaviorParser::RuleCondition_Event_One_Time);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(184);
+    setState(192);
     match(BehaviorParser::WHEN);
-    setState(186);
+    setState(194);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::AN
 
-    || _la == BehaviorParser::THEN) {
-      setState(185);
+    || _la == BehaviorParser::THE) {
+      setState(193);
       _la = _input->LA(1);
       if (!(_la == BehaviorParser::AN
 
-      || _la == BehaviorParser::THEN)) {
+      || _la == BehaviorParser::THE)) {
       _errHandler->recoverInline(this);
       }
       else {
@@ -1172,17 +1468,17 @@ BehaviorParser::Condition_Event_One_TimeContext* BehaviorParser::condition_Event
         consume();
       }
     }
-    setState(188);
+    setState(196);
     match(BehaviorParser::EVNT);
-    setState(190);
+    setState(198);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == BehaviorParser::EVENT) {
-      setState(189);
+      setState(197);
       match(BehaviorParser::EVENT);
     }
-    setState(192);
+    setState(200);
     _la = _input->LA(1);
     if (!(_la == BehaviorParser::ENDS
 
@@ -1193,6 +1489,303 @@ BehaviorParser::Condition_Event_One_TimeContext* BehaviorParser::condition_Event
       _errHandler->reportMatch(this);
       consume();
     }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- Value_numberContext ------------------------------------------------------------------
+
+BehaviorParser::Value_numberContext::Value_numberContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* BehaviorParser::Value_numberContext::NUMBER() {
+  return getToken(BehaviorParser::NUMBER, 0);
+}
+
+tree::TerminalNode* BehaviorParser::Value_numberContext::FLOAT() {
+  return getToken(BehaviorParser::FLOAT, 0);
+}
+
+BehaviorParser::Number_randomContext* BehaviorParser::Value_numberContext::number_random() {
+  return getRuleContext<BehaviorParser::Number_randomContext>(0);
+}
+
+
+size_t BehaviorParser::Value_numberContext::getRuleIndex() const {
+  return BehaviorParser::RuleValue_number;
+}
+
+
+std::any BehaviorParser::Value_numberContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
+    return parserVisitor->visitValue_number(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BehaviorParser::Value_numberContext* BehaviorParser::value_number() {
+  Value_numberContext *_localctx = _tracker.createInstance<Value_numberContext>(_ctx, getState());
+  enterRule(_localctx, 28, BehaviorParser::RuleValue_number);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(205);
+    _errHandler->sync(this);
+    switch (_input->LA(1)) {
+      case BehaviorParser::NUMBER: {
+        enterOuterAlt(_localctx, 1);
+        setState(202);
+        match(BehaviorParser::NUMBER);
+        break;
+      }
+
+      case BehaviorParser::FLOAT: {
+        enterOuterAlt(_localctx, 2);
+        setState(203);
+        match(BehaviorParser::FLOAT);
+        break;
+      }
+
+      case BehaviorParser::AN: {
+        enterOuterAlt(_localctx, 3);
+        setState(204);
+        number_random();
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- Number_randomContext ------------------------------------------------------------------
+
+BehaviorParser::Number_randomContext::Number_randomContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+BehaviorParser::Random_floatContext* BehaviorParser::Number_randomContext::random_float() {
+  return getRuleContext<BehaviorParser::Random_floatContext>(0);
+}
+
+BehaviorParser::Random_numberContext* BehaviorParser::Number_randomContext::random_number() {
+  return getRuleContext<BehaviorParser::Random_numberContext>(0);
+}
+
+
+size_t BehaviorParser::Number_randomContext::getRuleIndex() const {
+  return BehaviorParser::RuleNumber_random;
+}
+
+
+std::any BehaviorParser::Number_randomContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
+    return parserVisitor->visitNumber_random(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BehaviorParser::Number_randomContext* BehaviorParser::number_random() {
+  Number_randomContext *_localctx = _tracker.createInstance<Number_randomContext>(_ctx, getState());
+  enterRule(_localctx, 30, BehaviorParser::RuleNumber_random);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(209);
+    _errHandler->sync(this);
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 17, _ctx)) {
+    case 1: {
+      enterOuterAlt(_localctx, 1);
+      setState(207);
+      random_float();
+      break;
+    }
+
+    case 2: {
+      enterOuterAlt(_localctx, 2);
+      setState(208);
+      random_number();
+      break;
+    }
+
+    default:
+      break;
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- Random_numberContext ------------------------------------------------------------------
+
+BehaviorParser::Random_numberContext::Random_numberContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* BehaviorParser::Random_numberContext::AN() {
+  return getToken(BehaviorParser::AN, 0);
+}
+
+tree::TerminalNode* BehaviorParser::Random_numberContext::RANDOM() {
+  return getToken(BehaviorParser::RANDOM, 0);
+}
+
+std::vector<tree::TerminalNode *> BehaviorParser::Random_numberContext::NUMBER() {
+  return getTokens(BehaviorParser::NUMBER);
+}
+
+tree::TerminalNode* BehaviorParser::Random_numberContext::NUMBER(size_t i) {
+  return getToken(BehaviorParser::NUMBER, i);
+}
+
+tree::TerminalNode* BehaviorParser::Random_numberContext::TO() {
+  return getToken(BehaviorParser::TO, 0);
+}
+
+
+size_t BehaviorParser::Random_numberContext::getRuleIndex() const {
+  return BehaviorParser::RuleRandom_number;
+}
+
+
+std::any BehaviorParser::Random_numberContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
+    return parserVisitor->visitRandom_number(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BehaviorParser::Random_numberContext* BehaviorParser::random_number() {
+  Random_numberContext *_localctx = _tracker.createInstance<Random_numberContext>(_ctx, getState());
+  enterRule(_localctx, 32, BehaviorParser::RuleRandom_number);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(211);
+    match(BehaviorParser::AN);
+    setState(212);
+    match(BehaviorParser::RANDOM);
+    setState(213);
+    match(BehaviorParser::NUMBER);
+    setState(214);
+    match(BehaviorParser::TO);
+    setState(215);
+    match(BehaviorParser::NUMBER);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- Random_floatContext ------------------------------------------------------------------
+
+BehaviorParser::Random_floatContext::Random_floatContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* BehaviorParser::Random_floatContext::AN() {
+  return getToken(BehaviorParser::AN, 0);
+}
+
+tree::TerminalNode* BehaviorParser::Random_floatContext::RANDOM() {
+  return getToken(BehaviorParser::RANDOM, 0);
+}
+
+std::vector<tree::TerminalNode *> BehaviorParser::Random_floatContext::FLOAT() {
+  return getTokens(BehaviorParser::FLOAT);
+}
+
+tree::TerminalNode* BehaviorParser::Random_floatContext::FLOAT(size_t i) {
+  return getToken(BehaviorParser::FLOAT, i);
+}
+
+tree::TerminalNode* BehaviorParser::Random_floatContext::TO() {
+  return getToken(BehaviorParser::TO, 0);
+}
+
+
+size_t BehaviorParser::Random_floatContext::getRuleIndex() const {
+  return BehaviorParser::RuleRandom_float;
+}
+
+
+std::any BehaviorParser::Random_floatContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
+    return parserVisitor->visitRandom_float(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BehaviorParser::Random_floatContext* BehaviorParser::random_float() {
+  Random_floatContext *_localctx = _tracker.createInstance<Random_floatContext>(_ctx, getState());
+  enterRule(_localctx, 34, BehaviorParser::RuleRandom_float);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(217);
+    match(BehaviorParser::AN);
+    setState(218);
+    match(BehaviorParser::RANDOM);
+    setState(219);
+    match(BehaviorParser::FLOAT);
+    setState(220);
+    match(BehaviorParser::TO);
+    setState(221);
+    match(BehaviorParser::FLOAT);
    
   }
   catch (RecognitionException &e) {
@@ -1231,7 +1824,8 @@ size_t BehaviorParser::DirectionContext::getRuleIndex() const {
   return BehaviorParser::RuleDirection;
 }
 
-antlrcpp::Any BehaviorParser::DirectionContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::DirectionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitDirection(this);
   else
@@ -1240,20 +1834,24 @@ antlrcpp::Any BehaviorParser::DirectionContext::accept(tree::ParseTreeVisitor *v
 
 BehaviorParser::DirectionContext* BehaviorParser::direction() {
   DirectionContext *_localctx = _tracker.createInstance<DirectionContext>(_ctx, getState());
-  enterRule(_localctx, 28, BehaviorParser::RuleDirection);
+  enterRule(_localctx, 36, BehaviorParser::RuleDirection);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(194);
+    setState(223);
     dir();
-    setState(195);
+    setState(224);
     match(BehaviorParser::WITHIN);
-    setState(196);
+    setState(225);
     match(BehaviorParser::NUMBER);
-    setState(197);
+    setState(226);
     match(BehaviorParser::METERS);
    
   }
@@ -1293,7 +1891,8 @@ size_t BehaviorParser::DirContext::getRuleIndex() const {
   return BehaviorParser::RuleDir;
 }
 
-antlrcpp::Any BehaviorParser::DirContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::DirContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitDir(this);
   else
@@ -1302,43 +1901,49 @@ antlrcpp::Any BehaviorParser::DirContext::accept(tree::ParseTreeVisitor *visitor
 
 BehaviorParser::DirContext* BehaviorParser::dir() {
   DirContext *_localctx = _tracker.createInstance<DirContext>(_ctx, getState());
-  enterRule(_localctx, 30, BehaviorParser::RuleDir);
+  enterRule(_localctx, 38, BehaviorParser::RuleDir);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(203);
+    setState(232);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 16, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 18, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(199);
+      setState(228);
       direction_of();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(200);
+      setState(229);
       infront();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(201);
+      setState(230);
       behind();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(202);
+      setState(231);
       around();
       break;
     }
 
+    default:
+      break;
     }
    
   }
@@ -1378,7 +1983,8 @@ size_t BehaviorParser::Direction_ofContext::getRuleIndex() const {
   return BehaviorParser::RuleDirection_of;
 }
 
-antlrcpp::Any BehaviorParser::Direction_ofContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Direction_ofContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitDirection_of(this);
   else
@@ -1387,20 +1993,24 @@ antlrcpp::Any BehaviorParser::Direction_ofContext::accept(tree::ParseTreeVisitor
 
 BehaviorParser::Direction_ofContext* BehaviorParser::direction_of() {
   Direction_ofContext *_localctx = _tracker.createInstance<Direction_ofContext>(_ctx, getState());
-  enterRule(_localctx, 32, BehaviorParser::RuleDirection_of);
+  enterRule(_localctx, 40, BehaviorParser::RuleDirection_of);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(205);
+    setState(234);
     match(BehaviorParser::IN);
-    setState(206);
+    setState(235);
     match(BehaviorParser::DIRECTION);
-    setState(207);
+    setState(236);
     match(BehaviorParser::OF);
-    setState(208);
+    setState(237);
     match(BehaviorParser::ID);
    
   }
@@ -1432,7 +2042,8 @@ size_t BehaviorParser::InfrontContext::getRuleIndex() const {
   return BehaviorParser::RuleInfront;
 }
 
-antlrcpp::Any BehaviorParser::InfrontContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::InfrontContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitInfront(this);
   else
@@ -1441,16 +2052,20 @@ antlrcpp::Any BehaviorParser::InfrontContext::accept(tree::ParseTreeVisitor *vis
 
 BehaviorParser::InfrontContext* BehaviorParser::infront() {
   InfrontContext *_localctx = _tracker.createInstance<InfrontContext>(_ctx, getState());
-  enterRule(_localctx, 34, BehaviorParser::RuleInfront);
+  enterRule(_localctx, 42, BehaviorParser::RuleInfront);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(210);
+    setState(239);
     match(BehaviorParser::IN);
-    setState(211);
+    setState(240);
     match(BehaviorParser::FRONT);
    
   }
@@ -1478,7 +2093,8 @@ size_t BehaviorParser::BehindContext::getRuleIndex() const {
   return BehaviorParser::RuleBehind;
 }
 
-antlrcpp::Any BehaviorParser::BehindContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::BehindContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitBehind(this);
   else
@@ -1487,14 +2103,18 @@ antlrcpp::Any BehaviorParser::BehindContext::accept(tree::ParseTreeVisitor *visi
 
 BehaviorParser::BehindContext* BehaviorParser::behind() {
   BehindContext *_localctx = _tracker.createInstance<BehindContext>(_ctx, getState());
-  enterRule(_localctx, 36, BehaviorParser::RuleBehind);
+  enterRule(_localctx, 44, BehaviorParser::RuleBehind);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(213);
+    setState(242);
     match(BehaviorParser::BEHIND);
    
   }
@@ -1522,7 +2142,8 @@ size_t BehaviorParser::AroundContext::getRuleIndex() const {
   return BehaviorParser::RuleAround;
 }
 
-antlrcpp::Any BehaviorParser::AroundContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::AroundContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitAround(this);
   else
@@ -1531,14 +2152,18 @@ antlrcpp::Any BehaviorParser::AroundContext::accept(tree::ParseTreeVisitor *visi
 
 BehaviorParser::AroundContext* BehaviorParser::around() {
   AroundContext *_localctx = _tracker.createInstance<AroundContext>(_ctx, getState());
-  enterRule(_localctx, 38, BehaviorParser::RuleAround);
+  enterRule(_localctx, 46, BehaviorParser::RuleAround);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(215);
+    setState(244);
     match(BehaviorParser::AROUND);
    
   }
@@ -1574,7 +2199,8 @@ size_t BehaviorParser::ObjectContext::getRuleIndex() const {
   return BehaviorParser::RuleObject;
 }
 
-antlrcpp::Any BehaviorParser::ObjectContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::ObjectContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitObject(this);
   else
@@ -1583,40 +2209,46 @@ antlrcpp::Any BehaviorParser::ObjectContext::accept(tree::ParseTreeVisitor *visi
 
 BehaviorParser::ObjectContext* BehaviorParser::object() {
   ObjectContext *_localctx = _tracker.createInstance<ObjectContext>(_ctx, getState());
-  enterRule(_localctx, 40, BehaviorParser::RuleObject);
+  enterRule(_localctx, 48, BehaviorParser::RuleObject);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(222);
+    setState(251);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 17, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 19, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(217);
+      setState(246);
       match(BehaviorParser::T__1);
-      setState(218);
+      setState(247);
       match(BehaviorParser::PEDESTRIAN);
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(219);
+      setState(248);
       match(BehaviorParser::T__1);
-      setState(220);
+      setState(249);
       match(BehaviorParser::OBSTACLE);
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(221);
+      setState(250);
       match(BehaviorParser::OBJECT);
       break;
     }
 
+    default:
+      break;
     }
    
   }
@@ -1671,10 +2303,6 @@ tree::TerminalNode* BehaviorParser::Ped_SelectorContext::COLON() {
   return getToken(BehaviorParser::COLON, 0);
 }
 
-BehaviorParser::Selector_CondContext* BehaviorParser::Ped_SelectorContext::selector_Cond() {
-  return getRuleContext<BehaviorParser::Selector_CondContext>(0);
-}
-
 tree::TerminalNode* BehaviorParser::Ped_SelectorContext::AN() {
   return getToken(BehaviorParser::AN, 0);
 }
@@ -1688,7 +2316,8 @@ size_t BehaviorParser::Ped_SelectorContext::getRuleIndex() const {
   return BehaviorParser::RulePed_Selector;
 }
 
-antlrcpp::Any BehaviorParser::Ped_SelectorContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Ped_SelectorContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitPed_Selector(this);
   else
@@ -1697,51 +2326,45 @@ antlrcpp::Any BehaviorParser::Ped_SelectorContext::accept(tree::ParseTreeVisitor
 
 BehaviorParser::Ped_SelectorContext* BehaviorParser::ped_Selector() {
   Ped_SelectorContext *_localctx = _tracker.createInstance<Ped_SelectorContext>(_ctx, getState());
-  enterRule(_localctx, 42, BehaviorParser::RulePed_Selector);
+  enterRule(_localctx, 50, BehaviorParser::RulePed_Selector);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(253);
+    setState(276);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 24, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(226);
+      setState(255);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::REQUIRED) {
-        setState(224);
+        setState(253);
         match(BehaviorParser::REQUIRED);
-        setState(225);
+        setState(254);
         match(BehaviorParser::COLON);
       }
-      setState(228);
+      setState(257);
       selector();
-      setState(229);
+      setState(258);
       _la = _input->LA(1);
-      if (!(((((_la - 50) & ~ 0x3fULL) == 0) &&
-        ((1ULL << (_la - 50)) & ((1ULL << (BehaviorParser::PEDESTRIAN - 50))
-        | (1ULL << (BehaviorParser::PEDESTRIANS - 50))
-        | (1ULL << (BehaviorParser::ID - 50)))) != 0))) {
+      if (!(((((_la - 53) & ~ 0x3fULL) == 0) &&
+        ((1ULL << (_la - 53)) & 2097155) != 0))) {
       _errHandler->recoverInline(this);
       }
       else {
         _errHandler->reportMatch(this);
         consume();
       }
-      setState(231);
-      _errHandler->sync(this);
-
-      _la = _input->LA(1);
-      if (_la == BehaviorParser::THAT) {
-        setState(230);
-        selector_Cond();
-      }
-      setState(233);
+      setState(259);
       _la = _input->LA(1);
       if (!(_la == BehaviorParser::ARE
 
@@ -1752,107 +2375,51 @@ BehaviorParser::Ped_SelectorContext* BehaviorParser::ped_Selector() {
         _errHandler->reportMatch(this);
         consume();
       }
-      setState(235);
+      setState(261);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::AN) {
-        setState(234);
+        setState(260);
         match(BehaviorParser::AN);
       }
-      setState(237);
+      setState(263);
       id_list();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(241);
+      setState(267);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::REQUIRED) {
-        setState(239);
+        setState(265);
         match(BehaviorParser::REQUIRED);
-        setState(240);
+        setState(266);
         match(BehaviorParser::COLON);
       }
-      setState(243);
+      setState(269);
       selector_Everyone();
-      setState(245);
-      _errHandler->sync(this);
-
-      _la = _input->LA(1);
-      if (_la == BehaviorParser::THAT) {
-        setState(244);
-        selector_Cond();
-      }
-      setState(247);
+      setState(270);
       match(BehaviorParser::IS);
-      setState(249);
+      setState(272);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::AN) {
-        setState(248);
+        setState(271);
         match(BehaviorParser::AN);
       }
-      setState(251);
+      setState(274);
       id_list();
       break;
     }
 
+    default:
+      break;
     }
-   
-  }
-  catch (RecognitionException &e) {
-    _errHandler->reportError(this, e);
-    _localctx->exception = std::current_exception();
-    _errHandler->recover(this, _localctx->exception);
-  }
-
-  return _localctx;
-}
-
-//----------------- Selector_CondContext ------------------------------------------------------------------
-
-BehaviorParser::Selector_CondContext::Selector_CondContext(ParserRuleContext *parent, size_t invokingState)
-  : ParserRuleContext(parent, invokingState) {
-}
-
-tree::TerminalNode* BehaviorParser::Selector_CondContext::THAT() {
-  return getToken(BehaviorParser::THAT, 0);
-}
-
-tree::TerminalNode* BehaviorParser::Selector_CondContext::ARE() {
-  return getToken(BehaviorParser::ARE, 0);
-}
-
-
-size_t BehaviorParser::Selector_CondContext::getRuleIndex() const {
-  return BehaviorParser::RuleSelector_Cond;
-}
-
-antlrcpp::Any BehaviorParser::Selector_CondContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
-    return parserVisitor->visitSelector_Cond(this);
-  else
-    return visitor->visitChildren(this);
-}
-
-BehaviorParser::Selector_CondContext* BehaviorParser::selector_Cond() {
-  Selector_CondContext *_localctx = _tracker.createInstance<Selector_CondContext>(_ctx, getState());
-  enterRule(_localctx, 44, BehaviorParser::RuleSelector_Cond);
-
-  auto onExit = finally([=] {
-    exitRule();
-  });
-  try {
-    enterOuterAlt(_localctx, 1);
-    setState(255);
-    match(BehaviorParser::THAT);
-    setState(256);
-    match(BehaviorParser::ARE);
    
   }
   catch (RecognitionException &e) {
@@ -1878,12 +2445,21 @@ BehaviorParser::Selector_Exactly_N_RandomContext* BehaviorParser::SelectorContex
   return getRuleContext<BehaviorParser::Selector_Exactly_N_RandomContext>(0);
 }
 
+BehaviorParser::Selector_EveryoneContext* BehaviorParser::SelectorContext::selector_Everyone() {
+  return getRuleContext<BehaviorParser::Selector_EveryoneContext>(0);
+}
+
+BehaviorParser::Selector_AreaContext* BehaviorParser::SelectorContext::selector_Area() {
+  return getRuleContext<BehaviorParser::Selector_AreaContext>(0);
+}
+
 
 size_t BehaviorParser::SelectorContext::getRuleIndex() const {
   return BehaviorParser::RuleSelector;
 }
 
-antlrcpp::Any BehaviorParser::SelectorContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::SelectorContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitSelector(this);
   else
@@ -1892,31 +2468,49 @@ antlrcpp::Any BehaviorParser::SelectorContext::accept(tree::ParseTreeVisitor *vi
 
 BehaviorParser::SelectorContext* BehaviorParser::selector() {
   SelectorContext *_localctx = _tracker.createInstance<SelectorContext>(_ctx, getState());
-  enterRule(_localctx, 46, BehaviorParser::RuleSelector);
+  enterRule(_localctx, 52, BehaviorParser::RuleSelector);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(260);
+    setState(282);
     _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case BehaviorParser::NUMBER: {
-        enterOuterAlt(_localctx, 1);
-        setState(258);
-        selector_Percent();
-        break;
-      }
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 25, _ctx)) {
+    case 1: {
+      enterOuterAlt(_localctx, 1);
+      setState(278);
+      selector_Percent();
+      break;
+    }
 
-      case BehaviorParser::EXACTLY: {
-        enterOuterAlt(_localctx, 2);
-        setState(259);
-        selector_Exactly_N_Random();
-        break;
-      }
+    case 2: {
+      enterOuterAlt(_localctx, 2);
+      setState(279);
+      selector_Exactly_N_Random();
+      break;
+    }
+
+    case 3: {
+      enterOuterAlt(_localctx, 3);
+      setState(280);
+      selector_Everyone();
+      break;
+    }
+
+    case 4: {
+      enterOuterAlt(_localctx, 4);
+      setState(281);
+      selector_Area();
+      break;
+    }
 
     default:
-      throw NoViableAltException(this);
+      break;
     }
    
   }
@@ -1935,8 +2529,8 @@ BehaviorParser::Selector_PercentContext::Selector_PercentContext(ParserRuleConte
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* BehaviorParser::Selector_PercentContext::NUMBER() {
-  return getToken(BehaviorParser::NUMBER, 0);
+BehaviorParser::Value_numberContext* BehaviorParser::Selector_PercentContext::value_number() {
+  return getRuleContext<BehaviorParser::Value_numberContext>(0);
 }
 
 tree::TerminalNode* BehaviorParser::Selector_PercentContext::OF() {
@@ -1948,7 +2542,8 @@ size_t BehaviorParser::Selector_PercentContext::getRuleIndex() const {
   return BehaviorParser::RuleSelector_Percent;
 }
 
-antlrcpp::Any BehaviorParser::Selector_PercentContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Selector_PercentContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitSelector_Percent(this);
   else
@@ -1957,18 +2552,22 @@ antlrcpp::Any BehaviorParser::Selector_PercentContext::accept(tree::ParseTreeVis
 
 BehaviorParser::Selector_PercentContext* BehaviorParser::selector_Percent() {
   Selector_PercentContext *_localctx = _tracker.createInstance<Selector_PercentContext>(_ctx, getState());
-  enterRule(_localctx, 48, BehaviorParser::RuleSelector_Percent);
+  enterRule(_localctx, 54, BehaviorParser::RuleSelector_Percent);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(262);
-    match(BehaviorParser::NUMBER);
-    setState(263);
+    setState(284);
+    value_number();
+    setState(285);
     match(BehaviorParser::T__2);
-    setState(264);
+    setState(286);
     match(BehaviorParser::OF);
    
   }
@@ -1991,8 +2590,8 @@ tree::TerminalNode* BehaviorParser::Selector_Exactly_N_RandomContext::EXACTLY() 
   return getToken(BehaviorParser::EXACTLY, 0);
 }
 
-tree::TerminalNode* BehaviorParser::Selector_Exactly_N_RandomContext::NUMBER() {
-  return getToken(BehaviorParser::NUMBER, 0);
+BehaviorParser::Value_numberContext* BehaviorParser::Selector_Exactly_N_RandomContext::value_number() {
+  return getRuleContext<BehaviorParser::Value_numberContext>(0);
 }
 
 tree::TerminalNode* BehaviorParser::Selector_Exactly_N_RandomContext::OF() {
@@ -2004,7 +2603,8 @@ size_t BehaviorParser::Selector_Exactly_N_RandomContext::getRuleIndex() const {
   return BehaviorParser::RuleSelector_Exactly_N_Random;
 }
 
-antlrcpp::Any BehaviorParser::Selector_Exactly_N_RandomContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Selector_Exactly_N_RandomContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitSelector_Exactly_N_Random(this);
   else
@@ -2013,18 +2613,22 @@ antlrcpp::Any BehaviorParser::Selector_Exactly_N_RandomContext::accept(tree::Par
 
 BehaviorParser::Selector_Exactly_N_RandomContext* BehaviorParser::selector_Exactly_N_Random() {
   Selector_Exactly_N_RandomContext *_localctx = _tracker.createInstance<Selector_Exactly_N_RandomContext>(_ctx, getState());
-  enterRule(_localctx, 50, BehaviorParser::RuleSelector_Exactly_N_Random);
+  enterRule(_localctx, 56, BehaviorParser::RuleSelector_Exactly_N_Random);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(266);
+    setState(288);
     match(BehaviorParser::EXACTLY);
-    setState(267);
-    match(BehaviorParser::NUMBER);
-    setState(268);
+    setState(289);
+    value_number();
+    setState(290);
     match(BehaviorParser::OF);
    
   }
@@ -2052,7 +2656,8 @@ size_t BehaviorParser::Selector_EveryoneContext::getRuleIndex() const {
   return BehaviorParser::RuleSelector_Everyone;
 }
 
-antlrcpp::Any BehaviorParser::Selector_EveryoneContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Selector_EveryoneContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitSelector_Everyone(this);
   else
@@ -2061,15 +2666,98 @@ antlrcpp::Any BehaviorParser::Selector_EveryoneContext::accept(tree::ParseTreeVi
 
 BehaviorParser::Selector_EveryoneContext* BehaviorParser::selector_Everyone() {
   Selector_EveryoneContext *_localctx = _tracker.createInstance<Selector_EveryoneContext>(_ctx, getState());
-  enterRule(_localctx, 52, BehaviorParser::RuleSelector_Everyone);
+  enterRule(_localctx, 58, BehaviorParser::RuleSelector_Everyone);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(270);
+    setState(292);
     match(BehaviorParser::EVERYONE);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- Selector_AreaContext ------------------------------------------------------------------
+
+BehaviorParser::Selector_AreaContext::Selector_AreaContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* BehaviorParser::Selector_AreaContext::EVERYONE() {
+  return getToken(BehaviorParser::EVERYONE, 0);
+}
+
+tree::TerminalNode* BehaviorParser::Selector_AreaContext::IN() {
+  return getToken(BehaviorParser::IN, 0);
+}
+
+tree::TerminalNode* BehaviorParser::Selector_AreaContext::LOC() {
+  return getToken(BehaviorParser::LOC, 0);
+}
+
+tree::TerminalNode* BehaviorParser::Selector_AreaContext::IS() {
+  return getToken(BehaviorParser::IS, 0);
+}
+
+tree::TerminalNode* BehaviorParser::Selector_AreaContext::AN() {
+  return getToken(BehaviorParser::AN, 0);
+}
+
+tree::TerminalNode* BehaviorParser::Selector_AreaContext::ID() {
+  return getToken(BehaviorParser::ID, 0);
+}
+
+
+size_t BehaviorParser::Selector_AreaContext::getRuleIndex() const {
+  return BehaviorParser::RuleSelector_Area;
+}
+
+
+std::any BehaviorParser::Selector_AreaContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
+    return parserVisitor->visitSelector_Area(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+BehaviorParser::Selector_AreaContext* BehaviorParser::selector_Area() {
+  Selector_AreaContext *_localctx = _tracker.createInstance<Selector_AreaContext>(_ctx, getState());
+  enterRule(_localctx, 60, BehaviorParser::RuleSelector_Area);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(294);
+    match(BehaviorParser::EVERYONE);
+    setState(295);
+    match(BehaviorParser::IN);
+    setState(296);
+    match(BehaviorParser::LOC);
+    setState(297);
+    match(BehaviorParser::IS);
+    setState(298);
+    match(BehaviorParser::AN);
+    setState(299);
+    match(BehaviorParser::ID);
    
   }
   catch (RecognitionException &e) {
@@ -2124,7 +2812,8 @@ size_t BehaviorParser::Id_listContext::getRuleIndex() const {
   return BehaviorParser::RuleId_list;
 }
 
-antlrcpp::Any BehaviorParser::Id_listContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Id_listContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitId_list(this);
   else
@@ -2133,51 +2822,52 @@ antlrcpp::Any BehaviorParser::Id_listContext::accept(tree::ParseTreeVisitor *vis
 
 BehaviorParser::Id_listContext* BehaviorParser::id_list() {
   Id_listContext *_localctx = _tracker.createInstance<Id_listContext>(_ctx, getState());
-  enterRule(_localctx, 54, BehaviorParser::RuleId_list);
+  enterRule(_localctx, 62, BehaviorParser::RuleId_list);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(272);
+    setState(301);
     match(BehaviorParser::ID);
-    setState(285);
+    setState(314);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (((((_la - 12) & ~ 0x3fULL) == 0) &&
-      ((1ULL << (_la - 12)) & ((1ULL << (BehaviorParser::COMMA - 12))
-      | (1ULL << (BehaviorParser::AND - 12))
-      | (1ULL << (BehaviorParser::AN - 12))
-      | (1ULL << (BehaviorParser::ID - 12)))) != 0)) {
-      setState(274);
+      ((1ULL << (_la - 12)) & 4611686018427388545) != 0)) {
+      setState(303);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::COMMA) {
-        setState(273);
+        setState(302);
         match(BehaviorParser::COMMA);
       }
-      setState(277);
+      setState(306);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::AND) {
-        setState(276);
+        setState(305);
         match(BehaviorParser::AND);
       }
-      setState(280);
+      setState(309);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::AN) {
-        setState(279);
+        setState(308);
         match(BehaviorParser::AN);
       }
-      setState(282);
+      setState(311);
       match(BehaviorParser::ID);
-      setState(287);
+      setState(316);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -2211,7 +2901,8 @@ size_t BehaviorParser::ActionContext::getRuleIndex() const {
   return BehaviorParser::RuleAction;
 }
 
-antlrcpp::Any BehaviorParser::ActionContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::ActionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitAction(this);
   else
@@ -2220,29 +2911,35 @@ antlrcpp::Any BehaviorParser::ActionContext::accept(tree::ParseTreeVisitor *visi
 
 BehaviorParser::ActionContext* BehaviorParser::action() {
   ActionContext *_localctx = _tracker.createInstance<ActionContext>(_ctx, getState());
-  enterRule(_localctx, 56, BehaviorParser::RuleAction);
+  enterRule(_localctx, 64, BehaviorParser::RuleAction);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(290);
+    setState(319);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 30, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(288);
+      setState(317);
       conditional_action();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(289);
+      setState(318);
       un_conditional_action();
       break;
     }
 
+    default:
+      break;
     }
    
   }
@@ -2286,7 +2983,8 @@ size_t BehaviorParser::Conditional_actionContext::getRuleIndex() const {
   return BehaviorParser::RuleConditional_action;
 }
 
-antlrcpp::Any BehaviorParser::Conditional_actionContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Conditional_actionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitConditional_action(this);
   else
@@ -2295,22 +2993,26 @@ antlrcpp::Any BehaviorParser::Conditional_actionContext::accept(tree::ParseTreeV
 
 BehaviorParser::Conditional_actionContext* BehaviorParser::conditional_action() {
   Conditional_actionContext *_localctx = _tracker.createInstance<Conditional_actionContext>(_ctx, getState());
-  enterRule(_localctx, 58, BehaviorParser::RuleConditional_action);
+  enterRule(_localctx, 66, BehaviorParser::RuleConditional_action);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(292);
+    setState(321);
     match(BehaviorParser::AN);
-    setState(293);
+    setState(322);
     match(BehaviorParser::ID);
-    setState(294);
+    setState(323);
     match(BehaviorParser::WILL);
-    setState(295);
+    setState(324);
     sub_action();
-    setState(296);
+    setState(325);
     condition();
    
   }
@@ -2354,7 +3056,8 @@ size_t BehaviorParser::Un_conditional_actionContext::getRuleIndex() const {
   return BehaviorParser::RuleUn_conditional_action;
 }
 
-antlrcpp::Any BehaviorParser::Un_conditional_actionContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Un_conditional_actionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitUn_conditional_action(this);
   else
@@ -2363,22 +3066,26 @@ antlrcpp::Any BehaviorParser::Un_conditional_actionContext::accept(tree::ParseTr
 
 BehaviorParser::Un_conditional_actionContext* BehaviorParser::un_conditional_action() {
   Un_conditional_actionContext *_localctx = _tracker.createInstance<Un_conditional_actionContext>(_ctx, getState());
-  enterRule(_localctx, 60, BehaviorParser::RuleUn_conditional_action);
+  enterRule(_localctx, 68, BehaviorParser::RuleUn_conditional_action);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(298);
+    setState(327);
     match(BehaviorParser::AN);
-    setState(299);
+    setState(328);
     match(BehaviorParser::ID);
-    setState(300);
+    setState(329);
     match(BehaviorParser::WILL);
-    setState(301);
+    setState(330);
     match(BehaviorParser::ALWAYS);
-    setState(302);
+    setState(331);
     sub_action();
    
   }
@@ -2418,7 +3125,8 @@ size_t BehaviorParser::Sub_actionContext::getRuleIndex() const {
   return BehaviorParser::RuleSub_action;
 }
 
-antlrcpp::Any BehaviorParser::Sub_actionContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Sub_actionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitSub_action(this);
   else
@@ -2427,25 +3135,29 @@ antlrcpp::Any BehaviorParser::Sub_actionContext::accept(tree::ParseTreeVisitor *
 
 BehaviorParser::Sub_actionContext* BehaviorParser::sub_action() {
   Sub_actionContext *_localctx = _tracker.createInstance<Sub_actionContext>(_ctx, getState());
-  enterRule(_localctx, 62, BehaviorParser::RuleSub_action);
+  enterRule(_localctx, 70, BehaviorParser::RuleSub_action);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(304);
+    setState(333);
     action_atom();
-    setState(309);
+    setState(338);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == BehaviorParser::THEN) {
-      setState(305);
+      setState(334);
       match(BehaviorParser::THEN);
-      setState(306);
+      setState(335);
       action_atom();
-      setState(311);
+      setState(340);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -2487,7 +3199,8 @@ size_t BehaviorParser::Action_atomContext::getRuleIndex() const {
   return BehaviorParser::RuleAction_atom;
 }
 
-antlrcpp::Any BehaviorParser::Action_atomContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Action_atomContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitAction_atom(this);
   else
@@ -2496,39 +3209,43 @@ antlrcpp::Any BehaviorParser::Action_atomContext::accept(tree::ParseTreeVisitor 
 
 BehaviorParser::Action_atomContext* BehaviorParser::action_atom() {
   Action_atomContext *_localctx = _tracker.createInstance<Action_atomContext>(_ctx, getState());
-  enterRule(_localctx, 64, BehaviorParser::RuleAction_atom);
+  enterRule(_localctx, 72, BehaviorParser::RuleAction_atom);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(316);
+    setState(345);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case BehaviorParser::ACTION: {
         enterOuterAlt(_localctx, 1);
-        setState(312);
+        setState(341);
         match(BehaviorParser::ACTION);
         break;
       }
 
       case BehaviorParser::T__3: {
         enterOuterAlt(_localctx, 2);
-        setState(313);
+        setState(342);
         action_Stop();
         break;
       }
 
       case BehaviorParser::T__7: {
         enterOuterAlt(_localctx, 3);
-        setState(314);
+        setState(343);
         action_Be();
         break;
       }
 
       case BehaviorParser::T__4: {
         enterOuterAlt(_localctx, 4);
-        setState(315);
+        setState(344);
         action_atom_Percent_Walk_Speed();
         break;
       }
@@ -2558,7 +3275,8 @@ size_t BehaviorParser::Action_StopContext::getRuleIndex() const {
   return BehaviorParser::RuleAction_Stop;
 }
 
-antlrcpp::Any BehaviorParser::Action_StopContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Action_StopContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitAction_Stop(this);
   else
@@ -2567,14 +3285,18 @@ antlrcpp::Any BehaviorParser::Action_StopContext::accept(tree::ParseTreeVisitor 
 
 BehaviorParser::Action_StopContext* BehaviorParser::action_Stop() {
   Action_StopContext *_localctx = _tracker.createInstance<Action_StopContext>(_ctx, getState());
-  enterRule(_localctx, 66, BehaviorParser::RuleAction_Stop);
+  enterRule(_localctx, 74, BehaviorParser::RuleAction_Stop);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(318);
+    setState(347);
     match(BehaviorParser::T__3);
    
   }
@@ -2593,8 +3315,8 @@ BehaviorParser::Action_atom_Percent_Walk_SpeedContext::Action_atom_Percent_Walk_
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* BehaviorParser::Action_atom_Percent_Walk_SpeedContext::FLOAT() {
-  return getToken(BehaviorParser::FLOAT, 0);
+BehaviorParser::Value_numberContext* BehaviorParser::Action_atom_Percent_Walk_SpeedContext::value_number() {
+  return getRuleContext<BehaviorParser::Value_numberContext>(0);
 }
 
 tree::TerminalNode* BehaviorParser::Action_atom_Percent_Walk_SpeedContext::THEIR() {
@@ -2614,7 +3336,8 @@ size_t BehaviorParser::Action_atom_Percent_Walk_SpeedContext::getRuleIndex() con
   return BehaviorParser::RuleAction_atom_Percent_Walk_Speed;
 }
 
-antlrcpp::Any BehaviorParser::Action_atom_Percent_Walk_SpeedContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Action_atom_Percent_Walk_SpeedContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitAction_atom_Percent_Walk_Speed(this);
   else
@@ -2623,24 +3346,28 @@ antlrcpp::Any BehaviorParser::Action_atom_Percent_Walk_SpeedContext::accept(tree
 
 BehaviorParser::Action_atom_Percent_Walk_SpeedContext* BehaviorParser::action_atom_Percent_Walk_Speed() {
   Action_atom_Percent_Walk_SpeedContext *_localctx = _tracker.createInstance<Action_atom_Percent_Walk_SpeedContext>(_ctx, getState());
-  enterRule(_localctx, 68, BehaviorParser::RuleAction_atom_Percent_Walk_Speed);
+  enterRule(_localctx, 76, BehaviorParser::RuleAction_atom_Percent_Walk_Speed);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(320);
+    setState(349);
     match(BehaviorParser::T__4);
-    setState(321);
-    match(BehaviorParser::FLOAT);
-    setState(322);
+    setState(350);
+    value_number();
+    setState(351);
     match(BehaviorParser::T__5);
-    setState(323);
+    setState(352);
     match(BehaviorParser::THEIR);
-    setState(324);
+    setState(353);
     match(BehaviorParser::NORMAL);
-    setState(325);
+    setState(354);
     match(BehaviorParser::SPEED);
    
   }
@@ -2668,7 +3395,8 @@ size_t BehaviorParser::Action_PushContext::getRuleIndex() const {
   return BehaviorParser::RuleAction_Push;
 }
 
-antlrcpp::Any BehaviorParser::Action_PushContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Action_PushContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitAction_Push(this);
   else
@@ -2677,16 +3405,20 @@ antlrcpp::Any BehaviorParser::Action_PushContext::accept(tree::ParseTreeVisitor 
 
 BehaviorParser::Action_PushContext* BehaviorParser::action_Push() {
   Action_PushContext *_localctx = _tracker.createInstance<Action_PushContext>(_ctx, getState());
-  enterRule(_localctx, 70, BehaviorParser::RuleAction_Push);
+  enterRule(_localctx, 78, BehaviorParser::RuleAction_Push);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(327);
+    setState(356);
     match(BehaviorParser::T__6);
-    setState(328);
+    setState(357);
     match(BehaviorParser::ID);
    
   }
@@ -2714,7 +3446,8 @@ size_t BehaviorParser::Action_BeContext::getRuleIndex() const {
   return BehaviorParser::RuleAction_Be;
 }
 
-antlrcpp::Any BehaviorParser::Action_BeContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Action_BeContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitAction_Be(this);
   else
@@ -2723,16 +3456,20 @@ antlrcpp::Any BehaviorParser::Action_BeContext::accept(tree::ParseTreeVisitor *v
 
 BehaviorParser::Action_BeContext* BehaviorParser::action_Be() {
   Action_BeContext *_localctx = _tracker.createInstance<Action_BeContext>(_ctx, getState());
-  enterRule(_localctx, 72, BehaviorParser::RuleAction_Be);
+  enterRule(_localctx, 80, BehaviorParser::RuleAction_Be);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(330);
+    setState(359);
     match(BehaviorParser::T__7);
-    setState(331);
+    setState(360);
     match(BehaviorParser::STATE);
    
   }
@@ -2768,7 +3505,8 @@ size_t BehaviorParser::DeclarationContext::getRuleIndex() const {
   return BehaviorParser::RuleDeclaration;
 }
 
-antlrcpp::Any BehaviorParser::DeclarationContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::DeclarationContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitDeclaration(this);
   else
@@ -2777,36 +3515,48 @@ antlrcpp::Any BehaviorParser::DeclarationContext::accept(tree::ParseTreeVisitor 
 
 BehaviorParser::DeclarationContext* BehaviorParser::declaration() {
   DeclarationContext *_localctx = _tracker.createInstance<DeclarationContext>(_ctx, getState());
-  enterRule(_localctx, 74, BehaviorParser::RuleDeclaration);
+  enterRule(_localctx, 82, BehaviorParser::RuleDeclaration);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    setState(336);
+    setState(366);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 33, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(333);
+      setState(362);
       decl_Ped();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(334);
+      setState(363);
       decl_Ped_State();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(335);
+      setState(364);
       decl_Env_State();
       break;
     }
 
+    case 4: {
+      enterOuterAlt(_localctx, 4);
+
+      break;
+    }
+
+    default:
+      break;
     }
    
   }
@@ -2866,7 +3616,8 @@ size_t BehaviorParser::Decl_PedContext::getRuleIndex() const {
   return BehaviorParser::RuleDecl_Ped;
 }
 
-antlrcpp::Any BehaviorParser::Decl_PedContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Decl_PedContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitDecl_Ped(this);
   else
@@ -2875,56 +3626,57 @@ antlrcpp::Any BehaviorParser::Decl_PedContext::accept(tree::ParseTreeVisitor *vi
 
 BehaviorParser::Decl_PedContext* BehaviorParser::decl_Ped() {
   Decl_PedContext *_localctx = _tracker.createInstance<Decl_PedContext>(_ctx, getState());
-  enterRule(_localctx, 76, BehaviorParser::RuleDecl_Ped);
+  enterRule(_localctx, 84, BehaviorParser::RuleDecl_Ped);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(338);
+    setState(368);
     match(BehaviorParser::CONSIDER);
-    setState(339);
+    setState(369);
     match(BehaviorParser::AN);
 
-    setState(340);
+    setState(370);
     match(BehaviorParser::ID);
-    setState(353);
+    setState(383);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (((((_la - 12) & ~ 0x3fULL) == 0) &&
-      ((1ULL << (_la - 12)) & ((1ULL << (BehaviorParser::COMMA - 12))
-      | (1ULL << (BehaviorParser::AND - 12))
-      | (1ULL << (BehaviorParser::AN - 12))
-      | (1ULL << (BehaviorParser::ID - 12)))) != 0)) {
-      setState(342);
+      ((1ULL << (_la - 12)) & 4611686018427388545) != 0)) {
+      setState(372);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::COMMA) {
-        setState(341);
+        setState(371);
         match(BehaviorParser::COMMA);
       }
-      setState(345);
+      setState(375);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::AND) {
-        setState(344);
+        setState(374);
         match(BehaviorParser::AND);
       }
-      setState(348);
+      setState(378);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::AN) {
-        setState(347);
+        setState(377);
         match(BehaviorParser::AN);
       }
-      setState(350);
+      setState(380);
       match(BehaviorParser::ID);
-      setState(355);
+      setState(385);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -2990,7 +3742,8 @@ size_t BehaviorParser::Decl_Ped_StateContext::getRuleIndex() const {
   return BehaviorParser::RuleDecl_Ped_State;
 }
 
-antlrcpp::Any BehaviorParser::Decl_Ped_StateContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Decl_Ped_StateContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitDecl_Ped_State(this);
   else
@@ -2999,51 +3752,53 @@ antlrcpp::Any BehaviorParser::Decl_Ped_StateContext::accept(tree::ParseTreeVisit
 
 BehaviorParser::Decl_Ped_StateContext* BehaviorParser::decl_Ped_State() {
   Decl_Ped_StateContext *_localctx = _tracker.createInstance<Decl_Ped_StateContext>(_ctx, getState());
-  enterRule(_localctx, 78, BehaviorParser::RuleDecl_Ped_State);
+  enterRule(_localctx, 86, BehaviorParser::RuleDecl_Ped_State);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(356);
+    setState(386);
     match(BehaviorParser::POSSIBLE);
-    setState(357);
+    setState(387);
     match(BehaviorParser::PEDESTRIAN);
-    setState(358);
+    setState(388);
     match(BehaviorParser::STATES);
-    setState(359);
+    setState(389);
     match(BehaviorParser::ARE);
 
-    setState(360);
+    setState(390);
     match(BehaviorParser::STATE);
-    setState(370);
+    setState(400);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << BehaviorParser::COMMA)
-      | (1ULL << BehaviorParser::STATE)
-      | (1ULL << BehaviorParser::AND))) != 0)) {
-      setState(362);
+      ((1ULL << _la) & 2117632) != 0)) {
+      setState(392);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::COMMA) {
-        setState(361);
+        setState(391);
         match(BehaviorParser::COMMA);
       }
-      setState(365);
+      setState(395);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::AND) {
-        setState(364);
+        setState(394);
         match(BehaviorParser::AND);
       }
-      setState(367);
+      setState(397);
       match(BehaviorParser::STATE);
-      setState(372);
+      setState(402);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -3109,7 +3864,8 @@ size_t BehaviorParser::Decl_Env_StateContext::getRuleIndex() const {
   return BehaviorParser::RuleDecl_Env_State;
 }
 
-antlrcpp::Any BehaviorParser::Decl_Env_StateContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any BehaviorParser::Decl_Env_StateContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<BehaviorVisitor*>(visitor))
     return parserVisitor->visitDecl_Env_State(this);
   else
@@ -3118,51 +3874,53 @@ antlrcpp::Any BehaviorParser::Decl_Env_StateContext::accept(tree::ParseTreeVisit
 
 BehaviorParser::Decl_Env_StateContext* BehaviorParser::decl_Env_State() {
   Decl_Env_StateContext *_localctx = _tracker.createInstance<Decl_Env_StateContext>(_ctx, getState());
-  enterRule(_localctx, 80, BehaviorParser::RuleDecl_Env_State);
+  enterRule(_localctx, 88, BehaviorParser::RuleDecl_Env_State);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(373);
+    setState(403);
     match(BehaviorParser::POSSIBLE);
-    setState(374);
+    setState(404);
     match(BehaviorParser::ENVIRONMENT);
-    setState(375);
+    setState(405);
     match(BehaviorParser::STATES);
-    setState(376);
+    setState(406);
     match(BehaviorParser::ARE);
 
-    setState(377);
+    setState(407);
     match(BehaviorParser::STATE);
-    setState(387);
+    setState(417);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << BehaviorParser::COMMA)
-      | (1ULL << BehaviorParser::STATE)
-      | (1ULL << BehaviorParser::AND))) != 0)) {
-      setState(379);
+      ((1ULL << _la) & 2117632) != 0)) {
+      setState(409);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::COMMA) {
-        setState(378);
+        setState(408);
         match(BehaviorParser::COMMA);
       }
-      setState(382);
+      setState(412);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == BehaviorParser::AND) {
-        setState(381);
+        setState(411);
         match(BehaviorParser::AND);
       }
-      setState(384);
+      setState(414);
       match(BehaviorParser::STATE);
-      setState(389);
+      setState(419);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -3177,339 +3935,6 @@ BehaviorParser::Decl_Env_StateContext* BehaviorParser::decl_Env_State() {
   return _localctx;
 }
 
-// Static vars and initialization.
-std::vector<dfa::DFA> BehaviorParser::_decisionToDFA;
-atn::PredictionContextCache BehaviorParser::_sharedContextCache;
-
-// We own the ATN which in turn owns the ATN states.
-atn::ATN BehaviorParser::_atn;
-std::vector<uint16_t> BehaviorParser::_serializedATN;
-
-std::vector<std::string> BehaviorParser::_ruleNames = {
-  "program", "statement", "event", "event_Single", "event_Lasting", "condition", 
-  "connector", "or_Connector", "and_Connector", "sub_condition", "condition_Time_Elapsed_From_Event", 
-  "condition_Event_Occurred", "condition_Event_Occurring", "condition_Event_One_Time", 
-  "direction", "dir", "direction_of", "infront", "behind", "around", "object", 
-  "ped_Selector", "selector_Cond", "selector", "selector_Percent", "selector_Exactly_N_Random", 
-  "selector_Everyone", "id_list", "action", "conditional_action", "un_conditional_action", 
-  "sub_action", "action_atom", "action_Stop", "action_atom_Percent_Walk_Speed", 
-  "action_Push", "action_Be", "declaration", "decl_Ped", "decl_Ped_State", 
-  "decl_Env_State"
-};
-
-std::vector<std::string> BehaviorParser::_literalNames = {
-  "", "'.'", "'+'", "'%'", "'@stop'", "'@walk'", "'x'", "'@push'", "'@be set to'", 
-  "", "", "", "','", "':'"
-};
-
-std::vector<std::string> BehaviorParser::_symbolicNames = {
-  "", "", "", "", "", "", "", "", "", "COMMENT", "LINE_COMMENT", "WS", "COMMA", 
-  "COLON", "STATE", "ACTION", "PARAMETER", "EVNT", "OBJECT", "AFTER", "AND", 
-  "ALWAYS", "AN", "ARE", "AROUND", "BEHIND", "CONSIDER", "DIRECTION", "END", 
-  "ENDS", "ENVIRONMENT", "EVENT", "EXACTLY", "EVERY", "EVERYONE", "FASTER", 
-  "FROM", "FRONT", "GIVEN", "HAS", "IN", "IS", "METERS", "NORMAL", "OBSTACLE", 
-  "OCCUR", "OCCURRED", "OCCURRING", "OF", "OR", "PEDESTRIAN", "PEDESTRIANS", 
-  "POSSIBLE", "RANDOM", "REQUIRED", "SECONDS", "SLOWER", "STATES", "STARTS", 
-  "SPEED", "THE", "THAT", "THEN", "THEIR", "TYPES", "WHEN", "WHILE", "WILL", 
-  "WITHIN", "ID", "NUMBER", "FLOAT"
-};
-
-dfa::Vocabulary BehaviorParser::_vocabulary(_literalNames, _symbolicNames);
-
-std::vector<std::string> BehaviorParser::_tokenNames;
-
-BehaviorParser::Initializer::Initializer() {
-	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
-		std::string name = _vocabulary.getLiteralName(i);
-		if (name.empty()) {
-			name = _vocabulary.getSymbolicName(i);
-		}
-
-		if (name.empty()) {
-			_tokenNames.push_back("<INVALID>");
-		} else {
-      _tokenNames.push_back(name);
-    }
-	}
-
-  _serializedATN = {
-    0x3, 0x608b, 0xa72a, 0x8133, 0xb9ed, 0x417c, 0x3be7, 0x7786, 0x5964, 
-    0x3, 0x49, 0x189, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 
-    0x9, 0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x4, 0x7, 0x9, 0x7, 
-    0x4, 0x8, 0x9, 0x8, 0x4, 0x9, 0x9, 0x9, 0x4, 0xa, 0x9, 0xa, 0x4, 0xb, 
-    0x9, 0xb, 0x4, 0xc, 0x9, 0xc, 0x4, 0xd, 0x9, 0xd, 0x4, 0xe, 0x9, 0xe, 
-    0x4, 0xf, 0x9, 0xf, 0x4, 0x10, 0x9, 0x10, 0x4, 0x11, 0x9, 0x11, 0x4, 
-    0x12, 0x9, 0x12, 0x4, 0x13, 0x9, 0x13, 0x4, 0x14, 0x9, 0x14, 0x4, 0x15, 
-    0x9, 0x15, 0x4, 0x16, 0x9, 0x16, 0x4, 0x17, 0x9, 0x17, 0x4, 0x18, 0x9, 
-    0x18, 0x4, 0x19, 0x9, 0x19, 0x4, 0x1a, 0x9, 0x1a, 0x4, 0x1b, 0x9, 0x1b, 
-    0x4, 0x1c, 0x9, 0x1c, 0x4, 0x1d, 0x9, 0x1d, 0x4, 0x1e, 0x9, 0x1e, 0x4, 
-    0x1f, 0x9, 0x1f, 0x4, 0x20, 0x9, 0x20, 0x4, 0x21, 0x9, 0x21, 0x4, 0x22, 
-    0x9, 0x22, 0x4, 0x23, 0x9, 0x23, 0x4, 0x24, 0x9, 0x24, 0x4, 0x25, 0x9, 
-    0x25, 0x4, 0x26, 0x9, 0x26, 0x4, 0x27, 0x9, 0x27, 0x4, 0x28, 0x9, 0x28, 
-    0x4, 0x29, 0x9, 0x29, 0x4, 0x2a, 0x9, 0x2a, 0x3, 0x2, 0x3, 0x2, 0x3, 
-    0x2, 0x6, 0x2, 0x58, 0xa, 0x2, 0xd, 0x2, 0xe, 0x2, 0x59, 0x3, 0x3, 0x3, 
-    0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
-    0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x5, 0x3, 0x68, 0xa, 0x3, 0x3, 0x4, 
-    0x3, 0x4, 0x5, 0x4, 0x6c, 0xa, 0x4, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x5, 
-    0x5, 0x71, 0xa, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x6, 
-    0x3, 0x6, 0x3, 0x6, 0x5, 0x6, 0x7a, 0xa, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 
-    0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x7, 0x3, 0x7, 0x7, 
-    0x7, 0x85, 0xa, 0x7, 0xc, 0x7, 0xe, 0x7, 0x88, 0xb, 0x7, 0x3, 0x8, 0x3, 
-    0x8, 0x5, 0x8, 0x8c, 0xa, 0x8, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0xa, 
-    0x3, 0xa, 0x3, 0xa, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x5, 0xb, 
-    0x98, 0xa, 0xb, 0x3, 0xc, 0x3, 0xc, 0x3, 0xc, 0x3, 0xc, 0x3, 0xc, 0x5, 
-    0xc, 0x9f, 0xa, 0xc, 0x3, 0xc, 0x3, 0xc, 0x5, 0xc, 0xa3, 0xa, 0xc, 0x3, 
-    0xd, 0x3, 0xd, 0x5, 0xd, 0xa7, 0xa, 0xd, 0x3, 0xd, 0x3, 0xd, 0x5, 0xd, 
-    0xab, 0xa, 0xd, 0x3, 0xd, 0x3, 0xd, 0x3, 0xd, 0x3, 0xe, 0x3, 0xe, 0x5, 
-    0xe, 0xb2, 0xa, 0xe, 0x3, 0xe, 0x3, 0xe, 0x5, 0xe, 0xb6, 0xa, 0xe, 0x3, 
-    0xe, 0x3, 0xe, 0x3, 0xe, 0x3, 0xf, 0x3, 0xf, 0x5, 0xf, 0xbd, 0xa, 0xf, 
-    0x3, 0xf, 0x3, 0xf, 0x5, 0xf, 0xc1, 0xa, 0xf, 0x3, 0xf, 0x3, 0xf, 0x3, 
-    0x10, 0x3, 0x10, 0x3, 0x10, 0x3, 0x10, 0x3, 0x10, 0x3, 0x11, 0x3, 0x11, 
-    0x3, 0x11, 0x3, 0x11, 0x5, 0x11, 0xce, 0xa, 0x11, 0x3, 0x12, 0x3, 0x12, 
-    0x3, 0x12, 0x3, 0x12, 0x3, 0x12, 0x3, 0x13, 0x3, 0x13, 0x3, 0x13, 0x3, 
-    0x14, 0x3, 0x14, 0x3, 0x15, 0x3, 0x15, 0x3, 0x16, 0x3, 0x16, 0x3, 0x16, 
-    0x3, 0x16, 0x3, 0x16, 0x5, 0x16, 0xe1, 0xa, 0x16, 0x3, 0x17, 0x3, 0x17, 
-    0x5, 0x17, 0xe5, 0xa, 0x17, 0x3, 0x17, 0x3, 0x17, 0x3, 0x17, 0x5, 0x17, 
-    0xea, 0xa, 0x17, 0x3, 0x17, 0x3, 0x17, 0x5, 0x17, 0xee, 0xa, 0x17, 0x3, 
-    0x17, 0x3, 0x17, 0x3, 0x17, 0x3, 0x17, 0x5, 0x17, 0xf4, 0xa, 0x17, 0x3, 
-    0x17, 0x3, 0x17, 0x5, 0x17, 0xf8, 0xa, 0x17, 0x3, 0x17, 0x3, 0x17, 0x5, 
-    0x17, 0xfc, 0xa, 0x17, 0x3, 0x17, 0x3, 0x17, 0x5, 0x17, 0x100, 0xa, 
-    0x17, 0x3, 0x18, 0x3, 0x18, 0x3, 0x18, 0x3, 0x19, 0x3, 0x19, 0x5, 0x19, 
-    0x107, 0xa, 0x19, 0x3, 0x1a, 0x3, 0x1a, 0x3, 0x1a, 0x3, 0x1a, 0x3, 0x1b, 
-    0x3, 0x1b, 0x3, 0x1b, 0x3, 0x1b, 0x3, 0x1c, 0x3, 0x1c, 0x3, 0x1d, 0x3, 
-    0x1d, 0x5, 0x1d, 0x115, 0xa, 0x1d, 0x3, 0x1d, 0x5, 0x1d, 0x118, 0xa, 
-    0x1d, 0x3, 0x1d, 0x5, 0x1d, 0x11b, 0xa, 0x1d, 0x3, 0x1d, 0x7, 0x1d, 
-    0x11e, 0xa, 0x1d, 0xc, 0x1d, 0xe, 0x1d, 0x121, 0xb, 0x1d, 0x3, 0x1e, 
-    0x3, 0x1e, 0x5, 0x1e, 0x125, 0xa, 0x1e, 0x3, 0x1f, 0x3, 0x1f, 0x3, 0x1f, 
-    0x3, 0x1f, 0x3, 0x1f, 0x3, 0x1f, 0x3, 0x20, 0x3, 0x20, 0x3, 0x20, 0x3, 
-    0x20, 0x3, 0x20, 0x3, 0x20, 0x3, 0x21, 0x3, 0x21, 0x3, 0x21, 0x7, 0x21, 
-    0x136, 0xa, 0x21, 0xc, 0x21, 0xe, 0x21, 0x139, 0xb, 0x21, 0x3, 0x22, 
-    0x3, 0x22, 0x3, 0x22, 0x3, 0x22, 0x5, 0x22, 0x13f, 0xa, 0x22, 0x3, 0x23, 
-    0x3, 0x23, 0x3, 0x24, 0x3, 0x24, 0x3, 0x24, 0x3, 0x24, 0x3, 0x24, 0x3, 
-    0x24, 0x3, 0x24, 0x3, 0x25, 0x3, 0x25, 0x3, 0x25, 0x3, 0x26, 0x3, 0x26, 
-    0x3, 0x26, 0x3, 0x27, 0x3, 0x27, 0x3, 0x27, 0x5, 0x27, 0x153, 0xa, 0x27, 
-    0x3, 0x28, 0x3, 0x28, 0x3, 0x28, 0x3, 0x28, 0x5, 0x28, 0x159, 0xa, 0x28, 
-    0x3, 0x28, 0x5, 0x28, 0x15c, 0xa, 0x28, 0x3, 0x28, 0x5, 0x28, 0x15f, 
-    0xa, 0x28, 0x3, 0x28, 0x7, 0x28, 0x162, 0xa, 0x28, 0xc, 0x28, 0xe, 0x28, 
-    0x165, 0xb, 0x28, 0x3, 0x29, 0x3, 0x29, 0x3, 0x29, 0x3, 0x29, 0x3, 0x29, 
-    0x3, 0x29, 0x5, 0x29, 0x16d, 0xa, 0x29, 0x3, 0x29, 0x5, 0x29, 0x170, 
-    0xa, 0x29, 0x3, 0x29, 0x7, 0x29, 0x173, 0xa, 0x29, 0xc, 0x29, 0xe, 0x29, 
-    0x176, 0xb, 0x29, 0x3, 0x2a, 0x3, 0x2a, 0x3, 0x2a, 0x3, 0x2a, 0x3, 0x2a, 
-    0x3, 0x2a, 0x5, 0x2a, 0x17e, 0xa, 0x2a, 0x3, 0x2a, 0x5, 0x2a, 0x181, 
-    0xa, 0x2a, 0x3, 0x2a, 0x7, 0x2a, 0x184, 0xa, 0x2a, 0xc, 0x2a, 0xe, 0x2a, 
-    0x187, 0xb, 0x2a, 0x3, 0x2a, 0x2, 0x2, 0x2b, 0x2, 0x4, 0x6, 0x8, 0xa, 
-    0xc, 0xe, 0x10, 0x12, 0x14, 0x16, 0x18, 0x1a, 0x1c, 0x1e, 0x20, 0x22, 
-    0x24, 0x26, 0x28, 0x2a, 0x2c, 0x2e, 0x30, 0x32, 0x34, 0x36, 0x38, 0x3a, 
-    0x3c, 0x3e, 0x40, 0x42, 0x44, 0x46, 0x48, 0x4a, 0x4c, 0x4e, 0x50, 0x52, 
-    0x2, 0x7, 0x4, 0x2, 0x18, 0x18, 0x3e, 0x3e, 0x4, 0x2, 0x18, 0x18, 0x40, 
-    0x40, 0x4, 0x2, 0x1f, 0x1f, 0x3c, 0x3c, 0x4, 0x2, 0x34, 0x35, 0x47, 
-    0x47, 0x4, 0x2, 0x19, 0x19, 0x2b, 0x2b, 0x2, 0x195, 0x2, 0x54, 0x3, 
-    0x2, 0x2, 0x2, 0x4, 0x67, 0x3, 0x2, 0x2, 0x2, 0x6, 0x6b, 0x3, 0x2, 0x2, 
-    0x2, 0x8, 0x6d, 0x3, 0x2, 0x2, 0x2, 0xa, 0x76, 0x3, 0x2, 0x2, 0x2, 0xc, 
-    0x82, 0x3, 0x2, 0x2, 0x2, 0xe, 0x8b, 0x3, 0x2, 0x2, 0x2, 0x10, 0x8d, 
-    0x3, 0x2, 0x2, 0x2, 0x12, 0x90, 0x3, 0x2, 0x2, 0x2, 0x14, 0x97, 0x3, 
-    0x2, 0x2, 0x2, 0x16, 0x99, 0x3, 0x2, 0x2, 0x2, 0x18, 0xa4, 0x3, 0x2, 
-    0x2, 0x2, 0x1a, 0xaf, 0x3, 0x2, 0x2, 0x2, 0x1c, 0xba, 0x3, 0x2, 0x2, 
-    0x2, 0x1e, 0xc4, 0x3, 0x2, 0x2, 0x2, 0x20, 0xcd, 0x3, 0x2, 0x2, 0x2, 
-    0x22, 0xcf, 0x3, 0x2, 0x2, 0x2, 0x24, 0xd4, 0x3, 0x2, 0x2, 0x2, 0x26, 
-    0xd7, 0x3, 0x2, 0x2, 0x2, 0x28, 0xd9, 0x3, 0x2, 0x2, 0x2, 0x2a, 0xe0, 
-    0x3, 0x2, 0x2, 0x2, 0x2c, 0xff, 0x3, 0x2, 0x2, 0x2, 0x2e, 0x101, 0x3, 
-    0x2, 0x2, 0x2, 0x30, 0x106, 0x3, 0x2, 0x2, 0x2, 0x32, 0x108, 0x3, 0x2, 
-    0x2, 0x2, 0x34, 0x10c, 0x3, 0x2, 0x2, 0x2, 0x36, 0x110, 0x3, 0x2, 0x2, 
-    0x2, 0x38, 0x112, 0x3, 0x2, 0x2, 0x2, 0x3a, 0x124, 0x3, 0x2, 0x2, 0x2, 
-    0x3c, 0x126, 0x3, 0x2, 0x2, 0x2, 0x3e, 0x12c, 0x3, 0x2, 0x2, 0x2, 0x40, 
-    0x132, 0x3, 0x2, 0x2, 0x2, 0x42, 0x13e, 0x3, 0x2, 0x2, 0x2, 0x44, 0x140, 
-    0x3, 0x2, 0x2, 0x2, 0x46, 0x142, 0x3, 0x2, 0x2, 0x2, 0x48, 0x149, 0x3, 
-    0x2, 0x2, 0x2, 0x4a, 0x14c, 0x3, 0x2, 0x2, 0x2, 0x4c, 0x152, 0x3, 0x2, 
-    0x2, 0x2, 0x4e, 0x154, 0x3, 0x2, 0x2, 0x2, 0x50, 0x166, 0x3, 0x2, 0x2, 
-    0x2, 0x52, 0x177, 0x3, 0x2, 0x2, 0x2, 0x54, 0x55, 0x5, 0x4e, 0x28, 0x2, 
-    0x55, 0x57, 0x7, 0x3, 0x2, 0x2, 0x56, 0x58, 0x5, 0x4, 0x3, 0x2, 0x57, 
-    0x56, 0x3, 0x2, 0x2, 0x2, 0x58, 0x59, 0x3, 0x2, 0x2, 0x2, 0x59, 0x57, 
-    0x3, 0x2, 0x2, 0x2, 0x59, 0x5a, 0x3, 0x2, 0x2, 0x2, 0x5a, 0x3, 0x3, 
-    0x2, 0x2, 0x2, 0x5b, 0x5c, 0x5, 0x6, 0x4, 0x2, 0x5c, 0x5d, 0x7, 0x3, 
-    0x2, 0x2, 0x5d, 0x68, 0x3, 0x2, 0x2, 0x2, 0x5e, 0x5f, 0x5, 0x4c, 0x27, 
-    0x2, 0x5f, 0x60, 0x7, 0x3, 0x2, 0x2, 0x60, 0x68, 0x3, 0x2, 0x2, 0x2, 
-    0x61, 0x62, 0x5, 0x2c, 0x17, 0x2, 0x62, 0x63, 0x7, 0x3, 0x2, 0x2, 0x63, 
-    0x68, 0x3, 0x2, 0x2, 0x2, 0x64, 0x65, 0x5, 0x3a, 0x1e, 0x2, 0x65, 0x66, 
-    0x7, 0x3, 0x2, 0x2, 0x66, 0x68, 0x3, 0x2, 0x2, 0x2, 0x67, 0x5b, 0x3, 
-    0x2, 0x2, 0x2, 0x67, 0x5e, 0x3, 0x2, 0x2, 0x2, 0x67, 0x61, 0x3, 0x2, 
-    0x2, 0x2, 0x67, 0x64, 0x3, 0x2, 0x2, 0x2, 0x68, 0x5, 0x3, 0x2, 0x2, 
-    0x2, 0x69, 0x6c, 0x5, 0x8, 0x5, 0x2, 0x6a, 0x6c, 0x5, 0xa, 0x6, 0x2, 
-    0x6b, 0x69, 0x3, 0x2, 0x2, 0x2, 0x6b, 0x6a, 0x3, 0x2, 0x2, 0x2, 0x6c, 
-    0x7, 0x3, 0x2, 0x2, 0x2, 0x6d, 0x6e, 0x9, 0x2, 0x2, 0x2, 0x6e, 0x70, 
-    0x7, 0x13, 0x2, 0x2, 0x6f, 0x71, 0x7, 0x21, 0x2, 0x2, 0x70, 0x6f, 0x3, 
-    0x2, 0x2, 0x2, 0x70, 0x71, 0x3, 0x2, 0x2, 0x2, 0x71, 0x72, 0x3, 0x2, 
-    0x2, 0x2, 0x72, 0x73, 0x7, 0x45, 0x2, 0x2, 0x73, 0x74, 0x7, 0x2f, 0x2, 
-    0x2, 0x74, 0x75, 0x5, 0xc, 0x7, 0x2, 0x75, 0x9, 0x3, 0x2, 0x2, 0x2, 
-    0x76, 0x77, 0x9, 0x2, 0x2, 0x2, 0x77, 0x79, 0x7, 0x13, 0x2, 0x2, 0x78, 
-    0x7a, 0x7, 0x21, 0x2, 0x2, 0x79, 0x78, 0x3, 0x2, 0x2, 0x2, 0x79, 0x7a, 
-    0x3, 0x2, 0x2, 0x2, 0x7a, 0x7b, 0x3, 0x2, 0x2, 0x2, 0x7b, 0x7c, 0x7, 
-    0x45, 0x2, 0x2, 0x7c, 0x7d, 0x7, 0x2f, 0x2, 0x2, 0x7d, 0x7e, 0x5, 0xc, 
-    0x7, 0x2, 0x7e, 0x7f, 0x7, 0x16, 0x2, 0x2, 0x7f, 0x80, 0x7, 0x1e, 0x2, 
-    0x2, 0x80, 0x81, 0x5, 0xc, 0x7, 0x2, 0x81, 0xb, 0x3, 0x2, 0x2, 0x2, 
-    0x82, 0x86, 0x5, 0x14, 0xb, 0x2, 0x83, 0x85, 0x5, 0xe, 0x8, 0x2, 0x84, 
-    0x83, 0x3, 0x2, 0x2, 0x2, 0x85, 0x88, 0x3, 0x2, 0x2, 0x2, 0x86, 0x84, 
-    0x3, 0x2, 0x2, 0x2, 0x86, 0x87, 0x3, 0x2, 0x2, 0x2, 0x87, 0xd, 0x3, 
-    0x2, 0x2, 0x2, 0x88, 0x86, 0x3, 0x2, 0x2, 0x2, 0x89, 0x8c, 0x5, 0x10, 
-    0x9, 0x2, 0x8a, 0x8c, 0x5, 0x12, 0xa, 0x2, 0x8b, 0x89, 0x3, 0x2, 0x2, 
-    0x2, 0x8b, 0x8a, 0x3, 0x2, 0x2, 0x2, 0x8c, 0xf, 0x3, 0x2, 0x2, 0x2, 
-    0x8d, 0x8e, 0x7, 0x33, 0x2, 0x2, 0x8e, 0x8f, 0x5, 0x14, 0xb, 0x2, 0x8f, 
-    0x11, 0x3, 0x2, 0x2, 0x2, 0x90, 0x91, 0x7, 0x16, 0x2, 0x2, 0x91, 0x92, 
-    0x5, 0x14, 0xb, 0x2, 0x92, 0x13, 0x3, 0x2, 0x2, 0x2, 0x93, 0x98, 0x5, 
-    0x16, 0xc, 0x2, 0x94, 0x98, 0x5, 0x18, 0xd, 0x2, 0x95, 0x98, 0x5, 0x1a, 
-    0xe, 0x2, 0x96, 0x98, 0x5, 0x1c, 0xf, 0x2, 0x97, 0x93, 0x3, 0x2, 0x2, 
-    0x2, 0x97, 0x94, 0x3, 0x2, 0x2, 0x2, 0x97, 0x95, 0x3, 0x2, 0x2, 0x2, 
-    0x97, 0x96, 0x3, 0x2, 0x2, 0x2, 0x98, 0x15, 0x3, 0x2, 0x2, 0x2, 0x99, 
-    0x9a, 0x7, 0x15, 0x2, 0x2, 0x9a, 0x9b, 0x7, 0x48, 0x2, 0x2, 0x9b, 0x9c, 
-    0x7, 0x39, 0x2, 0x2, 0x9c, 0x9e, 0x7, 0x26, 0x2, 0x2, 0x9d, 0x9f, 0x9, 
-    0x2, 0x2, 0x2, 0x9e, 0x9d, 0x3, 0x2, 0x2, 0x2, 0x9e, 0x9f, 0x3, 0x2, 
-    0x2, 0x2, 0x9f, 0xa0, 0x3, 0x2, 0x2, 0x2, 0xa0, 0xa2, 0x7, 0x13, 0x2, 
-    0x2, 0xa1, 0xa3, 0x7, 0x21, 0x2, 0x2, 0xa2, 0xa1, 0x3, 0x2, 0x2, 0x2, 
-    0xa2, 0xa3, 0x3, 0x2, 0x2, 0x2, 0xa3, 0x17, 0x3, 0x2, 0x2, 0x2, 0xa4, 
-    0xa6, 0x7, 0x28, 0x2, 0x2, 0xa5, 0xa7, 0x9, 0x2, 0x2, 0x2, 0xa6, 0xa5, 
-    0x3, 0x2, 0x2, 0x2, 0xa6, 0xa7, 0x3, 0x2, 0x2, 0x2, 0xa7, 0xa8, 0x3, 
-    0x2, 0x2, 0x2, 0xa8, 0xaa, 0x7, 0x13, 0x2, 0x2, 0xa9, 0xab, 0x7, 0x21, 
-    0x2, 0x2, 0xaa, 0xa9, 0x3, 0x2, 0x2, 0x2, 0xaa, 0xab, 0x3, 0x2, 0x2, 
-    0x2, 0xab, 0xac, 0x3, 0x2, 0x2, 0x2, 0xac, 0xad, 0x7, 0x29, 0x2, 0x2, 
-    0xad, 0xae, 0x7, 0x30, 0x2, 0x2, 0xae, 0x19, 0x3, 0x2, 0x2, 0x2, 0xaf, 
-    0xb1, 0x7, 0x44, 0x2, 0x2, 0xb0, 0xb2, 0x9, 0x3, 0x2, 0x2, 0xb1, 0xb0, 
-    0x3, 0x2, 0x2, 0x2, 0xb1, 0xb2, 0x3, 0x2, 0x2, 0x2, 0xb2, 0xb3, 0x3, 
-    0x2, 0x2, 0x2, 0xb3, 0xb5, 0x7, 0x13, 0x2, 0x2, 0xb4, 0xb6, 0x7, 0x21, 
-    0x2, 0x2, 0xb5, 0xb4, 0x3, 0x2, 0x2, 0x2, 0xb5, 0xb6, 0x3, 0x2, 0x2, 
-    0x2, 0xb6, 0xb7, 0x3, 0x2, 0x2, 0x2, 0xb7, 0xb8, 0x7, 0x2b, 0x2, 0x2, 
-    0xb8, 0xb9, 0x7, 0x31, 0x2, 0x2, 0xb9, 0x1b, 0x3, 0x2, 0x2, 0x2, 0xba, 
-    0xbc, 0x7, 0x43, 0x2, 0x2, 0xbb, 0xbd, 0x9, 0x3, 0x2, 0x2, 0xbc, 0xbb, 
-    0x3, 0x2, 0x2, 0x2, 0xbc, 0xbd, 0x3, 0x2, 0x2, 0x2, 0xbd, 0xbe, 0x3, 
-    0x2, 0x2, 0x2, 0xbe, 0xc0, 0x7, 0x13, 0x2, 0x2, 0xbf, 0xc1, 0x7, 0x21, 
-    0x2, 0x2, 0xc0, 0xbf, 0x3, 0x2, 0x2, 0x2, 0xc0, 0xc1, 0x3, 0x2, 0x2, 
-    0x2, 0xc1, 0xc2, 0x3, 0x2, 0x2, 0x2, 0xc2, 0xc3, 0x9, 0x4, 0x2, 0x2, 
-    0xc3, 0x1d, 0x3, 0x2, 0x2, 0x2, 0xc4, 0xc5, 0x5, 0x20, 0x11, 0x2, 0xc5, 
-    0xc6, 0x7, 0x46, 0x2, 0x2, 0xc6, 0xc7, 0x7, 0x48, 0x2, 0x2, 0xc7, 0xc8, 
-    0x7, 0x2c, 0x2, 0x2, 0xc8, 0x1f, 0x3, 0x2, 0x2, 0x2, 0xc9, 0xce, 0x5, 
-    0x22, 0x12, 0x2, 0xca, 0xce, 0x5, 0x24, 0x13, 0x2, 0xcb, 0xce, 0x5, 
-    0x26, 0x14, 0x2, 0xcc, 0xce, 0x5, 0x28, 0x15, 0x2, 0xcd, 0xc9, 0x3, 
-    0x2, 0x2, 0x2, 0xcd, 0xca, 0x3, 0x2, 0x2, 0x2, 0xcd, 0xcb, 0x3, 0x2, 
-    0x2, 0x2, 0xcd, 0xcc, 0x3, 0x2, 0x2, 0x2, 0xce, 0x21, 0x3, 0x2, 0x2, 
-    0x2, 0xcf, 0xd0, 0x7, 0x2a, 0x2, 0x2, 0xd0, 0xd1, 0x7, 0x1d, 0x2, 0x2, 
-    0xd1, 0xd2, 0x7, 0x32, 0x2, 0x2, 0xd2, 0xd3, 0x7, 0x47, 0x2, 0x2, 0xd3, 
-    0x23, 0x3, 0x2, 0x2, 0x2, 0xd4, 0xd5, 0x7, 0x2a, 0x2, 0x2, 0xd5, 0xd6, 
-    0x7, 0x27, 0x2, 0x2, 0xd6, 0x25, 0x3, 0x2, 0x2, 0x2, 0xd7, 0xd8, 0x7, 
-    0x1b, 0x2, 0x2, 0xd8, 0x27, 0x3, 0x2, 0x2, 0x2, 0xd9, 0xda, 0x7, 0x1a, 
-    0x2, 0x2, 0xda, 0x29, 0x3, 0x2, 0x2, 0x2, 0xdb, 0xdc, 0x7, 0x4, 0x2, 
-    0x2, 0xdc, 0xe1, 0x7, 0x34, 0x2, 0x2, 0xdd, 0xde, 0x7, 0x4, 0x2, 0x2, 
-    0xde, 0xe1, 0x7, 0x2e, 0x2, 0x2, 0xdf, 0xe1, 0x7, 0x14, 0x2, 0x2, 0xe0, 
-    0xdb, 0x3, 0x2, 0x2, 0x2, 0xe0, 0xdd, 0x3, 0x2, 0x2, 0x2, 0xe0, 0xdf, 
-    0x3, 0x2, 0x2, 0x2, 0xe1, 0x2b, 0x3, 0x2, 0x2, 0x2, 0xe2, 0xe3, 0x7, 
-    0x38, 0x2, 0x2, 0xe3, 0xe5, 0x7, 0xf, 0x2, 0x2, 0xe4, 0xe2, 0x3, 0x2, 
-    0x2, 0x2, 0xe4, 0xe5, 0x3, 0x2, 0x2, 0x2, 0xe5, 0xe6, 0x3, 0x2, 0x2, 
-    0x2, 0xe6, 0xe7, 0x5, 0x30, 0x19, 0x2, 0xe7, 0xe9, 0x9, 0x5, 0x2, 0x2, 
-    0xe8, 0xea, 0x5, 0x2e, 0x18, 0x2, 0xe9, 0xe8, 0x3, 0x2, 0x2, 0x2, 0xe9, 
-    0xea, 0x3, 0x2, 0x2, 0x2, 0xea, 0xeb, 0x3, 0x2, 0x2, 0x2, 0xeb, 0xed, 
-    0x9, 0x6, 0x2, 0x2, 0xec, 0xee, 0x7, 0x18, 0x2, 0x2, 0xed, 0xec, 0x3, 
-    0x2, 0x2, 0x2, 0xed, 0xee, 0x3, 0x2, 0x2, 0x2, 0xee, 0xef, 0x3, 0x2, 
-    0x2, 0x2, 0xef, 0xf0, 0x5, 0x38, 0x1d, 0x2, 0xf0, 0x100, 0x3, 0x2, 0x2, 
-    0x2, 0xf1, 0xf2, 0x7, 0x38, 0x2, 0x2, 0xf2, 0xf4, 0x7, 0xf, 0x2, 0x2, 
-    0xf3, 0xf1, 0x3, 0x2, 0x2, 0x2, 0xf3, 0xf4, 0x3, 0x2, 0x2, 0x2, 0xf4, 
-    0xf5, 0x3, 0x2, 0x2, 0x2, 0xf5, 0xf7, 0x5, 0x36, 0x1c, 0x2, 0xf6, 0xf8, 
-    0x5, 0x2e, 0x18, 0x2, 0xf7, 0xf6, 0x3, 0x2, 0x2, 0x2, 0xf7, 0xf8, 0x3, 
-    0x2, 0x2, 0x2, 0xf8, 0xf9, 0x3, 0x2, 0x2, 0x2, 0xf9, 0xfb, 0x7, 0x2b, 
-    0x2, 0x2, 0xfa, 0xfc, 0x7, 0x18, 0x2, 0x2, 0xfb, 0xfa, 0x3, 0x2, 0x2, 
-    0x2, 0xfb, 0xfc, 0x3, 0x2, 0x2, 0x2, 0xfc, 0xfd, 0x3, 0x2, 0x2, 0x2, 
-    0xfd, 0xfe, 0x5, 0x38, 0x1d, 0x2, 0xfe, 0x100, 0x3, 0x2, 0x2, 0x2, 0xff, 
-    0xe4, 0x3, 0x2, 0x2, 0x2, 0xff, 0xf3, 0x3, 0x2, 0x2, 0x2, 0x100, 0x2d, 
-    0x3, 0x2, 0x2, 0x2, 0x101, 0x102, 0x7, 0x3f, 0x2, 0x2, 0x102, 0x103, 
-    0x7, 0x19, 0x2, 0x2, 0x103, 0x2f, 0x3, 0x2, 0x2, 0x2, 0x104, 0x107, 
-    0x5, 0x32, 0x1a, 0x2, 0x105, 0x107, 0x5, 0x34, 0x1b, 0x2, 0x106, 0x104, 
-    0x3, 0x2, 0x2, 0x2, 0x106, 0x105, 0x3, 0x2, 0x2, 0x2, 0x107, 0x31, 0x3, 
-    0x2, 0x2, 0x2, 0x108, 0x109, 0x7, 0x48, 0x2, 0x2, 0x109, 0x10a, 0x7, 
-    0x5, 0x2, 0x2, 0x10a, 0x10b, 0x7, 0x32, 0x2, 0x2, 0x10b, 0x33, 0x3, 
-    0x2, 0x2, 0x2, 0x10c, 0x10d, 0x7, 0x22, 0x2, 0x2, 0x10d, 0x10e, 0x7, 
-    0x48, 0x2, 0x2, 0x10e, 0x10f, 0x7, 0x32, 0x2, 0x2, 0x10f, 0x35, 0x3, 
-    0x2, 0x2, 0x2, 0x110, 0x111, 0x7, 0x24, 0x2, 0x2, 0x111, 0x37, 0x3, 
-    0x2, 0x2, 0x2, 0x112, 0x11f, 0x7, 0x47, 0x2, 0x2, 0x113, 0x115, 0x7, 
-    0xe, 0x2, 0x2, 0x114, 0x113, 0x3, 0x2, 0x2, 0x2, 0x114, 0x115, 0x3, 
-    0x2, 0x2, 0x2, 0x115, 0x117, 0x3, 0x2, 0x2, 0x2, 0x116, 0x118, 0x7, 
-    0x16, 0x2, 0x2, 0x117, 0x116, 0x3, 0x2, 0x2, 0x2, 0x117, 0x118, 0x3, 
-    0x2, 0x2, 0x2, 0x118, 0x11a, 0x3, 0x2, 0x2, 0x2, 0x119, 0x11b, 0x7, 
-    0x18, 0x2, 0x2, 0x11a, 0x119, 0x3, 0x2, 0x2, 0x2, 0x11a, 0x11b, 0x3, 
-    0x2, 0x2, 0x2, 0x11b, 0x11c, 0x3, 0x2, 0x2, 0x2, 0x11c, 0x11e, 0x7, 
-    0x47, 0x2, 0x2, 0x11d, 0x114, 0x3, 0x2, 0x2, 0x2, 0x11e, 0x121, 0x3, 
-    0x2, 0x2, 0x2, 0x11f, 0x11d, 0x3, 0x2, 0x2, 0x2, 0x11f, 0x120, 0x3, 
-    0x2, 0x2, 0x2, 0x120, 0x39, 0x3, 0x2, 0x2, 0x2, 0x121, 0x11f, 0x3, 0x2, 
-    0x2, 0x2, 0x122, 0x125, 0x5, 0x3c, 0x1f, 0x2, 0x123, 0x125, 0x5, 0x3e, 
-    0x20, 0x2, 0x124, 0x122, 0x3, 0x2, 0x2, 0x2, 0x124, 0x123, 0x3, 0x2, 
-    0x2, 0x2, 0x125, 0x3b, 0x3, 0x2, 0x2, 0x2, 0x126, 0x127, 0x7, 0x18, 
-    0x2, 0x2, 0x127, 0x128, 0x7, 0x47, 0x2, 0x2, 0x128, 0x129, 0x7, 0x45, 
-    0x2, 0x2, 0x129, 0x12a, 0x5, 0x40, 0x21, 0x2, 0x12a, 0x12b, 0x5, 0xc, 
-    0x7, 0x2, 0x12b, 0x3d, 0x3, 0x2, 0x2, 0x2, 0x12c, 0x12d, 0x7, 0x18, 
-    0x2, 0x2, 0x12d, 0x12e, 0x7, 0x47, 0x2, 0x2, 0x12e, 0x12f, 0x7, 0x45, 
-    0x2, 0x2, 0x12f, 0x130, 0x7, 0x17, 0x2, 0x2, 0x130, 0x131, 0x5, 0x40, 
-    0x21, 0x2, 0x131, 0x3f, 0x3, 0x2, 0x2, 0x2, 0x132, 0x137, 0x5, 0x42, 
-    0x22, 0x2, 0x133, 0x134, 0x7, 0x40, 0x2, 0x2, 0x134, 0x136, 0x5, 0x42, 
-    0x22, 0x2, 0x135, 0x133, 0x3, 0x2, 0x2, 0x2, 0x136, 0x139, 0x3, 0x2, 
-    0x2, 0x2, 0x137, 0x135, 0x3, 0x2, 0x2, 0x2, 0x137, 0x138, 0x3, 0x2, 
-    0x2, 0x2, 0x138, 0x41, 0x3, 0x2, 0x2, 0x2, 0x139, 0x137, 0x3, 0x2, 0x2, 
-    0x2, 0x13a, 0x13f, 0x7, 0x11, 0x2, 0x2, 0x13b, 0x13f, 0x5, 0x44, 0x23, 
-    0x2, 0x13c, 0x13f, 0x5, 0x4a, 0x26, 0x2, 0x13d, 0x13f, 0x5, 0x46, 0x24, 
-    0x2, 0x13e, 0x13a, 0x3, 0x2, 0x2, 0x2, 0x13e, 0x13b, 0x3, 0x2, 0x2, 
-    0x2, 0x13e, 0x13c, 0x3, 0x2, 0x2, 0x2, 0x13e, 0x13d, 0x3, 0x2, 0x2, 
-    0x2, 0x13f, 0x43, 0x3, 0x2, 0x2, 0x2, 0x140, 0x141, 0x7, 0x6, 0x2, 0x2, 
-    0x141, 0x45, 0x3, 0x2, 0x2, 0x2, 0x142, 0x143, 0x7, 0x7, 0x2, 0x2, 0x143, 
-    0x144, 0x7, 0x49, 0x2, 0x2, 0x144, 0x145, 0x7, 0x8, 0x2, 0x2, 0x145, 
-    0x146, 0x7, 0x41, 0x2, 0x2, 0x146, 0x147, 0x7, 0x2d, 0x2, 0x2, 0x147, 
-    0x148, 0x7, 0x3d, 0x2, 0x2, 0x148, 0x47, 0x3, 0x2, 0x2, 0x2, 0x149, 
-    0x14a, 0x7, 0x9, 0x2, 0x2, 0x14a, 0x14b, 0x7, 0x47, 0x2, 0x2, 0x14b, 
-    0x49, 0x3, 0x2, 0x2, 0x2, 0x14c, 0x14d, 0x7, 0xa, 0x2, 0x2, 0x14d, 0x14e, 
-    0x7, 0x10, 0x2, 0x2, 0x14e, 0x4b, 0x3, 0x2, 0x2, 0x2, 0x14f, 0x153, 
-    0x5, 0x4e, 0x28, 0x2, 0x150, 0x153, 0x5, 0x50, 0x29, 0x2, 0x151, 0x153, 
-    0x5, 0x52, 0x2a, 0x2, 0x152, 0x14f, 0x3, 0x2, 0x2, 0x2, 0x152, 0x150, 
-    0x3, 0x2, 0x2, 0x2, 0x152, 0x151, 0x3, 0x2, 0x2, 0x2, 0x153, 0x4d, 0x3, 
-    0x2, 0x2, 0x2, 0x154, 0x155, 0x7, 0x1c, 0x2, 0x2, 0x155, 0x156, 0x7, 
-    0x18, 0x2, 0x2, 0x156, 0x163, 0x7, 0x47, 0x2, 0x2, 0x157, 0x159, 0x7, 
-    0xe, 0x2, 0x2, 0x158, 0x157, 0x3, 0x2, 0x2, 0x2, 0x158, 0x159, 0x3, 
-    0x2, 0x2, 0x2, 0x159, 0x15b, 0x3, 0x2, 0x2, 0x2, 0x15a, 0x15c, 0x7, 
-    0x16, 0x2, 0x2, 0x15b, 0x15a, 0x3, 0x2, 0x2, 0x2, 0x15b, 0x15c, 0x3, 
-    0x2, 0x2, 0x2, 0x15c, 0x15e, 0x3, 0x2, 0x2, 0x2, 0x15d, 0x15f, 0x7, 
-    0x18, 0x2, 0x2, 0x15e, 0x15d, 0x3, 0x2, 0x2, 0x2, 0x15e, 0x15f, 0x3, 
-    0x2, 0x2, 0x2, 0x15f, 0x160, 0x3, 0x2, 0x2, 0x2, 0x160, 0x162, 0x7, 
-    0x47, 0x2, 0x2, 0x161, 0x158, 0x3, 0x2, 0x2, 0x2, 0x162, 0x165, 0x3, 
-    0x2, 0x2, 0x2, 0x163, 0x161, 0x3, 0x2, 0x2, 0x2, 0x163, 0x164, 0x3, 
-    0x2, 0x2, 0x2, 0x164, 0x4f, 0x3, 0x2, 0x2, 0x2, 0x165, 0x163, 0x3, 0x2, 
-    0x2, 0x2, 0x166, 0x167, 0x7, 0x36, 0x2, 0x2, 0x167, 0x168, 0x7, 0x34, 
-    0x2, 0x2, 0x168, 0x169, 0x7, 0x3b, 0x2, 0x2, 0x169, 0x16a, 0x7, 0x19, 
-    0x2, 0x2, 0x16a, 0x174, 0x7, 0x10, 0x2, 0x2, 0x16b, 0x16d, 0x7, 0xe, 
-    0x2, 0x2, 0x16c, 0x16b, 0x3, 0x2, 0x2, 0x2, 0x16c, 0x16d, 0x3, 0x2, 
-    0x2, 0x2, 0x16d, 0x16f, 0x3, 0x2, 0x2, 0x2, 0x16e, 0x170, 0x7, 0x16, 
-    0x2, 0x2, 0x16f, 0x16e, 0x3, 0x2, 0x2, 0x2, 0x16f, 0x170, 0x3, 0x2, 
-    0x2, 0x2, 0x170, 0x171, 0x3, 0x2, 0x2, 0x2, 0x171, 0x173, 0x7, 0x10, 
-    0x2, 0x2, 0x172, 0x16c, 0x3, 0x2, 0x2, 0x2, 0x173, 0x176, 0x3, 0x2, 
-    0x2, 0x2, 0x174, 0x172, 0x3, 0x2, 0x2, 0x2, 0x174, 0x175, 0x3, 0x2, 
-    0x2, 0x2, 0x175, 0x51, 0x3, 0x2, 0x2, 0x2, 0x176, 0x174, 0x3, 0x2, 0x2, 
-    0x2, 0x177, 0x178, 0x7, 0x36, 0x2, 0x2, 0x178, 0x179, 0x7, 0x20, 0x2, 
-    0x2, 0x179, 0x17a, 0x7, 0x3b, 0x2, 0x2, 0x17a, 0x17b, 0x7, 0x19, 0x2, 
-    0x2, 0x17b, 0x185, 0x7, 0x10, 0x2, 0x2, 0x17c, 0x17e, 0x7, 0xe, 0x2, 
-    0x2, 0x17d, 0x17c, 0x3, 0x2, 0x2, 0x2, 0x17d, 0x17e, 0x3, 0x2, 0x2, 
-    0x2, 0x17e, 0x180, 0x3, 0x2, 0x2, 0x2, 0x17f, 0x181, 0x7, 0x16, 0x2, 
-    0x2, 0x180, 0x17f, 0x3, 0x2, 0x2, 0x2, 0x180, 0x181, 0x3, 0x2, 0x2, 
-    0x2, 0x181, 0x182, 0x3, 0x2, 0x2, 0x2, 0x182, 0x184, 0x7, 0x10, 0x2, 
-    0x2, 0x183, 0x17d, 0x3, 0x2, 0x2, 0x2, 0x184, 0x187, 0x3, 0x2, 0x2, 
-    0x2, 0x185, 0x183, 0x3, 0x2, 0x2, 0x2, 0x185, 0x186, 0x3, 0x2, 0x2, 
-    0x2, 0x186, 0x53, 0x3, 0x2, 0x2, 0x2, 0x187, 0x185, 0x3, 0x2, 0x2, 0x2, 
-    0x2e, 0x59, 0x67, 0x6b, 0x70, 0x79, 0x86, 0x8b, 0x97, 0x9e, 0xa2, 0xa6, 
-    0xaa, 0xb1, 0xb5, 0xbc, 0xc0, 0xcd, 0xe0, 0xe4, 0xe9, 0xed, 0xf3, 0xf7, 
-    0xfb, 0xff, 0x106, 0x114, 0x117, 0x11a, 0x11f, 0x124, 0x137, 0x13e, 
-    0x152, 0x158, 0x15b, 0x15e, 0x163, 0x16c, 0x16f, 0x174, 0x17d, 0x180, 
-    0x185, 
-  };
-
-  atn::ATNDeserializer deserializer;
-  _atn = deserializer.deserialize(_serializedATN);
-
-  size_t count = _atn.getNumberOfDecisions();
-  _decisionToDFA.reserve(count);
-  for (size_t i = 0; i < count; i++) { 
-    _decisionToDFA.emplace_back(_atn.getDecisionState(i), i);
-  }
+void BehaviorParser::initialize() {
+  ::antlr4::internal::call_once(behaviorParserOnceFlag, behaviorParserInitialize);
 }
-
-BehaviorParser::Initializer BehaviorParser::_init;

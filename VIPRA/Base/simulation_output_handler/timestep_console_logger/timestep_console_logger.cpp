@@ -1,23 +1,16 @@
 
 #include "timestep_console_logger.hpp"
 
-void
-TimestepConsoleLogger::configure(const VIPRA::Config::Map& configMap) {
+void TimestepConsoleLogger::configure(const VIPRA::CONFIG::Map& configMap) {
   frequency = configMap["outputFrequency"].asUInt64();
 }
 
-bool
-TimestepConsoleLogger::isOutputCriterionMet([[maybe_unused]] const PedestrianSet& pedSet,
-                                            [[maybe_unused]] const ObstacleSet&   obsSet,
-                                            [[maybe_unused]] const Goals&         goals,
-                                            VIPRA::t_step                         currTimestep) {
+bool TimestepConsoleLogger::isOutputCriterionMet(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                                                 VIPRA::t_step currTimestep) {
   return (currTimestep % frequency == 0);
 }
 
-void
-TimestepConsoleLogger::writeOutput([[maybe_unused]] OutputDataWriter& outputDataWriter,
-                                   const PedestrianSet&               pedestrianSet,
-                                   VIPRA::t_step                      currTimestep) {
+void TimestepConsoleLogger::writeOutput(OutputDataWriter&, const PedestrianSet& pedestrianSet, VIPRA::t_step currTimestep) {
   spdlog::debug("TIMESTEP: {}", currTimestep);
 
   const auto&       coords = pedestrianSet.getPedestrianCoordinates();

@@ -1,9 +1,9 @@
 
 #include <spdlog/spdlog.h>
 
-#include "actions/atoms/atom_change_speed.hpp"
+#include <actions/atoms/atom_change_speed.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 
 /**
  * @brief either slows/speeds up a pedestrian based on change
@@ -13,17 +13,11 @@ namespace Behaviors {
  * @param dT : simulation time step size
  * @param state : state object to put result into
  */
-void
-Atom_Change_Speed::operator()(PedestrianSet& pedestrianSet,
-                              ObstacleSet&,
-                              Goals&,
-                              BehaviorContext&,
-                              VIPRA::idx                    pedIndex,
-                              VIPRA::delta_t                dT,
-                              std::shared_ptr<VIPRA::State> state) {
+void AtomChangeSpeed::operator()(PedestrianSet& pedestrianSet, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx pedIndex,
+                                 VIPRA::delta_t dT, VIPRA::State& state) const {
   VIPRA::f3d originalPos = pedestrianSet.getPedCoords(pedIndex);
-  VIPRA::f3d tempVel = state->velocities[pedIndex] * change;
+  VIPRA::f3d tempVel = state.velocities[pedIndex] * change;
 
-  state->pedestrianCoordinates[pedIndex] = originalPos + (tempVel * dT);
+  state.pedestrianCoordinates[pedIndex] = originalPos + (tempVel * dT);
 }
-}  // namespace Behaviors
+}  // namespace BHVR

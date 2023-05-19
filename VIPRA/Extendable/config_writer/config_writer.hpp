@@ -1,9 +1,9 @@
 #ifndef PEDESTRIAN_CONFIG_WRITER_HPP
 #define PEDESTRIAN_CONFIG_WRITER_HPP
 
+#include <memory>
 #include "definitions/config_map.hpp"
 #include "definitions/type_definitions.hpp"
-#include <memory>
 
 namespace VIPRA {
 struct PedestrianBuilderData {
@@ -22,7 +22,7 @@ class PedestrianConfigWriter {
  public:
   virtual ~PedestrianConfigWriter() = default;
 
-  virtual void        configure(const VIPRA::Config::Map& configMap) = 0;
+  virtual void        configure(const VIPRA::CONFIG::Map& configMap) = 0;
   virtual void        initialize() = 0;
   virtual std::string buildPedestrians(const std::string& filePath) = 0;
 };

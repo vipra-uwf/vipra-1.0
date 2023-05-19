@@ -1,0 +1,12 @@
+consider a typeA, and a typeB.
+
+50% of pedestrians are typeA.
+exactly 1 of typeA is typeB.
+
+a !trip event will 
+  occur after 5 seconds from !start 
+  and end after 10 seconds from !trip.
+
+a typeA will always @walk 1.0x their normal speed.
+
+a typeB will @stop while the !trip event is occurring.

@@ -16,7 +16,7 @@ class ObstacleSet {
   virtual ~ObstacleSet() = default;
 
   virtual void initialize(std::unique_ptr<VIPRA::MapData>) = 0;
-  virtual void configure(const VIPRA::Config::Map& configMap) = 0;
+  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
 
   virtual VIPRA::f3d getMapDimensions() const = 0;
 

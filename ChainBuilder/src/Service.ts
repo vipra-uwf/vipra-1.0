@@ -69,7 +69,7 @@ export class Service {
    * @returns {CbResult} - The location of the result in the result store
    */
   private async runService(request : express.Request) : Promise<CbResult> {
-    const parameters = await this.getRequestParams(request as express.Request<any, any, { [key:string]:any }>);
+    const parameters = await this.getRequestParams(request as express.Request<unknown, unknown, { [key:string]:unknown }>);
     if (parameters) {
       if (parameters.error) {
         return { error: true, result: parameters.error };
@@ -92,7 +92,7 @@ export class Service {
    * @note Parameters either come directly from the request or are requested from other Services
    * @param {express.Request} request - Client Request Object
    */
-  private async getRequestParams(request : express.Request<any, any, { [key:string]:any }>) : Promise<{ error: Nullable<string>, params: Nullable<CbArgs> }> {
+  private async getRequestParams(request : express.Request<unknown, unknown, { [key:string]:unknown }>) : Promise<{ error: Nullable<string>, params: Nullable<CbArgs> }> {
 
     const params : string[] = Object.keys(this.parameters.arguments);
 
@@ -136,7 +136,7 @@ export class Service {
    * @param {any} param - parameters to correct
    * @returns {string[]} - The corrected parameter list
    */
-  private normalizeParam(param : any) : string[] {
+  private normalizeParam(param : unknown) : string[] {
     if (typeof param === 'string') {
       return [param];
     } else {

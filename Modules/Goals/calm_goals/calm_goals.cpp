@@ -4,8 +4,7 @@
 
 #include "calm_goals.hpp"
 
-void
-CalmGoals::configure(const VIPRA::Config::Map& configMap) {
+void CalmGoals::configure(const VIPRA::CONFIG::Map& configMap) {
   spdlog::info("CalmGoals: Configuring Calm Goals");
   goalRange = configMap["goalRange"].asFloat();
   endGoalType = configMap["endGoalType"].asString();
@@ -21,8 +20,7 @@ CalmGoals::configure(const VIPRA::Config::Map& configMap) {
  * @param obsSet
  * @param pedSet
  */
-void
-CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
+void CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   VIPRA::size pedCnt = pedSet.getNumPedestrians();
 
   currentGoals = VIPRA::f3dVec(pedCnt);
@@ -49,8 +47,7 @@ CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
  * 
  * @param pedSet 
  */
-void
-CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSet) {
+void CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSet) {
   const VIPRA::size    pedCnt = pedSet.getNumPedestrians();
   const VIPRA::f3dVec& coords = pedSet.getPedestrianCoordinates();
   
@@ -72,8 +69,7 @@ CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& obsSe
   spdlog::debug("CalmGoals: Finished Initializing Paths");
 }
 
-std::queue<VIPRA::f3d>
-CalmGoals::disembarkPath(const VIPRA::f3d& start, const ObstacleSet& obsSet) {
+std::queue<VIPRA::f3d> CalmGoals::disembarkPath(const VIPRA::f3d& start, const ObstacleSet& obsSet) {
   std::queue<VIPRA::f3d> path;
   VIPRA::f3d             aisle = nearestObjective("aisle", start, obsSet);
   path.push(aisle);
@@ -83,12 +79,11 @@ CalmGoals::disembarkPath(const VIPRA::f3d& start, const ObstacleSet& obsSet) {
   return path;
 }
 
-const VIPRA::f3d&
-CalmGoals::nearestObjective(const std::string& type, const VIPRA::f3d& point, const ObstacleSet& obsSet) {
+const VIPRA::f3d& CalmGoals::nearestObjective(const std::string& type, const VIPRA::f3d& point, const ObstacleSet& obsSet) {
   const auto&       objectives = obsSet.getObjectsofType(type);
   const VIPRA::size objCnt = objectives.size();
   if (objectives.empty()) {
-    GoalsException::Throw("No Objectives of Type: " + type + " In Provided Map");
+    GoalsException::error("No Objectives of Type: " + type + " In Provided Map");
   }
   VIPRA::idx closest = 0;
   float      minDist = std::numeric_limits<float>::max();
@@ -108,13 +103,12 @@ CalmGoals::nearestObjective(const std::string& type, const VIPRA::f3d& point, co
  * @param obsSet 
  * @param pedSet 
  */
-void
-CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
+void CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
   const auto& coords = pedSet.getPedestrianCoordinates();
   const auto& objectives = obsSet.getObjectsofType(endGoalType);
 
   if (objectives.empty()) {
-    GoalsException::Throw("No Objectives of Type: " + endGoalType + " In Provided Map");
+    GoalsException::error("No Objectives of Type: " + endGoalType + " In Provided Map");
   }
 
   if (objectives.size() == 1) {
@@ -144,10 +138,7 @@ CalmGoals::findNearestEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pe
  * @param obsSet 
  * @param pedSet 
  */
-void
-CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet,
-                                 const PedestrianSet&                pedSet,
-                                 VIPRA::delta_t                      d_time) {
+void CalmGoals::updatePedestrianGoals(const ObstacleSet&, const PedestrianSet& pedSet, VIPRA::delta_t d_time) {
   const VIPRA::size    numPeds = pedSet.getNumPedestrians();
   const VIPRA::f3dVec& pedCoords = pedSet.getPedestrianCoordinates();
 
@@ -160,7 +151,7 @@ CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet,
         paths[i].pop();
         if (paths[i].empty()) {
           spdlog::debug("Pedestrian {}, Reached Their End Goal", i);
-          currentGoals[i] = VIPRA::__emptyf3d__;
+          currentGoals[i] = VIPRA::_emptyf3d_;
           goalsMet[i] = true;
         } else {
           currentGoals[i] = paths[i].front();
@@ -172,15 +163,14 @@ CalmGoals::updatePedestrianGoals([[maybe_unused]] const ObstacleSet& obsSet,
 }
 
 /**
- * @brief returns the current goal for the pedestrian at index, returns VIPRA::__emptyf3d__ if no current goal
+ * @brief returns the current goal for the pedestrian at index, returns VIPRA::_emptyf3d_ if no current goal
  * 
  * @param index 
  * @return const VIPRA::f3d 
  */
-VIPRA::f3d
-CalmGoals::getCurrentGoal(VIPRA::idx index) const {
+VIPRA::f3d CalmGoals::getCurrentGoal(VIPRA::idx index) const {
   if (paths[index].empty()) {
-    return VIPRA::__emptyf3d__;
+    return VIPRA::_emptyf3d_;
   }
   return paths[index].front();
 }
@@ -191,8 +181,7 @@ CalmGoals::getCurrentGoal(VIPRA::idx index) const {
  * @param index 
  * @return const VIPRA::f3d 
  */
-VIPRA::f3d
-CalmGoals::getEndGoal(VIPRA::idx index) const {
+VIPRA::f3d CalmGoals::getEndGoal(VIPRA::idx index) const {
   return endGoals.at(index);
 }
 
@@ -201,8 +190,7 @@ CalmGoals::getEndGoal(VIPRA::idx index) const {
  * 
  * @return const VIPRA::f3dVec& 
  */
-const VIPRA::f3dVec&
-CalmGoals::getAllCurrentGoals() const noexcept {
+const VIPRA::f3dVec& CalmGoals::getAllCurrentGoals() const noexcept {
   return currentGoals;
 }
 
@@ -211,8 +199,7 @@ CalmGoals::getAllCurrentGoals() const noexcept {
  * 
  * @return const VIPRA::f3dVec& 
  */
-const VIPRA::f3dVec&
-CalmGoals::getAllEndGoals() const noexcept {
+const VIPRA::f3dVec& CalmGoals::getAllEndGoals() const noexcept {
   return endGoals;
 }
 
@@ -223,8 +210,7 @@ CalmGoals::getAllEndGoals() const noexcept {
  * @return true 
  * @return false 
  */
-bool
-CalmGoals::isPedestianGoalMet(VIPRA::idx index) const {
+bool CalmGoals::isPedestianGoalMet(VIPRA::idx index) const {
   return goalsMet.at(index);
 }
 
@@ -234,12 +220,10 @@ CalmGoals::isPedestianGoalMet(VIPRA::idx index) const {
  * @return true 
  * @return false 
  */
-bool
-CalmGoals::isSimulationGoalMet() const noexcept {
+bool CalmGoals::isSimulationGoalMet() const noexcept {
   return std::all_of(goalsMet.begin(), goalsMet.end(), [](bool met) { return met; });
 }
 
-VIPRA::delta_t
-CalmGoals::timeSinceLastGoal(VIPRA::idx index) const {
+VIPRA::delta_t CalmGoals::timeSinceLastGoal(VIPRA::idx index) const {
   return lastGoalTimes.at(index);
 }

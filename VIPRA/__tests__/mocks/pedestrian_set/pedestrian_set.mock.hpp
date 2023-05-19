@@ -8,7 +8,7 @@
 class PedestrianSetMock : public PedestrianSet {
  public:
   PedestrianSetMock() = default;
-  MOCK_METHOD(void, configure, (const VIPRA::Config::Map&), (override));
+  MOCK_METHOD(void, configure, (const VIPRA::CONFIG::Map&), (override));
   MOCK_METHOD(void, initialize, (std::unique_ptr<VIPRA::PedData>), (override));
   MOCK_METHOD(void, updateState, (std::shared_ptr<VIPRA::State>), (override));
   MOCK_METHOD(VIPRA::size, getNumPedestrians, (), (const, override));

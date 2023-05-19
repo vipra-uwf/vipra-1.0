@@ -1,14 +1,11 @@
 
 #include "calm_pedestrian_loader.hpp"
 
-void
-CalmPedestrianLoader::configure(const VIPRA::Config::Map& configMap) {}
+void CalmPedestrianLoader::configure(const VIPRA::CONFIG::Map&) {}
 
-void
-CalmPedestrianLoader::initialize() {}
+void CalmPedestrianLoader::initialize() {}
 
-std::unique_ptr<VIPRA::PedData>
-CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
+std::unique_ptr<VIPRA::PedData> CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
   Json::Value             jsonDocument;
   Json::CharReaderBuilder jsonReader;
   std::ifstream           fileStream;
@@ -65,8 +62,8 @@ CalmPedestrianLoader::LoadPedestrians(const std::string& filePath) const {
     PedestrianLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
   }
 
-  if (inputData->positions.size() < 1 || inputData->masses.size() < 1 || inputData->desiredSpeeds.size() < 1 ||
-      inputData->reactionTimes.size() < 1) {
+  if (inputData->positions.empty() || inputData->masses.empty() || inputData->desiredSpeeds.empty() ||
+      inputData->reactionTimes.empty()) {
     spdlog::error("CalmPedestrianLoader: Pedestrian File Missing Properties");
     PedestrianLoaderException::Throw("Pedestrian File Missing Properties: " + filePath + "\n");
   }

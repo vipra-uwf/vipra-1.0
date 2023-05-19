@@ -4,18 +4,11 @@
 #include <actions/atom.hpp>
 #include <definitions/dsl_types.hpp>
 
-namespace Behaviors {
-
-struct Atom_Be {
-  stateUID state;
-  void     operator()(PedestrianSet&,
-                  ObstacleSet&,
-                  Goals&,
-                  BehaviorContext&,
-                  VIPRA::idx,
-                  VIPRA::delta_t,
-                  std::shared_ptr<VIPRA::State>);
+namespace BHVR {
+struct AtomBe {
+  BHVR::stateUID state;
+  void operator()(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t, VIPRA::State&) const;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

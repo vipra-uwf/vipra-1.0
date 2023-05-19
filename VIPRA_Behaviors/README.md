@@ -589,8 +589,38 @@ The `Behavior Builder` is what constructs `Behavior` objects from .behavior file
 
 ---
 
+# V. Values
 
+## V.1. Numerical Values
 
+Some `Conditions`, `Actions`, and `Events` require a numerical value to be provided in the `Behavior` file.
+
+### V.1.1. Static Values
+
+Numerical values can be provided as a static value.
+
+For Example:
+```
+An !announcement event will 
+  occur after 10 seconds from !start.
+```
+
+### V.1.2. Random Values
+
+Numerical values can also be defined as a range; either as Integers or Decimal values.
+
+For Example:
+```
+An !announcement event will 
+  occur after a random 5.0 to 10.0 seconds from !start.
+```
+In this, the value will be chosen randomly from the values between 5.0 and 10.0 (inclusive).
+
+Adding the decimal point to the number *(5.0)* means it will have a decimal value.
+
+Without the decimal point *(5)* the values will be whole numbers.
+
+---
 # N. Needs
 
 

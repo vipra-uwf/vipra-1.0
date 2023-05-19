@@ -5,13 +5,12 @@
 
 /**
  * @throws
- * @brief Creates a Config::Map from a JSON file at filePath
+ * @brief Creates a CONFIG::Map from a JSON file at filePath
  * 
  * @param filePath Absolute Path to JSON Configuration file
- * @return Config::Map containing the values of the configuration file
+ * @return CONFIG::Map containing the values of the configuration file
  */
-[[nodiscard]] VIPRA::Config::Map
-ConfigurationReader::getConfiguration(const std::string& filePath) {
+VIPRA::CONFIG::Map ConfigurationReader::getConfiguration(const std::string& filePath) {
   Json::Value             jsonDocument;
   Json::CharReaderBuilder jsonReader;
   std::ifstream           fileStream;
@@ -19,17 +18,16 @@ ConfigurationReader::getConfiguration(const std::string& filePath) {
 
   fileStream.open(filePath);
   if (!fileStream.is_open()) {
-    VIPRA::Config::ConfigurationException::Throw("Unable to Open Configuration File: " + filePath);
+    VIPRA::CONFIG::ConfigurationException::error("Unable to Open Configuration File: " + filePath);
   }
 
   if (!Json::parseFromStream(jsonReader, fileStream, &jsonDocument, &errors)) {
     fileStream.close();
-    VIPRA::Config::ConfigurationException::Throw("Unable To Parse Configuration File: " + filePath);
+    VIPRA::CONFIG::ConfigurationException::error("Unable To Parse Configuration File: " + filePath);
   }
   fileStream.close();
 
-  return VIPRA::Config::Map(jsonDocument);
+  return VIPRA::CONFIG::Map(jsonDocument);
 }
 
-void
-ConfigurationReader::configure(const VIPRA::Config::Map&) {}
+void ConfigurationReader::configure(const VIPRA::CONFIG::Map&) {}

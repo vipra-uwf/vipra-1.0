@@ -3,10 +3,10 @@
 
 #include <unordered_map>
 
-#include "configuration/configuration_reader.hpp"
+#include <configuration/configuration_reader.hpp>
 
 void        setFiles(int, char const*[]);
-std::string Log(const std::string& message);
+std::string log(const std::string& message);
 
 std::string generateGetFiles();
 std::string generateIncludes();
@@ -16,6 +16,8 @@ std::string generateFunctionOptions(const std::string& type);
 std::string generateExtractConfigMap();
 std::string generateMain();
 std::string initializeModules();
+std::string turnOffLint();
+std::string turnOnLint();
 
 std::string mainFunctionDefinition();
 std::string generateModules();
@@ -28,7 +30,7 @@ bool                     requireCompiled = true;
 std::string              outputFile;
 std::string              optionsFile;
 std::vector<std::string> includes;
-VIPRA::Config::Map       jsonObj;
+VIPRA::CONFIG::Map       jsonObj;
 
 const std::unordered_map<std::string, std::string> TYPES{{"pedestrian_dynamics_model", "PedestrianDynamicsModel"},
                                                          {"goals", "Goals"},
@@ -45,24 +47,24 @@ const std::unordered_map<std::string, std::string> TYPES{{"pedestrian_dynamics_m
                                                          {"human_behavior_model", "HumanBehaviorModel"},
                                                          {"configuration_writer", "PedestrianConfigWriter"}};
 
-int
-main(int argc, char const* argv[]) {
+int main(int argc, char const* argv[]) {
 
   setFiles(argc, argv);
 
-  ConfigurationReader configurationReader;
-  jsonObj = configurationReader.getConfiguration(optionsFile);
+  jsonObj = ConfigurationReader::getConfiguration(optionsFile);
 
-  std::string functionDecls_Str = generateFunctionDeclarations();
-  std::string objectFunctions_Str{""};
+  std::string functionDeclsStr = generateFunctionDeclarations();
+  std::string objectFunctionsStr;
   for (const auto& [type, className] : TYPES) {
-    objectFunctions_Str += generateObjectFunction(className, type);
+    objectFunctionsStr += generateObjectFunction(className, type);
   }
 
-  std::string includes_Str = generateIncludes();
-  std::string mainFunction_Str = generateMain();
-  std::string getInputFiles_Str = generateGetFiles();
-  std::string extractConfigMap_Str = generateExtractConfigMap();
+  std::string lintOff = turnOffLint();
+  std::string lintOn = turnOnLint();
+  std::string includesStr = generateIncludes();
+  std::string mainFunctionStr = generateMain();
+  std::string getInputFilesStr = generateGetFiles();
+  std::string extractConfigMapStr = generateExtractConfigMap();
 
   std::ofstream mainFile;
   mainFile.open(outputFile);
@@ -71,18 +73,17 @@ main(int argc, char const* argv[]) {
     return -1;
   }
 
-  mainFile << includes_Str << functionDecls_Str << getInputFiles_Str << mainFunction_Str << objectFunctions_Str
-           << extractConfigMap_Str;
+  mainFile << lintOff << includesStr << functionDeclsStr << getInputFilesStr << mainFunctionStr << objectFunctionsStr
+           << extractConfigMapStr << lintOn;
 
   mainFile.close();
 
   return 0;
 }
 
-void
-setFiles(int argc, const char** argv) {
+void setFiles(int argc, const char** argv) {
   if (argc > 4 || argc < 3) {
-    std::cerr << "Usage: generate_main *output file* *options file*\n";
+    std::cerr << "Usage: generateMain *output file* *options file*\n";
     exit(1);
   }
 
@@ -93,9 +94,8 @@ setFiles(int argc, const char** argv) {
   }
 }
 
-std::string
-generateIncludes() {
-  std::string generatedIncludes = "";
+std::string generateIncludes() {
+  std::string generatedIncludes;
   for (const auto& t : TYPES) {
     for (const auto& option : jsonObj[t.first]) {
       const auto& module = option["object"];
@@ -109,27 +109,26 @@ generateIncludes() {
     generatedIncludes += "#include \"" + include + "\"\n";
   }
 
-  generatedIncludes += "#include \"definitions/config_map.hpp\"\n";
   generatedIncludes += "#include <spdlog/spdlog.h>\n";
-  generatedIncludes += "#include <memory>\n";
+  generatedIncludes += "#include <memory>\n\n";
+  generatedIncludes += "#include <definitions/config_map.hpp>\n";
+
   return generatedIncludes;
 }
-std::string
-generateFunctionDeclarations() {
-  std::string generatedDeclarations = "\nVIPRA::Config::Map extractConfigMap(std::string name);";
+std::string generateFunctionDeclarations() {
+  std::string generatedDeclarations = "\nVIPRA::CONFIG::Map extractConfigMap(std::string name);";
 
   for (const auto& [type, className] : TYPES) {
-    generatedDeclarations += "std::unique_ptr<" + className + "> generate" + className +
-                             "(std::string id, const VIPRA::Config::Map& configMap);\n";
+    generatedDeclarations += "std::unique_ptr<" + className + "> generate" +=
+        className + "(const std::string& id, const VIPRA::CONFIG::Map& configMap);\n";
   }
 
   return generatedDeclarations;
 }
 
-std::string
-generateObjectFunction(const std::string& className, const std::string& type) {
+std::string generateObjectFunction(const std::string& className, const std::string& type) {
   std::string generatedFunction = "\nstd::unique_ptr<" + className + "> generate" + className +
-                                  "(std::string id, const VIPRA::Config::Map& configMap)\n"
+                                  "(const std::string& id, const VIPRA::CONFIG::Map& configMap)\n"
                                   "{\n";
 
   generatedFunction += generateFunctionOptions(type);
@@ -137,36 +136,34 @@ generateObjectFunction(const std::string& className, const std::string& type) {
   return generatedFunction;
 }
 
-std::string
-generateFunctionOptions(const std::string& type) {
-  std::string generatedFunction{""};
+std::string generateFunctionOptions(const std::string& type) {
+  std::string generatedFunction;
   for (const auto& option : jsonObj[type]) {
     const auto& module = option["object"];
     if (!requireCompiled || module["compiled"]) {
-      generatedFunction += Log("Creating " + type + " Implementation") + "\n\tif(id==\"" + module["id"].asString() +
+      generatedFunction += log("Creating " + type + " Implementation") + "\n\tif(id==\"" + module["id"].asString() +
                            "\"){\n\t\tstd::unique_ptr<" + module["className"].asString() + "> " + module["name"].asString() +
                            " = std::make_unique<" + module["className"].asString() + ">();\n\t\t" +
-                           Log("Configuring " + type + " Module: ID: " + module["id"].asString()) + "\n\t\t" +
+                           log("Configuring " + type + " Module: ID: " + module["id"].asString()) + "\n\t\t" +
                            module["name"].asString() + "->configure(configMap);" + "\n\t\treturn " +
                            module["name"].asString() + ";" + "\n\t}";
     }
   }
-  generatedFunction +=
-      "\n\tthrow std::runtime_error(\"No Valid Module of Type: " + type + " Was Chosen. Provided ID: \" + id);";
+  generatedFunction += "\n\tspdlog::error(\"No Valid Module of Type: " + type + "Was Chosen. Provided ID: {} \",  id); ";
+  generatedFunction += "\n\texit(1);";
   generatedFunction += "\n\treturn nullptr;\n}";
   return generatedFunction;
 }
 
-std::string
-generateExtractConfigMap() {
-  return {"\nVIPRA::Config::Map extractConfigMap(std::string name)"
+std::string generateExtractConfigMap() {
+  return {"\nVIPRA::CONFIG::Map extractConfigMap(std::string name)"
           "\n{"
-          "\n\tVIPRA::Config::Map configMap;"
+          "\n\tVIPRA::CONFIG::Map configMap;"
           "\n\tfor(unsigned int i = 0; i < "
           "moduleParams[name].size(); i++)"
           "\n\t{"
-          "\n\tauto attribute = moduleParams[name].getMemberNames()[i];"
-          "\n\tauto value = moduleParams[name][attribute];"
+          "\n\t\tauto attribute = moduleParams[name].getMemberNames()[i];"
+          "\n\t\tauto value = moduleParams[name][attribute];"
           "\n\t\tconfigMap[attribute] = value;"
           "\n\t}"
           "\n"
@@ -174,18 +171,17 @@ generateExtractConfigMap() {
           "\n}"};
 }
 
-std::string
-generateMain() {
-  std::string mainFunction = "";
+std::string generateMain() {
+  std::string mainFunction;
 
   mainFunction += mainFunctionDefinition();
   mainFunction += "\n\tspdlog::set_level(spdlog::level::debug);"
                   "\n\tspdlog::info(\"Set Logging Level To Debug\");";
   mainFunction += makeModuleConfigs();
   mainFunction += generateModules();
-  mainFunction += Log("Generating Modules");
+  mainFunction += log("Generating Modules");
   mainFunction += initializeModules();
-  mainFunction += Log("Setting Up Output Handlers");
+  mainFunction += log("Setting Up Output Handlers");
   mainFunction += outputSetup();
   mainFunction += runSim();
   mainFunction += "\n}";
@@ -193,56 +189,51 @@ generateMain() {
   return mainFunction;
 }
 
-std::string
-initializeModules() {
+std::string initializeModules() {
   //Call config writer before pedestrian loader
-  return Log("Initializing Map Loader") + "\n\tmap_loader->initialize();\n\t" + Log("Loading Map") +
-         "\n\tauto map = map_loader->LoadMap(obstacleFile);\n\t" + Log("Initializing Obstacle Set") +
-         "\n\tobstacle_set->initialize(std::move(map));\n\t" + Log("Writing Pedestrian Config And Loading Pedestrians") +
+  return log("Initializing Map Loader") + "\n\tmap_loader->initialize();\n\t" + log("Loading Map") +
+         "\n\tauto map = map_loader->LoadMap(obstacleFile);\n\t" + log("Initializing Obstacle Set") +
+         "\n\tobstacle_set->initialize(std::move(map));\n\t" + log("Writing Pedestrian Config And Loading Pedestrians") +
          "\n\tauto peds = pedestrian_loader->LoadPedestrians(configuration_writer->buildPedestrians(pedestrianFile));\n\t" +
-         Log("Initializing Pedestrian Set") + "\n\tpedestrian_set->initialize(std::move(peds));\n\t" +
-         Log("Initializing Goals") + "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" +
-         Log("Initializing Pedestrian Dynamics Model") +
+         log("Initializing Pedestrian Set") + "\n\tpedestrian_set->initialize(std::move(peds));\n\t" +
+         log("Initializing Goals") + "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" +
+         log("Initializing Pedestrian Dynamics Model") +
          "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +
-         Log("Initializing Human Behavior Model") +
+         log("Initializing Human Behavior Model") +
          "\n\thuman_behavior_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +
-         Log("Initializing Simulation") + "\n\tsimulation->initialize();\n\t";
+         log("Initializing Simulation") + "\n\tsimulation->initialize();\n\t";
 }
 
-std::string
-mainFunctionDefinition() {
-  return "\nVIPRA::Config::Map simulationJsonConfig;"
-         "\nVIPRA::Config::Map moduleParams;"
+std::string mainFunctionDefinition() {
+  return "\nVIPRA::CONFIG::Map simulationJsonConfig;"
+         "\nVIPRA::CONFIG::Map moduleParams;"
          "\nint main(int argc, const char **argv) {"
          "\n\tgetInputFiles(argc, argv);"
-         "\n\tConfigurationReader configurationReader;"
-         "\n\tsimulationJsonConfig = configurationReader.getConfiguration(configFile);"
-         "\n\tmoduleParams = configurationReader.getConfiguration(paramsFile);";
+         "\n\tsimulationJsonConfig = ConfigurationReader::getConfiguration(configFile);"
+         "\n\tmoduleParams = ConfigurationReader::getConfiguration(paramsFile);";
 }
 
-std::string
-generateModules() {
-  std::string str{""};
+std::string generateModules() {
+  std::string str;
   for (const auto& [type, className] : TYPES) {
-    str += "\n\tstd::unique_ptr<" + className + "> " + type + " = generate" + className +
-           "(simulationJsonConfig[\"modules\"][\"" + type + "\"].asString(), " + type + "Config);";
+    str += "\n\tstd::unique_ptr<" + className + "> " += type + " = generate" +=
+        className + R"((simulationJsonConfig["modules"][")" += type + "\"].asString(), " += type + "Config);";
+  }
+
+  str += "\n\tclock->start();";
+  return str;
+}
+
+std::string makeModuleConfigs() {
+  std::string str;
+  for (const auto& [type, className] : TYPES) {
+    str += "\n\tVIPRA::CONFIG::Map " + type + "Config =  extractConfigMap(\"" += type + "\");";
   }
 
   return str;
 }
 
-std::string
-makeModuleConfigs() {
-  std::string str{""};
-  for (const auto& [type, className] : TYPES) {
-    str += "\n\tVIPRA::Config::Map " + type + "Config =  extractConfigMap(\"" + type + "\");";
-  }
-
-  return str;
-}
-
-std::string
-generateGetFiles() {
+std::string generateGetFiles() {
   return {"\nstd::string paramsFile;"
           "\nstd::string configFile;"
           "\nstd::string pedestrianFile;"
@@ -263,8 +254,7 @@ generateGetFiles() {
           "\n}"};
 }
 
-std::string
-runSim() {
+std::string runSim() {
   return "\n\tsimulation->run(*goals,"
          "*pedestrian_set,"
          "*obstacle_set,"
@@ -277,12 +267,17 @@ runSim() {
          "\n\toutput_data_writer->writeToDocument();";
 }
 
-std::string
-outputSetup() {
+std::string outputSetup() {
   return "\n\toutput_data_writer->initializeOutputFile(outputFile);";
 }
 
-std::string
-Log(const std::string& message) {
+std::string log(const std::string& message) {
   return "spdlog::info( \"" + message + "\");\n";
+}
+
+std::string turnOffLint() {
+  return "\n// NOLINTBEGIN\n";
+}
+std::string turnOnLint() {
+  return "\n// NOLINTEND\n";
 }
