@@ -1,4 +1,6 @@
 #include <spdlog/spdlog.h>
+#include <unordered_set>
+#include <iostream>
 
 #include "pathfinding.hpp"
 
@@ -9,7 +11,14 @@ struct AGridPoint {
   AGridPoint* parent = nullptr;
   float       g;
   float       f;
+
+  bool operator==(const AGridPoint rightObject) const {
+    return (node == rightObject.node && parent == rightObject.parent && g == rightObject.g && f == rightObject.f);
+  }
 };
+
+//breadcrumb approach with a key-value pair of grid space and next grid space.
+std::unordered_map<AGridPoint*, AGridPoint*> breadCrumbMap;
 
 class GridPointCompare {
  public:
@@ -67,7 +76,6 @@ makeGridPoint(GridPoint* node, AGridPoint* parent, float g, float f, std::vector
 
 std::queue<VIPRA::f3d>
 pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
-
   // find grid GridPoints the start and end reside in (flipped since the path is
   // created in reverse)
   GridPoint* first = graph.search(end);
@@ -76,7 +84,7 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
   // create datastructures
   std::vector<AGridPoint*> allocList;
   pQueue                   open_list;
-  std::vector<AGridPoint*> closed_list{};
+  std::unordered_set<GridPoint*> closed_list;
 
   // add start first node to "open list"
   open_list.emplace(makeGridPoint(first, nullptr, 0, cost(first, last), allocList));
@@ -97,25 +105,37 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
 
     // move current node to the closed list
     open_list.pop();
-    closed_list.push_back(curr);
+    closed_list.insert(curr->node);
 
-    for (GridPoint* neighbor : curr->node->adj) {
-      if (!std::any_of(closed_list.begin(), closed_list.end(), [&](AGridPoint* n) { return n->node == neighbor; })) {
-        // if the neighbor hasn't been visited yet, calculate it's cost
-        float       g = curr->g + neighbor->center.distanceTo(curr->node->center);
-        float       f = g + cost(neighbor, first);
-        AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, g, f, allocList);
+    // if (goal is the same) {
+    if (breadCrumbMap.count(curr) > 0) {
+      open_list.push(breadCrumbMap[curr]);  //push the neighbor that led from the breadcrumb into the queue
+      // std::cout << "hi" << std::endl;
+      continue;
+    }//}
+    else {
+      // std::cout << "Hello";
 
-        auto found = open_list.search(neighborGridPoint);
-        if (!found.has_value()) {
-          // if the neighbor isn't already in the open list, add it
-          open_list.push(neighborGridPoint);
-        } else {
-          // if the neighbor is in the list check if the new path to it is
-          // cheaper, if so replace its values with the cheaper path
-          if (neighborGridPoint->g < found.value()->g) {
-            found.value()->g = neighborGridPoint->g;
-            found.value()->parent = neighborGridPoint->parent;
+      for (GridPoint* neighbor : curr->node->adj) {
+        if (closed_list.find(neighbor) == closed_list.end()) {        
+          // if the neighbor hasn't been visited yet, calculate it's cost
+          float       g = curr->g + neighbor->center.distanceTo(curr->node->center);
+          float       f = g + cost(neighbor, first);
+          AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, g, f, allocList);
+
+          auto found = open_list.search(neighborGridPoint);
+          if (!found.has_value()) {
+            // if the neighbor isn't already in the open list, add it
+            breadCrumbMap[curr] = neighborGridPoint;    //may have to assign a goal to this later somehow
+            open_list.push(neighborGridPoint);
+          } else {
+            // if the neighbor is in the list check if the new path to it is
+            // cheaper, if so replace its values with the cheaper path
+            if (neighborGridPoint->g < found.value()->g) {
+              found.value()->g = neighborGridPoint->g;
+              found.value()->parent = neighborGridPoint->parent;
+              breadCrumbMap[found.value()] = neighborGridPoint;
+            }
           }
         }
       }

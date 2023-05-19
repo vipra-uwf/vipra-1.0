@@ -1,8 +1,8 @@
 
 
 add_subdirectory(goals)
-add_subdirectory(pedestrian_set)
-add_subdirectory(pedestrian_dynamics_model)
-add_subdirectory(pedestrian_loader)
-add_subdirectory(maploader)
-add_subdirectory(obstacle_set)
+# add_subdirectory(pedestrian_set)
+# add_subdirectory(pedestrian_dynamics_model)
+# add_subdirectory(pedestrian_loader)
+# add_subdirectory(maploader)
+# add_subdirectory(obstacle_set)
