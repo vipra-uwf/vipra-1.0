@@ -3,10 +3,13 @@ BASE_DIR = ./Base
 CODE_GEN_DIR = ${BASE_DIR}/code_generation
 
 release:
-	make build DEBUG=-DDEBUG_MODE=OFF
+	make build DEBUG=-DDEBUG_MODE=OFF PROF=-DPROF_MODE=ON
 
 debug:
-	make build DEBUG=-DDEBUG_MODE=ON
+	make build DEBUG=-DDEBUG_MODE=ON PROF=-DPROF_MODE=ON
+
+profiling:
+	make build DEBUG=-DDEBUG_MODE=OFF PROF=-DPROF_MODE=ON
 
 build: start_server build_gen_main run_gen_main build_sim
 
@@ -21,7 +24,7 @@ run_gen_main:
 	${CODE_GEN_DIR}/generate_main main.cpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
 
 build_sim:
-	cmake -B build . ${DEBUG}
+	cmake -B build . ${DEBUG} ${PROF}
 	cmake --build build
 	
 clean:
@@ -29,7 +32,6 @@ clean:
 	rm main.cpp
 	rm output.json
 	rm VIPRA_SIM
-
 
 .PHONY:
 	start_server

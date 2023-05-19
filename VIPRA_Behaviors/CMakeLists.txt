@@ -15,6 +15,8 @@ set(HEADERS
   ${INCLUDE_DIR}/behavior/behavior_builder.hpp
 )
 
+message(STATUS ${SRCS})
+
 add_library(
   ${LIB_NAME}
   STATIC
@@ -22,7 +24,7 @@ add_library(
 )
 
 target_compile_options(
-  ${LIB_NAME} 
+  ${LIB_NAME}
   PRIVATE
   $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>

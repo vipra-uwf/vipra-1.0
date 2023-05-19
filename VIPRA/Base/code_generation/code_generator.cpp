@@ -165,7 +165,6 @@ std::string generateExtractConfigMap() {
           "\n\t\tauto attribute = moduleParams[name].getMemberNames()[i];"
           "\n\t\tauto value = moduleParams[name][attribute];"
           "\n\t\tconfigMap[attribute] = value;"
-          "\n\t\tspdlog::debug(\"Config Value: {} = {}\", attribute, \"\");"
           "\n\t}"
           "\n"
           "\n\treturn configMap;"

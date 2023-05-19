@@ -9,13 +9,14 @@ The idea behind the project is for researchers to be able to test their pedestri
 
 The following are the requirements for running the VIPRA simulation.
 
-1. `NodeJS`
-2. `CMake`
+1. `NodeJS` - version 17.0^
+2. `CMake` - version 3.14^
 3. `Make`
+4. C++ compiler that supports C++17
 
 Following are additional requirements for development
 
-1. `ANTLR4`
+1. `ANTLR4` - version 4.11^
 
 ---
 # SE. Setup
@@ -30,15 +31,15 @@ There are three main steps for setting up the simulation. *(This is temporary, a
 In `/ChainBuilder/` run:
 
 1. `npm install`
-2. `npm build`
+2. `npm run build`
 3. `npm pack`
 
-## SE.3. VIPRA Launcher
+## Se.3. VIPRA Launcher
 
 In `/VIPRA_Launcher/server/` run:
 
 1. `npm install`
-2. `npm build`
+2. `npm run build`
 
 If you encounter errors with `npm install`:
 
@@ -49,15 +50,17 @@ If you encounter errors with `npm install`:
 
 In `/VIPRA/` run:
 
-1. `make BuildAll` for compiling in release mode
+1. `make release` for compiling in release mode
 or
-1. `make DebugBuildAll` for compiling in debug mode
+1. `make debug` for compiling in debug mode
 
 ---
 # Ru. Running
 
 In `/VIPRA/` run:
 `./VIPRA_SIM *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path* *Output File Path*`
+
+An example `sim.config` and `module_params.json` are found in `SimConfigs/ExampleConfig/`
 
 ---
 
@@ -71,6 +74,7 @@ We have a Python script for viewing the output of a simulation.
 
 To run:
 1. `python3 visualize.py *Path to output.json* *Path to Obstacle File*`
+
 ---
 # M. Modules
 
