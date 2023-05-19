@@ -21,7 +21,7 @@ Following are additional requirements for development
 ---
 # SE. Setup
 
-There are three main steps for setting up the simulation. *(This is temporary, a more permanent setup is needed)*
+There are three main steps for setting up the simulation. *(This is temporary, a more permanent setup will be created in the future)*
 1. ChainBuilder setup
 2. VIPRA Launcher setup
 3. Simulation Compilation
@@ -46,14 +46,26 @@ If you encounter errors with `npm install`:
 1. Delete `package-lock.json`
 2. Check that `typechain` in `package.json` points to the tarball created for ChainBuilder
 
+If you encounter errors with `npm run build`:
+
+*if you only get type errors, try moving on to the simulation compilation step*
+
+1. Make sure you have Node 17 or later
+2. Check that the `ChainBuilder` tarball was created properly
+
 ## SE.4. Simulation Compilation
 
 In `/VIPRA/` run:
 
 1. `make release` for compiling in release mode
+ 
 or
+
 1. `make debug` for compiling in debug mode
 
+or
+
+1. `make profiling` for compiling in release mode with profiling output
 ---
 # Ru. Running
 
