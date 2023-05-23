@@ -1,6 +1,6 @@
 #include <spdlog/spdlog.h>
 #include <unordered_set>
-#include <iostream>
+#include <unordered_map>
 
 #include "pathfinding.hpp"
 
@@ -17,8 +17,25 @@ struct AGridPoint {
   }
 };
 
+struct AGridPointHash {
+  std::size_t operator() (const AGridPoint& object) const {
+    std::size_t seed = 0;
+    
+    seed ^= GridPointHash{}(object.node) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= reinterpret_cast<std::uintptr_t>(object.parent) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= std::hash<double>{}(object.g) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= std::hash<double>{}(object.f) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+
+    return seed;
+  }
+  std::size_t operator()(const AGridPoint* object) const {
+    return operator()(*object);
+  }
+}; 
+
 //breadcrumb approach with a key-value pair of grid space and next grid space.
-std::unordered_map<AGridPoint*, AGridPoint*> breadCrumbMap;
+std::unordered_map<AGridPoint*, AGridPoint*, AGridPointHash> breadCrumbMap;
+
 
 class GridPointCompare {
  public:
@@ -110,12 +127,9 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
     // if (goal is the same) {
     if (breadCrumbMap.count(curr) > 0) {
       open_list.push(breadCrumbMap[curr]);  //push the neighbor that led from the breadcrumb into the queue
-      // std::cout << "hi" << std::endl;
       continue;
     }//}
     else {
-      // std::cout << "Hello";
-
       for (GridPoint* neighbor : curr->node->adj) {
         if (closed_list.find(neighbor) == closed_list.end()) {        
           // if the neighbor hasn't been visited yet, calculate it's cost

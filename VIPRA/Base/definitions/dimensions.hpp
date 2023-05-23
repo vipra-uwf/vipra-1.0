@@ -302,6 +302,18 @@ struct f3d {
 using f2dVec = std::vector<f2d>;
 using f3dVec = std::vector<f3d>;
 
+struct F3dHash {
+  std::size_t operator() (const f3d& object) const {
+    std::size_t seed = 0;
+
+    seed ^= std::hash<float>{}(object.x) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= std::hash<float>{}(object.y) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= std::hash<float>{}(object.z) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+
+    return seed;
+  }
+};
+
 inline constexpr const f2d _emptyf2d_ =  // NOLINT
     VIPRA::f2d{std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
 inline constexpr const f3d _emptyf3d_ =  // NOLINT

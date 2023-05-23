@@ -44,7 +44,7 @@ for obj in data["Paths"]:
   lastx = -1
   lasty = -1
   c = numpy.random.rand(3,)
-  for i in obj["points"]:
+  for j, i in enumerate(obj["points"]):
     print(i)
     x = i["x"]
     y = i["y"]

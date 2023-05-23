@@ -5,6 +5,16 @@
 
 namespace CalmPath {
 
+bool 
+GridPoint::vectorEq(const std::vector<GridPoint*>& first, const std::vector<GridPoint*>& second) const {
+  if (first.size() != second.size()) {
+    return false;
+  } else {
+    return std::equal(first.begin(), first.end(), second.begin());
+  }
+}
+
+
 inline bool
 inside(VIPRA::f3d point, VIPRA::f3d center, float size) {
   VIPRA::f3d tl{center.x - size / 2, center.y + size / 2};

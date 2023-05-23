@@ -10,7 +10,32 @@ struct GridPoint {
   std::vector<GridPoint*> adj;
   bool                    traversable;
   bool                    buffer;
+
   GridPoint(VIPRA::f3d pos, bool trav, bool buff) : center(pos), adj(), traversable(trav), buffer(buff) {}
+  
+  bool vectorEq(const std::vector<GridPoint*>& first, const std::vector<GridPoint*>& second) const; 
+  bool operator==(const GridPoint& rightObject) const {
+    return (center == rightObject.center && vectorEq(adj, rightObject.adj) && traversable == rightObject.traversable && buffer == rightObject.buffer);
+  }
+};
+
+struct GridPointHash {
+  std::size_t operator() (const GridPoint& object) const {
+    std::size_t seed = 0;
+
+    seed ^= VIPRA::F3dHash{}(object.center) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    for (const GridPoint* adjPoint : object.adj) {
+      seed ^= reinterpret_cast<std::uintptr_t>(adjPoint) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    }
+    seed ^= std::hash<bool>{}(object.traversable) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= std::hash<bool>{}(object.buffer) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+
+    return seed;
+  }
+  
+  std::size_t operator()(const GridPoint* object) const {
+    return operator()(*object);
+  }
 };
 
 class PathingGraph {
