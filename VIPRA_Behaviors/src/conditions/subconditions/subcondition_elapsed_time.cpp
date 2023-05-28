@@ -11,8 +11,8 @@ namespace BHVR {
  * @param time : 
  * @param event : 
  */
-SubConditionElapsedTimeFromEvent::SubConditionElapsedTimeFromEvent(VIPRA::delta_t time, VIPRA::idx ev)
-    : requiredTime(time), event(ev) {}
+SubConditionElapsedTimeFromEvent::SubConditionElapsedTimeFromEvent(VIPRA::time_s time, VIPRA::idx ev)
+    : latch(time), event(ev) {}
 
 /**
  * @brief Returns true if the required simulated time has elapsed from the event starting.
@@ -22,10 +22,15 @@ SubConditionElapsedTimeFromEvent::SubConditionElapsedTimeFromEvent(VIPRA::delta_
  * @return false
  */
 bool SubConditionElapsedTimeFromEvent::operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
-                                                  const BehaviorContext& context, VIPRA::idx, VIPRA::delta_t) const {
+                                                  const BehaviorContext& context, VIPRA::idx, VIPRA::delta_t) {
+  const VIPRA::time_s currTime = context.elapsedTime;
+  if (latch.check(currTime)) {
+    return true;
+  }
+
   const auto& ev = context.events[event];
-  if (ev.hasOccurred()) {
-    return ev.timeSinceLastStart(context) >= requiredTime;
+  if (ev.isOccurring()) {
+    latch.latch(currTime);
   }
 
   return false;

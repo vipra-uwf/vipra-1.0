@@ -2,7 +2,7 @@ lexer grammar lexer_rules;
 
 COMMENT : '/*' .*? '*/'    -> skip;
 LINE_COMMENT: '//' ~[\r\n]*    -> skip;
-WS : [ \t\r\n]+ -> channel(HIDDEN) ;
+WS : [ \t\r\n]+ -> channel(HIDDEN);
 
 fragment A:[aA];
 fragment B:[bB];
@@ -67,9 +67,10 @@ EXACTLY: E X A C T L Y;
 EVERY: E V E R Y;
 EVERYONE: E V E R Y O N E;
 
-FASTER: F A S T E R;
+FOR: F O R;
 FROM: F R O M;
 FRONT: F R O N T;
+FASTER: F A S T E R;
 
 GIVEN: G I V E N;
 
@@ -97,6 +98,7 @@ POSSIBLE: P O S S I B L E;
 RANDOM: R A N D O M;
 REQUIRED: R E Q U I R E D;
 
+SECOND: S E C O N D;
 SECONDS: S E C O N D S;
 SLOWER: S L O W E R;
 STATES: S T A T E S;

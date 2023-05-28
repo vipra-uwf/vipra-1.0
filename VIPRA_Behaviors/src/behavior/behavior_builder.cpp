@@ -9,6 +9,8 @@
 
 #include <behavior/behavior_builder.hpp>
 
+#include <definitions/type_definitions.hpp>
+#include <optional>
 #include <selectors/selector_everyone.hpp>
 #include <selectors/selector_exactly_N.hpp>
 #include <selectors/selector_percent.hpp>
@@ -20,7 +22,6 @@
 #include <conditions/subconditions/subcondition_elapsed_time.hpp>
 #include <conditions/subconditions/subcondition_event.hpp>
 #include <conditions/subconditions/subcondition_event_occurring.hpp>
-#include <conditions/subconditions/subcondition_event_one_time.hpp>
 #include <conditions/subconditions/subcondition_start.hpp>
 
 #include <definitions/directions.hpp>
@@ -176,18 +177,6 @@ void BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser:
     return;
   }
 
-  if (subcond->condition_Event_One_Time()) {
-    std::string evName = subcond->condition_Event_One_Time()->EVNT()->toString();
-    bool        onstart = (subcond->condition_Event_One_Time()->STARTS() != nullptr);
-    spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" {})",
-                  currentBehavior.getName(),
-                  evName,
-                  onstart ? "starts" : "ends");
-
-    condition.addSubCondition(SubConditionEventOneTime(onstart, getEvent(evName)));
-    return;
-  }
-
   spdlog::error("Behavior Error: No Valid SubCondition For: \"{}\"", subcond->getText());
   exit(1);
 }
@@ -332,6 +321,42 @@ float BehaviorBuilder::getValue(BehaviorParser::Value_numberContext* value) cons
   exit(1);
 }
 
+VIPRA::time_range_s BehaviorBuilder::getRange(BehaviorParser::Value_numberContext* value) {
+
+  VIPRA::time_range_s ret;
+
+  if (value->number_random()) {
+    auto* ctx = value->number_random();
+
+    if (ctx->random_float()) {
+      auto numbers = ctx->random_float()->FLOAT();
+      ret.first = std::stof(numbers[0]->toString());
+      ret.second = std::stof(numbers[1]->toString());
+    } else {
+      auto numbers = ctx->random_number()->NUMBER();
+      ret.first = std::round(std::stof(numbers[0]->toString()));
+      ret.second = std::round(std::stof(numbers[1]->toString()));
+    }
+
+    return ret;
+  }
+
+  if (value->FLOAT()) {
+    float v = std::stof(value->FLOAT()->toString());
+    ret = {v, v};
+    return ret;
+  }
+
+  if (value->NUMBER()) {
+    float v = std::stof(value->NUMBER()->toString());
+    ret = {v, v};
+    return ret;
+  }
+
+  spdlog::error("Behavior Error: Unable To Get Value For Behavior: \"{}\"", currentBehavior.getName());
+  exit(1);
+}
+
 /**
  * @brief Makes a random float between min and max (inclusive)
  * 
@@ -351,7 +376,7 @@ float BehaviorBuilder::makeRandomValue(float min, float max) const {
  * @brief Creates a vector with all of the strings for each type in a given id_list
  * 
  * @param types : id_list vector
- * @return std::vector<std::string> 
+ * @return std::vector<std::string>
  */
 std::vector<std::string> BehaviorBuilder::getListStrs(const std::vector<antlr4::tree::TerminalNode*>& types) {
   std::vector<std::string> strs(types.size());
@@ -525,6 +550,16 @@ antlrcpp::Any BehaviorBuilder::visitConditional_action(BehaviorParser::Condition
 
   const auto typeStr = ctx->ID()->toString();
   const auto type = getType(typeStr);
+
+  if (ctx->duration()) {
+    const auto timeRange = getRange(ctx->duration()->value_number());
+    spdlog::debug("Behavior \"{}\": Adding Time Range To Action For {}, Range: {}-{}",
+                  currentBehavior.getName(),
+                  typeStr,
+                  timeRange.first,
+                  timeRange.second);
+    action.addDuration(timeRange, currSeed);
+  }
 
   spdlog::debug("Behavior \"{}\": Adding Conditional Action For {}", currentBehavior.getName(), typeStr);
   action.addCondition(buildCondition(ctx->condition()));

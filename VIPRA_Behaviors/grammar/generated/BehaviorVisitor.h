@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.12.0
+// Generated from Behavior.g4 by ANTLR 4.13.0
 
 #pragma once
 
@@ -28,6 +28,8 @@ public:
     virtual std::any visitEvent_Single(BehaviorParser::Event_SingleContext *context) = 0;
 
     virtual std::any visitEvent_Lasting(BehaviorParser::Event_LastingContext *context) = 0;
+
+    virtual std::any visitEvent_Individual(BehaviorParser::Event_IndividualContext *context) = 0;
 
     virtual std::any visitCondition(BehaviorParser::ConditionContext *context) = 0;
 
@@ -97,9 +99,9 @@ public:
 
     virtual std::any visitAction_atom_Percent_Walk_Speed(BehaviorParser::Action_atom_Percent_Walk_SpeedContext *context) = 0;
 
-    virtual std::any visitAction_Push(BehaviorParser::Action_PushContext *context) = 0;
-
     virtual std::any visitAction_Be(BehaviorParser::Action_BeContext *context) = 0;
+
+    virtual std::any visitDuration(BehaviorParser::DurationContext *context) = 0;
 
     virtual std::any visitDeclaration(BehaviorParser::DeclarationContext *context) = 0;
 

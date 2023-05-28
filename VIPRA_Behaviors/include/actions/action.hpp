@@ -8,14 +8,13 @@
 #include <actions/atom.hpp>
 #include <conditions/condition.hpp>
 #include <definitions/behavior_context.hpp>
+#include <definitions/type_definitions.hpp>
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
+#include <util/timed_latch.hpp>
 
 namespace BHVR {
-/**
- * An action is something the pedestrian does, such as stopping movement.
- */
 class Action {
  public:
   ~Action() = default;
@@ -29,10 +28,14 @@ class Action {
 
   void addCondition(const Condition&);
   void addAtom(const Atom&);
+  void addDuration(VIPRA::time_range_s, BHVR::seed);
 
  private:
-  std::vector<Atom>        atoms;
-  std::optional<Condition> condition;
+  std::vector<Atom>                    atoms;
+  std::optional<Condition>             condition;
+  std::optional<BHVR::LatchCollection> latches;
+
+  inline bool evaluate(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t);
 };
 }  // namespace BHVR
 

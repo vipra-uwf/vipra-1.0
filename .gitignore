@@ -1,10 +1,3 @@
-# VIPRA
-generate_main
-main.cpp
-generated_main
-generated_main.cpp
-main
-VIPRAsim
 *.exe
 *.out
 *.o
@@ -12,24 +5,21 @@ VIPRAsim
 *.gif
 *.png
 *.csv
-build
-rapidxml
-rapidxml-1.13
-output.json
-pedestrian_trajectory.json
-Test
-temp
-VIPRA_SIM
-simbuild
-genbuild
-testBuild
-warnings.txt
-Vipra_tests
-_build
-Behavior_Tests
-output.gif
-.cache
 
+# VIPRA
+VIPRA_SIM
+main.cpp
+generate_main
+build
+build_debug
+
+# Output
+output.json
+
+# Tests
+Test
+Behavior_Tests
+Vipra_tests
 
 # VIPRA Launcher
 node_modules
@@ -45,10 +35,10 @@ config.json
 # 3rd Party
 *.mdj
 odeint-v2
-.vagrant
 .antlr
 .idea
 package-lock.json
 
 # VSCode
 .vscode
+.cache

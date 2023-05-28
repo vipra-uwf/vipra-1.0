@@ -3,9 +3,9 @@ grammar values;
 import lexer_rules;
 
 value_number:
+  number_random |
   NUMBER |
-  FLOAT |
-  number_random
+  FLOAT
   ;
 
 number_random:
@@ -14,9 +14,9 @@ number_random:
   ;
 
 random_number:
-  AN RANDOM NUMBER TO NUMBER
+  AN RANDOM NUMBER (TO | '-') NUMBER
   ;
 
 random_float:
-  AN RANDOM FLOAT TO FLOAT
+  AN RANDOM FLOAT (TO | '-') FLOAT
   ;

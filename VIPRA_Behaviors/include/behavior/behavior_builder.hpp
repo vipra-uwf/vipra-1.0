@@ -1,10 +1,12 @@
 #ifndef DSL_HUMAN_BEHAVIOR_HPP
 #define DSL_HUMAN_BEHAVIOR_HPP
 
+#include <definitions/type_definitions.hpp>
 #include <filesystem>
 #include <unordered_map>
 
 #include <generated/BehaviorBaseVisitor.h>
+#include <generated/BehaviorParser.h>
 
 #include <selectors/subselector.hpp>
 
@@ -13,6 +15,7 @@
 #include <events/event.hpp>
 
 #include <util/caseless_str_comp.hpp>
+
 
 namespace BHVR {
 
@@ -49,8 +52,9 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   SubSelector buildSubSelector(BehaviorParser::Ped_SelectorContext*);
 
-  BHVR::stateUID getState(const std::string&);
-  VIPRA::idx     getEvent(const std::string&);
+  BHVR::stateUID             getState(const std::string&);
+  VIPRA::idx                 getEvent(const std::string&);
+  static VIPRA::time_range_s getRange(BehaviorParser::Value_numberContext*);
 
   BHVR::typeUID                   getType(const std::string&) const;
   BHVR::typeUID                   getGroup(BehaviorParser::Ped_SelectorContext*) const;

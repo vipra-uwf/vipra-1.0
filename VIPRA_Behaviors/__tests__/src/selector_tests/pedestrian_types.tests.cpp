@@ -1,17 +1,15 @@
 #include <gtest/gtest.h>
 #include <filesystem>
 
-#include <definitions/../../__tests__/mocks/goals/goals.mock.hpp>
-#include <definitions/../../__tests__/mocks/obstacle_set/obstacle_set.mock.hpp>
-#include <definitions/../../__tests__/mocks/pedestrian_set/pedestrian_set.mock.hpp>
+#include <mocks/goals/goals.mock.hpp>
+#include <mocks/obstacle_set/obstacle_set.mock.hpp>
+#include <mocks/pedestrian_set/pedestrian_set.mock.hpp>
 
 #include <definitions/pedestrian_types.hpp>
 
-using ::testing::Return;
-using ::testing::ReturnRef;
 
 TEST(PedstrianTypes, ForEach) {
-  BHVR::pType sut1{15};
+  BHVR::Ptype sut1{15};
 
   BHVR::typeUID totalTypes = 0;
   BHVR::typeUID nextType = 1;
@@ -24,7 +22,7 @@ TEST(PedstrianTypes, ForEach) {
 
   EXPECT_EQ(totalTypes, 4);
 
-  BHVR::pType sut2{31};
+  BHVR::Ptype sut2{31};
 
   totalTypes = 0;
   nextType = 1;
@@ -37,7 +35,7 @@ TEST(PedstrianTypes, ForEach) {
 
   EXPECT_EQ(totalTypes, 5);
 
-  BHVR::pType sut3{63};
+  BHVR::Ptype sut3{63};
 
   totalTypes = 0;
   nextType = 1;

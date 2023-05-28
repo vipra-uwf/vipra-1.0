@@ -5,6 +5,7 @@
 
 #include <conditions/condition.hpp>
 #include <definitions/behavior_context.hpp>
+#include "util/bool_latch.hpp"
 
 namespace BHVR {
 
@@ -28,22 +29,17 @@ class Event {
   void setStartCondition(const Condition&);
   void setEndCondition(const Condition&);
 
-  bool  hasStarted() const;
-  bool  hasEnded() const;
-  bool  isOccurring() const;
-  bool  hasOccurred() const;
-  float timeSinceLastStart(const BehaviorContext&) const;
+  bool isOccurring() const;
+  bool hasOccurred() const;
 
   const std::string& getName() const;
 
  private:
   std::string name;
   bool        occurred;
-  bool        started;
-  bool        ended;
-  float       startTime;
-  float       endTime;
+  bool        occurring;
 
+  Latch     latch;
   Condition startCondition;
   Condition endCondition;
 };

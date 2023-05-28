@@ -14,8 +14,9 @@ class Clock {
   std::chrono::time_point<std::chrono::system_clock> realEndTime;
   std::chrono::time_point<std::chrono::system_clock> simulationEndTime;
   std::chrono::duration<double>                      realElapsedSeconds;
-  void                                               calculateRealElapsedSeconds();
-  uint64_t                                           simulationElapsedMs;
+  VIPRA::time_ms                                     elapsedTime;
+
+  void calculateRealElapsedSeconds();
 
  public:
   Clock();
@@ -24,10 +25,10 @@ class Clock {
   void printRealStartTime();
   void printRealDuration();
   void printRealEndTime();
-  void addSimulationTimeMs(VIPRA::delta_t seconds);
+  void addSimulationTimeMs(VIPRA::time_ms);
   void printSimulationDuration() const;
 
-  void configure(const VIPRA::CONFIG::Map& config);
+  void configure(const VIPRA::CONFIG::Map&);
 };
 
 #endif

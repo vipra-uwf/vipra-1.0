@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include <filesystem>
 
-#include <definitions/../../__tests__/mocks/goals/goals.mock.hpp>
-#include <definitions/../../__tests__/mocks/obstacle_set/obstacle_set.mock.hpp>
-#include <definitions/../../__tests__/mocks/pedestrian_set/pedestrian_set.mock.hpp>
+#include <mocks/goals/goals.mock.hpp>
+#include <mocks/obstacle_set/obstacle_set.mock.hpp>
+#include <mocks/pedestrian_set/pedestrian_set.mock.hpp>
 
 #include <definitions/pedestrian_types.hpp>
 #include <selectors/pedestrian_groups.hpp>

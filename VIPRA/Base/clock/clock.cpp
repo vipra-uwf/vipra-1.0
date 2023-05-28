@@ -1,7 +1,7 @@
 #include "clock.hpp"
 
 Clock::Clock() {
-  this->simulationElapsedMs = 0;
+  elapsedTime = 0;
 }
 
 void Clock::configure(const VIPRA::CONFIG::Map&) {}
@@ -33,10 +33,10 @@ void Clock::printRealEndTime() {
   spdlog::info("Computation Finished: {}", std::ctime(&time));
 }
 
-void Clock::addSimulationTimeMs(VIPRA::delta_t seconds) {
-  this->simulationElapsedMs += seconds * 1000;
+void Clock::addSimulationTimeMs(VIPRA::time_ms seconds) {
+  elapsedTime += seconds * 1000;
 }
 
 void Clock::printSimulationDuration() const {
-  spdlog::info("Simulation Duration: {:f}s", static_cast<float>(this->simulationElapsedMs) / 1000);
+  spdlog::info("Simulation Duration: {:f}s", static_cast<float>(elapsedTime) / 1000);
 }

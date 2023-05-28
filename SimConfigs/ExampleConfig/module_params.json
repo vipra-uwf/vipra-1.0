@@ -3,6 +3,7 @@
     "human_behavior_model": {
         "seed": 4525,
         "behaviors": [
+            "trip_event"
         ]
     },
     "output_data_writer": {},
