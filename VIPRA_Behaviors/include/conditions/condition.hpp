@@ -27,8 +27,8 @@ class Condition {
 
   void addSubCondition(const SubCondition&);
 
-  bool evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
-                VIPRA::delta_t) const;
+  [[nodiscard]] bool evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
+                              VIPRA::delta_t) const;
 
  private:
   std::vector<bool>         operations;

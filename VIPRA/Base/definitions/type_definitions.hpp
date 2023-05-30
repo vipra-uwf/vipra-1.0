@@ -31,7 +31,7 @@ using time_s = float;
 /**
  * @brief used for a time value, in milliseconds
  */
-using time_ms = uint64_t;
+using time_ms = float;
 
 /**
  * @brief used for a range of time, in seconds

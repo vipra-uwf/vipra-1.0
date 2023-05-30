@@ -5,6 +5,7 @@
 
 #include <configuration/configuration_reader.hpp>
 
+// NOLINTNEXTLINE(hicpp-avoid-c-arrays, modernize-avoid-c-arrays, cppcoreguidelines-avoid-c-arrays) - (rolland) Takes in command line args
 void        setFiles(int, char const*[]);
 std::string log(const std::string& message);
 
@@ -26,6 +27,8 @@ std::string makeModuleConfigs();
 std::string runSim();
 std::string outputSetup();
 
+// NOLINTBEGIN : (rolland) Saving reworking these into local variables      : ignoring (cppcoreguidelines-avoid-non-const-global-variables)
+namespace {
 bool                     requireCompiled = true;
 std::string              outputFile;
 std::string              optionsFile;
@@ -39,13 +42,14 @@ const std::unordered_map<std::string, std::string> TYPES{{"pedestrian_dynamics_m
                                                          {"pedestrian_set", "PedestrianSet"},
                                                          {"obstacle_set", "ObstacleSet"},
                                                          {"configuration_reader", "ConfigurationReader"},
-                                                         {"clock", "Clock"},
                                                          {"simulation", "Simulation"},
                                                          {"policy_model", "PolicyModel"},
                                                          {"map_loader", "MapLoader"},
                                                          {"pedestrian_loader", "PedestrianLoader"},
                                                          {"human_behavior_model", "HumanBehaviorModel"},
                                                          {"configuration_writer", "PedestrianConfigWriter"}};
+}  // namespace
+// NOLINTEND
 
 int main(int argc, char const* argv[]) {
 
@@ -81,6 +85,7 @@ int main(int argc, char const* argv[]) {
   return 0;
 }
 
+// NOLINTBEGIN : (rolland) getting around using plain ptr arithmetic for this isn't worth it    : ignoring (cppcoreguidelines-pro-bounds-pointer-arithmetic)
 void setFiles(int argc, const char** argv) {
   if (argc > 4 || argc < 3) {
     std::cerr << "Usage: generateMain *output file* *options file*\n";
@@ -93,11 +98,12 @@ void setFiles(int argc, const char** argv) {
     requireCompiled = (strcmp(argv[3], "-noCompReq") != 0);
   }
 }
+// NOLINTEND
 
 std::string generateIncludes() {
   std::string generatedIncludes;
-  for (const auto& t : TYPES) {
-    for (const auto& option : jsonObj[t.first]) {
+  for (const auto& type : TYPES) {
+    for (const auto& option : jsonObj[type.first]) {
       const auto& module = option["object"];
       if (!requireCompiled || module["compiled"]) {
         includes.emplace_back(option["dirPath"].asString() + "/" + module["name"].asString() + ".hpp");
@@ -111,6 +117,7 @@ std::string generateIncludes() {
 
   generatedIncludes += "#include <spdlog/spdlog.h>\n";
   generatedIncludes += "#include <memory>\n\n";
+  generatedIncludes += "#include <clock/clock.hpp>\n";
   generatedIncludes += "#include <definitions/config_map.hpp>\n";
 
   return generatedIncludes;
@@ -190,17 +197,31 @@ std::string generateMain() {
 }
 
 std::string initializeModules() {
-  //Call config writer before pedestrian loader
-  return log("Initializing Map Loader") + "\n\tmap_loader->initialize();\n\t" + log("Loading Map") +
-         "\n\tauto map = map_loader->LoadMap(obstacleFile);\n\t" + log("Initializing Obstacle Set") +
-         "\n\tobstacle_set->initialize(std::move(map));\n\t" + log("Writing Pedestrian Config And Loading Pedestrians") +
-         "\n\tauto peds = pedestrian_loader->LoadPedestrians(configuration_writer->buildPedestrians(pedestrianFile));\n\t" +
-         log("Initializing Pedestrian Set") + "\n\tpedestrian_set->initialize(std::move(peds));\n\t" +
-         log("Initializing Goals") + "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" +
-         log("Initializing Pedestrian Dynamics Model") +
+  return log("Initializing Map Loader") + "\n\tmap_loader->initialize();\n\t" +
+
+         log("Loading Map") + "\n\tauto map = map_loader->loadMap(obstacleFile);\n\t" +
+
+         log("Initializing Obstacle Set") + "\n\ttimer.start();" + "\n\tobstacle_set->initialize(std::move(map));" +
+         "\n\tauto stopTime = timer.stop(); spdlog::debug(\"Obstacle Set Initialization: {}\", stopTime);" + "\n\t" +
+
+         log("Writing Pedestrian Config And Loading Pedestrians") + "\n\ttimer.start();" +
+         "\n\tauto peds = pedestrian_loader->loadPedestrians(configuration_writer->buildPedestrians(pedestrianFile));\n\t" +
+         "\n\tstopTime = timer.stop(); spdlog::debug(\"Loading Pedestrians: {}\", stopTime);" + "\n\t" +
+
+         log("Initializing Pedestrian Set") + "\n\ttimer.start();" + "\n\tpedestrian_set->initialize(std::move(peds));\n\t" +
+         "\n\tstopTime = timer.stop(); spdlog::debug(\"Pedestrian Set Initialization: {}\", stopTime);" + "\n\t" +
+
+         log("Initializing Goals") + "\n\ttimer.start();" + "\n\tgoals->initialize(*obstacle_set, *pedestrian_set);\n\t" +
+         "\n\tstopTime = timer.stop(); spdlog::debug(\"Goals Initialization: {}\", stopTime);" + "\n\t" +
+
+         log("Initializing Pedestrian Dynamics Model") + "\n\ttimer.start();" +
          "\n\tpedestrian_dynamics_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +
-         log("Initializing Human Behavior Model") +
+         "\n\tstopTime = timer.stop(); spdlog::debug(\"Pedestrian Model Initialization: {}\", stopTime);" + "\n\t" +
+
+         log("Initializing Human Behavior Model") + "\n\ttimer.start();" +
          "\n\thuman_behavior_model->initialize(*pedestrian_set, *obstacle_set, *goals);\n\t" +
+         "\n\tstopTime = timer.stop(); spdlog::debug(\"Behavior Model Initialization: {}\", stopTime);" + "\n\t" +
+
          log("Initializing Simulation") + "\n\tsimulation->initialize();\n\t";
 }
 
@@ -219,8 +240,6 @@ std::string generateModules() {
     str += "\n\tstd::unique_ptr<" + className + "> " += type + " = generate" +=
         className + R"((simulationJsonConfig["modules"][")" += type + "\"].asString(), " += type + "Config);";
   }
-
-  str += "\n\tclock->start();";
   return str;
 }
 
@@ -239,7 +258,8 @@ std::string generateGetFiles() {
           "\nstd::string pedestrianFile;"
           "\nstd::string obstacleFile;"
           "\nstd::string outputFile;"
-          "void getInputFiles(int argc, const char** argv);"
+          "\nVIPRA::Clock<VIPRA::milli> timer;"
+          "\nvoid getInputFiles(int argc, const char** argv);"
           "\nvoid getInputFiles(int argc, const char** argv){"
           "\n\tif(argc > 6 || argc < 6){"
           "\n\t\tstd::cerr << \"Invalid inputs: Usage: *Config Path* *Params Path* *Pedestrians path* "
@@ -262,8 +282,7 @@ std::string runSim() {
          "*human_behavior_model,"
          "*policy_model,"
          "*output_data_writer,"
-         "*simulation_output_handler,"
-         "*clock);"
+         "*simulation_output_handler);"
          "\n\toutput_data_writer->writeToDocument();";
 }
 
@@ -276,7 +295,7 @@ std::string log(const std::string& message) {
 }
 
 std::string turnOffLint() {
-  return "\n// NOLINTBEGIN\n";
+  return "\n// NOLINTBEGIN (rolland) No point in linting generated code : ignoring (all) \n";
 }
 std::string turnOnLint() {
   return "\n// NOLINTEND\n";

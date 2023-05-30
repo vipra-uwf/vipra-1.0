@@ -150,7 +150,7 @@ void CalmGoals::updatePedestrianGoals(const ObstacleSet&, const PedestrianSet& p
         } else {
           currentGoals[i] = paths[i].front();
         }
-        lastGoalTimes[i] = 0.0f;
+        lastGoalTimes[i] = 0.0F;
       }
     }
   }

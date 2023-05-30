@@ -10,7 +10,6 @@ export enum ModuleType {
   HUMAN_BEHAVIOR_MODEL    = 'human_behavior_model',
   CONFIGURATION_WRITER    = 'configuration_writer',
   CONFIGURATION_READER    = 'configuration_reader',
-  CLOCK                   = 'clock',
   SIMULATION              = 'simulation',
   MAP_LOADER              = 'map_loader',
   POLICY_MODEL            = 'policy_model',

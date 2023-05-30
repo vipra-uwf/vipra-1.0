@@ -55,8 +55,9 @@ void Action::addDuration(VIPRA::time_range_s range, BHVR::seed seed) {
  */
 inline bool Action::evaluate(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, BehaviorContext& context,
                              VIPRA::idx pedIdx, VIPRA::delta_t dT) {
-  if (!condition)
+  if (!condition) {
     return true;
+  }
 
   bool run = condition->evaluate(pedSet, obsSet, goals, context, pedIdx, dT);
   if (latches) {

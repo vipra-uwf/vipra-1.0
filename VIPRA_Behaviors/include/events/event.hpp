@@ -15,13 +15,6 @@ namespace BHVR {
    */
 class Event {
  public:
-  ~Event() = default;
-  Event(Event&&) noexcept = default;
-  Event& operator=(Event&&) noexcept = default;
-  Event() = default;
-  Event(const Event&) = default;
-  Event& operator=(const Event&) = default;
-
   explicit Event(std::string);
 
   void evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, BehaviorContext&, VIPRA::delta_t);
@@ -29,19 +22,27 @@ class Event {
   void setStartCondition(const Condition&);
   void setEndCondition(const Condition&);
 
-  bool isOccurring() const;
-  bool hasOccurred() const;
+  [[nodiscard]] bool isOccurring() const;
+  [[nodiscard]] bool hasOccurred() const;
 
-  const std::string& getName() const;
+  [[nodiscard]] const std::string& getName() const;
 
  private:
   std::string name;
-  bool        occurred;
-  bool        occurring;
+  bool        occurred = false;
+  bool        occurring = false;
 
   Latch     latch;
   Condition startCondition;
   Condition endCondition;
+
+ public:
+  ~Event() = default;
+  Event(Event&&) noexcept = default;
+  Event& operator=(Event&&) noexcept = default;
+  Event() = default;
+  Event(const Event&) = default;
+  Event& operator=(const Event&) = default;
 };
 }  // namespace BHVR
 

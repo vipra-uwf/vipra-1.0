@@ -8,13 +8,11 @@ const properSimConfig : SimConfig = {
     pedestrian_dynamics_model: 'good',
     goals: 'good',
     output_data_writer: 'good',
-    input_data_loader: 'good',
     simulation_output_handler: 'good',
     pedestrian_set: 'good',
     obstacle_set: 'good',
     human_behavior_model: 'good',
     configuration_reader: 'good',
-    clock: 'good',
     simulation: 'good',
   },
 };
@@ -34,7 +32,6 @@ const missingNameSimConfigUpload : SimConfigUpload = {
     obstacle_set: 'good',
     human_behavior_model: 'good',
     configuration_reader: 'good',
-    clock: 'good',
     simulation: 'good',
   },
 };
@@ -52,7 +49,6 @@ const missingModuleSimConfigUpload : SimConfigUpload = {
     obstacle_set: 'good',
     human_behavior_model: 'good',
     configuration_reader: 'good',
-    clock: 'good',
     simulation: 'good',
   },
 };
@@ -70,7 +66,6 @@ const badModuleSimConfigUpload : SimConfigUpload = {
     obstacle_set: 'good',
     human_behavior_model: 'good',
     configuration_reader: 'good',
-    clock: 'good',
     simulation: 'good',
   },
 };
@@ -90,13 +85,11 @@ const updatedSimConfig : SimConfig = {
     pedestrian_dynamics_model: 'good',
     goals: 'good',
     output_data_writer: 'good',
-    input_data_loader: 'updatedid',
     simulation_output_handler: 'good',
     pedestrian_set: 'good',
     obstacle_set: 'good',
     human_behavior_model: 'good',
     configuration_reader: 'good',
-    clock: 'good',
     simulation: 'good',
   },
 };

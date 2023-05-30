@@ -26,23 +26,29 @@ using SelectorFunc = std::function<SelectorResult(seed, const VIPRA::idxVec&, co
 class SubSelector {
  public:
   SubSelector(typeUID, Ptype, bool, SelectorFunc);
+
+  SelectorResult selectPeds(seed, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&, const ObstacleSet&,
+                            const Goals&);
+
+  // NOLINTBEGIN - (rolland) Having these public increases readability   : ignoring (cppcoreguidelines-non-private-member-variables-in-classes)
+  typeUID group;
+  Ptype   type;
+  bool    required;
+  // NOLINTEND
+
+ private:
+  SelectorFunc                select;
+  std::optional<SubCondition> condition;
+
+
+
+ public:
   SubSelector() = delete;
   ~SubSelector() = default;
   SubSelector(SubSelector&&) noexcept = default;
   SubSelector(const SubSelector&) = default;
   SubSelector& operator=(SubSelector&&) noexcept = default;
   SubSelector& operator=(const SubSelector&) = default;
-
-  SelectorResult selectPeds(seed, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&, const ObstacleSet&,
-                            const Goals&);
-
-  typeUID group;
-  Ptype   type;
-  bool    required;
-
- private:
-  SelectorFunc                select;
-  std::optional<SubCondition> condition;
 };
 
 }  // namespace BHVR

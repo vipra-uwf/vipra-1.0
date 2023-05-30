@@ -10,18 +10,20 @@ namespace BHVR {
 class SubConditionElapsedTimeFromEvent {
  public:
   SubConditionElapsedTimeFromEvent(VIPRA::time_s, VIPRA::idx);
-  SubConditionElapsedTimeFromEvent(const SubConditionElapsedTimeFromEvent&) = default;
-  SubConditionElapsedTimeFromEvent& operator=(const SubConditionElapsedTimeFromEvent&) = default;
-  SubConditionElapsedTimeFromEvent(SubConditionElapsedTimeFromEvent&&) noexcept = default;
-  SubConditionElapsedTimeFromEvent& operator=(SubConditionElapsedTimeFromEvent&&) noexcept = default;
 
   bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
                   VIPRA::delta_t);
 
  private:
   BHVR::TimedLatch latch;
-  VIPRA::time_s    startTime;
   VIPRA::idx       event;
+
+ public:
+  ~SubConditionElapsedTimeFromEvent() = default;
+  SubConditionElapsedTimeFromEvent(const SubConditionElapsedTimeFromEvent&) = default;
+  SubConditionElapsedTimeFromEvent& operator=(const SubConditionElapsedTimeFromEvent&) = default;
+  SubConditionElapsedTimeFromEvent(SubConditionElapsedTimeFromEvent&&) noexcept = default;
+  SubConditionElapsedTimeFromEvent& operator=(SubConditionElapsedTimeFromEvent&&) noexcept = default;
 };
 }  // namespace BHVR
 

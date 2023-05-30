@@ -2,6 +2,7 @@
 #include <numeric>
 
 #include <selectors/selector.hpp>
+#include "behavior/exceptions.hpp"
 
 namespace BHVR {
 
@@ -75,7 +76,7 @@ VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector& selector, BHVR::seed se
                   behaviorName,
                   selector.type.fullType,
                   selector.group);
-    exit(1);
+    DSLException::error("");
   }
 
   spdlog::warn(
@@ -145,7 +146,7 @@ void checkforDuplicates(const VIPRA::idxVec& order) {
     for (VIPRA::idx j = i + 1; j < order.size(); ++j) {
       if (order[i] == order[j]) {
         spdlog::error("Duplicate Selector in Selectors");
-        exit(1);
+        DSLException::error("");
       }
     }
   }

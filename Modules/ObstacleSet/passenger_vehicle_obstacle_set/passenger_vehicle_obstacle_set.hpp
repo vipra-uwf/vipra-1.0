@@ -4,21 +4,12 @@
 #include <algorithm>
 #include <limits>
 
-#include "MapLoader/Point_Map_Loader/point_map_loader.hpp"
-#include "definitions/dimensions.hpp"
-#include "obstacle_set/obstacle_set.hpp"
-#include "pedestrian_set/pedestrian_set.hpp"
+#include <MapLoader/Point_Map_Loader/point_map_loader.hpp>
+#include <definitions/dimensions.hpp>
+#include <obstacle_set/obstacle_set.hpp>
+#include <pedestrian_set/pedestrian_set.hpp>
 
 class PassengerVehicleObstacleSet : public ObstacleSet {
- private:
-  VIPRA::EntitySet         objects;
-  std::vector<std::string> objectTypes;
-
-  VIPRA::f3d mapDimensions;
-
-  float obstacleCollisionDistance;
-  float obstacleCollisionDistanceSqrd;
-
  public:
   void initialize(std::unique_ptr<VIPRA::MapData>) override;
   void configure(const VIPRA::CONFIG::Map& configMap) override;
@@ -37,6 +28,14 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
   [[nodiscard]] float rayHit(VIPRA::f3d, VIPRA::f3d) const override;
 
  private:
+  VIPRA::EntitySet         objects;
+  std::vector<std::string> objectTypes;
+
+  VIPRA::f3d mapDimensions;
+
+  float obstacleCollisionDistance;
+  float obstacleCollisionDistanceSqrd;
+
   void checkMap() const;
 
   void buildQuadTree();

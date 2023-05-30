@@ -1,17 +1,16 @@
 #ifndef CALM_CONFIG_WRITER_HPP
 #define CALM_CONFIG_WRITER_HPP
 
+#include <random>
+
 #include <json/json.h>
 #include <spdlog/spdlog.h>
-#include <random>
-#include "config_writer/config_writer.hpp"
+
+#include <config_writer/config_writer.hpp>
 
 struct CalmPedestrianBuilderData : public VIPRA::PedestrianBuilderData {
-  CalmPedestrianBuilderData()
-      : VIPRA::PedestrianBuilderData{}, desiredSpeedMin{}, desiredSpeedMax{}, desiredSpeeds{}, distribution{} {}
-
-  float              desiredSpeedMin;
-  float              desiredSpeedMax;
+  float              desiredSpeedMin{};
+  float              desiredSpeedMax{};
   std::vector<float> desiredSpeeds;
   std::string        distribution;
 };
@@ -19,13 +18,16 @@ struct CalmPedestrianBuilderData : public VIPRA::PedestrianBuilderData {
 class CalmPedestrianConfigWriter : public PedestrianConfigWriter {
 
  public:
-  void        configure(const VIPRA::CONFIG::Map& configMap) override;
+  void        configure(const VIPRA::CONFIG::Map&) override;
   void        initialize() override;
-  std::string buildPedestrians(const std::string& filePath) override;
+  std::string buildPedestrians(const std::string&) override;
 
  private:
-  void                      calculateDesiredSpeeds(const unsigned int numPedestrians);
   CalmPedestrianBuilderData pedData;
+  VIPRA::size               seed;
+
+
+  void calculateDesiredSpeeds(VIPRA::size numPedestrians);
 };
 
 

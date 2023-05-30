@@ -6,15 +6,14 @@
 #include <type_traits>
 #include <vector>
 namespace VIPRA {
-
 // NOLINTNEXTLINE
 struct f2d {
   float x, y;
 
   ~f2d() = default;
   constexpr explicit f2d() noexcept : x(0), y(0) {}
-  constexpr explicit f2d(float X) noexcept : x(X), y(0) {}
-  constexpr explicit f2d(float X, float Y) noexcept : x(X), y(Y) {}
+  constexpr explicit f2d(float valX) noexcept : x(valX), y(0) {}
+  constexpr explicit f2d(float valX, float valY) noexcept : x(valX), y(valY) {}
   constexpr f2d(const f2d& other) noexcept = default;
   constexpr f2d(f2d&& other) noexcept = default;
   constexpr f2d& operator=(const f2d& other) noexcept = default;
@@ -55,25 +54,22 @@ struct f2d {
         throw std::out_of_range("Attempt to access invalid index on VIPRA::f2d");
     }
   }
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  inline constexpr f2d& operator*=(const T& multiplier) noexcept {
+
+  template <typename T> inline constexpr f2d& operator*=(T&& multiplier) noexcept {
     x *= multiplier;
     y *= multiplier;
     return *this;
   }
 
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  inline constexpr f2d operator*(T multiplier) const noexcept {
-    return f2d{x, y} *= multiplier;
+  template <typename T> inline constexpr f2d operator*(T&& multiplier) const noexcept {
+    return f2d{x, y} *= std::forward<T>(multiplier);
   }
 
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  inline constexpr f2d operator/(T multiplier) const noexcept {
-    return f2d{x, y} /= multiplier;
+  template <typename T> inline constexpr f2d operator/(T&& multiplier) const noexcept {
+    return f2d{x, y} /= std::forward<T>(multiplier);
   }
 
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  inline constexpr f2d& operator/=(const T& multiplier) noexcept {
+  template <typename T> inline constexpr f2d& operator/=(T&& multiplier) noexcept {
     x /= multiplier;
     y /= multiplier;
     return *this;
@@ -94,7 +90,7 @@ struct f2d {
     return *this;
   }
 
-  inline constexpr float distanceTo(const f2d& other) const {
+  [[nodiscard]] inline constexpr float distanceTo(const f2d& other) const {
     const float dX = other.x - x;
     const float dY = other.y - y;
 
@@ -103,9 +99,9 @@ struct f2d {
 
   inline constexpr f2d operator-() const noexcept { return f2d{-x, -y}; }
 
-  inline constexpr f2d unit() const {
+  [[nodiscard]] inline constexpr f2d unit() const {
     const float mag = std::sqrt((x * x) + (y * y));
-    return VIPRA::f2d{x, y} / mag;
+    return VIPRA::f2d{x, y} /= mag;
   }
 
   inline constexpr bool operator==(const f2d& other) const noexcept { return (x == other.x && y == other.y); }
@@ -113,25 +109,25 @@ struct f2d {
   inline constexpr bool operator!=(const f2d& other) const noexcept { return (x != other.x || y != other.y); }
   inline constexpr bool operator!=(f2d&& other) const noexcept { return (x != other.x || y != other.y); }
 
-  inline constexpr float dot(const f2d& other) const { return (x * other.x) + (y * other.y); }
+  [[nodiscard]] inline constexpr float dot(const f2d& other) const { return (x * other.x) + (y * other.y); }
 };
 
-// NOLINTNEXTLINE
+// NOLINTNEXTLINE (rolland) Keeping f3d from before format changes     : ignore (readability-identifier-naming)
 struct f3d {
   float x, y, z;
 
   ~f3d() = default;
   constexpr explicit f3d() noexcept : x(0), y(0), z(0) {}
-  constexpr explicit f3d(float X) noexcept : x(X), y(0), z(0) {}
-  constexpr explicit f3d(float X, float Y) noexcept : x(X), y(Y), z(0) {}
-  constexpr explicit f3d(float X, float Y, float Z) noexcept : x(X), y(Y), z(Z) {}
+  constexpr explicit f3d(float valX) noexcept : x(valX), y(0), z(0) {}
+  constexpr explicit f3d(float valX, float valY) noexcept : x(valX), y(valY), z(0) {}
+  constexpr explicit f3d(float valX, float valY, float valZ) noexcept : x(valX), y(valY), z(valZ) {}
   constexpr f3d(const f3d& other) noexcept = default;
-  constexpr f3d(f3d&& other) noexcept : x(other.x), y(other.y), z(other.z) {}
-  explicit constexpr f3d(const f2d& other) noexcept : x(other.x), y(other.y), z(0) {}
-  explicit constexpr f3d(f2d&& other) noexcept : x(other.x), y(other.y), z(0) {}
-
+  constexpr f3d(f3d&& other) noexcept = default;
   constexpr f3d& operator=(const f3d& other) noexcept = default;
   constexpr f3d& operator=(f3d&& other) noexcept = default;
+
+  explicit constexpr f3d(const f2d& other) noexcept : x(other.x), y(other.y), z(0) {}
+  explicit constexpr f3d(f2d&& other) noexcept : x(other.x), y(other.y), z(0) {}
   constexpr f3d& operator=(const f2d& other) noexcept {
     x = other.x;
     y = other.y;
@@ -144,6 +140,7 @@ struct f3d {
     z = 0;
     return *this;
   }
+
 
   template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
   inline constexpr float& operator[](T index) {
@@ -185,24 +182,20 @@ struct f3d {
     }
   }
 
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  inline constexpr f3d operator*(T multiplier) const noexcept {
-    return f3d{x, y, z} *= multiplier;
+  template <typename T> inline constexpr f3d operator*(T&& multiplier) const noexcept {
+    return f3d{x, y, z} *= std::forward<T>(multiplier);
   }
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  inline constexpr f3d& operator*=(const T& multiplier) noexcept {
+  template <typename T> inline constexpr f3d& operator*=(T&& multiplier) noexcept {
     x *= multiplier;
     y *= multiplier;
     z *= multiplier;
     return *this;
   }
 
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  inline constexpr f3d operator/(T multiplier) const noexcept {
-    return f3d{x, y, z} /= multiplier;
+  template <typename T> inline constexpr f3d operator/(T&& multiplier) const noexcept {
+    return f3d{x, y, z} /= std::forward<T>(multiplier);
   }
-  template <typename T, class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
-  inline constexpr f3d& operator/=(const T& multiplier) noexcept {
+  template <typename T> inline constexpr f3d& operator/=(T&& multiplier) noexcept {
     x /= multiplier;
     y /= multiplier;
     z /= multiplier;
@@ -212,7 +205,6 @@ struct f3d {
   inline constexpr f3d operator-(const f2d& other) const noexcept { return f3d{x - other.x, y - other.y, z}; }
   inline constexpr f3d operator-(const f3d& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
   inline constexpr f3d operator-(f3d&& other) const noexcept { return f3d{x - other.x, y - other.y, z - other.z}; }
-
   inline constexpr f3d operator+(const f2d& other) const noexcept { return f3d{x + other.x, y + other.y, z}; }
   inline constexpr f3d operator+(const f3d& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
   inline constexpr f3d operator+(f3d&& other) const noexcept { return f3d{x + other.x, y + other.y, z + other.z}; }
@@ -243,7 +235,7 @@ struct f3d {
     return *this;
   }
 
-  inline constexpr float distanceToSquared(const f3d& other) const noexcept {
+  [[nodiscard]] inline constexpr float distanceToSquared(const f3d& other) const noexcept {
     const float dX = other.x - x;
     const float dY = other.y - y;
     const float dZ = other.z - z;
@@ -251,7 +243,7 @@ struct f3d {
     return (dX * dX) + (dY * dY) + (dZ * dZ);
   }
 
-  inline constexpr float distanceTo(const f2d& other) const {
+  [[nodiscard]] inline constexpr float distanceTo(const f2d& other) const {
     const float dX = other.x - x;
     const float dY = other.y - y;
     const float dZ = 0 - z;
@@ -259,7 +251,7 @@ struct f3d {
     return std::sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
   }
 
-  inline constexpr float distanceTo(const f3d& other) const {
+  [[nodiscard]] inline constexpr float distanceTo(const f3d& other) const {
     const float dX = other.x - x;
     const float dY = other.y - y;
     const float dZ = other.z - z;
@@ -287,16 +279,18 @@ struct f3d {
 
   inline constexpr f3d operator-() const noexcept { return f3d{-x, -y, -z}; }
 
-  inline constexpr f3d unit() const noexcept {
+  [[nodiscard]] inline constexpr f3d unit() const noexcept {
     if (x == 0 && y == 0 && z == 0) {
       return f3d{0, 0, 0};
     }
     return f3d{x, y, z} / magnitude();
   }
-  inline constexpr float magnitudeSquared() const noexcept { return (x * x) + (y * y) + (z * z); }
-  inline constexpr float magnitude() const { return std::sqrt((x * x) + (y * y) + (z * z)); }
+  [[nodiscard]] inline constexpr float magnitudeSquared() const noexcept { return (x * x) + (y * y) + (z * z); }
+  [[nodiscard]] inline constexpr float magnitude() const { return std::sqrt((x * x) + (y * y) + (z * z)); }
 
-  inline constexpr float dot(const f3d& other) const noexcept { return (x * other.x) + (y * other.y) + (z * other.z); }
+  [[nodiscard]] inline constexpr float dot(const f3d& other) const noexcept {
+    return (x * other.x) + (y * other.y) + (z * other.z);
+  }
 };
 
 using f2dVec = std::vector<f2d>;

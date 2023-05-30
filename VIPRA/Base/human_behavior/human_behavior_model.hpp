@@ -16,21 +16,26 @@ class BehaviorModelException : public std::runtime_error {
 };
 
 class HumanBehaviorModel {
-
- private:
-  std::vector<BHVR::HumanBehavior> humanBehaviors;
-  VIPRA::size                      seed;
-
  public:
-  HumanBehaviorModel() = default;
-  ~HumanBehaviorModel() = default;
+  explicit HumanBehaviorModel(std::vector<BHVR::HumanBehavior> humanBehaviors) : humanBehaviors(std::move(humanBehaviors)) {}
   void configure(const VIPRA::CONFIG::Map& configMap);
   void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
   void timestep(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::State&, VIPRA::delta_t);
 
  private:
+  std::vector<BHVR::HumanBehavior> humanBehaviors;
+  VIPRA::size                      seed{};
+
   void loadBehavior(const std::vector<std::string>&);
   void loadMockBehavior(const std::vector<std::string>&);
+
+ public:
+  HumanBehaviorModel() = default;
+  HumanBehaviorModel(const HumanBehaviorModel&) = default;
+  HumanBehaviorModel(HumanBehaviorModel&&) = default;
+  HumanBehaviorModel& operator=(const HumanBehaviorModel&) = default;
+  HumanBehaviorModel& operator=(HumanBehaviorModel&&) = default;
+  ~HumanBehaviorModel() = default;
 };
 
 #endif  //VIPRA_HUMAN_BEHAVIOR_MODEL_HPP

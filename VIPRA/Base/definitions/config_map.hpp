@@ -32,7 +32,7 @@ class Map {
   const Json::Value& operator[](const std::string& key) const { return document[key]; }
   Json::Value&       operator[](const std::string& key) { return document[key]; }
 
-  std::vector<std::string> getStringVector(const std::string& key) const {
+  [[nodiscard]] std::vector<std::string> getStringVector(const std::string& key) const {
     const VIPRA::size        valCnt = document[key].size();
     std::vector<std::string> ret(valCnt);
 

@@ -11,18 +11,24 @@
 
 class PedDynamicsException : public std::runtime_error {
  public:
-  PedDynamicsException(const std::string& message) : std::runtime_error(message) {}
-  static void Throw(const std::string& message) { throw PedDynamicsException(message); }
+  explicit PedDynamicsException(const std::string& message) : std::runtime_error(message) {}
+  static void error(const std::string& message) { throw PedDynamicsException(message); }
 };
 
 class PedestrianDynamicsModel {
  public:
-  virtual ~PedestrianDynamicsModel() = default;
-
   virtual void                          configure(const VIPRA::CONFIG::Map& configMap) = 0;
   virtual void                          initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) = 0;
   virtual std::shared_ptr<VIPRA::State> timestep(const PedestrianSet&, const ObstacleSet&, const Goals&, VIPRA::delta_t,
                                                  VIPRA::t_step) = 0;
+
+
+  PedestrianDynamicsModel(const PedestrianDynamicsModel&) = default;
+  PedestrianDynamicsModel(PedestrianDynamicsModel&&) = delete;
+  PedestrianDynamicsModel& operator=(const PedestrianDynamicsModel&) = default;
+  PedestrianDynamicsModel& operator=(PedestrianDynamicsModel&&) = delete;
+  PedestrianDynamicsModel() = default;
+  virtual ~PedestrianDynamicsModel() = default;
 };
 
 #endif

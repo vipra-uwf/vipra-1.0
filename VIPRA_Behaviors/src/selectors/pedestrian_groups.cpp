@@ -8,7 +8,8 @@ namespace {
 inline VIPRA::size getTypeCount(BHVR::Ptype allTypes) {
   VIPRA::size typeCnt = 1;
   while (allTypes.fullType != 0) {
-    allTypes.fullType = allTypes.fullType & (allTypes.fullType - 1);
+    BHVR::typeUID currType = allTypes.fullType & (allTypes.fullType - 1);
+    allTypes.fullType = currType;
     ++typeCnt;
   }
   return typeCnt;

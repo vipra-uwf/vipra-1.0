@@ -10,10 +10,12 @@ namespace BHVR {
    */
 class Latch {
  public:
-  void latch();
-  void unlatch();
+  inline void latch() { set = true; }
 
-  [[nodiscard]] explicit operator bool() const;
+  inline void unlatch() { set = false; }
+
+
+  [[nodiscard]] inline explicit operator bool() const { return set; }
 
  private:
   bool set = false;

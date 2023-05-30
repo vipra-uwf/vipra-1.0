@@ -8,19 +8,21 @@ struct CaselessStrCompare {
   struct Comp {
     bool operator()(const std::string& str1, const std::string& str2) const {
       const size_t cnt = str1.size();
-      if (cnt != str2.size())
+      if (cnt != str2.size()) {
         return false;
+      }
 
       for (size_t i = 0; i < cnt; ++i) {
-        if (str1[i] == str2[i])
+        if (str1[i] == str2[i]) {
           continue;
+        }
 
         if (str1[i] > str2[i]) {
-          if (str1[i] - 32 != str2[i]) {
+          if (str1[i] - spaceAscii != str2[i]) {
             return false;
           }
         } else {
-          if (str2[i] - 32 != str1[i]) {
+          if (str2[i] - spaceAscii != str1[i]) {
             return false;
           }
         }
@@ -31,12 +33,15 @@ struct CaselessStrCompare {
   struct Hash {
     size_t operator()(const std::string& str) const {
       std::string temp{str};
-      for (char& c : temp) {
-        c = std::tolower(c);
+      for (char& ch : temp) {
+        ch = static_cast<char>(std::tolower(ch));
       }
       return std::hash<std::string>{}(temp);
     }
   };
+
+ private:
+  static constexpr char spaceAscii = 32;
 };
 
 #endif

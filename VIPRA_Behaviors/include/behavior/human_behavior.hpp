@@ -21,16 +21,9 @@ namespace BHVR {
  */
 class HumanBehavior {
  public:
-  HumanBehavior() = default;
-  ~HumanBehavior() = default;
-  HumanBehavior& operator=(const HumanBehavior&) = default;
-  HumanBehavior(const HumanBehavior&) = default;
-  HumanBehavior(HumanBehavior&&) noexcept = default;
-  HumanBehavior& operator=(HumanBehavior&&) noexcept = default;
-
   explicit HumanBehavior(std::string);
 
-  const std::string& getName() const noexcept;
+  [[nodiscard]] const std::string& getName() const noexcept;
 
   void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
   void timestep(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::State&, VIPRA::delta_t);
@@ -40,14 +33,14 @@ class HumanBehavior {
   void       addAction(typeUID, const Action&);
   VIPRA::idx addEvent(const Event&);
 
-  VIPRA::size eventCount() const;
-  VIPRA::size selectorCount() const;
-  VIPRA::size actionCount() const;
+  [[nodiscard]] VIPRA::size eventCount() const;
+  [[nodiscard]] VIPRA::size selectorCount() const;
+  [[nodiscard]] VIPRA::size actionCount() const;
 
   void setSeed(BHVR::seed);
 
  private:
-  BHVR::seed seedNum;
+  BHVR::seed seedNum = 0;
 
   std::string     name;
   BehaviorContext context;
@@ -57,6 +50,14 @@ class HumanBehavior {
 
   void evaluateEvents(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::delta_t);
   void applyActions(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::State&, VIPRA::delta_t);
+
+ public:
+  HumanBehavior() = default;
+  ~HumanBehavior() = default;
+  HumanBehavior& operator=(const HumanBehavior&) = default;
+  HumanBehavior(const HumanBehavior&) = default;
+  HumanBehavior(HumanBehavior&&) noexcept = default;
+  HumanBehavior& operator=(HumanBehavior&&) noexcept = default;
 };
 }  // namespace BHVR
 

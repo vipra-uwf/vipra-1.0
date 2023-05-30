@@ -11,7 +11,7 @@ bool TimestepOutputHandler::isOutputCriterionMet(const PedestrianSet&, const Obs
 
 void TimestepOutputHandler::writeOutput(OutputDataWriter& outputDataWriter, const PedestrianSet& pedestrianSet,
                                         VIPRA::t_step timestep) {
-  outputDataWriter.addFloatValue("NEW_TIMESTEP", timestep);
+  outputDataWriter.addFloatValue("NEW_TIMESTEP", static_cast<float>(timestep));
 
   const auto& coords = pedestrianSet.getPedestrianCoordinates();
 

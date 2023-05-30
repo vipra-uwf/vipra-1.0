@@ -14,11 +14,31 @@ class LatchCollection;
  */
 class TimedLatch {
  public:
-  void               latch(VIPRA::time_s);
-  [[nodiscard]] bool check(VIPRA::time_s);
+  explicit TimedLatch(VIPRA::time_s dur) : duration(dur) {}
 
-  void          setDuration(VIPRA::time_s);
-  VIPRA::time_s getDuration() const;
+
+  void latch(VIPRA::time_s startT) {
+    if (!set) {
+      startTime = startT;
+      set = true;
+    }
+  }
+
+  [[nodiscard]] bool check(VIPRA::time_s currTime) {
+    if (set) {
+      const VIPRA::delta_t currDuration = currTime - startTime;
+      if (currDuration >= duration) {
+        set = false;
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  inline void setDuration(VIPRA::time_s dur) { duration = dur; }
+
+  [[nodiscard]] inline VIPRA::time_s getDuration() const { return duration; }
 
  private:
   bool  set = false;
@@ -26,7 +46,6 @@ class TimedLatch {
   float duration = 0;
 
  public:
-  explicit TimedLatch(VIPRA::time_s);
   TimedLatch() = default;
   ~TimedLatch() = default;
   TimedLatch(const TimedLatch&) = default;
@@ -43,23 +62,48 @@ class TimedLatch {
  */
 class LatchCollection {
  public:
-  void               latch(VIPRA::time_s, VIPRA::idx);
-  [[nodiscard]] bool check(VIPRA::time_s, VIPRA::idx);
+  explicit LatchCollection(VIPRA::time_range_s timeRange, BHVR::seed bSeed) : seed(bSeed), range(std::move(timeRange)) {}
 
-  void          addLatches(VIPRA::size);
-  VIPRA::time_s getDuration(VIPRA::idx) const;
+  inline void               latch(VIPRA::time_s startTime, VIPRA::idx index) { latches[index].latch(startTime); }
+  [[nodiscard]] inline bool check(VIPRA::time_s currTime, VIPRA::idx index) { return latches[index].check(currTime); }
 
-  VIPRA::size count() const;
+  inline void addLatches(VIPRA::size cnt) {
+    if (latches.size() <= cnt) {
+      VIPRA::size start = 0;
+      if (latches.empty()) {
+        start = 0;
+      } else {
+        start = latches.size() - 1;
+      }
+
+      latches.resize(cnt);
+      VIPRA::size end = latches.size();
+
+      for (VIPRA::idx i = start; i < end; ++i) {
+        latches[i].setDuration(makeDuration(i));
+      }
+    }
+  }
+  [[nodiscard]] inline VIPRA::time_s getDuration(VIPRA::idx index) const { return latches[index].duration; }
+
+  [[nodiscard]] inline VIPRA::size count() const { return latches.size(); }
 
  private:
   BHVR::seed              seed;
   std::vector<TimedLatch> latches;
   VIPRA::time_range_s     range;
 
-  inline VIPRA::time_s makeDuration(VIPRA::idx) const;
+  [[nodiscard]] inline VIPRA::time_s makeDuration(VIPRA::idx index) const {
+    if (range.first == range.second) {
+      return range.first;
+    }
+
+    srand(seed + index);
+    // TODO(rolland) : replace rand
+    return range.first + (static_cast<float>(rand()) / (static_cast<float>(RAND_MAX) / (range.second - range.first)));
+  }
 
  public:
-  explicit LatchCollection(VIPRA::time_range_s, BHVR::seed);
   LatchCollection() = delete;
   ~LatchCollection() = default;
   LatchCollection(const LatchCollection&) = default;

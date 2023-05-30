@@ -3,12 +3,13 @@
 
 #include <behavior/exceptions.hpp>
 #include <definitions/object.hpp>
+#include "behavior/behavior_builder.hpp"
 
 namespace BHVR {
 Object objectFromContext(BehaviorParser::ObjectContext* ctx) {
   if (ctx == nullptr) {
     spdlog::error("ObjectFromContext: Context is null");
-    exit(1);
+    BuilderException::error();
   }
 
   std::string name = ctx->OBJECT()->toString();

@@ -60,7 +60,7 @@ const std::string& Event::getName() const {
 
 // ---------------------------------- CONSTRUCTORS -----------------------------------------------------------
 
-Event::Event(std::string evName) : name(std::move(evName)), occurred(false), occurring(false) {}
+Event::Event(std::string evName) : name(std::move(evName)) {}
 
 // ---------------------------------- END CONSTRUCTORS -----------------------------------------------------------
 

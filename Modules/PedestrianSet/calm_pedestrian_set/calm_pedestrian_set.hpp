@@ -16,10 +16,7 @@
 
 class CalmPedestrianSet : public PedestrianSet {
  public:
-  CalmPedestrianSet();
-
   void updateState(std::shared_ptr<VIPRA::State>) override;
-
   void configure(const VIPRA::CONFIG::Map&) override;
   void initialize(std::unique_ptr<VIPRA::PedData>) override;
 
@@ -36,7 +33,7 @@ class CalmPedestrianSet : public PedestrianSet {
   [[nodiscard]] const std::vector<float>& getShoulderLengths() const noexcept;
 
  private:
-  VIPRA::size numPedestrians;
+  VIPRA::size numPedestrians{};
 
   VIPRA::f3dVec pedestrianCoordinates;
   VIPRA::f3dVec velocities;

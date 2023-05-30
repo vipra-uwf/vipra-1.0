@@ -112,7 +112,7 @@ The `Pedestrian Model`module is the main pedestrian dynamics model that, in conj
 
 `/VIPRA/Extendable/goals/goals.hpp`
 
-The `Goals` module is what does all of the path finding for pedestrians, it also determines the end goal for the overall simulation. *(for example: all pedestrians exit the plane)*
+The `Goals` module is what does all the path finding for pedestrians, it also determines the end goal for the overall simulation. *(for example: all pedestrians exit the plane)*
 
 ### M.1.3. Obstacle Set
 
@@ -141,7 +141,7 @@ The `Pedestrian Loader` module is responsible for loading pedestrian files into 
 ---
 ## M.2. Base Modules
 
-Base Modules are the modules that the VIPRA team implements, end users can extend them but the idea is that they do not have to.
+Base Modules are the modules that the VIPRA team implements, end users can extend them, but the idea is that they do not have to.
 
 1. Human Behavior Model
 2. Policy Model
@@ -179,11 +179,11 @@ The main path a simulation takes is as follows:
 
 ### S.1. Module Selection / Configuration
 
-Each simulation run is provided a `sim.config` file that holds the ids for each module the simulation should use. *(one for each type of module)*
+Each simulation run is provided a `sim.config` file that holds the IDs for each module the simulation should use. *(one for each type of module)*
 
 An instance of each of these modules is then created and configured, using the `module_params.json` file that is also provided to the simulation.
 
-Each of the modules is then passed into the main simulation object. *defined in `/VIPRA/Base/simulation/simulation.hpp`*
+Each of the modules is then passed into the main simulation object. *Defined in `/VIPRA/Base/simulation/simulation.hpp`*
 
 ### S.2. Simulation Loop
 
@@ -209,7 +209,7 @@ Once the simulation is finished the buffered output is written to an output file
 
 `/VIPRA/Base/Definitions/dimensions.hpp`
 
-`VIPRA::f3d` is a three dimensional float, used for positions/vectors/etc.
+`VIPRA::f3d` is a three-dimensional float, used for positions/vectors/etc.
 `VIPRA::f3dVec` is a `std::vector<VIPRA::f3d>`, used for holding `VIPRA::f3ds`
 
 There is also a `VIPRA::f2d`, though it is very rarely used.
@@ -230,3 +230,12 @@ There are several type definitions that are used for clarity:
 2. `VIPRA::size` : for counts of elements in a container `uint64_t`
 3. `VIPRA::t_step` : for time step counts `uint64_t`
 4. `VIPRA::delta_t` : for changes in time `float`
+5. `VIPRA::time_s` : for time in seconds `float`
+6. `VIPRA::time_ms` : for time in milliseconds `float`
+7. `time_range_s` : for time ranges in seconds `std::pair<VIPRA::time_s, VIPRA::time_s>`
+8. `time_range_ms` : for time ranges in milliseconds `std::pair<VIPRA::time_ms, VIPRA::time_ms>`
+9. `idxVec` : for vectors of indexes `std::vector<idx>`
+
+
+# F. Formatting
+

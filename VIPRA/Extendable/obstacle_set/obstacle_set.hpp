@@ -7,30 +7,36 @@
 
 class ObstacleSetException : public std::runtime_error {
  public:
-  ObstacleSetException(const std::string& message) : std::runtime_error(message) {}
-  static void Throw(const std::string& message) { throw ObstacleSetException(message); }
+  explicit ObstacleSetException(const std::string& message) : std::runtime_error(message) {}
+  static void error(const std::string& message) { throw ObstacleSetException(message); }
 };
 
 class ObstacleSet {
  public:
-  virtual ~ObstacleSet() = default;
-
   virtual void initialize(std::unique_ptr<VIPRA::MapData>) = 0;
   virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
 
-  virtual VIPRA::f3d getMapDimensions() const = 0;
+  [[nodiscard]] virtual VIPRA::f3d getMapDimensions() const = 0;
 
-  virtual const std::vector<std::string>& getObjectTypes() const = 0;
-  virtual const VIPRA::f3dVec&            getObjectsofType(const std::string& type) const = 0;
+  [[nodiscard]] virtual const std::vector<std::string>& getObjectTypes() const = 0;
+  [[nodiscard]] virtual const VIPRA::f3dVec&            getObjectsofType(const std::string& type) const = 0;
 
-  virtual VIPRA::f3dVec nearestObstacle(const PedestrianSet&) const = 0;
-  virtual VIPRA::f3dVec nearestObstacleInDirection(const PedestrianSet&) const = 0;
+  [[nodiscard]] virtual VIPRA::f3dVec nearestObstacle(const PedestrianSet&) const = 0;
+  [[nodiscard]] virtual VIPRA::f3dVec nearestObstacleInDirection(const PedestrianSet&) const = 0;
 
-  virtual VIPRA::f3d nearestObstacle(VIPRA::f3d) const = 0;
-  virtual VIPRA::f3d nearestObstacleInDirection(VIPRA::f3d, VIPRA::f3d) const = 0;
+  [[nodiscard]] virtual VIPRA::f3d nearestObstacle(VIPRA::f3d) const = 0;
+  [[nodiscard]] virtual VIPRA::f3d nearestObstacleInDirection(VIPRA::f3d, VIPRA::f3d) const = 0;
 
-  virtual bool  collision(VIPRA::f3d) const = 0;
-  virtual float rayHit(VIPRA::f3d, VIPRA::f3d) const = 0;
+  [[nodiscard]] virtual bool  collision(VIPRA::f3d) const = 0;
+  [[nodiscard]] virtual float rayHit(VIPRA::f3d, VIPRA::f3d) const = 0;
+
+
+  ObstacleSet(const ObstacleSet&) = default;
+  ObstacleSet(ObstacleSet&&) = delete;
+  ObstacleSet& operator=(const ObstacleSet&) = default;
+  ObstacleSet& operator=(ObstacleSet&&) = delete;
+  ObstacleSet() = default;
+  virtual ~ObstacleSet() = default;
 };
 
 #endif
