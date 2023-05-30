@@ -18,7 +18,7 @@
         "obstacleCollisionDistance": 0.05
     },
     "goals": {
-        "pathFinding": "Disembark",
+        "pathFinding": "Astar",
         "endGoalType": "exit",
         "quadSize": 0.1,
         "closestObstacle": 0.2,
