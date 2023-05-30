@@ -1,0 +1,3 @@
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/jsoncpp-subbuild/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/jsoncpp-subbuild/CMakeFiles/edit_cache.dir
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/jsoncpp-subbuild/CMakeFiles/jsoncpp-populate.dir

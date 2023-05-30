@@ -1,0 +1,22 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/behaviors/CMakeFiles/antlr4_runtime-build_static"
+		},
+		{
+			"file" : "/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/behaviors/CMakeFiles/antlr4_runtime-build_static.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/behaviors/antlr4_runtime/src/antlr4_runtime-stamp/antlr4_runtime-build_static.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"antlr4_runtime"
+		],
+		"name" : "antlr4_runtime-build_static"
+	}
+}

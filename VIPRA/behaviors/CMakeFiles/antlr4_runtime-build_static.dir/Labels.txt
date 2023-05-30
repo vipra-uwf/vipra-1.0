@@ -1,0 +1,6 @@
+# Target labels
+ antlr4_runtime
+# Source files and their labels
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/behaviors/CMakeFiles/antlr4_runtime-build_static
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/behaviors/CMakeFiles/antlr4_runtime-build_static.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/behaviors/antlr4_runtime/src/antlr4_runtime-stamp/antlr4_runtime-build_static.rule

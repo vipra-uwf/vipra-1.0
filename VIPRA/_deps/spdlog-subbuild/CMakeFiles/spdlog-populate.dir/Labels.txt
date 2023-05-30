@@ -1,0 +1,14 @@
+# Target labels
+ spdlog-populate
+# Source files and their labels
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate-complete.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-mkdir.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-download.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build.rule
+/mnt/c/Users/gabeb/Research-Vipra/vipra/VIPRA/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test.rule

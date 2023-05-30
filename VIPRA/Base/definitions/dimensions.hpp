@@ -306,9 +306,9 @@ struct F3dHash {
   std::size_t operator() (const f3d& object) const {
     std::size_t seed = 0;
 
-    seed ^= std::hash<float>{}(object.x) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    seed ^= std::hash<float>{}(object.y) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    seed ^= std::hash<float>{}(object.z) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= std::hash<float>{}(object.x) + 0x9e3779b9 + (seed << 2) + (seed >> 1);
+    seed ^= std::hash<float>{}(object.y) + 0x9e3779b9 + (seed << 2) + (seed >> 1);
+    seed ^= std::hash<float>{}(object.z) + 0x9e3779b9 + (seed << 2) + (seed >> 1);
 
     return seed;
   }
