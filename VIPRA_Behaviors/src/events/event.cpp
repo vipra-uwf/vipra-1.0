@@ -19,21 +19,24 @@ namespace BHVR {
 void Event::evaluate(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals, BehaviorContext& context,
                      VIPRA::delta_t dT) {
 
-  if (!latch && startCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
-    latch.latch();
-    spdlog::info("Event \"{}\" has Started", name);
+  ending = false;
+  starting = false;
+
+  if (occurring) {
+    if (endCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
+      spdlog::info("Event {} is Ending", name);
+      occurring = false;
+      ending = true;
+    }
+
+    return;
   }
 
-  if (endCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
-    latch.unlatch();
-  }
-
-  if (latch) {
+  if (startCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
+    spdlog::info("Event {} is Starting", name);
     occurred = true;
     occurring = true;
-  } else {
-    spdlog::info("Event \"{}\" has Ended", name);
-    occurring = false;
+    starting = true;
   }
 }
 
@@ -44,6 +47,14 @@ bool Event::isOccurring() const {
 
 bool Event::hasOccurred() const {
   return occurred;
+}
+
+bool Event::isStarting() const {
+  return starting;
+}
+
+bool Event::isEnding() const {
+  return ending;
 }
 
 void Event::setStartCondition(const Condition& condition) {

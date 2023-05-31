@@ -24,6 +24,8 @@ class Event {
 
   [[nodiscard]] bool isOccurring() const;
   [[nodiscard]] bool hasOccurred() const;
+  [[nodiscard]] bool isStarting() const;
+  [[nodiscard]] bool isEnding() const;
 
   [[nodiscard]] const std::string& getName() const;
 
@@ -31,6 +33,8 @@ class Event {
   std::string name;
   bool        occurred = false;
   bool        occurring = false;
+  bool        ending = false;
+  bool        starting = false;
 
   Latch     latch;
   Condition startCondition;

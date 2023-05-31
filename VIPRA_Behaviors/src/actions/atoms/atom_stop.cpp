@@ -1,4 +1,6 @@
 
+#include <spdlog/spdlog.h>
+
 #include <actions/atoms/atom_stop.hpp>
 
 namespace BHVR {

@@ -3,5 +3,5 @@ consider a tripper.
 Everyone is a tripper.
 
 a tripper will
-  @stop after 1 seconds from !start
-  for a random 1-3 seconds.
+  @stop after 0 seconds from !start
+  for a random 1-8 seconds.
