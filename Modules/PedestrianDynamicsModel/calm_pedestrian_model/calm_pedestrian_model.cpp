@@ -1,26 +1,27 @@
-#include <array>
-#include <cmath>
-
 #include "calm_pedestrian_model.hpp"
 
+#include <cmath>
+
+CalmPedestrianModel::CalmPedestrianModel() = default;
 
 CalmPedestrianModel::~CalmPedestrianModel() {
   delete[] pedestrianDistanceMatrix;
 }
 
-void CalmPedestrianModel::configure(const VIPRA::CONFIG::Map&) {}
+void CalmPedestrianModel::configure(const VIPRA::CONFIG::Map& configMap) {}
 
-void CalmPedestrianModel::initialize(const PedestrianSet& pedestrianSet, const ObstacleSet&, const Goals&) {
+void CalmPedestrianModel::initialize(const PedestrianSet& pedestrianSet, const ObstacleSet& obstacleSet,
+                                     const Goals& goals) {
   pedestrianDistanceMatrix = new float[pedestrianSet.getNumPedestrians() * pedestrianSet.getNumPedestrians()];
-  propulsionForces = VIPRA::f3dVec(pedestrianSet.getNumPedestrians(), VIPRA::f3d{0.0F, 0.0F});
+  propulsionForces = VIPRA::f3dVec(pedestrianSet.getNumPedestrians(), VIPRA::f3d{0.0f, 0.0f});
   modelState = std::make_shared<VIPRA::State>(pedestrianSet.getNumPedestrians());
   nearestNeighbors = std::vector<float>(pedestrianSet.getNumPedestrians());
   betas = std::vector<float>(pedestrianSet.getNumPedestrians());
   nearestNeighborIndex = std::vector<VIPRA::idx>(pedestrianSet.getNumPedestrians());
 
   raceStatuses = std::vector<RaceStatus>(pedestrianSet.getNumPedestrians(), NO_RACE);
-  raceOpponents = std::vector<VIPRA::idx>(pedestrianSet.getNumPedestrians());
-  raceCounter = std::vector<int>(pedestrianSet.getNumPedestrians(), 0);
+  raceOpponents = std::vector<std::set<VIPRA::idx>>(pedestrianSet.getNumPedestrians());
+  raceCounter = std::vector<std::vector<int>>(pedestrianSet.getNumPedestrians(), std::vector<int>(pedestrianSet.getNumPedestrians(),0));
   inRace = std::vector<std::vector<bool>>(pedestrianSet.getNumPedestrians(),
                                           std::vector<bool>(pedestrianSet.getNumPedestrians(), false));
 
@@ -35,12 +36,12 @@ void CalmPedestrianModel::initialize(const PedestrianSet& pedestrianSet, const O
 /// @param index1
 /// @param index2
 /// @return true or false
-bool CalmPedestrianModel::checkIfCollide(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::idx index1,
-                                         VIPRA::idx index2) {
+bool CalmPedestrianModel::checkIfCollide(const CalmPedestrianSet& pedestrianSet, const Goals& goals, const VIPRA::idx index1,
+                                         const VIPRA::idx index2) {
 
-  const auto& shoulderLengths = pedestrianSet.getShoulderLengths();
-  Rect        r1 = getCollisionRectangle(pedestrianSet, goals, index1, shoulderLengths.at(index1));
-  Rect        r2 = getCollisionRectangle(pedestrianSet, goals, index2, shoulderLengths.at(index2));
+  auto shoulderLengths = pedestrianSet.getShoulderLengths();
+  Rect r1 = getCollisionRectangle(pedestrianSet, goals, index1, shoulderLengths.at(index1));
+  Rect r2 = getCollisionRectangle(pedestrianSet, goals, index2, shoulderLengths.at(index2));
 
   bool check = doRectanglesIntersect(r1, r2);
 
@@ -54,15 +55,22 @@ bool CalmPedestrianModel::checkIfCollide(const CalmPedestrianSet& pedestrianSet,
 /// @param index2
 /// @return Collision Area Midpoint
 VIPRA::f3d CalmPedestrianModel::getCollisionAreaMidpoint(const CalmPedestrianSet& pedestrianSet, const Goals& goals,
-                                                         VIPRA::idx index1, VIPRA::idx index2) {
-  const auto& shoulderLengths = pedestrianSet.getShoulderLengths();
-  Rect        r1 = getCollisionRectangle(pedestrianSet, goals, index1, shoulderLengths.at(index1));
-  Rect        r2 = getCollisionRectangle(pedestrianSet, goals, index2, shoulderLengths.at(index2));
+                                                         const VIPRA::idx index1, const VIPRA::idx index2) {
+  auto shoulderLengths = pedestrianSet.getShoulderLengths();
+  Rect r1 = getCollisionRectangle(pedestrianSet, goals, index1, shoulderLengths.at(index1));
+  Rect r2 = getCollisionRectangle(pedestrianSet, goals, index2, shoulderLengths.at(index2));
 
-  std::array<std::pair<VIPRA::f3d, VIPRA::f3d>, 4> s1{
-      std::pair{r1.p1, r1.p2}, {r1.p2, r1.p3}, {r1.p3, r1.p4}, {r1.p4, r1.p1}};
-  std::array<std::pair<VIPRA::f3d, VIPRA::f3d>, 4> s2{
-      std::pair{r2.p1, r2.p2}, {r2.p2, r2.p3}, {r2.p3, r2.p4}, {r2.p4, r2.p1}};
+  std::vector<std::pair<VIPRA::f3d, VIPRA::f3d>> s1;
+  std::vector<std::pair<VIPRA::f3d, VIPRA::f3d>> s2;
+  s1.emplace_back(r1.p1, r1.p2);
+  s1.emplace_back(r1.p2, r1.p3);
+  s1.emplace_back(r1.p3, r1.p4);
+  s1.emplace_back(r1.p4, r1.p1);
+
+  s2.emplace_back(r2.p1, r2.p2);
+  s2.emplace_back(r2.p2, r2.p3);
+  s2.emplace_back(r2.p3, r2.p4);
+  s2.emplace_back(r2.p4, r2.p1);
 
   VIPRA::f3dVec intersectionPoints;
   for (size_t i = 0; i < 4; i++) {
@@ -74,7 +82,7 @@ VIPRA::f3d CalmPedestrianModel::getCollisionAreaMidpoint(const CalmPedestrianSet
   }
 
   VIPRA::f3d midpoint(0, 0, 0);
-  for (const auto& intersectionPoint : intersectionPoints) {
+  for (const auto & intersectionPoint : intersectionPoints) {
     midpoint += intersectionPoint;
   }
   midpoint /= intersectionPoints.size();
@@ -87,10 +95,18 @@ VIPRA::f3d CalmPedestrianModel::getCollisionAreaMidpoint(const CalmPedestrianSet
 /// @param r2
 /// @return true or false
 bool CalmPedestrianModel::doRectanglesIntersect(Rect& r1, Rect& r2) {
-  std::array<std::pair<VIPRA::f3d, VIPRA::f3d>, 4> s1{
-      std::pair{r1.p1, r1.p2}, {r1.p2, r1.p3}, {r1.p3, r1.p4}, {r1.p4, r1.p1}};
-  std::array<std::pair<VIPRA::f3d, VIPRA::f3d>, 4> s2{
-      std::pair{r2.p1, r2.p2}, {r2.p2, r2.p3}, {r2.p3, r2.p4}, {r2.p4, r2.p1}};
+
+  std::vector<std::pair<VIPRA::f3d, VIPRA::f3d>> s1;
+  std::vector<std::pair<VIPRA::f3d, VIPRA::f3d>> s2;
+  s1.emplace_back(r1.p1, r1.p2);
+  s1.emplace_back(r1.p2, r1.p3);
+  s1.emplace_back(r1.p3, r1.p4);
+  s1.emplace_back(r1.p4, r1.p1);
+
+  s2.emplace_back(r2.p1, r2.p2);
+  s2.emplace_back(r2.p2, r2.p3);
+  s2.emplace_back(r2.p3, r2.p4);
+  s2.emplace_back(r2.p4, r2.p1);
 
   for (size_t i = 0; i < 4; i++) {
     for (size_t j = 0; j < 4; j++) {
@@ -110,8 +126,7 @@ bool CalmPedestrianModel::doRectanglesIntersect(Rect& r1, Rect& r2) {
 /// @param pt
 /// @return true or false
 bool CalmPedestrianModel::checkIfOnLineSegment(VIPRA::f3d p, VIPRA::f3d q, VIPRA::f3d pt) {
-  return pt.x <= std::max(p.x, q.x) && pt.y <= std::max(p.y, q.y) && pt.x >= std::min(p.x, q.x) &&
-         pt.y >= std::min(p.y, q.y);
+  return pt.x <= max(p.x, q.x) && pt.y <= max(p.y, q.y) && pt.x >= min(p.x, q.x) && pt.y >= min(p.y, q.y);
 }
 
 
@@ -121,21 +136,14 @@ bool CalmPedestrianModel::checkIfOnLineSegment(VIPRA::f3d p, VIPRA::f3d q, VIPRA
 /// @param p
 /// @param q
 /// @param r
-/// @return
-/// The function returns following values
-/// 0 --> p, q and r are collinear
-/// 1 --> Clockwise
-/// 2 --> Counterclockwise
+/// @return The function returns following values: 0 --> p, q and r are collinear; 1 --> Clockwise; 2 --> Counterclockwise
 int CalmPedestrianModel::orientation(VIPRA::f3d p, VIPRA::f3d q, VIPRA::f3d r) {
   float val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
 
-  if (val > 0)
-    return 1;
+  if (val == 0)  // collinear
+    return 0;
 
-  if (val < 0)
-    return 2;
-
-  return 0;
+  return (val > 0) ? 1 : 2;  // clockwise or counterclock wise
 }
 
 /// @brief Check if 2 line segments intersect, where p1 and q1 are endpoints of the first line segment, and p2 and q2 are endpoints of the second line segment
@@ -204,6 +212,27 @@ void CalmPedestrianModel::addIntersectionPoints(VIPRA::f3d p1, VIPRA::f3d q1, VI
   }
 }
 
+/// @brief Returns the maximum value between a and b
+/// @param a
+/// @param b
+/// @return a or b
+float CalmPedestrianModel::max(float a, float b) {
+  if (a > b)
+    return a;
+  else
+    return b;
+}
+
+/// @brief Returns the minimum value between a and b
+/// @param a
+/// @param b
+/// @return a or b
+float CalmPedestrianModel::min(float a, float b) {
+  if (a < b)
+    return a;
+  else
+    return b;
+}
 
 /// @brief Get the collision rectangle for particular pedestrian
 /// @param pedestrianSet
@@ -211,8 +240,8 @@ void CalmPedestrianModel::addIntersectionPoints(VIPRA::f3d p1, VIPRA::f3d q1, VI
 /// @param index
 /// @param shldrlen
 /// @return
-Rect CalmPedestrianModel::getCollisionRectangle(const CalmPedestrianSet& pedestrianSet, const Goals&, VIPRA::idx index,
-                                                float shldrlen) {
+Rect CalmPedestrianModel::getCollisionRectangle(const CalmPedestrianSet& pedestrianSet, const Goals& goals,
+                                                const VIPRA::idx index, const float& shldrlen) {
   auto coords = pedestrianSet.getPedCoords(index);
   auto pedVel = pedestrianSet.getPedVelocity(index);
 
@@ -220,7 +249,7 @@ Rect CalmPedestrianModel::getCollisionRectangle(const CalmPedestrianSet& pedestr
     return collisionRectangle.at(index);
 
   const Line       shoulders = getShoulderPoints(coords, pedVel, shldrlen / 2);
-  const VIPRA::f3d range = (pedVel.unit() * 0.575);
+  const VIPRA::f3d range = (pedVel.unit() * 0.6);
 
   const Rect pedCollisionRect = {shoulders.p1, shoulders.p1 + range, shoulders.p2 + range, shoulders.p2};
   collisionRectangle.at(index) = pedCollisionRect;
@@ -245,13 +274,13 @@ float CalmPedestrianModel::shortestDistanceToLineSegment(VIPRA::f3d point, VIPRA
   if (distRat >= 1) {
     if (point.distanceTo(start) < point.distanceTo(end))
       return point.distanceTo(start);
-
-    return point.distanceTo(end);
+    else
+      return point.distanceTo(end);
+  } else {
+    float bX = start.x + distRat * (end.x - start.x);
+    float bY = start.y + distRat * (end.y - start.y);
+    return std::sqrt((point.x - bX) * (point.x - bX) + (point.y - bY) * (point.y - bY));
   }
-
-  float bX = start.x + distRat * (end.x - start.x);
-  float bY = start.y + distRat * (end.y - start.y);
-  return std::sqrt((point.x - bX) * (point.x - bX) + (point.y - bY) * (point.y - bY));
 }
 
 /// @brief The race detection function which resolves race conditions in the simulation
@@ -272,7 +301,14 @@ void CalmPedestrianModel::raceDetection(const CalmPedestrianSet& pedestrianSet, 
     else
       raceStatuses.at(i) = WAIT;
 
-    // spdlog::debug("Race Status of {} is {}, its x is {}, its y is {} and its goal is {}, {}. Its velocity is {} x and {} y.", i, static_cast<int>(raceStatuses.at(i)), pedestrianSet.getPedCoords(i).x, pedestrianSet.getPedCoords(i).y, goals.getCurrentGoal(i).x, goals.getCurrentGoal(i).y,pedestrianSet.getPedVelocity(i).x,pedestrianSet.getPedVelocity(i).y);
+    if(i == 65)
+    {
+      spdlog::debug("Race Status of {} is {}, its x is {}, its y is {} and its goal is {}, {}. Its velocity is {} x and {} y.", i, static_cast<int>(raceStatuses.at(i)), pedestrianSet.getPedCoords(i).x, pedestrianSet.getPedCoords(i).y, goals.getCurrentGoal(i).x, goals.getCurrentGoal(i).y,pedestrianSet.getPedVelocity(i).x,pedestrianSet.getPedVelocity(i).y);
+      spdlog::debug("Its goal is {}x {}y", goals.getCurrentGoal(i).x, goals.getCurrentGoal(i).y);
+      spdlog::debug("Its propulsion is {}x {}y", propulsionForces.at(i).x, propulsionForces.at(i).y);
+      spdlog::debug("Its desired speed is {}", pedestrianSet.getDesiredSpeeds().at(i));
+      spdlog::debug("Its reaction time is {}", pedestrianSet.getReactionTimes().at(i));
+    }
   }
 }
 
@@ -283,7 +319,7 @@ void CalmPedestrianModel::raceDetection(const CalmPedestrianSet& pedestrianSet, 
 /// @param timestep
 /// @return true or false
 bool CalmPedestrianModel::checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet, const Goals& goals,
-                                                 VIPRA::idx index, VIPRA::t_step) {
+                                                 VIPRA::idx index, VIPRA::t_step timestep) {
   bool flag = true;
   for (VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); i++) {
     if (i == index)
@@ -293,32 +329,103 @@ bool CalmPedestrianModel::checkIfHighestPriority(const CalmPedestrianSet& pedest
       continue;
 
     if (!checkIfCollide(pedestrianSet, goals, index, i)) {
-      inRace.at(index).at(i) = false;
-      inRace.at(i).at(index) = false;
+      if(inRace.at(index).at(i))
+      {
+        inRace.at(index).at(i) = false;
+        inRace.at(i).at(index) = false;
+        
+        raceOpponents.at(i).erase(index);
+        raceOpponents.at(index).erase(i);
+
+        raceCounter.at(i).at(index) = 0;
+        raceCounter.at(index).at(i) = 0;
+      }
       continue;
     }
 
     VIPRA::f3d collisionMidpoint;
-    if (!inRace.at(index).at(i)) {
+    if (!inRace.at(index).at(i) || raceCounter.at(index).at(i)>500) {
       collisionMidpoint = getCollisionAreaMidpoint(pedestrianSet, goals, index, i);
+
       intersectionMidpoints.at(index).at(i) = collisionMidpoint;
       intersectionMidpoints.at(i).at(index) = collisionMidpoint;
+
       inRace.at(i).at(index) = true;
       inRace.at(index).at(i) = true;
+      raceOpponents.at(i).insert(index);
+      raceOpponents.at(index).insert(i);
+
+      raceCounter.at(i).at(index) = 0;
+      raceCounter.at(index).at(i) = 0;
+
     } else {
       collisionMidpoint = intersectionMidpoints.at(index).at(i);
     }
 
-    //   spdlog::debug("For index: {}, pedestrian {} is considered", index, i);
+    raceCounter.at(i).at(index)++;
+    raceCounter.at(index).at(i)++;
+  
+    if(index == 65)
+      spdlog::debug("For index: {}, pedestrian {} is considered", index, i);
+
+    VIPRA::f3d overallMidpoint{0,0};
+    int cnt = 0;
+
+    // // IMPLEMENTATION 1
+    // std::vector<VIPRA::idx> relevantIndices{index,i}; 
+    // for(auto opponent: raceOpponents.at(index))
+    // {
+    //   if(raceOpponents.at(i).count(opponent))
+    //   {
+    //     relevantIndices.push_back(opponent);
+    //   }
+    // }
+    // for(size_t k = 0; k < relevantIndices.size(); k++)
+    // {
+    //   for(size_t j = k+1; j < relevantIndices.size(); j++)
+    //   {
+    //     if(inRace.at(relevantIndices[k]).at(relevantIndices[j]))
+    //     {
+    //       overallMidpoint += intersectionMidpoints.at(relevantIndices[k]).at(relevantIndices[j]);
+    //       cnt++; 
+    //     }
+    //   }
+    // }
+
+
+    //IMPLEMENTATION 2
+    for(auto opponent: raceOpponents.at(index))
+    {
+      if(raceOpponents.at(i).count(opponent))
+      {
+        overallMidpoint+=intersectionMidpoints.at(index).at(opponent);
+        overallMidpoint+=intersectionMidpoints.at(i).at(opponent);
+        cnt+=2;
+      }
+    }
+    cnt++;
+    overallMidpoint+=intersectionMidpoints.at(index).at(i);
+
+
+    overallMidpoint.x /=cnt;
+    overallMidpoint.y /=cnt;
+
     auto coords1 = pedestrianSet.getPedCoords(index);
     auto coords2 = pedestrianSet.getPedCoords(i);
 
-    if (coords1.distanceTo(collisionMidpoint) > coords2.distanceTo(collisionMidpoint))
+    if (coords1.distanceTo(overallMidpoint) > coords2.distanceTo(overallMidpoint))
       flag = false;
-    else if (coords1.distanceTo(collisionMidpoint) == coords2.distanceTo(collisionMidpoint)) {
+    else if (coords1.distanceTo(overallMidpoint) == coords2.distanceTo(overallMidpoint)) {
       if (index < i)
         flag = false;
     }
+    if(index == 65)
+    {
+      // spdlog::debug("Their collision midpoint is {}x, {}y", collisionMidpoint.x,collisionMidpoint.y);
+      // spdlog::debug("Their overall midpoint is {}x, {}y", overallMidpoint.x,overallMidpoint.y);
+      spdlog::debug("Distance of {} to overall midpoint is {}. Distance of {} to overall midpoint is {}.", index, coords1.distanceTo(overallMidpoint), i, coords2.distanceTo(overallMidpoint));
+    }
+    
   }
   return flag;
 }
@@ -355,8 +462,8 @@ std::shared_ptr<VIPRA::State> CalmPedestrianModel::timestep(const PedestrianSet&
 
 
 VIPRA::f3d CalmPedestrianModel::calculateSpeedDensity(const PedestrianSet& pedestrianSet) {
-  const auto&       pedSet = static_cast<const CalmPedestrianSet&>(pedestrianSet);
-  const VIPRA::size pedCnt = pedSet.getNumPedestrians();
+  const auto& pedSet = static_cast<const CalmPedestrianSet&>(pedestrianSet);
+  const VIPRA::size        pedCnt = pedSet.getNumPedestrians();
   //x less than 24.51 and greater than 20.51
   //y greater than 1.6 and less than 2
 
@@ -364,21 +471,20 @@ VIPRA::f3d CalmPedestrianModel::calculateSpeedDensity(const PedestrianSet& pedes
   const auto&   velocities = pedSet.getVelocities();
   VIPRA::f3dVec dVelocities = VIPRA::f3dVec();
   float         area = 1.6;
-  int           nt = 0;
+  int           Nt = 0;
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     if (coords.at(i).x < 24.51 && coords.at(i).x > 20.51 && coords.at(i).y < 2 && coords.at(i).y > 1.6) {
       dVelocities.push_back(velocities.at(i));
-      nt++;
+      Nt++;
     }
   }
 
   VIPRA::f3d meanVelocity = VIPRA::f3d();
-  for (auto& dVelocitie : dVelocities) {
-    meanVelocity.x += dVelocitie.x;
-    meanVelocity.y += dVelocitie.y;
+  for (size_t i = 0; i < dVelocities.size(); i++) {
+    meanVelocity.x += dVelocities.at(i).x;
+    meanVelocity.y += dVelocities.at(i).y;
   }
-
   if (dVelocities.empty()) {
     meanVelocity.x = 0;
     meanVelocity.y = 0;
@@ -388,7 +494,7 @@ VIPRA::f3d CalmPedestrianModel::calculateSpeedDensity(const PedestrianSet& pedes
   }
 
 
-  float density = nt / area;
+  float density = Nt / area;
   spdlog::debug("Mean Velocity: {}, Density: {}", meanVelocity.magnitude(), density);
 
 
@@ -400,8 +506,8 @@ VIPRA::f3d CalmPedestrianModel::calculateSpeedDensity(const PedestrianSet& pedes
  * 
  * @param pedSet 
  */
-void CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet, const ObstacleSet&,
-                                                     const Goals&             goals) noexcept {
+void CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pedSet, const ObstacleSet& obsSet,
+                                                     const Goals& goals) noexcept {
 
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       coords = pedSet.getPedestrianCoordinates();
@@ -414,6 +520,7 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pe
       continue;
 
     const auto pedCoords = coords.at(i);
+    const auto velocity = velocities.at(i);
 
     float      nearestDist = std::numeric_limits<float>::max();
     VIPRA::idx index = 0;
@@ -423,24 +530,18 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pe
         continue;
 
       const auto secondCoords = coords.at(j);
-
-      float dist = pedCoords.distanceTo(secondCoords);
-      if (dist >= nearestDist)
+      if (!isPedInFront(pedCoords, velocity, shoulderLengths.at(i), secondCoords, velocities.at(j), shoulderLengths.at(j)))
         continue;
 
       if (!isPedInDirectionOfGoal(goals.getCurrentGoal(i), pedCoords, secondCoords))
         continue;
 
-      const auto& secondVel = velocities.at(j);
-      const auto  secondShoulder = getShoulderPoints(coords.at(j), secondVel, shoulderLengths.at(j));
-      if (!objectSpatialTest(pedCoords, secondVel, shoulderLengths.at(i), secondShoulder.p1, secondShoulder.p2))
-        continue;
-
-      nearestDist = dist;
-      index = j;
+      float dist = pedCoords.distanceTo(secondCoords);
+      if (dist < nearestDist) {
+        nearestDist = dist;
+        index = j;
+      }
     }
-
-    // TODO(rolland): Collision with obstacles is turned off with this commented out
 
     // float obsDist = checkBlockedPath(coords.at(i), velocities.at(i), shoulderLengths.at(i), nearestDist, obsSet);
     // if (obsDist != -1 && obsDist < nearestDist) {
@@ -452,11 +553,11 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const CalmPedestrianSet& pe
   }
 }
 
-bool CalmPedestrianModel::isPedInDirectionOfGoal(VIPRA::f3d goalCoords, VIPRA::f3d pedCoords,
-                                                 VIPRA::f3d secondCoords) noexcept {
+bool CalmPedestrianModel::isPedInDirectionOfGoal(const VIPRA::f3d& goalCoords, const VIPRA::f3d& pedCoords,
+                                                 const VIPRA::f3d& secondCoords) const noexcept {
 
-  VIPRA::f3d pedDirection = goalCoords - pedCoords;
-  VIPRA::f3d secondDirection = secondCoords - pedCoords;
+  const VIPRA::f3d& pedDirection = goalCoords - pedCoords;
+  const VIPRA::f3d& secondDirection = secondCoords - pedCoords;
 
   const float dotProduct =
       (pedDirection.x * secondDirection.x) + (pedDirection.y * secondDirection.y) + (pedDirection.z * secondDirection.z);
@@ -464,6 +565,18 @@ bool CalmPedestrianModel::isPedInDirectionOfGoal(VIPRA::f3d goalCoords, VIPRA::f
   return dotProduct > 0;
 }
 
+bool CalmPedestrianModel::isPedInFront(const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVel, const float shoulderLen,
+                                       const VIPRA::f3d& secondCoords, const VIPRA::f3d& secondVel,
+                                       const float secondShoulderLen) const noexcept {
+  // if (!objectDirectionTest(pedCoords, pedVel, secondCoords))
+  //   return false;
+
+  // const Line secondPedShoulders = getShoulderPoints(secondCoords, secondVel, secondShoulderLen);
+  // if (!objectSpatialTest(pedCoords, pedVel, shoulderLen, secondPedShoulders.p1, secondPedShoulders.p2))
+  //   return false;
+
+  return true;
+}
 
 /**
  * @brief returns true if pedestrian at secondIdx is infront of firstIdx, infront being in a 180 degree field in the direction of firstIdx's velocity
@@ -472,7 +585,8 @@ bool CalmPedestrianModel::isPedInDirectionOfGoal(VIPRA::f3d goalCoords, VIPRA::f
  * @param firstIdx 
  * @param secondIdx 
  */
-bool CalmPedestrianModel::objectDirectionTest(VIPRA::f3d pedCoords, VIPRA::f3d pedVelocity, VIPRA::f3d objCoords) noexcept {
+bool CalmPedestrianModel::objectDirectionTest(const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity,
+                                              const VIPRA::f3d& objCoords) const noexcept {
   const VIPRA::f3d displacement = objCoords - pedCoords;
 
   const float dotProduct =
@@ -489,8 +603,12 @@ bool CalmPedestrianModel::objectDirectionTest(VIPRA::f3d pedCoords, VIPRA::f3d p
  * @param secondPedIdx 
  * @param firstShoulderLength
  */
-bool CalmPedestrianModel::objectSpatialTest(VIPRA::f3d pedCoords, VIPRA::f3d pedVelocity, float pedShoulderLength,
-                                            VIPRA::f3d objLeft, VIPRA::f3d objRight) noexcept {
+bool CalmPedestrianModel::objectSpatialTest(const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity,
+                                            float pedShoulderLength, const VIPRA::f3d& objLeft,
+                                            const VIPRA::f3d& objRight) const noexcept {
+
+  // Creates a rectangle from the first pedestrians position, shoulders, and velocity
+  // then checks if the second pedestrian intersects it
 
   const Line       shoulders = getShoulderPoints(pedCoords, pedVelocity, pedShoulderLength);
   const VIPRA::f3d range = (pedVelocity.unit() * 4);
@@ -504,8 +622,8 @@ bool CalmPedestrianModel::objectSpatialTest(VIPRA::f3d pedCoords, VIPRA::f3d ped
   return isPointInRect(pedCollisionRect, objLeft) || isPointInRect(pedCollisionRect, objRight);
 }
 
-float CalmPedestrianModel::checkBlockedPath(VIPRA::f3d coords, VIPRA::f3d velocity, float shoulderWidth, float checkDistance,
-                                            const ObstacleSet& obsSet) noexcept {
+float CalmPedestrianModel::checkBlockedPath(const VIPRA::f3d& coords, const VIPRA::f3d& velocity, float shoulderWidth,
+                                            float checkDistance, const ObstacleSet& obsSet) const noexcept {
 
   const Line shoulders = getShoulderPoints(coords, velocity, shoulderWidth);
   if (shoulders.p1 == shoulders.p2) {
@@ -531,7 +649,7 @@ void CalmPedestrianModel::calculateBetas(const CalmPedestrianSet& pedSet) noexce
   }
 }
 
-inline float CalmPedestrianModel::calculateBeta(float distance) noexcept {
+inline float CalmPedestrianModel::calculateBeta(float distance) const noexcept {
   constexpr float a = -2.11;
   constexpr float b = 0.366;
   constexpr float c = 0.966;
@@ -560,28 +678,36 @@ void CalmPedestrianModel::calculatePropulsion(const CalmPedestrianSet& pedestria
       continue;
     }
 
-    const VIPRA::f3d velocity = velocities[i];
-    const VIPRA::f3d goal = currentGoals[i];
-    const VIPRA::f3d coord = coords[i];
-    const float      desiredSpeed = desiredSpeeds[i];
-    const float      mass = masses[i];
-    const float      reactionTime = reactionTimes[i];
-    const float      beta = betas[i];
+    const VIPRA::f3d& velocity = velocities[i];
+    const VIPRA::f3d& goal = currentGoals[i];
+    const VIPRA::f3d& coord = coords[i];
+    const float       desiredSpeed = desiredSpeeds[i];
+    const float       mass = masses[i];
+    const float       reactionTime = reactionTimes[i];
+    float             beta = betas[i];
 
     const VIPRA::f3d direction = goal - coord;
-    const VIPRA::f3d desiredVelocity = direction.unit() * desiredSpeed * beta;
-
+    VIPRA::f3d       desiredVelocity;
+    desiredVelocity = direction.unit() * desiredSpeed * beta;
     propulsionForces.at(i) = ((desiredVelocity - velocity) * mass) / reactionTime;
+    if(i==65)
+    {
+      spdlog::debug("Beta is {}",beta);
+      spdlog::debug("Mass is {}",mass);
+      spdlog::debug("Desired velocity is {}x {}y", desiredVelocity.x, desiredVelocity.y);
+    }
+      
   }
 }
 
 void CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, const CalmGoals& goals, VIPRA::delta_t time,
-                                           VIPRA::t_step) noexcept {
+                                           VIPRA::t_step timestep) noexcept {
 
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       coords = pedSet.getPedestrianCoordinates();
   const auto&       velocities = pedSet.getVelocities();
   const auto&       masses = pedSet.getMasses();
+  const auto&       desiredSpeeds = pedSet.getDesiredSpeeds();
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
 
@@ -594,6 +720,7 @@ void CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, cons
     const auto& propulsion = propulsionForces.at(i);
     const auto& velocity = velocities.at(i);
     const float mass = masses.at(i);
+    const float desiredSpeed = desiredSpeeds.at(i);
 
     //Use Euler Method to update position and velocity
     modelState->velocities[i] = ((propulsion / mass) * time) + velocity;
@@ -609,6 +736,10 @@ void CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, cons
   }
 }
 
+// CalmPedestrianModel::~CalmPedestrianModel() {
+//   delete[] pedestrianDistanceMatrix;
+// }
+
 /**
  * @brief returns true if the line intersects any of the sides of rect, also checks if it intersects the rect's internal diagonal
  * @note requires rect points to go clockwise from points 1-4
@@ -616,7 +747,7 @@ void CalmPedestrianModel::updateModelState(const CalmPedestrianSet& pedSet, cons
  * @param rect 
  * @param line 
  */
-bool CalmPedestrianModel::isPointInRect(const Rect& rect, VIPRA::f3d p1) noexcept {
+bool CalmPedestrianModel::isPointInRect(const Rect& rect, const VIPRA::f3d& p1) const noexcept {
   if (p1 == rect.p1 || p1 == rect.p2 || p1 == rect.p3 || p1 == rect.p4)
     return true;
 
@@ -650,7 +781,8 @@ bool CalmPedestrianModel::isPointInRect(const Rect& rect, VIPRA::f3d p1) noexcep
  * @param end1 
  * @param line 
  */
-bool CalmPedestrianModel::lineIntersect(VIPRA::f3d start1, VIPRA::f3d end1, VIPRA::f3d start2, VIPRA::f3d end2) noexcept {
+bool CalmPedestrianModel::lineIntersect(const VIPRA::f3d& start1, const VIPRA::f3d& end1, const VIPRA::f3d& start2,
+                                        const VIPRA::f3d& end2) const noexcept {
 
   if (start1 == end1 || start2 == end2) {
     return false;
@@ -659,12 +791,16 @@ bool CalmPedestrianModel::lineIntersect(VIPRA::f3d start1, VIPRA::f3d end1, VIPR
   const float det = (end1.x - start1.x) * (end2.y - start2.y) - (end2.x - start2.x) * (end1.y - start1.y);
   if (det == 0) {
 
-    return start1.distanceTo(start2) + end1.distanceTo(start2) == start1.distanceTo(end1) ||
-           std::abs(start1.distanceTo(end2) + end1.distanceTo(end2)) == start1.distanceTo(end1);
+    if (start1.distanceTo(start2) + end1.distanceTo(start2) == start1.distanceTo(end1) ||
+        abs(start1.distanceTo(end2) + end1.distanceTo(end2)) == start1.distanceTo(end1))
+      return true;
+
+    return false;
+  } else {
+    const float lambda = ((end2.y - start2.y) * (end2.x - start1.x) + (start2.x - end2.x) * (end2.y - start1.y)) / det;
+    const float gamma = ((start1.y - end1.y) * (end2.x - start1.x) + (end1.x - start1.x) * (end2.y - start1.y)) / det;
+    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
   }
-  const float lambda = ((end2.y - start2.y) * (end2.x - start1.x) + (start2.x - end2.x) * (end2.y - start1.y)) / det;
-  const float gamma = ((start1.y - end1.y) * (end2.x - start1.x) + (end1.x - start1.x) * (end2.y - start1.y)) / det;
-  return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
 }
 
 /**
@@ -674,7 +810,8 @@ bool CalmPedestrianModel::lineIntersect(VIPRA::f3d start1, VIPRA::f3d end1, VIPR
  * @param velocity 
  * @param shoulderWidth 
  */
-Line CalmPedestrianModel::getShoulderPoints(VIPRA::f3d coords, VIPRA::f3d velocity, float shoulderWidth) noexcept {
+Line CalmPedestrianModel::getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& velocity,
+                                            float shoulderWidth) const noexcept {
   if (velocity == VIPRA::f3d{0, 0, 0}) {
     return {(VIPRA::f3d{0, shoulderWidth}), (VIPRA::f3d{0, -shoulderWidth})};
   }
