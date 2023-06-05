@@ -23,13 +23,14 @@ class GroupsContainer {
   * @return constexpr VIPRA::idx 
   */
   static constexpr VIPRA::idx index(typeUID type) {
-    if (type == 0)
+    if (type == 0) {
       return 0;
+    }
 
     VIPRA::idx check = 1;
     VIPRA::idx index = 1;
-    while (!(check & type)) {
-      check = check << 1;
+    while ((check & type) == 0U) {
+      check = check << 1U;
       ++index;
     }
 

@@ -23,12 +23,12 @@ struct GridPointHash {
   std::size_t operator() (const GridPoint& object) const {
     std::size_t seed = 0;
 
-    seed ^= VIPRA::F3dHash{}(object.center) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed += VIPRA::F3dHash{}(object.center);
     for (const GridPoint* adjPoint : object.adj) {
-      seed ^= reinterpret_cast<std::uintptr_t>(adjPoint) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+      seed += reinterpret_cast<std::size_t>(adjPoint);
     }
-    seed ^= std::hash<bool>{}(object.traversable) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    seed ^= std::hash<bool>{}(object.buffer) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed += std::hash<bool>{}(object.traversable);
+    seed += std::hash<bool>{}(object.buffer);
 
     return seed;
   }

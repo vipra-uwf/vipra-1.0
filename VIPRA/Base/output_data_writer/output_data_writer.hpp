@@ -5,8 +5,8 @@
 #include <iostream>
 #include <string>
 
-#include "definitions/config_map.hpp"
-#include "definitions/type_definitions.hpp"
+#include <definitions/config_map.hpp>
+#include <definitions/type_definitions.hpp>
 
 class OutputDataWriterException : public std::runtime_error {
  public:
@@ -16,14 +16,19 @@ class OutputDataWriterException : public std::runtime_error {
 
 class OutputDataWriter {
  public:
-  virtual ~OutputDataWriter() = default;
-
-  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
-  virtual void initializeOutputFile(const std::string& outputFilePath) = 0;
-  virtual void addFloatValue(const std::string& key, float value) = 0;
-  virtual void addStringValue(const std::string& key, const std::string& value) = 0;
-
+  virtual void configure(const VIPRA::CONFIG::Map&) = 0;
+  virtual void initializeOutputFile(const std::string&) = 0;
+  virtual void addFloatValue(const std::string&, float) = 0;
+  virtual void addStringValue(const std::string&, const std::string&) = 0;
   virtual void writeToDocument() = 0;
+
+
+  OutputDataWriter(const OutputDataWriter&) = default;
+  OutputDataWriter(OutputDataWriter&&) = delete;
+  OutputDataWriter& operator=(const OutputDataWriter&) = default;
+  OutputDataWriter& operator=(OutputDataWriter&&) = delete;
+  OutputDataWriter() = default;
+  virtual ~OutputDataWriter() = default;
 };
 
 #endif

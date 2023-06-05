@@ -15,23 +15,28 @@ class GoalsException : public std::runtime_error {
 
 class Goals {
  public:
-  virtual ~Goals() = default;
-
   virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
   virtual void initialize(const ObstacleSet&, const PedestrianSet&) = 0;
-
   virtual void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&, VIPRA::delta_t) = 0;
 
-  virtual VIPRA::f3d getCurrentGoal(VIPRA::idx) const = 0;
-  virtual VIPRA::f3d getEndGoal(VIPRA::idx) const = 0;
+  [[nodiscard]] virtual VIPRA::f3d getCurrentGoal(VIPRA::idx) const = 0;
+  [[nodiscard]] virtual VIPRA::f3d getEndGoal(VIPRA::idx) const = 0;
 
-  virtual const VIPRA::f3dVec& getAllCurrentGoals() const = 0;
-  virtual const VIPRA::f3dVec& getAllEndGoals() const = 0;
+  [[nodiscard]] virtual const VIPRA::f3dVec& getAllCurrentGoals() const = 0;
+  [[nodiscard]] virtual const VIPRA::f3dVec& getAllEndGoals() const = 0;
 
-  virtual VIPRA::delta_t timeSinceLastGoal(VIPRA::idx) const = 0;
+  [[nodiscard]] virtual VIPRA::delta_t timeSinceLastGoal(VIPRA::idx) const = 0;
 
-  virtual bool isPedestianGoalMet(VIPRA::idx) const = 0;
-  virtual bool isSimulationGoalMet() const = 0;
+  [[nodiscard]] virtual bool isPedestianGoalMet(VIPRA::idx) const = 0;
+  [[nodiscard]] virtual bool isSimulationGoalMet() const = 0;
+
+
+  Goals(const Goals&) = default;
+  Goals(Goals&&) = delete;
+  Goals& operator=(const Goals&) = default;
+  Goals& operator=(Goals&&) = delete;
+  Goals() = default;
+  virtual ~Goals() = default;
 };
 
 #endif

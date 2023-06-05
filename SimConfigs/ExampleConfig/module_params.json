@@ -11,7 +11,8 @@
     },
     "configuration_writer": {
         "desiredSpeedMin": 0.80,
-        "desiredSpeedMax": 1.20
+        "desiredSpeedMax": 1.20,
+        "seed": 12345
     },
     "pedestrian_set": {},
     "obstacle_set": {
@@ -26,7 +27,6 @@
     },
     "pedestrian_dynamics_model": {},
     "configuration_reader": {},
-    "clock": {},
     "simulation": {
         "time_step_size": 0.005,
         "max_timestep": 5000

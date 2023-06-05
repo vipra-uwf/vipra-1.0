@@ -1,10 +1,13 @@
 #ifndef DSL_HUMAN_BEHAVIOR_HPP
 #define DSL_HUMAN_BEHAVIOR_HPP
 
+#include <definitions/type_definitions.hpp>
 #include <filesystem>
+#include <stdexcept>
 #include <unordered_map>
 
 #include <generated/BehaviorBaseVisitor.h>
+#include <generated/BehaviorParser.h>
 
 #include <selectors/subselector.hpp>
 
@@ -14,11 +17,19 @@
 
 #include <util/caseless_str_comp.hpp>
 
+
 namespace BHVR {
 
 using StateMap = std::unordered_map<std::string, BHVR::stateUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
 using TypeMap = std::unordered_map<std::string, BHVR::typeUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
 using EventMap = std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
+
+class BuilderException : public std::runtime_error {
+ public:
+  explicit BuilderException() : std::runtime_error("") {}
+  static void error() { throw BuilderException(); }
+};
+
 
 class BehaviorBuilder : public BehaviorBaseVisitor {
  public:
@@ -31,16 +42,20 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   TypeMap  types;
   EventMap eventsMap;
 
+  Condition     startCond;
+  Event         startEvent;
+  HumanBehavior currentBehavior;
+
   BHVR::stateUID currState;
   BHVR::typeUID  currType;
 
   BHVR::seed currSeed;
 
-  void        initialBehaviorSetup(const std::string&, BHVR::seed);
-  void        initializeTypes();
-  void        initializeEvents();
-  void        initializeStates();
-  static void endBehaviorCheck();
+  void initialBehaviorSetup(const std::string&, BHVR::seed);
+  void initializeTypes();
+  void initializeEvents();
+  void initializeStates();
+  void endBehaviorCheck();
 
   void addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
 
@@ -49,8 +64,9 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   SubSelector buildSubSelector(BehaviorParser::Ped_SelectorContext*);
 
-  BHVR::stateUID getState(const std::string&);
-  VIPRA::idx     getEvent(const std::string&);
+  BHVR::stateUID      getState(const std::string&);
+  VIPRA::idx          getEvent(const std::string&);
+  VIPRA::time_range_s getRange(BehaviorParser::Value_numberContext*);
 
   BHVR::typeUID                   getType(const std::string&) const;
   BHVR::typeUID                   getGroup(BehaviorParser::Ped_SelectorContext*) const;

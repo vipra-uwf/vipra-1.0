@@ -1,7 +1,7 @@
 #ifndef TIMESTEP_OUTPUT_HANDLER_HPP
 #define TIMESTEP_OUTPUT_HANDLER_HPP
 
-#include "../simulation_output_handler.hpp"
+#include <simulation_output_handler/simulation_output_handler.hpp>
 
 class TimestepOutputHandler : public SimulationOutputHandler {
  private:

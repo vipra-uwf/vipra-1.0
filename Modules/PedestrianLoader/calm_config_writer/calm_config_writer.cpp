@@ -4,6 +4,7 @@ void CalmPedestrianConfigWriter::configure(const VIPRA::CONFIG::Map& configMap) 
   spdlog::info("CalmPedestrianConfigWriter: Configuring Calm Config Writer");
   pedData.desiredSpeedMin = configMap["desiredSpeedMin"].asFloat();
   pedData.desiredSpeedMax = configMap["desiredSpeedMax"].asFloat();
+  seed = configMap["seed"].asUInt64();
   spdlog::info("CalmPedestrianConfigWriter: Done Configuring Calm Config Writer");
 }
 
@@ -21,13 +22,13 @@ std::string CalmPedestrianConfigWriter::buildPedestrians(const std::string& file
 
   inputFileStream.open(filePath);
   if (!inputFileStream.is_open()) {
-    PedestrianConfigWriterException::Throw("Unable To Open Map File: " + filePath + "\n");
+    PedestrianConfigWriterException::error("Unable To Open Map File: " + filePath + "\n");
   }
 
   if (!Json::parseFromStream(jsonReader, inputFileStream, &jsonDocument, &errors)) {
     inputFileStream.close();
     spdlog::error("CalmPedestrianConfigWriter: Jsoncpp unable to parse file");
-    PedestrianConfigWriterException::Throw("Unable To Parse Map File: " + filePath + "\n");
+    PedestrianConfigWriterException::error("Unable To Parse Map File: " + filePath + "\n");
   }
   inputFileStream.close();
 
@@ -60,7 +61,7 @@ std::string CalmPedestrianConfigWriter::buildPedestrians(const std::string& file
   } catch (const std::exception& ex) {
     spdlog::debug("CalmPedestrianConfigWriter: Error Building Json, Error: {}", ex.what());
     outputFileStream.close();
-    PedestrianConfigWriterException::Throw("Unable to write json file: " + filePath + "2\n");
+    PedestrianConfigWriterException::error("Unable to write json file: " + filePath + "2\n");
   }
 
 
@@ -68,8 +69,8 @@ std::string CalmPedestrianConfigWriter::buildPedestrians(const std::string& file
   return newFilePath;
 }
 
-void CalmPedestrianConfigWriter::calculateDesiredSpeeds(const unsigned int numPedestrians) {
-  std::default_random_engine            generator;
+void CalmPedestrianConfigWriter::calculateDesiredSpeeds(VIPRA::size numPedestrians) {
+  std::default_random_engine            generator(seed);
   std::uniform_real_distribution<float> distribution(pedData.desiredSpeedMin, pedData.desiredSpeedMax);
 
   for (unsigned int i = 0; i < numPedestrians; i++) {

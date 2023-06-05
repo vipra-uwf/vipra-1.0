@@ -32,12 +32,7 @@ target_compile_options(
   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
 
-if (MOCK_BEHAVIORS)
-  add_compile_definitions(MOCK_BEHAVIORS=1)
-endif()
-
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../)
-
 
 
 if (DEBUG_MODE)
@@ -51,6 +46,18 @@ elseif (PROF_MODE)
 else()
   set(CMAKE_BUILD_TYPE Release)
 endif ()
+
+include(FetchContent)
+message(STATUS "Getting spdlog")
+FetchContent_Declare(spdlog URL https://github.com/gabime/spdlog/archive/v1.11.0.tar.gz)
+FetchContent_MakeAvailable(spdlog)
+message(STATUS "Done Getting spdlog")
+
+message(STATUS "Getting jsoncpp")
+set(JSONCPP_WITH_TESTS OFF)
+FetchContent_Declare(jsoncpp URL https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.3.tar.gz)
+FetchContent_MakeAvailable(jsoncpp)
+message(STATUS "Done Getting jsoncpp")
 
 add_subdirectory(${BASE_DIR})
 add_subdirectory(${MODULES_DIR} modules)

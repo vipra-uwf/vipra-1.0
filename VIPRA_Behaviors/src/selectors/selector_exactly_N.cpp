@@ -6,8 +6,9 @@
 #include "selectors/selector_exactly_N.hpp"
 
 namespace BHVR {
-SelectorResult SelectorExactlyN::operator()(BHVR::seed seed, const VIPRA::idxVec&, const VIPRA::idxVec& group,
-                                            const PedestrianSet&, const ObstacleSet&, const Goals&) {
+SelectorResult SelectorExactlyN::operator()(BHVR::seed seed, const VIPRA::idxVec& /*peds*/, const VIPRA::idxVec& group,
+                                            const PedestrianSet& /*pedset*/, const ObstacleSet& /*obsset*/,
+                                            const Goals& /*goals*/) {
   srand(seed);
   auto groupPeds = group;
 

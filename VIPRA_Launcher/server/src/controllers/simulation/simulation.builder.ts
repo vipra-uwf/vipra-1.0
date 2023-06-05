@@ -376,7 +376,6 @@ export class SimulationBuilder {
       human_behavior_model: 0,
       configuration_writer: 0,
       configuration_reader: 0, 
-      clock: 0, 
       simulation : 0, 
       map_loader: 0, 
       policy_model: 0,

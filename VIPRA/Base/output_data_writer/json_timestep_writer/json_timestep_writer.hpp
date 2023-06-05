@@ -2,7 +2,8 @@
 #define JSON_TIMESTEP_WRITER_HPP
 
 #include <json/json.h>
-#include "../output_data_writer.hpp"
+
+#include <output_data_writer/output_data_writer.hpp>
 
 
 class JSONTimestepWriter : public OutputDataWriter {

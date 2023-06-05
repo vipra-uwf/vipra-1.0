@@ -1,4 +1,7 @@
+
+
 #include "simulation.hpp"
+#include <chrono>
 
 void Simulation::configure(const VIPRA::CONFIG::Map& config) {
   timestep = 0;
@@ -28,9 +31,10 @@ VIPRA::t_step Simulation::getTimestep() const {
 void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
                      PedestrianDynamicsModel& pedestrianDynamicsModel, HumanBehaviorModel& humanBehaviorModel,
                      PolicyModel& policyModel, OutputDataWriter& outputDataWriter,
-                     SimulationOutputHandler& simulationOutputHandler, Clock& clock) {
+                     SimulationOutputHandler& simulationOutputHandler) {
   spdlog::info("Starting Simulation Loop");
 
+  clock.start();
   while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
     auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, timestep)};
     policyModel.timestep(pedestrianSet, obstacleSet, goals, *pedState, timestep_size);
@@ -45,14 +49,17 @@ void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& ob
 
     goals.updatePedestrianGoals(obstacleSet, pedestrianSet, timestep_size);
     ++timestep;
-    clock.addSimulationTimeMs(timestep_size);
   }
 
   spdlog::info("Simulation Run Complete");
+  printSimTime();
+}
 
-  clock.stop();
-  clock.printRealEndTime();
-  clock.printRealDuration();
-  clock.printSimulationDuration();
+void Simulation::printSimTime() {
+  auto stopTime = clock.stop();
+  spdlog::info("Simulation Real Run Time: {}", stopTime);
 
-}  // namespace Vipra
+  const double simTime = timestep_size * static_cast<float>(timestep);
+  const auto   stm = std::chrono::round<std::chrono::milliseconds>(std::chrono::duration<float>{simTime});
+  spdlog::info("Simulated Time: {}", stm);
+}

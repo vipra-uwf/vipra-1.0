@@ -3,9 +3,9 @@
 
 #include <gmock/gmock.h>
 
-#include "definitions/config_map.hpp"
-#include "definitions/dimensions.hpp"
-#include "goals/goals.hpp"
+#include <definitions/config_map.hpp>
+#include <definitions/dimensions.hpp>
+#include <goals/goals.hpp>
 
 class GoalsMock : public Goals {
  public:

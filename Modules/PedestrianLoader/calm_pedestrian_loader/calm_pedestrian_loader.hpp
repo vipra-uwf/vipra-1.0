@@ -11,8 +11,7 @@
 #include <pedestrian_loader/pedestrian_loader.hpp>
 
 struct CalmPedData : public VIPRA::PedData {
-  CalmPedData()
-      : VIPRA::PedData{"CalmPedData"}, positions{}, masses{}, shoulderLengths{}, desiredSpeeds{}, reactionTimes{} {}
+  CalmPedData() : VIPRA::PedData{"CalmPedData"} {}
   VIPRA::f3dVec      positions;
   std::vector<float> masses;
   std::vector<float> shoulderLengths;
@@ -22,9 +21,11 @@ struct CalmPedData : public VIPRA::PedData {
 
 class CalmPedestrianLoader : public PedestrianLoader {
  public:
-  void                            configure(const VIPRA::CONFIG::Map& configMap) override;
-  void                            initialize() override;
-  std::unique_ptr<VIPRA::PedData> LoadPedestrians(const std::string& filePath) const override;
+  void                                          configure(const VIPRA::CONFIG::Map& configMap) override;
+  void                                          initialize() override;
+  [[nodiscard]] std::unique_ptr<VIPRA::PedData> loadPedestrians(const std::string& filePath) const override;
+
+  CalmPedestrianLoader() = default;
 };
 
 #endif

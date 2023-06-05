@@ -9,13 +9,18 @@
 #include "pedestrian_set/pedestrian_set.hpp"
 
 class SimulationOutputHandler {
-
  public:
-  virtual ~SimulationOutputHandler() = default;
-
   virtual void configure(const VIPRA::CONFIG::Map&) = 0;
   virtual bool isOutputCriterionMet(const PedestrianSet&, const ObstacleSet&, const Goals&, VIPRA::t_step timestep) = 0;
   virtual void writeOutput(OutputDataWriter&, const PedestrianSet&, VIPRA::t_step timestep) = 0;
+
+
+  SimulationOutputHandler(const SimulationOutputHandler&) = default;
+  SimulationOutputHandler(SimulationOutputHandler&&) = delete;
+  SimulationOutputHandler& operator=(const SimulationOutputHandler&) = default;
+  SimulationOutputHandler& operator=(SimulationOutputHandler&&) = delete;
+  SimulationOutputHandler() = default;
+  virtual ~SimulationOutputHandler() = default;
 };
 
 #endif

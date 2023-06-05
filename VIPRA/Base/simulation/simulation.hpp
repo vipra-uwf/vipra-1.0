@@ -2,6 +2,7 @@
 #define SIMULATION_HPP
 
 #include <spdlog/spdlog.h>
+
 #include <clock/clock.hpp>
 #include <definitions/config_map.hpp>
 #include <definitions/state.hpp>
@@ -16,15 +17,17 @@ class Simulation {
   void initialize();
   void run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
            PedestrianDynamicsModel& pedestrianDynamicsModel, HumanBehaviorModel& humanBehaviorModel,
-           PolicyModel& policyModel, OutputDataWriter& outputDataWriter, SimulationOutputHandler& simulationOutputHandler,
-           Clock& clock);
+           PolicyModel& policyModel, OutputDataWriter& outputDataWriter, SimulationOutputHandler& simulationOutputHandler);
 
-  VIPRA::t_step getTimestep() const;
+  [[nodiscard]] VIPRA::t_step getTimestep() const;
 
  private:
-  VIPRA::t_step  timestep;
-  VIPRA::delta_t timestep_size;
-  VIPRA::t_step  maxTimeStep;
+  VIPRA::t_step  timestep{};
+  VIPRA::delta_t timestep_size{};
+  VIPRA::t_step  maxTimeStep{};
+  VIPRA::Clock<> clock;
+
+  void printSimTime();
 };
 
 #endif

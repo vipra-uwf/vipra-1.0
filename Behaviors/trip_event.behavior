@@ -1,12 +1,7 @@
-consider a typeA, and a typeB.
+consider a tripper.
 
-50% of pedestrians are typeA.
-exactly 1 of typeA is typeB.
+Everyone is a tripper.
 
-a !trip event will 
-  occur after 5 seconds from !start 
-  and end after 10 seconds from !trip.
-
-a typeA will always @walk 1.0x their normal speed.
-
-a typeB will @stop while the !trip event is occurring.
+a tripper will
+  @stop after 1 seconds from !start
+  for a random 1-3 seconds.

@@ -5,7 +5,7 @@
 namespace BHVR {
 Direction directionFromContext(BehaviorParser::DirectionContext* ctx) {
 
-  Direction direction;
+  Direction direction{};
 
   if (ctx->dir()->direction_of()) {
     direction.type = DirType::TOWARDS;

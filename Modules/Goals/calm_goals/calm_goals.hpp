@@ -6,6 +6,7 @@
 #include <queue>
 
 #include <spdlog/spdlog.h>
+
 #include "goals/goals.hpp"
 #include "pathfinding/pathfinding.hpp"
 
@@ -29,7 +30,7 @@ class CalmGoals : public Goals {
 
   [[nodiscard]] VIPRA::delta_t timeSinceLastGoal(VIPRA::idx) const override;
 
- protected:
+ private:
   float goalRange;
   float quadSize;
   float closestObs;
@@ -45,10 +46,10 @@ class CalmGoals : public Goals {
   CalmPath::PathingGraph              graph;
   std::vector<std::queue<VIPRA::f3d>> paths;
 
-  void                                 initializePaths(const PedestrianSet&, const ObstacleSet&);
-  void                                 findNearestEndGoal(const ObstacleSet&, const PedestrianSet&);
-  [[nodiscard]] std::queue<VIPRA::f3d> disembarkPath(const VIPRA::f3d&, const ObstacleSet&);
-  [[nodiscard]] const VIPRA::f3d&      nearestObjective(const std::string&, const VIPRA::f3d&, const ObstacleSet&);
+  void                                        initializePaths(const PedestrianSet&, const ObstacleSet&);
+  void                                        findNearestEndGoal(const ObstacleSet&, const PedestrianSet&);
+  [[nodiscard]] static std::queue<VIPRA::f3d> disembarkPath(const VIPRA::f3d&, const ObstacleSet&);
+  [[nodiscard]] static const VIPRA::f3d&      nearestObjective(const std::string&, const VIPRA::f3d&, const ObstacleSet&);
 };
 
 #endif

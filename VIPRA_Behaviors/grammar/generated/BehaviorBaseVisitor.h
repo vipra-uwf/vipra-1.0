@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.12.0
+// Generated from Behavior.g4 by ANTLR 4.13.0
 
 #pragma once
 
@@ -32,6 +32,10 @@ public:
   }
 
   virtual std::any visitEvent_Lasting(BehaviorParser::Event_LastingContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitEvent_Individual(BehaviorParser::Event_IndividualContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -171,11 +175,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAction_Push(BehaviorParser::Action_PushContext *ctx) override {
+  virtual std::any visitAction_Be(BehaviorParser::Action_BeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAction_Be(BehaviorParser::Action_BeContext *ctx) override {
+  virtual std::any visitDuration(BehaviorParser::DurationContext *ctx) override {
     return visitChildren(ctx);
   }
 

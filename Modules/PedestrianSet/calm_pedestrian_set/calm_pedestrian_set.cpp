@@ -1,20 +1,16 @@
 #include "calm_pedestrian_set.hpp"
 
-CalmPedestrianSet::CalmPedestrianSet() {
-  numPedestrians = 0;
-}
-
 void CalmPedestrianSet::configure(const VIPRA::CONFIG::Map&) {}
 
 void CalmPedestrianSet::initialize(std::unique_ptr<VIPRA::PedData> pedData) {
-  const auto* peds = reinterpret_cast<CalmPedData*>(pedData.get());
+  const auto* peds = dynamic_cast<CalmPedData*>(pedData.get());
   numPedestrians = peds->positions.size();
 
-  pedestrianCoordinates = std::move(peds->positions);
-  masses = std::move(peds->masses);
-  reactionTimes = std::move(peds->reactionTimes);
-  desiredSpeeds = std::move(peds->desiredSpeeds);
-  shoulderLengths = std::move(peds->shoulderLengths);
+  pedestrianCoordinates = peds->positions;
+  masses = peds->masses;
+  reactionTimes = peds->reactionTimes;
+  desiredSpeeds = peds->desiredSpeeds;
+  shoulderLengths = peds->shoulderLengths;
 
   velocities = VIPRA::f3dVec{numPedestrians, VIPRA::f3d{0, 0, 0}};
 }

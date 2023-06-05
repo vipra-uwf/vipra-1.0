@@ -122,8 +122,8 @@ VIPRA::size HumanBehavior::actionCount() const {
  * 
  * @param s : 
  */
-void HumanBehavior::setSeed(BHVR::seed s) {
-  seedNum = s;
+void HumanBehavior::setSeed(BHVR::seed bSeed) {
+  seedNum = bSeed;
 }
 
 void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, VIPRA::delta_t dT) {
@@ -149,7 +149,7 @@ void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goa
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------
 
-HumanBehavior::HumanBehavior(std::string behaviorName) : seedNum(0), name(std::move(behaviorName)), context() {}
+HumanBehavior::HumanBehavior(std::string behaviorName) : name(std::move(behaviorName)), context() {}
 
 // ------------------------------------------ END CONSTRUCTORS ------------------------------------------------------------------------
 }  // namespace BHVR

@@ -5,7 +5,7 @@ void PointMapLoader::configure(const VIPRA::CONFIG::Map&) {}
 
 void PointMapLoader::initialize() {}
 
-std::unique_ptr<VIPRA::MapData> PointMapLoader::LoadMap(const std::string& filePath) const {
+std::unique_ptr<VIPRA::MapData> PointMapLoader::loadMap(const std::string& filePath) const {
   Json::Value             jsonDocument;
   Json::CharReaderBuilder jsonReader;
   std::ifstream           fileStream;
@@ -13,12 +13,12 @@ std::unique_ptr<VIPRA::MapData> PointMapLoader::LoadMap(const std::string& fileP
 
   fileStream.open(filePath);
   if (!fileStream.is_open()) {
-    MapLoaderException::Throw("Unable To Open Map File: " + filePath + "\n");
+    MapLoaderException::error("Unable To Open Map File: " + filePath + "\n");
   }
 
   if (!Json::parseFromStream(jsonReader, fileStream, &jsonDocument, &errors)) {
     fileStream.close();
-    MapLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
+    MapLoaderException::error("Unable To Parse Map File: " + filePath + "\n");
   }
   fileStream.close();
   auto inputData = std::make_unique<PointMap>();
@@ -38,10 +38,10 @@ std::unique_ptr<VIPRA::MapData> PointMapLoader::LoadMap(const std::string& fileP
       }
     }
   } catch (...) {
-    MapLoaderException::Throw("Unable To Parse Map File: " + filePath + "\n");
+    MapLoaderException::error("Unable To Parse Map File: " + filePath + "\n");
   }
-  if (inputData->entities.size() == 0) {
-    MapLoaderException::Throw("Empty Map File: " + filePath + "\n");
+  if (inputData->entities.empty()) {
+    MapLoaderException::error("Empty Map File: " + filePath + "\n");
   }
   return inputData;
 }

@@ -8,24 +8,34 @@
 namespace VIPRA {
 struct PedData {
   std::string type;
-  PedData(std::string t) : type(std::move(t)) {}
+  PedData(const PedData&) = default;
+  PedData(PedData&&) = delete;
+  PedData& operator=(const PedData&) = default;
+  PedData& operator=(PedData&&) = delete;
+  explicit PedData(std::string dtype) : type(std::move(dtype)) {}
   virtual ~PedData() = default;
 };
 }  // namespace VIPRA
 
 class PedestrianLoaderException : public std::runtime_error {
  public:
-  PedestrianLoaderException(const std::string& message) : std::runtime_error(message) {}
-  static void Throw(const std::string& message) { throw PedestrianLoaderException(message); }
+  explicit PedestrianLoaderException(const std::string& message) : std::runtime_error(message) {}
+  static void error(const std::string& message) { throw PedestrianLoaderException(message); }
 };
 
 class PedestrianLoader {
  public:
-  virtual ~PedestrianLoader() = default;
+  virtual void                                          configure(const VIPRA::CONFIG::Map& configMap) = 0;
+  virtual void                                          initialize() = 0;
+  [[nodiscard]] virtual std::unique_ptr<VIPRA::PedData> loadPedestrians(const std::string& filePath) const = 0;
 
-  virtual void                            configure(const VIPRA::CONFIG::Map& configMap) = 0;
-  virtual void                            initialize() = 0;
-  virtual std::unique_ptr<VIPRA::PedData> LoadPedestrians(const std::string& filePath) const = 0;
+
+  PedestrianLoader(const PedestrianLoader&) = default;
+  PedestrianLoader(PedestrianLoader&&) = delete;
+  PedestrianLoader& operator=(const PedestrianLoader&) = default;
+  PedestrianLoader& operator=(PedestrianLoader&&) = delete;
+  PedestrianLoader() = default;
+  virtual ~PedestrianLoader() = default;
 };
 
 #endif

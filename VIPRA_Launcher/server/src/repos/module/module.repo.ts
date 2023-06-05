@@ -28,7 +28,6 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
       human_behavior_model: [],
       configuration_writer: [],
       configuration_reader: [],
-      clock: [],
       simulation: [],
       map_loader: [],
       policy_model: [],

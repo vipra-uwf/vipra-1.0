@@ -1,6 +1,6 @@
 grammar action;
 
-import lexer_rules, values, condition;
+import lexer_rules, values, condition, time;
 
 action:
   conditional_action |
@@ -8,7 +8,8 @@ action:
   ;
 
 conditional_action:
-  AN ID WILL sub_action condition;
+  AN ID WILL sub_action condition (duration?)
+  ;
 
 un_conditional_action:
   AN ID WILL ALWAYS sub_action;
@@ -29,10 +30,7 @@ action_Stop:
   ;
 
 action_atom_Percent_Walk_Speed:
-  '@walk' value_number 'x' THEIR NORMAL SPEED;
-
-action_Push:
-  '@push' ID
+  '@walk' value_number 'x' THEIR NORMAL SPEED
   ;
 
 action_Be:

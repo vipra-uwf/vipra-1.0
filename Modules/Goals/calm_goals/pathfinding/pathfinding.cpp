@@ -1,6 +1,8 @@
 #include <spdlog/spdlog.h>
 #include <unordered_set>
 #include <unordered_map>
+#include <cmath>
+#include <iostream>
 
 #include "pathfinding.hpp"
 
@@ -17,29 +19,13 @@ struct AGridPoint {
   }
 };
 
-struct AGridPointHash {
-  std::size_t operator() (const AGridPoint& object) const {
-    std::size_t seed = 0;
-    
-    seed ^= GridPointHash{}(object.node) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    seed ^= reinterpret_cast<std::uintptr_t>(object.parent) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    seed ^= std::hash<double>{}(object.g) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    seed ^= std::hash<double>{}(object.f) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-
-    return seed;
-  }
-  std::size_t operator()(const AGridPoint* object) const {
-    return operator()(*object);
-  }
-}; 
-
 //breadcrumb approach with a key-value pair of grid space and next grid space.
-std::unordered_map<AGridPoint*, AGridPoint*, AGridPointHash> breadCrumbMap;
+std::unordered_map<GridPoint*, GridPoint*, GridPointHash> breadCrumbMap;
 
 
 class GridPointCompare {
- public:
-  bool operator()(AGridPoint* first, AGridPoint* second) { return first->f > second->f; }
+  public:
+    bool operator()(AGridPoint* first, AGridPoint* second) { return first->f > second->f; }
 };
 
 struct pQueue : public std::priority_queue<AGridPoint*, std::vector<AGridPoint*>, GridPointCompare> {
@@ -57,32 +43,55 @@ pQueue::search(AGridPoint* node) {
   }
 }
 
+inline void 
+reverseQueue(std::queue<VIPRA::f3d>& queue) {
+  std::stack<VIPRA::f3d> stack;
+
+  while (!queue.empty()) {
+    stack.push(queue.front());
+    queue.pop();
+  }
+
+  while (!stack.empty()) {
+    queue.push(stack.top());
+    stack.pop();
+  }
+}
+
 inline std::queue<VIPRA::f3d>
-constructPath(VIPRA::f3d goal, AGridPoint* end) {
+constructPath(VIPRA::f3d start, AGridPoint* end) {
   std::queue<VIPRA::f3d> path;
   AGridPoint*            iter = end->parent;
   AGridPoint*            prev = iter;
 
   VIPRA::f3d dif{0, 0, 0};
 
+  path.push(end->node->center);
+  
   while (iter != nullptr) {
     auto currDif = iter->node->center - prev->node->center;
     if (currDif != dif) {
       path.push(prev->node->center);
       dif = currDif;
     }
+
+    if (prev != end->parent) 
+      breadCrumbMap[iter->node] = prev->node;
+
     prev = iter;
     iter = iter->parent;
+
   }
 
-  path.push(goal);
+  path.push(start);
+  reverseQueue(path);
   return path;
 }
 
 inline float
 cost(GridPoint* first, GridPoint* goal) {
-  const auto dif = goal->center - first->center;
-  return dif.magnitudeSquared();
+  const auto dif = 0.8 * std::abs(first->center.x - goal->center.x) + 2 * std::abs(first->center.y - goal->center.y);
+  return dif;
 }
 
 inline AGridPoint*
@@ -95,8 +104,8 @@ std::queue<VIPRA::f3d>
 pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
   // find grid GridPoints the start and end reside in (flipped since the path is
   // created in reverse)
-  GridPoint* first = graph.search(end);
-  GridPoint* last = graph.search(start);
+  GridPoint* first = graph.search(start);
+  GridPoint* last = graph.search(end);
 
   // create datastructures
   std::vector<AGridPoint*> allocList;
@@ -112,10 +121,10 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
   while (!open_list.empty()) {
     curr = open_list.top();
 
-    if (curr->node == last) {
+    if (curr->node == last) { 
       // if the end node has been found, create the path, delete the created
       // objects, return the path
-      std::queue<VIPRA::f3d> path{constructPath(end, curr)};
+      std::queue<VIPRA::f3d> path{constructPath(start, curr)};
       std::for_each(allocList.begin(), allocList.end(), [](AGridPoint* ptr) { delete ptr; });
       return path;
     }
@@ -125,30 +134,28 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
     closed_list.insert(curr->node);
 
     // if (goal is the same) {
-    if (breadCrumbMap.count(curr) > 0) {
-      open_list.push(breadCrumbMap[curr]);  //push the neighbor that led from the breadcrumb into the queue
-      continue;
+    if (breadCrumbMap.count(curr->node) > 0) {
+      AGridPoint* neighborGridPoint = makeGridPoint(breadCrumbMap[curr->node], curr, 0, 0, allocList);
+      open_list.push(neighborGridPoint);
     }//}
     else {
       for (GridPoint* neighbor : curr->node->adj) {
-        if (closed_list.find(neighbor) == closed_list.end()) {        
+        if (closed_list.find(neighbor) == closed_list.end()) { 
           // if the neighbor hasn't been visited yet, calculate it's cost
           float       g = curr->g + neighbor->center.distanceTo(curr->node->center);
-          float       f = g + cost(neighbor, first);
+          float       f = g + cost(neighbor, last);
           AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, g, f, allocList);
 
           auto found = open_list.search(neighborGridPoint);
           if (!found.has_value()) {
             // if the neighbor isn't already in the open list, add it
-            breadCrumbMap[curr] = neighborGridPoint;    //may have to assign a goal to this later somehow
             open_list.push(neighborGridPoint);
           } else {
             // if the neighbor is in the list check if the new path to it is
             // cheaper, if so replace its values with the cheaper path
-            if (neighborGridPoint->g < found.value()->g) {
+            if (neighborGridPoint->f < found.value()->f) {
               found.value()->g = neighborGridPoint->g;
               found.value()->parent = neighborGridPoint->parent;
-              breadCrumbMap[found.value()] = neighborGridPoint;
             }
           }
         }

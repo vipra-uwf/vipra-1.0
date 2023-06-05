@@ -1,6 +1,6 @@
 grammar condition;
 
-import lexer_rules, values, directions, objects;
+import lexer_rules, values, directions, objects, time;
 
 condition:
   sub_condition connector*;
@@ -19,12 +19,11 @@ and_Connector:
 sub_condition:
   condition_Time_Elapsed_From_Event |
   condition_Event_Occurred |
-  condition_Event_Occurring |
-  condition_Event_One_Time
+  condition_Event_Occurring
   ;
 
 condition_Time_Elapsed_From_Event:
-  AFTER value_number SECONDS FROM (AN | THE)? EVNT (EVENT)?
+  AFTER duration FROM (AN | THE)? EVNT (EVENT)?
   ;
 
 condition_Event_Occurred:
@@ -32,6 +31,3 @@ condition_Event_Occurred:
 
 condition_Event_Occurring:
   WHILE (AN | THE)? EVNT (EVENT)? IS OCCURRING;
-
-condition_Event_One_Time:
-  WHEN (AN | THE)? EVNT (EVENT)? (ENDS | STARTS);

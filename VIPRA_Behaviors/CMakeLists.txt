@@ -40,6 +40,10 @@ target_include_directories(
   ${GRAMMAR_DIR}
 )
 
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+  cmake_policy(SET CMP0135 NEW)
+endif()
+
 include(FetchContent)
 message(STATUS "Getting spdlog")
 FetchContent_Declare(spdlog URL https://github.com/gabime/spdlog/archive/v1.11.0.tar.gz)
