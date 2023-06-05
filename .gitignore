@@ -42,5 +42,7 @@ package-lock.json
 # VSCode
 .vscode
 .cache
-
 .clangd
+
+# Python
+__pycache__

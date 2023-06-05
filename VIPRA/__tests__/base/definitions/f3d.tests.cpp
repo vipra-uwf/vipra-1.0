@@ -229,15 +229,3 @@ TEST(Dimensions, Distance_To_Tests) {
   EXPECT_NEAR((sut1.distanceTo(sut2)), 1.7320508075689, ERROR);
   EXPECT_NEAR((sut2.distanceTo(sut1)), 1.7320508075689, ERROR);
 }
-
-TEST(Dimensions, __Empty__) {
-  EXPECT_EQ(VIPRA::_emptyf2d_, VIPRA::f2d(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
-  EXPECT_EQ(
-      VIPRA::_emptyf3d_,
-      VIPRA::f3d(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
-}
-
-TEST(Dimensions, __Empty_Vec__) {
-  EXPECT_EQ(VIPRA::__emptyf2d_Vec__, VIPRA::f2dVec());
-  EXPECT_EQ(VIPRA::__emptyf3d_Vec__, VIPRA::f3dVec());
-}

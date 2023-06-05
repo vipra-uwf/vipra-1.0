@@ -7,9 +7,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(MODULES_DIR ./../../Modules Modules)
 set(BASE_DIR ./../Base Base)
-set(DEPS_DIR ./../deps)
-set(JSON_DIR ./../deps/jsoncpp jsoncpp)
-set(SPDLOG_DIR ./../deps/spdlog spdlog)
 set(BEHAVIOR_DIR ./../../VIPRA_Behaviors behaviors)
 set(EXTENDABLE_DIR ./../Extendable Extendable)
 
@@ -43,14 +40,13 @@ gtest_discover_tests(${PROJECT_NAME})
 
 add_subdirectory(${MODULES_DIR})
 add_subdirectory(${BASE_DIR})
-add_subdirectory(${JSON_DIR})
 add_subdirectory(${BEHAVIOR_DIR})
 
 target_link_libraries(
   ${PROJECT_NAME}
   GTest::gtest_main
   GTest::gmock_main
-  jsoncpp
+  jsoncpp_lib
   spdlog
   VIPRA_Behaviors
 )

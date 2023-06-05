@@ -1,3 +1,0 @@
-repository='external project URL'
-module='https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.3.tar.gz'
-tag=''

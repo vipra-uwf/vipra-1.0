@@ -1,12 +1,35 @@
 #ifndef TYPE_DEFINITIONS_HPP
 #define TYPE_DEFINITIONS_HPP
 
+#include <cstdint>
 #include <limits>
 #include <vector>
 
-#include "definitions/dimensions.hpp"
+#include <definitions/dimensions.hpp>
 
 namespace VIPRA {
+
+/**
+ * @brief used for goal points
+ */
+using goal = VIPRA::f3d;
+
+/**
+ * @brief used for pedestrian coordinates
+ */
+using pcoord = VIPRA::f3d;
+
+/**
+ * @brief used for velocities
+ * 
+ */
+using veloc = VIPRA::f3d;
+
+/**
+ * @brief used for distance
+ */
+using dist = float;
+
 /**
  * @brief used for indexes into containers
  */
@@ -15,6 +38,11 @@ using idx = uint64_t;
  * @brief used for a count of container elements
  */
 using size = uint64_t;
+
+/**
+ * @brief used for counting
+ */
+using cnt = uint64_t;
 
 /**
  * @brief used for time step count
