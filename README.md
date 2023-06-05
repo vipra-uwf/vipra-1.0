@@ -232,9 +232,13 @@ There are several type definitions that are used for clarity:
 4. `VIPRA::delta_t` : for changes in time `float`
 5. `VIPRA::time_s` : for time in seconds `float`
 6. `VIPRA::time_ms` : for time in milliseconds `float`
-7. `time_range_s` : for time ranges in seconds `std::pair<VIPRA::time_s, VIPRA::time_s>`
-8. `time_range_ms` : for time ranges in milliseconds `std::pair<VIPRA::time_ms, VIPRA::time_ms>`
-9. `idxVec` : for vectors of indexes `std::vector<idx>`
+7. `VIPRA::time_range_s` : for time ranges in seconds `std::pair<VIPRA::time_s, VIPRA::time_s>`
+8. `VIPRA::time_range_ms` : for time ranges in milliseconds `std::pair<VIPRA::time_ms, VIPRA::time_ms>`
+9. `VIPRA::idxVec` : for vectors of indexes `std::vector<idx>`
+10. `VIPRA::goal` : for goal coordinates `VIPRA::f3d`
+11. `VIPRA::pcoord` : for pedestrian coordinates`VIPRA::f3d`
+12. `VIPRA::veloc` : for velocities `VIPRA::f3d`
+13. `VIPRA::dist` : for distances `float`
 
 
 # F. Formatting
