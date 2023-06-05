@@ -1,0 +1,2 @@
+
+add_subdirectory(passenger_vehicle_obstacle_set)
