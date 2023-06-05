@@ -29,8 +29,9 @@ bool SubConditionElapsedTimeFromEvent::operator()(const PedestrianSet&, const Ob
   }
 
   const auto& ev = context.events[event];
-  if (ev.isOccurring()) {
+  if (ev.isStarting()) {
     latch.latch(currTime);
+    return true;
   }
 
   return false;
