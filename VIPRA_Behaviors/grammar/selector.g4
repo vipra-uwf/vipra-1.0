@@ -10,8 +10,8 @@ ped_Selector:
 selector:
     selector_Percent |
     selector_Exactly_N_Random |
-    selector_Everyone |
-    selector_Area;
+    selector_Everyone
+    ;
 
 selector_Percent:
     value_number '%' OF
@@ -25,5 +25,3 @@ selector_Everyone:
     EVERYONE
     ;
 
-selector_Area:
-    EVERYONE IN LOC IS AN ID;
