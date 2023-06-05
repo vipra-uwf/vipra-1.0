@@ -19,7 +19,7 @@ TEST(Calm_Goals_Pathfinding, Pathfinding) {
   PassengerVehicleObstacleSet map;
   CalmPath::PathingGraph      test;
   map.initialize(
-      loader.loadMap("/home/rolland/Documents/VIPRA/vipra/Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap"));
+      loader.loadMap("/mnt/c/Users/gabeb/Research-Vipra/vipra/Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap"));
 
   test.build(map, 0.1, 0.2);
   spdlog::info("Done Building");
