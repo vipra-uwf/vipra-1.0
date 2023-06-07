@@ -87,29 +87,6 @@ constructPath(VIPRA::f3d start, AGridPoint* end) {
   return path;
 }
 
-inline float 
-calculateAngle(GridPoint* point1, GridPoint* point2, GridPoint* point3) {
-  float dx1 = point1->center.x - point2->center.x;
-  float dy1 = point1->center.y - point2->center.y;
-  float dx2 = point3->center.x - point2->center.x;
-  float dy2 = point3->center.y - point2->center.y;
-
-  float angle1 = std::atan2(dy1, dx1);
-  float angle2 = std::atan2(dy2, dx2);
-
-  float angle = angle1 - angle2;
-
-  // Convert angle to the range [0, 2*pi]
-  while (angle < 0.0f) {
-    angle += 2.0f * M_PI;
-  }
-
-  // Convert angle to the range [0, 360]
-  angle *= 180.0f / M_PI;
-
-  return angle;
-}
-
 inline float
 cost(GridPoint* first, GridPoint* goal) {
   const auto dif = 0.8 * std::abs(first->center.x - goal->center.x) + 2 * std::abs(first->center.y - goal->center.y);
@@ -127,25 +104,22 @@ static int count = 0;
 std::queue<VIPRA::f3d>
 pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
   count++;
-  // find grid GridPoints the start and end reside in (flipped since the path is
-  // created in reverse)
+  // find grid GridPoints the start and end reside in
   GridPoint* first = graph.search(start);
   GridPoint* last = graph.search(end);
 
   // create datastructures
-  std::vector<AGridPoint*> allocList;
-  pQueue                   open_list;
-  std::unordered_set<GridPoint*> closed_list;
+  std::vector<AGridPoint*>        allocList;
+  pQueue                          open_list;
+  std::unordered_set<GridPoint*>  closed_list;
 
   // add start first node to "open list"
   open_list.emplace(makeGridPoint(first, nullptr, 0, cost(first, last), allocList));
 
   AGridPoint* curr = nullptr;
-  AGridPoint* prev = nullptr;
 
   // while there are still nodes in the open list
   while (!open_list.empty()) {
-    prev = curr;
     curr = open_list.top();
 
     if (curr->node == last) { 
@@ -160,44 +134,32 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
     open_list.pop();
     closed_list.insert(curr->node);
 
-    if (breadCrumbMap.count(curr->node) > 0 /*3 == 4*/) {
-      float angle = calculateAngle(prev->node, curr->node, breadCrumbMap[curr->node]);
-      if (angle < 181) {
-        GridPoint*  neighbor = breadCrumbMap[curr->node];
-        float       g = curr->g + neighbor->center.distanceTo(curr->node->center);
-        float       f = g + cost(neighbor, last);
-        AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, g, f, allocList);
+    if (breadCrumbMap.count(curr->node) > 0) {
+      float       g = curr->g + breadCrumbMap[curr->node]->center.distanceTo(curr->node->center);
+      float       f = g + cost(breadCrumbMap[curr->node], last);
+      AGridPoint* neighborGridPoint = makeGridPoint(breadCrumbMap[curr->node], curr, g, f, allocList);
 
-        auto found = open_list.search(neighborGridPoint);
-        if (!found.has_value()) {
-          open_list.push(neighborGridPoint);
-        } else {
-          if (neighborGridPoint->f < found.value()->f) {
-            found.value()->g = neighborGridPoint->g;
-            found.value()->parent = neighborGridPoint->parent;
-          }
-        }
-        continue;
-      }   
+      open_list.push(neighborGridPoint);
     }
+    else {
+      for (GridPoint* neighbor : curr->node->adj) {
+        if (closed_list.find(neighbor) == closed_list.end()) { 
+          // if the neighbor hasn't been visited yet, calculate it's cost
+          float       g = curr->g + neighbor->center.distanceTo(curr->node->center);
+          float       f = g + cost(neighbor, last);
+          AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, g, f, allocList);
 
-    for (GridPoint* neighbor : curr->node->adj) {
-      if (closed_list.find(neighbor) == closed_list.end()) { 
-        // if the neighbor hasn't been visited yet, calculate it's cost
-        float       g = curr->g + neighbor->center.distanceTo(curr->node->center);
-        float       f = g + cost(neighbor, last);
-        AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, g, f, allocList);
-
-        auto found = open_list.search(neighborGridPoint);
-        if (!found.has_value()) {
-          // if the neighbor isn't already in the open list, add it
-          open_list.push(neighborGridPoint);
-        } else {
-          // if the neighbor is in the list check if the new path to it is
-          // cheaper, if so replace its values with the cheaper path
-          if (neighborGridPoint->f < found.value()->f) {
-            found.value()->g = neighborGridPoint->g;
-            found.value()->parent = neighborGridPoint->parent;
+          auto found = open_list.search(neighborGridPoint);
+          if (!found.has_value()) {
+            // if the neighbor isn't already in the open list, add it
+            open_list.push(neighborGridPoint);
+          } else {
+            // if the neighbor is in the list check if the new path to it is
+            // cheaper, if so replace its values with the cheaper path
+            if (neighborGridPoint->f < found.value()->f) {
+              found.value()->g = neighborGridPoint->g;
+              found.value()->parent = neighborGridPoint->parent;
+            }
           }
         }
       }
