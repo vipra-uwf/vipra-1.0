@@ -84,6 +84,7 @@ void BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, BHVR
   initializeStates();
   initializeEvents();
   initializeTypes();
+  initializeLocations();
 }
 
 void BehaviorBuilder::initializeEvents() {
@@ -108,6 +109,13 @@ void BehaviorBuilder::initializeTypes() {
   types["pedestrians"] = 0;
   currType = 1;
 }
+
+void BehaviorBuilder::initializeLocations() {
+  locations.clear();
+
+
+}
+
 
 // ------------------------------------ END INITIALIZATION --------------------------------------------------------------------------------------
 
@@ -150,7 +158,7 @@ Condition BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond
 void BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
 
   if (subcond->condition_Time_Elapsed_From_Event()) {
-    VIPRA::delta_t time = getValue(subcond->condition_Time_Elapsed_From_Event()->value_number());
+    VIPRA::delta_t time = getValue(subcond->condition_Time_Elapsed_From_Event()->duration()->value_number());
     std::string    evName = subcond->condition_Time_Elapsed_From_Event()->EVNT()->toString();
     spdlog::debug(R"(Behavior "{}": Adding SubCondition: Elapsed Time {} Seconds From "{}" Event)",
                   currentBehavior.getName(),
@@ -231,6 +239,24 @@ VIPRA::idx BehaviorBuilder::getEvent(const std::string& evName) {
   }
 
   return (*ev).second;
+}
+
+
+/**
+ * @brief Gets a pointer to the Location with a name locName from LocationsMap
+ * @exits if the location was not found
+ * 
+ * @param locName : Name of location to find
+ * @return Location*
+*/
+VIPRA::idx BehaviorBuilder::getLocation(const std::string& locName) {
+  auto loc = locations.find(locName);
+  if(loc == locations.end()) {
+    spdlog::error("Behavior Error: Attempt To Use Location Before It Was Defined: \"{}\"", locName);
+    exit(1);
+  }
+
+  return (*loc).second;
 }
 
 /**
@@ -593,7 +619,49 @@ antlrcpp::Any BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_con
 
 // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
 
-antlrcpp::Any BehaviorBuilder::visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) {
+antlrcpp::Any 
+BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
+
+  if (ctx->decl_Loc_Area_Circle()) {
+
+    const std::string circleName = ctx->decl_Loc_Area_Circle()->ID()->toString();
+    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(), circleName);
+
+    float circleCenterPointX = getValue(ctx->decl_Loc_Area_Circle()->point()->value_number().at(0));
+    float circleCenterPointY = getValue(ctx->decl_Loc_Area_Circle()->point()->value_number().at(1));
+    float circleRadius = getValue(ctx->decl_Loc_Area_Circle()->value_number());
+
+    locations[circleName] = currentBehavior.addLocation(Location(circleName, "circle", VIPRA::shape(circleCenterPointX, circleCenterPointY, circleRadius)));
+
+  } else if (ctx->decl_Loc_Area_Rect()) {
+    
+    const auto rectName = ctx->decl_Loc_Area_Rect()->ID()->toString();
+    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(), rectName);
+
+    const auto rectCenterPointX = getValue(ctx->decl_Loc_Area_Rect()->point()->value_number().at(0));
+    const auto rectCenterPointY = getValue(ctx->decl_Loc_Area_Rect()->point()->value_number().at(1));
+    const auto rectLen = getValue(ctx->decl_Loc_Area_Rect()->value_number().at(0));
+    const auto rectWidth = getValue(ctx->decl_Loc_Area_Rect()->value_number().at(1));
+
+    locations[rectName] = currentBehavior.addLocation(Location(rectName, "rectangle", VIPRA::shape(rectCenterPointX, rectCenterPointY, rectLen, rectWidth))); 
+
+  } else if(ctx->decl_Loc_Point()) {
+
+    const auto pointName = ctx->decl_Loc_Point()->ID()->toString();
+    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(), pointName);
+
+    const auto pointX = getValue(ctx->decl_Loc_Point()->point()->value_number().at(0));
+    const auto pointY = getValue(ctx->decl_Loc_Point()->point()->value_number().at(1));
+
+    locations[pointName] = currentBehavior.addLocation(Location(pointName, "point", VIPRA::shape(pointX, pointY))); 
+    
+  }
+
+  return BehaviorBaseVisitor::visitDecl_Loc(ctx);
+}
+
+antlrcpp::Any
+BehaviorBuilder::visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) {
   const auto stateNames = ctx->STATE();
 
   for (auto* state : stateNames) {

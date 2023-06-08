@@ -2,6 +2,7 @@
 #define VIPRA_BHVR_SUB_SELECTOR_HPP
 
 #include <functional>
+#include <optional>
 
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>

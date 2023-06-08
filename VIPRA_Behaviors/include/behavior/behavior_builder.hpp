@@ -14,6 +14,7 @@
 #include <behavior/behavior_error_listener.hpp>
 #include <behavior/human_behavior.hpp>
 #include <events/event.hpp>
+#include <locations/location.hpp>
 
 #include <util/caseless_str_comp.hpp>
 
@@ -23,6 +24,8 @@ namespace BHVR {
 using StateMap = std::unordered_map<std::string, BHVR::stateUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
 using TypeMap = std::unordered_map<std::string, BHVR::typeUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
 using EventMap = std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
+using LocationMap = std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
+
 
 class BuilderException : public std::runtime_error {
  public:
@@ -41,6 +44,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   StateMap states;
   TypeMap  types;
   EventMap eventsMap;
+  LocationMap locations;
 
   Condition     startCond;
   Event         startEvent;
@@ -51,10 +55,11 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   BHVR::seed currSeed;
 
-  void initialBehaviorSetup(const std::string&, BHVR::seed);
-  void initializeTypes();
-  void initializeEvents();
-  void initializeStates();
+  void        initialBehaviorSetup(const std::string&, BHVR::seed);
+  void        initializeTypes();
+  void        initializeEvents();
+  void        initializeStates();
+  void        initializeLocations();
   void endBehaviorCheck();
 
   void addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
@@ -67,6 +72,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   BHVR::stateUID      getState(const std::string&);
   VIPRA::idx          getEvent(const std::string&);
   VIPRA::time_range_s getRange(BehaviorParser::Value_numberContext*);
+  VIPRA::idx     getLocation(const std::string&);
 
   BHVR::typeUID                   getType(const std::string&) const;
   BHVR::typeUID                   getGroup(BehaviorParser::Ped_SelectorContext*) const;
@@ -99,6 +105,8 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   // ------------------------------- END ACTIONS -----------------------------------------------------------------------------------------
 
   // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
+
+  antlrcpp::Any visitDecl_Loc(BehaviorParser::Decl_LocContext*) override;
 
   antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext*) override;
 

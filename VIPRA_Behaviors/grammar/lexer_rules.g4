@@ -38,7 +38,6 @@ COLON: ':';
 
 STATE: '#'[a-zA-Z_\-]+;
 ACTION: '@'[a-zA-Z_\-]+;
-PARAMETER: '$'[a-zA-Z_\-]+;
 EVNT: '!'[a-zA-Z_\-]+;
 OBJECT: '+'[a-zA-Z_\-]+;
 
@@ -80,6 +79,10 @@ IN: I N;
 INTEGER: I N T E G E R;
 IS: I S;
 
+LENGTH: L E N G T H;
+
+LOCATION: L O C A T I O N;
+
 METERS: M E T E R S;
 
 NORMAL: N O R M A L;
@@ -95,6 +98,7 @@ PEDESTRIAN: P E D E S T R I A N;
 PEDESTRIANS: P E D E S T R I A N S;
 POSSIBLE: P O S S I B L E;
 
+RADIUS: R A D I U S;
 RANDOM: R A N D O M;
 REQUIRED: R E Q U I R E D;
 
@@ -110,13 +114,16 @@ THE: T H E;
 THAT: T H A T;
 THEN: T H E N;
 THEIR: T H E I R;
+THERES: T H E R E S;
 TYPES: T Y P E S;
 
 VALUE: V A L U E;
 
 WHEN: W H E N;
 WHILE: W H I L E;
+WIDTH: W I D T H;
 WILL: W I L L;
+WITH: W I T H;
 WITHIN: W I T H I N;
 
 
@@ -125,8 +132,3 @@ WITHIN: W I T H I N;
 ID: [a-zA-Z_\-]+;
 NUMBER : [0-9]+;
 FLOAT: [0-9]+'.'[0-9]+;
-LOC: [a-zA-Z_/-]+;
-// L: FLOAT;
-// W: FLOAT;
-POINTX: FLOAT;
-POINTY: FLOAT;

@@ -86,6 +86,18 @@ VIPRA::idx HumanBehavior::addEvent(const Event& event) {
 }
 
 /**
+ * @brief adds a location to the behavior and returns a pointer to it
+ * 
+ * @param loc : location object to add
+ * @return Location*
+*/
+VIPRA::idx
+HumanBehavior::addLocation(Location loc) {
+  context.locations.emplace_back(loc);
+  return context.locations.size() - 1;
+}
+
+/**
  * @brief Returns the number of events the behavior has
  * 
  * @return VIPRA::size 

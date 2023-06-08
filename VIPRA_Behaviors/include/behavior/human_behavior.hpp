@@ -9,6 +9,7 @@
 
 #include <actions/action.hpp>
 #include <events/event.hpp>
+#include <locations/location.hpp>
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
@@ -32,6 +33,7 @@ class HumanBehavior {
   void       addSubSelector(const SubSelector&);
   void       addAction(typeUID, const Action&);
   VIPRA::idx addEvent(const Event&);
+  VIPRA::idx addLocation(Location);
 
   [[nodiscard]] VIPRA::size eventCount() const;
   [[nodiscard]] VIPRA::size selectorCount() const;
@@ -46,6 +48,8 @@ class HumanBehavior {
   BehaviorContext context;
 
   Selector                         selector;
+  std::vector<Event>               events;
+  std::vector<Location*>            locations;
   std::vector<std::vector<Action>> actions;
 
   void evaluateEvents(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::delta_t);

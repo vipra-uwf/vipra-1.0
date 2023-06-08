@@ -71,10 +71,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitCondition_Event_One_Time(BehaviorParser::Condition_Event_One_TimeContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitValue_number(BehaviorParser::Value_numberContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -119,6 +115,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitDuration(BehaviorParser::DurationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitPed_Selector(BehaviorParser::Ped_SelectorContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -136,10 +136,6 @@ public:
   }
 
   virtual std::any visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitSelector_Area(BehaviorParser::Selector_AreaContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -179,15 +175,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitDuration(BehaviorParser::DurationContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitDeclaration(BehaviorParser::DeclarationContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitDecl_Ped(BehaviorParser::Decl_PedContext *ctx) override {
+  virtual std::any visitDecl_Loc(BehaviorParser::Decl_LocContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -196,6 +188,26 @@ public:
   }
 
   virtual std::any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDecl_Loc_Area_Circle(BehaviorParser::Decl_Loc_Area_CircleContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDecl_Loc_Area_Rect(BehaviorParser::Decl_Loc_Area_RectContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDecl_Loc_Point(BehaviorParser::Decl_Loc_PointContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDecl_Ped(BehaviorParser::Decl_PedContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitPoint(BehaviorParser::PointContext *ctx) override {
     return visitChildren(ctx);
   }
 
