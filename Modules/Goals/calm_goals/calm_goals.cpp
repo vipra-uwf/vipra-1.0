@@ -1,7 +1,4 @@
 
-#include <iostream>
-#include <chrono>
-
 #include "calm_goals.hpp"
 
 void CalmGoals::configure(const VIPRA::CONFIG::Map& configMap) {
@@ -51,8 +48,6 @@ void CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& 
   const VIPRA::size    pedCnt = pedSet.getNumPedestrians();
   const VIPRA::f3dVec& coords = pedSet.getPedestrianCoordinates();
   
-  auto startTime = std::chrono::high_resolution_clock::now();
-
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     if (pathingType == "Astar") {
       spdlog::debug("CalmGoals: Finding AStar Path for Ped: {}", i);
@@ -63,9 +58,6 @@ void CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& 
     }
     currentGoals[i] = paths[i].front();
   }
-  auto endTime = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-  std::cout << duration.count()<< std::endl;
   spdlog::debug("CalmGoals: Finished Initializing Paths");
 }
 

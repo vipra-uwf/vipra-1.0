@@ -2,7 +2,6 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <cmath>
-#include <iostream>
 
 #include "pathfinding.hpp"
 
@@ -11,11 +10,11 @@ namespace CalmPath {
 struct AGridPoint {
   GridPoint*  node;
   AGridPoint* parent = nullptr;
-  float       g;
-  float       f;
+  float       distanceFromStart;
+  float       distanceWithHeuristic;
 
   bool operator==(const AGridPoint rightObject) const {
-    return (node == rightObject.node && parent == rightObject.parent && g == rightObject.g && f == rightObject.f);
+    return (node == rightObject.node && parent == rightObject.parent && distanceFromStart == rightObject.distanceFromStart && distanceWithHeuristic == rightObject.distanceWithHeuristic);
   }
 };
 
@@ -24,7 +23,7 @@ std::unordered_map<GridPoint*, GridPoint*, GridPointHash> breadCrumbMap;
 
 class GridPointCompare {
   public:
-    bool operator()(AGridPoint* first, AGridPoint* second) { return first->f > second->f; }
+    bool operator()(AGridPoint* first, AGridPoint* second) { return first->distanceWithHeuristic > second->distanceWithHeuristic; }
 };
 
 struct pQueue : public std::priority_queue<AGridPoint*, std::vector<AGridPoint*>, GridPointCompare> {
@@ -91,19 +90,19 @@ inline float
 cost(GridPoint* first, GridPoint* goal) {
   const auto dif = 0.8 * std::abs(first->center.x - goal->center.x) + 2 * std::abs(first->center.y - goal->center.y);
   return dif;
+  //FIXME!! These values 0.8 and 2 help prioritize horizontal movement over vertical so that the paths remain smooth 
+  // allowing for the heuristic to shine. Instead these should be parameters passed in. 
 }
 
 inline AGridPoint*
-makeGridPoint(GridPoint* node, AGridPoint* parent, float g, float f, std::vector<AGridPoint*>& allocator) {
-  allocator.emplace_back(new AGridPoint{node, parent, g, f});
+makeGridPoint(GridPoint* node, AGridPoint* parent, float distanceFromStart, float distanceWithHeuristic, std::vector<AGridPoint*>& allocator) {
+  allocator.emplace_back(new AGridPoint{node, parent, distanceFromStart, distanceWithHeuristic});
   return allocator.at(allocator.size() - 1);
 }
 
-static int count = 0;
 
 std::queue<VIPRA::f3d>
 pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
-  count++;
   // find grid GridPoints the start and end reside in
   GridPoint* first = graph.search(start);
   GridPoint* last = graph.search(end);
@@ -135,9 +134,9 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
     closed_list.insert(curr->node);
 
     if (breadCrumbMap.count(curr->node) > 0) {
-      float       g = curr->g + breadCrumbMap[curr->node]->center.distanceTo(curr->node->center);
-      float       f = g + cost(breadCrumbMap[curr->node], last);
-      AGridPoint* neighborGridPoint = makeGridPoint(breadCrumbMap[curr->node], curr, g, f, allocList);
+      float       distanceFromStart = curr->distanceFromStart + breadCrumbMap[curr->node]->center.distanceTo(curr->node->center);
+      float       distanceWithHeuristic = distanceFromStart + cost(breadCrumbMap[curr->node], last);
+      AGridPoint* neighborGridPoint = makeGridPoint(breadCrumbMap[curr->node], curr, distanceFromStart, distanceWithHeuristic, allocList);
 
       open_list.push(neighborGridPoint);
     }
@@ -145,9 +144,9 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
       for (GridPoint* neighbor : curr->node->adj) {
         if (closed_list.find(neighbor) == closed_list.end()) { 
           // if the neighbor hasn't been visited yet, calculate it's cost
-          float       g = curr->g + neighbor->center.distanceTo(curr->node->center);
-          float       f = g + cost(neighbor, last);
-          AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, g, f, allocList);
+          float       distanceFromStart = curr->distanceFromStart + neighbor->center.distanceTo(curr->node->center);
+          float       distanceWithHeuristic = distanceFromStart + cost(neighbor, last);
+          AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, distanceFromStart, distanceWithHeuristic, allocList);
 
           auto found = open_list.search(neighborGridPoint);
           if (!found.has_value()) {
@@ -156,8 +155,8 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
           } else {
             // if the neighbor is in the list check if the new path to it is
             // cheaper, if so replace its values with the cheaper path
-            if (neighborGridPoint->f < found.value()->f) {
-              found.value()->g = neighborGridPoint->g;
+            if (neighborGridPoint->distanceFromStart < found.value()->distanceFromStart) {
+              found.value()->distanceFromStart = neighborGridPoint->distanceFromStart;
               found.value()->parent = neighborGridPoint->parent;
             }
           }
