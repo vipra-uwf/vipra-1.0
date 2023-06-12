@@ -2,8 +2,11 @@
 #define VIPRA_BEHAVIORS_LOCATION_HPP
 
 #include <functional>
+#include <string>
+#include <memory>
 
-#include <definitions/shape_descriptor.hpp>
+#include <definitions/shape_type.hpp>
+#include <shapes/shape_class_definitions.hpp>
 
 
 namespace BHVR {
@@ -17,19 +20,19 @@ class Location {
   Location(Location&&) noexcept = default;
   Location& operator=(Location&&) noexcept = default;
   Location() = default;
-  Location(const Location&) = default;
-  Location& operator=(const Location&) = default;
+  Location(const Location&) = delete;
+  Location& operator=(const Location&) = delete;
 
-  explicit Location(std::string, std::string locType, VIPRA::shape locShape);
+  explicit Location(std::string, BHVR::ShapeType, std::shared_ptr<BHVR::Shape>);
 
   const std::string& getName() const;
-  const std::string& getType() const;
-  const VIPRA::shape getShape() const;
+  const BHVR::ShapeType getType() const;
+  std::shared_ptr<BHVR::Shape> getShape();
 
  private:
   std::string name;
-  std::string type;
-  VIPRA::shape shape;
+  BHVR::ShapeType type;
+  std::shared_ptr<BHVR::Shape> shape;
 
 };
 } //namespace BHVR

@@ -6,15 +6,14 @@ const std::string& Location::getName() const {
    return name;
 }
 
-const std::string& Location::getType() const {
+const BHVR::ShapeType Location::getType() const {
    return type;
 }
 
-const VIPRA::shape Location::getShape() const {
+std::shared_ptr<BHVR::Shape> Location::getShape() {
    return shape;
 }
 
-Location::Location(std::string locName, std::string locType, VIPRA::shape locShape) : name(std::move(locName)), type(std::move(locType)), shape(locShape){}
-
+Location::Location(std::string locName, BHVR::ShapeType locType, std::shared_ptr<Shape> locShape) : name(std::move(locName)), type(std::move(locType)), shape(locShape){}
 
 } //Namespace BHVR

@@ -631,7 +631,9 @@ BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
     float circleCenterPointY = getValue(ctx->decl_Loc_Area_Circle()->point()->value_number().at(1));
     float circleRadius = getValue(ctx->decl_Loc_Area_Circle()->value_number());
 
-    locations[circleName] = currentBehavior.addLocation(Location(circleName, "circle", VIPRA::shape(circleCenterPointX, circleCenterPointY, circleRadius)));
+    std::shared_ptr<BHVR::Shape> circle = std::make_shared<BHVR::Circle>(VIPRA::f3d(circleCenterPointX, circleCenterPointY), circleRadius);
+
+    locations[circleName] = currentBehavior.addLocation(BHVR::Location(circleName, BHVR::ShapeType::CIRCLE, circle));
 
   } else if (ctx->decl_Loc_Area_Rect()) {
     
@@ -643,7 +645,9 @@ BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
     const auto rectLen = getValue(ctx->decl_Loc_Area_Rect()->value_number().at(0));
     const auto rectWidth = getValue(ctx->decl_Loc_Area_Rect()->value_number().at(1));
 
-    locations[rectName] = currentBehavior.addLocation(Location(rectName, "rectangle", VIPRA::shape(rectCenterPointX, rectCenterPointY, rectLen, rectWidth))); 
+    std::shared_ptr<BHVR::Shape> rectangle = std::make_shared<BHVR::Rectangle>(VIPRA::f3d(rectCenterPointX, rectCenterPointY), rectLen, rectWidth);
+    
+    locations[rectName] = currentBehavior.addLocation(BHVR::Location(rectName, BHVR::ShapeType::RECTANGLE, rectangle)); 
 
   } else if(ctx->decl_Loc_Point()) {
 
@@ -653,7 +657,9 @@ BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
     const auto pointX = getValue(ctx->decl_Loc_Point()->point()->value_number().at(0));
     const auto pointY = getValue(ctx->decl_Loc_Point()->point()->value_number().at(1));
 
-    locations[pointName] = currentBehavior.addLocation(Location(pointName, "point", VIPRA::shape(pointX, pointY))); 
+    std::shared_ptr<BHVR::Shape> point = std::make_shared<BHVR::Point>(VIPRA::f3d(pointX, pointY));
+
+    locations[pointName] = currentBehavior.addLocation(BHVR::Location(pointName, BHVR::ShapeType::POINT, point)); 
     
   }
 

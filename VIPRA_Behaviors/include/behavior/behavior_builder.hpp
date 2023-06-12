@@ -15,6 +15,7 @@
 #include <behavior/human_behavior.hpp>
 #include <events/event.hpp>
 #include <locations/location.hpp>
+#include <shapes/shape_class_definitions.hpp>
 
 #include <util/caseless_str_comp.hpp>
 

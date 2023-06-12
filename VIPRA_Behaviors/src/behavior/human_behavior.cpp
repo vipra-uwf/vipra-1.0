@@ -92,8 +92,8 @@ VIPRA::idx HumanBehavior::addEvent(const Event& event) {
  * @return Location*
 */
 VIPRA::idx
-HumanBehavior::addLocation(Location loc) {
-  context.locations.emplace_back(loc);
+HumanBehavior::addLocation(Location&& loc) {
+  context.locations.push_back(std::move(loc));
   return context.locations.size() - 1;
 }
 
