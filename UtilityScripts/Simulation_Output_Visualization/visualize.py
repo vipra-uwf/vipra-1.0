@@ -27,7 +27,7 @@ def animate(i):
     if args["shoulders"]:
       util.plotShoulders(pointsX, pointsY, args["shldrLen"], pedColors, ax)
     if args["indexes"]:
-      util.plotIndexes(pointsX, pointsY, pedColors, ax)
+      util.plotIndexes(pointsX, pointsY, args["idxColor"], pedColors, ax)
 
     return points, obstacles
 

@@ -1072,7 +1072,7 @@ The exact percentage will be a random integer value between 10 and 20.
 <details>
   <summary>
     <h3>
-      V.1.2. Random Values
+      V.1.3. Random Values
     </h3>
   </summary>
 
@@ -1083,7 +1083,7 @@ The big difference is that: `Range Values` only have one random value, `Random V
 <details>
   <summary>
     <h3>
-      V.1.2.1 Float Random Values vs. Number Random Values
+      V.1.3.1 Float Random Values vs. Number Random Values
     </h3>
   </summary>
 
@@ -1116,7 +1116,9 @@ A random 1.0 to 3.0
   </summary>
 
 ```
-A Random 10-20% of pedestrians is a typeA.
+A typeA will 
+  @stop after a random 5-10 seconds from the !example event
+  for a random 10-20 seconds.
 ```
 
 The exact percentage will be a random integer value between 10 and 20.

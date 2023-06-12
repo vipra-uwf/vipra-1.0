@@ -15,6 +15,7 @@ def getArgs():
   xMax = 25
   yMax = 4
   fps = 10
+  idxColor = False
 
   for arg in sys.argv[1::]:
     if arg == '-idx':
@@ -46,6 +47,9 @@ def getArgs():
     elif arg == '-fps':
       fps = float(sys.argv[flagCnt + 1])
       flagCnt += 2
+    elif arg == '-idxClr':
+      idxColor = True
+      flagCnt += 1
     else:
       if (arg[0] == '-'):
         print(f'Unknown Flag: {arg}')
@@ -67,7 +71,8 @@ def getArgs():
     xMax     = xMax,
     yMin     = yMin,
     yMax     = yMax,
-    fps = fps,
+    fps      = fps,
+    idxColor = idxColor,
   )
 
 
@@ -104,9 +109,9 @@ def plotShoulders(pointsX, pointsY, shldrLen, colors, ax):
     ax.plot([x-shldrLen, x+shldrLen], [y, y], color=colors[index], linestyle='-', linewidth=0.5)
     ax.plot([x, x], [y-shldrLen, y+shldrLen], color=colors[index], linestyle='-', linewidth=0.5)
 
-def plotIndexes(pointsX, pointsY, pedColors, ax):
+def plotIndexes(pointsX, pointsY, idxColor, pedColors, ax):
   for index in range(0, len(pointsX)):
-    ax.text(pointsX[index], pointsY[index], index, fontsize=5, c=pedColors[index])
+    ax.text(pointsX[index], pointsY[index], index, fontsize=5, c=pedColors[index] if idxColor else 'k')
 
 
 percent = 0
