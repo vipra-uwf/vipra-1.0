@@ -30,7 +30,7 @@ action_Stop:
   ;
 
 action_atom_Percent_Walk_Speed:
-  '@walk' value_number 'x' THEIR NORMAL SPEED
+  '@walk' value_numeric 'x' THEIR NORMAL SPEED
   ;
 
 action_Be:

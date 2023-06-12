@@ -9,12 +9,11 @@
 
 #include <actions/action.hpp>
 #include <events/event.hpp>
-#include <locations/location.hpp>
 #include <goals/goals.hpp>
+#include <locations/location.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 #include <selectors/selector.hpp>
-
 
 namespace BHVR {
 /**
@@ -49,7 +48,7 @@ class HumanBehavior {
 
   Selector                         selector;
   std::vector<Event>               events;
-  std::vector<Location*>            locations;
+  std::vector<Location*>           locations;
   std::vector<std::vector<Action>> actions;
 
   void evaluateEvents(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::delta_t);

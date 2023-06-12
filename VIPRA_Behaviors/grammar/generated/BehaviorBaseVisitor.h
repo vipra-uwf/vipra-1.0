@@ -35,10 +35,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEvent_Individual(BehaviorParser::Event_IndividualContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitCondition(BehaviorParser::ConditionContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -71,11 +67,23 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitValue_number(BehaviorParser::Value_numberContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitNumber_random(BehaviorParser::Number_randomContext *ctx) override {
+  virtual std::any visitValue_float(BehaviorParser::Value_floatContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitValue_range(BehaviorParser::Value_rangeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitValue_random(BehaviorParser::Value_randomContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -84,6 +92,14 @@ public:
   }
 
   virtual std::any visitRandom_float(BehaviorParser::Random_floatContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFloat_range(BehaviorParser::Float_rangeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitNumber_range(BehaviorParser::Number_rangeContext *ctx) override {
     return visitChildren(ctx);
   }
 

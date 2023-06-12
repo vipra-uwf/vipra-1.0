@@ -11,9 +11,7 @@ namespace BHVR {
  * 
  * @return const std::string& 
  */
-const std::string& HumanBehavior::getName() const noexcept {
-  return name;
-}
+const std::string& HumanBehavior::getName() const noexcept { return name; }
 
 /**
  * @brief Adds an action to the selectors with type
@@ -50,12 +48,19 @@ void HumanBehavior::setAllPedTypes(Ptype types) {
  * @param obsSet : obstacle set object
  * @param goals : goals object
  */
-void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
+void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet,
+                               const Goals& goals) {
   context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
   context.types = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
 
   spdlog::debug("Initializing {} Selectors, Seed: {}", selector.selectorCount(), seedNum);
   selector.initialize(name, seedNum, context, pedSet, obsSet, goals);
+
+  for (auto& actionGroup : actions) {
+    for (auto& action : actionGroup) {
+      action.initialize(pedSet, obsSet, goals, context);
+    }
+  }
 }
 
 /**
@@ -67,8 +72,8 @@ void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& o
  * @param state : state object to write results to
  * @param dT : simulation timestep size
  */
-void HumanBehavior::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, VIPRA::State& state,
-                             VIPRA::delta_t dT) {
+void HumanBehavior::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
+                             VIPRA::State& state, VIPRA::delta_t dT) {
   evaluateEvents(pedSet, obsSet, goals, dT);
   applyActions(pedSet, obsSet, goals, state, dT);
   context.elapsedTime += dT;
@@ -91,8 +96,7 @@ VIPRA::idx HumanBehavior::addEvent(const Event& event) {
  * @param loc : location object to add
  * @return Location*
 */
-VIPRA::idx
-HumanBehavior::addLocation(Location loc) {
+VIPRA::idx HumanBehavior::addLocation(Location loc) {
   context.locations.emplace_back(loc);
   return context.locations.size() - 1;
 }
@@ -102,18 +106,14 @@ HumanBehavior::addLocation(Location loc) {
  * 
  * @return VIPRA::size 
  */
-VIPRA::size HumanBehavior::eventCount() const {
-  return context.events.size();
-}
+VIPRA::size HumanBehavior::eventCount() const { return context.events.size(); }
 
 /**
  * @brief Returns the number of selectors the behavior has
  * 
  * @return VIPRA::size 
  */
-VIPRA::size HumanBehavior::selectorCount() const {
-  return selector.selectorCount();
-}
+VIPRA::size HumanBehavior::selectorCount() const { return selector.selectorCount(); }
 
 /**
  * @brief Returns the number of actions the behavior has
@@ -134,18 +134,17 @@ VIPRA::size HumanBehavior::actionCount() const {
  * 
  * @param s : 
  */
-void HumanBehavior::setSeed(BHVR::seed bSeed) {
-  seedNum = bSeed;
-}
+void HumanBehavior::setSeed(BHVR::seed bSeed) { seedNum = bSeed; }
 
-void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, VIPRA::delta_t dT) {
+void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
+                                   Goals& goals, VIPRA::delta_t dT) {
   for (auto& event : context.events) {
     event.evaluate(pedSet, obsSet, goals, context, dT);
   }
 }
 
-void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, VIPRA::State& state,
-                                 VIPRA::delta_t dT) {
+void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
+                                 VIPRA::State& state, VIPRA::delta_t dT) {
   const GroupsContainer& groups = selector.getGroups();
   const VIPRA::size      groupCnt = groups.size();
 
@@ -161,7 +160,8 @@ void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goa
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------
 
-HumanBehavior::HumanBehavior(std::string behaviorName) : name(std::move(behaviorName)), context() {}
+HumanBehavior::HumanBehavior(std::string behaviorName)
+    : name(std::move(behaviorName)), context() {}
 
 // ------------------------------------------ END CONSTRUCTORS ------------------------------------------------------------------------
 }  // namespace BHVR

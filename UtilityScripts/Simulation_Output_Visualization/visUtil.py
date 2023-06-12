@@ -14,34 +14,42 @@ def getArgs():
   yMin = -1
   xMax = 25
   yMax = 4
+  fps = 10
 
-  for arg in sys.argv:
-    if arg == "-idx":
+  for arg in sys.argv[1::]:
+    if arg == '-idx':
       indexes = True
       flagCnt += 1
-    if arg == "-shldr":
+    elif arg == '-shldr':
       shldrLen = float(sys.argv[flagCnt + 1])
       shoulders = True
       flagCnt += 2
-    if arg == "-out":
+    elif arg == '-out':
       outpath = sys.argv[flagCnt + 1]
       flagCnt += 2
-    if arg == "-peds":
+    elif arg == '-peds':
       peds = sys.argv[flagCnt + 1]
       flagCnt += 2
-    if arg == "-obs":
+    elif arg == '-obs':
       obs = sys.argv[flagCnt + 1]
       flagCnt += 2
-    if arg == "-xDim":
+    elif arg == '-xDim':
       dims = sys.argv[flagCnt + 1].split(',')
       xMin = float(dims[0])
       xMax = float(dims[1])
       flagCnt += 2
-    if arg == "-yDim":
+    elif arg == '-yDim':
       dims = sys.argv[flagCnt + 1].split(',')
       yMin = float(dims[0])
       yMax = float(dims[1])
       flagCnt += 2
+    elif arg == '-fps':
+      fps = float(sys.argv[flagCnt + 1])
+      flagCnt += 2
+    else:
+      if (arg[0] == '-'):
+        print(f'Unknown Flag: {arg}')
+        exit(-1)
     
 
   if peds == "" or obs == "":
@@ -59,6 +67,7 @@ def getArgs():
     xMax     = xMax,
     yMin     = yMin,
     yMax     = yMax,
+    fps = fps,
   )
 
 

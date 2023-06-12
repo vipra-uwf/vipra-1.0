@@ -14,11 +14,11 @@ selector:
     ;
 
 selector_Percent:
-    value_number '%' OF
+    value_number '%' (OF)?
     ;
 
 selector_Exactly_N_Random:
-    EXACTLY value_number OF
+    EXACTLY value_number (OF)?
     ;
 
 selector_Everyone:

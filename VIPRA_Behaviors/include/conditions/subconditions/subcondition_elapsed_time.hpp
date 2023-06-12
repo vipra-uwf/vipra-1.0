@@ -3,27 +3,33 @@
 
 #include <conditions/sub_condition.hpp>
 #include <definitions/dsl_types.hpp>
+#include <definitions/type_definitions.hpp>
 #include <events/event.hpp>
+#include <time/time.hpp>
 #include <util/timed_latch.hpp>
+#include <values/numeric_value.hpp>
 
 namespace BHVR {
 class SubConditionElapsedTimeFromEvent {
  public:
-  SubConditionElapsedTimeFromEvent(VIPRA::time_s, VIPRA::idx);
+  SubConditionElapsedTimeFromEvent(BHVR::NumericValue, VIPRA::idx);
 
-  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
-                  VIPRA::delta_t);
+  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                  const BehaviorContext&, VIPRA::idx, VIPRA::delta_t);
 
  private:
-  BHVR::TimedLatch latch;
-  VIPRA::idx       event;
+  VIPRA::idx         event;
+  BHVR::NumericValue requiredTime;
+  VIPRA::time_s      startTime;
 
  public:
   ~SubConditionElapsedTimeFromEvent() = default;
   SubConditionElapsedTimeFromEvent(const SubConditionElapsedTimeFromEvent&) = default;
-  SubConditionElapsedTimeFromEvent& operator=(const SubConditionElapsedTimeFromEvent&) = default;
+  SubConditionElapsedTimeFromEvent& operator=(const SubConditionElapsedTimeFromEvent&) =
+      default;
   SubConditionElapsedTimeFromEvent(SubConditionElapsedTimeFromEvent&&) noexcept = default;
-  SubConditionElapsedTimeFromEvent& operator=(SubConditionElapsedTimeFromEvent&&) noexcept = default;
+  SubConditionElapsedTimeFromEvent& operator=(
+      SubConditionElapsedTimeFromEvent&&) noexcept = default;
 };
 }  // namespace BHVR
 

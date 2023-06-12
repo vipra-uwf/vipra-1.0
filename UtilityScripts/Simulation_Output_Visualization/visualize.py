@@ -33,5 +33,5 @@ def animate(i):
 
 
 ani = FuncAnimation(fig, animate, frames=pedCoords, blit=True)
-ani.save(args["outpath"], dpi=300, writer=PillowWriter(fps=12), progress_callback=util.printProgressBar)
+ani.save(args["outpath"], dpi=300, writer=PillowWriter(fps=args["fps"]), progress_callback=util.printProgressBar)
 util.printProgressBar(timestepCnt, timestepCnt, "Done")

@@ -23,7 +23,7 @@ sub_condition:
   ;
 
 condition_Time_Elapsed_From_Event:
-  AFTER duration FROM (AN | THE)? EVNT (EVENT)?
+  AFTER value_numeric SECONDS FROM (AN | THE)? EVNT (EVENT)?
   ;
 
 condition_Event_Occurred:

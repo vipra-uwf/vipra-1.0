@@ -13,7 +13,7 @@ Checks: >
   -hicpp-named-parameter,
   -readability-braces-around-statements,
   -google-readability-braces-around-statements,
-  -hicpp-braces-around-statements
+  -hicpp-braces-around-statements,
 
 WarningsAsErrors: "*"
 
@@ -23,14 +23,14 @@ CheckOptions:
   - { key: readability-identifier-naming.StructCase                                , value: CamelCase  }
   - { key: readability-identifier-naming.TemplateParameterCase                     , value: CamelCase  }
   - { key: readability-identifier-naming.FunctionCase                              , value: camelBack  }
-  - { key: readability-identifier-naming.VariableCase                              , value: camelBack }
-  - { key: readability-identifier-naming.ClassMemberCase                           , value: camelBack }
+  - { key: readability-identifier-naming.VariableCase                              , value: camelBack  }
+  - { key: readability-identifier-naming.ClassMemberCase                           , value: camelBack  }
   - { key: readability-identifier-naming.EnumConstantCase                          , value: UPPER_CASE }
-  - { key: readability-identifier-naming.ConstexprVariableCase                     , value: camelBack }
+  - { key: readability-identifier-naming.ConstexprVariableCase                     , value: camelBack  }
   - { key: readability-identifier-naming.GlobalConstantCase                        , value: UPPER_CASE }
   - { key: readability-identifier-naming.MemberConstantCase                        , value: UPPER_CASE }
   - { key: readability-identifier-naming.StaticConstantCase                        , value: UPPER_CASE }
-  - { key: readability-implicit-bool-conversion.AllowPointerConditions             , value: 1   }
-  - { key: readability-identifier-length.MinimumVariableNameLength                 , value: 2}
-  - { key: readability-identifier-length.MinimumParameterNameLength                , value: 2}
-  - { key: misc-non-private-member-variables-in-classes.IgnorePublicMemberVariables, value: 1}
+  - { key: readability-implicit-bool-conversion.AllowPointerConditions             , value: 1          }
+  - { key: readability-identifier-length.MinimumVariableNameLength                 , value: 2          }
+  - { key: readability-identifier-length.MinimumParameterNameLength                , value: 2          }
+  - { key: misc-non-private-member-variables-in-classes.IgnorePublicMemberVariables, value: 1          }

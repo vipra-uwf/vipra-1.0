@@ -31,7 +31,9 @@
 2. **REQUIRED** `-obs *obstacle map path*` : sets the path to the obstacle map *(no default)*
 3. `-outpath *output gif path*` : sets the path for the output gif *(default ./output.gif)*
 3. `-idx` : prints the pedestrians index next to their position *(default OFF)*
-4. `-shldr *len*` : draws shoulders <sup> (axis aligned) </sup> on pedestrians *(default OFF)*
+4. `-idxClr` : colors pedestrian indexes to their color *(default OFF)*
+5. `-shldr *len*` : draws shoulders <sup> (axis aligned) </sup> on pedestrians *(default OFF)*
 - `*len*` being half the total shoulder length
-5. `-xDim *minX, maxX*` : sets the min and max X for the plot *(default: -1, 25)*
-6. `-yDim *minY, maxY*` : sets the min and max Y for the plot *(default: -1, 4)*
+6. `-xDim *minX, maxX*` : sets the min and max X for the plot *(default: -1, 25)*
+7. `-yDim *minY, maxY*` : sets the min and max Y for the plot *(default: -1, 4)*
+8. `-fps *fps*` : sets the fps of the output Gif *(default 10)*

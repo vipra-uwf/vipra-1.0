@@ -5,7 +5,6 @@
 
 #include <definitions/shape_descriptor.hpp>
 
-
 namespace BHVR {
 /**
    * @brief A Location is an area in the map that is either predefined, such as the bathroom, or defined by a behavior created by the user.
@@ -22,15 +21,14 @@ class Location {
 
   explicit Location(std::string, std::string locType, VIPRA::shape locShape);
 
-  const std::string& getName() const;
-  const std::string& getType() const;
-  const VIPRA::shape getShape() const;
+  [[nodiscard]] const std::string& getName() const;
+  [[nodiscard]] const std::string& getType() const;
+  [[nodiscard]] const VIPRA::shape getShape() const;
 
  private:
-  std::string name;
-  std::string type;
+  std::string  name;
+  std::string  type;
   VIPRA::shape shape;
-
 };
-} //namespace BHVR
+}  //namespace BHVR
 #endif
