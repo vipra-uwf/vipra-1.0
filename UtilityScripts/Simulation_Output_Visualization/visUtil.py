@@ -16,6 +16,8 @@ def getArgs():
   yMax = 4
   fps = 10
   idxColor = False
+  pedColor = False
+  obsColor = 'k'
 
   for arg in sys.argv[1::]:
     if arg == '-idx':
@@ -50,6 +52,12 @@ def getArgs():
     elif arg == '-idxClr':
       idxColor = True
       flagCnt += 1
+    elif arg == '-pedClr':
+      pedColor = True
+      flagCnt += 1
+    elif arg == '-obsClr':
+      obsColor = sys.argv[flagCnt + 1]
+      flagCnt += 2
     else:
       if (arg[0] == '-'):
         print(f'Unknown Flag: {arg}')
@@ -73,6 +81,8 @@ def getArgs():
     yMax     = yMax,
     fps      = fps,
     idxColor = idxColor,
+    pedColor = pedColor,
+    obsColor = obsColor,
   )
 
 
@@ -99,15 +109,18 @@ def getPoints(timestep):
 
   return (pointsX, pointsY)
 
-def makeColors(pedCoords):
+def makeColors(pedCoords, pedColor):
+  if pedColor:
     return np.random.rand(len(pedCoords["0"]), 3)
+  else:
+    return np.zeros(len(pedCoords["0"]))
 
-def plotShoulders(pointsX, pointsY, shldrLen, colors, ax):
+def plotShoulders(pointsX, pointsY, shldrLen, pedColor, colors, ax):
   for index in range(0, len(pointsX)):
     x = pointsX[index]
     y = pointsY[index]
-    ax.plot([x-shldrLen, x+shldrLen], [y, y], color=colors[index], linestyle='-', linewidth=0.5)
-    ax.plot([x, x], [y-shldrLen, y+shldrLen], color=colors[index], linestyle='-', linewidth=0.5)
+    ax.plot([x-shldrLen, x+shldrLen], [y, y], color=colors[index] if pedColor else 'k', linestyle='-', linewidth=0.5)
+    ax.plot([x, x], [y-shldrLen, y+shldrLen], color=colors[index] if pedColor else 'k', linestyle='-', linewidth=0.5)
 
 def plotIndexes(pointsX, pointsY, idxColor, pedColors, ax):
   for index in range(0, len(pointsX)):
