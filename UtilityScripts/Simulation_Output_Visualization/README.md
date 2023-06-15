@@ -38,5 +38,7 @@
 7. `-yDim *minY, maxY*` : sets the min and max Y for the plot *(default: -1, 4)*
 8. `-fps *fps*` : sets the fps of the output Gif *(default 10)*
 9. `-pedClr` : sets each pedestrian a different color *(default OFF)*
-10. `-obsClr` *color* : sets the color of obstacles *(default k)*
-- options: https://matplotlib.org/stable/tutorials/colors/colors.html
+10. `-obsClr *color*` : sets the color of obstacles *(default k)*
+11. `-bckClr *color*` : sets the color of the background *(default w)*
+
+**color options: https://matplotlib.org/stable/tutorials/colors/colors.html**

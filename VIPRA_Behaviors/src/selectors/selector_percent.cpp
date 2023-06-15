@@ -3,6 +3,7 @@
 #include <cmath>
 #include <random>
 
+#include <randomization/random.hpp>
 #include <selectors/selector_percent.hpp>
 
 namespace BHVR {
@@ -11,14 +12,16 @@ namespace BHVR {
  * 
  * @param pedSet : 
  */
-SelectorResult SelectorPercent::operator()(BHVR::seed seed, const VIPRA::idxVec& fullGroup, const VIPRA::idxVec& group,
-                                           const PedestrianSet& /*pedset*/, const ObstacleSet& /*obsSet*/,
+SelectorResult SelectorPercent::operator()(VIPRA::pRNG_Engine&  rngEngine,
+                                           const VIPRA::idxVec& fullGroup,
+                                           const VIPRA::idxVec& group,
+                                           const PedestrianSet& /*pedset*/,
+                                           const ObstacleSet& /*obsSet*/,
                                            const Goals& /*goals*/) const {
-  srand(seed);
-
   auto groupPeds = group;
 
-  auto count = static_cast<VIPRA::size>(std::floor(percentage * static_cast<float>(fullGroup.size())));
+  auto count = static_cast<VIPRA::size>(
+      std::floor(percentage * static_cast<float>(fullGroup.size())));
 
   bool starved = false;
   if (count > group.size()) {
@@ -28,7 +31,7 @@ SelectorResult SelectorPercent::operator()(BHVR::seed seed, const VIPRA::idxVec&
 
   spdlog::debug("Selector Percent: Selecting {} Pedestrians", count);
 
-  std::shuffle(groupPeds.begin(), groupPeds.end(), std::default_random_engine(seed));
+  std::shuffle(groupPeds.begin(), groupPeds.end(), rngEngine);
   groupPeds.resize(count);
 
   return {starved, groupPeds};

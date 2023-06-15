@@ -18,6 +18,7 @@ def getArgs():
   idxColor = False
   pedColor = False
   obsColor = 'k'
+  bckColor = 'w'
 
   for arg in sys.argv[1::]:
     if arg == '-idx':
@@ -58,6 +59,9 @@ def getArgs():
     elif arg == '-obsClr':
       obsColor = sys.argv[flagCnt + 1]
       flagCnt += 2
+    elif arg == '-bckClr':
+      bckColor = sys.argv[flagCnt + 1]
+      flagCnt += 2
     else:
       if (arg[0] == '-'):
         print(f'Unknown Flag: {arg}')
@@ -75,14 +79,13 @@ def getArgs():
     outpath  = outpath,
     peds     = peds,
     obs      = obs,
-    xMin     = xMin,
-    xMax     = xMax,
-    yMin     = yMin,
-    yMax     = yMax,
+    xDim     = [xMin, xMax],
+    yDim     = [yMin, yMax],
     fps      = fps,
     idxColor = idxColor,
     pedColor = pedColor,
     obsColor = obsColor,
+    bckColor = bckColor,
   )
 
 
@@ -113,22 +116,35 @@ def makeColors(pedCoords, pedColor):
   if pedColor:
     return np.random.rand(len(pedCoords["0"]), 3)
   else:
-    return np.zeros(len(pedCoords["0"]))
+    return [1,0.5,0]
 
-def plotShoulders(pointsX, pointsY, shldrLen, pedColor, colors, ax):
-  for index in range(0, len(pointsX)):
-    x = pointsX[index]
-    y = pointsY[index]
-    ax.plot([x-shldrLen, x+shldrLen], [y, y], color=colors[index] if pedColor else 'k', linestyle='-', linewidth=0.5)
-    ax.plot([x, x], [y-shldrLen, y+shldrLen], color=colors[index] if pedColor else 'k', linestyle='-', linewidth=0.5)
+def plotShoulders(plot, pointsX, pointsY, shldrLen, colors, ax):
+  if plot:
+    for index in range(0, len(pointsX)):
+      x = pointsX[index]
+      y = pointsY[index]
+      ax.plot([x-shldrLen, x+shldrLen], [y, y], color=colors[index], linestyle='-', linewidth=0.5)
+      ax.plot([x, x], [y-shldrLen, y+shldrLen], color=colors[index], linestyle='-', linewidth=0.5)
 
-def plotIndexes(pointsX, pointsY, idxColor, pedColors, ax):
-  for index in range(0, len(pointsX)):
-    ax.text(pointsX[index], pointsY[index], index, fontsize=5, c=pedColors[index] if idxColor else 'k')
+def plotIndexes(plot, pointsX, pointsY, idxColor, pedColors, ax):
+  if plot:
+    for index in range(0, len(pointsX)):
+      ax.text(pointsX[index], pointsY[index], index, fontsize=5, c=pedColors[index] if idxColor else 'k')
 
+def plotPeds(pedsX, pedsY, pedColors, ax):
+  return ax.scatter(pedsX, pedsY, 2, color=pedColors)
+
+def plotObs(obsX, obsY, color, ax):
+  return ax.scatter(obsX, obsY, 1, c=color)
+
+def prepPlot(xDim, yDim, bckColor, ax):
+  ax.clear()
+  ax.set_xlim(xDim[0], xDim[1])
+  ax.set_ylim(yDim[0], yDim[1])
+  ax.autoscale(False)
+  ax.set_facecolor(bckColor)
 
 percent = 0
-
 def printProgressBar (iteration, total, prefix="Saving", animating=False):
     if not animating:
       percent = ("{0:." + str(1) + "f}").format(100 * (iteration / float(total)))

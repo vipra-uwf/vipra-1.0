@@ -86,7 +86,6 @@ void BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName,
                                            BHVR::seed         seedNum) {
   currentBehavior = HumanBehavior(behaviorName);
   currentBehavior.setSeed(seedNum);
-  NumericValue::getRandomEngine().seed(seedNum);
   currSeed = seedNum;
   initializeStates();
   initializeEvents();
@@ -160,8 +159,8 @@ Condition BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond
 void BehaviorBuilder::addSubCondToCondtion(
     Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
   if (subcond->condition_Time_Elapsed_From_Event()) {
-    BHVR::NumericValue dur =
-        getNumeric(subcond->condition_Time_Elapsed_From_Event()->value_numeric());
+    BHVR::NumericValue dur = getNumeric(
+        subcond->condition_Time_Elapsed_From_Event()->value_numeric(), currSeed);
     std::string evName = subcond->condition_Time_Elapsed_From_Event()->EVNT()->toString();
     spdlog::debug(R"(Behavior "{}": Adding SubCondition: Elapsed Time From "{}" Event)",
                   currentBehavior.getName(), evName);
@@ -201,7 +200,7 @@ void BehaviorBuilder::addAtomToAction(Action&                             action
     spdlog::debug(R"(Behavior "{}": Adding Action Atom: "Change Speed")",
                   currentBehavior.getName());
     NumericValue change =
-        getNumeric(atom->action_atom_Percent_Walk_Speed()->value_numeric());
+        getNumeric(atom->action_atom_Percent_Walk_Speed()->value_numeric(), currSeed);
     action.addAtom(AtomChangeSpeed{change});
     return;
   }
@@ -464,19 +463,22 @@ SubSelector BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContex
 
   if (selector->selector_Exactly_N_Random()) {
     NumericValue nPeds =
-        getNumeric(selector->selector_Exactly_N_Random()->value_number());
+        getNumeric(selector->selector_Exactly_N_Random()->value_number(), currSeed);
     spdlog::debug(
         R"(Behavior "{}": Adding Selector: "Exactly {}" of {} Are Ped Type: {})",
-        currentBehavior.getName(), nPeds(), groupStr, fmt::join(typeStrs, ", "));
+        currentBehavior.getName(), nPeds.value(0), groupStr, fmt::join(typeStrs, ", "));
     return SubSelector{group, comPtype, required, SelectorExactlyN{nPeds}};
   }
 
   if (selector->selector_Percent()) {
-    NumericValue percentage = getNumeric(selector->selector_Percent()->value_number());
+    NumericValue percentage =
+        getNumeric(selector->selector_Percent()->value_number(), currSeed);
     spdlog::debug(
         R"(Behavior "{}": Adding Selector: "{} Percent" of {} Are Ped Type: {})",
-        currentBehavior.getName(), percentage(), groupStr, fmt::join(typeStrs, ", "));
-    return SubSelector{group, comPtype, required, SelectorPercent{percentage() / 100.0F}};
+        currentBehavior.getName(), percentage.value(0), groupStr,
+        fmt::join(typeStrs, ", "));
+    return SubSelector{group, comPtype, required,
+                       SelectorPercent{percentage.value(0) / 100.0F}};
   }
 
   spdlog::error("Behavior Error: Unable To Create Selector For Behavior \"{}\"",
@@ -504,7 +506,7 @@ antlrcpp::Any BehaviorBuilder::visitConditional_action(
   const auto type = getType(typeStr);
 
   if (ctx->duration()) {
-    NumericValue timeRange = getNumeric(ctx->duration()->value_numeric());
+    NumericValue timeRange = getNumeric(ctx->duration()->value_numeric(), currSeed);
     spdlog::debug("Behavior \"{}\": Adding Time Range To Action For {}",
                   currentBehavior.getName(), typeStr);
     action.addDuration(timeRange);
@@ -553,11 +555,11 @@ antlrcpp::Any BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ct
   //                   circleName);
 
   //     NumericValue circleCenterPointX =
-  //         getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_number().at(0));
+  //         getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_number().at(0), currSeed);
   //     NumericValue circleCenterPointY =
-  //         getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_number().at(1));
+  //         getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_number().at(1), currSeed);
   //     NumericValue circleRadius =
-  //         getNumeric(ctx->decl_Loc_Area_Circle()->value_number());
+  //         getNumeric(ctx->decl_Loc_Area_Circle()->value_number(), currSeed);
 
   //     locations[circleName] = currentBehavior.addLocation(
   //         Location(circleName, "circle",
@@ -569,13 +571,13 @@ antlrcpp::Any BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ct
   //                   rectName);
 
   //     const auto rectCenterPointX =
-  //         getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_number().at(0));
+  //         getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_number().at(0), currSeed);
   //     const auto rectCenterPointY =
-  //         getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_number().at(1));
+  //         getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_number().at(1), currSeed);
   //     const auto rectLen =
-  //         getNumeric(ctx->decl_Loc_Area_Rect()->value_number().at(0));
+  //         getNumeric(ctx->decl_Loc_Area_Rect()->value_number().at(0), currSeed);
   //     const auto rectWidth =
-  //         getNumeric(ctx->decl_Loc_Area_Rect()->value_number().at(1));
+  //         getNumeric(ctx->decl_Loc_Area_Rect()->value_number().at(1), currSeed);
 
   //     locations[rectName] = currentBehavior.addLocation(
   //         Location(rectName, "rectangle",
@@ -587,9 +589,9 @@ antlrcpp::Any BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ct
   //                   pointName);
 
   //     const auto pointX =
-  //         getNumeric(ctx->decl_Loc_Point()->point()->value_number().at(0));
+  //         getNumeric(ctx->decl_Loc_Point()->point()->value_number().at(0), currSeed);
   //     const auto pointY =
-  //         getNumeric(ctx->decl_Loc_Point()->point()->value_number().at(1));
+  //         getNumeric(ctx->decl_Loc_Point()->point()->value_number().at(1), currSeed);
 
   //     locations[pointName] = currentBehavior.addLocation(
   //         Location(pointName, "point", VIPRA::shape(pointX, pointY)));

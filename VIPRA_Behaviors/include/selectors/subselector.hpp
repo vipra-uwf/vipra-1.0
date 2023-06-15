@@ -12,6 +12,7 @@
 
 #include <definitions/behavior_context.hpp>
 #include <definitions/pedestrian_types.hpp>
+#include <randomization/random.hpp>
 #include <selectors/pedestrian_groups.hpp>
 
 namespace BHVR {
@@ -21,15 +22,17 @@ struct SelectorResult {
   VIPRA::idxVec group;
 };
 
-using SelectorFunc = std::function<SelectorResult(seed, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&,
-                                                  const ObstacleSet&, const Goals&)>;
+using SelectorFunc = std::function<SelectorResult(
+    VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&,
+    const ObstacleSet&, const Goals&)>;
 
 class SubSelector {
  public:
   SubSelector(typeUID, Ptype, bool, SelectorFunc);
 
-  SelectorResult selectPeds(seed, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&, const ObstacleSet&,
-                            const Goals&);
+  SelectorResult selectPeds(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
+                            const VIPRA::idxVec&, const PedestrianSet&,
+                            const ObstacleSet&, const Goals&);
 
   // NOLINTBEGIN - (rolland) Having these public increases readability   : ignoring (cppcoreguidelines-non-private-member-variables-in-classes)
   typeUID group;
@@ -40,8 +43,6 @@ class SubSelector {
  private:
   SelectorFunc                select;
   std::optional<SubCondition> condition;
-
-
 
  public:
   SubSelector() = delete;

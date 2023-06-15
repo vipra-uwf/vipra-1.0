@@ -35,13 +35,13 @@ inline constexpr bool inTimeStep(VIPRA::time_s currTime, VIPRA::time_s checkTime
 bool SubConditionElapsedTimeFromEvent::operator()(const PedestrianSet&,
                                                   const ObstacleSet&, const Goals&,
                                                   const BehaviorContext& context,
-                                                  VIPRA::idx, VIPRA::delta_t dT) {
+                                                  VIPRA::idx pedIdx, VIPRA::delta_t dT) {
   const auto& ev = context.events[event];
   if (ev.isStarting()) {
     startTime = context.elapsedTime;
   }
 
-  float reqTime = requiredTime();
+  float reqTime = requiredTime.value(pedIdx);
   float checkTime = startTime + reqTime;
   return inTimeStep(context.elapsedTime, checkTime, dT);
 }

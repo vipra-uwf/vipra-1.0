@@ -45,6 +45,8 @@ public:
 
     virtual std::any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext *context) = 0;
 
+    virtual std::any visitCondition_ped_state(BehaviorParser::Condition_ped_stateContext *context) = 0;
+
     virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *context) = 0;
 
     virtual std::any visitValue_number(BehaviorParser::Value_numberContext *context) = 0;

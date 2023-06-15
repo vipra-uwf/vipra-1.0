@@ -1,8 +1,6 @@
 #ifndef VIPRA_BEHAVIORS_VALUES_HPP
 #define VIPRA_BEHAVIORS_VALUES_HPP
 
-#include <random>
-
 #include <generated/BehaviorParser.h>
 
 #include <spdlog/spdlog.h>
@@ -11,6 +9,7 @@
 #include <definitions/dsl_types.hpp>
 #include <stdexcept>
 #include <time/time.hpp>
+#include "randomization/random.hpp"
 #include "values/numeric_value.hpp"
 
 namespace BHVR {
@@ -19,9 +18,9 @@ using RandomVal = std::pair<float, float>;
 using RangeVal = std::pair<float, float>;
 
 [[nodiscard]] inline float collapseRangeValue(BHVR::seed seed, float min, float max) {
-  std::mt19937                          gen{seed};
-  std::uniform_real_distribution<float> distr{min, max};
-  return distr(gen);
+  VIPRA::pRNG_Engine                 eng{seed};
+  VIPRA::uniform_distribution<float> distr{min, max};
+  return distr(eng);
 }
 
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_numberContext* ctx,

@@ -67,6 +67,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitCondition_ped_state(BehaviorParser::Condition_ped_stateContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *ctx) override {
     return visitChildren(ctx);
   }

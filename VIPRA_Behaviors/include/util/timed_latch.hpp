@@ -25,7 +25,7 @@ class TimedLatchCollection {
   bool check(VIPRA::time_s currTime, VIPRA::idx pedIdx) {
     if (startTimes.at(pedIdx) == -1) return false;
 
-    float val = duration();
+    float val = duration.value(pedIdx);
     if (currTime - startTimes.at(pedIdx) >= val) {
       startTimes.at(pedIdx) = -1;
       return false;
@@ -33,6 +33,8 @@ class TimedLatchCollection {
 
     return true;
   }
+
+  float getDuration(VIPRA::idx pedIdx) { return duration.value(pedIdx); }
 
  private:
   BHVR::NumericValue         duration;

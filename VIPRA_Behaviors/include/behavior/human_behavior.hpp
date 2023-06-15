@@ -14,6 +14,7 @@
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 #include <selectors/selector.hpp>
+#include "randomization/random.hpp"
 
 namespace BHVR {
 /**
@@ -41,7 +42,8 @@ class HumanBehavior {
   void setSeed(BHVR::seed);
 
  private:
-  BHVR::seed seedNum = 0;
+  BHVR::seed         seedNum = 0;
+  VIPRA::pRNG_Engine rngEngine{};
 
   std::string     name;
   BehaviorContext context;

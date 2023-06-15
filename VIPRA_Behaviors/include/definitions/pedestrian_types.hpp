@@ -40,7 +40,6 @@ class Ptype {
     return count;
   }
 
-
   /**
    * @brief Loops through each individual type, starting from 1. example(1, 2, 4, 8)
    * 
@@ -57,7 +56,6 @@ class Ptype {
     }
   }
 
-
   /**
    * @brief Checks if the Ptype has the given type
    * 
@@ -67,39 +65,52 @@ class Ptype {
     return ((type & fullType) != 0U) && ((~type & fullType) == 0);
   }
 
-
   /**
    * @brief Checks if the Ptype has the given type
    * 
    * @param type : type to check for
    */
-  [[nodiscard]] inline constexpr bool hasType(typeUID type) const noexcept { return (type & fullType) != 0U; }
+  [[nodiscard]] inline constexpr bool hasType(typeUID type) const noexcept {
+    return (type & fullType) != 0U;
+  }
 
-  inline constexpr Ptype  operator+(typeUID type) const noexcept { return Ptype{fullType | type}; }
+  inline constexpr Ptype operator+(typeUID type) const noexcept {
+    return Ptype{fullType | type};
+  }
   inline constexpr Ptype& operator+=(typeUID type) noexcept {
     fullType = (fullType | type);
     return *this;
   }
-  inline constexpr Ptype  operator+(Ptype type) const noexcept { return Ptype{fullType | type.fullType}; }
+  inline constexpr Ptype operator+(Ptype type) const noexcept {
+    return Ptype{fullType | type.fullType};
+  }
   inline constexpr Ptype& operator+=(Ptype type) noexcept {
     fullType = (fullType | type.fullType);
     return *this;
   }
 
-  inline constexpr Ptype  operator-(typeUID type) const noexcept { return Ptype{fullType & ~type}; }
+  inline constexpr Ptype operator-(typeUID type) const noexcept {
+    return Ptype{fullType & ~type};
+  }
   inline constexpr Ptype& operator-=(typeUID type) noexcept {
     fullType = (fullType & ~type);
     return *this;
   }
 
-  inline constexpr Ptype  operator-(Ptype type) const noexcept { return Ptype{fullType & ~type.fullType}; }
+  inline constexpr Ptype operator-(Ptype type) const noexcept {
+    return Ptype{fullType & ~type.fullType};
+  }
   inline constexpr Ptype& operator-=(Ptype type) noexcept {
     fullType = (fullType & ~type.fullType);
     return *this;
   }
 
-  inline constexpr bool operator==(Ptype type) const noexcept { return fullType == type.fullType; }
-  inline constexpr bool operator!=(Ptype type) const noexcept { return fullType != type.fullType; }
+  inline constexpr bool operator==(Ptype type) const noexcept {
+    return fullType == type.fullType;
+  }
+  inline constexpr bool operator!=(Ptype type) const noexcept {
+    return fullType != type.fullType;
+  }
 
   ~Ptype() = default;
   constexpr Ptype() noexcept = default;

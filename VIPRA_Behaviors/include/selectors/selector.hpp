@@ -7,6 +7,7 @@
 #include <definitions/behavior_context.hpp>
 #include <definitions/pedestrian_types.hpp>
 
+#include <randomization/random.hpp>
 #include <selectors/pedestrian_groups.hpp>
 #include <selectors/subselector.hpp>
 
@@ -21,7 +22,8 @@ class Selector {
   Selector(Selector&&) noexcept = default;
   Selector& operator=(Selector&&) noexcept = default;
 
-  void initialize(const std::string&, BHVR::seed, BehaviorContext&, const PedestrianSet&, const ObstacleSet&, const Goals&);
+  void initialize(const std::string&, VIPRA::pRNG_Engine&, BehaviorContext&,
+                  const PedestrianSet&, const ObstacleSet&, const Goals&);
 
   void setAllTypes(Ptype);
   void addSubSelector(const SubSelector&);
@@ -35,16 +37,21 @@ class Selector {
   std::vector<SubSelector> subSelectors;
   GroupsContainer          pedGroups;
 
-  [[nodiscard]] VIPRA::idxVec selectPedsFromGroup(SubSelector&, BHVR::seed, const PedestrianSet&, const ObstacleSet&,
-                                                  const Goals&, const std::string&);
+  [[nodiscard]] VIPRA::idxVec selectPedsFromGroup(SubSelector&, VIPRA::pRNG_Engine&,
+                                                  const PedestrianSet&,
+                                                  const ObstacleSet&, const Goals&,
+                                                  const std::string&);
 
   [[nodiscard]] VIPRA::idxVec        orderSelectors();
-  [[nodiscard]] static VIPRA::idxVec filterUsedPeds(const VIPRA::idxVec&, const std::vector<bool>&);
+  [[nodiscard]] static VIPRA::idxVec filterUsedPeds(const VIPRA::idxVec&,
+                                                    const std::vector<bool>&);
 
-  void runSelectors(const VIPRA::idxVec&, const std::string&, BHVR::seed, BehaviorContext&, const PedestrianSet&,
-                    const ObstacleSet&, const Goals&);
+  void runSelectors(const VIPRA::idxVec&, const std::string&, VIPRA::pRNG_Engine&,
+                    BehaviorContext&, const PedestrianSet&, const ObstacleSet&,
+                    const Goals&);
   void updateUsedPeds(const VIPRA::idxVec&, std::vector<bool>&);
-  void updatePedGroups(const VIPRA::idxVec&, SubSelector&, BehaviorContext&, const std::string&);
+  void updatePedGroups(const VIPRA::idxVec&, SubSelector&, BehaviorContext&,
+                       const std::string&);
   void sortGroups();
 };
 }  // namespace BHVR

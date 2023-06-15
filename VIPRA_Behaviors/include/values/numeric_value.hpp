@@ -3,33 +3,26 @@
 
 #include <cmath>
 #include <functional>
-#include <random>
 
 #include <definitions/dsl_types.hpp>
 #include <definitions/type_definitions.hpp>
+#include <random/random.hpp>
 #include <utility>
 
 namespace BHVR {
 
-using ValueFunc = std::function<float(std::default_random_engine&)>;
+using ValueFunc = std::function<float(BHVR::seed, VIPRA::idx)>;
 
 class NumericValue {
  public:
-  explicit NumericValue(ValueFunc func) : value(std::move(func)) {}
+  explicit NumericValue(BHVR::seed seedNum, ValueFunc func)
+      : seed(seedNum), val(std::move(func)) {}
 
-  [[nodiscard]] inline float operator()() const {
-    float val = value(getRandomEngine());
-    return val;
-  }
-
-  [[nodiscard]] static std::default_random_engine& getRandomEngine() {
-    // NOLINTNEXTLINE (rolland) probably not ideal, builder seeds the engine with each new behavior : ignores(cert-msc32-c)
-    static std::default_random_engine gen{};
-    return gen;
-  }
+  [[nodiscard]] inline float value(VIPRA::idx pedIdx) const { return val(seed, pedIdx); }
 
  private:
-  std::function<float(std::default_random_engine&)> value;
+  BHVR::seed seed{};
+  ValueFunc  val;
 
  public:
   NumericValue() = default;
@@ -37,24 +30,24 @@ class NumericValue {
 
 struct ExactValue {
   float        value;
-  inline float operator()(std::default_random_engine&) const { return value; }
+  inline float operator()(BHVR::seed, VIPRA::idx) const { return value; }
 };
 
 struct RandomFloatValue {
-  float                                 min{};
-  float                                 max{};
-  std::uniform_real_distribution<float> distr{min, max};
+  float min{};
+  float max{};
 
-  inline float operator()(std::default_random_engine& gen) { return distr(gen); }
+  inline float operator()(BHVR::seed seed, VIPRA::idx pedIdx) const {
+    return BHVR::DRNG::pedRandomFloat(seed, pedIdx, min, max);
+  }
 };
 
 struct RandomNumberValue {
-  float                                 min{};
-  float                                 max{};
-  std::uniform_real_distribution<float> distr{min, max};
+  float min{};
+  float max{};
 
-  inline float operator()(std::default_random_engine& gen) {
-    return std::round(distr(gen));
+  inline float operator()(BHVR::seed seed, VIPRA::idx pedIdx) const {
+    return std::round(BHVR::DRNG::pedRandomFloat(seed, pedIdx, min, max));
   }
 };
 

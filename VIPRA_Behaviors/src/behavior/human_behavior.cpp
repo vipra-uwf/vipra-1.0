@@ -54,7 +54,7 @@ void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& o
   context.types = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
 
   spdlog::debug("Initializing {} Selectors, Seed: {}", selector.selectorCount(), seedNum);
-  selector.initialize(name, seedNum, context, pedSet, obsSet, goals);
+  selector.initialize(name, rngEngine, context, pedSet, obsSet, goals);
 
   for (auto& actionGroup : actions) {
     for (auto& action : actionGroup) {
@@ -134,7 +134,10 @@ VIPRA::size HumanBehavior::actionCount() const {
  * 
  * @param s : 
  */
-void HumanBehavior::setSeed(BHVR::seed bSeed) { seedNum = bSeed; }
+void HumanBehavior::setSeed(BHVR::seed bSeed) {
+  rngEngine.reseed(bSeed);
+  seedNum = bSeed;
+}
 
 void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
                                    Goals& goals, VIPRA::delta_t dT) {

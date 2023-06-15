@@ -1,6 +1,7 @@
 
 #include <numeric>
 
+#include <randomization/random.hpp>
 #include <selectors/selector.hpp>
 #include "behavior/exceptions.hpp"
 
@@ -15,12 +16,13 @@ namespace BHVR {
  * @param obsSet : 
  * @param goals : 
  */
-void Selector::initialize(const std::string& behaviorName, BHVR::seed seed, BehaviorContext& context,
-                          const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
+void Selector::initialize(const std::string& behaviorName, VIPRA::pRNG_Engine& rngEngine,
+                          BehaviorContext& context, const PedestrianSet& pedSet,
+                          const ObstacleSet& obsSet, const Goals& goals) {
   pedGroups.initialize(allTypes, pedSet.getNumPedestrians());
 
   auto selectorIdxs = orderSelectors();
-  runSelectors(selectorIdxs, behaviorName, seed, context, pedSet, obsSet, goals);
+  runSelectors(selectorIdxs, behaviorName, rngEngine, context, pedSet, obsSet, goals);
   sortGroups();
   pedGroups.cleanUsed();
 }
@@ -36,13 +38,15 @@ void Selector::initialize(const std::string& behaviorName, BHVR::seed seed, Beha
  * @param obsSet : 
  * @param goals : 
  */
-void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs, const std::string& behaviorName, BHVR::seed seed,
-                            BehaviorContext& context, const PedestrianSet& pedSet, const ObstacleSet& obsSet,
+void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs,
+                            const std::string&   behaviorName,
+                            VIPRA::pRNG_Engine& rngEngine, BehaviorContext& context,
+                            const PedestrianSet& pedSet, const ObstacleSet& obsSet,
                             const Goals& goals) {
-
   std::for_each(selectorIdxs.begin(), selectorIdxs.end(), [&](VIPRA::idx index) {
     auto& selector = subSelectors[index];
-    auto  selectedPeds = selectPedsFromGroup(selector, seed, pedSet, obsSet, goals, behaviorName);
+    auto  selectedPeds =
+        selectPedsFromGroup(selector, rngEngine, pedSet, obsSet, goals, behaviorName);
     updatePedGroups(selectedPeds, selector, context, behaviorName);
   });
 
@@ -61,11 +65,15 @@ void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs, const std::string
  * @param behaviorName : 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector& selector, BHVR::seed seed, const PedestrianSet& pedSet,
-                                            const ObstacleSet& obsSet, const Goals& goals, const std::string& behaviorName) {
+VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector&         selector,
+                                            VIPRA::pRNG_Engine&  rngEngine,
+                                            const PedestrianSet& pedSet,
+                                            const ObstacleSet& obsSet, const Goals& goals,
+                                            const std::string& behaviorName) {
   const auto& fullGroup = pedGroups.getGroup(selector.group);
   auto        usablegroup = filterUsedPeds(fullGroup, pedGroups.getUsed(selector.group));
-  auto        result = selector.selectPeds(seed, fullGroup, usablegroup, pedSet, obsSet, goals);
+  auto        result =
+      selector.selectPeds(rngEngine, fullGroup, usablegroup, pedSet, obsSet, goals);
 
   if (!result.starved) {
     return result.group;
@@ -73,14 +81,12 @@ VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector& selector, BHVR::seed se
 
   if (selector.required) {
     spdlog::error("Behavior: {}, Required Selector Starved For Type: {} From Group: {}",
-                  behaviorName,
-                  selector.type.fullType,
-                  selector.group);
+                  behaviorName, selector.type.fullType, selector.group);
     DSLException::error("");
   }
 
-  spdlog::warn(
-      "Behavior: {}, Starved Selector For Type: {} From Group: {}", behaviorName, selector.type.fullType, selector.group);
+  spdlog::warn("Behavior: {}, Starved Selector For Type: {} From Group: {}", behaviorName,
+               selector.type.fullType, selector.group);
   return result.group;
 }
 
@@ -92,11 +98,13 @@ VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector& selector, BHVR::seed se
  * @param context : 
  * @param behaviorName : 
  */
-void Selector::updatePedGroups(const VIPRA::idxVec& selectedPeds, SubSelector& selector, BehaviorContext& context,
+void Selector::updatePedGroups(const VIPRA::idxVec& selectedPeds, SubSelector& selector,
+                               BehaviorContext&   context,
                                const std::string& behaviorName) {
   std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](auto& pedIdx) {
     selector.type.forEachType([&](typeUID type) {
-      spdlog::debug("Behavior: {}, Selecting Ped {} for Type: {}", behaviorName, pedIdx, type);
+      spdlog::debug("Behavior: {}, Selecting Ped {} for Type: {}", behaviorName, pedIdx,
+                    type);
       context.types[pedIdx] += type;
       pedGroups.addPed(pedIdx, type);
     });
@@ -112,7 +120,8 @@ void Selector::updatePedGroups(const VIPRA::idxVec& selectedPeds, SubSelector& s
  * @param used : 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec Selector::filterUsedPeds(const VIPRA::idxVec& peds, const std::vector<bool>& used) {
+VIPRA::idxVec Selector::filterUsedPeds(const VIPRA::idxVec&     peds,
+                                       const std::vector<bool>& used) {
   VIPRA::idxVec ret;
 
   for (VIPRA::idx i = 0; i < peds.size(); ++i) {
@@ -175,8 +184,9 @@ VIPRA::idxVec Selector::orderSelectors() {
   });
 
   for (VIPRA::idx selIdx = 0; selIdx < subSelectors.size(); ++selIdx) {
-    bool notInGraph =
-        std::find_if(order.begin(), order.end(), [&](VIPRA::idx index) { return index == selIdx; }) == order.end();
+    bool notInGraph = std::find_if(order.begin(), order.end(), [&](VIPRA::idx index) {
+                        return index == selIdx;
+                      }) == order.end();
     if (notInGraph) {
       order.push_back(selIdx);
     }
@@ -188,21 +198,15 @@ VIPRA::idxVec Selector::orderSelectors() {
 
 // ----------------- GETTERS/SETTERS --------------------------------------------------------------------
 
-void Selector::setAllTypes(Ptype pedTypes) {
-  allTypes = pedTypes;
-}
+void Selector::setAllTypes(Ptype pedTypes) { allTypes = pedTypes; }
 
 void Selector::addSubSelector(const SubSelector& subSelector) {
   subSelectors.emplace_back(subSelector);
 }
 
-VIPRA::size Selector::selectorCount() const {
-  return subSelectors.size();
-}
+VIPRA::size Selector::selectorCount() const { return subSelectors.size(); }
 
-const GroupsContainer& Selector::getGroups() const {
-  return pedGroups;
-}
+const GroupsContainer& Selector::getGroups() const { return pedGroups; }
 
 // ----------------- END GETTERS/SETTERS --------------------------------------------------------------------
 

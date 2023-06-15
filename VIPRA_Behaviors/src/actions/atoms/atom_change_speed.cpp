@@ -18,7 +18,7 @@ void AtomChangeSpeed::operator()(PedestrianSet& pedestrianSet, ObstacleSet& /*ob
                                  VIPRA::idx pedIndex, VIPRA::delta_t dT,
                                  VIPRA::State& state) const {
   VIPRA::f3d originalPos = pedestrianSet.getPedCoords(pedIndex);
-  VIPRA::f3d tempVel = state.velocities[pedIndex] * change();
+  VIPRA::f3d tempVel = state.velocities[pedIndex] * change.value(pedIndex);
 
   state.pedestrianCoordinates[pedIndex] = originalPos + (tempVel * dT);
 }
