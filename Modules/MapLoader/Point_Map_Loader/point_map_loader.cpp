@@ -5,7 +5,8 @@ void PointMapLoader::configure(const VIPRA::CONFIG::Map&) {}
 
 void PointMapLoader::initialize() {}
 
-std::unique_ptr<VIPRA::MapData> PointMapLoader::loadMap(const std::string& filePath) const {
+std::unique_ptr<VIPRA::MapData> PointMapLoader::loadMap(
+    const std::string& filePath) const {
   Json::Value             jsonDocument;
   Json::CharReaderBuilder jsonReader;
   std::ifstream           fileStream;

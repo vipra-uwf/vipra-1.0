@@ -2,6 +2,7 @@
 
 #include "calm_collision.hpp"
 #include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 namespace {
 inline Line getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& velocity,
@@ -18,9 +19,9 @@ inline Line getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& veloci
  * @brief The race detection function which resolves race conditions in the simulation
  * 
  */
-void Collision::raceDetection(const CalmPedestrianSet& pedestrianSet, const Goals& goals,
-                              VIPRA::t_step timestep) {
-  calcCollisionRectangles(pedestrianSet);
+void Collision::raceDetection(const PedestrianSet& pedestrianSet, const ModelData& data,
+                              const Goals& goals, VIPRA::t_step timestep) {
+  calcCollisionRectangles(pedestrianSet, data);
 
   const VIPRA::size pedCnt = pedestrianSet.getNumPedestrians();
 
@@ -43,10 +44,11 @@ RaceStatus Collision::status(VIPRA::idx index) const { return raceStatuses.at(in
  * @brief Calculates the collision rectangles for all pedestrians
  * 
  */
-void Collision::calcCollisionRectangles(const CalmPedestrianSet& pedestrianSet) {
-  const auto&       coords = pedestrianSet.getPedestrianCoordinates();
+void Collision::calcCollisionRectangles(const PedestrianSet& pedestrianSet,
+                                        const ModelData&     data) {
+  const auto&       coords = pedestrianSet.getCoordinates();
   const auto&       velocities = pedestrianSet.getVelocities();
-  const auto&       shldrs = pedestrianSet.getShoulderLengths();
+  const auto&       shldrs = data.shoulders;
   const VIPRA::size pedCnt = pedestrianSet.getNumPedestrians();
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
@@ -65,7 +67,7 @@ void Collision::calcCollisionRectangles(const CalmPedestrianSet& pedestrianSet) 
  * @brief Checks if the current index has the highest priority within its collision boundary
  * 
  */
-bool Collision::checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet,
+bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
                                        const Goals& goals, VIPRA::idx index,
                                        VIPRA::t_step) {
   bool flag = true;

@@ -16,9 +16,10 @@ struct PointMap : public VIPRA::MapData {
 
 class PointMapLoader : public MapLoader {
  public:
-  void                                          configure(const VIPRA::CONFIG::Map&) override;
-  void                                          initialize() override;
-  [[nodiscard]] std::unique_ptr<VIPRA::MapData> loadMap(const std::string&) const override;
+  void configure(const VIPRA::CONFIG::Map&) override;
+  void initialize() override;
+  [[nodiscard]] std::unique_ptr<VIPRA::MapData> loadMap(
+      const std::string&) const override;
 };
 
 #endif

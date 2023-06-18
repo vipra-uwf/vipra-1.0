@@ -1,4 +1,3 @@
 
 
-add_subdirectory(calm_pedestrian_loader)
-add_subdirectory(calm_config_writer)
+add_subdirectory(json_pedestrian_loader)

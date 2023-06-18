@@ -7,3 +7,5 @@ ColumnLimit: 90
 ReflowComments:  false
 IncludeBlocks: Preserve
 AlignConsecutiveDeclarations: true
+PointerAlignment: Left
+ReferenceAlignment: Left

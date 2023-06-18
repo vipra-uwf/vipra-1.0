@@ -10,24 +10,16 @@
 #include <pedestrian_loader/pedestrian_loader.hpp>
 
 #include <definitions/dimensions.hpp>
+#include "definitions/type_definitions.hpp"
 
-struct CalmPedData : public VIPRA::PedData {
-  CalmPedData() : VIPRA::PedData{"CalmPedData"} {}
-  VIPRA::f3dVec positions;
-  std::vector<float> masses;
-  std::vector<float> shoulderLengths;
-  std::vector<float> desiredSpeeds;
-  std::vector<float> reactionTimes;
-};
-
-class CalmPedestrianLoader : public PedestrianLoader {
+class JsonPedestrianLoader : public PedestrianLoader {
  public:
   void configure(const VIPRA::CONFIG::Map& configMap) override;
   void initialize() override;
-  [[nodiscard]] std::unique_ptr<VIPRA::PedData> loadPedestrians(
+  [[nodiscard]] std::vector<VIPRA::pcoord> loadPedestrians(
       const std::string& filePath) const override;
 
-  CalmPedestrianLoader() = default;
+  JsonPedestrianLoader() = default;
 };
 
 #endif

@@ -13,10 +13,20 @@
 
 enum RaceStatus { NO_RACE, WAIT };
 
+struct ModelData {
+  std::vector<float>          betas;
+  std::vector<float>          masses;
+  std::vector<float>          desiredSpeeds;
+  std::vector<float>          shoulders;
+  std::vector<VIPRA::delta_t> reactionTimes;
+  std::vector<VIPRA::dist>    nearestNeighborDists;
+  VIPRA::f3dVec               propulsionForces;
+};
+
 class Collision {
  public:
   void initialize(const PedestrianSet&);
-  void raceDetection(const CalmPedestrianSet&, const Goals&, VIPRA::t_step);
+  void raceDetection(const PedestrianSet&, const ModelData&, const Goals&, VIPRA::t_step);
 
   [[nodiscard]] RaceStatus status(VIPRA::idx) const;
 
@@ -31,13 +41,13 @@ class Collision {
   static constexpr VIPRA::cnt maxCount = 500;
   static constexpr float      minspeed = 0.0001F;
 
-  void calcCollisionRectangles(const CalmPedestrianSet&);
+  void calcCollisionRectangles(const PedestrianSet&, const ModelData&);
 
   static void        addIntersectionPoints(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d,
                                            VIPRA::f3dVec&);
   [[nodiscard]] bool checkIfCollide(VIPRA::size, VIPRA::size) const;
   [[nodiscard]] VIPRA::f3d getCollisionAreaMidpoint(VIPRA::idx, VIPRA::idx);
-  [[nodiscard]] bool       checkIfHighestPriority(const CalmPedestrianSet&, const Goals&,
+  [[nodiscard]] bool       checkIfHighestPriority(const PedestrianSet&, const Goals&,
                                                   VIPRA::idx, VIPRA::t_step);
 };
 

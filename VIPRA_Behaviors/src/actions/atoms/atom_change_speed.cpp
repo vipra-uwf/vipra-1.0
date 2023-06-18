@@ -20,6 +20,6 @@ void AtomChangeSpeed::operator()(PedestrianSet& pedestrianSet, ObstacleSet& /*ob
   VIPRA::f3d originalPos = pedestrianSet.getPedCoords(pedIndex);
   VIPRA::f3d tempVel = state.velocities[pedIndex] * change.value(pedIndex);
 
-  state.pedestrianCoordinates[pedIndex] = originalPos + (tempVel * dT);
+  state.coords[pedIndex] = originalPos + (tempVel * dT);
 }
 }  // namespace BHVR
