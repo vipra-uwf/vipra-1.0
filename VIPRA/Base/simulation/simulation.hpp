@@ -16,8 +16,10 @@ class Simulation {
   void configure(const VIPRA::CONFIG::Map& config);
   void initialize();
   void run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
-           PedestrianDynamicsModel& pedestrianDynamicsModel, HumanBehaviorModel& humanBehaviorModel,
-           PolicyModel& policyModel, OutputDataWriter& outputDataWriter, SimulationOutputHandler& simulationOutputHandler);
+           PedestrianDynamicsModel& pedestrianDynamicsModel,
+           HumanBehaviorModel& humanBehaviorModel, PolicyModel& policyModel,
+           OutputDataWriter&        outputDataWriter,
+           SimulationOutputHandler& simulationOutputHandler);
 
   [[nodiscard]] VIPRA::t_step getTimestep() const;
 

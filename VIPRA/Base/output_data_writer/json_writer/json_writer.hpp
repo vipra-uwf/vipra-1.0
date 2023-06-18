@@ -5,7 +5,6 @@
 
 #include <output_data_writer/output_data_writer.hpp>
 
-
 class JSONWriter : public OutputDataWriter {
  private:
   std::ofstream    fileStream;

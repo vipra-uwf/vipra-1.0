@@ -11,13 +11,15 @@
 
 class BehaviorModelException : public std::runtime_error {
  public:
-  explicit BehaviorModelException(const std::string& message) : std::runtime_error(message) {}
+  explicit BehaviorModelException(const std::string& message)
+      : std::runtime_error(message) {}
   static void error(const std::string& message) { throw BehaviorModelException(message); }
 };
 
 class HumanBehaviorModel {
  public:
-  explicit HumanBehaviorModel(std::vector<BHVR::HumanBehavior> humanBehaviors) : humanBehaviors(std::move(humanBehaviors)) {}
+  explicit HumanBehaviorModel(std::vector<BHVR::HumanBehavior> humanBehaviors)
+      : humanBehaviors(std::move(humanBehaviors)) {}
   void configure(const VIPRA::CONFIG::Map& configMap);
   void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
   void timestep(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::State&, VIPRA::delta_t);

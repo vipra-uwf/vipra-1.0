@@ -17,7 +17,8 @@ class Goals {
  public:
   virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
   virtual void initialize(const ObstacleSet&, const PedestrianSet&) = 0;
-  virtual void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&, VIPRA::delta_t) = 0;
+  virtual void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&,
+                                     VIPRA::delta_t) = 0;
 
   [[nodiscard]] virtual VIPRA::f3d getCurrentGoal(VIPRA::idx) const = 0;
   [[nodiscard]] virtual VIPRA::f3d getEndGoal(VIPRA::idx) const = 0;
@@ -29,7 +30,6 @@ class Goals {
 
   [[nodiscard]] virtual bool isPedestianGoalMet(VIPRA::idx) const = 0;
   [[nodiscard]] virtual bool isSimulationGoalMet() const = 0;
-
 
   Goals(const Goals&) = default;
   Goals(Goals&&) = delete;

@@ -11,9 +11,7 @@ void Simulation::configure(const VIPRA::CONFIG::Map& config) {
 
 void Simulation::initialize() {}
 
-VIPRA::t_step Simulation::getTimestep() const {
-  return timestep;
-}
+VIPRA::t_step Simulation::getTimestep() const { return timestep; }
 
 /**
  * @brief Main Loop of Simulation
@@ -29,20 +27,24 @@ VIPRA::t_step Simulation::getTimestep() const {
  * @param clock - Clock implementation
  */
 void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
-                     PedestrianDynamicsModel& pedestrianDynamicsModel, HumanBehaviorModel& humanBehaviorModel,
-                     PolicyModel& policyModel, OutputDataWriter& outputDataWriter,
+                     PedestrianDynamicsModel& pedestrianDynamicsModel,
+                     HumanBehaviorModel& humanBehaviorModel, PolicyModel& policyModel,
+                     OutputDataWriter&        outputDataWriter,
                      SimulationOutputHandler& simulationOutputHandler) {
   spdlog::info("Starting Simulation Loop");
 
   clock.start();
   while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
-    auto pedState{pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, timestep_size, timestep)};
-    policyModel.timestep(pedestrianSet, obstacleSet, goals, *pedState, timestep_size);
-    humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, *pedState, timestep_size);
+    auto& pedState = pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals,
+                                                      timestep_size, timestep);
+    policyModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
+    humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, pedState,
+                                timestep_size);
 
     pedestrianSet.updateState(pedState);
 
-    if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals, timestep)) {
+    if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals,
+                                                     timestep)) {
       spdlog::info("Writing To Document, Timestep: {}", timestep);
       simulationOutputHandler.writeOutput(outputDataWriter, pedestrianSet, timestep);
     }
@@ -60,6 +62,7 @@ void Simulation::printSimTime() {
   spdlog::info("Simulation Real Run Time: {}", stopTime);
 
   const double simTime = timestep_size * static_cast<float>(timestep);
-  const auto   stm = std::chrono::round<std::chrono::milliseconds>(std::chrono::duration<float>{simTime});
+  const auto   stm = std::chrono::round<std::chrono::milliseconds>(
+      std::chrono::duration<float>{simTime});
   spdlog::info("Simulated Time: {}", stm);
 }
