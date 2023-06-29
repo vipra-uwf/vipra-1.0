@@ -33,15 +33,6 @@ void Collision::raceDetection(const PedestrianSet& pedestrianSet, const ModelDat
       raceStatuses.at(i) = NO_RACE;
     else
       raceStatuses.at(i) = WAIT;
-
-    // if (i == 62 || i == 108 || i == 127)
-    //   spdlog::debug(
-    //       "Race Status of {} is {}, its x is {}, its y is {} and its goal is {}, {}. Its "
-    //       "velocity is {} x and {} y.",
-    //       i, static_cast<int>(raceStatuses.at(i)), pedestrianSet.getPedCoords(i).x,
-    //       pedestrianSet.getPedCoords(i).y, goals.getCurrentGoal(i).x,
-    //       goals.getCurrentGoal(i).y, pedestrianSet.getPedVelocity(i).x,
-    //       pedestrianSet.getPedVelocity(i).y);
   }
 }
 
@@ -60,12 +51,6 @@ void Collision::calcCollisionRectangles(const PedestrianSet& pedestrianSet, cons
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     VIPRA::f3d pedVel = velocities.at(i);
-
-    // if(i==62||i==108||i==127)
-    // spdlog::debug("Collision rectangle of {}: {}x {}y to {}x {}y",i,
-    //               collisionRectangles.at(i).p1.x, collisionRectangles.at(i).p1.y,
-    //               collisionRectangles.at(i).p3.x, collisionRectangles.at(i).p3.y);
-
     if (pedVel.magnitudeSquared() == 0) 
     {
       auto goalCoords = goals.getCurrentGoal(i);
@@ -103,14 +88,10 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
                                        const Goals& goals, VIPRA::idx index,
                                        VIPRA::t_step ) {
   bool flag = true;
-  // const auto& velocities = pedestrianSet.getVelocities();
   for (VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); i++) {
     if (i == index) continue;
 
     if (goals.isPedestianGoalMet(i)) continue;
-
-    // if (index == 65 && timestep > 5000)
-    //   spdlog::debug("For index: {}, pedestrian {}, flag is {}", index, i, flag);
 
     auto coords1 = pedestrianSet.getPedCoords(index);
     auto coords2 = pedestrianSet.getPedCoords(i);
@@ -152,15 +133,6 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
       continue;
     }
 
-    // if (index == 62)
-    // spdlog::debug("For index: {}, pedestrian {} is considered", index, i);
-
-    // if(index == 128 && i==54&&timestep>12000)
-    //   spdlog::debug("Velocity dir of {} is {}x {}y and {} is {}x {}y", index, velocityDirections.at(index).x, velocityDirections.at(index).y, i, velocityDirections.at(i).x, velocityDirections.at(i).y);
-
-    // if (index == 128 && i == 54 && timestep > 12000)
-    //   spdlog::debug("Velocity of {} is {}x {}y and {} is {}x {}y", index, velocities.at(index).x, velocities.at(index).y, i, velocities.at(i).x, velocities.at(i).y);
-
     VIPRA::f3d collisionMidpoint;
     if (!inRace.at(index).at(i)) {
       collisionMidpoint = getCollisionAreaMidpoint(index, i);
@@ -185,18 +157,7 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
               coords2.distanceTo(collisionMidpoint)) {
       if (index < i) flag = false;
     }
-
-    // if (index == 101 || index == 57 || index == 56 || index == 122) {
-    //   // spdlog::debug("Their collision midpoint is {}x, {}y", collisionMidpoint.x,collisionMidpoint.y);
-    //   spdlog::debug("The distance between {} and {} is {}", index, i, coords1.distanceTo(coords2));
-    //   spdlog::debug("Their overall midpoint is {}x, {}y", overallMidpoint.x,overallMidpoint.y);
-    //   spdlog::debug(
-    //       "Distance of {} to overall midpoint is {}. Distance of {} to overall midpoint "
-    //       "is {}.",
-    //       index, coords1.distanceTo(overallMidpoint), i,
-    //       coords2.distanceTo(overallMidpoint));
-    // }
-    }
+  }
   return flag;
 }
 

@@ -20,7 +20,6 @@ VIPRA::State& CalmPedestrianModel::timestep(const PedestrianSet& pedSet,
   updateModelState(pedSet, goals, time, timestep);
 
   // TODO(rolland) : re-enable collision detection
-  // spdlog::debug("Nearest neighbour of 62 at {} is {}", timestep, nearestNeighborDists.at(62));
   if(timestep>0)
     collision.raceDetection(dynamic_cast<const PedestrianSet&>(pedSet), peds, goals, timestep);
 
@@ -122,7 +121,6 @@ void CalmPedestrianModel::updateModelState(const PedestrianSet& pedSet,
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     if (collision.status(i) == WAIT) {
-      // modelState->velocities[i] = modelState->velocities[i].unit() * 0.00001;
       this->modelState.velocities[i] = VIPRA::f3d{};
       continue;
     }
