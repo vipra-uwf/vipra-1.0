@@ -23,15 +23,15 @@
 
 class CalmPedestrianModel : public PedestrianDynamicsModel {
  public:
-  struct ModelData {
-    std::vector<float>          betas;
-    std::vector<float>          masses;
-    std::vector<float>          desiredSpeeds;
-    std::vector<float>          shoulders;
-    std::vector<VIPRA::delta_t> reactionTimes;
-    std::vector<VIPRA::dist>    nearestNeighborDists;
-    VIPRA::f3dVec               propulsionForces;
-  };
+  // struct ModelData {
+  //   std::vector<float>          betas;
+  //   std::vector<float>          masses;
+  //   std::vector<float>          desiredSpeeds;
+  //   std::vector<float>          shoulders;
+  //   std::vector<VIPRA::delta_t> reactionTimes;
+  //   std::vector<VIPRA::dist>    nearestNeighborDists;
+  //   VIPRA::f3dVec               propulsionForces;
+  // };
 
   struct ConfigData {
     float meanMass;

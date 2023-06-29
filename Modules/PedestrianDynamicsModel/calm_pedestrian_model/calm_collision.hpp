@@ -25,8 +25,10 @@ struct ModelData {
 
 class Collision {
  public:
-  void initialize(const PedestrianSet&);
+  void initialize(const PedestrianSet&, const Goals&, const ModelData&);
   void raceDetection(const PedestrianSet&, const ModelData&, const Goals&, VIPRA::t_step);
+
+  void initializeRectangles(const PedestrianSet& pedestrianSet, const Goals& goals, const ModelData&);
 
   [[nodiscard]] RaceStatus status(VIPRA::idx) const;
 
@@ -37,15 +39,24 @@ class Collision {
   std::vector<std::vector<bool>>       inRace;
   std::vector<std::vector<VIPRA::cnt>> raceCounter;
   std::vector<std::vector<VIPRA::f3d>> intersectionMidpoints;
+  std::vector<VIPRA::f3d> velocityDirections;
 
   static constexpr VIPRA::cnt maxCount = 500;
-  static constexpr float      minspeed = 0.0001F;
+  static constexpr float      minspeed = 0.00000001F;
+  static constexpr float      rectangleRange = 0.4;
 
-  void calcCollisionRectangles(const PedestrianSet&, const ModelData&);
+  void calcCollisionRectangles(const PedestrianSet&, const Goals&, const ModelData&);
+  bool checkIfOnLineSegment(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
+  int  orientation(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
+  bool checkIfLineSegmentsIntersect(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
+  bool doRectanglesIntersect(Rect& r1, Rect& r2);
+  bool isCoordInRectangle(VIPRA::f3d, Rect&);
+  static float max(float a, float b);
+  static float min(float a, float b);
 
   static void        addIntersectionPoints(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d,
                                            VIPRA::f3dVec&);
-  [[nodiscard]] bool checkIfCollide(VIPRA::size, VIPRA::size) const;
+  [[nodiscard]] bool checkIfCollide(VIPRA::size, VIPRA::size);
   [[nodiscard]] VIPRA::f3d getCollisionAreaMidpoint(VIPRA::idx, VIPRA::idx);
   [[nodiscard]] bool       checkIfHighestPriority(const PedestrianSet&, const Goals&,
                                                   VIPRA::idx, VIPRA::t_step);
