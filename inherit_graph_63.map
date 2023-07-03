@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classSimulationOutputHandler.html" title=" " alt="" coords="5,31,172,56"/>
+<area shape="rect" id="Node000001" href="$classTimestepConsoleLogger.html" title=" " alt="" coords="220,5,382,31"/>
+<area shape="poly" id="edge69_Node000000_Node000001" title=" " alt="" coords="186,29,219,25,220,31,187,34"/>
+<area shape="rect" id="Node000002" href="$classTimestepOutputHandler.html" title=" " alt="" coords="221,55,381,80"/>
+<area shape="poly" id="edge70_Node000000_Node000002" title=" " alt="" coords="187,52,221,56,220,61,186,57"/>
+</map>
