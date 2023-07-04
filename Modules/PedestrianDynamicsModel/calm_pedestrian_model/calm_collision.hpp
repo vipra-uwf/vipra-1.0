@@ -35,9 +35,7 @@ class Collision {
  private:
   std::vector<RaceStatus>              raceStatuses;
   std::vector<Rect>                    collisionRectangles;
-  std::vector<std::set<VIPRA::idx>>    raceOpponents;
   std::vector<std::vector<bool>>       inRace;
-  std::vector<std::vector<VIPRA::cnt>> raceCounter;
   std::vector<std::vector<VIPRA::f3d>> intersectionMidpoints;
   std::vector<VIPRA::f3d> velocityDirections;
 
@@ -46,14 +44,6 @@ class Collision {
   static constexpr float      rectangleRange = 0.4;
 
   void calcCollisionRectangles(const PedestrianSet&, const Goals&, const ModelData&);
-  bool checkIfOnLineSegment(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
-  int  orientation(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
-  bool checkIfLineSegmentsIntersect(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
-  bool doRectanglesIntersect(Rect& r1, Rect& r2);
-  bool isCoordInRectangle(VIPRA::f3d, Rect&);
-  static float max(float a, float b);
-  static float min(float a, float b);
-
   static void        addIntersectionPoints(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d,
                                            VIPRA::f3dVec&);
   [[nodiscard]] bool checkIfCollide(VIPRA::size, VIPRA::size);

@@ -71,31 +71,75 @@ struct Rect {
    * @return false 
    */
   [[nodiscard]] inline bool isPointInRect(VIPRA::f3d point) const noexcept {
-    // p1, point, p4
-    float areaTri1 =
-        std::abs((point.x * p1.y - p1.x * point.y) + (p4.x * point.y - point.x * p4.y) +
-                 (p1.x * p4.y - p4.x * p1.y)) /
-        two;
+    std::vector<VIPRA::f3d> rectPoints{p1, p2, p3, p4};
+    float maxX = p1.x;
+    for (auto& rectPoint : rectPoints) {
+      maxX = std::max(maxX, rectPoint.x);
+    }
+    VIPRA::f3d ptInf(2 * maxX, point.y);
 
-    // p4, point, p3
-    float areaTri2 =
-        std::abs((point.x * p4.y - p4.x * point.y) + (p3.x * point.y - point.x * p3.y) +
-                 (p4.x * p3.y - p3.x * p4.y)) /
-        two;
+    int cnt = 0;
+    for (size_t i = 0; i < rectPoints.size(); i++) {
+      auto pt1 = rectPoints[i];
+      auto pt2 = rectPoints[(i + 1) % rectPoints.size()];
+      if (Line::orientation(pt1, point, pt2) == 0) return true;
 
-    // p3, point, p2
-    float areaTri3 =
-        std::abs((point.x * p3.y - p3.x * point.y) + (p2.x * point.y - point.x * p2.y) +
-                 (p3.x * p2.y - p2.x * p3.y)) /
-        two;
+      Line segment(pt1, pt2);
+      Line ptToInf(point, ptInf);
+      if (segment.doesIntersect(ptToInf)) cnt++;
+    }
+    return (cnt % 2 == 1);
+  }
 
-    // point, p2, p1
-    float areaTri4 =
-        std::abs((p2.x * point.y - point.x * p2.y) + (p1.x * p2.y - p2.x * p1.y) +
-                 (point.x * p1.y - p1.x * point.y)) /
-        two;
+  // /**
+  //  * @brief Returns if the rectangle intersects another
+  //  * 
+  //  * @param other : 
+  //  * @return true 
+  //  * @return false 
+  //  */
+  // [[nodiscard]] constexpr bool doesIntersect(const Rect& other) const {
+  //   for (VIPRA::idx i1 = 0; i1 < 4; ++i1) {
+  //     const VIPRA::idx i2 = (i1 + 1) % 4;
 
-    return !((areaTri1 += areaTri2 += areaTri3 += areaTri4) > area());
+  //     float normalx = (*this).at(i2).y - (*this).at(i1).y;
+  //     float normaly = (*this).at(i2).x - (*this).at(i1).x;
+
+  //     auto [minA, maxA] = getProjectedMinMax(*this, normalx, normaly);
+  //     auto [minB, maxB] = getProjectedMinMax(other, normalx, normaly);
+
+  //     if (maxA < minB || maxB < minA) return false;
+
+  //     normalx = other.at(i2).y - other.at(i1).y;
+  //     normaly = other.at(i2).x - other.at(i1).x;
+
+  //     auto [minA2, maxA2] = getProjectedMinMax(*this, normalx, normaly);
+  //     auto [minB2, maxB2] = getProjectedMinMax(other, normalx, normaly);
+
+  //     if (maxA2 < minB2 || maxB2 < minA2) return false;
+  //   }
+
+  //   return true;
+  // }
+
+  /**
+   * @brief Returns if the rectangles intersect one another
+   * 
+   * @param r1, r2 : 
+   * @return true 
+   * @return false 
+   */
+  [[nodiscard]] static bool doRectanglesIntersect(Rect& r1, Rect& r2) {
+    std::array<Line, 4> s1{Line{r1.p1, r1.p2}, {r1.p2, r1.p3}, {r1.p3, r1.p4}, {r1.p4, r1.p1}};
+    std::array<Line, 4> s2{Line{r2.p1, r2.p2}, {r2.p2, r2.p3}, {r2.p3, r2.p4}, {r2.p4, r2.p1}};
+
+    for (size_t i = 0; i < 4; i++) {
+      for (size_t j = 0; j < 4; j++) {
+        if (s1.at(i).doesIntersect(s2.at(j))) return true;
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -105,51 +149,19 @@ struct Rect {
    * @return true 
    * @return false 
    */
-  [[nodiscard]] constexpr bool doesIntersect(const Rect& other) const {
-    for (VIPRA::idx i1 = 0; i1 < 4; ++i1) {
-      const VIPRA::idx i2 = (i1 + 1) % 4;
+  [[nodiscard]] bool doesIntersect(Rect& other) {
+    std::array<Line, 4> s1{Line{p1, p2}, {p2, p3}, {p3, p4}, {p4, p1}};
+    std::array<Line, 4> s2{Line{other.p1, other.p2}, {other.p2, other.p3}, {other.p3, other.p4}, {other.p4, other.p1}};
 
-      float normalx = (*this).at(i2).y - (*this).at(i1).y;
-      float normaly = (*this).at(i2).x - (*this).at(i1).x;
-
-      auto [minA, maxA] = getProjectedMinMax(*this, normalx, normaly);
-      auto [minB, maxB] = getProjectedMinMax(other, normalx, normaly);
-
-      if (maxA < minB || maxB < minA) return false;
-
-      normalx = other.at(i2).y - other.at(i1).y;
-      normaly = other.at(i2).x - other.at(i1).x;
-
-      auto [minA2, maxA2] = getProjectedMinMax(*this, normalx, normaly);
-      auto [minB2, maxB2] = getProjectedMinMax(other, normalx, normaly);
-
-      if (maxA2 < minB2 || maxB2 < minA2) return false;
+    for (size_t i = 0; i < 4; i++) {
+      for (size_t j = 0; j < 4; j++) {
+        if (s1.at(i).doesIntersect(s2.at(j)))
+          return true;
+      }
     }
 
-    return true;
+    return false;
   }
-
-  // ------------------------------------------------------------------------------------------------------------------
-
-  // /// @brief Check whether two rectangles intersect
-  // /// @param r1
-  // /// @param r2
-  // /// @return true or false
-  // bool doesIntersect(Rect& other) {
-  //   std::array<Line, 4> s1{Line{p1, p2}, {p2, p3}, {p3, p4}, {p4, p1}};
-  //   std::array<Line, 4> s2{Line{other.p1, other.p2}, {other.p2, other.p3}, {other.p3, other.p4}, {other.p4, other.p1}};
-
-  //   for (size_t i = 0; i < 4; i++) {
-  //     for (size_t j = 0; j < 4; j++) {
-  //       if (s1.at(i).doesIntersect(s2.at(j)))
-  //         return true;
-  //     }
-  //   }
-
-  //   return false;
-  // }
-
-  // ------------------------------------------------------------------------------------------------------------------
 
  private:
   static constexpr float two = 2.0F;

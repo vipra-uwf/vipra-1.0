@@ -96,12 +96,13 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
     auto coords1 = pedestrianSet.getPedCoords(index);
     auto coords2 = pedestrianSet.getPedCoords(i);
 
-    bool cr2in1 = isCoordInRectangle(coords2, collisionRectangles.at(index));
-    bool cr1in2 = isCoordInRectangle(coords1, collisionRectangles.at(i));
+    bool cr2in1 = collisionRectangles.at(index).isPointInRect(coords2);
+    bool cr1in2 = collisionRectangles.at(i).isPointInRect(coords1);
 
     auto goal1 = goals.getCurrentGoal(index);
     auto goal2 = goals.getCurrentGoal(i);
 
+    //If goals don't match, check if coordinates of the pedestrians are in each others collision rectangles
     if(goal1!=goal2)
     {
       if (!cr2in1) {
@@ -114,25 +115,23 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
       }
     }
     
-    
+    //Check if pedestrians collide, if not continue onto next passenger
     bool collisionCheck = checkIfCollide(index, i);
-
     if (!collisionCheck) {
       if (inRace.at(index).at(i)) {
         inRace.at(index).at(i) = false;
         inRace.at(i).at(index) = false;
-
-        raceOpponents.at(i).erase(index);
-        raceOpponents.at(index).erase(i);
       }
       continue;
     }
 
+    //If goals match, use distance comparision
     if (goal1 == goal2) {
       if (coords1.distanceTo(goal1) > coords2.distanceTo(goal2)) flag = false;
       continue;
     }
 
+    //If goals don't match, use collision midpoint to resolve race condition
     VIPRA::f3d collisionMidpoint;
     if (!inRace.at(index).at(i)) {
       collisionMidpoint = getCollisionAreaMidpoint(index, i);
@@ -144,53 +143,18 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
 
       inRace.at(i).at(index) = true;
       inRace.at(index).at(i) = true;
-      raceOpponents.at(i).insert(index);
-      raceOpponents.at(index).insert(i);
-
-    } else {
+    } 
+    else {
       collisionMidpoint = intersectionMidpoints.at(index).at(i);
     }
-
     if (coords1.distanceTo(collisionMidpoint) > coords2.distanceTo(collisionMidpoint))
       flag = false;
-    else if (coords1.distanceTo(collisionMidpoint) ==
-              coords2.distanceTo(collisionMidpoint)) {
+    else if (coords1.distanceTo(collisionMidpoint) == coords2.distanceTo(collisionMidpoint)) {
       if (index < i) flag = false;
     }
+
   }
   return flag;
-}
-
-/**
- * @brief Checks if a point is on or inside the given rectangle
- * 
- * @param coords 
- * @param rect 
- * @return true 
- * @return false 
- */
-bool Collision::isCoordInRectangle(VIPRA::f3d coords, Rect& rect) {
-  
-  std::vector<VIPRA::f3d> rectPoints{rect.p1,rect.p2,rect.p3,rect.p4};
-  float maxX = rect.p1.x;
-  for(auto & rectPoint : rectPoints)
-  {
-    maxX = max(maxX,rectPoint.x);
-  }
-  VIPRA::f3d ptInf(2*maxX, coords.y);
-  
-  int cnt = 0;
-  for(size_t i = 0; i < rectPoints.size(); i++)
-  {
-    auto pt1 = rectPoints[i];
-    auto pt2 = rectPoints[(i+1)%rectPoints.size()];
-    if(orientation(pt1,coords,pt2)==0)
-      return true;
-
-    if(checkIfLineSegmentsIntersect(pt1, pt2, coords, ptInf))
-      cnt++;
-  }
-  return (cnt%2==1);
 }
 
 /**
@@ -204,107 +168,7 @@ bool Collision::isCoordInRectangle(VIPRA::f3d coords, Rect& rect) {
 bool Collision::checkIfCollide(VIPRA::idx index1, VIPRA::idx index2) {
   Rect& r1 = collisionRectangles.at(index1);
   Rect& r2 = collisionRectangles.at(index2);
-  return doRectanglesIntersect(r1, r2);
-}
-
-/// @brief Returns the maximum value between a and b
-/// @param a
-/// @param b
-/// @return a or b
-float Collision::max(float a, float b) {
-  if (a > b)
-    return a;
-  else
-    return b;
-}
-
-/// @brief Returns the minimum value between a and b
-/// @param a
-/// @param b
-/// @return a or b
-float Collision::min(float a, float b) {
-  if (a < b)
-    return a;
-  else
-    return b;
-}
-
-/// @brief Check whether two rectangles intersect
-/// @param r1
-/// @param r2
-/// @return true or false
-bool Collision::doRectanglesIntersect(Rect& r1, Rect& r2) {
-  std::vector<std::pair<VIPRA::f3d, VIPRA::f3d>> s1;
-  std::vector<std::pair<VIPRA::f3d, VIPRA::f3d>> s2;
-  s1.emplace_back(r1.p1, r1.p2);
-  s1.emplace_back(r1.p2, r1.p3);
-  s1.emplace_back(r1.p3, r1.p4);
-  s1.emplace_back(r1.p4, r1.p1);
-
-  s2.emplace_back(r2.p1, r2.p2);
-  s2.emplace_back(r2.p2, r2.p3);
-  s2.emplace_back(r2.p3, r2.p4);
-  s2.emplace_back(r2.p4, r2.p1);
-
-  for (size_t i = 0; i < 4; i++) {
-    for (size_t j = 0; j < 4; j++) {
-      bool check = checkIfLineSegmentsIntersect(s1[i].first, s1[i].second, s2[j].first,
-                                                s2[j].second);
-      if (check) return true;
-    }
-  }
-
-  return false;
-}
-
-/// @brief If p, q and pt are collinear, check if pt lies on segment pq
-/// @param p
-/// @param q
-/// @param pt
-/// @return true or false
-bool Collision::checkIfOnLineSegment(VIPRA::f3d p, VIPRA::f3d q, VIPRA::f3d pt) {
-  return pt.x <= max(p.x, q.x) && pt.y <= max(p.y, q.y) && pt.x >= min(p.x, q.x) &&
-         pt.y >= min(p.y, q.y);
-}
-
-/// @brief
-/// To find orientation of ordered triplet (p, q, r).
-/// @param p
-/// @param q
-/// @param r
-/// @return The function returns following values: 0 --> p, q and r are collinear; 1 --> Clockwise; 2 --> Counterclockwise
-int Collision::orientation(VIPRA::f3d p, VIPRA::f3d q, VIPRA::f3d r) {
-  float val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-
-  if (val == 0)  // collinear
-    return 0;
-
-  return (val > 0) ? 1 : 2;  // clockwise or counterclock wise
-}
-
-/// @brief Check if 2 line segments intersect, where p1 and q1 are endpoints of the first line segment, and p2 and q2 are endpoints of the second line segment
-/// @param p1
-/// @param q1
-/// @param p2
-/// @param q2
-/// @return true or false
-bool Collision::checkIfLineSegmentsIntersect(VIPRA::f3d p1, VIPRA::f3d q1, VIPRA::f3d p2,
-                                             VIPRA::f3d q2) {
-  if (p1 == p2 || p1 == q2 || q1 == p2 || q1 == q2) return true;
-
-  int o1 = orientation(p1, q1, p2);
-  int o2 = orientation(p1, q1, q2);
-  int o3 = orientation(p2, q2, p1);
-  int o4 = orientation(p2, q2, q1);
-
-  if (o1 != o2 && o3 != o4) return true;
-
-  if (o1 == 0 && checkIfOnLineSegment(p1, q1, p2)) return true;
-  if (o2 == 0 && checkIfOnLineSegment(p1, q1, q2)) return true;
-  if (o3 == 0 && checkIfOnLineSegment(p2, q2, p1)) return true;
-  if (o4 == 0 && checkIfOnLineSegment(p2, q2, q1)) return true;
-
-  return false;
+  return Rect::doRectanglesIntersect(r1, r2);
 }
 
 /**
@@ -396,10 +260,6 @@ void Collision::initializeRectangles(const PedestrianSet& pedestrianSet,
 
 void Collision::initialize(const PedestrianSet& pedestrianSet, const Goals& goals, const ModelData& data) {
   raceStatuses = std::vector<RaceStatus>(pedestrianSet.getNumPedestrians(), NO_RACE);
-  raceOpponents = std::vector<std::set<VIPRA::idx>>(pedestrianSet.getNumPedestrians());
-  raceCounter = std::vector<std::vector<VIPRA::cnt>>(
-      pedestrianSet.getNumPedestrians(),
-      std::vector<VIPRA::cnt>(pedestrianSet.getNumPedestrians(), 0));
   inRace = std::vector<std::vector<bool>>(
       pedestrianSet.getNumPedestrians(),
       std::vector<bool>(pedestrianSet.getNumPedestrians(), false));
