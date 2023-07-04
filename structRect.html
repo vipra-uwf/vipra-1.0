@@ -71,6 +71,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structRect-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Rect Struct Reference</div></div>
@@ -101,9 +102,15 @@ constexpr float&#160;</td><td class="memItemRight" valign="bottom"><b>area</b> (
 <tr class="memitem:aec29d3597699bc1ced9b5ca6563bc843"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRect.html#aec29d3597699bc1ced9b5ca6563bc843">isPointInRect</a> (<a class="el" href="structVIPRA_1_1f3d.html">VIPRA::f3d</a> point) const noexcept</td></tr>
 <tr class="memdesc:aec29d3597699bc1ced9b5ca6563bc843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the point is inside the rectangle.  <br /></td></tr>
 <tr class="separator:aec29d3597699bc1ced9b5ca6563bc843"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5d052ea1ea6f0d15bf1a6d6ae72d373"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRect.html#ad5d052ea1ea6f0d15bf1a6d6ae72d373">doesIntersect</a> (const <a class="el" href="structRect.html">Rect</a> &amp;other) const</td></tr>
-<tr class="memdesc:ad5d052ea1ea6f0d15bf1a6d6ae72d373"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the rectangle intersects another.  <br /></td></tr>
-<tr class="separator:ad5d052ea1ea6f0d15bf1a6d6ae72d373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6634da722869b5fec4cc084143e7f319"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRect.html#a6634da722869b5fec4cc084143e7f319">doesIntersect</a> (<a class="el" href="structRect.html">Rect</a> &amp;other)</td></tr>
+<tr class="memdesc:a6634da722869b5fec4cc084143e7f319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the rectangle intersects another.  <br /></td></tr>
+<tr class="separator:a6634da722869b5fec4cc084143e7f319"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa138708861c873b305f011b34da072b7"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRect.html#aa138708861c873b305f011b34da072b7">doRectanglesIntersect</a> (<a class="el" href="structRect.html">Rect</a> &amp;r1, <a class="el" href="structRect.html">Rect</a> &amp;r2)</td></tr>
+<tr class="memdesc:aa138708861c873b305f011b34da072b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the rectangles intersect one another.  <br /></td></tr>
+<tr class="separator:aa138708861c873b305f011b34da072b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -121,8 +128,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a7fedb8f81f80b9a1f865de5c2d92768b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad5d052ea1ea6f0d15bf1a6d6ae72d373" name="ad5d052ea1ea6f0d15bf1a6d6ae72d373"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5d052ea1ea6f0d15bf1a6d6ae72d373">&#9670;&#160;</a></span>doesIntersect()</h2>
+<a id="a6634da722869b5fec4cc084143e7f319" name="a6634da722869b5fec4cc084143e7f319"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6634da722869b5fec4cc084143e7f319">&#9670;&#160;</a></span>doesIntersect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,16 +138,16 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool Rect::doesIntersect </td>
+          <td class="memname">bool Rect::doesIntersect </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structRect.html">Rect</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structRect.html">Rect</a> &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -149,6 +156,53 @@ Public Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">other</td><td>: </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+
+</div>
+</div>
+<a id="aa138708861c873b305f011b34da072b7" name="aa138708861c873b305f011b34da072b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa138708861c873b305f011b34da072b7">&#9670;&#160;</a></span>doRectanglesIntersect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Rect::doRectanglesIntersect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structRect.html">Rect</a> &amp;&#160;</td>
+          <td class="paramname"><em>r1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structRect.html">Rect</a> &amp;&#160;</td>
+          <td class="paramname"><em>r2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns if the rectangles intersect one another. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r1,r2</td><td>: </td></tr>
   </table>
   </dd>
 </dl>
