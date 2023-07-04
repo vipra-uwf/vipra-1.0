@@ -40,5 +40,7 @@
 9. `-pedClr` : sets each pedestrian a different color *(default OFF)*
 10. `-obsClr *color*` : sets the color of obstacles *(default k)*
 11. `-bckClr *color*` : sets the color of the background *(default w)*
+12. `-dif` *sim output filepath* : shows differences between sim runs
+13. `-difalpha *0.0 - 1.0* : sets the alpha for dif *(default 0.1)*
 
 **color options: https://matplotlib.org/stable/tutorials/colors/colors.html**

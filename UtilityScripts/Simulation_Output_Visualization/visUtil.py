@@ -19,6 +19,8 @@ def getArgs():
   pedColor = False
   obsColor = 'k'
   bckColor = 'w'
+  dif = None
+  difalpha = 0.1
 
   for arg in sys.argv[1::]:
     if arg == '-idx':
@@ -28,7 +30,7 @@ def getArgs():
       shldrLen = float(sys.argv[flagCnt + 1])
       shoulders = True
       flagCnt += 2
-    elif arg == '-out':
+    elif arg == '-outpath':
       outpath = sys.argv[flagCnt + 1]
       flagCnt += 2
     elif arg == '-peds':
@@ -62,6 +64,12 @@ def getArgs():
     elif arg == '-bckClr':
       bckColor = sys.argv[flagCnt + 1]
       flagCnt += 2
+    elif arg == '-dif':
+      dif = sys.argv[flagCnt + 1]
+      flagCnt += 2
+    elif arg == '-difalpha':
+      difalpha = float(sys.argv[flagCnt + 1])
+      flagCnt += 2
     else:
       if (arg[0] == '-'):
         print(f'Unknown Flag: {arg}')
@@ -86,6 +94,8 @@ def getArgs():
     pedColor = pedColor,
     obsColor = obsColor,
     bckColor = bckColor,
+    dif = dif,
+    difalpha = difalpha,
   )
 
 
@@ -118,18 +128,18 @@ def makeColors(pedCoords, pedColor):
   else:
     return [1,0.5,0]
 
-def plotShoulders(plot, pointsX, pointsY, shldrLen, colors, ax):
+def plotShoulders(plot, pointsX, pointsY, shldrLen, colors, ax, dif, difalpha):
   if plot:
     for index in range(0, len(pointsX)):
       x = pointsX[index]
       y = pointsY[index]
-      ax.plot([x-shldrLen, x+shldrLen], [y, y], color=colors[index], linestyle='-', linewidth=0.5)
-      ax.plot([x, x], [y-shldrLen, y+shldrLen], color=colors[index], linestyle='-', linewidth=0.5)
+      ax.plot([x-shldrLen, x+shldrLen], [y, y], color=colors[index], linestyle='-', linewidth=0.5, alpha=difalpha if dif else 1)
+      ax.plot([x, x], [y-shldrLen, y+shldrLen], color=colors[index], linestyle='-', linewidth=0.5, alpha=difalpha if dif else 1)
 
-def plotIndexes(plot, pointsX, pointsY, idxColor, pedColors, ax):
+def plotIndexes(plot, pointsX, pointsY, idxColor, pedColors, ax, dif, difalpha):
   if plot:
     for index in range(0, len(pointsX)):
-      ax.text(pointsX[index], pointsY[index], index, fontsize=5, c=pedColors[index] if idxColor else 'k')
+      ax.text(pointsX[index], pointsY[index], index, fontsize=5, c=pedColors[index] if idxColor else 'k', alpha=difalpha if dif else 1)
 
 def plotPeds(pedsX, pedsY, pedColors, ax):
   return ax.scatter(pedsX, pedsY, 2, color=pedColors)
@@ -154,3 +164,18 @@ def printProgressBar (iteration, total, prefix="Saving", animating=False):
     print(f'\r{prefix.ljust(9, " ")} :  |{bar}| {percent}%', end = "\r")
     if iteration == total:
         print()
+
+def plotDif(pointsX, pointsY, compX, compY, pedColors, ax, difalpha):
+  difXidx = np.where(~np.equal(pointsX, compX))
+  difYidx = np.where(~np.equal(pointsY, compY))
+
+  difX = np.array(pointsX)[difXidx]
+  difY = np.array(pointsY)[difXidx]
+  colors = np.array(pedColors)[difXidx]
+
+  np.append(difX, np.array(pointsX)[difYidx])
+  np.append(difY, np.array(pointsY)[difYidx])
+  np.append(colors, np.array(pedColors)[difYidx])
+
+  ax.scatter(compX, compY, 2, color=pedColors, alpha=difalpha)
+  return ax.scatter(difX, difY, 2, color=colors)
