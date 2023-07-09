@@ -17,7 +17,7 @@ fig,ax = plt.subplots()
 def animate(i):
   printProgressBar(int(i), timestepCnt, 'Animating')
   [pointsX, pointsY] = getPoints(pedCoords[i])
-  [compX, compY] = getPoints(difCoords[i]) if args['dif'] else None
+  [compX, compY] = getPoints(difCoords[i]) if args['dif'] else [[], []]
 
   prepPlot(ax, args)
   obstacles = plotObs(obsX, obsY, ax, args)

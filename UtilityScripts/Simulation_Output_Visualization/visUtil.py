@@ -121,7 +121,10 @@ def getObs(obs):
   return (obsX, obsY)
 
 def getPeds(peds):
-  return json.load(open(peds))["timesteps"]
+  if peds:
+    return json.load(open(peds))["timesteps"]
+  else:
+    return {}
 
 
 def getPoints(timestep):
@@ -153,7 +156,7 @@ def plotIndexes(pointsX, pointsY, pedColors, ax, args):
     for index in range(0, len(pointsX)):
       ax.text(pointsX[index], pointsY[index], index, fontsize=5, c=pedColors[index] if args['idxColor'] else 'k', alpha=args['difalpha'] if args['dif'] else 1)
 
-def plotPeds(pedsX, pedsY, pedColors, ax):
+def plotPeds(pedsX, pedsY, pedColors, ax, args):
   return ax.scatter(pedsX, pedsY, 2, color=pedColors)
 
 def plotObs(obsX, obsY, ax, args):
