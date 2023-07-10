@@ -2,11 +2,11 @@
 
 namespace BHVR {
 
-  const VIPRA::f3d Circle::getCenterPoint() const {
+   const VIPRA::f3d Circle::getCenterPoint() const {
       return centerPoint;
   }
 
-  const float Circle::getRadius(){
+  float Circle::getRadius(){
       return radius;
   }
 

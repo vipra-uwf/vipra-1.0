@@ -6,11 +6,11 @@ namespace BHVR {
       return centerPoint;
   }
 
-  const float Rectangle::getLength(){
+  float Rectangle::getLength(){
       return length;
   }
 
-  const float Rectangle::getWidth(){
+  float Rectangle::getWidth(){
       return width;
   }
 

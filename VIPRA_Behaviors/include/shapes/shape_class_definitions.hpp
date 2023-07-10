@@ -46,8 +46,8 @@ class Rectangle : public Shape {
   explicit Rectangle(VIPRA::f3d, float, float);
 
   const VIPRA::f3d getCenterPoint() const override;
-  const float getLength();
-  const float getWidth();
+  float getLength();
+  float getWidth();
 
  private:
   VIPRA::f3d centerPoint;
@@ -69,7 +69,7 @@ class Circle : public Shape {
   explicit Circle(VIPRA::f3d, float);
 
   const VIPRA::f3d getCenterPoint() const override;
-  const float getRadius();
+  float getRadius();
 
  private:
   VIPRA::f3d centerPoint;

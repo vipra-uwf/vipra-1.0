@@ -6,7 +6,7 @@ const std::string& Location::getName() const {
    return name;
 }
 
-const BHVR::ShapeType Location::getType() const {
+BHVR::ShapeType Location::getType() const {
    return type;
 }
 

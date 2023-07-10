@@ -20,13 +20,13 @@ class Location {
   Location(Location&&) noexcept = default;
   Location& operator=(Location&&) noexcept = default;
   Location() = default;
-  Location(const Location&) = delete;
-  Location& operator=(const Location&) = delete;
+  Location(const Location&) = default;
+  Location& operator=(const Location&) noexcept = default;
 
   explicit Location(std::string, BHVR::ShapeType, std::shared_ptr<BHVR::Shape>);
 
   const std::string& getName() const;
-  const BHVR::ShapeType getType() const;
+  BHVR::ShapeType getType() const;
   std::shared_ptr<BHVR::Shape> getShape();
 
  private:
