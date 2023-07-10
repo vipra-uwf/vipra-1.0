@@ -1,22 +1,10 @@
 #include "calm_pedestrian_set.hpp"
+#include "definitions/type_definitions.hpp"
 
-void CalmPedestrianSet::configure(const VIPRA::CONFIG::Map&) {}
-
-void CalmPedestrianSet::initialize(std::unique_ptr<VIPRA::PedData> pedData) {
-  const auto* peds = dynamic_cast<CalmPedData*>(pedData.get());
-  numPedestrians = peds->positions.size();
-
-  pedestrianCoordinates = peds->positions;
-  masses = peds->masses;
-  reactionTimes = peds->reactionTimes;
-  desiredSpeeds = peds->desiredSpeeds;
-  shoulderLengths = peds->shoulderLengths;
-
-  velocities = VIPRA::f3dVec{numPedestrians, VIPRA::f3d{0, 0, 0}};
-}
+const VIPRA::f3dVec& CalmPedestrianSet::getCoordinates() const noexcept { return coords; }
 
 VIPRA::f3d CalmPedestrianSet::getPedCoords(VIPRA::idx index) const {
-  return pedestrianCoordinates.at(index);
+  return coords.at(index);
 }
 
 VIPRA::f3d CalmPedestrianSet::getPedVelocity(VIPRA::idx index) const {
@@ -24,36 +12,23 @@ VIPRA::f3d CalmPedestrianSet::getPedVelocity(VIPRA::idx index) const {
 }
 
 VIPRA::size CalmPedestrianSet::getNumPedestrians() const noexcept {
-  return pedestrianCoordinates.size();
-}
-
-const VIPRA::f3dVec& CalmPedestrianSet::getPedestrianCoordinates() const noexcept {
-  return pedestrianCoordinates;
+  return coords.size();
 }
 
 const VIPRA::f3dVec& CalmPedestrianSet::getVelocities() const noexcept {
   return velocities;
 }
 
-const std::vector<float>& CalmPedestrianSet::getMasses() const noexcept {
-  return masses;
+void CalmPedestrianSet::updateState(VIPRA::State& state) {
+  std::copy(state.velocities.begin(), state.velocities.end(), velocities.begin());
+  std::copy(state.coords.begin(), state.coords.end(), coords.begin());
 }
 
-const std::vector<float>& CalmPedestrianSet::getReactionTimes() const noexcept {
-  return reactionTimes;
-}
+// ----------------------------- INITIALIZATION -----------------------------------------------
 
-const std::vector<float>& CalmPedestrianSet::getDesiredSpeeds() const noexcept {
-  return desiredSpeeds;
-}
+void CalmPedestrianSet::configure(const VIPRA::CONFIG::Map&) {}
 
-const std::vector<float>& CalmPedestrianSet::getShoulderLengths() const noexcept {
-  return shoulderLengths;
-}
-
-void CalmPedestrianSet::updateState(std::shared_ptr<VIPRA::State> state) {
-  for (VIPRA::idx i = 0; i < numPedestrians; ++i) {
-    velocities[i] = state->velocities[i];
-    pedestrianCoordinates[i] = state->pedestrianCoordinates[i];
-  }
+void CalmPedestrianSet::initialize(const std::vector<VIPRA::pcoord>& pedCoords) {
+  coords = pedCoords;
+  velocities = VIPRA::f3dVec{coords.size(), VIPRA::f3d{}};
 }

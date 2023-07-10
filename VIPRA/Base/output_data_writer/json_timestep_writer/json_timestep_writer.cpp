@@ -1,18 +1,14 @@
 
 #include "json_timestep_writer.hpp"
 
-JSONTimestepWriter::JSONTimestepWriter() {
-  document["timesteps"] = Json::Value();
-}
+JSONTimestepWriter::JSONTimestepWriter() { document["timesteps"] = Json::Value(); }
 
 /**
  * @brief Returns the Json::Value that holds the timestep values
  * 
  * @return const Json::Value&
  */
-const Json::Value& JSONTimestepWriter::getDocument() const {
-  return document;
-}
+const Json::Value& JSONTimestepWriter::getDocument() const { return document; }
 
 void JSONTimestepWriter::configure(const VIPRA::CONFIG::Map&) {}
 
@@ -63,7 +59,8 @@ void JSONTimestepWriter::addFloatValue(const std::string& key, float value) {
  * @param key - key to set value of
  * @param value - value to set key
  */
-void JSONTimestepWriter::addStringValue(const std::string& key, const std::string& value) {
+void JSONTimestepWriter::addStringValue(const std::string& key,
+                                        const std::string& value) {
   if (key == "NEW_TIMESTEP") {
     timestep = std::to_string(currTimestep);
     ++currTimestep;

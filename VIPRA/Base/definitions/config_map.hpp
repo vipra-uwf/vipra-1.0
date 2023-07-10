@@ -14,7 +14,8 @@ namespace VIPRA::CONFIG {
 
 class ConfigurationException : public std::runtime_error {
  public:
-  explicit ConfigurationException(const std::string& message) : std::runtime_error{message} {}
+  explicit ConfigurationException(const std::string& message)
+      : std::runtime_error{message} {}
   static void error(const std::string& message) { throw ConfigurationException(message); }
 };
 
@@ -37,9 +38,12 @@ class Map {
     std::vector<std::string> ret(valCnt);
 
     for (VIPRA::idx i = 0; i < valCnt; ++i) {
-      if (document[key][static_cast<Json::ArrayIndex>(i)].type() != Json::ValueType::stringValue) {
-        ConfigurationException::error("Attempt To Get String Vector From Config Value That Doesn't Match That Type, Key: " +
-                                      key);
+      if (document[key][static_cast<Json::ArrayIndex>(i)].type() !=
+          Json::ValueType::stringValue) {
+        ConfigurationException::error(
+            "Attempt To Get String Vector From Config Value That Doesn't Match That "
+            "Type, Key: " +
+            key);
       }
       ret[i] = document[key][static_cast<Json::ArrayIndex>(i)].asString();
     }

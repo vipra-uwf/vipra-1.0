@@ -13,12 +13,13 @@ namespace BHVR {
  * @param dT : simulation time step size
  * @param state : state object to put result into
  */
-void AtomChangeSpeed::operator()(PedestrianSet& pedestrianSet, ObstacleSet& /*obsset*/, Goals& /*goals*/,
-                                 BehaviorContext& /*context*/, VIPRA::idx pedIndex, VIPRA::delta_t dT,
+void AtomChangeSpeed::operator()(PedestrianSet& pedestrianSet, ObstacleSet& /*obsset*/,
+                                 Goals& /*goals*/, BehaviorContext& /*context*/,
+                                 VIPRA::idx pedIndex, VIPRA::delta_t dT,
                                  VIPRA::State& state) const {
   VIPRA::f3d originalPos = pedestrianSet.getPedCoords(pedIndex);
-  VIPRA::f3d tempVel = state.velocities[pedIndex] * change;
+  VIPRA::f3d tempVel = state.velocities[pedIndex] * change.value(pedIndex);
 
-  state.pedestrianCoordinates[pedIndex] = originalPos + (tempVel * dT);
+  state.coords[pedIndex] = originalPos + (tempVel * dT);
 }
 }  // namespace BHVR

@@ -15,8 +15,6 @@ set(HEADERS
   ${INCLUDE_DIR}/behavior/behavior_builder.hpp
 )
 
-message(STATUS ${SRCS})
-
 add_library(
   ${LIB_NAME}
   STATIC

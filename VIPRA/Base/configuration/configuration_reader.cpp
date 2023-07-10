@@ -18,12 +18,14 @@ VIPRA::CONFIG::Map ConfigurationReader::getConfiguration(const std::string& file
 
   fileStream.open(filePath);
   if (!fileStream.is_open()) {
-    VIPRA::CONFIG::ConfigurationException::error("Unable to Open Configuration File: " + filePath);
+    VIPRA::CONFIG::ConfigurationException::error("Unable to Open Configuration File: " +
+                                                 filePath);
   }
 
   if (!Json::parseFromStream(jsonReader, fileStream, &jsonDocument, &errors)) {
     fileStream.close();
-    VIPRA::CONFIG::ConfigurationException::error("Unable To Parse Configuration File: " + filePath);
+    VIPRA::CONFIG::ConfigurationException::error("Unable To Parse Configuration File: " +
+                                                 filePath);
   }
   fileStream.close();
 

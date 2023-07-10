@@ -2,21 +2,43 @@ grammar values;
 
 import lexer_rules;
 
+value_numeric:
+  value_number |
+  value_float |
+  value_range |
+  value_random
+  ;
+
 value_number:
-  number_random |
-  NUMBER |
+  NUMBER
+  ;
+
+value_float:
   FLOAT
   ;
 
-number_random:
+value_range:
+  float_range |
+  number_range
+  ;
+
+value_random:
   random_float |
   random_number
   ;
 
 random_number:
-  AN RANDOM NUMBER (TO | '-') NUMBER
+  AN RANDOM number_range
   ;
 
 random_float:
-  AN RANDOM FLOAT (TO | '-') FLOAT
+  AN RANDOM float_range
+  ;
+
+float_range:
+  FLOAT (TO | '-') FLOAT
+  ;
+
+number_range:
+  NUMBER (TO | '-') NUMBER
   ;

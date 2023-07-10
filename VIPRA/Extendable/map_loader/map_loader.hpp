@@ -28,9 +28,10 @@ class MapLoaderException : public std::runtime_error {
 
 class MapLoader {
  public:
-  virtual void                                          configure(const VIPRA::CONFIG::Map& configMap) = 0;
-  virtual void                                          initialize() = 0;
-  [[nodiscard]] virtual std::unique_ptr<VIPRA::MapData> loadMap(const std::string& filePath) const = 0;
+  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
+  virtual void initialize() = 0;
+  [[nodiscard]] virtual std::unique_ptr<VIPRA::MapData> loadMap(
+      const std::string& filePath) const = 0;
 
   MapLoader(const MapLoader&) = default;
   MapLoader(MapLoader&&) = delete;

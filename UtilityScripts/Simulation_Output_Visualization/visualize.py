@@ -2,36 +2,32 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
 import numpy as np
 
-import visUtil as util
+from visUtil import getArgs, plotDif, getPeds, getObs, makeColors, printProgressBar, getPoints, prepPlot, plotObs, plotShoulders, plotPeds, plotIndexes, printProgressBar, printProgressBar
 
-args = util.getArgs()
+args = getArgs()
 
-pedCoords = util.getPeds(args["peds"]) 
-[obsX, obsY] = util.getObs(args["obs"]);
-pedColors = util.makeColors(pedCoords)
+pedCoords = getPeds(args['peds'])
+difCoords = getPeds(args['dif'])
+[obsX, obsY] = getObs(args['obs']);
+pedColors = makeColors(pedCoords, args)
 timestepCnt = len(pedCoords)
 
 fig,ax = plt.subplots()
 
 def animate(i):
-    util.printProgressBar(int(i), timestepCnt, "Animating")
-    ax.clear()
-    ax.set_xlim(args["xMin"], args["xMax"])
-    ax.set_ylim(args["yMin"], args["yMax"])
-    ax.autoscale(False)
-    
-    [pointsX, pointsY] = util.getPoints(pedCoords[i])
-    obstacles = ax.scatter(obsX, obsY, 1)
-    points = ax.scatter(pointsX, pointsY, 2, pedColors)
+  printProgressBar(int(i), timestepCnt, 'Animating')
+  [pointsX, pointsY] = getPoints(pedCoords[i])
+  [compX, compY] = getPoints(difCoords[i]) if args['dif'] else [[], []]
 
-    if args["shoulders"]:
-      util.plotShoulders(pointsX, pointsY, args["shldrLen"], pedColors, ax)
-    if args["indexes"]:
-      util.plotIndexes(pointsX, pointsY, pedColors, ax)
-
-    return points, obstacles
+  prepPlot(ax, args)
+  obstacles = plotObs(obsX, obsY, ax, args)
+  plotShoulders(pointsX, pointsY, pedColors, ax, args)
+  points = plotPeds(pointsX, pointsY, pedColors, ax, args) if not args['dif'] else plotDif(pointsX, pointsY, compX, compY, pedColors, ax, args)
+  plotIndexes(pointsX, pointsY, pedColors, ax, args)
+  
+  return points, obstacles
 
 
 ani = FuncAnimation(fig, animate, frames=pedCoords, blit=True)
-ani.save(args["outpath"], dpi=300, writer=PillowWriter(fps=12), progress_callback=util.printProgressBar)
-util.printProgressBar(timestepCnt, timestepCnt, "Done")
+ani.save(args['outpath'], dpi=300, writer=PillowWriter(fps=args['fps']), progress_callback=printProgressBar)
+printProgressBar(timestepCnt, timestepCnt, 'Done')

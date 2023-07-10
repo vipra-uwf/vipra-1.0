@@ -29,8 +29,6 @@ public:
 
     virtual std::any visitEvent_Lasting(BehaviorParser::Event_LastingContext *context) = 0;
 
-    virtual std::any visitEvent_Individual(BehaviorParser::Event_IndividualContext *context) = 0;
-
     virtual std::any visitCondition(BehaviorParser::ConditionContext *context) = 0;
 
     virtual std::any visitConnector(BehaviorParser::ConnectorContext *context) = 0;
@@ -47,13 +45,25 @@ public:
 
     virtual std::any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext *context) = 0;
 
+    virtual std::any visitCondition_ped_state(BehaviorParser::Condition_ped_stateContext *context) = 0;
+
+    virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *context) = 0;
+
     virtual std::any visitValue_number(BehaviorParser::Value_numberContext *context) = 0;
 
-    virtual std::any visitNumber_random(BehaviorParser::Number_randomContext *context) = 0;
+    virtual std::any visitValue_float(BehaviorParser::Value_floatContext *context) = 0;
+
+    virtual std::any visitValue_range(BehaviorParser::Value_rangeContext *context) = 0;
+
+    virtual std::any visitValue_random(BehaviorParser::Value_randomContext *context) = 0;
 
     virtual std::any visitRandom_number(BehaviorParser::Random_numberContext *context) = 0;
 
     virtual std::any visitRandom_float(BehaviorParser::Random_floatContext *context) = 0;
+
+    virtual std::any visitFloat_range(BehaviorParser::Float_rangeContext *context) = 0;
+
+    virtual std::any visitNumber_range(BehaviorParser::Number_rangeContext *context) = 0;
 
     virtual std::any visitDirection(BehaviorParser::DirectionContext *context) = 0;
 

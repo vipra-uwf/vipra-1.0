@@ -341,7 +341,7 @@ using f2dVec = std::vector<f2d>;
 using f3dVec = std::vector<f3d>;
 
 struct F3dHash {
-  std::size_t operator() (const f3d& object) const {
+  std::size_t operator()(const f3d& object) const {
     std::size_t seed = 0;
 
     seed += std::hash<float>{}(object.x);

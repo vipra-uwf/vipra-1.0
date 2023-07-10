@@ -8,7 +8,6 @@
 #include <definitions/shape_type.hpp>
 #include <shapes/shape_class_definitions.hpp>
 
-
 namespace BHVR {
 /**
    * @brief A Location is an area in the map that is either predefined, such as the bathroom, or defined by a behavior created by the user.
@@ -25,9 +24,9 @@ class Location {
 
   explicit Location(std::string, BHVR::ShapeType, std::shared_ptr<BHVR::Shape>);
 
-  const std::string& getName() const;
-  BHVR::ShapeType getType() const;
-  std::shared_ptr<BHVR::Shape> getShape();
+  [[nodiscard]] const std::string& getName() const;
+  [[nodiscard]] BHVR::ShapeType getType() const;
+  [[nodiscard]] std::shared_ptr<BHVR::Shape> getShape();
 
  private:
   std::string name;
@@ -35,5 +34,5 @@ class Location {
   std::shared_ptr<BHVR::Shape> shape;
 
 };
-} //namespace BHVR
+}  //namespace BHVR
 #endif

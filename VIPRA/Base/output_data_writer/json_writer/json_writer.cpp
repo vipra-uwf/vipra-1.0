@@ -1,9 +1,7 @@
 
 #include "json_writer.hpp"
 
-JSONWriter::JSONWriter() {
-  document["values"] = Json::arrayValue;
-}
+JSONWriter::JSONWriter() { document["values"] = Json::arrayValue; }
 
 void JSONWriter::configure(const VIPRA::CONFIG::Map&) {}
 

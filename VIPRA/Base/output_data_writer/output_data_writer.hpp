@@ -10,8 +10,11 @@
 
 class OutputDataWriterException : public std::runtime_error {
  public:
-  explicit OutputDataWriterException(const std::string& message) : std::runtime_error(message) {}
-  static void error(const std::string& message) { throw OutputDataWriterException(message); }
+  explicit OutputDataWriterException(const std::string& message)
+      : std::runtime_error(message) {}
+  static void error(const std::string& message) {
+    throw OutputDataWriterException(message);
+  }
 };
 
 class OutputDataWriter {
@@ -21,7 +24,6 @@ class OutputDataWriter {
   virtual void addFloatValue(const std::string&, float) = 0;
   virtual void addStringValue(const std::string&, const std::string&) = 0;
   virtual void writeToDocument() = 0;
-
 
   OutputDataWriter(const OutputDataWriter&) = default;
   OutputDataWriter(OutputDataWriter&&) = delete;

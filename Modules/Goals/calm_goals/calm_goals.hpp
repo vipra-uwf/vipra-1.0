@@ -10,14 +10,13 @@
 #include "goals/goals.hpp"
 #include "pathfinding/pathfinding.hpp"
 
-
 class CalmGoals : public Goals {
-
  public:
   void configure(const VIPRA::CONFIG::Map& configMap) override;
   void initialize(const ObstacleSet&, const PedestrianSet&) override;
 
-  void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&, VIPRA::delta_t) override;
+  void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&,
+                             VIPRA::delta_t) override;
 
   [[nodiscard]] VIPRA::f3d getCurrentGoal(VIPRA::idx) const override;
   [[nodiscard]] VIPRA::f3d getEndGoal(VIPRA::idx) const override;
@@ -46,10 +45,13 @@ class CalmGoals : public Goals {
   CalmPath::PathingGraph              graph;
   std::vector<std::queue<VIPRA::f3d>> paths;
 
-  void                                        initializePaths(const PedestrianSet&, const ObstacleSet&);
-  void                                        findNearestEndGoal(const ObstacleSet&, const PedestrianSet&);
-  [[nodiscard]] static std::queue<VIPRA::f3d> disembarkPath(const VIPRA::f3d&, const ObstacleSet&);
-  [[nodiscard]] static const VIPRA::f3d&      nearestObjective(const std::string&, const VIPRA::f3d&, const ObstacleSet&);
+  void initializePaths(const PedestrianSet&, const ObstacleSet&);
+  void findNearestEndGoal(const ObstacleSet&, const PedestrianSet&);
+  [[nodiscard]] static std::queue<VIPRA::f3d> disembarkPath(const VIPRA::f3d&,
+                                                            const ObstacleSet&);
+  [[nodiscard]] static const VIPRA::f3d&      nearestObjective(const std::string&,
+                                                               const VIPRA::f3d&,
+                                                               const ObstacleSet&);
 };
 
 #endif

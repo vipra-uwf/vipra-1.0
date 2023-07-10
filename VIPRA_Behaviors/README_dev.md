@@ -17,7 +17,7 @@
 A `Behavior` describes `Actions` that pedestrians take given certain `Conditions`
 
 A `Behavior` is comprised of:
-- a `Selector`
+- `Selectors`
 - `Events`
 - `Actions`
 - `Behavior Context`
@@ -659,29 +659,6 @@ a !fire will occur after 5 seconds from !start.
 a pedestrian will @head towards the +exit nearest to them.
 ```
 
-## N.5 Personal Events
-We need a way for events to happen to individuals, as opposed to the overall environment.
-
-for example: a pedestrian hurts themselves and now walks slower
-
-## N.6 Exclusive Selectors
-
-Currently there is no way to make selectors exclusive.
-
-example
-```
-exactly one pedestrian is an example.
-exactly one pedestrian is another_example.
-
-// It is possible these choose the same pedestrian
-// There needs to be a way to choose if a selector is exclusive
-```
-
-## N.7. Behavior Priorities
-We need a way to say which behaviors take precedence over others.
-
-todo
-
 ## N.8. Conditional Selectors
 We need a way to select pedestrians based on conditions.
 
@@ -725,3 +702,117 @@ Currently behaviors can only change the state of the environment
 # I. Issues
 
 ---
+
+
+# Uc. Use Cases
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Most Important:
+  Multiple Selectors - Finished
+  Interaction Between Pedestrians
+  Update Goals
+  Individual events
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Multiple Selectors:
+
+    Medical emergency (everyone waits for passenger to leave before moving)
+      - multiple selectors (injured v normal)
+
+    Injured people may have to wait to disembark
+      - multiple selectors
+
+    Disabled person - might need support
+      - multiple selectors
+      - interaction between pedestrians
+      - changing goals?
+
+    A group of stationary folks with people moving around them (can make stationary people, but not move around)
+      - multiple selectors
+      - updating goals? (path around peds)
+      - updating obstacle map? (add pedestrians as obstacle)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Update Goals:
+
+    A group of stationary folks with people moving around them (can make stationary people, but not move around)
+      - multiple selectors
+      - updating goals? (path around peds)
+      - updating obstacle map? (add pedestrians as obstacle)
+
+    Travel in a group
+      - group selector
+      - update goals?
+
+    Forget something (have to go back to get it)
+      - updating goals
+
+    Disabled person - might need support
+      - multiple selectors
+      - interaction between pedestrians
+      - changing goals?
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Change Propulsive Forces:
+
+    General fear of getting infection
+      - change the propulsive forces?
+
+    Racial differences
+      - change the propulsive forces? (allow to get closer)
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Interaction Between Pedestrians:
+
+    Emergencies (Fire)
+      - interaction between pedestrians (pushing)
+      - allow climbing over obstacles?
+      - update obstacle map?
+
+    Pushing slow/stopped walkers out of the way
+      - interaction between pedestrians
+
+    Disabled person - might need support
+      - multiple selectors
+      - interaction between pedestrians
+      - changing goals?
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Update Obstacle Set:
+
+    Emergencies (Fire)
+          - interaction between pedestrians (pushing)
+          - allow climbing over obstacles?
+          - update obstacle map?
+
+    A group of stationary folks with people moving around them (can make stationary people, but not move around)
+      - multiple selectors
+      - updating goals? (path around peds)
+      - updating obstacle map? (add pedestrians as obstacle)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Misc:
+
+    Letting passengers in rows in front go first
+      - condition for other passengers state
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Not Sure About:
+
+Responses influenced by religious or cultural beliefs and norms
+Unaccompanied minor
+Using precautionary or careful approach - self-protecting behavior 
+risk-averse versus risk-seeking tendencies
+Misuse of intervention such as mask
+Sleep behaviors during a flight
+Conflict resolution

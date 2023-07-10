@@ -19,31 +19,33 @@ public:
     BEHIND = 27, CONSIDER = 28, DECIMAL = 29, DIRECTION = 30, END = 31, 
     ENDS = 32, ENVIRONMENT = 33, EVENT = 34, EXACTLY = 35, EVERY = 36, EVERYONE = 37, 
     FOR = 38, FROM = 39, FRONT = 40, FASTER = 41, GIVEN = 42, HAS = 43, 
-    IN = 44, INTEGER = 45, IS = 46, LENGTH = 47, LOCATION = 48, METERS = 49, 
-    NORMAL = 50, OBSTACLE = 51, OCCUR = 52, OCCURRED = 53, OCCURRING = 54, 
-    OF = 55, OR = 56, PEDESTRIAN = 57, PEDESTRIANS = 58, POSSIBLE = 59, 
-    RADIUS = 60, RANDOM = 61, REQUIRED = 62, SECOND = 63, SECONDS = 64, 
-    SLOWER = 65, STATES = 66, STARTS = 67, SPEED = 68, TO = 69, THE = 70, 
-    THAT = 71, THEN = 72, THEIR = 73, THERES = 74, TYPES = 75, VALUE = 76, 
-    WHEN = 77, WHILE = 78, WIDTH = 79, WILL = 80, WITH = 81, WITHIN = 82, 
-    ID = 83, NUMBER = 84, FLOAT = 85
+    IN = 44, INTEGER = 45, IS = 46, IF = 47, LENGTH = 48, LOCATION = 49, 
+    METERS = 50, NORMAL = 51, OBSTACLE = 52, OCCUR = 53, OCCURRED = 54, 
+    OCCURRING = 55, OF = 56, OR = 57, PEDESTRIAN = 58, PEDESTRIANS = 59, 
+    POSSIBLE = 60, RADIUS = 61, RANDOM = 62, REQUIRED = 63, SECOND = 64, 
+    SECONDS = 65, SLOWER = 66, STATES = 67, STARTS = 68, SPEED = 69, TO = 70, 
+    THE = 71, THAT = 72, THEN = 73, THEIR = 74, THERES = 75, TYPES = 76, 
+    VALUE = 77, WHEN = 78, WHILE = 79, WIDTH = 80, WILL = 81, WITH = 82, 
+    WITHIN = 83, ID = 84, NUMBER = 85, FLOAT = 86
   };
 
   enum {
     RuleProgram = 0, RuleStatement = 1, RuleEvent = 2, RuleEvent_Single = 3, 
-    RuleEvent_Lasting = 4, RuleEvent_Individual = 5, RuleCondition = 6, 
-    RuleConnector = 7, RuleOr_Connector = 8, RuleAnd_Connector = 9, RuleSub_condition = 10, 
-    RuleCondition_Time_Elapsed_From_Event = 11, RuleCondition_Event_Occurred = 12, 
-    RuleCondition_Event_Occurring = 13, RuleValue_number = 14, RuleNumber_random = 15, 
-    RuleRandom_number = 16, RuleRandom_float = 17, RuleDirection = 18, RuleDir = 19, 
-    RuleDirection_of = 20, RuleInfront = 21, RuleBehind = 22, RuleAround = 23, 
-    RuleObject = 24, RuleDuration = 25, RulePed_Selector = 26, RuleSelector = 27, 
-    RuleSelector_Percent = 28, RuleSelector_Exactly_N_Random = 29, RuleSelector_Everyone = 30, 
-    RuleId_list = 31, RuleAction = 32, RuleConditional_action = 33, RuleUn_conditional_action = 34, 
-    RuleSub_action = 35, RuleAction_atom = 36, RuleAction_Stop = 37, RuleAction_atom_Percent_Walk_Speed = 38, 
-    RuleAction_Be = 39, RuleDeclaration = 40, RuleDecl_Loc = 41, RuleDecl_Ped_State = 42, 
-    RuleDecl_Env_State = 43, RuleDecl_Loc_Area_Circle = 44, RuleDecl_Loc_Area_Rect = 45, 
-    RuleDecl_Loc_Point = 46, RuleDecl_Ped = 47, RulePoint = 48
+    RuleEvent_Lasting = 4, RuleCondition = 5, RuleConnector = 6, RuleOr_Connector = 7, 
+    RuleAnd_Connector = 8, RuleSub_condition = 9, RuleCondition_Time_Elapsed_From_Event = 10, 
+    RuleCondition_Event_Occurred = 11, RuleCondition_Event_Occurring = 12, 
+    RuleCondition_ped_state = 13, RuleValue_numeric = 14, RuleValue_number = 15, 
+    RuleValue_float = 16, RuleValue_range = 17, RuleValue_random = 18, RuleRandom_number = 19, 
+    RuleRandom_float = 20, RuleFloat_range = 21, RuleNumber_range = 22, 
+    RuleDirection = 23, RuleDir = 24, RuleDirection_of = 25, RuleInfront = 26, 
+    RuleBehind = 27, RuleAround = 28, RuleObject = 29, RuleDuration = 30, 
+    RulePed_Selector = 31, RuleSelector = 32, RuleSelector_Percent = 33, 
+    RuleSelector_Exactly_N_Random = 34, RuleSelector_Everyone = 35, RuleId_list = 36, 
+    RuleAction = 37, RuleConditional_action = 38, RuleUn_conditional_action = 39, 
+    RuleSub_action = 40, RuleAction_atom = 41, RuleAction_Stop = 42, RuleAction_atom_Percent_Walk_Speed = 43, 
+    RuleAction_Be = 44, RuleDeclaration = 45, RuleDecl_Loc = 46, RuleDecl_Ped_State = 47, 
+    RuleDecl_Env_State = 48, RuleDecl_Loc_Area_Circle = 49, RuleDecl_Loc_Area_Rect = 50, 
+    RuleDecl_Loc_Point = 51, RuleDecl_Ped = 52, RulePoint = 53
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -68,7 +70,6 @@ public:
   class EventContext;
   class Event_SingleContext;
   class Event_LastingContext;
-  class Event_IndividualContext;
   class ConditionContext;
   class ConnectorContext;
   class Or_ConnectorContext;
@@ -77,10 +78,16 @@ public:
   class Condition_Time_Elapsed_From_EventContext;
   class Condition_Event_OccurredContext;
   class Condition_Event_OccurringContext;
+  class Condition_ped_stateContext;
+  class Value_numericContext;
   class Value_numberContext;
-  class Number_randomContext;
+  class Value_floatContext;
+  class Value_rangeContext;
+  class Value_randomContext;
   class Random_numberContext;
   class Random_floatContext;
+  class Float_rangeContext;
+  class Number_rangeContext;
   class DirectionContext;
   class DirContext;
   class Direction_ofContext;
@@ -191,6 +198,7 @@ public:
     antlr4::tree::TerminalNode *AN();
     antlr4::tree::TerminalNode *THE();
     antlr4::tree::TerminalNode *EVENT();
+    antlr4::tree::TerminalNode *COMMA();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -198,23 +206,6 @@ public:
   };
 
   Event_LastingContext* event_Lasting();
-
-  class  Event_IndividualContext : public antlr4::ParserRuleContext {
-  public:
-    Event_IndividualContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *AN();
-    antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *WILL();
-    antlr4::tree::TerminalNode *EVNT();
-    ConditionContext *condition();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Event_IndividualContext* event_Individual();
 
   class  ConditionContext : public antlr4::ParserRuleContext {
   public:
@@ -280,6 +271,7 @@ public:
     Condition_Time_Elapsed_From_EventContext *condition_Time_Elapsed_From_Event();
     Condition_Event_OccurredContext *condition_Event_Occurred();
     Condition_Event_OccurringContext *condition_Event_Occurring();
+    Condition_ped_stateContext *condition_ped_state();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -293,7 +285,8 @@ public:
     Condition_Time_Elapsed_From_EventContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *AFTER();
-    DurationContext *duration();
+    Value_numericContext *value_numeric();
+    antlr4::tree::TerminalNode *SECONDS();
     antlr4::tree::TerminalNode *FROM();
     antlr4::tree::TerminalNode *EVNT();
     antlr4::tree::TerminalNode *EVENT();
@@ -345,13 +338,42 @@ public:
 
   Condition_Event_OccurringContext* condition_Event_Occurring();
 
+  class  Condition_ped_stateContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_ped_stateContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *IF();
+    antlr4::tree::TerminalNode *IS();
+    antlr4::tree::TerminalNode *AN();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_ped_stateContext* condition_ped_state();
+
+  class  Value_numericContext : public antlr4::ParserRuleContext {
+  public:
+    Value_numericContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Value_numberContext *value_number();
+    Value_floatContext *value_float();
+    Value_rangeContext *value_range();
+    Value_randomContext *value_random();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Value_numericContext* value_numeric();
+
   class  Value_numberContext : public antlr4::ParserRuleContext {
   public:
     Value_numberContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Number_randomContext *number_random();
     antlr4::tree::TerminalNode *NUMBER();
-    antlr4::tree::TerminalNode *FLOAT();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -360,9 +382,36 @@ public:
 
   Value_numberContext* value_number();
 
-  class  Number_randomContext : public antlr4::ParserRuleContext {
+  class  Value_floatContext : public antlr4::ParserRuleContext {
   public:
-    Number_randomContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Value_floatContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *FLOAT();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Value_floatContext* value_float();
+
+  class  Value_rangeContext : public antlr4::ParserRuleContext {
+  public:
+    Value_rangeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Float_rangeContext *float_range();
+    Number_rangeContext *number_range();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Value_rangeContext* value_range();
+
+  class  Value_randomContext : public antlr4::ParserRuleContext {
+  public:
+    Value_randomContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     Random_floatContext *random_float();
     Random_numberContext *random_number();
@@ -372,7 +421,7 @@ public:
    
   };
 
-  Number_randomContext* number_random();
+  Value_randomContext* value_random();
 
   class  Random_numberContext : public antlr4::ParserRuleContext {
   public:
@@ -380,9 +429,7 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *AN();
     antlr4::tree::TerminalNode *RANDOM();
-    std::vector<antlr4::tree::TerminalNode *> NUMBER();
-    antlr4::tree::TerminalNode* NUMBER(size_t i);
-    antlr4::tree::TerminalNode *TO();
+    Number_rangeContext *number_range();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -397,6 +444,19 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *AN();
     antlr4::tree::TerminalNode *RANDOM();
+    Float_rangeContext *float_range();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Random_floatContext* random_float();
+
+  class  Float_rangeContext : public antlr4::ParserRuleContext {
+  public:
+    Float_rangeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
     std::vector<antlr4::tree::TerminalNode *> FLOAT();
     antlr4::tree::TerminalNode* FLOAT(size_t i);
     antlr4::tree::TerminalNode *TO();
@@ -406,7 +466,22 @@ public:
    
   };
 
-  Random_floatContext* random_float();
+  Float_rangeContext* float_range();
+
+  class  Number_rangeContext : public antlr4::ParserRuleContext {
+  public:
+    Number_rangeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> NUMBER();
+    antlr4::tree::TerminalNode* NUMBER(size_t i);
+    antlr4::tree::TerminalNode *TO();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Number_rangeContext* number_range();
 
   class  DirectionContext : public antlr4::ParserRuleContext {
   public:
@@ -516,7 +591,7 @@ public:
     DurationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *FOR();
-    Value_numberContext *value_number();
+    Value_numericContext *value_numeric();
     antlr4::tree::TerminalNode *SECONDS();
     antlr4::tree::TerminalNode *SECOND();
 
@@ -724,7 +799,7 @@ public:
   public:
     Action_atom_Percent_Walk_SpeedContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Value_numberContext *value_number();
+    Value_numericContext *value_numeric();
     antlr4::tree::TerminalNode *THEIR();
     antlr4::tree::TerminalNode *NORMAL();
     antlr4::tree::TerminalNode *SPEED();

@@ -19,7 +19,7 @@ void AtomStop::operator()(PedestrianSet& pedSet, ObstacleSet& /*obsset*/,
                           Goals& /*goals*/, BehaviorContext& /*context*/,
                           VIPRA::idx    pedIdx, VIPRA::delta_t /*dT*/,
                           VIPRA::State& state) const {
-  state.pedestrianCoordinates[pedIdx] = pedSet.getPedCoords(pedIdx);
+  state.coords[pedIdx] = pedSet.getPedCoords(pedIdx);
   state.velocities[pedIdx] = VIPRA::f3d{0, 0, 0};
 }
 }  // namespace BHVR

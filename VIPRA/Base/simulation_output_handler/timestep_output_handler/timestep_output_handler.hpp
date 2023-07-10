@@ -9,7 +9,8 @@ class TimestepOutputHandler : public SimulationOutputHandler {
 
  public:
   void configure(const VIPRA::CONFIG::Map&) override;
-  bool isOutputCriterionMet(const PedestrianSet&, const ObstacleSet&, const Goals&, VIPRA::t_step) override;
+  bool isOutputCriterionMet(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                            VIPRA::t_step) override;
   void writeOutput(OutputDataWriter&, const PedestrianSet&, VIPRA::t_step) override;
 };
 

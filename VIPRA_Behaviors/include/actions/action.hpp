@@ -12,7 +12,9 @@
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
+#include <time/time.hpp>
 #include <util/timed_latch.hpp>
+#include "values/numeric_value.hpp"
 
 namespace BHVR {
 class Action {
@@ -24,18 +26,23 @@ class Action {
   Action(Action&&) noexcept = default;
   Action& operator=(Action&&) noexcept = default;
 
-  void performAction(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t, VIPRA::State&);
+  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                  const BehaviorContext&);
+
+  void performAction(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx,
+                     VIPRA::delta_t, VIPRA::State&);
 
   void addCondition(const Condition&);
   void addAtom(const Atom&);
-  void addDuration(VIPRA::time_range_s, BHVR::seed);
+  void addDuration(const BHVR::NumericValue&);
 
  private:
-  std::vector<Atom>                    atoms;
-  std::optional<Condition>             condition;
-  std::optional<BHVR::LatchCollection> latches;
+  std::vector<Atom>                   atoms;
+  std::optional<Condition>            condition;
+  std::optional<TimedLatchCollection> duration;
 
-  inline bool evaluate(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t);
+  inline bool evaluate(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx,
+                       VIPRA::delta_t);
 };
 }  // namespace BHVR
 

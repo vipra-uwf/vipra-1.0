@@ -2,6 +2,7 @@
 
 #include "calm_collision.hpp"
 #include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 namespace {
 inline Line getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& velocity,
@@ -18,9 +19,9 @@ inline Line getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& veloci
  * @brief The race detection function which resolves race conditions in the simulation
  * 
  */
-void Collision::raceDetection(const CalmPedestrianSet& pedestrianSet, const Goals& goals,
-                              VIPRA::t_step timestep) {
-  calcCollisionRectangles(pedestrianSet);
+void Collision::raceDetection(const PedestrianSet& pedestrianSet, const ModelData& data,
+                              const Goals& goals, VIPRA::t_step timestep) {
+  calcCollisionRectangles(pedestrianSet, goals, data);
 
   const VIPRA::size pedCnt = pedestrianSet.getNumPedestrians();
 
@@ -32,8 +33,6 @@ void Collision::raceDetection(const CalmPedestrianSet& pedestrianSet, const Goal
       raceStatuses.at(i) = NO_RACE;
     else
       raceStatuses.at(i) = WAIT;
-
-    // spdlog::debug("Race Status of {} is {}, its x is {}, its y is {} and its goal is {}, {}. Its velocity is {} x and {} y.", i, static_cast<int>(raceStatuses.at(i)), pedestrianSet.getPedCoords(i).x, pedestrianSet.getPedCoords(i).y, goals.getCurrentGoal(i).x, goals.getCurrentGoal(i).y,pedestrianSet.getPedVelocity(i).x,pedestrianSet.getPedVelocity(i).y);
   }
 }
 
@@ -43,21 +42,41 @@ RaceStatus Collision::status(VIPRA::idx index) const { return raceStatuses.at(in
  * @brief Calculates the collision rectangles for all pedestrians
  * 
  */
-void Collision::calcCollisionRectangles(const CalmPedestrianSet& pedestrianSet) {
-  const auto&       coords = pedestrianSet.getPedestrianCoordinates();
+void Collision::calcCollisionRectangles(const PedestrianSet& pedestrianSet, const Goals& goals,
+                                        const ModelData&     data) {
+  const auto&       coords = pedestrianSet.getCoordinates();
   const auto&       velocities = pedestrianSet.getVelocities();
-  const auto&       shldrs = pedestrianSet.getShoulderLengths();
+  const auto&       shldrs = data.shoulders;
   const VIPRA::size pedCnt = pedestrianSet.getNumPedestrians();
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     VIPRA::f3d pedVel = velocities.at(i);
+    if (pedVel.magnitudeSquared() == 0) 
+    {
+      auto goalCoords = goals.getCurrentGoal(i);
+      auto goalDirection = goalCoords - coords.at(i);
 
-    if (pedVel.magnitudeSquared() < minspeed) continue;
+      auto shldr1 =
+          (VIPRA::f3d{-goalDirection.y, goalDirection.x}.unit() * shldrs.at(i)) +
+          coords.at(i);
+      auto shldr2 =
+          (VIPRA::f3d{goalDirection.y, -goalDirection.x}.unit() * shldrs.at(i)) +
+          coords.at(i);
 
-    const Line       shoulders = getShoulderPoints(coords.at(i), pedVel, shldrs.at(i));
-    const VIPRA::f3d range = (pedVel.unit() * 0.575);
+      const VIPRA::f3d range = (goalDirection.unit() * rectangleRange);
+      collisionRectangles[i].p1 = shldr1;
+      collisionRectangles[i].p2 = shldr1 + range;
+      collisionRectangles[i].p3 = shldr2 + range;
+      collisionRectangles[i].p4 = shldr2;
+      continue;
+    }
+
+    const Line shoulders = getShoulderPoints(coords.at(i), pedVel, shldrs.at(i));
+    const VIPRA::f3d range = (pedVel.unit() * rectangleRange);
     collisionRectangles.at(i) = {shoulders.p1, shoulders.p1 + range, shoulders.p2 + range,
                                  shoulders.p2};
+
+    
   }
 }
 
@@ -65,47 +84,75 @@ void Collision::calcCollisionRectangles(const CalmPedestrianSet& pedestrianSet) 
  * @brief Checks if the current index has the highest priority within its collision boundary
  * 
  */
-bool Collision::checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet,
+bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
                                        const Goals& goals, VIPRA::idx index,
-                                       VIPRA::t_step) {
+                                       VIPRA::t_step ) {
   bool flag = true;
   for (VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); i++) {
     if (i == index) continue;
 
     if (goals.isPedestianGoalMet(i)) continue;
 
-    if (!checkIfCollide(index, i)) {
+    auto coords1 = pedestrianSet.getPedCoords(index);
+    auto coords2 = pedestrianSet.getPedCoords(i);
+
+    bool cr2in1 = collisionRectangles.at(index).isPointInRect(coords2);
+    bool cr1in2 = collisionRectangles.at(i).isPointInRect(coords1);
+
+    auto goal1 = goals.getCurrentGoal(index);
+    auto goal2 = goals.getCurrentGoal(i);
+
+    //If goals don't match, check if coordinates of the pedestrians are in each others collision rectangles
+    if(goal1!=goal2)
+    {
+      if (!cr2in1) {
+        continue;
+      }
+
+      if (!cr1in2) {
+        flag = false;
+        continue;
+      }
+    }
+    
+    //Check if pedestrians collide, if not continue onto next passenger
+    bool collisionCheck = checkIfCollide(index, i);
+    if (!collisionCheck) {
       if (inRace.at(index).at(i)) {
         inRace.at(index).at(i) = false;
         inRace.at(i).at(index) = false;
-
-        raceOpponents.at(i).erase(index);
-        raceOpponents.at(index).erase(i);
-
-        raceCounter.at(i).at(index) = 0;
-        raceCounter.at(index).at(i) = 0;
       }
       continue;
     }
 
+    //If goals match, use distance comparision
+    if (goal1 == goal2) {
+      if (coords1.distanceTo(goal1) > coords2.distanceTo(goal2)) flag = false;
+      continue;
+    }
+
+    //If goals don't match, use collision midpoint to resolve race condition
     VIPRA::f3d collisionMidpoint;
-    if (!inRace.at(index).at(i) || raceCounter.at(index).at(i) > maxCount) {
+    if (!inRace.at(index).at(i)) {
       collisionMidpoint = getCollisionAreaMidpoint(index, i);
+
+      velocityDirections.at(index) = pedestrianSet.getPedVelocity(index).unit();
 
       intersectionMidpoints.at(index).at(i) = collisionMidpoint;
       intersectionMidpoints.at(i).at(index) = collisionMidpoint;
 
       inRace.at(i).at(index) = true;
       inRace.at(index).at(i) = true;
-      raceOpponents.at(i).insert(index);
-      raceOpponents.at(index).insert(i);
-
-      raceCounter.at(i).at(index) = 0;
-      raceCounter.at(index).at(i) = 0;
-
-    } else {
+    } 
+    else {
       collisionMidpoint = intersectionMidpoints.at(index).at(i);
     }
+    if (coords1.distanceTo(collisionMidpoint) > coords2.distanceTo(collisionMidpoint))
+      flag = false;
+    else if (coords1.distanceTo(collisionMidpoint) == coords2.distanceTo(collisionMidpoint)) {
+      if (index < i) flag = false;
+    }
+
   }
   return flag;
 }
@@ -118,10 +165,10 @@ bool Collision::checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet,
  * @return true 
  * @return false 
  */
-bool Collision::checkIfCollide(VIPRA::idx index1, VIPRA::idx index2) const {
-  const Rect& r1 = collisionRectangles.at(index1);
-  const Rect& r2 = collisionRectangles.at(index2);
-  return r1.doesIntersect(r2);
+bool Collision::checkIfCollide(VIPRA::idx index1, VIPRA::idx index2) {
+  Rect& r1 = collisionRectangles.at(index1);
+  Rect& r2 = collisionRectangles.at(index2);
+  return Rect::doRectanglesIntersect(r1, r2);
 }
 
 /**
@@ -190,12 +237,29 @@ void Collision::addIntersectionPoints(VIPRA::f3d p1, VIPRA::f3d q1, VIPRA::f3d p
   }
 }
 
-void Collision::initialize(const PedestrianSet& pedestrianSet) {
+void Collision::initializeRectangles(const PedestrianSet& pedestrianSet,
+                                     const Goals& goals, const ModelData& data) {
+  collisionRectangles = std::vector<Rect>(pedestrianSet.getNumPedestrians());
+  const auto& shldrs = data.shoulders;
+  for(size_t i = 0; i < collisionRectangles.size(); i++)
+  {
+    auto coords = pedestrianSet.getPedCoords(i);
+    auto goalCoords = goals.getCurrentGoal(i);
+    auto goalDirection = goalCoords - coords;
+
+    auto shldr1 = (VIPRA::f3d{-goalDirection.y, goalDirection.x}.unit() * shldrs.at(i)) + coords;
+    auto shldr2 = (VIPRA::f3d{goalDirection.y, -goalDirection.x}.unit() * shldrs.at(i)) + coords;
+
+    const VIPRA::f3d range = (goalDirection.unit() * rectangleRange);
+    collisionRectangles[i].p1 = shldr1;
+    collisionRectangles[i].p2 = shldr1 + range;
+    collisionRectangles[i].p3 = shldr2 + range;
+    collisionRectangles[i].p4 = shldr2;
+  }
+}
+
+void Collision::initialize(const PedestrianSet& pedestrianSet, const Goals& goals, const ModelData& data) {
   raceStatuses = std::vector<RaceStatus>(pedestrianSet.getNumPedestrians(), NO_RACE);
-  raceOpponents = std::vector<std::set<VIPRA::idx>>(pedestrianSet.getNumPedestrians());
-  raceCounter = std::vector<std::vector<VIPRA::cnt>>(
-      pedestrianSet.getNumPedestrians(),
-      std::vector<VIPRA::cnt>(pedestrianSet.getNumPedestrians(), 0));
   inRace = std::vector<std::vector<bool>>(
       pedestrianSet.getNumPedestrians(),
       std::vector<bool>(pedestrianSet.getNumPedestrians(), false));
@@ -203,5 +267,8 @@ void Collision::initialize(const PedestrianSet& pedestrianSet) {
   intersectionMidpoints = std::vector<std::vector<VIPRA::f3d>>(
       pedestrianSet.getNumPedestrians(),
       VIPRA::f3dVec(pedestrianSet.getNumPedestrians()));
-  collisionRectangles = std::vector<Rect>(pedestrianSet.getNumPedestrians());
+
+  velocityDirections = std::vector<VIPRA::f3d>(pedestrianSet.getNumPedestrians());
+
+  initializeRectangles(pedestrianSet, goals, data);
 }

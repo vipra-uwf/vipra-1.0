@@ -1,7 +1,6 @@
 grammar declarations;
 
-import lexer_rules;
-import values;
+import lexer_rules, values;
 
 declaration:
   decl_Loc |
@@ -23,10 +22,10 @@ decl_Env_State:
   POSSIBLE ENVIRONMENT STATES ARE (STATE (COMMA? AND? STATE)*);
 
 decl_Loc_Area_Circle:
-  CONSIDER AN LOCATION ID AT point WITH AN RADIUS OF value_number;
+  CONSIDER AN LOCATION ID AT point WITH AN RADIUS OF value_numeric;
 
 decl_Loc_Area_Rect:
-  CONSIDER AN LOCATION ID AT point WITH AN LENGTH OF value_number AND AN WIDTH OF value_number;
+  CONSIDER AN LOCATION ID AT point WITH AN LENGTH OF value_numeric AND AN WIDTH OF value_numeric;
 
 decl_Loc_Point:
   CONSIDER AN LOCATION ID AT point;
@@ -34,4 +33,4 @@ decl_Loc_Point:
 decl_Ped:
   CONSIDER AN (ID (COMMA? AND? AN? ID)*);
 
-point: '('value_number',' value_number')';
+point: '('value_numeric',' value_numeric')';

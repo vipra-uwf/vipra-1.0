@@ -8,11 +8,13 @@
 #include <definitions/config_map.hpp>
 #include <definitions/type_definitions.hpp>
 
-
 class ConfigurationReaderException : public std::runtime_error {
  public:
-  explicit ConfigurationReaderException(const std::string& message) : std::runtime_error(message) {}
-  static void error(const std::string& message) { throw ConfigurationReaderException(message); }
+  explicit ConfigurationReaderException(const std::string& message)
+      : std::runtime_error(message) {}
+  static void error(const std::string& message) {
+    throw ConfigurationReaderException(message);
+  }
 };
 
 class ConfigurationReader {

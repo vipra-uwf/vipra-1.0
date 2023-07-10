@@ -25,10 +25,13 @@
 #include <conditions/subconditions/subcondition_event_occurring.hpp>
 #include <conditions/subconditions/subcondition_start.hpp>
 
+#include <behavior/human_behavior.hpp>
 #include <definitions/directions.hpp>
 #include <definitions/object.hpp>
 #include <definitions/pedestrian_types.hpp>
-#include "behavior/human_behavior.hpp"
+#include <time/time.hpp>
+#include <values/numeric_value.hpp>
+#include <values/values.hpp>
 
 namespace BHVR {
 
@@ -40,14 +43,16 @@ namespace BHVR {
  * @param seedNum 
  * @return HumanBehavior&&
  */
-HumanBehavior BehaviorBuilder::build(std::string behaviorName, const std::filesystem::path& filepath, BHVR::seed seedNum) {
-
+HumanBehavior BehaviorBuilder::build(std::string                  behaviorName,
+                                     const std::filesystem::path& filepath,
+                                     BHVR::seed                   seedNum) {
   if (!std::filesystem::exists(filepath)) {
     spdlog::error("Behavior \"{}\" Does NOT Exist at {}", behaviorName, filepath.c_str());
     BuilderException::error();
   }
 
-  spdlog::debug("Loading Behavior: {} at {}", behaviorName, std::filesystem::canonical(filepath).c_str());
+  spdlog::debug("Loading Behavior: {} at {}", behaviorName,
+                std::filesystem::canonical(filepath).c_str());
   initialBehaviorSetup(behaviorName, seedNum);
 
   std::ifstream dslFile(filepath);
@@ -77,7 +82,8 @@ HumanBehavior BehaviorBuilder::build(std::string behaviorName, const std::filesy
  * @param behaviorName : name of new behavior
  * @param seedNum : randomization seed for behavior
  */
-void BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName, BHVR::seed seedNum) {
+void BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName,
+                                           BHVR::seed         seedNum) {
   currentBehavior = HumanBehavior(behaviorName);
   currentBehavior.setSeed(seedNum);
   currSeed = seedNum;
@@ -110,12 +116,7 @@ void BehaviorBuilder::initializeTypes() {
   currType = 1;
 }
 
-void BehaviorBuilder::initializeLocations() {
-  locations.clear();
-
-
-}
-
+void BehaviorBuilder::initializeLocations() { locations.clear(); }
 
 // ------------------------------------ END INITIALIZATION --------------------------------------------------------------------------------------
 
@@ -155,29 +156,30 @@ Condition BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond
  * @param condition 
  * @param subcond 
  */
-void BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
-
+void BehaviorBuilder::addSubCondToCondtion(
+    Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
   if (subcond->condition_Time_Elapsed_From_Event()) {
-    VIPRA::delta_t time = getValue(subcond->condition_Time_Elapsed_From_Event()->duration()->value_number());
-    std::string    evName = subcond->condition_Time_Elapsed_From_Event()->EVNT()->toString();
-    spdlog::debug(R"(Behavior "{}": Adding SubCondition: Elapsed Time {} Seconds From "{}" Event)",
-                  currentBehavior.getName(),
-                  std::to_string(time),
-                  evName);
-    condition.addSubCondition(SubConditionElapsedTimeFromEvent(time, getEvent(evName)));
+    BHVR::NumericValue dur = getNumeric(
+        subcond->condition_Time_Elapsed_From_Event()->value_numeric(), currSeed);
+    std::string evName = subcond->condition_Time_Elapsed_From_Event()->EVNT()->toString();
+    spdlog::debug(R"(Behavior "{}": Adding SubCondition: Elapsed Time From "{}" Event)",
+                  currentBehavior.getName(), evName);
+    condition.addSubCondition(SubConditionElapsedTimeFromEvent(dur, getEvent(evName)));
     return;
   }
 
   if (subcond->condition_Event_Occurred()) {
     std::string evName = subcond->condition_Event_Occurred()->EVNT()->toString();
-    spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurred)", currentBehavior.getName(), evName);
+    spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurred)",
+                  currentBehavior.getName(), evName);
     condition.addSubCondition(SubConditionEventOccurred(getEvent(evName)));
     return;
   }
 
   if (subcond->condition_Event_Occurring()) {
     std::string evName = subcond->condition_Event_Occurring()->EVNT()->toString();
-    spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurring)", currentBehavior.getName(), evName);
+    spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurring)",
+                  currentBehavior.getName(), evName);
     condition.addSubCondition(SubConditionEventOccurring(getEvent(evName)));
     return;
   }
@@ -192,11 +194,13 @@ void BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser:
  * @param action : action to add the atom to
  * @param atom : atom context
  */
-void BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_atomContext* atom) {
-
+void BehaviorBuilder::addAtomToAction(Action&                             action,
+                                      BehaviorParser::Action_atomContext* atom) {
   if (atom->action_atom_Percent_Walk_Speed()) {
-    spdlog::debug(R"(Behavior "{}": Adding Action Atom: "Change Speed")", currentBehavior.getName());
-    float change = getValue(atom->action_atom_Percent_Walk_Speed()->value_number());
+    spdlog::debug(R"(Behavior "{}": Adding Action Atom: "Change Speed")",
+                  currentBehavior.getName());
+    NumericValue change =
+        getNumeric(atom->action_atom_Percent_Walk_Speed()->value_numeric(), currSeed);
     action.addAtom(AtomChangeSpeed{change});
     return;
   }
@@ -204,7 +208,8 @@ void BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_ato
   if (atom->action_Be()) {
     auto     stateStr = atom->action_Be()->STATE()->toString();
     stateUID state = getState(stateStr);
-    spdlog::debug(R"(Behavior "{}": Adding Action Atom: "Be State" state: {})", currentBehavior.getName(), stateStr);
+    spdlog::debug(R"(Behavior "{}": Adding Action Atom: "Be State" state: {})",
+                  currentBehavior.getName(), stateStr);
     action.addAtom(AtomBe{state});
     return;
   }
@@ -213,7 +218,8 @@ void BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_ato
   std::string atomName = atom->getText();
 
   if (atom->action_Stop()) {
-    spdlog::debug(R"(Behavior "{}": Adding Action Atom: "Stop")", currentBehavior.getName());
+    spdlog::debug(R"(Behavior "{}": Adding Action Atom: "Stop")",
+                  currentBehavior.getName());
     action.addAtom(AtomStop{});
     return;
   }
@@ -234,13 +240,13 @@ void BehaviorBuilder::addAtomToAction(Action& action, BehaviorParser::Action_ato
 VIPRA::idx BehaviorBuilder::getEvent(const std::string& evName) {
   auto ev = eventsMap.find(evName);
   if (ev == eventsMap.end()) {
-    spdlog::error("Behavior Error: Attempt To Use Event Before It Was Defined: \"{}\"", evName);
+    spdlog::error("Behavior Error: Attempt To Use Event Before It Was Defined: \"{}\"",
+                  evName);
     BuilderException::error();
   }
 
   return (*ev).second;
 }
-
 
 /**
  * @brief Gets a pointer to the Location with a name locName from LocationsMap
@@ -251,9 +257,10 @@ VIPRA::idx BehaviorBuilder::getEvent(const std::string& evName) {
 */
 VIPRA::idx BehaviorBuilder::getLocation(const std::string& locName) {
   auto loc = locations.find(locName);
-  if(loc == locations.end()) {
-    spdlog::error("Behavior Error: Attempt To Use Location Before It Was Defined: \"{}\"", locName);
-    exit(1);
+  if (loc == locations.end()) {
+    spdlog::error("Behavior Error: Attempt To Use Location Before It Was Defined: \"{}\"",
+                  locName);
+    BuilderException::error();
   }
 
   return (*loc).second;
@@ -286,7 +293,8 @@ typeUID BehaviorBuilder::getType(const std::string& type) const {
   const auto typeId = types.find(type);
 
   if (typeId == types.end()) {
-    spdlog::error("Behavior Error: Attempt To Use Undeclared Pedestrian Type: \"{}\"", type);
+    spdlog::error("Behavior Error: Attempt To Use Undeclared Pedestrian Type: \"{}\"",
+                  type);
     BuilderException::error();
   }
 
@@ -299,7 +307,8 @@ typeUID BehaviorBuilder::getType(const std::string& type) const {
  * @param types : id_list vector
  * @return BHVR::Ptype 
  */
-BHVR::Ptype BehaviorBuilder::getCompositeType(const std::vector<antlr4::tree::TerminalNode*>& types) const {
+BHVR::Ptype BehaviorBuilder::getCompositeType(
+    const std::vector<antlr4::tree::TerminalNode*>& types) const {
   Ptype compType;
   for (auto* type : types) {
     const std::string tStr = type->toString();
@@ -311,104 +320,17 @@ BHVR::Ptype BehaviorBuilder::getCompositeType(const std::vector<antlr4::tree::Te
 }
 
 /**
- * @brief Gets a numerical value from a value context
- * 
- * @param value : value context
- * @return float 
- */
-float BehaviorBuilder::getValue(BehaviorParser::Value_numberContext* value) const {
-  if (value->FLOAT()) {
-    return std::stof(value->FLOAT()->toString());
-  }
-
-  if (value->NUMBER()) {
-    return std::stof(value->NUMBER()->toString());
-  }
-
-  if (value->number_random()) {
-    auto* ctx = value->number_random();
-
-    float ret = 0;
-    if (ctx->random_float()) {
-      auto numbers = ctx->random_float()->FLOAT();
-      ret = makeRandomValue(std::stof(numbers[0]->toString()), std::stof(numbers[1]->toString()));
-    } else {
-      auto numbers = ctx->random_number()->NUMBER();
-      ret = std::round(makeRandomValue(std::stof(numbers[0]->toString()), std::stof(numbers[1]->toString())));
-    }
-
-    return ret;
-  }
-
-  spdlog::error("Behavior Error: Unable To Get Value For Behavior: \"{}\"", currentBehavior.getName());
-  BuilderException::error();
-  return 0;
-}
-
-VIPRA::time_range_s BehaviorBuilder::getRange(BehaviorParser::Value_numberContext* value) {
-
-  VIPRA::time_range_s ret;
-
-  if (value->number_random()) {
-    auto* ctx = value->number_random();
-
-    if (ctx->random_float()) {
-      auto numbers = ctx->random_float()->FLOAT();
-      ret.first = std::stof(numbers[0]->toString());
-      ret.second = std::stof(numbers[1]->toString());
-    } else {
-      auto numbers = ctx->random_number()->NUMBER();
-      ret.first = std::round(std::stof(numbers[0]->toString()));
-      ret.second = std::round(std::stof(numbers[1]->toString()));
-    }
-
-    return ret;
-  }
-
-  if (value->FLOAT()) {
-    float val = std::stof(value->FLOAT()->toString());
-    ret = {val, val};
-    return ret;
-  }
-
-  if (value->NUMBER()) {
-    float val = std::stof(value->NUMBER()->toString());
-    ret = {val, val};
-    return ret;
-  }
-
-  spdlog::error("Behavior Error: Unable To Get Value For Behavior: \"{}\"", currentBehavior.getName());
-  BuilderException::error();
-  return {0, 0};
-}
-
-/**
- * @brief Makes a random float between min and max (inclusive)
- * 
- * @param min : minimum value
- * @param max : maximum value
- * @return float 
- */
-float BehaviorBuilder::makeRandomValue(float min, float max) const {
-  srand(currSeed);
-
-  // TODO(rolland): replace rand
-  float val = min + (static_cast<float>(rand()) / (static_cast<float>(RAND_MAX) / (max - min)));
-
-  return val;
-}
-
-/**
  * @brief Creates a vector with all of the strings for each type in a given id_list
  * 
  * @param types : id_list vector
  * @return std::vector<std::string>
  */
-std::vector<std::string> BehaviorBuilder::getListStrs(const std::vector<antlr4::tree::TerminalNode*>& types) {
+std::vector<std::string> BehaviorBuilder::getListStrs(
+    const std::vector<antlr4::tree::TerminalNode*>& types) {
   std::vector<std::string> strs(types.size());
 
-  std::transform(
-      types.begin(), types.end(), strs.begin(), [](antlr4::tree::TerminalNode* type) { return type->toString(); });
+  std::transform(types.begin(), types.end(), strs.begin(),
+                 [](antlr4::tree::TerminalNode* type) { return type->toString(); });
 
   return strs;
 }
@@ -419,11 +341,13 @@ std::vector<std::string> BehaviorBuilder::getListStrs(const std::vector<antlr4::
  */
 void BehaviorBuilder::endBehaviorCheck() {
   if (currentBehavior.selectorCount() == 0) {
-    spdlog::error("Behavior Error: No Pedestrian Selector Defined For Behavior: \"{}\"", currentBehavior.getName());
+    spdlog::error("Behavior Error: No Pedestrian Selector Defined For Behavior: \"{}\"",
+                  currentBehavior.getName());
     BuilderException::error();
   }
   if (currentBehavior.actionCount() == 0) {
-    spdlog::error("Behavior Error: No Actions Defined For Behavior: \"{}\"", currentBehavior.getName());
+    spdlog::error("Behavior Error: No Actions Defined For Behavior: \"{}\"",
+                  currentBehavior.getName());
     BuilderException::error();
   }
 }
@@ -436,8 +360,8 @@ void BehaviorBuilder::endBehaviorCheck() {
  * @param ctx : antlr context
  * @return antlrcpp::Any
  */
-antlrcpp::Any BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleContext* ctx) {
-
+antlrcpp::Any BehaviorBuilder::visitEvent_Single(
+    BehaviorParser::Event_SingleContext* ctx) {
   std::string eventName = ctx->EVNT()->toString();
 
   if (eventsMap.find(eventName) != eventsMap.end()) {
@@ -447,7 +371,8 @@ antlrcpp::Any BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleCon
 
   Event event(eventName);
 
-  spdlog::debug(R"(Behavior "{}": Adding Single Fire Event: "{}")", currentBehavior.getName(), eventName);
+  spdlog::debug(R"(Behavior "{}": Adding Single Fire Event: "{}")",
+                currentBehavior.getName(), eventName);
   eventsMap[eventName] = currentBehavior.eventCount();
 
   auto* startCtx = ctx->condition();
@@ -466,7 +391,8 @@ antlrcpp::Any BehaviorBuilder::visitEvent_Single(BehaviorParser::Event_SingleCon
  * @param ctx : antlr context
  * @return antlrcpp::Any 
  */
-antlrcpp::Any BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingContext* ctx) {
+antlrcpp::Any BehaviorBuilder::visitEvent_Lasting(
+    BehaviorParser::Event_LastingContext* ctx) {
   std::string eventName = ctx->EVNT()->toString();
 
   if (eventsMap.find(eventName) != eventsMap.end()) {
@@ -476,15 +402,18 @@ antlrcpp::Any BehaviorBuilder::visitEvent_Lasting(BehaviorParser::Event_LastingC
 
   Event event(eventName);
 
-  spdlog::debug(R"(Behavior "{}": Adding Lasting Event: "{}")", currentBehavior.getName(), eventName);
+  spdlog::debug(R"(Behavior "{}": Adding Lasting Event: "{}")", currentBehavior.getName(),
+                eventName);
   eventsMap[eventName] = currentBehavior.eventCount();
 
   auto* startCtx = ctx->condition()[0];
   auto* endCtx = ctx->condition()[1];
 
-  spdlog::debug(R"(Behavior "{}": Event: "{}" Adding Start Condition)", currentBehavior.getName(), eventName);
+  spdlog::debug(R"(Behavior "{}": Event: "{}" Adding Start Condition)",
+                currentBehavior.getName(), eventName);
   event.setStartCondition(buildCondition(startCtx));
-  spdlog::debug(R"(Behavior "{}": Event: "{}" Adding End Condition)", currentBehavior.getName(), eventName);
+  spdlog::debug(R"(Behavior "{}": Event: "{}" Adding End Condition)",
+                currentBehavior.getName(), eventName);
   event.setEndCondition(buildCondition(endCtx));
 
   eventsMap[eventName] = currentBehavior.addEvent(event);
@@ -517,7 +446,6 @@ BHVR::typeUID BehaviorBuilder::getGroup(BehaviorParser::Ped_SelectorContext* ctx
  * @return Selector 
  */
 SubSelector BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContext* ctx) {
-
   auto  types = ctx->id_list()->ID();
   Ptype comPtype = getCompositeType(types);
   auto  typeStrs = getListStrs(types);
@@ -525,8 +453,7 @@ SubSelector BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContex
 
   if (ctx->selector_Everyone()) {
     spdlog::debug(R"(Behavior "{}": Adding Selector: "Everyone" Is Ped Type: {})",
-                  currentBehavior.getName(),
-                  fmt::join(typeStrs, ", "));
+                  currentBehavior.getName(), fmt::join(typeStrs, ", "));
     return SubSelector{0, comPtype, required, SelectorEveryone{}};
   }
 
@@ -535,32 +462,33 @@ SubSelector BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContex
   std::string groupStr = (group != 0U ? ctx->ID()->toString() : "Pedestrians");
 
   if (selector->selector_Exactly_N_Random()) {
-    const auto nPeds = static_cast<VIPRA::size>(getValue(selector->selector_Exactly_N_Random()->value_number()));
-    spdlog::debug(R"(Behavior "{}": Adding Selector: "Exactly {}" of {} Are Ped Type: {})",
-                  currentBehavior.getName(),
-                  nPeds,
-                  groupStr,
-                  fmt::join(typeStrs, ", "));
+    NumericValue nPeds =
+        getNumeric(selector->selector_Exactly_N_Random()->value_number(), currSeed);
+    spdlog::debug(
+        R"(Behavior "{}": Adding Selector: "Exactly {}" of {} Are Ped Type: {})",
+        currentBehavior.getName(), nPeds.value(0), groupStr, fmt::join(typeStrs, ", "));
     return SubSelector{group, comPtype, required, SelectorExactlyN{nPeds}};
   }
 
   if (selector->selector_Percent()) {
-    float percentage = getValue(selector->selector_Percent()->value_number());
-    spdlog::debug(R"(Behavior "{}": Adding Selector: "{} Percent" of {} Are Ped Type: {})",
-                  currentBehavior.getName(),
-                  percentage,
-                  groupStr,
-                  fmt::join(typeStrs, ", "));
-    return SubSelector{group, comPtype, required, SelectorPercent{percentage / 100.0F}};
+    NumericValue percentage =
+        getNumeric(selector->selector_Percent()->value_number(), currSeed);
+    spdlog::debug(
+        R"(Behavior "{}": Adding Selector: "{} Percent" of {} Are Ped Type: {})",
+        currentBehavior.getName(), percentage.value(0), groupStr,
+        fmt::join(typeStrs, ", "));
+    return SubSelector{group, comPtype, required,
+                       SelectorPercent{percentage.value(0) / 100.0F}};
   }
 
-  spdlog::error("Behavior Error: Unable To Create Selector For Behavior \"{}\"", currentBehavior.getName());
+  spdlog::error("Behavior Error: Unable To Create Selector For Behavior \"{}\"",
+                currentBehavior.getName());
   BuilderException::error();
   return SubSelector{group, Ptype{0}, true, SelectorEveryone{}};
 }
 
-antlrcpp::Any BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx) {
-
+antlrcpp::Any BehaviorBuilder::visitPed_Selector(
+    BehaviorParser::Ped_SelectorContext* ctx) {
   currentBehavior.addSubSelector(buildSubSelector(ctx));
 
   return BehaviorBaseVisitor::visitPed_Selector(ctx);
@@ -569,8 +497,8 @@ antlrcpp::Any BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorCon
 
 // ------------------------------- ACTIONS -----------------------------------------------------------------------------------------
 
-antlrcpp::Any BehaviorBuilder::visitConditional_action(BehaviorParser::Conditional_actionContext* ctx) {
-
+antlrcpp::Any BehaviorBuilder::visitConditional_action(
+    BehaviorParser::Conditional_actionContext* ctx) {
   const auto& atoms = ctx->sub_action()->action_atom();
   Action      action;
 
@@ -578,38 +506,39 @@ antlrcpp::Any BehaviorBuilder::visitConditional_action(BehaviorParser::Condition
   const auto type = getType(typeStr);
 
   if (ctx->duration()) {
-    const auto timeRange = getRange(ctx->duration()->value_number());
-    spdlog::debug("Behavior \"{}\": Adding Time Range To Action For {}, Range: {}-{}",
-                  currentBehavior.getName(),
-                  typeStr,
-                  timeRange.first,
-                  timeRange.second);
-    action.addDuration(timeRange, currSeed);
+    NumericValue timeRange = getNumeric(ctx->duration()->value_numeric(), currSeed);
+    spdlog::debug("Behavior \"{}\": Adding Time Range To Action For {}",
+                  currentBehavior.getName(), typeStr);
+    action.addDuration(timeRange);
   }
 
-  spdlog::debug("Behavior \"{}\": Adding Conditional Action For {}", currentBehavior.getName(), typeStr);
+  spdlog::debug("Behavior \"{}\": Adding Conditional Action For {}",
+                currentBehavior.getName(), typeStr);
   action.addCondition(buildCondition(ctx->condition()));
 
   std::for_each(
-      atoms.begin(), atoms.end(), [&](BehaviorParser::Action_atomContext* atom) { addAtomToAction(action, atom); });
+      atoms.begin(), atoms.end(),
+      [&](BehaviorParser::Action_atomContext* atom) { addAtomToAction(action, atom); });
 
   currentBehavior.addAction(type, action);
 
   return BehaviorBaseVisitor::visitConditional_action(ctx);
 }
 
-antlrcpp::Any BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext* ctx) {
-
+antlrcpp::Any BehaviorBuilder::visitUn_conditional_action(
+    BehaviorParser::Un_conditional_actionContext* ctx) {
   const auto& atoms = ctx->sub_action()->action_atom();
   Action      action;
 
   const auto typeStr = ctx->ID()->toString();
   const auto type = getType(typeStr);
 
-  spdlog::debug("Behavior \"{}\": Adding Unconditional Action For {}", currentBehavior.getName(), typeStr);
+  spdlog::debug("Behavior \"{}\": Adding Unconditional Action For {}",
+                currentBehavior.getName(), typeStr);
 
   std::for_each(
-      atoms.begin(), atoms.end(), [&](BehaviorParser::Action_atomContext* atom) { addAtomToAction(action, atom); });
+      atoms.begin(), atoms.end(),
+      [&](BehaviorParser::Action_atomContext* atom) { addAtomToAction(action, atom); });
 
   currentBehavior.addAction(type, action);
   return BehaviorBaseVisitor::visitUn_conditional_action(ctx);
@@ -619,17 +548,15 @@ antlrcpp::Any BehaviorBuilder::visitUn_conditional_action(BehaviorParser::Un_con
 
 // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
 
-antlrcpp::Any 
-BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
-
-  if (ctx->decl_Loc_Area_Circle()) {
+antlrcpp::Any BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
+    if (ctx->decl_Loc_Area_Circle()) {
 
     const std::string circleName = ctx->decl_Loc_Area_Circle()->ID()->toString();
     spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(), circleName);
 
-    float circleCenterPointX = getValue(ctx->decl_Loc_Area_Circle()->point()->value_number().at(0));
-    float circleCenterPointY = getValue(ctx->decl_Loc_Area_Circle()->point()->value_number().at(1));
-    float circleRadius = getValue(ctx->decl_Loc_Area_Circle()->value_number());
+    const float circleCenterPointX = getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_numeric().at(0), currSeed).value(0);
+    const float circleCenterPointY = getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_numeric().at(1), currSeed).value(0);
+    const float circleRadius = getNumeric(ctx->decl_Loc_Area_Circle()->value_numeric(), currSeed).value(0);
 
     std::shared_ptr<BHVR::Shape> circle = std::make_shared<BHVR::Circle>(VIPRA::f3d(circleCenterPointX, circleCenterPointY), circleRadius);
 
@@ -640,10 +567,10 @@ BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
     const auto rectName = ctx->decl_Loc_Area_Rect()->ID()->toString();
     spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(), rectName);
 
-    const auto rectCenterPointX = getValue(ctx->decl_Loc_Area_Rect()->point()->value_number().at(0));
-    const auto rectCenterPointY = getValue(ctx->decl_Loc_Area_Rect()->point()->value_number().at(1));
-    const auto rectLen = getValue(ctx->decl_Loc_Area_Rect()->value_number().at(0));
-    const auto rectWidth = getValue(ctx->decl_Loc_Area_Rect()->value_number().at(1));
+    const float rectCenterPointX = getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_numeric().at(0), currSeed).value(0);
+    const float rectCenterPointY = getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_numeric().at(1), currSeed).value(0);
+    const float rectLen = getNumeric(ctx->decl_Loc_Area_Rect()->value_numeric().at(0), currSeed).value(0);
+    const float rectWidth = getNumeric(ctx->decl_Loc_Area_Rect()->value_numeric().at(1), currSeed).value(0);
 
     std::shared_ptr<BHVR::Shape> rectangle = std::make_shared<BHVR::Rectangle>(VIPRA::f3d(rectCenterPointX, rectCenterPointY), rectLen, rectWidth);
     
@@ -654,8 +581,8 @@ BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
     const auto pointName = ctx->decl_Loc_Point()->ID()->toString();
     spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(), pointName);
 
-    const auto pointX = getValue(ctx->decl_Loc_Point()->point()->value_number().at(0));
-    const auto pointY = getValue(ctx->decl_Loc_Point()->point()->value_number().at(1));
+    const float pointX = getNumeric(ctx->decl_Loc_Point()->point()->value_numeric().at(0), currSeed).value(0);
+    const float pointY = getNumeric(ctx->decl_Loc_Point()->point()->value_numeric().at(1), currSeed).value(0);
 
     std::shared_ptr<BHVR::Shape> point = std::make_shared<BHVR::Point>(VIPRA::f3d(pointX, pointY));
 
@@ -666,13 +593,14 @@ BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
   return BehaviorBaseVisitor::visitDecl_Loc(ctx);
 }
 
-antlrcpp::Any
-BehaviorBuilder::visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) {
+antlrcpp::Any BehaviorBuilder::visitDecl_Ped_State(
+    BehaviorParser::Decl_Ped_StateContext* ctx) {
   const auto stateNames = ctx->STATE();
 
   for (auto* state : stateNames) {
     auto name = state->toString();
-    spdlog::debug("Behavior \"{}\": Adding Pedestrian State {}, id: {}", currentBehavior.getName(), name, currState);
+    spdlog::debug("Behavior \"{}\": Adding Pedestrian State {}, id: {}",
+                  currentBehavior.getName(), name, currState);
     states[name] = currState;
     ++currState;
   }
@@ -680,12 +608,14 @@ BehaviorBuilder::visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx)
   return BehaviorBaseVisitor::visitDecl_Ped_State(ctx);
 }
 
-antlrcpp::Any BehaviorBuilder::visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx) {
+antlrcpp::Any BehaviorBuilder::visitDecl_Env_State(
+    BehaviorParser::Decl_Env_StateContext* ctx) {
   const auto stateNames = ctx->STATE();
 
   for (auto* state : stateNames) {
     auto name = state->toString();
-    spdlog::debug("Behavior \"{}\": Adding Environment State {}, id: {}", currentBehavior.getName(), name, currState);
+    spdlog::debug("Behavior \"{}\": Adding Environment State {}, id: {}",
+                  currentBehavior.getName(), name, currState);
     states[name] = currState;
     ++currState;
   }
@@ -699,16 +629,19 @@ antlrcpp::Any BehaviorBuilder::visitDecl_Ped(BehaviorParser::Decl_PedContext* ct
 
   for (auto* type : typeNames) {
     auto name = type->toString();
-    spdlog::debug("Behavior \"{}\": Adding Pedestrian Type {}, id: {}", currentBehavior.getName(), name, currType);
+    spdlog::debug("Behavior \"{}\": Adding Pedestrian Type {}, id: {}",
+                  currentBehavior.getName(), name, currType);
     types[name] = currType;
     allTypes += currType;
     currType = currType << 1U;
   }
 
-  spdlog::debug("Behavior \"{}\": All Types: {}", currentBehavior.getName(), allTypes.fullType);
+  spdlog::debug("Behavior \"{}\": All Types: {}", currentBehavior.getName(),
+                allTypes.fullType);
   currentBehavior.setAllPedTypes(allTypes);
   return BehaviorBaseVisitor::visitDecl_Ped(ctx);
 }
 
 // ------------------------------- END DECLARATIONS -----------------------------------------------------------------------------------------
+
 }  // namespace BHVR

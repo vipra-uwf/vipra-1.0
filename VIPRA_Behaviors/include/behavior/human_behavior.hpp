@@ -9,12 +9,12 @@
 
 #include <actions/action.hpp>
 #include <events/event.hpp>
-#include <locations/location.hpp>
 #include <goals/goals.hpp>
+#include <locations/location.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 #include <selectors/selector.hpp>
-
+#include "randomization/random.hpp"
 
 namespace BHVR {
 /**
@@ -42,14 +42,15 @@ class HumanBehavior {
   void setSeed(BHVR::seed);
 
  private:
-  BHVR::seed seedNum = 0;
+  BHVR::seed         seedNum = 0;
+  VIPRA::pRNG_Engine rngEngine{};
 
   std::string     name;
   BehaviorContext context;
 
   Selector                         selector;
   std::vector<Event>               events;
-  std::vector<Location*>            locations;
+  std::vector<Location*>           locations;
   std::vector<std::vector<Action>> actions;
 
   void evaluateEvents(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::delta_t);
