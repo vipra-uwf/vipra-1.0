@@ -6,6 +6,7 @@ var searchData=
   ['randomfloatvalue_3',['RandomFloatValue',['../structBHVR_1_1RandomFloatValue.html',1,'BHVR']]],
   ['randomnumbervalue_4',['RandomNumberValue',['../structBHVR_1_1RandomNumberValue.html',1,'BHVR']]],
   ['rect_5',['Rect',['../structRect.html',1,'']]],
-  ['removeped_6',['removePed',['../classBHVR_1_1GroupsContainer.html#a7967b02aebb79ea3ace8b62e02381f59',1,'BHVR::GroupsContainer']]],
-  ['run_7',['run',['../classSimulation.html#a56d9c2a3b665d4df21071d5075beeb9f',1,'Simulation']]]
+  ['rectangle_6',['Rectangle',['../classBHVR_1_1Rectangle.html',1,'BHVR']]],
+  ['removeped_7',['removePed',['../classBHVR_1_1GroupsContainer.html#a7967b02aebb79ea3ace8b62e02381f59',1,'BHVR::GroupsContainer']]],
+  ['run_8',['run',['../classSimulation.html#a56d9c2a3b665d4df21071d5075beeb9f',1,'Simulation']]]
 ];

@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structModelData.html" title=" " alt="" coords="5,5,89,31"/>
+<area shape="rect" id="Node000000" href="$classMapLoader.html" title=" " alt="" coords="5,5,92,31"/>
+<area shape="rect" id="Node000001" href="$classPointMapLoader.html" title=" " alt="" coords="140,5,256,31"/>
+<area shape="poly" id="edge65_Node000000_Node000001" title=" " alt="" coords="107,16,139,16,139,21,107,21"/>
 </map>
