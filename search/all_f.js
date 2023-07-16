@@ -8,5 +8,7 @@ var searchData=
   ['rect_5',['Rect',['../structRect.html',1,'']]],
   ['rectangle_6',['Rectangle',['../classBHVR_1_1Rectangle.html',1,'BHVR']]],
   ['removeped_7',['removePed',['../classBHVR_1_1GroupsContainer.html#a7967b02aebb79ea3ace8b62e02381f59',1,'BHVR::GroupsContainer']]],
-  ['run_8',['run',['../classSimulation.html#a56d9c2a3b665d4df21071d5075beeb9f',1,'Simulation']]]
+  ['reseed_8',['reseed',['../classVIPRA_1_1pRNG__Engine.html#a06ab81bf57fb7ae2143b932c8cd2da2d',1,'VIPRA::pRNG_Engine']]],
+  ['resize_9',['resize',['../classBHVR_1_1TimedLatchCollection.html#a5c2792cfaa0b3bcd1ea71d3d0234bffc',1,'BHVR::TimedLatchCollection']]],
+  ['run_10',['run',['../classSimulation.html#a56d9c2a3b665d4df21071d5075beeb9f',1,'Simulation']]]
 ];

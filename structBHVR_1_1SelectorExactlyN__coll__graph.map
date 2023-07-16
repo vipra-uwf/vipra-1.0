@@ -1,5 +1,5 @@
 <map id="BHVR::SelectorExactlyN" name="BHVR::SelectorExactlyN">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,169,120"/>
-<area shape="rect" id="Node000002" href="$classBHVR_1_1NumericValue.html" title=" " alt="" coords="14,5,160,31"/>
+<area shape="rect" id="Node000001" title="Selects exactly N pedestrians from a group to be given a type." alt="" coords="5,94,169,120"/>
+<area shape="rect" id="Node000002" href="$classBHVR_1_1NumericValue.html" title="Holds a runtime value for a Behavior." alt="" coords="14,5,160,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,46,90,94,84,94,84,46"/>
 </map>

@@ -397,53 +397,59 @@ $(function() {
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <span class="keyword">inline</span> <span class="keyword">constexpr</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a> operator-() <span class="keyword">const</span> <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a>{-x, -y, -z}; }</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  [[nodiscard]] <span class="keyword">inline</span> <span class="keyword">constexpr</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a> unit() <span class="keyword">const</span> <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    <span class="keywordflow">if</span> (x == 0 &amp;&amp; y == 0 &amp;&amp; z == 0) {</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>      <span class="keywordflow">return</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a>{0, 0, 0};</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    }</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    <span class="keywordflow">return</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a>{x, y, z} / magnitude();</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  }</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  [[nodiscard]] <span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">float</span> magnitudeSquared() <span class="keyword">const</span> <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    <span class="keywordflow">return</span> (x * x) + (y * y) + (z * z);</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  }</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  [[nodiscard]] <span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">float</span> magnitude()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <span class="keywordflow">return</span> std::sqrt((x * x) + (y * y) + (z * z));</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  }</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>  [[nodiscard]] <span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">float</span> dot(<span class="keyword">const</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a>&amp; other) <span class="keyword">const</span> <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    <span class="keywordflow">return</span> (x * other.x) + (y * other.y) + (z * other.z);</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  }</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>};</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="keyword">using </span>f2dVec = std::vector&lt;f2d&gt;;</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="keyword">using </span>f3dVec = std::vector&lt;f3d&gt;;</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno"><a class="line" href="structVIPRA_1_1f3d.html#ac705b18c03931e90047d9dd296d5954e">  327</a></span>  [[nodiscard]] <span class="keyword">inline</span> <span class="keyword">constexpr</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a> <a class="code hl_function" href="structVIPRA_1_1f3d.html#ac705b18c03931e90047d9dd296d5954e">unit</a>() const noexcept {</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="keywordflow">if</span> (x == 0 &amp;&amp; y == 0 &amp;&amp; z == 0) {</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>      <span class="keywordflow">return</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a>{0, 0, 0};</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    }</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="keywordflow">return</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a>{x, y, z} / <a class="code hl_function" href="structVIPRA_1_1f3d.html#ae99dec440a1f1da324235e8cdcc018a9">magnitude</a>();</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  }</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno"><a class="line" href="structVIPRA_1_1f3d.html#a68d9b5df62e799f0fb05e34bc87f028c">  339</a></span>  [[nodiscard]] <span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">float</span> <a class="code hl_function" href="structVIPRA_1_1f3d.html#a68d9b5df62e799f0fb05e34bc87f028c">magnitudeSquared</a>() const noexcept {</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="keywordflow">return</span> (x * x) + (y * y) + (z * z);</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  }</div>
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="structVIPRA_1_1F3dHash.html">  343</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structVIPRA_1_1F3dHash.html">F3dHash</a> {</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  std::size_t operator()(<span class="keyword">const</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a>&amp; <span class="keywordtype">object</span>)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    std::size_t seed = 0;</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    seed += std::hash&lt;float&gt;{}(<span class="keywordtype">object</span>.x);</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    seed += std::hash&lt;float&gt;{}(<span class="keywordtype">object</span>.y);</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    seed += std::hash&lt;float&gt;{}(<span class="keywordtype">object</span>.z);</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="keywordflow">return</span> seed;</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  }</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>};</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> <a class="code hl_struct" href="structVIPRA_1_1f2d.html">f2d</a> _emptyf2d_ =  <span class="comment">// NOLINT</span></div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    <a class="code hl_struct" href="structVIPRA_1_1f2d.html">VIPRA::f2d</a>{std::numeric_limits&lt;float&gt;::max(), std::numeric_limits&lt;float&gt;::max()};</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> f3d _emptyf3d_ =  <span class="comment">// NOLINT</span></div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <a class="code hl_struct" href="structVIPRA_1_1f3d.html">VIPRA::f3d</a>{std::numeric_limits&lt;float&gt;::max(), std::numeric_limits&lt;float&gt;::max(),</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>               std::numeric_limits&lt;float&gt;::max()};</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span><span class="keyword">extern</span> <span class="keyword">const</span> f2dVec emptyf2d_vec;  <span class="comment">// NOLINT</span></div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="keyword">extern</span> <span class="keyword">const</span> f3dVec emptyf3d_vec;  <span class="comment">// NOLINT</span></div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>}  <span class="comment">// namespace VIPRA</span></div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> </div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="astructVIPRA_1_1F3dHash_html"><div class="ttname"><a href="structVIPRA_1_1F3dHash.html">VIPRA::F3dHash</a></div><div class="ttdef"><b>Definition</b> dimensions.hpp:343</div></div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno"><a class="line" href="structVIPRA_1_1f3d.html#ae99dec440a1f1da324235e8cdcc018a9">  348</a></span>  [[nodiscard]] <span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">float</span> <a class="code hl_function" href="structVIPRA_1_1f3d.html#ae99dec440a1f1da324235e8cdcc018a9">magnitude</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="keywordflow">return</span> std::sqrt((x * x) + (y * y) + (z * z));</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>  }</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno"><a class="line" href="structVIPRA_1_1f3d.html#ac2c5774422abba54902f88353b46dfee">  358</a></span>  [[nodiscard]] <span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">float</span> <a class="code hl_function" href="structVIPRA_1_1f3d.html#ac2c5774422abba54902f88353b46dfee">dot</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a>&amp; other) <span class="keyword">const</span> <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keywordflow">return</span> (x * other.x) + (y * other.y) + (z * other.z);</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>  }</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>};</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span><span class="keyword">using </span>f2dVec = std::vector&lt;f2d&gt;;</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="keyword">using </span>f3dVec = std::vector&lt;f3d&gt;;</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno"><a class="line" href="structVIPRA_1_1F3dHash.html">  366</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structVIPRA_1_1F3dHash.html">F3dHash</a> {</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  std::size_t operator()(<span class="keyword">const</span> <a class="code hl_struct" href="structVIPRA_1_1f3d.html">f3d</a>&amp; <span class="keywordtype">object</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    std::size_t seed = 0;</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    seed += std::hash&lt;float&gt;{}(<span class="keywordtype">object</span>.x);</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    seed += std::hash&lt;float&gt;{}(<span class="keywordtype">object</span>.y);</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    seed += std::hash&lt;float&gt;{}(<span class="keywordtype">object</span>.z);</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <span class="keywordflow">return</span> seed;</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  }</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>};</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> <a class="code hl_struct" href="structVIPRA_1_1f2d.html">f2d</a> _emptyf2d_ =  <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <a class="code hl_struct" href="structVIPRA_1_1f2d.html">VIPRA::f2d</a>{std::numeric_limits&lt;float&gt;::max(), std::numeric_limits&lt;float&gt;::max()};</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> f3d _emptyf3d_ =  <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    <a class="code hl_struct" href="structVIPRA_1_1f3d.html">VIPRA::f3d</a>{std::numeric_limits&lt;float&gt;::max(), std::numeric_limits&lt;float&gt;::max(),</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>               std::numeric_limits&lt;float&gt;::max()};</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span><span class="keyword">extern</span> <span class="keyword">const</span> f2dVec emptyf2d_vec;  <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span><span class="keyword">extern</span> <span class="keyword">const</span> f3dVec emptyf3d_vec;  <span class="comment">// NOLINT</span></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>}  <span class="comment">// namespace VIPRA</span></div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="astructVIPRA_1_1F3dHash_html"><div class="ttname"><a href="structVIPRA_1_1F3dHash.html">VIPRA::F3dHash</a></div><div class="ttdef"><b>Definition</b> dimensions.hpp:366</div></div>
 <div class="ttc" id="astructVIPRA_1_1f2d_html"><div class="ttname"><a href="structVIPRA_1_1f2d.html">VIPRA::f2d</a></div><div class="ttdef"><b>Definition</b> dimensions.hpp:11</div></div>
 <div class="ttc" id="astructVIPRA_1_1f3d_html"><div class="ttname"><a href="structVIPRA_1_1f3d.html">VIPRA::f3d</a></div><div class="ttdef"><b>Definition</b> dimensions.hpp:135</div></div>
+<div class="ttc" id="astructVIPRA_1_1f3d_html_a68d9b5df62e799f0fb05e34bc87f028c"><div class="ttname"><a href="structVIPRA_1_1f3d.html#a68d9b5df62e799f0fb05e34bc87f028c">VIPRA::f3d::magnitudeSquared</a></div><div class="ttdeci">constexpr float magnitudeSquared() const noexcept</div><div class="ttdoc">Returns vector magnitude^2.</div><div class="ttdef"><b>Definition</b> dimensions.hpp:339</div></div>
+<div class="ttc" id="astructVIPRA_1_1f3d_html_ac2c5774422abba54902f88353b46dfee"><div class="ttname"><a href="structVIPRA_1_1f3d.html#ac2c5774422abba54902f88353b46dfee">VIPRA::f3d::dot</a></div><div class="ttdeci">constexpr float dot(const f3d &amp;other) const noexcept</div><div class="ttdoc">Returns the dot product between two f3ds.</div><div class="ttdef"><b>Definition</b> dimensions.hpp:358</div></div>
+<div class="ttc" id="astructVIPRA_1_1f3d_html_ac705b18c03931e90047d9dd296d5954e"><div class="ttname"><a href="structVIPRA_1_1f3d.html#ac705b18c03931e90047d9dd296d5954e">VIPRA::f3d::unit</a></div><div class="ttdeci">constexpr f3d unit() const noexcept</div><div class="ttdoc">Returns the unit vector in the direction of the f3d.</div><div class="ttdef"><b>Definition</b> dimensions.hpp:327</div></div>
+<div class="ttc" id="astructVIPRA_1_1f3d_html_ae99dec440a1f1da324235e8cdcc018a9"><div class="ttname"><a href="structVIPRA_1_1f3d.html#ae99dec440a1f1da324235e8cdcc018a9">VIPRA::f3d::magnitude</a></div><div class="ttdeci">constexpr float magnitude() const</div><div class="ttdoc">Returns the vectors magnitude.</div><div class="ttdef"><b>Definition</b> dimensions.hpp:348</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

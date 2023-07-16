@@ -102,7 +102,7 @@ $(function() {
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keyword">static</span> <span class="keyword">inline</span> <a class="code hl_class" href="classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a>&amp; getEngine(BHVR::seed seed) {</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">static</span> <a class="code hl_class" href="classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a> gen{};</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    gen.reseed(seed);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    gen.<a class="code hl_function" href="classVIPRA_1_1pRNG__Engine.html#a06ab81bf57fb7ae2143b932c8cd2da2d">reseed</a>(seed);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">return</span> gen;</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  }</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>};</div>
@@ -111,8 +111,9 @@ $(function() {
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassBHVR_1_1DRNG_html"><div class="ttname"><a href="classBHVR_1_1DRNG.html">BHVR::DRNG</a></div><div class="ttdef"><b>Definition</b> random.hpp:14</div></div>
 <div class="ttc" id="aclassBHVR_1_1DRNG_html_ad3e90d76b25dfe9a0e9d04c4dfadcee7"><div class="ttname"><a href="classBHVR_1_1DRNG.html#ad3e90d76b25dfe9a0e9d04c4dfadcee7">BHVR::DRNG::pedRandomFloat</a></div><div class="ttdeci">static float pedRandomFloat(BHVR::seed seed, VIPRA::idx pedIdx, float min, float max)</div><div class="ttdoc">Gets the random float between min and max that is assigned to the pedestrian at pedIdx.</div><div class="ttdef"><b>Definition</b> random.hpp:20</div></div>
-<div class="ttc" id="aclassVIPRA_1_1pRNG__Engine_html"><div class="ttname"><a href="classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a></div><div class="ttdef"><b>Definition</b> random.hpp:13</div></div>
-<div class="ttc" id="aclassVIPRA_1_1uniform__distribution_html"><div class="ttname"><a href="classVIPRA_1_1uniform__distribution.html">VIPRA::uniform_distribution</a></div><div class="ttdef"><b>Definition</b> distributions.hpp:26</div></div>
+<div class="ttc" id="aclassVIPRA_1_1pRNG__Engine_html"><div class="ttname"><a href="classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a></div><div class="ttdoc">Psuedo Random number engine.</div><div class="ttdef"><b>Definition</b> random.hpp:17</div></div>
+<div class="ttc" id="aclassVIPRA_1_1pRNG__Engine_html_a06ab81bf57fb7ae2143b932c8cd2da2d"><div class="ttname"><a href="classVIPRA_1_1pRNG__Engine.html#a06ab81bf57fb7ae2143b932c8cd2da2d">VIPRA::pRNG_Engine::reseed</a></div><div class="ttdeci">void reseed(uint64_t seedNum)</div><div class="ttdoc">Restarts the number generator with a new seed.</div><div class="ttdef"><b>Definition</b> random.hpp:40</div></div>
+<div class="ttc" id="aclassVIPRA_1_1uniform__distribution_html"><div class="ttname"><a href="classVIPRA_1_1uniform__distribution.html">VIPRA::uniform_distribution</a></div><div class="ttdoc">produces a uniform random distribution</div><div class="ttdef"><b>Definition</b> distributions.hpp:31</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -14,7 +14,7 @@
 <area shape="poly" id="edge80_Node000000_Node000006" title=" " alt="" coords="137,295,216,276,217,281,138,300"/>
 <area shape="rect" id="Node000007" href="$classObstacleSetException.html" title=" " alt="" coords="200,301,349,327"/>
 <area shape="poly" id="edge81_Node000000_Node000007" title=" " alt="" coords="141,312,199,312,199,317,141,317"/>
-<area shape="rect" id="Node000008" href="$classOutputDataWriterException.html" title=" " alt="" coords="186,351,363,376"/>
+<area shape="rect" id="Node000008" href="$classOutputDataWriterException.html" title="Handles writing output to the proper sink." alt="" coords="186,351,363,376"/>
 <area shape="poly" id="edge82_Node000000_Node000008" title=" " alt="" coords="138,328,217,347,216,353,137,334"/>
 <area shape="rect" id="Node000009" href="$classPedDynamicsException.html" title=" " alt="" coords="196,400,353,426"/>
 <area shape="poly" id="edge83_Node000000_Node000009" title=" " alt="" coords="95,334,132,362,176,386,205,397,203,402,174,391,129,366,92,339"/>

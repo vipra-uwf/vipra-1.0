@@ -1,6 +1,6 @@
 <map id="BehaviorBaseVisitor" name="BehaviorBaseVisitor">
 <area shape="rect" id="Node000001" title=" " alt="" coords="21,168,160,193"/>
-<area shape="rect" id="Node000004" href="$classBHVR_1_1BehaviorBuilder.html" title=" " alt="" coords="13,241,168,267"/>
+<area shape="rect" id="Node000004" href="$classBHVR_1_1BehaviorBuilder.html" title="Parses Behavior files and creates their runtime equivalent." alt="" coords="13,241,168,267"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="93,208,93,241,88,241,88,208"/>
 <area shape="rect" id="Node000002" href="$classBehaviorVisitor.html" title=" " alt="" coords="36,94,145,120"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,134,93,167,88,167,88,134"/>

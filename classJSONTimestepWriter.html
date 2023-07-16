@@ -75,12 +75,17 @@ $(function() {
   <div class="headertitle"><div class="title">JSONTimestepWriter Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Writes simulation timesteps as JSON to a file.  
+ <a href="classJSONTimestepWriter.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="json__timestep__writer_8hpp_source.html">json_timestep_writer.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for JSONTimestepWriter:</div>
 <div class="dyncontent">
 <div class="center"><img src="classJSONTimestepWriter__inherit__graph.png" border="0" usemap="#aJSONTimestepWriter_inherit__map" alt="Inheritance graph"/></div>
 <map name="aJSONTimestepWriter_inherit__map" id="aJSONTimestepWriter_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,151,105"/>
+<area shape="rect" title="Writes simulation timesteps as JSON to a file." alt="" coords="5,79,151,105"/>
 <area shape="rect" href="classOutputDataWriter.html" title=" " alt="" coords="17,5,139,31"/>
 <area shape="poly" title=" " alt="" coords="81,46,81,79,75,79,75,46"/>
 </map>
@@ -90,7 +95,7 @@ Collaboration diagram for JSONTimestepWriter:</div>
 <div class="dyncontent">
 <div class="center"><img src="classJSONTimestepWriter__coll__graph.png" border="0" usemap="#aJSONTimestepWriter_coll__map" alt="Collaboration graph"/></div>
 <map name="aJSONTimestepWriter_coll__map" id="aJSONTimestepWriter_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,151,105"/>
+<area shape="rect" title="Writes simulation timesteps as JSON to a file." alt="" coords="5,79,151,105"/>
 <area shape="rect" href="classOutputDataWriter.html" title=" " alt="" coords="17,5,139,31"/>
 <area shape="poly" title=" " alt="" coords="81,46,81,79,75,79,75,46"/>
 </map>
@@ -104,7 +109,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:addb884b58d2b5ea9ddd9c2d7086561ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJSONTimestepWriter.html#addb884b58d2b5ea9ddd9c2d7086561ac">configure</a> (const <a class="el" href="classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;configMap) override</td></tr>
 <tr class="separator:addb884b58d2b5ea9ddd9c2d7086561ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90a0e0dd95dbc7c03331fb568eba75e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJSONTimestepWriter.html#a90a0e0dd95dbc7c03331fb568eba75e4">initializeOutputFile</a> (const std::string &amp;outputFilePath) override</td></tr>
-<tr class="memdesc:a90a0e0dd95dbc7c03331fb568eba75e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the output file, Throws {<a class="el" href="classOutputDataWriterException.html">OutputDataWriterException</a>} if unable to open file.  <br /></td></tr>
+<tr class="memdesc:a90a0e0dd95dbc7c03331fb568eba75e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the output file, Throws {<a class="el" href="classOutputDataWriterException.html" title="Handles writing output to the proper sink.">OutputDataWriterException</a>} if unable to open file.  <br /></td></tr>
 <tr class="separator:a90a0e0dd95dbc7c03331fb568eba75e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e82f3af5fe1e6200f0516926d6922bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJSONTimestepWriter.html#a4e82f3af5fe1e6200f0516926d6922bd">addFloatValue</a> (const std::string &amp;key, float value) override</td></tr>
 <tr class="memdesc:a4e82f3af5fe1e6200f0516926d6922bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a float value to Document["timesteps"][timestep][key].  <br /></td></tr>
@@ -140,7 +145,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>configure</b>
 <a class="el" href="classOutputDataWriter.html">OutputDataWriter</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classOutputDataWriter.html">OutputDataWriter</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:a09f93511bea520dab9f588d7b260b375 inherit pub_methods_classOutputDataWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Writes simulation timesteps as JSON to a file. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a4e82f3af5fe1e6200f0516926d6922bd" name="a4e82f3af5fe1e6200f0516926d6922bd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4e82f3af5fe1e6200f0516926d6922bd">&#9670;&#160;</a></span>addFloatValue()</h2>
 
@@ -309,10 +316,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>configure</b>
 </table>
 </div><div class="memdoc">
 
-<p>Opens the output file, Throws {<a class="el" href="classOutputDataWriterException.html">OutputDataWriterException</a>} if unable to open file. </p>
+<p>Opens the output file, Throws {<a class="el" href="classOutputDataWriterException.html" title="Handles writing output to the proper sink.">OutputDataWriterException</a>} if unable to open file. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classOutputDataWriterException.html">OutputDataWriterException</a></td><td></td></tr>
+    <tr><td class="paramname"><a class="el" href="classOutputDataWriterException.html" title="Handles writing output to the proper sink.">OutputDataWriterException</a></td><td></td></tr>
   </table>
   </dd>
 </dl>

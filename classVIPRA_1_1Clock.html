@@ -80,17 +80,22 @@ $(function() {
   <div class="headertitle"><div class="title">VIPRA::Clock&lt; TimeT, ClockT &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="classVIPRA_1_1Clock.html" title="Clock to time execution time.">Clock</a> to time execution time.  
+ <a href="classVIPRA_1_1Clock.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="clock_8hpp_source.html">clock.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aaf063fb7323da097cf98904d79ef12d2"><td class="memItemLeft" align="right" valign="top"><a id="aaf063fb7323da097cf98904d79ef12d2" name="aaf063fb7323da097cf98904d79ef12d2"></a>
-TimeT&#160;</td><td class="memItemRight" valign="bottom"><b>now</b> ()</td></tr>
+<tr class="memitem:aaf063fb7323da097cf98904d79ef12d2"><td class="memItemLeft" align="right" valign="top">TimeT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVIPRA_1_1Clock.html#aaf063fb7323da097cf98904d79ef12d2">now</a> ()</td></tr>
+<tr class="memdesc:aaf063fb7323da097cf98904d79ef12d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current time.  <br /></td></tr>
 <tr class="separator:aaf063fb7323da097cf98904d79ef12d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98d4e8003e6b86c7f3dc9cc264a99483"><td class="memItemLeft" align="right" valign="top"><a id="a98d4e8003e6b86c7f3dc9cc264a99483" name="a98d4e8003e6b86c7f3dc9cc264a99483"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>start</b> ()</td></tr>
+<tr class="memitem:a98d4e8003e6b86c7f3dc9cc264a99483"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVIPRA_1_1Clock.html#a98d4e8003e6b86c7f3dc9cc264a99483">start</a> ()</td></tr>
+<tr class="memdesc:a98d4e8003e6b86c7f3dc9cc264a99483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the timer.  <br /></td></tr>
 <tr class="separator:a98d4e8003e6b86c7f3dc9cc264a99483"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea598c35321dd78197ec3bc6bc05de51"><td class="memItemLeft" align="right" valign="top"><a id="aea598c35321dd78197ec3bc6bc05de51" name="aea598c35321dd78197ec3bc6bc05de51"></a>
-TimeT&#160;</td><td class="memItemRight" valign="bottom"><b>stop</b> ()</td></tr>
+<tr class="memitem:aea598c35321dd78197ec3bc6bc05de51"><td class="memItemLeft" align="right" valign="top">TimeT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVIPRA_1_1Clock.html#aea598c35321dd78197ec3bc6bc05de51">stop</a> ()</td></tr>
+<tr class="memdesc:aea598c35321dd78197ec3bc6bc05de51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the timer and returns the time since it was started.  <br /></td></tr>
 <tr class="separator:aea598c35321dd78197ec3bc6bc05de51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -99,6 +104,106 @@ Static Public Attributes</h2></td></tr>
 static constexpr TimeT&#160;</td><td class="memItemRight" valign="bottom"><b>zero</b> = TimeT::zero()</td></tr>
 <tr class="separator:a813b968fdfd2754dafd5ca40414dfc12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename TimeT = seconds, typename ClockT = std::chrono::steady_clock&gt;<br />
+class VIPRA::Clock&lt; TimeT, ClockT &gt;</div><p><a class="el" href="classVIPRA_1_1Clock.html" title="Clock to time execution time.">Clock</a> to time execution time. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TimeT</td><td>: time scale </td></tr>
+    <tr><td class="paramname">ClockT</td><td>: type of clock to use </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aaf063fb7323da097cf98904d79ef12d2" name="aaf063fb7323da097cf98904d79ef12d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf063fb7323da097cf98904d79ef12d2">&#9670;&#160;</a></span>now()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TimeT  = seconds, typename ClockT  = std::chrono::steady_clock&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TimeT <a class="el" href="classVIPRA_1_1Clock.html">VIPRA::Clock</a>&lt; TimeT, ClockT &gt;::now </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the current time. </p>
+<dl class="section return"><dt>Returns</dt><dd>TimeT </dd></dl>
+
+</div>
+</div>
+<a id="a98d4e8003e6b86c7f3dc9cc264a99483" name="a98d4e8003e6b86c7f3dc9cc264a99483"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98d4e8003e6b86c7f3dc9cc264a99483">&#9670;&#160;</a></span>start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TimeT  = seconds, typename ClockT  = std::chrono::steady_clock&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classVIPRA_1_1Clock.html">VIPRA::Clock</a>&lt; TimeT, ClockT &gt;::start </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Starts the timer. </p>
+
+</div>
+</div>
+<a id="aea598c35321dd78197ec3bc6bc05de51" name="aea598c35321dd78197ec3bc6bc05de51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea598c35321dd78197ec3bc6bc05de51">&#9670;&#160;</a></span>stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TimeT  = seconds, typename ClockT  = std::chrono::steady_clock&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TimeT <a class="el" href="classVIPRA_1_1Clock.html">VIPRA::Clock</a>&lt; TimeT, ClockT &gt;::stop </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stops the timer and returns the time since it was started. </p>
+<dl class="section return"><dt>Returns</dt><dd>TimeT </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>VIPRA/Base/clock/<a class="el" href="clock_8hpp_source.html">clock.hpp</a></li>
 </ul>
