@@ -5,14 +5,16 @@
 #include <events/event.hpp>
 
 namespace BHVR {
+/**
+  * @brief Returns true if the chosen event has occurred at all during a simulation run
+  * 
+  */
 class SubConditionEventOccurred {
  public:
   explicit SubConditionEventOccurred(VIPRA::idx);
 
-
-
-  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
-                  VIPRA::delta_t) const;
+  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                  const BehaviorContext&, VIPRA::idx, VIPRA::delta_t) const;
 
  private:
   VIPRA::idx event;

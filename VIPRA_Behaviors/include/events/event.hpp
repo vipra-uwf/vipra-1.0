@@ -10,14 +10,15 @@
 namespace BHVR {
 
 /**
-   * @brief An Event is something that occurs during a simulation, when an event starts it notifies it's subscribing functions and same when it ends
+   * @brief An Event is something that occurs during a simulation 
    *
    */
 class Event {
  public:
   explicit Event(std::string);
 
-  void evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, BehaviorContext&, VIPRA::delta_t);
+  void evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, BehaviorContext&,
+                VIPRA::delta_t);
 
   void setStartCondition(const Condition&);
   void setEndCondition(const Condition&);

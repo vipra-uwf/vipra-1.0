@@ -319,19 +319,42 @@ struct f3d {
 
   inline constexpr f3d operator-() const noexcept { return f3d{-x, -y, -z}; }
 
+  /**
+   * @brief Returns the unit vector in the direction of the f3d
+   * 
+   * @return constexpr f3d 
+   */
   [[nodiscard]] inline constexpr f3d unit() const noexcept {
     if (x == 0 && y == 0 && z == 0) {
       return f3d{0, 0, 0};
     }
     return f3d{x, y, z} / magnitude();
   }
+
+  /**
+   * @brief Returns vector magnitude^2
+   * 
+   * @return constexpr float 
+   */
   [[nodiscard]] inline constexpr float magnitudeSquared() const noexcept {
     return (x * x) + (y * y) + (z * z);
   }
+
+  /**
+   * @brief Returns the vectors magnitude
+   * 
+   * @return constexpr float 
+   */
   [[nodiscard]] inline constexpr float magnitude() const {
     return std::sqrt((x * x) + (y * y) + (z * z));
   }
 
+  /**
+   * @brief Returns the dot product between two f3ds
+   * 
+   * @param other : 
+   * @return constexpr float 
+   */
   [[nodiscard]] inline constexpr float dot(const f3d& other) const noexcept {
     return (x * other.x) + (y * other.y) + (z * other.z);
   }

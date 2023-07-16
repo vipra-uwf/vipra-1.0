@@ -11,6 +11,10 @@
 #include <policy_model/policy_model.hpp>
 #include <simulation_output_handler/simulation_output_handler.hpp>
 
+/**
+ * @brief Main Simulation Class
+ * 
+ */
 class Simulation {
  public:
   void configure(const VIPRA::CONFIG::Map& config);

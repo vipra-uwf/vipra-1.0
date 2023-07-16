@@ -35,6 +35,10 @@ std::string              optionsFile;
 std::vector<std::string> includes;
 VIPRA::CONFIG::Map       jsonObj;
 
+/**
+ * @brief Map of all module types and their base class name
+ * 
+ */
 const std::unordered_map<std::string, std::string> TYPES{
     {"pedestrian_dynamics_model", "PedestrianDynamicsModel"},
     {"goals", "Goals"},
@@ -85,6 +89,12 @@ int main(int argc, char const* argv[]) {
 }
 
 // NOLINTBEGIN : (rolland) getting around using plain ptr arithmetic for this isn't worth it    : ignoring (cppcoreguidelines-pro-bounds-pointer-arithmetic)
+/**
+ * @brief Gets the file paths provided from command line
+ * 
+ * @param argc : 
+ * @param argv : 
+ */
 void setFiles(int argc, const char** argv) {
   if (argc > 4 || argc < 3) {
     std::cerr << "Usage: generateMain *output file* *options file*\n";
@@ -99,6 +109,11 @@ void setFiles(int argc, const char** argv) {
 }
 // NOLINTEND
 
+/**
+ * @brief Creates a string with include paths for each module found by the launcher, plus somw standard/library includes
+ * 
+ * @return std::string 
+ */
 std::string generateIncludes() {
   std::string generatedIncludes;
   for (const auto& type : TYPES) {
@@ -122,6 +137,12 @@ std::string generateIncludes() {
 
   return generatedIncludes;
 }
+
+/**
+ * @brief Creates a string with all of the function declarations for module generation
+ * 
+ * @return std::string 
+ */
 std::string generateFunctionDeclarations() {
   std::string generatedDeclarations =
       "\nVIPRA::CONFIG::Map extractConfigMap(std::string name);";
@@ -134,6 +155,13 @@ std::string generateFunctionDeclarations() {
   return generatedDeclarations;
 }
 
+/**
+ * @brief Creates a string with the function for generating a module of type
+ * 
+ * @param className : 
+ * @param type : 
+ * @return std::string 
+ */
 std::string generateObjectFunction(const std::string& className,
                                    const std::string& type) {
   std::string generatedFunction =
@@ -146,6 +174,12 @@ std::string generateObjectFunction(const std::string& className,
   return generatedFunction;
 }
 
+/**
+ * @brief Creates a string with the if block that checks which module implementation is being used
+ * 
+ * @param type : 
+ * @return std::string 
+ */
 std::string generateFunctionOptions(const std::string& type) {
   std::string generatedFunction;
   for (const auto& option : jsonObj[type]) {
@@ -168,6 +202,11 @@ std::string generateFunctionOptions(const std::string& type) {
   return generatedFunction;
 }
 
+/**
+ * @brief Creates a string with the function for extracting config maps from the module params
+ * 
+ * @return std::string 
+ */
 std::string generateExtractConfigMap() {
   return {
       "\nVIPRA::CONFIG::Map extractConfigMap(std::string name)"
@@ -185,6 +224,11 @@ std::string generateExtractConfigMap() {
       "\n}"};
 }
 
+/**
+ * @brief Creates a string with the generated main function
+ * 
+ * @return std::string 
+ */
 std::string generateMain() {
   std::string mainFunction;
 
@@ -204,6 +248,11 @@ std::string generateMain() {
   return mainFunction;
 }
 
+/**
+ * @brief Creates a string that initializes each module in order
+ * 
+ * @return std::string 
+ */
 std::string initializeModules() {
   return log("Initializing Map Loader") + "\n\tmap_loader->initialize();\n\t" +
 
@@ -251,6 +300,11 @@ std::string initializeModules() {
          log("Initializing Simulation") + "\n\tsimulation->initialize();\n\t";
 }
 
+/**
+ * @brief Creates string with the start of the main function definition
+ * 
+ * @return std::string 
+ */
 std::string mainFunctionDefinition() {
   return "\nVIPRA::CONFIG::Map simulationJsonConfig;"
          "\nVIPRA::CONFIG::Map moduleParams;"
@@ -260,6 +314,11 @@ std::string mainFunctionDefinition() {
          "\n\tmoduleParams = ConfigurationReader::getConfiguration(paramsFile);";
 }
 
+/**
+ * @brief Creates a string that calls the generate function for each module type
+ * 
+ * @return std::string 
+ */
 std::string generateModules() {
   std::string str;
   for (const auto& [type, className] : TYPES) {
@@ -270,6 +329,11 @@ std::string generateModules() {
   return str;
 }
 
+/**
+ * @brief Creates a string that calls extractConfigMap for each module type
+ * 
+ * @return std::string 
+ */
 std::string makeModuleConfigs() {
   std::string str;
   for (const auto& [type, className] : TYPES) {
@@ -280,6 +344,11 @@ std::string makeModuleConfigs() {
   return str;
 }
 
+/**
+ * @brief Creates string for function that gets input file paths from the command line
+ * 
+ * @return std::string 
+ */
 std::string generateGetFiles() {
   return {
       "\nstd::string paramsFile;"
@@ -304,6 +373,11 @@ std::string generateGetFiles() {
       "\n}"};
 }
 
+/**
+ * @brief Creates a string that starts the simulation
+ * 
+ * @return std::string 
+ */
 std::string runSim() {
   return "\n\tsimulation->run(*goals,"
          "*pedestrian_set,"
@@ -316,14 +390,30 @@ std::string runSim() {
          "\n\toutput_data_writer->writeToDocument();";
 }
 
+/**
+ * @brief Creates a string that initializes the output writer
+ * 
+ * @return std::string 
+ */
 std::string outputSetup() {
   return "\n\toutput_data_writer->initializeOutputFile(outputFile);";
 }
 
+/**
+ * @brief Creates a string that logs to the console
+ * 
+ * @param message : 
+ * @return std::string 
+ */
 std::string log(const std::string& message) {
   return "spdlog::info( \"" + message + "\");\n";
 }
 
+/**
+ * @brief Creates a string that turns of linting for the file
+ * 
+ * @return std::string 
+ */
 std::string turnOffLint() {
   return "\n// NOLINTBEGIN (rolland) No point in linting generated code : ignoring (all) "
          "\n";

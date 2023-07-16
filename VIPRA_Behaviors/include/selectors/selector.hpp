@@ -13,6 +13,10 @@
 
 namespace BHVR {
 
+/**
+ * @brief Selectors choose which pedestrians belong to which type, through subselectors
+ * 
+ */
 class Selector {
  public:
   Selector() = default;

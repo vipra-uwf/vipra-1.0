@@ -4,6 +4,11 @@
 #include <cstring>
 #include <string>
 
+/**
+ * @brief Struct for std::unordered_map to allow for lookup with any capitalization
+ * @example KEY Key key kEy: all return the same hash
+ * 
+ */
 struct CaselessStrCompare {
   struct Comp {
     bool operator()(const std::string& str1, const std::string& str2) const {

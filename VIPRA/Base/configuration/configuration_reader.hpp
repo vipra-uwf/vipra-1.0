@@ -17,6 +17,10 @@ class ConfigurationReaderException : public std::runtime_error {
   }
 };
 
+/**
+ * @brief Reads module params for configuration values
+ * 
+ */
 class ConfigurationReader {
  public:
   static VIPRA::CONFIG::Map getConfiguration(const std::string& filePath);

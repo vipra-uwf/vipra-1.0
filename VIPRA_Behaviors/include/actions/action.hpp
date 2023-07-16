@@ -17,6 +17,10 @@
 #include "values/numeric_value.hpp"
 
 namespace BHVR {
+/**
+ * @brief Affects pedestrians based on the atoms added to it
+ * 
+ */
 class Action {
  public:
   ~Action() = default;

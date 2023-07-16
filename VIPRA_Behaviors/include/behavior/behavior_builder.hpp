@@ -22,7 +22,6 @@
 #include <time/time.hpp>
 #include <values/values.hpp>
 
-
 namespace BHVR {
 
 using StateMap = std::unordered_map<std::string, BHVR::stateUID, CaselessStrCompare::Hash,
@@ -40,6 +39,10 @@ class BuilderException : public std::runtime_error {
   static void error() { throw BuilderException(); }
 };
 
+/**
+ * @brief Parses Behavior files and creates their runtime equivalent
+ * 
+ */
 class BehaviorBuilder : public BehaviorBaseVisitor {
  public:
   HumanBehavior build(std::string, const std::filesystem::path&, BHVR::seed);

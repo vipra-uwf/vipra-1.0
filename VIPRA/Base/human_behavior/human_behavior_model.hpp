@@ -16,6 +16,10 @@ class BehaviorModelException : public std::runtime_error {
   static void error(const std::string& message) { throw BehaviorModelException(message); }
 };
 
+/**
+ * @brief Coordinator for Human Behaviors
+ * 
+ */
 class HumanBehaviorModel {
  public:
   explicit HumanBehaviorModel(std::vector<BHVR::HumanBehavior> humanBehaviors)

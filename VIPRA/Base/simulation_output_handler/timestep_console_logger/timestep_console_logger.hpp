@@ -4,6 +4,10 @@
 #include <spdlog/spdlog.h>
 #include <simulation_output_handler/simulation_output_handler.hpp>
 
+/**
+ * @brief Outputs to console
+ * 
+ */
 class TimestepConsoleLogger : public SimulationOutputHandler {
  public:
   void configure(const VIPRA::CONFIG::Map&) override;

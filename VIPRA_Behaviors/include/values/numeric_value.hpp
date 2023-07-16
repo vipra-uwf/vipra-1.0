@@ -11,8 +11,16 @@
 
 namespace BHVR {
 
+/**
+ * @brief Used by Numeric Values to get their run-time value
+ * 
+ */
 using ValueFunc = std::function<float(BHVR::seed, VIPRA::idx)>;
 
+/**
+ * @brief Holds a runtime value for a Behavior
+ * 
+ */
 class NumericValue {
  public:
   explicit NumericValue(BHVR::seed seedNum, ValueFunc func)
@@ -28,11 +36,19 @@ class NumericValue {
   NumericValue() = default;
 };
 
+/**
+ * @brief Holds an exact runtime value
+ * 
+ */
 struct ExactValue {
   float        value;
   inline float operator()(BHVR::seed, VIPRA::idx) const { return value; }
 };
 
+/**
+ * @brief Holds a float runtime value that is different for each pedestrian, but the same for the given pedestrian
+ * 
+ */
 struct RandomFloatValue {
   float min{};
   float max{};
@@ -42,6 +58,10 @@ struct RandomFloatValue {
   }
 };
 
+/**
+ * @brief Holds a whole number runtime value that is different for each pedestrian, but the same for the given pedestrian
+ * 
+ */
 struct RandomNumberValue {
   float min{};
   float max{};

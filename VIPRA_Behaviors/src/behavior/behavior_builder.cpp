@@ -41,7 +41,7 @@ namespace BHVR {
  * @param behaviorName 
  * @param filepath 
  * @param seedNum 
- * @return HumanBehavior&&
+ * @return HumanBehavior
  */
 HumanBehavior BehaviorBuilder::build(std::string                  behaviorName,
                                      const std::filesystem::path& filepath,
@@ -93,6 +93,10 @@ void BehaviorBuilder::initialBehaviorSetup(const std::string& behaviorName,
   initializeLocations();
 }
 
+/**
+ * @brief cleans and initializes the events map
+ * 
+ */
 void BehaviorBuilder::initializeEvents() {
   eventsMap.clear();
 
@@ -104,11 +108,19 @@ void BehaviorBuilder::initializeEvents() {
   eventsMap["!start"] = currentBehavior.addEvent(startEvent);
 }
 
+/**
+ * @brief Cleans and initializes the state map and current state
+ * 
+ */
 void BehaviorBuilder::initializeStates() {
   states.clear();
   currState = 1;
 }
 
+/**
+ * @brief Cleans and initializes the type map
+ * 
+ */
 void BehaviorBuilder::initializeTypes() {
   types.clear();
   types["pedestrian"] = 0;
@@ -116,14 +128,18 @@ void BehaviorBuilder::initializeTypes() {
   currType = 1;
 }
 
+/**
+ * @brief Cleans and initializes the locations map
+ * 
+ */
 void BehaviorBuilder::initializeLocations() { locations.clear(); }
 
 // ------------------------------------ END INITIALIZATION --------------------------------------------------------------------------------------
 
 /**
- * @brief Creates a new condition adding all sub_conditions and operations
+ * @brief Creates a new condition adding all sub_conditions and operations from a condition context
  * 
- * @param cond 
+ * @param cond condition context
  * @return Condition
  */
 Condition BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond) {
@@ -151,10 +167,10 @@ Condition BehaviorBuilder::buildCondition(BehaviorParser::ConditionContext* cond
 }
 
 /**
- * @brief Finds the appropriate subcondition in CondMap and adds it to the condition, along with the parameters from the behavior file
+ * @brief Adds the subcondition described by they sub condition context and adds it to the condition
  * 
- * @param condition 
- * @param subcond 
+ * @param condition condition to add subcondition to
+ * @param subcond sub condition context
  */
 void BehaviorBuilder::addSubCondToCondtion(
     Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
@@ -231,11 +247,10 @@ void BehaviorBuilder::addAtomToAction(Action&                             action
 // ------------------------- UTIL Methods -----------------------------------------------------------------------------------------------------
 
 /**
- * @brief Gets a pointer to the event with name evName from eventsMap
- * @exits if the event isn't found
+ * @brief Returns the index for the event with name evName in the behaviors BehaviorContext
  * 
  * @param evName : name of event to find
- * @return Event*
+ * @return VIPRA::idx
  */
 VIPRA::idx BehaviorBuilder::getEvent(const std::string& evName) {
   auto ev = eventsMap.find(evName);
@@ -249,11 +264,10 @@ VIPRA::idx BehaviorBuilder::getEvent(const std::string& evName) {
 }
 
 /**
- * @brief Gets a pointer to the Location with a name locName from LocationsMap
- * @exits if the location was not found
+ * @brief Returns the index for the location with name locName in the behaviors BehaviorContext
  * 
  * @param locName : Name of location to find
- * @return Location*
+ * @return VIPRA::idx
 */
 VIPRA::idx BehaviorBuilder::getLocation(const std::string& locName) {
   auto loc = locations.find(locName);
@@ -268,7 +282,6 @@ VIPRA::idx BehaviorBuilder::getLocation(const std::string& locName) {
 
 /**
  * @brief Returns the stateUID associated with a state string
- * @exits if the state isn't found
  * 
  * @param state : name of state
  * @return stateUID 
@@ -284,7 +297,6 @@ stateUID BehaviorBuilder::getState(const std::string& state) {
 
 /**
  * @brief Gets the id for a type from its name
- * @exits if the type isn't found
  * 
  * @param type : type name
  * @return typeUID
@@ -302,7 +314,7 @@ typeUID BehaviorBuilder::getType(const std::string& type) const {
 }
 
 /**
- * @brief Combines a list of types into one type
+ * @brief Combines a list of types into one composite type
  * 
  * @param types : id_list vector
  * @return BHVR::Ptype 
@@ -355,9 +367,9 @@ void BehaviorBuilder::endBehaviorCheck() {
 // --------------------------------------------- ANTLR VISITOR METHODS -----------------------------------------------------------------------------------------
 
 /**
- * @brief Creates a new single fire event and adds it to the eventsMap
+ * @brief Creates a new event and adds it to the eventsMap
  * 
- * @param ctx : antlr context
+ * @param ctx : event context context
  * @return antlrcpp::Any
  */
 antlrcpp::Any BehaviorBuilder::visitEvent_Single(
@@ -497,6 +509,12 @@ antlrcpp::Any BehaviorBuilder::visitPed_Selector(
 
 // ------------------------------- ACTIONS -----------------------------------------------------------------------------------------
 
+/**
+ * @brief Creates a conditional action from an action context and adds it to the behavior
+ * 
+ * @param ctx : 
+ * @return antlrcpp::Any 
+ */
 antlrcpp::Any BehaviorBuilder::visitConditional_action(
     BehaviorParser::Conditional_actionContext* ctx) {
   const auto& atoms = ctx->sub_action()->action_atom();
@@ -549,45 +567,65 @@ antlrcpp::Any BehaviorBuilder::visitUn_conditional_action(
 // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
 
 antlrcpp::Any BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
-    if (ctx->decl_Loc_Area_Circle()) {
-
+  if (ctx->decl_Loc_Area_Circle()) {
     const std::string circleName = ctx->decl_Loc_Area_Circle()->ID()->toString();
-    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(), circleName);
+    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(),
+                  circleName);
 
-    const float circleCenterPointX = getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_numeric().at(0), currSeed).value(0);
-    const float circleCenterPointY = getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_numeric().at(1), currSeed).value(0);
-    const float circleRadius = getNumeric(ctx->decl_Loc_Area_Circle()->value_numeric(), currSeed).value(0);
+    const float circleCenterPointX =
+        getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_numeric().at(0), currSeed)
+            .value(0);
+    const float circleCenterPointY =
+        getNumeric(ctx->decl_Loc_Area_Circle()->point()->value_numeric().at(1), currSeed)
+            .value(0);
+    const float circleRadius =
+        getNumeric(ctx->decl_Loc_Area_Circle()->value_numeric(), currSeed).value(0);
 
-    std::shared_ptr<BHVR::Shape> circle = std::make_shared<BHVR::Circle>(VIPRA::f3d(circleCenterPointX, circleCenterPointY), circleRadius);
+    std::shared_ptr<BHVR::Shape> circle = std::make_shared<BHVR::Circle>(
+        VIPRA::f3d(circleCenterPointX, circleCenterPointY), circleRadius);
 
-    locations[circleName] = currentBehavior.addLocation(BHVR::Location(circleName, BHVR::ShapeType::CIRCLE, circle));
+    locations[circleName] = currentBehavior.addLocation(
+        BHVR::Location(circleName, BHVR::ShapeType::CIRCLE, circle));
 
   } else if (ctx->decl_Loc_Area_Rect()) {
-    
     const auto rectName = ctx->decl_Loc_Area_Rect()->ID()->toString();
-    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(), rectName);
+    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(),
+                  rectName);
 
-    const float rectCenterPointX = getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_numeric().at(0), currSeed).value(0);
-    const float rectCenterPointY = getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_numeric().at(1), currSeed).value(0);
-    const float rectLen = getNumeric(ctx->decl_Loc_Area_Rect()->value_numeric().at(0), currSeed).value(0);
-    const float rectWidth = getNumeric(ctx->decl_Loc_Area_Rect()->value_numeric().at(1), currSeed).value(0);
+    const float rectCenterPointX =
+        getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_numeric().at(0), currSeed)
+            .value(0);
+    const float rectCenterPointY =
+        getNumeric(ctx->decl_Loc_Area_Rect()->point()->value_numeric().at(1), currSeed)
+            .value(0);
+    const float rectLen =
+        getNumeric(ctx->decl_Loc_Area_Rect()->value_numeric().at(0), currSeed).value(0);
+    const float rectWidth =
+        getNumeric(ctx->decl_Loc_Area_Rect()->value_numeric().at(1), currSeed).value(0);
 
-    std::shared_ptr<BHVR::Shape> rectangle = std::make_shared<BHVR::Rectangle>(VIPRA::f3d(rectCenterPointX, rectCenterPointY), rectLen, rectWidth);
-    
-    locations[rectName] = currentBehavior.addLocation(BHVR::Location(rectName, BHVR::ShapeType::RECTANGLE, rectangle)); 
+    std::shared_ptr<BHVR::Shape> rectangle = std::make_shared<BHVR::Rectangle>(
+        VIPRA::f3d(rectCenterPointX, rectCenterPointY), rectLen, rectWidth);
 
-  } else if(ctx->decl_Loc_Point()) {
+    locations[rectName] = currentBehavior.addLocation(
+        BHVR::Location(rectName, BHVR::ShapeType::RECTANGLE, rectangle));
 
+  } else if (ctx->decl_Loc_Point()) {
     const auto pointName = ctx->decl_Loc_Point()->ID()->toString();
-    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(), pointName);
+    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(),
+                  pointName);
 
-    const float pointX = getNumeric(ctx->decl_Loc_Point()->point()->value_numeric().at(0), currSeed).value(0);
-    const float pointY = getNumeric(ctx->decl_Loc_Point()->point()->value_numeric().at(1), currSeed).value(0);
+    const float pointX =
+        getNumeric(ctx->decl_Loc_Point()->point()->value_numeric().at(0), currSeed)
+            .value(0);
+    const float pointY =
+        getNumeric(ctx->decl_Loc_Point()->point()->value_numeric().at(1), currSeed)
+            .value(0);
 
-    std::shared_ptr<BHVR::Shape> point = std::make_shared<BHVR::Point>(VIPRA::f3d(pointX, pointY));
+    std::shared_ptr<BHVR::Shape> point =
+        std::make_shared<BHVR::Point>(VIPRA::f3d(pointX, pointY));
 
-    locations[pointName] = currentBehavior.addLocation(BHVR::Location(pointName, BHVR::ShapeType::POINT, point)); 
-    
+    locations[pointName] = currentBehavior.addLocation(
+        BHVR::Location(pointName, BHVR::ShapeType::POINT, point));
   }
 
   return BehaviorBaseVisitor::visitDecl_Loc(ctx);

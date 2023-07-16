@@ -18,7 +18,7 @@
 
 namespace BHVR {
 /**
- * Describes a specific human behavior. Implementations can either define the behavior directly in C++ or use a DSL.
+ * @brief Describes a specific human behavior
  */
 class HumanBehavior {
  public:

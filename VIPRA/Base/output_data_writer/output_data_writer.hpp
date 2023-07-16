@@ -8,6 +8,10 @@
 #include <definitions/config_map.hpp>
 #include <definitions/type_definitions.hpp>
 
+/**
+ * @brief Handles writing output to the proper sink
+ * 
+ */
 class OutputDataWriterException : public std::runtime_error {
  public:
   explicit OutputDataWriterException(const std::string& message)

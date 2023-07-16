@@ -10,6 +10,10 @@
 #include <values/numeric_value.hpp>
 
 namespace BHVR {
+/**
+ * @brief Returns true after a given duration from an event starting
+ * 
+ */
 class SubConditionElapsedTimeFromEvent {
  public:
   SubConditionElapsedTimeFromEvent(BHVR::NumericValue, VIPRA::idx);
