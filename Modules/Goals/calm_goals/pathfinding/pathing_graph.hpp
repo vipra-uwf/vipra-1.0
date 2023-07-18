@@ -80,6 +80,13 @@ struct GridPointHash {
   }
 };
 
+/**
+ * @class PathingGraph
+ * @brief A class that builds a graph of points for the paths to be built upon.
+ *
+ * This class provides implementations for creating, searching, and representing the
+ * graph that the pedestrians paths are created from, which is used in the simulation.
+ */
 class PathingGraph {
  public:
 
