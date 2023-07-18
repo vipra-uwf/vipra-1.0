@@ -1,9 +1,0 @@
-<map id="BHVR::BehaviorBuilder" name="BHVR::BehaviorBuilder">
-<area shape="rect" id="Node000001" title="Parses Behavior files and creates their runtime equivalent." alt="" coords="13,241,168,267"/>
-<area shape="rect" id="Node000002" href="$classBehaviorBaseVisitor.html" title=" " alt="" coords="21,168,160,193"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,208,93,241,88,241,88,208"/>
-<area shape="rect" id="Node000003" href="$classBehaviorVisitor.html" title=" " alt="" coords="36,94,145,120"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="93,134,93,167,88,167,88,134"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,5,176,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="93,61,93,93,88,93,88,61"/>
-</map>

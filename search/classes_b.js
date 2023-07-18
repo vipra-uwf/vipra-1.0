@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['map_0',['Map',['../classVIPRA_1_1CONFIG_1_1Map.html',1,'VIPRA::CONFIG']]],
-  ['mapdata_1',['MapData',['../structVIPRA_1_1MapData.html',1,'VIPRA']]],
-  ['maploader_2',['MapLoader',['../classMapLoader.html',1,'']]],
-  ['maploaderexception_3',['MapLoaderException',['../classMapLoaderException.html',1,'']]],
-  ['modeldata_4',['ModelData',['../structModelData.html',1,'']]]
+  ['normal_5fdistribution_0',['normal_distribution',['../d4/d74/classVIPRA_1_1normal__distribution.html',1,'VIPRA']]],
+  ['numericvalue_1',['NumericValue',['../dc/d06/classBHVR_1_1NumericValue.html',1,'BHVR']]]
 ];

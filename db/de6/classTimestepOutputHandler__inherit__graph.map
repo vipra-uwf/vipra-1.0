@@ -1,0 +1,5 @@
+<map id="TimestepOutputHandler" name="TimestepOutputHandler">
+<area shape="rect" id="Node000001" title="Outputs timesteps, x,y,z positions of each pedestrian." alt="" coords="9,79,168,105"/>
+<area shape="rect" id="Node000002" href="$d9/deb/classSimulationOutputHandler.html" title="Coordinates output writers." alt="" coords="5,5,172,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,46,91,79,86,79,86,46"/>
+</map>

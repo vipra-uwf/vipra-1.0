@@ -1,5 +1,0 @@
-<map id="JSONTimestepWriter" name="JSONTimestepWriter">
-<area shape="rect" id="Node000001" title="Writes simulation timesteps as JSON to a file." alt="" coords="5,79,151,105"/>
-<area shape="rect" id="Node000002" href="$classOutputDataWriter.html" title=" " alt="" coords="17,5,139,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,46,81,79,75,79,75,46"/>
-</map>

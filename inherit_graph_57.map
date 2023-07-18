@@ -1,7 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classOutputDataWriter.html" title=" " alt="" coords="5,31,127,56"/>
-<area shape="rect" id="Node000001" href="$classJSONTimestepWriter.html" title="Writes simulation timesteps as JSON to a file." alt="" coords="175,5,320,31"/>
-<area shape="poly" id="edge67_Node000000_Node000001" title=" " alt="" coords="141,30,174,26,174,31,142,36"/>
-<area shape="rect" id="Node000002" href="$classJSONWriter.html" title="Writes output as JSON to a file." alt="" coords="202,55,293,80"/>
-<area shape="poly" id="edge68_Node000000_Node000002" title=" " alt="" coords="142,51,201,59,201,64,141,56"/>
+<area shape="rect" id="Node000000" href="$d5/d90/classPedestrianSet.html" title=" " alt="" coords="5,5,109,31"/>
+<area shape="rect" id="Node000001" href="$db/df2/classCalmPedestrianSet.html" title=" " alt="" coords="157,5,290,31"/>
+<area shape="poly" id="edge13_Node000000_Node000001" title=" " alt="" coords="124,16,156,16,156,21,124,21"/>
 </map>

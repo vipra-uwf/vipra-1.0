@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structBHVR_1_1SelectorExactlyN.html" title="Selects exactly N pedestrians from a group to be given a type." alt="" coords="5,5,169,31"/>
+<area shape="rect" id="Node000000" href="$d1/d4b/classBHVR_1_1Shape.html" title="A Shape is an area in the map that is either predefined in the config file, or defined by a behavior ..." alt="" coords="5,55,107,80"/>
+<area shape="rect" id="Node000001" href="$d1/d71/classBHVR_1_1Circle.html" title=" " alt="" coords="167,5,265,31"/>
+<area shape="poly" id="edge3_Node000000_Node000001" title=" " alt="" coords="113,47,171,29,172,34,115,52"/>
+<area shape="rect" id="Node000002" href="$d7/d4b/classBHVR_1_1Point.html" title=" " alt="" coords="169,55,263,80"/>
+<area shape="poly" id="edge4_Node000000_Node000002" title=" " alt="" coords="122,65,168,65,168,70,122,70"/>
+<area shape="rect" id="Node000003" href="$df/d5c/classBHVR_1_1Rectangle.html" title=" " alt="" coords="155,104,277,130"/>
+<area shape="poly" id="edge5_Node000000_Node000003" title=" " alt="" coords="115,83,172,101,171,106,113,88"/>
 </map>

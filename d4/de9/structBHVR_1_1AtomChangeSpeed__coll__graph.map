@@ -1,0 +1,5 @@
+<map id="BHVR::AtomChangeSpeed" name="BHVR::AtomChangeSpeed">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,182,120"/>
+<area shape="rect" id="Node000002" href="$dc/d06/classBHVR_1_1NumericValue.html" title="Holds a runtime value for a Behavior." alt="" coords="20,5,167,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,46,96,94,91,94,91,46"/>
+</map>

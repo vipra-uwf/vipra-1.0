@@ -1,0 +1,5 @@
+<map id="JSONWriter" name="JSONWriter">
+<area shape="rect" id="Node000001" title="Writes output as JSON to a file." alt="" coords="20,79,112,105"/>
+<area shape="rect" id="Node000002" href="$d9/d09/classOutputDataWriter.html" title=" " alt="" coords="5,5,127,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,46,69,79,63,79,63,46"/>
+</map>
