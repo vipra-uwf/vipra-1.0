@@ -79,11 +79,6 @@ $(function() {
   <div class="headertitle"><div class="title">BHVR::Condition Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Evaluates the state of the simulation and returns true if its matches its internal conditions.  
- <a href="../../d9/d20/classBHVR_1_1Condition.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="../../df/df8/condition_8hpp_source.html">condition.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -102,18 +97,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a062183bc68ed7c65c19d3d8c1651b140"><td class="memItemLeft" align="right" valign="top"><a id="a062183bc68ed7c65c19d3d8c1651b140" name="a062183bc68ed7c65c19d3d8c1651b140"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addAndOr</b> (bool)</td></tr>
 <tr class="separator:a062183bc68ed7c65c19d3d8c1651b140"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f84af5a093ff634d6877ba58eef7001"><td class="memItemLeft" align="right" valign="top"><a id="a2f84af5a093ff634d6877ba58eef7001" name="a2f84af5a093ff634d6877ba58eef7001"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addSubCondition</b> (const SubCondition &amp;)</td></tr>
-<tr class="separator:a2f84af5a093ff634d6877ba58eef7001"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00fe0d6c333ddebebfb9926fa31f725b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d20/classBHVR_1_1Condition.html#a00fe0d6c333ddebebfb9926fa31f725b">evaluate</a> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;, const <a class="el" href="../../dc/d0a/structBHVR_1_1BehaviorContext.html">BehaviorContext</a> &amp;, VIPRA::idx, VIPRA::delta_t) const</td></tr>
-<tr class="memdesc:a00fe0d6c333ddebebfb9926fa31f725b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests whether a condition is met, by running through each sub condition sequentially.  <br /></td></tr>
-<tr class="separator:a00fe0d6c333ddebebfb9926fa31f725b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4f9945f6b82b1b6148838ed93e97015"><td class="memItemLeft" align="right" valign="top"><a id="ab4f9945f6b82b1b6148838ed93e97015" name="ab4f9945f6b82b1b6148838ed93e97015"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addSubCondition</b> (SubCondition &amp;&amp;)</td></tr>
+<tr class="separator:ab4f9945f6b82b1b6148838ed93e97015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33741809982c40a6345986996ad9b368"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d20/classBHVR_1_1Condition.html#a33741809982c40a6345986996ad9b368">evaluate</a> (<a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) const</td></tr>
+<tr class="memdesc:a33741809982c40a6345986996ad9b368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests whether a condition is met, by running through each sub condition sequentially.  <br /></td></tr>
+<tr class="separator:a33741809982c40a6345986996ad9b368"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Evaluates the state of the simulation and returns true if its matches its internal conditions. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a00fe0d6c333ddebebfb9926fa31f725b" name="a00fe0d6c333ddebebfb9926fa31f725b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00fe0d6c333ddebebfb9926fa31f725b">&#9670;&#160;</a></span>evaluate()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a33741809982c40a6345986996ad9b368" name="a33741809982c40a6345986996ad9b368"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33741809982c40a6345986996ad9b368">&#9670;&#160;</a></span>evaluate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -121,26 +114,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addSubCondition</b> (
         <tr>
           <td class="memname">bool BHVR::Condition::evaluate </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>pedSet</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>obsSet</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;&#160;</td>
-          <td class="paramname"><em>goals</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="../../dc/d0a/structBHVR_1_1BehaviorContext.html">BehaviorContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
+          <td class="paramtype"><a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>&#160;</td>
+          <td class="paramname"><em>pack</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -151,8 +126,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addSubCondition</b> (
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">VIPRA::delta_t&#160;</td>
-          <td class="paramname"><em>dT</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

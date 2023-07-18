@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,131,31"/>
-<area shape="rect" id="Node000001" href="$d5/d88/structCalmPath_1_1pQueue.html" title="A struct that represents a priority queue for AGridPoint objects.." alt="" coords="179,5,308,31"/>
-<area shape="poly" id="edge16_Node000000_Node000001" title=" " alt="" coords="146,16,178,16,178,21,146,21"/>
+<area shape="rect" id="Node000000" href="$d0/d61/classPedestrianDynamicsModel.html" title=" " alt="" coords="5,5,181,31"/>
+<area shape="rect" id="Node000001" href="$d5/d12/classCalmPedestrianModel.html" title=" " alt="" coords="229,5,377,31"/>
+<area shape="poly" id="edge11_Node000000_Node000001" title=" " alt="" coords="195,16,228,16,228,21,195,21"/>
 </map>

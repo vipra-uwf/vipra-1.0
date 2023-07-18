@@ -80,7 +80,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>An <a class="el" href="../../dd/d86/classBHVR_1_1Event.html" title="An Event is something that occurs during a simulation.">Event</a> is something that occurs during a simulation.  
+<p>An <a class="el" href="../../dd/d86/classBHVR_1_1Event.html" title="An Event is something that occurs during a simulation, when an event starts it notifies it&#39;s subscrib...">Event</a> is something that occurs during a simulation, when an event starts it notifies it's subscribing functions and same when it ends.  
  <a href="../../dd/d86/classBHVR_1_1Event.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../dc/d94/event_8hpp_source.html">event.hpp</a>&gt;</code></p>
@@ -90,9 +90,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad22516c5770920de53aedbc194a76da2"><td class="memItemLeft" align="right" valign="top"><a id="ad22516c5770920de53aedbc194a76da2" name="ad22516c5770920de53aedbc194a76da2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Event</b> (std::string)</td></tr>
 <tr class="separator:ad22516c5770920de53aedbc194a76da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff646b1b15c8fa4b409ccd45e5191920"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d86/classBHVR_1_1Event.html#aff646b1b15c8fa4b409ccd45e5191920">evaluate</a> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;, <a class="el" href="../../dc/d0a/structBHVR_1_1BehaviorContext.html">BehaviorContext</a> &amp;, VIPRA::delta_t)</td></tr>
-<tr class="memdesc:aff646b1b15c8fa4b409ccd45e5191920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates whether an event should start or end based on its conditions.  <br /></td></tr>
-<tr class="separator:aff646b1b15c8fa4b409ccd45e5191920"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a575e35a0b338fc1f65f4195325042a42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d86/classBHVR_1_1Event.html#a575e35a0b338fc1f65f4195325042a42">evaluate</a> (<a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>)</td></tr>
+<tr class="memdesc:a575e35a0b338fc1f65f4195325042a42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates whether an event should start or end based on its conditions.  <br /></td></tr>
+<tr class="separator:a575e35a0b338fc1f65f4195325042a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83cb581645174281d7ed51a0e5b03b79"><td class="memItemLeft" align="right" valign="top"><a id="a83cb581645174281d7ed51a0e5b03b79" name="a83cb581645174281d7ed51a0e5b03b79"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setStartCondition</b> (const <a class="el" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a> &amp;)</td></tr>
 <tr class="separator:a83cb581645174281d7ed51a0e5b03b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -111,6 +111,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isStarting</b> () con
 <tr class="memitem:a5f76293b57438231e2c8e60b49664735"><td class="memItemLeft" align="right" valign="top"><a id="a5f76293b57438231e2c8e60b49664735" name="a5f76293b57438231e2c8e60b49664735"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEnding</b> () const</td></tr>
 <tr class="separator:a5f76293b57438231e2c8e60b49664735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f162645c29c43bf154d270373214789"><td class="memItemLeft" align="right" valign="top"><a id="a2f162645c29c43bf154d270373214789" name="a2f162645c29c43bf154d270373214789"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setStatus</b> (EventStatus)</td></tr>
+<tr class="separator:a2f162645c29c43bf154d270373214789"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a066208791a750218b0715e59466d5a7e"><td class="memItemLeft" align="right" valign="top"><a id="a066208791a750218b0715e59466d5a7e" name="a066208791a750218b0715e59466d5a7e"></a>
+const EventStatus &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getStatus</b> () const</td></tr>
+<tr class="separator:a066208791a750218b0715e59466d5a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2a772bfa9d1c30653535377deeb4f24"><td class="memItemLeft" align="right" valign="top"><a id="af2a772bfa9d1c30653535377deeb4f24" name="af2a772bfa9d1c30653535377deeb4f24"></a>
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> () const</td></tr>
 <tr class="separator:af2a772bfa9d1c30653535377deeb4f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,10 +134,10 @@ const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>ge
 <tr class="separator:a015f25a949dc483d8518689ae665a2ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>An <a class="el" href="../../dd/d86/classBHVR_1_1Event.html" title="An Event is something that occurs during a simulation.">Event</a> is something that occurs during a simulation. </p>
+<div class="textblock"><p>An <a class="el" href="../../dd/d86/classBHVR_1_1Event.html" title="An Event is something that occurs during a simulation, when an event starts it notifies it&#39;s subscrib...">Event</a> is something that occurs during a simulation, when an event starts it notifies it's subscribing functions and same when it ends. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aff646b1b15c8fa4b409ccd45e5191920" name="aff646b1b15c8fa4b409ccd45e5191920"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff646b1b15c8fa4b409ccd45e5191920">&#9670;&#160;</a></span>evaluate()</h2>
+<a id="a575e35a0b338fc1f65f4195325042a42" name="a575e35a0b338fc1f65f4195325042a42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a575e35a0b338fc1f65f4195325042a42">&#9670;&#160;</a></span>evaluate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,37 +145,9 @@ const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>ge
         <tr>
           <td class="memname">void BHVR::Event::evaluate </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>pedSet</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>&#160;</td>
+          <td class="paramname"><em>pack</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>obsSet</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;&#160;</td>
-          <td class="paramname"><em>goals</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/d0a/structBHVR_1_1BehaviorContext.html">BehaviorContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">VIPRA::delta_t&#160;</td>
-          <td class="paramname"><em>dT</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

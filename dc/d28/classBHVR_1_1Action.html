@@ -79,11 +79,6 @@ $(function() {
   <div class="headertitle"><div class="title">BHVR::Action Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Affects pedestrians based on the atoms added to it.  
- <a href="../../dc/d28/classBHVR_1_1Action.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="../../d9/d16/action_8hpp_source.html">action.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -99,12 +94,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af9d3f872f171d7a1515051f81f8a2470"><td class="memItemLeft" align="right" valign="top"><a id="af9d3f872f171d7a1515051f81f8a2470" name="af9d3f872f171d7a1515051f81f8a2470"></a>
 <a class="el" href="../../dc/d28/classBHVR_1_1Action.html">Action</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="../../dc/d28/classBHVR_1_1Action.html">Action</a> &amp;&amp;) noexcept=default</td></tr>
 <tr class="separator:af9d3f872f171d7a1515051f81f8a2470"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15eb1f28f098ea06b114d07a06421c3e"><td class="memItemLeft" align="right" valign="top"><a id="a15eb1f28f098ea06b114d07a06421c3e" name="a15eb1f28f098ea06b114d07a06421c3e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;, const <a class="el" href="../../dc/d0a/structBHVR_1_1BehaviorContext.html">BehaviorContext</a> &amp;)</td></tr>
-<tr class="separator:a15eb1f28f098ea06b114d07a06421c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafbfe14d95c00eccfc99e074d2d21624"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classBHVR_1_1Action.html#aafbfe14d95c00eccfc99e074d2d21624">performAction</a> (<a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;, <a class="el" href="../../dc/d0a/structBHVR_1_1BehaviorContext.html">BehaviorContext</a> &amp;, VIPRA::idx, VIPRA::delta_t, <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;)</td></tr>
-<tr class="memdesc:aafbfe14d95c00eccfc99e074d2d21624"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the action conditions are met, if it is, each atom is run on the pedestrian.  <br /></td></tr>
-<tr class="separator:aafbfe14d95c00eccfc99e074d2d21624"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8fc7c862dabcab662359ccb080f5b1e"><td class="memItemLeft" align="right" valign="top"><a id="ae8fc7c862dabcab662359ccb080f5b1e" name="ae8fc7c862dabcab662359ccb080f5b1e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (<a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack)</td></tr>
+<tr class="separator:ae8fc7c862dabcab662359ccb080f5b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8439311950c5f00c360f66a231d8dad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classBHVR_1_1Action.html#ab8439311950c5f00c360f66a231d8dad">performAction</a> (<a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, VIPRA::idx, <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;)</td></tr>
+<tr class="memdesc:ab8439311950c5f00c360f66a231d8dad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the action conditions are met, if it is, each atom is run on the pedestrian.  <br /></td></tr>
+<tr class="separator:ab8439311950c5f00c360f66a231d8dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ddafbd5f1bebf4fd1915f03b600b608"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classBHVR_1_1Action.html#a5ddafbd5f1bebf4fd1915f03b600b608">addCondition</a> (const <a class="el" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a> &amp;)</td></tr>
 <tr class="memdesc:a5ddafbd5f1bebf4fd1915f03b600b608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the condition for the action.  <br /></td></tr>
 <tr class="separator:a5ddafbd5f1bebf4fd1915f03b600b608"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,10 +109,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (const
 <tr class="memitem:a710c75669b34da1efef4775f5511db0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classBHVR_1_1Action.html#a710c75669b34da1efef4775f5511db0d">addDuration</a> (const <a class="el" href="../../dc/d06/classBHVR_1_1NumericValue.html">BHVR::NumericValue</a> &amp;)</td></tr>
 <tr class="memdesc:a710c75669b34da1efef4775f5511db0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a time range for the action to take place.  <br /></td></tr>
 <tr class="separator:a710c75669b34da1efef4775f5511db0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a765b0083fdd32e355fe5d8e554a37ee3"><td class="memItemLeft" align="right" valign="top"><a id="a765b0083fdd32e355fe5d8e554a37ee3" name="a765b0083fdd32e355fe5d8e554a37ee3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addTarget</b> (<a class="el" href="../../d1/df3/classBHVR_1_1TargetSelector.html">TargetSelector</a> &amp;&amp;)</td></tr>
+<tr class="separator:a765b0083fdd32e355fe5d8e554a37ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Affects pedestrians based on the atoms added to it. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0fd9a30b4cc0fac8b1db0e8c21850f5f" name="a0fd9a30b4cc0fac8b1db0e8c21850f5f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0fd9a30b4cc0fac8b1db0e8c21850f5f">&#9670;&#160;</a></span>addAtom()</h2>
 
@@ -163,7 +159,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (const
 <p>Sets the condition for the action. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cond</td><td>: <a class="el" href="../../d9/d20/classBHVR_1_1Condition.html" title="Evaluates the state of the simulation and returns true if its matches its internal conditions.">Condition</a> object </td></tr>
+    <tr><td class="paramname">cond</td><td>: <a class="el" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a> object </td></tr>
   </table>
   </dd>
 </dl>
@@ -196,8 +192,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (const
 
 </div>
 </div>
-<a id="aafbfe14d95c00eccfc99e074d2d21624" name="aafbfe14d95c00eccfc99e074d2d21624"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafbfe14d95c00eccfc99e074d2d21624">&#9670;&#160;</a></span>performAction()</h2>
+<a id="ab8439311950c5f00c360f66a231d8dad" name="ab8439311950c5f00c360f66a231d8dad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8439311950c5f00c360f66a231d8dad">&#9670;&#160;</a></span>performAction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -205,38 +201,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (const
         <tr>
           <td class="memname">void BHVR::Action::performAction </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>pedSet</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>obsSet</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;&#160;</td>
-          <td class="paramname"><em>goals</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/d0a/structBHVR_1_1BehaviorContext.html">BehaviorContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
+          <td class="paramtype"><a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>&#160;</td>
+          <td class="paramname"><em>pack</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">VIPRA::idx&#160;</td>
           <td class="paramname"><em>pedIdx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">VIPRA::delta_t&#160;</td>
-          <td class="paramname"><em>dT</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

@@ -79,11 +79,6 @@ $(function() {
   <div class="headertitle"><div class="title">BHVR::Selector Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Selectors choose which pedestrians belong to which type, through subselectors.  
- <a href="../../d4/dd2/classBHVR_1_1Selector.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="../../d8/df8/selector_8hpp_source.html">selector.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -99,9 +94,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a629d737ec1ce611d8bcddeef5648d28d"><td class="memItemLeft" align="right" valign="top"><a id="a629d737ec1ce611d8bcddeef5648d28d" name="a629d737ec1ce611d8bcddeef5648d28d"></a>
 <a class="el" href="../../d4/dd2/classBHVR_1_1Selector.html">Selector</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="../../d4/dd2/classBHVR_1_1Selector.html">Selector</a> &amp;&amp;) noexcept=default</td></tr>
 <tr class="separator:a629d737ec1ce611d8bcddeef5648d28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a267383754c4735b576d69944ba2d027f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd2/classBHVR_1_1Selector.html#a267383754c4735b576d69944ba2d027f">initialize</a> (const std::string &amp;, <a class="el" href="../../d8/d8f/classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a> &amp;, <a class="el" href="../../dc/d0a/structBHVR_1_1BehaviorContext.html">BehaviorContext</a> &amp;, const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;)</td></tr>
-<tr class="memdesc:a267383754c4735b576d69944ba2d027f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the pedestrian groups, and runs the sub selectors over them.  <br /></td></tr>
-<tr class="separator:a267383754c4735b576d69944ba2d027f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55da10d9bc873d0084d369aab059d434"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd2/classBHVR_1_1Selector.html#a55da10d9bc873d0084d369aab059d434">initialize</a> (const std::string &amp;, <a class="el" href="../../d8/d8f/classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a> &amp;, <a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>)</td></tr>
+<tr class="memdesc:a55da10d9bc873d0084d369aab059d434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the pedestrian groups, and runs the sub selectors over them.  <br /></td></tr>
+<tr class="separator:a55da10d9bc873d0084d369aab059d434"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37e4ca07ca7f82ac094b495bbb3d47fa"><td class="memItemLeft" align="right" valign="top"><a id="a37e4ca07ca7f82ac094b495bbb3d47fa" name="a37e4ca07ca7f82ac094b495bbb3d47fa"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setAllTypes</b> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>)</td></tr>
 <tr class="separator:a37e4ca07ca7f82ac094b495bbb3d47fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,11 +110,9 @@ const <a class="el" href="../../d9/d1d/classBHVR_1_1GroupsContainer.html">Groups
 VIPRA::size&#160;</td><td class="memItemRight" valign="bottom"><b>selectorCount</b> () const</td></tr>
 <tr class="separator:ad7ca6d1266fa1020d1fe1921f0a7a8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Selectors choose which pedestrians belong to which type, through subselectors. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a267383754c4735b576d69944ba2d027f" name="a267383754c4735b576d69944ba2d027f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a267383754c4735b576d69944ba2d027f">&#9670;&#160;</a></span>initialize()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a55da10d9bc873d0084d369aab059d434" name="a55da10d9bc873d0084d369aab059d434"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55da10d9bc873d0084d369aab059d434">&#9670;&#160;</a></span>initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,26 +132,8 @@ VIPRA::size&#160;</td><td class="memItemRight" valign="bottom"><b>selectorCount<
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/d0a/structBHVR_1_1BehaviorContext.html">BehaviorContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>pedSet</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>obsSet</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;&#160;</td>
-          <td class="paramname"><em>goals</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>&#160;</td>
+          <td class="paramname"><em>pack</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
