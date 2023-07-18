@@ -21,6 +21,11 @@ class DistributionException : public std::runtime_error {
   static void error(const std::string& message) { throw DistributionException(message); }
 };
 
+/**
+ * @brief produces a uniform random distribution
+ * 
+ * @tparam T : 
+ */
 template <typename T = float>
 // NOLINTNEXTLINE (rolland) sticking to familiar naming convention for std::uniform_real_distribution
 class uniform_distribution {
@@ -41,11 +46,11 @@ class uniform_distribution {
   std::pair<T, T> range;
 };
 
-template <typename T = float>
 /**
  * @brief Normal Distribution created using the Marsaglia method
  * @ref https://en.wikipedia.org/wiki/Marsaglia_polar_method
  */
+template <typename T = float>
 // NOLINTNEXTLINE (rolland) sticking to familiar naming convention for std::normal_distribution
 class normal_distribution {
  public:
@@ -79,6 +84,16 @@ class normal_distribution {
   static constexpr float two = 2.0;
 };
 
+/**
+ * @brief Returns a vector of float with random values following the Dist distribution
+ * 
+ * @tparam Dist : 
+ * @param count : 
+ * @param min : 
+ * @param max : 
+ * @param engine : 
+ * @return std::vector<float> 
+ */
 template <typename Dist>
 inline std::vector<float> makeDistribution(VIPRA::size count, float min, float max,
                                            VIPRA::pRNG_Engine& engine) {

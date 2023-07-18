@@ -13,11 +13,33 @@ using nano = std::chrono::nanoseconds;
 using milli = std::chrono::milliseconds;
 using seconds = std::chrono::seconds;
 
+/**
+ * @brief Clock to time execution time
+ * 
+ * @tparam TimeT : time scale
+ * @tparam ClockT : type of clock to use
+ */
 template <typename TimeT = seconds, typename ClockT = std::chrono::steady_clock>
 class Clock {
  public:
-  inline TimeT               now() { return ClockT::now(); }
-  inline void                start() { _start = ClockT::now(); }
+  /**
+   * @brief Returns the current time
+   * 
+   * @return TimeT 
+   */
+  inline TimeT now() { return ClockT::now(); }
+
+  /**
+   * @brief Starts the timer
+   * 
+   */
+  inline void start() { _start = ClockT::now(); }
+
+  /**
+   * @brief Stops the timer and returns the time since it was started
+   * 
+   * @return TimeT 
+   */
   [[nodiscard]] inline TimeT stop() {
     return std::chrono::duration_cast<TimeT>(ClockT::now() - _start);
   }
@@ -29,6 +51,11 @@ class Clock {
 };
 }  // namespace VIPRA
 
+/**
+ * @brief Formatter for time in spdlog
+ * 
+ * @tparam  : 
+ */
 template <>
 struct fmt::v9::formatter<VIPRA::seconds> {
   static constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
@@ -49,9 +76,14 @@ struct fmt::v9::formatter<VIPRA::seconds> {
                      seconds.count(), milliseconds.count());
   }
 };
-
-template <>
-struct fmt::v9::formatter<VIPRA::milli> {
+interval
+    /**
+ * @brief Formatter for time in spdlog
+ * 
+ * @tparam  : 
+ */
+    template <>
+    struct fmt::v9::formatter<VIPRA::milli> {
   static constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
     return ctx.end();
   }
@@ -71,6 +103,11 @@ struct fmt::v9::formatter<VIPRA::milli> {
   }
 };
 
+/**
+ * @brief Formatter for time in spdlog
+ * 
+ * @tparam  : 
+ */
 template <>
 struct fmt::v9::formatter<VIPRA::nano> {
   static constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {

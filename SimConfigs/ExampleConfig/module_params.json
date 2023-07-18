@@ -3,6 +3,7 @@
     "human_behavior_model": {
         "seed": 4525,
         "behaviors": [
+            "location_decl"
         ]
     },
     "output_data_writer": {},

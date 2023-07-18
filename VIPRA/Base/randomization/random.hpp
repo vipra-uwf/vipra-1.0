@@ -9,6 +9,10 @@
 
 namespace VIPRA {
 
+/**
+ * @brief Psuedo Random number engine
+ * 
+ */
 // NOLINTNEXTLINE (rolland) Default Naming Convention looks ugly
 class pRNG_Engine {
   using seed = __uint128_t;
@@ -28,12 +32,28 @@ class pRNG_Engine {
     return currVal >> shiftNum;
   }
 
+  /**
+   * @brief Restarts the number generator with a new seed
+   * 
+   * @param seedNum : 
+   */
   void reseed(uint64_t seedNum) {
     currVal = seedNum;
     currVal <<= shiftNum;
   }
 
+  /**
+   * @brief Returns the minimum number possible
+   * 
+   * @return constexpr uint64_t 
+   */
   static inline constexpr uint64_t min() { return 0; }
+
+  /**
+   * @brief Returns the maximum number possible
+   * 
+   * @return constexpr uint64_t 
+   */
   static inline constexpr uint64_t max() { return std::numeric_limits<uint64_t>::max(); }
 
  private:

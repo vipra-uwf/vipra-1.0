@@ -10,8 +10,12 @@
 
 namespace BHVR {
 
-using Atom =
-    std::function<void(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t, VIPRA::State&)>;
+/**
+ * @brief Component of an Action that affects pedestrians 
+ * 
+ */
+using Atom = std::function<void(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&,
+                                VIPRA::idx, VIPRA::delta_t, VIPRA::State&)>;
 
 }  // namespace BHVR
 

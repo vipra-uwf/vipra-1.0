@@ -3,14 +3,28 @@
 #include "simulation.hpp"
 #include <chrono>
 
+/**
+ * @brief Gets simulation module params
+ * 
+ * @param config : 
+ */
 void Simulation::configure(const VIPRA::CONFIG::Map& config) {
   timestep = 0;
   timestep_size = config["time_step_size"].asFloat();
   maxTimeStep = config["max_timestep"].asUInt64();
 }
 
+/**
+ * @brief Does nothing, each module has the function
+ * 
+ */
 void Simulation::initialize() {}
 
+/**
+ * @brief Returns the current timestep number
+ * 
+ * @return VIPRA::t_step 
+ */
 VIPRA::t_step Simulation::getTimestep() const { return timestep; }
 
 /**
@@ -57,6 +71,10 @@ void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& ob
   printSimTime();
 }
 
+/**
+ * @brief Outputs the simulated and real times for the simulation run
+ * 
+ */
 void Simulation::printSimTime() {
   auto stopTime = clock.stop();
   spdlog::info("Simulation Real Run Time: {}", stopTime);
