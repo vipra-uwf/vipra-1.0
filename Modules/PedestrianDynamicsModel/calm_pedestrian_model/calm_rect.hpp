@@ -82,7 +82,7 @@ struct Rect {
     for (size_t i = 0; i < rectPoints.size(); i++) {
       auto pt1 = rectPoints[i];
       auto pt2 = rectPoints[(i + 1) % rectPoints.size()];
-      if (Line::orientation(pt1, point, pt2) == 0) return true;
+      if (Line::checkIfOnLineSegment(pt1,pt2,point) && Line::orientation(pt1,point,pt2)==0) return true;
 
       Line segment(pt1, pt2);
       Line ptToInf(point, ptInf);

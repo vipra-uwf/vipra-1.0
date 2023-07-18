@@ -88,7 +88,7 @@ TEST(CalmRect, DoRectIntersect) {
 
   EXPECT_TRUE(sut1_1.doesIntersect(sut1_2));
   EXPECT_TRUE(sut1_2.doesIntersect(sut1_1));
-  EXPECT_TRUE(sut1_1.doesIntersect(sut2));
+  EXPECT_FALSE(sut1_1.doesIntersect(sut2));
   EXPECT_TRUE(sut1_2.doesIntersect(sut2));
 
   EXPECT_FALSE(sut1_1.doesIntersect(sut3));
@@ -152,5 +152,5 @@ TEST(CalmRect, DoRectIntersect) {
       VIPRA::f3d{1.46, -3.03},
   };
 
-  EXPECT_FALSE(sut6.doesIntersect(sut7));
+  EXPECT_TRUE(sut6.doesIntersect(sut7));
 }
