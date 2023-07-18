@@ -1,8 +1,18 @@
+Types:
+  individual
+.
 
-consider a person.
+Selector:
+  Type: individual
+  Select: Everyone
+.
 
-everyone is a person.
+Event:
+  Name: Fire
+  Start: 10 seconds after !Start
+.
 
-a !fire will occur after 0 seconds from the !start.
-
-a person will @walk 2.0x their normal speed given a !fire has occurred.
+Action (individual):
+  Stimulus: !Fire occurring
+  Response: scale velocity 2.0x
+.

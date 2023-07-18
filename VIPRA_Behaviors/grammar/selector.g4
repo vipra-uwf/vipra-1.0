@@ -3,25 +3,50 @@ grammar selector;
 import lexer_rules, values, common;
 
 ped_Selector:
-    (REQUIRED COLON)? selector (ID | PEDESTRIAN | PEDESTRIANS ) (ARE | IS) AN? id_list |
-    (REQUIRED COLON)? selector_Everyone IS AN? id_list
-    ;
+    SELECTOR ':' selector_attribute*
+;
+
+selector_attribute:
+    selector_type |
+    selector_selector |
+    selector_from |
+    selector_required
+;
+
+selector_type:
+    TYPE ':' id_list
+;
+
+selector_selector:
+    SELECT ':' selector
+;
+
+selector_from:
+    FROM ':' group
+;
+
+selector_required:
+    REQUIRED
+;
 
 selector:
     selector_Percent |
     selector_Exactly_N_Random |
     selector_Everyone
-    ;
+;
 
 selector_Percent:
-    value_number '%' (OF)?
-    ;
+    value_number '%'
+;
 
 selector_Exactly_N_Random:
-    EXACTLY value_number (OF)?
-    ;
+    value_number
+;
 
 selector_Everyone:
     EVERYONE
-    ;
+;
 
+group:
+    (ID | PEDESTRIAN | PEDESTRIANS )
+;

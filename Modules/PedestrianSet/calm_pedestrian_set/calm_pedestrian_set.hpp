@@ -23,8 +23,10 @@ class CalmPedestrianSet : public PedestrianSet {
 
   [[nodiscard]] const VIPRA::f3dVec& getCoordinates() const noexcept override;
   [[nodiscard]] const VIPRA::f3dVec& getVelocities() const noexcept override;
-  [[nodiscard]] VIPRA::f3d           getPedCoords(VIPRA::idx) const override;
-  [[nodiscard]] VIPRA::f3d           getPedVelocity(VIPRA::idx) const override;
+  [[nodiscard]] const VIPRA::f3d&    getPedCoords(VIPRA::idx) const override;
+  [[nodiscard]] const VIPRA::f3d&    getPedVelocity(VIPRA::idx) const override;
+
+  [[nodiscard]] std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(VIPRA::idx) const override;
 
  private:
   VIPRA::f3dVec coords;

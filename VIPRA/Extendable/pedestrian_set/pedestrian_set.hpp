@@ -27,8 +27,11 @@ class PedestrianSet {
   [[nodiscard]] virtual VIPRA::size          getNumPedestrians() const = 0;
   [[nodiscard]] virtual const VIPRA::f3dVec& getCoordinates() const = 0;
   [[nodiscard]] virtual const VIPRA::f3dVec& getVelocities() const = 0;
-  [[nodiscard]] virtual VIPRA::pcoord        getPedCoords(VIPRA::idx) const = 0;
-  [[nodiscard]] virtual VIPRA::veloc         getPedVelocity(VIPRA::idx) const = 0;
+  [[nodiscard]] virtual const VIPRA::pcoord& getPedCoords(VIPRA::idx) const = 0;
+  [[nodiscard]] virtual const VIPRA::veloc&  getPedVelocity(VIPRA::idx) const = 0;
+
+  [[nodiscard]] virtual std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(
+      VIPRA::idx) const = 0;
 
   virtual ~PedestrianSet() = default;
   PedestrianSet() = default;

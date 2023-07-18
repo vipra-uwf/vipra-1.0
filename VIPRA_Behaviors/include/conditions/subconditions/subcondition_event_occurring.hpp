@@ -3,18 +3,14 @@
 
 #include <conditions/sub_condition.hpp>
 #include <events/event.hpp>
+#include "definitions/sim_pack.hpp"
 
 namespace BHVR {
-/**
-   * @brief Returns true for every timestep the chosen event is occurring in
-   * 
-   */
 class SubConditionEventOccurring {
  public:
   explicit SubConditionEventOccurring(VIPRA::idx);
 
-  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
-                  const BehaviorContext&, VIPRA::idx, VIPRA::delta_t) const;
+  bool operator()(Simpack, VIPRA::idx, Target) const;
 
  private:
   VIPRA::idx event;

@@ -16,21 +16,19 @@ decl_Loc:
 ;
 
 decl_Ped_State:
-  POSSIBLE PEDESTRIAN STATES ARE (STATE (COMMA? AND? STATE)*);
-
+  PEDESTRIAN STATES ':' STATE_VAL (COMMA? STATE_VAL)*;
+  
 decl_Env_State:
-  POSSIBLE ENVIRONMENT STATES ARE (STATE (COMMA? AND? STATE)*);
+  ENVIRONMENT STATES ':' (STATE_VAL (COMMA? STATE_VAL)*);
 
 decl_Loc_Area_Circle:
-  CONSIDER AN LOCATION ID AT point WITH AN RADIUS OF value_numeric;
+  CONSIDER AN LOCATION ID AT value_coord WITH AN RADIUS OF value_numeric;
 
 decl_Loc_Area_Rect:
-  CONSIDER AN LOCATION ID AT point WITH AN LENGTH OF value_numeric AND AN WIDTH OF value_numeric;
+  CONSIDER AN LOCATION ID AT value_coord WITH AN LENGTH OF value_numeric AND AN WIDTH OF value_numeric;
 
 decl_Loc_Point:
-  CONSIDER AN LOCATION ID AT point;
+  CONSIDER AN LOCATION ID AT value_coord;
 
 decl_Ped:
-  CONSIDER AN (ID (COMMA? AND? AN? ID)*);
-
-point: '('value_numeric',' value_numeric')';
+  TYPES ':' ID (COMMA? ID)*;

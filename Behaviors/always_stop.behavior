@@ -1,5 +1,12 @@
-Consider an individual.
+Types:
+  individual
+.
 
-Everyone is an individual.
+Selector:
+  Type: individual
+  Select: Everyone
+.
 
-An individual will always @stop.
+Action (individual):
+  Response: set velocity to {0}
+.

@@ -8,8 +8,5 @@ namespace BHVR {
    * @return true 
    * @return false 
    */
-bool SubConditionStart::operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&,
-                                   VIPRA::idx, VIPRA::delta_t) const {
-  return true;
-}
+bool SubConditionStart::operator()(Simpack, VIPRA::idx, Target) const { return true; }
 }  // namespace BHVR

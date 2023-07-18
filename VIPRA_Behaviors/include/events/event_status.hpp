@@ -1,0 +1,13 @@
+#ifndef VIPRA_BEHAVIORS_EVENT_STATUS_HPP
+#define VIPRA_BEHAVIORS_EVENT_STATUS_HPP
+
+namespace BHVR {
+enum class EventStatus {
+  STARTING,
+  OCCURRING,
+  ENDING,
+  NOT_OCCURRING,
+};
+}
+
+#endif

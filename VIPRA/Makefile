@@ -25,7 +25,7 @@ run_gen_main:
 
 build_sim:
 	cmake -B ${DIR} . ${DEBUG} ${PROF}
-	cmake --build ${DIR} -j
+	cmake --build ${DIR}
 	
 clean:
 	rm -rf build

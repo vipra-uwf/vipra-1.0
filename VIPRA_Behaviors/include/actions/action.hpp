@@ -14,13 +14,12 @@
 #include <pedestrian_set/pedestrian_set.hpp>
 #include <time/time.hpp>
 #include <util/timed_latch.hpp>
+#include "definitions/sim_pack.hpp"
+#include "targets/target_selector.hpp"
+#include "targets/target_selectors/target_self.hpp"
 #include "values/numeric_value.hpp"
 
 namespace BHVR {
-/**
- * @brief Affects pedestrians based on the atoms added to it
- * 
- */
 class Action {
  public:
   ~Action() = default;
@@ -30,24 +29,24 @@ class Action {
   Action(Action&&) noexcept = default;
   Action& operator=(Action&&) noexcept = default;
 
-  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&,
-                  const BehaviorContext&);
+  void initialize(Simpack pack);
 
-  void performAction(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx,
-                     VIPRA::delta_t, VIPRA::State&);
+  void performAction(Simpack pack, VIPRA::idx, VIPRA::State&);
 
   void addCondition(const Condition&);
   void addAtom(const Atom&);
   void addDuration(const BHVR::NumericValue&);
+  void addTarget(TargetSelector&&);
 
  private:
   std::vector<Atom>                   atoms;
   std::optional<Condition>            condition;
   std::optional<TimedLatchCollection> duration;
+  TargetSelector                      targets{TargetSelf{}};
 
-  inline bool evaluate(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx,
-                       VIPRA::delta_t);
+  inline bool evaluate(Simpack pack, VIPRA::idx, Target);
 };
+
 }  // namespace BHVR
 
 #endif

@@ -18,7 +18,7 @@
 
 namespace BHVR {
 /**
- * @brief Describes a specific human behavior
+ * Describes a specific human behavior. Implementations can either define the behavior directly in C++ or use a DSL.
  */
 class HumanBehavior {
  public:
@@ -33,7 +33,7 @@ class HumanBehavior {
   void       addSubSelector(const SubSelector&);
   void       addAction(typeUID, const Action&);
   VIPRA::idx addEvent(const Event&);
-  VIPRA::idx addLocation(Location&&);
+  VIPRA::idx addLocation(Location);
 
   [[nodiscard]] VIPRA::size eventCount() const;
   [[nodiscard]] VIPRA::size selectorCount() const;
