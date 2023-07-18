@@ -19,6 +19,10 @@ class ConfigurationException : public std::runtime_error {
   static void error(const std::string& message) { throw ConfigurationException(message); }
 };
 
+/**
+ * @brief Holds JSON data from module params
+ * 
+ */
 class Map {
  public:
   ~Map() = default;

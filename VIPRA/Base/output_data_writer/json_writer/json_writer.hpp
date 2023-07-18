@@ -5,6 +5,10 @@
 
 #include <output_data_writer/output_data_writer.hpp>
 
+/**
+ * @brief Writes output as JSON to a file
+ * 
+ */
 class JSONWriter : public OutputDataWriter {
  private:
   std::ofstream    fileStream;

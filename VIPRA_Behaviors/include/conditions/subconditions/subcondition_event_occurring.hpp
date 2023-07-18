@@ -5,12 +5,16 @@
 #include <events/event.hpp>
 
 namespace BHVR {
+/**
+   * @brief Returns true for every timestep the chosen event is occurring in
+   * 
+   */
 class SubConditionEventOccurring {
  public:
   explicit SubConditionEventOccurring(VIPRA::idx);
 
-  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
-                  VIPRA::delta_t) const;
+  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                  const BehaviorContext&, VIPRA::idx, VIPRA::delta_t) const;
 
  private:
   VIPRA::idx event;

@@ -32,4 +32,8 @@ VIPRA::CONFIG::Map ConfigurationReader::getConfiguration(const std::string& file
   return VIPRA::CONFIG::Map(jsonDocument);
 }
 
+/**
+ * @brief Does nothing, each module has this function
+ * 
+ */
 void ConfigurationReader::configure(const VIPRA::CONFIG::Map&) {}

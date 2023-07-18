@@ -3,6 +3,10 @@
 
 #include <simulation_output_handler/simulation_output_handler.hpp>
 
+/**
+ * @brief Outputs timesteps, x,y,z positions of each pedestrian
+ * 
+ */
 class TimestepOutputHandler : public SimulationOutputHandler {
  private:
   VIPRA::t_step frequency;

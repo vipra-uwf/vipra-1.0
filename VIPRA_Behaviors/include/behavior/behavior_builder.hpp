@@ -15,12 +15,12 @@
 
 #include <events/event.hpp>
 #include <locations/location.hpp>
+#include <shapes/shape_class_definitions.hpp>
 
 #include <util/caseless_str_comp.hpp>
 
 #include <time/time.hpp>
 #include <values/values.hpp>
-
 
 namespace BHVR {
 
@@ -39,6 +39,10 @@ class BuilderException : public std::runtime_error {
   static void error() { throw BuilderException(); }
 };
 
+/**
+ * @brief Parses Behavior files and creates their runtime equivalent
+ * 
+ */
 class BehaviorBuilder : public BehaviorBaseVisitor {
  public:
   HumanBehavior build(std::string, const std::filesystem::path&, BHVR::seed);

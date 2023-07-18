@@ -14,6 +14,10 @@
 #include <pedestrian_set/pedestrian_set.hpp>
 
 namespace BHVR {
+/**
+  * @brief Evaluates the state of the simulation and returns true if its matches its internal conditions
+  * 
+  */
 class Condition {
  public:
   Condition() = default;
@@ -27,8 +31,8 @@ class Condition {
 
   void addSubCondition(const SubCondition&);
 
-  [[nodiscard]] bool evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx,
-                              VIPRA::delta_t) const;
+  [[nodiscard]] bool evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&,
+                              const BehaviorContext&, VIPRA::idx, VIPRA::delta_t) const;
 
  private:
   std::vector<bool>         operations;

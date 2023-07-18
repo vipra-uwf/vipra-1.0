@@ -5,6 +5,14 @@
 
 namespace CalmPath {
 
+/**
+ * @brief determins if two vectors are equal in contents.
+ *
+ * @param first First vector to compare.
+ * @param second Second vector to compare.
+ * @return true
+ * @return false
+ */
 bool 
 GridPoint::vectorEq(const std::vector<GridPoint*>& first, const std::vector<GridPoint*>& second) const {
   if (first.size() != second.size()) {
@@ -14,7 +22,15 @@ GridPoint::vectorEq(const std::vector<GridPoint*>& first, const std::vector<Grid
   }
 }
 
-
+/**
+ * @brief determines if a point is inside a distance surrounding a center point.
+ *
+ * @param point Point to compare.
+ * @param center Center point.
+ * @param size Distance surrounding the center. 
+ * @return true
+ * @return false
+ */
 inline bool
 inside(VIPRA::f3d point, VIPRA::f3d center, float size) {
   VIPRA::f3d tl{center.x - size / 2, center.y + size / 2};
@@ -22,16 +38,39 @@ inside(VIPRA::f3d point, VIPRA::f3d center, float size) {
   return (point.x >= tl.x && point.x <= br.x && point.y <= tl.y && point.y >= br.y);
 }
 
+/**
+ * @brief determines if two float values are equivalent.
+ *
+ * @param first First float for comparison.
+ * @param second Second float for comparison.
+ * @return true
+ * @return false
+ */
 inline bool
 floatEq(float first, float second) {
   return fabs(first - second) < 0.0001;
 }
 
+/**
+ * @brief returns an index of a x, y pair.
+ *
+ * @param x X-coordinate.
+ * @param y Y-coordinate.
+ * @param xCnt
+ * @return VIPRA::idx
+ */
 inline VIPRA::idx
 getIndex(VIPRA::size x, VIPRA::size y, VIPRA::size xCnt) {
   return x + (y * xCnt);
 }
 
+/**
+ * @brief starts processes to build the points and adjacencies for the obstacle set.
+ *
+ * @param obsSet Obstacle set for the simulation.
+ * @param gridSz Size of the grid being built.
+ * @param obsBufferDist
+ */
 void
 PathingGraph::build(const ObstacleSet& obsSet, float gridSz, float obsBufferDist) {
   this->gridSize = gridSz;
@@ -39,6 +78,12 @@ PathingGraph::build(const ObstacleSet& obsSet, float gridSz, float obsBufferDist
   buildAdjacencies();
 }
 
+/**
+ * @brief creates the set of GridPoints used on the map.
+ *
+ * @param obsSet Obstacle set for the simulation.
+ * @param obsBufferDist 
+ */
 void
 PathingGraph::constructPoints(const ObstacleSet& obsSet, float obsBufferDist) {
   dimensions = obsSet.getMapDimensions();
@@ -63,6 +108,10 @@ PathingGraph::constructPoints(const ObstacleSet& obsSet, float obsBufferDist) {
   }
 }
 
+/**
+ * @brief builds a vector of adjacent GridPoints for each GridPoint.
+ * 
+ */
 void
 PathingGraph::buildAdjacencies() {
   int                      cnt = static_cast<int>(xCnt);
@@ -93,6 +142,12 @@ PathingGraph::buildAdjacencies() {
   }
 }
 
+/**
+ * @brief adds adjacent coordinates to a string value for representation of the GridPoints.
+ *
+ * @param node Parent GridPoint to record adjacent grid points.
+ * @param str Holds the node's adjacent coordinates.
+ */
 void
 PathingGraph::addAdjToString(const GridPoint& node, std::string& str) const {
   for (const auto adj : node.adj) {
@@ -103,6 +158,11 @@ PathingGraph::addAdjToString(const GridPoint& node, std::string& str) const {
   }
 }
 
+/**
+ * @brief Creates and returns a string representation of the pathing graph.
+ *
+ * @return std::string
+ */
 std::string
 PathingGraph::toString() const {
   std::string treeStr = "{ \"GridPoints\":[";
@@ -126,6 +186,12 @@ PathingGraph::toString() const {
   return treeStr;
 }
 
+/**
+ * @brief searches the graph for a desired point.
+ *
+ * @param pos Desired position to see if it is in the graph.
+ * @return GridPoint*
+ */
 GridPoint*
 PathingGraph::search(VIPRA::f3d pos) {
   VIPRA::idx x = static_cast<VIPRA::idx>(std::floor(pos.x / gridSize));

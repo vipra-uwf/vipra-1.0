@@ -4,11 +4,23 @@
 #include <algorithm>
 #include <filesystem>
 
+/**
+ * @brief Gets module values from module params
+ * 
+ * @param configMap : 
+ */
 void HumanBehaviorModel::configure(const VIPRA::CONFIG::Map& configMap) {
   seed = configMap["seed"].asUInt();
   loadBehavior(configMap.getStringVector("behaviors"));
 }
 
+/**
+ * @brief Initializes each behavior
+ * 
+ * @param pedSet : 
+ * @param obsSet : 
+ * @param goals : 
+ */
 void HumanBehaviorModel::initialize(const PedestrianSet& pedSet,
                                     const ObstacleSet& obsSet, const Goals& goals) {
   for (auto& behavior : humanBehaviors) {
@@ -16,6 +28,15 @@ void HumanBehaviorModel::initialize(const PedestrianSet& pedSet,
   }
 }
 
+/**
+ * @brief Calls each behavior's timestep method
+ * 
+ * @param pedSet : 
+ * @param obsSet : 
+ * @param goals : 
+ * @param state : 
+ * @param dT : 
+ */
 void HumanBehaviorModel::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet,
                                   Goals& goals, VIPRA::State& state, VIPRA::delta_t dT) {
   for (auto& behavior : humanBehaviors) {
@@ -23,6 +44,11 @@ void HumanBehaviorModel::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet,
   }
 }
 
+/**
+ * @brief Builds each behavior from the vector of file paths
+ * 
+ * @param behaviors : 
+ */
 void HumanBehaviorModel::loadBehavior(const std::vector<std::string>& behaviors) {
   BHVR::BehaviorBuilder builder;
   spdlog::info("Loading {} Behaviors", behaviors.size());

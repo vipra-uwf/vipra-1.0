@@ -19,7 +19,7 @@ class GroupsContainer {
   /**
   * @brief Gets the index into the container for a given type
   * 
-  * @param type : 
+  * @param type : pedestrian type
   * @return constexpr VIPRA::idx 
   */
   static constexpr VIPRA::idx index(typeUID type) {

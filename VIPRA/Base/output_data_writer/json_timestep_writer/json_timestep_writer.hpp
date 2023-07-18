@@ -5,6 +5,10 @@
 
 #include <output_data_writer/output_data_writer.hpp>
 
+/**
+ * @brief Writes simulation timesteps as JSON to a file
+ * 
+ */
 class JSONTimestepWriter : public OutputDataWriter {
   std::ofstream    fileStream;
   Json::Value      document;

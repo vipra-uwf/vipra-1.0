@@ -96,8 +96,8 @@ VIPRA::idx HumanBehavior::addEvent(const Event& event) {
  * @param loc : location object to add
  * @return Location*
 */
-VIPRA::idx HumanBehavior::addLocation(Location loc) {
-  context.locations.emplace_back(loc);
+VIPRA::idx HumanBehavior::addLocation(Location&& loc) {
+  context.locations.push_back(std::move(loc));
   return context.locations.size() - 1;
 }
 
@@ -132,13 +132,21 @@ VIPRA::size HumanBehavior::actionCount() const {
 /**
  * @brief Sets the seed for the behavior
  * 
- * @param s : 
+ * @param bSeed : 
  */
 void HumanBehavior::setSeed(BHVR::seed bSeed) {
   rngEngine.reseed(bSeed);
   seedNum = bSeed;
 }
 
+/**
+ * @brief Updates each event in the behavior
+ * 
+ * @param pedSet
+ * @param obsSet 
+ * @param goals 
+ * @param dT
+ */
 void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
                                    Goals& goals, VIPRA::delta_t dT) {
   for (auto& event : context.events) {
@@ -146,6 +154,15 @@ void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
   }
 }
 
+/**
+ * @brief Goes through each pedestiran group and runs their actions
+ * 
+ * @param pedSet : 
+ * @param obsSet : 
+ * @param goals : 
+ * @param state : 
+ * @param dT : 
+ */
 void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
                                  VIPRA::State& state, VIPRA::delta_t dT) {
   const GroupsContainer& groups = selector.getGroups();

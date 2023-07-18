@@ -2,13 +2,14 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
 import numpy as np
 
-from visUtil import getArgs, getPeds, getObs, makeColors, printProgressBar, getPoints, prepPlot, plotObs, plotShoulders, plotPeds, plotIndexes, printProgressBar, printProgressBar
+from visUtil import getArgs, plotDif, getPeds, getObs, makeColors, printProgressBar, getPoints, prepPlot, plotObs, plotShoulders, plotPeds, plotIndexes, printProgressBar, printProgressBar
 
 args = getArgs()
 
-pedCoords = getPeds(args['peds']) 
+pedCoords = getPeds(args['peds'])
+difCoords = getPeds(args['dif'])
 [obsX, obsY] = getObs(args['obs']);
-pedColors = makeColors(pedCoords, args['pedColor'])
+pedColors = makeColors(pedCoords, args)
 timestepCnt = len(pedCoords)
 
 fig,ax = plt.subplots()
@@ -16,12 +17,13 @@ fig,ax = plt.subplots()
 def animate(i):
   printProgressBar(int(i), timestepCnt, 'Animating')
   [pointsX, pointsY] = getPoints(pedCoords[i])
+  [compX, compY] = getPoints(difCoords[i]) if args['dif'] else [[], []]
 
-  prepPlot(args['xDim'], args['yDim'], args['bckColor'], ax)
-  obstacles = plotObs(obsX, obsY, args['obsColor'], ax)
-  plotShoulders(args['shoulders'], pointsX, pointsY, args['shldrLen'], pedColors, ax)
-  points = plotPeds(pointsX, pointsY, pedColors, ax)
-  plotIndexes(args['indexes'], pointsX, pointsY, args['idxColor'], pedColors, ax)    
+  prepPlot(ax, args)
+  obstacles = plotObs(obsX, obsY, ax, args)
+  plotShoulders(pointsX, pointsY, pedColors, ax, args)
+  points = plotPeds(pointsX, pointsY, pedColors, ax, args) if not args['dif'] else plotDif(pointsX, pointsY, compX, compY, pedColors, ax, args)
+  plotIndexes(pointsX, pointsY, pedColors, ax, args)
   
   return points, obstacles
 
