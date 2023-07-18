@@ -32,7 +32,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = "VIPRA"
+PROJECT_NAME           = "VIPRA Documentation"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -68,7 +68,7 @@ OUTPUT_DIRECTORY       =
 # performance problems for the file system.
 # The default value is: NO.
 
-CREATE_SUBDIRS         = NO
+CREATE_SUBDIRS         = YES
 
 # If the ALLOW_UNICODE_NAMES tag is set to YES, doxygen will allow non-ASCII
 # characters to appear in the names of generated files. If set to NO, non-ASCII
@@ -975,7 +975,13 @@ EXCLUDE_PATTERNS       += */Maps/*
 EXCLUDE_PATTERNS       += */SimConfigs/*
 EXCLUDE_PATTERNS       += */UtilityScripts/*
 EXCLUDE_PATTERNS       += */VIPRA/__tests__/*
+EXCLUDE_PATTERNS       += */VIPRA/build/*
+EXCLUDE_PATTERNS       += */VIPRA_Behaviors/__tests__/*
+EXCLUDE_PATTERNS       += */VIPRA_Behaviors/antlr_setup/*
 EXCLUDE_PATTERNS       += */VIPRA_Launcher/*
+EXCLUDE_PATTERNS       += */code_generation/*
+EXCLUDE_PATTERNS       += */generated/*
+
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the

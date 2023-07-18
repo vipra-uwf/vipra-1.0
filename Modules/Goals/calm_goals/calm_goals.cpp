@@ -1,6 +1,11 @@
 
 #include "calm_goals.hpp"
 
+/**
+ * @brief Configures the map for calm goals
+ * 
+ * @param configMap
+ */
 void CalmGoals::configure(const VIPRA::CONFIG::Map& configMap) {
   spdlog::info("CalmGoals: Configuring Calm Goals");
   goalRange = configMap["goalRange"].asFloat();
@@ -62,6 +67,13 @@ void CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet& 
   spdlog::debug("CalmGoals: Finished Initializing Paths");
 }
 
+/**
+ * @brief Uses disembark to generate a path of points from a start to the exit.
+ * 
+ * @param start 
+ * @param obsSet
+ * @return std::queue<VIPRA::f3d>
+ */
 std::queue<VIPRA::f3d> CalmGoals::disembarkPath(const VIPRA::f3d&  start,
                                                 const ObstacleSet& obsSet) {
   std::queue<VIPRA::f3d> path;
@@ -73,6 +85,14 @@ std::queue<VIPRA::f3d> CalmGoals::disembarkPath(const VIPRA::f3d&  start,
   return path;
 }
 
+/**
+ * @brief Returns the nearest objective of a specific type compared to a point
+ * 
+ * @param type 
+ * @param point
+ * @param obsSet
+ * @return const VIPRA::f3d&
+ */
 const VIPRA::f3d& CalmGoals::nearestObjective(const std::string& type,
                                               const VIPRA::f3d&  point,
                                               const ObstacleSet& obsSet) {
@@ -218,6 +238,12 @@ bool CalmGoals::isSimulationGoalMet() const noexcept {
   return std::all_of(goalsMet.begin(), goalsMet.end(), [](bool met) { return met; });
 }
 
+/**
+ * @brief returns the time since the last goal was met
+ * 
+ * @param index
+ * @return VIPRA::delta_t
+ */
 VIPRA::delta_t CalmGoals::timeSinceLastGoal(VIPRA::idx index) const {
   return lastGoalTimes.at(index);
 }

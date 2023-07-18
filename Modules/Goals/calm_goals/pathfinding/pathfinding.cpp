@@ -7,6 +7,13 @@
 
 namespace CalmPath {
 
+/**
+ * @struct AGridPoint
+ * @brief A struct that represents a section on a grid.
+ *
+ * This struct provides implementations for an AStar algorithm as it needs a heuristic 
+ * and parent nodes to generate a path. 
+ */
 struct AGridPoint {
   GridPoint*  node;
   AGridPoint* parent = nullptr;
@@ -21,16 +28,42 @@ struct AGridPoint {
 //breadcrumb approach with a key-value pair of grid space and next grid space.
 std::unordered_map<GridPoint*, GridPoint*, GridPointHash> breadCrumbMap;
 
+/**
+ * @class GridPointCompare
+ * @brief A class that compares the heuristic distance of two AGridPoint objects passed in.
+ *
+ */
 class GridPointCompare {
   public:
     bool operator()(AGridPoint* first, AGridPoint* second) { return first->distanceWithHeuristic > second->distanceWithHeuristic; }
 };
 
+/**
+ * @struct pQueue
+ * @brief A struct that represents a priority queue for AGridPoint objects..
+ *
+ * This struct provides implementations for evaluating the shortest path from the start
+ * to end using AStar as this algorithm requires a priority queue to always evaluate
+ * the smallest heuristic first.
+ */
 struct pQueue : public std::priority_queue<AGridPoint*, std::vector<AGridPoint*>, GridPointCompare> {
   pQueue() : std::priority_queue<AGridPoint*, std::vector<AGridPoint*>, GridPointCompare>() {}
+  
+  /**
+  * @brief determines if an AgridPoint object is in the priority queue and returns it if it is.
+  *
+  * @param node AGridPoint pointer being searched for. 
+  * @return std::optional<AGridPoint*>
+  */
   std::optional<AGridPoint*> search(AGridPoint* node);
 };
 
+/**
+* @brief determines if an AgridPoint object is in the priority queue and returns it if it is.
+*
+* @param node AGridPoint pointer being searched for. 
+* @return std::optional<AGridPoint*>
+*/
 std::optional<AGridPoint*>
 pQueue::search(AGridPoint* node) {
   auto a = std::find_if(c.begin(), c.end(), [&](AGridPoint* n) { return node->node == n->node; });
@@ -41,6 +74,11 @@ pQueue::search(AGridPoint* node) {
   }
 }
 
+/**
+* @brief puts a queue in reverse order as the algorithm generates the end path backwards. 
+
+* @param queue A queue that needs to be reversed. 
+*/
 inline void 
 reverseQueue(std::queue<VIPRA::f3d>& queue) {
   std::stack<VIPRA::f3d> stack;
@@ -56,6 +94,13 @@ reverseQueue(std::queue<VIPRA::f3d>& queue) {
   }
 }
 
+/**
+* @brief generates a path using a trail of parent nodes from the end object.
+*
+* @param start A point that starts the path. 
+* @param end An AGridPoint object at the end of the path. 
+* @return std::queue<VIPRA::f3d>
+*/
 inline std::queue<VIPRA::f3d>
 constructPath(VIPRA::f3d start, AGridPoint* end) {
   std::queue<VIPRA::f3d> path;
@@ -86,6 +131,16 @@ constructPath(VIPRA::f3d start, AGridPoint* end) {
   return path;
 }
 
+/**
+* @brief evaluates the heuristic cost of the AStar algorithm.
+*
+* Currently the heuristic is using he manhattan distance with a weighted amount, 
+* prioritizing horizontal movement. 
+* 
+* @param first A GridPoint that represents current point on the path. 
+* @param goal A GridPoint that represents the final point on the path. 
+* @return float
+*/
 inline float
 cost(GridPoint* first, GridPoint* goal) {
   const auto dif = 0.8 * std::abs(first->center.x - goal->center.x) + 2 * std::abs(first->center.y - goal->center.y);
@@ -94,42 +149,52 @@ cost(GridPoint* first, GridPoint* goal) {
   // allowing for the heuristic to shine. Instead these should be parameters passed in. 
 }
 
+/**
+* @brief creates an AGridPoint object.
+*
+* @param node GridPoint to keep track on the map. 
+* @param parent AGridPoint to keep track of how to get to the node. 
+* @param distanceFromStart total distance from the start. 
+* @param distanceWithHeuristic total distance plus the heurstic to get to finish. 
+* @param allocator
+* @return AGridPoint*
+*/
 inline AGridPoint*
 makeGridPoint(GridPoint* node, AGridPoint* parent, float distanceFromStart, float distanceWithHeuristic, std::vector<AGridPoint*>& allocator) {
   allocator.emplace_back(new AGridPoint{node, parent, distanceFromStart, distanceWithHeuristic});
   return allocator.at(allocator.size() - 1);
 }
 
-
+/**
+* @brief generates a path using an A Star algorithm
+*
+* @param start Initial starting point of the path. 
+* @param end Desired end point of the path.
+* @param graph The map that the path is built from.
+* @return std::queue<VIPRA::f3d>
+*/
 std::queue<VIPRA::f3d>
 pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
-  // find grid GridPoints the start and end reside in
   GridPoint* first = graph.search(start);
   GridPoint* last = graph.search(end);
 
-  // create datastructures
   std::vector<AGridPoint*>        allocList;
   pQueue                          open_list;
   std::unordered_set<GridPoint*>  closed_list;
 
-  // add start first node to "open list"
   open_list.emplace(makeGridPoint(first, nullptr, 0, cost(first, last), allocList));
 
   AGridPoint* curr = nullptr;
 
-  // while there are still nodes in the open list
   while (!open_list.empty()) {
     curr = open_list.top();
 
     if (curr->node == last) { 
-      // if the end node has been found, create the path, delete the created
-      // objects, return the path
       std::queue<VIPRA::f3d> path{constructPath(start, curr)};
       std::for_each(allocList.begin(), allocList.end(), [](AGridPoint* ptr) { delete ptr; });
       return path;
     }
 
-    // move current node to the closed list
     open_list.pop();
     closed_list.insert(curr->node);
 
@@ -143,18 +208,14 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
     else {
       for (GridPoint* neighbor : curr->node->adj) {
         if (closed_list.find(neighbor) == closed_list.end()) { 
-          // if the neighbor hasn't been visited yet, calculate it's cost
           float       distanceFromStart = curr->distanceFromStart + neighbor->center.distanceTo(curr->node->center);
           float       distanceWithHeuristic = distanceFromStart + cost(neighbor, last);
           AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, distanceFromStart, distanceWithHeuristic, allocList);
 
           auto found = open_list.search(neighborGridPoint);
           if (!found.has_value()) {
-            // if the neighbor isn't already in the open list, add it
             open_list.push(neighborGridPoint);
           } else {
-            // if the neighbor is in the list check if the new path to it is
-            // cheaper, if so replace its values with the cheaper path
             if (neighborGridPoint->distanceFromStart < found.value()->distanceFromStart) {
               found.value()->distanceFromStart = neighborGridPoint->distanceFromStart;
               found.value()->parent = neighborGridPoint->parent;
@@ -165,7 +226,6 @@ pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& graph) {
     }
   }
 
-  // no path was found, clear the data, return empty queue
   std::for_each(allocList.begin(), allocList.end(), [](AGridPoint* ptr) { delete ptr; });
   spdlog::warn("Calm_Goals: No Path Found for Pedestrian at position: x:{}, y:{}, z:{}", start.x, start.y, start.z);
   return std::queue<VIPRA::f3d>{};
