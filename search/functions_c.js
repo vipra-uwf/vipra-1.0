@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['pedrandomfloat_0',['pedRandomFloat',['../de/dc3/classBHVR_1_1DRNG.html#ad3e90d76b25dfe9a0e9d04c4dfadcee7',1,'BHVR::DRNG']]],
-  ['performaction_1',['performAction',['../dc/d28/classBHVR_1_1Action.html#ab8439311950c5f00c360f66a231d8dad',1,'BHVR::Action']]]
+  ['nearestobstacle_0',['nearestObstacle',['../db/dec/classPassengerVehicleObstacleSet.html#a60f74b1a39a69e15944c1da3414f0f4f',1,'PassengerVehicleObstacleSet::nearestObstacle(const PedestrianSet &amp;) const override'],['../db/dec/classPassengerVehicleObstacleSet.html#a6aebc557e44a9defbf02e93552507b6b',1,'PassengerVehicleObstacleSet::nearestObstacle(VIPRA::f3d) const override']]],
+  ['nearestobstacleindirection_1',['nearestObstacleInDirection',['../db/dec/classPassengerVehicleObstacleSet.html#a6ed699182e74b6d4dc415af4420d94e2',1,'PassengerVehicleObstacleSet::nearestObstacleInDirection(const PedestrianSet &amp;) const override'],['../db/dec/classPassengerVehicleObstacleSet.html#a8f48558b79e0a3ae0ecead68695f548b',1,'PassengerVehicleObstacleSet::nearestObstacleInDirection(VIPRA::f3d, VIPRA::f3d) const override']]],
+  ['now_2',['now',['../d8/d95/classVIPRA_1_1Clock.html#aaf063fb7323da097cf98904d79ef12d2',1,'VIPRA::Clock']]]
 ];

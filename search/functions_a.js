@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['now_0',['now',['../d8/d95/classVIPRA_1_1Clock.html#aaf063fb7323da097cf98904d79ef12d2',1,'VIPRA::Clock']]]
+  ['loadmap_0',['loadMap',['../d8/d73/classPointMapLoader.html#a799f310dff5111aab8e80efd6aa3ba55',1,'PointMapLoader']]],
+  ['loadpedestrians_1',['loadPedestrians',['../da/d59/classJsonPedestrianLoader.html#a411d2cbd03c7609fb6baa262ed7bb272',1,'JsonPedestrianLoader']]]
 ];
