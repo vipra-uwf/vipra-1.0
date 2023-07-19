@@ -251,6 +251,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitScale_atom(BehaviorParser::Scale_atomContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitTarget(BehaviorParser::TargetContext *ctx) override {
     return visitChildren(ctx);
   }

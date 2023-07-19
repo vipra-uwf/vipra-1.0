@@ -137,6 +137,8 @@ public:
 
     virtual std::any visitSet_atom(BehaviorParser::Set_atomContext *context) = 0;
 
+    virtual std::any visitScale_atom(BehaviorParser::Scale_atomContext *context) = 0;
+
     virtual std::any visitTarget(BehaviorParser::TargetContext *context) = 0;
 
     virtual std::any visitSelf(BehaviorParser::SelfContext *context) = 0;

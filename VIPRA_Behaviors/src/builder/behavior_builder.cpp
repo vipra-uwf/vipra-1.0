@@ -30,12 +30,13 @@
 #include <definitions/directions.hpp>
 #include <definitions/pedestrian_types.hpp>
 
+#include <attributes/attributes.hpp>
 #include <definitions/dsl_types.hpp>
 #include <string>
-#include <targets/attributes.hpp>
 #include <time/time.hpp>
 #include <values/numeric_value.hpp>
 #include <values/values.hpp>
+#include "actions/atoms/atom_scale.hpp"
 #include "behavior/exceptions.hpp"
 #include "conditions/subconditions/subcondition_event_ending.hpp"
 #include "conditions/subconditions/subcondition_event_starting.hpp"
@@ -47,7 +48,7 @@
 namespace BHVR {
 
 // NOLINTNEXTLINE Bug in clang-tidy (https://bugs.llvm.org/show_bug.cgi?id=48040) : ignores (cppcoreguidelines-avoid-non-const-global-variables)
-std::vector<cAttributeValue> AttributeHandling::valueStore{};
+std::vector<CAttributeValue> AttributeHandling::valueStore{};
 
 /**
  * @brief Parses the behavior file at filepath, returns the behavior it describes
@@ -325,11 +326,20 @@ void BehaviorBuilder::addSubCondToCondtion(
 void BehaviorBuilder::addAtomToAction(Action&                             action,
                                       BehaviorParser::Action_atomContext* atom) {
   if (atom->set_atom()) {
-    auto        attrStr = makeAttributeStr(atom->set_atom()->attribute());
-    auto        attr = makeAttribute(attrStr);
-    const auto* attrValue = makeAttributeValue(atom->set_atom()->attr_value());
-    bool        targetSelf = atom->set_atom()->TARGET() == nullptr;
+    auto attrStr = makeAttributeStr(atom->set_atom()->attribute());
+    auto attr = makeAttribute(attrStr);
+    auto attrValue = makeAttributeValue(atom->set_atom()->attr_value());
+    bool targetSelf = atom->set_atom()->TARGET() == nullptr;
     action.addAtom(AtomSet{attr, attrValue, targetSelf});
+    return;
+  }
+
+  if (atom->scale_atom()) {
+    auto attrStr = makeAttributeStr(atom->scale_atom()->attribute());
+    auto attr = makeAttribute(attrStr);
+    auto attrValue = makeAttributeValue(atom->scale_atom()->attr_value());
+    bool targetSelf = atom->scale_atom()->TARGET() == nullptr;
+    action.addAtom(AtomScale{attr, attrValue, targetSelf});
     return;
   }
 
@@ -399,7 +409,7 @@ std::pair<BHVR::typeUID, std::string> BehaviorBuilder::getGroup(
  * @param state : name of state
  * @return stateUID 
  */
-stateUID BehaviorBuilder::getState(const std::string& state) const {
+BHVR::stateUID BehaviorBuilder::getState(const std::string& state) const {
   if (states.find(state) == states.end()) {
     spdlog::error("Behavior Error: Attempt To Use Undeclared State: \"{}\"", state);
     BuilderException::error();
@@ -457,20 +467,25 @@ std::optional<VIPRA::idx> BehaviorBuilder::getEvent(const std::string& evName) c
   return (*ev).second;
 }
 
-BHVR::cAttributeValue BehaviorBuilder::makeAttributeValue(
+BHVR::CAttributeValue BehaviorBuilder::makeAttributeValue(
     BehaviorParser::Attr_valueContext* ctx) {
   if (ctx->value_coord()) {
     return AttributeHandling::storeValue<VIPRA::f3d>(
-        getCoord(ctx->value_coord(), currSeed));
+        Type::COORD, getCoord(ctx->value_coord(), currSeed));
   }
 
   if (ctx->STATE_VAL()) {
     return AttributeHandling::storeValue<BHVR::stateUID>(
-        getState(ctx->STATE_VAL()->toString()));
+        Type::STATE, getState(ctx->STATE_VAL()->toString()));
+  }
+
+  if (ctx->value_numeric()) {
+    return AttributeHandling::storeValue<BHVR::NumericValue>(
+        Type::NUMBER, getNumeric(ctx->value_numeric(), currSeed));
   }
 
   error("Unable To Create Attribute Value");
-  return nullptr;
+  return {Type::INVALID, nullptr};
 }
 
 // --------------------------------------------------- END GETTERS ---------------------------------------------------------------------------------------------

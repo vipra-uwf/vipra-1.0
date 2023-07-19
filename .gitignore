@@ -20,6 +20,7 @@ output.json
 Test
 Behavior_Tests
 Vipra_tests
+TestConfig
 
 # VIPRA Launcher
 node_modules

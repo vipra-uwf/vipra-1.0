@@ -1,19 +1,19 @@
 #ifndef VIPRA_SUBCONDITION_ATTRIBUTE_HPP
 #define VIPRA_SUBCONDITION_ATTRIBUTE_HPP
 
+#include <attributes/attributes.hpp>
 #include <conditions/sub_condition.hpp>
-#include "targets/attributes.hpp"
 
 namespace BHVR {
 class SubConditionAttribute {
  public:
-  explicit SubConditionAttribute(cAttributeValue);
+  explicit SubConditionAttribute(CAttributeValue);
 
   bool operator()(Simpack, VIPRA::idx, Target) const;
 
  private:
   Attribute       type;
-  cAttributeValue value;
+  CAttributeValue value;
 
  public:
   ~SubConditionAttribute() = default;

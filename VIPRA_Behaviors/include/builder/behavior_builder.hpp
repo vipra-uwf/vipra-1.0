@@ -21,18 +21,21 @@
 
 #include <util/caseless_str_comp.hpp>
 
-#include <targets/attributes.hpp>
+#include <attributes/attributes.hpp>
 #include <time/time.hpp>
 #include <values/values.hpp>
+#include "definitions/dsl_types.hpp"
 
 namespace BHVR {
 
-using StateMap =
-    std::unordered_map<std::string, BHVR::stateUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
-using TypeMap = std::unordered_map<std::string, BHVR::typeUID, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
-using EventMap = std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
-using LocationMap =
-    std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash, CaselessStrCompare::Comp>;
+using StateMap = std::unordered_map<std::string, BHVR::stateUID, CaselessStrCompare::Hash,
+                                    CaselessStrCompare::Comp>;
+using TypeMap = std::unordered_map<std::string, BHVR::typeUID, CaselessStrCompare::Hash,
+                                   CaselessStrCompare::Comp>;
+using EventMap = std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash,
+                                    CaselessStrCompare::Comp>;
+using LocationMap = std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash,
+                                       CaselessStrCompare::Comp>;
 
 using evEnd = BehaviorParser::Event_endContext*;
 using evStart = BehaviorParser::Event_startContext*;
@@ -82,21 +85,27 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   void addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
 
   [[nodiscard]] auto buildCondition(BehaviorParser::ConditionContext*) -> Condition;
-  [[nodiscard]] auto buildSubSelector(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
+  [[nodiscard]] auto buildSubSelector(slType, slSelector, std::optional<slGroup>, bool)
+      -> SubSelector;
 
   [[nodiscard]] auto getLocation(const std::string&) const -> VIPRA::idx;
   [[nodiscard]] auto getState(const std::string&) const -> BHVR::stateUID;
   [[nodiscard]] auto getEvent(const std::string&) const -> std::optional<VIPRA::idx>;
-  [[nodiscard]] auto getRange(BehaviorParser::Value_numberContext*) const -> VIPRA::time_range_s;
+  [[nodiscard]] auto getRange(BehaviorParser::Value_numberContext*) const
+      -> VIPRA::time_range_s;
   [[nodiscard]] auto getType(const std::string&) const -> BHVR::typeUID;
-  [[nodiscard]] auto getGroup(std::optional<slGroup>) const -> std::pair<BHVR::typeUID, std::string>;
-  [[nodiscard]] auto getCompositeType(const std::vector<antlr4::tree::TerminalNode*>&) const -> BHVR::Ptype;
+  [[nodiscard]] auto getGroup(std::optional<slGroup>) const
+      -> std::pair<BHVR::typeUID, std::string>;
+  [[nodiscard]] auto getCompositeType(
+      const std::vector<antlr4::tree::TerminalNode*>&) const -> BHVR::Ptype;
 
   [[nodiscard]] auto addEvent(BehaviorParser::Event_nameContext*) -> VIPRA::idx;
 
-  [[nodiscard]] auto        makeAttributeValue(BehaviorParser::Attr_valueContext*) -> BHVR::cAttributeValue;
+  [[nodiscard]] auto makeAttributeValue(BehaviorParser::Attr_valueContext*)
+      -> BHVR::CAttributeValue;
   [[nodiscard]] static auto makeAttribute(std::string) -> BHVR::Attribute;
-  [[nodiscard]] static auto makeAttributeStr(BehaviorParser::AttributeContext*) -> std::string;
+  [[nodiscard]] static auto makeAttributeStr(BehaviorParser::AttributeContext*)
+      -> std::string;
   [[nodiscard]] static auto makeListStrs(const std::vector<antlr4::tree::TerminalNode*>&)
       -> std::vector<std::string>;
 
@@ -119,7 +128,8 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   // -------------------------------- FINDERS ------------------------------------------------------------------------------------------------
 
   template <typename T>
-  [[nodiscard]] static auto findEventAttribute(BehaviorParser::EventContext* ctx) -> std::optional<T> {
+  [[nodiscard]] static auto findEventAttribute(BehaviorParser::EventContext* ctx)
+      -> std::optional<T> {
     for (const auto& attr : ctx->event_attribute()) {
       // Name
       if constexpr (std::is_same_v<T, std::string>)
@@ -138,7 +148,8 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   }
 
   template <typename T>
-  [[nodiscard]] static auto findActionAttribute(BehaviorParser::ActionContext* ctx) -> std::optional<T> {
+  [[nodiscard]] static auto findActionAttribute(BehaviorParser::ActionContext* ctx)
+      -> std::optional<T> {
     for (const auto& attr : ctx->action_attribute()) {
       // Stimulus
       if constexpr (std::is_same_v<T, acStimulus>)
@@ -161,7 +172,8 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   }
 
   template <typename T>
-  [[nodiscard]] static auto findSelectorAttribute(BehaviorParser::Ped_SelectorContext* ctx) -> std::optional<T> {
+  [[nodiscard]] static auto findSelectorAttribute(
+      BehaviorParser::Ped_SelectorContext* ctx) -> std::optional<T> {
     for (const auto& attr : ctx->selector_attribute()) {
       // Type
       if constexpr (std::is_same_v<T, slType>)

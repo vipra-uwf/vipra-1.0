@@ -35,9 +35,14 @@ sub_action:
 ;
 
 action_atom:
-  set_atom |
+  set_atom | 
+  scale_atom
 ;
 
 set_atom:
   SET TARGET? attribute TO attr_value
+;
+
+scale_atom:
+  SCALE TARGET? attribute attr_value
 ;

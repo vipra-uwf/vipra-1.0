@@ -6,7 +6,7 @@
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
-#include "selectors/pedestrian_groups.hpp"
+#include <selectors/pedestrian_groups.hpp>
 
 namespace BHVR {
 struct Simpack {

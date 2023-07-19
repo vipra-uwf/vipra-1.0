@@ -4,15 +4,17 @@ import lexer_rules, values;
 
 
 attribute:
-  POSITION |
-  VELOCITY |
-  GOAL |
-  STATE |
-  LOCATION |
-  STATUS
+  POSITION  |
+  VELOCITY  |
+  GOAL      |
+  STATE     |
+  LOCATION  |
+  STATUS    |
+  MAX SPEED |
   ;
 
 attr_value:
-  value_coord |
+  value_numeric |
+  value_coord   |
   STATE_VAL
   ;

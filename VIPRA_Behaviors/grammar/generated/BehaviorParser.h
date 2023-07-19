@@ -23,13 +23,13 @@ public:
     METERS = 51, NAME = 52, NEAREST = 53, NORMAL = 54, OBSTACLE = 55, OCCUR = 56, 
     OCCURRED = 57, OCCURRING = 58, OF = 59, ON = 60, OR = 61, PEDESTRIAN = 62, 
     PEDESTRIANS = 63, POSSIBLE = 64, POSITION = 65, RADIUS = 66, RANDOM = 67, 
-    REQUIRED = 68, RESPONSE = 69, SELF = 70, SELECT = 71, SELECTOR = 72, 
-    SET = 73, SECOND = 74, SECONDS = 75, STATUS = 76, STARTING = 77, SLOWER = 78, 
-    STATES = 79, START = 80, STATE = 81, STARTS = 82, SPEED = 83, SUBTRACT = 84, 
-    STIMULUS = 85, TARGET = 86, TO = 87, THE = 88, THAT = 89, THEN = 90, 
-    THEIR = 91, THERES = 92, TYPES = 93, TYPE = 94, UNCONDITIONALLY = 95, 
-    VALUE = 96, VELOCITY = 97, WHEN = 98, WHILE = 99, WIDTH = 100, WILL = 101, 
-    WITH = 102, WITHIN = 103, ID = 104, NUMBER = 105, FLOAT = 106
+    REQUIRED = 68, RESPONSE = 69, SCALE = 70, SELF = 71, SELECT = 72, SELECTOR = 73, 
+    SET = 74, SECOND = 75, SECONDS = 76, STATUS = 77, STARTING = 78, SLOWER = 79, 
+    STATES = 80, START = 81, STATE = 82, STARTS = 83, SPEED = 84, SUBTRACT = 85, 
+    STIMULUS = 86, TARGET = 87, TO = 88, THE = 89, THAT = 90, THEN = 91, 
+    THEIR = 92, THERES = 93, TYPES = 94, TYPE = 95, UNCONDITIONALLY = 96, 
+    VALUE = 97, VELOCITY = 98, WHEN = 99, WHILE = 100, WIDTH = 101, WILL = 102, 
+    WITH = 103, WITHIN = 104, ID = 105, NUMBER = 106, FLOAT = 107
   };
 
   enum {
@@ -50,10 +50,11 @@ public:
     RuleSelector_Exactly_N_Random = 46, RuleSelector_Everyone = 47, RuleGroup = 48, 
     RuleId_list = 49, RuleAction = 50, RuleAction_attribute = 51, RuleAction_stimulus = 52, 
     RuleAction_response = 53, RuleAction_duration = 54, RuleAction_target = 55, 
-    RuleSub_action = 56, RuleAction_atom = 57, RuleSet_atom = 58, RuleTarget = 59, 
-    RuleSelf = 60, RuleNearest_type = 61, RuleDeclaration = 62, RuleDecl_Loc = 63, 
-    RuleDecl_Ped_State = 64, RuleDecl_Env_State = 65, RuleDecl_Loc_Area_Circle = 66, 
-    RuleDecl_Loc_Area_Rect = 67, RuleDecl_Loc_Point = 68, RuleDecl_Ped = 69
+    RuleSub_action = 56, RuleAction_atom = 57, RuleSet_atom = 58, RuleScale_atom = 59, 
+    RuleTarget = 60, RuleSelf = 61, RuleNearest_type = 62, RuleDeclaration = 63, 
+    RuleDecl_Loc = 64, RuleDecl_Ped_State = 65, RuleDecl_Env_State = 66, 
+    RuleDecl_Loc_Area_Circle = 67, RuleDecl_Loc_Area_Rect = 68, RuleDecl_Loc_Point = 69, 
+    RuleDecl_Ped = 70
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -132,6 +133,7 @@ public:
   class Sub_actionContext;
   class Action_atomContext;
   class Set_atomContext;
+  class Scale_atomContext;
   class TargetContext;
   class SelfContext;
   class Nearest_typeContext;
@@ -700,6 +702,7 @@ public:
   public:
     Attr_valueContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    Value_numericContext *value_numeric();
     Value_coordContext *value_coord();
     antlr4::tree::TerminalNode *STATE_VAL();
 
@@ -1003,6 +1006,7 @@ public:
     Action_atomContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     Set_atomContext *set_atom();
+    Scale_atomContext *scale_atom();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -1027,6 +1031,22 @@ public:
   };
 
   Set_atomContext* set_atom();
+
+  class  Scale_atomContext : public antlr4::ParserRuleContext {
+  public:
+    Scale_atomContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *SCALE();
+    AttributeContext *attribute();
+    Attr_valueContext *attr_value();
+    antlr4::tree::TerminalNode *TARGET();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Scale_atomContext* scale_atom();
 
   class  TargetContext : public antlr4::ParserRuleContext {
   public:

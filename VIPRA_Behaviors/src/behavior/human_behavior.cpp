@@ -2,6 +2,8 @@
 
 #include <numeric>
 #include <utility>
+#include "definitions/dsl_types.hpp"
+#include "definitions/pedestrian_types.hpp"
 #include "definitions/sim_pack.hpp"
 #include "selectors/selector.hpp"
 
@@ -29,7 +31,9 @@ void HumanBehavior::addAction(typeUID type, const Action& action) {
  * 
  * @param selector
  */
-void HumanBehavior::addSubSelector(const SubSelector& subSelector) { selector.addSubSelector(subSelector); }
+void HumanBehavior::addSubSelector(const SubSelector& subSelector) {
+  selector.addSubSelector(subSelector);
+}
 
 /**
  * @brief Sets the BHVR selectors allTypes
@@ -47,9 +51,10 @@ void HumanBehavior::setAllPedTypes(Ptype types) {
  * @param obsSet : obstacle set object
  * @param goals : goals object
  */
-void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
+void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet,
+                               const Goals& goals) {
   context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
-  context.types = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
+  context.types = std::vector<BHVR::typeUID>(pedSet.getNumPedestrians());
 
   Simpack pack{pedSet, obsSet, goals, context, selector.getGroups(), 0};
   spdlog::debug("Initializing {} Selectors, Seed: {}", selector.selectorCount(), seedNum);
@@ -71,8 +76,8 @@ void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& o
  * @param state : state object to write results to
  * @param dT : simulation timestep size
  */
-void HumanBehavior::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, VIPRA::State& state,
-                             VIPRA::delta_t dT) {
+void HumanBehavior::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
+                             VIPRA::State& state, VIPRA::delta_t dT) {
   evaluateEvents(pedSet, obsSet, goals, dT);
   applyActions(pedSet, obsSet, goals, state, dT);
   context.elapsedTime += dT;
@@ -138,14 +143,15 @@ void HumanBehavior::setSeed(BHVR::seed bSeed) {
   seedNum = bSeed;
 }
 
-void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, VIPRA::delta_t dT) {
+void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
+                                   Goals& goals, VIPRA::delta_t dT) {
   for (auto& event : context.events) {
     event.evaluate({pedSet, obsSet, goals, context, selector.getGroups(), dT});
   }
 }
 
-void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals, VIPRA::State& state,
-                                 VIPRA::delta_t dT) {
+void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
+                                 VIPRA::State& state, VIPRA::delta_t dT) {
   const GroupsContainer& groups = selector.getGroups();
   const VIPRA::size      groupCnt = groups.size();
 
@@ -154,7 +160,8 @@ void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goa
     std::for_each(pedestrians.begin(), pedestrians.end(), [&](VIPRA::idx ped) {
       if (!goals.isPedestianGoalMet(ped))
         for (auto& action : actions[i]) {
-          action.performAction({pedSet, obsSet, goals, context, selector.getGroups(), dT}, ped, state);
+          action.performAction({pedSet, obsSet, goals, context, selector.getGroups(), dT},
+                               ped, state);
         }
     });
   }
@@ -162,7 +169,8 @@ void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goa
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------
 
-HumanBehavior::HumanBehavior(std::string behaviorName) : name(std::move(behaviorName)), context() {}
+HumanBehavior::HumanBehavior(std::string behaviorName)
+    : name(std::move(behaviorName)), context() {}
 
 // ------------------------------------------ END CONSTRUCTORS ------------------------------------------------------------------------
 }  // namespace BHVR
