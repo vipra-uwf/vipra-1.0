@@ -1,17 +1,19 @@
 
+#include <spdlog/spdlog.h>
 #include <actions/action.hpp>
+#include <definitions/sim_pack.hpp>
+#include <targets/target.hpp>
+#include <time/time.hpp>
+#include <util/timed_latch.hpp>
 #include <utility>
-#include "spdlog/spdlog.h"
-#include "time/time.hpp"
-#include "util/timed_latch.hpp"
-#include "values/numeric_value.hpp"
+#include <values/numeric_value.hpp>
+#include "targets/target_selector.hpp"
 
 namespace BHVR {
 
-void Action::initialize(const PedestrianSet& pedSet, const ObstacleSet&, const Goals&,
-                        const BehaviorContext&) {
+void Action::initialize(Simpack pack) {
   if (duration) {
-    duration->resize(pedSet.getNumPedestrians());
+    duration->resize(pack.pedSet.getNumPedestrians());
   }
 }
 
@@ -26,13 +28,11 @@ void Action::initialize(const PedestrianSet& pedSet, const ObstacleSet&, const G
  * @param dT : simulation timestep size
  * @param state : state object to apply changes to
  */
-void Action::performAction(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
-                           BehaviorContext& context, VIPRA::idx pedIdx, VIPRA::delta_t dT,
-                           VIPRA::State& state) {
-  if (evaluate(pedSet, obsSet, goals, context, pedIdx, dT)) {
-    std::for_each(atoms.begin(), atoms.end(), [&](Atom& atom) {
-      atom(pedSet, obsSet, goals, context, pedIdx, dT, state);
-    });
+void Action::performAction(Simpack pack, VIPRA::idx pedIdx, VIPRA::State& state) {
+  Target self = {TargetType::PEDESTRIAN, pedIdx};
+  Target target = targets.getTarget(pack, self);
+  if (evaluate(pack, pedIdx, target)) {
+    std::for_each(atoms.begin(), atoms.end(), [&](Atom& atom) { atom(pack, self, target, state); });
   }
 }
 
@@ -55,30 +55,29 @@ void Action::addAtom(const Atom& atom) { atoms.emplace_back(atom); }
  * 
  * @param range
  */
-void Action::addDuration(const BHVR::NumericValue& dur) {
-  duration = TimedLatchCollection(dur);
-}
+void Action::addDuration(const BHVR::NumericValue& dur) { duration = TimedLatchCollection(dur); }
 
 /**
  * @brief Checks whether the condition should
  * 
  */
-inline bool Action::evaluate(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
-                             BehaviorContext& context, VIPRA::idx pedIdx,
-                             VIPRA::delta_t dT) {
+inline bool Action::evaluate(Simpack pack, VIPRA::idx pedIdx, Target target) {
   if (!condition) {
     return true;
   }
 
-  bool run = condition->evaluate(pedSet, obsSet, goals, context, pedIdx, dT);
+  bool run = condition->evaluate(pack, pedIdx, target);
   if (duration) {
     if (run) {
-      duration->latch(context.elapsedTime, pedIdx);
+      duration->latch(pack.context.elapsedTime, pedIdx);
     }
 
-    return duration->check(context.elapsedTime, pedIdx);
+    return duration->check(pack.context.elapsedTime, pedIdx);
   }
 
   return run;
 }
+
+void Action::addTarget(TargetSelector&& target) { targets = target; }
+
 }  // namespace BHVR

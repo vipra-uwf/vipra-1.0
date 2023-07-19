@@ -1,6 +1,7 @@
 
 
 #include <conditions/subconditions/subcondition_event.hpp>
+#include "definitions/sim_pack.hpp"
 
 namespace BHVR {
 /**
@@ -16,8 +17,7 @@ SubConditionEventOccurred::SubConditionEventOccurred(VIPRA::idx ev) : event(ev) 
  * @return true 
  * @return false 
  */
-bool SubConditionEventOccurred::operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
-                                           const BehaviorContext& context, VIPRA::idx, VIPRA::delta_t) const {
-  return context.events[event].hasOccurred();
+bool SubConditionEventOccurred::operator()(Simpack pack, VIPRA::idx, Target) const {
+  return pack.context.events[event].hasOccurred();
 }
 }  // namespace BHVR

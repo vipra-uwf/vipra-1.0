@@ -1,11 +1,31 @@
 
-Consider an announcement_listener.
+Types:
+  Listener
+  Half_listener
+.
 
-Everyone is an announcement_listener.
+Selector:
+  Type: Listener
+  Select: 20%
+.
 
-An !announcement event will 
-  occur after a random 3.0 to 5.0 seconds from !start
-  and
-  end after 3 seconds from !announcement.
+Selector:
+  Type: Half_listener
+  Select: 25%
+.
 
-An announcement_listener will @stop while an !announcement event is occurring.
+Event:
+  Name: Announcement
+  Start: 10 seconds from !Start
+  End: 15 seconds from !Announcement
+.
+
+Action (Listener):
+  Stimulus: !Announcement occurring
+  Response: set velocity to {0}
+.
+
+Action (Half_listener):
+  Stimulus: !Announcement occurring
+  Response: scale velocity 0.75
+.

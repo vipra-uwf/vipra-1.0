@@ -1,5 +1,12 @@
-Consider an injured_person.
+Types:
+  injured_person
+.
 
-Exactly 2 random pedestrians are an injured_person.
+Selector:
+  Type: injured_person
+  Select: 2
+.
 
-An injured_person will always @walk 0.9x their normal speed.
+Action (injured_person):
+  Response: scale velocity 0.5x
+.

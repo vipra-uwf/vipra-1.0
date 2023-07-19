@@ -17,27 +17,15 @@
 
 namespace BHVR {
 
-/**
- * @brief Result of a call to a subselector
- * 
- */
 struct SelectorResult {
   bool          starved;
   VIPRA::idxVec group;
 };
 
-/**
- * @brief Functor type for sub selectors
- * 
- */
 using SelectorFunc = std::function<SelectorResult(
     VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&,
     const ObstacleSet&, const Goals&)>;
 
-/**
- * @brief Subselectors are combined in a Selector to group pedestrians by type
- * 
- */
 class SubSelector {
  public:
   SubSelector(typeUID, Ptype, bool, SelectorFunc);

@@ -25,9 +25,13 @@ public:
 
     virtual std::any visitEvent(BehaviorParser::EventContext *context) = 0;
 
-    virtual std::any visitEvent_Single(BehaviorParser::Event_SingleContext *context) = 0;
+    virtual std::any visitEvent_attribute(BehaviorParser::Event_attributeContext *context) = 0;
 
-    virtual std::any visitEvent_Lasting(BehaviorParser::Event_LastingContext *context) = 0;
+    virtual std::any visitEvent_name(BehaviorParser::Event_nameContext *context) = 0;
+
+    virtual std::any visitEvent_start(BehaviorParser::Event_startContext *context) = 0;
+
+    virtual std::any visitEvent_end(BehaviorParser::Event_endContext *context) = 0;
 
     virtual std::any visitCondition(BehaviorParser::ConditionContext *context) = 0;
 
@@ -45,7 +49,13 @@ public:
 
     virtual std::any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext *context) = 0;
 
-    virtual std::any visitCondition_ped_state(BehaviorParser::Condition_ped_stateContext *context) = 0;
+    virtual std::any visitCondition_Event_Starting(BehaviorParser::Condition_Event_StartingContext *context) = 0;
+
+    virtual std::any visitCondition_Event_Ending(BehaviorParser::Condition_Event_EndingContext *context) = 0;
+
+    virtual std::any visitCondition_Spatial(BehaviorParser::Condition_SpatialContext *context) = 0;
+
+    virtual std::any visitCondition_Attribute(BehaviorParser::Condition_AttributeContext *context) = 0;
 
     virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *context) = 0;
 
@@ -65,6 +75,8 @@ public:
 
     virtual std::any visitNumber_range(BehaviorParser::Number_rangeContext *context) = 0;
 
+    virtual std::any visitValue_coord(BehaviorParser::Value_coordContext *context) = 0;
+
     virtual std::any visitDirection(BehaviorParser::DirectionContext *context) = 0;
 
     virtual std::any visitDir(BehaviorParser::DirContext *context) = 0;
@@ -77,11 +89,23 @@ public:
 
     virtual std::any visitAround(BehaviorParser::AroundContext *context) = 0;
 
-    virtual std::any visitObject(BehaviorParser::ObjectContext *context) = 0;
-
     virtual std::any visitDuration(BehaviorParser::DurationContext *context) = 0;
 
+    virtual std::any visitAttribute(BehaviorParser::AttributeContext *context) = 0;
+
+    virtual std::any visitAttr_value(BehaviorParser::Attr_valueContext *context) = 0;
+
     virtual std::any visitPed_Selector(BehaviorParser::Ped_SelectorContext *context) = 0;
+
+    virtual std::any visitSelector_attribute(BehaviorParser::Selector_attributeContext *context) = 0;
+
+    virtual std::any visitSelector_type(BehaviorParser::Selector_typeContext *context) = 0;
+
+    virtual std::any visitSelector_selector(BehaviorParser::Selector_selectorContext *context) = 0;
+
+    virtual std::any visitSelector_from(BehaviorParser::Selector_fromContext *context) = 0;
+
+    virtual std::any visitSelector_required(BehaviorParser::Selector_requiredContext *context) = 0;
 
     virtual std::any visitSelector(BehaviorParser::SelectorContext *context) = 0;
 
@@ -91,23 +115,35 @@ public:
 
     virtual std::any visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext *context) = 0;
 
+    virtual std::any visitGroup(BehaviorParser::GroupContext *context) = 0;
+
     virtual std::any visitId_list(BehaviorParser::Id_listContext *context) = 0;
 
     virtual std::any visitAction(BehaviorParser::ActionContext *context) = 0;
 
-    virtual std::any visitConditional_action(BehaviorParser::Conditional_actionContext *context) = 0;
+    virtual std::any visitAction_attribute(BehaviorParser::Action_attributeContext *context) = 0;
 
-    virtual std::any visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext *context) = 0;
+    virtual std::any visitAction_stimulus(BehaviorParser::Action_stimulusContext *context) = 0;
+
+    virtual std::any visitAction_response(BehaviorParser::Action_responseContext *context) = 0;
+
+    virtual std::any visitAction_duration(BehaviorParser::Action_durationContext *context) = 0;
+
+    virtual std::any visitAction_target(BehaviorParser::Action_targetContext *context) = 0;
 
     virtual std::any visitSub_action(BehaviorParser::Sub_actionContext *context) = 0;
 
     virtual std::any visitAction_atom(BehaviorParser::Action_atomContext *context) = 0;
 
-    virtual std::any visitAction_Stop(BehaviorParser::Action_StopContext *context) = 0;
+    virtual std::any visitSet_atom(BehaviorParser::Set_atomContext *context) = 0;
 
-    virtual std::any visitAction_atom_Percent_Walk_Speed(BehaviorParser::Action_atom_Percent_Walk_SpeedContext *context) = 0;
+    virtual std::any visitScale_atom(BehaviorParser::Scale_atomContext *context) = 0;
 
-    virtual std::any visitAction_Be(BehaviorParser::Action_BeContext *context) = 0;
+    virtual std::any visitTarget(BehaviorParser::TargetContext *context) = 0;
+
+    virtual std::any visitSelf(BehaviorParser::SelfContext *context) = 0;
+
+    virtual std::any visitNearest_type(BehaviorParser::Nearest_typeContext *context) = 0;
 
     virtual std::any visitDeclaration(BehaviorParser::DeclarationContext *context) = 0;
 
@@ -124,8 +160,6 @@ public:
     virtual std::any visitDecl_Loc_Point(BehaviorParser::Decl_Loc_PointContext *context) = 0;
 
     virtual std::any visitDecl_Ped(BehaviorParser::Decl_PedContext *context) = 0;
-
-    virtual std::any visitPoint(BehaviorParser::PointContext *context) = 0;
 
 
 };

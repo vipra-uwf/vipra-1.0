@@ -27,11 +27,19 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEvent_Single(BehaviorParser::Event_SingleContext *ctx) override {
+  virtual std::any visitEvent_attribute(BehaviorParser::Event_attributeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEvent_Lasting(BehaviorParser::Event_LastingContext *ctx) override {
+  virtual std::any visitEvent_name(BehaviorParser::Event_nameContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitEvent_start(BehaviorParser::Event_startContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitEvent_end(BehaviorParser::Event_endContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -67,7 +75,19 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitCondition_ped_state(BehaviorParser::Condition_ped_stateContext *ctx) override {
+  virtual std::any visitCondition_Event_Starting(BehaviorParser::Condition_Event_StartingContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitCondition_Event_Ending(BehaviorParser::Condition_Event_EndingContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitCondition_Spatial(BehaviorParser::Condition_SpatialContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitCondition_Attribute(BehaviorParser::Condition_AttributeContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -107,6 +127,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitValue_coord(BehaviorParser::Value_coordContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitDirection(BehaviorParser::DirectionContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -131,15 +155,39 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitObject(BehaviorParser::ObjectContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitDuration(BehaviorParser::DurationContext *ctx) override {
     return visitChildren(ctx);
   }
 
+  virtual std::any visitAttribute(BehaviorParser::AttributeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAttr_value(BehaviorParser::Attr_valueContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitPed_Selector(BehaviorParser::Ped_SelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_attribute(BehaviorParser::Selector_attributeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_type(BehaviorParser::Selector_typeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_selector(BehaviorParser::Selector_selectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_from(BehaviorParser::Selector_fromContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_required(BehaviorParser::Selector_requiredContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -159,6 +207,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitGroup(BehaviorParser::GroupContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitId_list(BehaviorParser::Id_listContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -167,11 +219,23 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitConditional_action(BehaviorParser::Conditional_actionContext *ctx) override {
+  virtual std::any visitAction_attribute(BehaviorParser::Action_attributeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext *ctx) override {
+  virtual std::any visitAction_stimulus(BehaviorParser::Action_stimulusContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_response(BehaviorParser::Action_responseContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_duration(BehaviorParser::Action_durationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_target(BehaviorParser::Action_targetContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -183,15 +247,23 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAction_Stop(BehaviorParser::Action_StopContext *ctx) override {
+  virtual std::any visitSet_atom(BehaviorParser::Set_atomContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAction_atom_Percent_Walk_Speed(BehaviorParser::Action_atom_Percent_Walk_SpeedContext *ctx) override {
+  virtual std::any visitScale_atom(BehaviorParser::Scale_atomContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAction_Be(BehaviorParser::Action_BeContext *ctx) override {
+  virtual std::any visitTarget(BehaviorParser::TargetContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelf(BehaviorParser::SelfContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitNearest_type(BehaviorParser::Nearest_typeContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -224,10 +296,6 @@ public:
   }
 
   virtual std::any visitDecl_Ped(BehaviorParser::Decl_PedContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitPoint(BehaviorParser::PointContext *ctx) override {
     return visitChildren(ctx);
   }
 

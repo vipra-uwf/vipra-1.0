@@ -28,11 +28,11 @@ value_random:
   ;
 
 random_number:
-  AN RANDOM number_range
+  RANDOM number_range
   ;
 
 random_float:
-  AN RANDOM float_range
+  RANDOM float_range
   ;
 
 float_range:
@@ -41,4 +41,8 @@ float_range:
 
 number_range:
   NUMBER (TO | '-') NUMBER
+  ;
+
+value_coord:
+  '{' value_numeric (',' value_numeric (',' value_numeric)?)? '}'
   ;

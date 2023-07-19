@@ -67,14 +67,22 @@ class CalmPedestrianSet : public PedestrianSet {
    * @param index The index of the pedestrian.
    * @return The coordinates of the pedestrian.
    */
-  [[nodiscard]] VIPRA::f3d           getPedCoords(VIPRA::idx) const override;
+  [[nodiscard]] const VIPRA::f3d&    getPedCoords(VIPRA::idx) const override;
   /**
    * @brief Gets the velocity of the pedestrian at the specified index.
    *
    * @param index The index of the pedestrian.
    * @return The velocity of the pedestrian.
    */
-  [[nodiscard]] VIPRA::f3d           getPedVelocity(VIPRA::idx) const override;
+  [[nodiscard]] const VIPRA::f3d&    getPedVelocity(VIPRA::idx) const override;
+
+  /**
+   * @brief Get the nearest pedestrian to the specified pedestrian.
+   *
+   * @param pedIdx The index of the pedestrian for which to find the nearest pedestrian.
+   * @return A pair containing the coordinates and index of the nearest pedestrian.
+   */
+  [[nodiscard]] std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(VIPRA::idx) const override;
 
  private:
   VIPRA::f3dVec coords;

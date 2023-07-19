@@ -7,15 +7,12 @@
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
+#include <targets/target.hpp>
+#include "definitions/sim_pack.hpp"
 
 namespace BHVR {
 
-/**
- * @brief Component of an Action that affects pedestrians 
- * 
- */
-using Atom = std::function<void(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&,
-                                VIPRA::idx, VIPRA::delta_t, VIPRA::State&)>;
+using Atom = std::function<void(Simpack, Target, Target, VIPRA::State&)>;
 
 }  // namespace BHVR
 

@@ -20,8 +20,8 @@ class Goals {
   virtual void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&,
                                      VIPRA::delta_t) = 0;
 
-  [[nodiscard]] virtual VIPRA::f3d getCurrentGoal(VIPRA::idx) const = 0;
-  [[nodiscard]] virtual VIPRA::f3d getEndGoal(VIPRA::idx) const = 0;
+  [[nodiscard]] virtual const VIPRA::f3d& getCurrentGoal(VIPRA::idx) const = 0;
+  [[nodiscard]] virtual const VIPRA::f3d& getEndGoal(VIPRA::idx) const = 0;
 
   [[nodiscard]] virtual const VIPRA::f3dVec& getAllCurrentGoals() const = 0;
   [[nodiscard]] virtual const VIPRA::f3dVec& getAllEndGoals() const = 0;

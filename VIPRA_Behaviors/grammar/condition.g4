@@ -1,6 +1,6 @@
 grammar condition;
 
-import lexer_rules, values, directions, objects, time;
+import lexer_rules, values, directions, time, attributes;
 
 condition:
   sub_condition connector*;
@@ -19,15 +19,36 @@ and_Connector:
 sub_condition:
   condition_Time_Elapsed_From_Event |
   condition_Event_Occurred |
-  condition_Event_Occurring
+  condition_Event_Occurring |
+  condition_Event_Starting |
+  condition_Event_Ending |
+  condition_Spatial
   ;
 
 condition_Time_Elapsed_From_Event:
-  AFTER value_numeric SECONDS FROM (AN | THE)? EVNT (EVENT)?
+  value_numeric SECONDS FROM EVNT
   ;
 
 condition_Event_Occurred:
-  GIVEN (AN | THE)? EVNT (EVENT)? HAS OCCURRED;
+  EVNT HAS OCCURRED
+  ;
 
 condition_Event_Occurring:
-  WHILE (AN | THE)? EVNT (EVENT)? IS OCCURRING;
+  EVNT OCCURRING
+  ;
+
+condition_Event_Starting:
+  EVNT STARTING
+  ;
+
+condition_Event_Ending:
+  EVNT ENDING
+  ;
+
+condition_Spatial:
+  TARGET WITHIN value_numeric METERS
+  ;
+
+condition_Attribute:
+  TARGET? attribute IS attr_value
+  ;

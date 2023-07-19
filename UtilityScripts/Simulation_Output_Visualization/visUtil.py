@@ -140,7 +140,7 @@ def makeColors(pedCoords, args):
   if args['pedColor']:
     return np.random.rand(len(pedCoords["0"]), 3)
   else:
-    return [1,0.5,0]
+    return np.full((len(pedCoords["0"]),3),[1,0.5,0])
 
 def plotShoulders(pointsX, pointsY, colors, ax, args):
   shldrLen = args['shldrLen']
