@@ -12,13 +12,37 @@
 #include <definitions/dimensions.hpp>
 #include "definitions/type_definitions.hpp"
 
+/**
+ * @class JsonPedestrianLoader
+ * @brief A class for loading pedestrian positions from a JSON file.
+ *
+ * This class inherits from PedestrianLoader and provides functionality for
+ * configuring, initializing, and loading pedestrian positions from a JSON file.
+ */
 class JsonPedestrianLoader : public PedestrianLoader {
  public:
+  /**
+   * @brief Configures the JsonPedestrianLoader with the given configuration map.
+   *
+   * @param configMap The configuration map.
+   */
   void configure(const VIPRA::CONFIG::Map& configMap) override;
+  /**
+   * @brief Initializes the JsonPedestrianLoader.
+   */
   void initialize() override;
+  
+  /**
+   * @brief Loads pedestrians from the specified JSON file.
+   *
+   * @param filePath The path to the JSON file.
+   * @return A vector containing the pedestrians data.
+   */
   [[nodiscard]] std::vector<VIPRA::pcoord> loadPedestrians(
       const std::string& filePath) const override;
-
+  /**
+   * @brief Default constructor for the JsonPedestrianLoader class.
+   */
   JsonPedestrianLoader() = default;
 };
 

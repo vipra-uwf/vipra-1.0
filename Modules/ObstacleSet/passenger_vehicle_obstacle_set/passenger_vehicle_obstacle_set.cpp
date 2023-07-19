@@ -1,10 +1,30 @@
 #include "passenger_vehicle_obstacle_set.hpp"
 
+/**
+ * @brief Calculates the maximum dimensions among the entities.
+ *
+ * @param objects The entity set.
+ * @return The maximum dimensions as a 3D vector.
+ */
 VIPRA::f3d  makeDimensions(const VIPRA::EntitySet& objects);
+/**
+ * @brief Tests if an object is in the opposite direction of the pedestrian's movement.
+ *
+ * @param pedCoords The pedestrian coordinates.
+ * @param pedVelocity The pedestrian velocity.
+ * @param objCoords The object coordinates.
+ * @return True if the object is in the opposite direction, false otherwise.
+ */
 inline bool objectDirectionTest(const VIPRA::f3d& pedCoords,
                                 const VIPRA::f3d& pedVelocity,
                                 const VIPRA::f3d& objCoords);
 
+/**
+ * @brief Calculates the maximum dimensions among the entities.
+ *
+ * @param objects The entity set.
+ * @return The maximum dimensions as a 3D vector.
+ */
 VIPRA::f3d makeDimensions(const VIPRA::EntitySet& objects) {
   VIPRA::f3d maxDim{0, 0, 0};
   for (const auto& mapIterator : objects) {
@@ -24,6 +44,11 @@ VIPRA::f3d makeDimensions(const VIPRA::EntitySet& objects) {
   return maxDim;
 }
 
+/**
+ * @brief Initializes the PassengerVehicleObstacleSet with the given map data.
+ *
+ * @param map The map data.
+ */
 void PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map) {
   if (map->type != "PointMap") {
     ObstacleSetException::error("Improper Map Type, Expected \"PointMap\"");
@@ -33,11 +58,22 @@ void PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map
   mapDimensions = makeDimensions(objects);
 }
 
+/**
+ * @brief Configures the PassengerVehicleObstacleSet with the given configuration map.
+ *
+ * @param configMap The configuration map.
+ */
 void PassengerVehicleObstacleSet::configure(const VIPRA::CONFIG::Map& configMap) {
   obstacleCollisionDistance = configMap["obstacleCollisionDistance"].asFloat();
   obstacleCollisionDistanceSqrd = obstacleCollisionDistance * obstacleCollisionDistance;
 }
 
+/**
+ * @brief Finds the nearest obstacles for each pedestrian in the PedestrianSet.
+ *
+ * @param PedSet The PedestrianSet.
+ * @return A vector containing the nearest obstacles for each pedestrian.
+ */
 VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacle(
     const PedestrianSet& PedSet) const {
   const VIPRA::f3dVec& coordinatesVector = PedSet.getCoordinates();
@@ -56,6 +92,12 @@ VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacle(
   return nearestObstacleVector;
 }
 
+/**
+ * @brief Finds the nearest obstacles in the direction of each pedestrian's velocity in the PedestrianSet.
+ *
+ * @param pedSet The PedestrianSet.
+ * @return A vector containing the nearest obstacles in the direction of each pedestrian's velocity.
+ */
 VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacleInDirection(
     const PedestrianSet& pedSet) const {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
@@ -70,6 +112,12 @@ VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacleInDirection(
   return nearest;
 }
 
+/**
+ * @brief Finds the nearest obstacle to the given coordinates.
+ *
+ * @param coordinates The coordinates.
+ * @return The nearest obstacle.
+ */
 VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacle(
     const VIPRA::f3d coordinates) const {
   const auto&       obs = objects.at("obstacle");
@@ -87,6 +135,13 @@ VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacle(
   return obs.at(closest);
 }
 
+/**
+ * @brief Finds the nearest obstacle in the direction of the given coordinates and velocity.
+ *
+ * @param coordinates The coordinates.
+ * @param velocity The velocity.
+ * @return The nearest obstacle in the given direction.
+ */
 VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacleInDirection(
     VIPRA::f3d coordinates, VIPRA::f3d velocity) const {
   const auto&       obstacles = objects.at("obstacle");
@@ -111,17 +166,40 @@ VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacleInDirection(
   return obstacles.at(nearest);
 }
 
+/**
+ * @brief Retrieves the objects of the specified type from the obstacle set.
+ *
+ * @param type The type of objects.
+ * @return A reference to the vector of objects.
+ */
 const std::vector<VIPRA::f3d>& PassengerVehicleObstacleSet::getObjectsofType(
     const std::string& type) const {
   return objects.at(type);
 }
 
+/**
+ * @brief Retrieves the types of objects in the obstacle set.
+ *
+ * @return A reference to the vector of object types.
+ */
 const std::vector<std::string>& PassengerVehicleObstacleSet::getObjectTypes() const {
   return objectTypes;
 }
 
+/**
+ * @brief Retrieves the dimensions of the map.
+ *
+ * @return The map dimensions as a VIPRA::f3d object.
+ */
 VIPRA::f3d PassengerVehicleObstacleSet::getMapDimensions() const { return mapDimensions; }
 
+/**
+ * @brief Performs a ray hit test between two points in the obstacle set.
+ *
+ * @param point1 The first point.
+ * @param point2 The second point.
+ * @return The distance of the hit point from point1 if a hit occurs, or -1 if no hit occurs.
+ */
 float PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const {
   const auto& obstacles = objects.at("obstacle");
   float       nearest = std::numeric_limits<float>::max();
@@ -155,6 +233,12 @@ float PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) 
   return nearest;
 }
 
+/**
+ * @brief Checks if a collision occurs at the given coordinates.
+ *
+ * @param coords The coordinates.
+ * @return True if a collision occurs, false otherwise.
+ */
 bool PassengerVehicleObstacleSet::collision(VIPRA::f3d coords) const {
   return std::any_of(objects.at("obstacle").begin(), objects.at("obstacle").end(),
                      [&](const VIPRA::f3d& obs) {
@@ -162,6 +246,9 @@ bool PassengerVehicleObstacleSet::collision(VIPRA::f3d coords) const {
                      });
 }
 
+/**
+ * @brief Checks if the required objects exist in the obstacle map.
+ */
 void PassengerVehicleObstacleSet::checkMap() const {
   // check that seat, exit, aisle, and endOfAilse exists
   if (objects.find("exit") == objects.end()) {
@@ -188,6 +275,14 @@ void PassengerVehicleObstacleSet::checkMap() const {
   }
 }
 
+/**
+ * @brief Tests if an object is in the opposite direction of the pedestrian's movement.
+ *
+ * @param pedCoords The pedestrian coordinates.
+ * @param pedVelocity The pedestrian velocity.
+ * @param objCoords The object coordinates.
+ * @return True if the object is in the opposite direction, false otherwise.
+ */
 inline bool objectDirectionTest(const VIPRA::f3d& pedCoords,
                                 const VIPRA::f3d& pedVelocity,
                                 const VIPRA::f3d& objCoords) {
