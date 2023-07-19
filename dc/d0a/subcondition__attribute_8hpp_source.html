@@ -79,19 +79,19 @@ $(function() {
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef VIPRA_SUBCONDITION_ATTRIBUTE_HPP</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define VIPRA_SUBCONDITION_ATTRIBUTE_HPP</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;conditions/sub_condition.hpp&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;targets/attributes.hpp&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;attributes/attributes.hpp&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;conditions/sub_condition.hpp&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span>BHVR {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="../../d1/da9/classBHVR_1_1SubConditionAttribute.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d1/da9/classBHVR_1_1SubConditionAttribute.html">SubConditionAttribute</a> {</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="../../d1/da9/classBHVR_1_1SubConditionAttribute.html">SubConditionAttribute</a>(cAttributeValue);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="../../d1/da9/classBHVR_1_1SubConditionAttribute.html">SubConditionAttribute</a>(<a class="code hl_struct" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a>);</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordtype">bool</span> operator()(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  Attribute       type;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  cAttributeValue value;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <a class="code hl_struct" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a> value;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <a class="code hl_class" href="../../d1/da9/classBHVR_1_1SubConditionAttribute.html">~SubConditionAttribute</a>() = <span class="keywordflow">default</span>;</div>
@@ -105,6 +105,7 @@ $(function() {
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassBHVR_1_1SubConditionAttribute_html"><div class="ttname"><a href="../../d1/da9/classBHVR_1_1SubConditionAttribute.html">BHVR::SubConditionAttribute</a></div><div class="ttdef"><b>Definition</b> subcondition_attribute.hpp:8</div></div>
+<div class="ttc" id="astructBHVR_1_1CAttributeValue_html"><div class="ttname"><a href="../../dc/d65/structBHVR_1_1CAttributeValue.html">BHVR::CAttributeValue</a></div><div class="ttdoc">Holds an immutable attribute value and its type.</div><div class="ttdef"><b>Definition</b> attributes.hpp:58</div></div>
 <div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdef"><b>Definition</b> sim_pack.hpp:12</div></div>
 <div class="ttc" id="astructBHVR_1_1Target_html"><div class="ttname"><a href="../../d1/d49/structBHVR_1_1Target.html">BHVR::Target</a></div><div class="ttdef"><b>Definition</b> target.hpp:21</div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -79,22 +79,272 @@ $(function() {
   <div class="headertitle"><div class="title">BHVR::AttributeHandling Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Handles all getting/setting of attributes in Behaviors.  
+ <a href="../../d5/dae/classBHVR_1_1AttributeHandling.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../df/d6a/attributes_8hpp_source.html">attributes.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:adcf6414eaada7760679e5b92b694fabd"><td class="memItemLeft" align="right" valign="top"><a id="adcf6414eaada7760679e5b92b694fabd" name="adcf6414eaada7760679e5b92b694fabd"></a>
-static cAttributeValue&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> (<a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> target, Attribute attr, <a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack)</td></tr>
-<tr class="separator:adcf6414eaada7760679e5b92b694fabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38f8aef330eac1328f1fe8483aa35132"><td class="memItemLeft" align="right" valign="top"><a id="a38f8aef330eac1328f1fe8483aa35132" name="a38f8aef330eac1328f1fe8483aa35132"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (<a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> target, Attribute attr, <a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;state, cAttributeValue value)</td></tr>
-<tr class="separator:a38f8aef330eac1328f1fe8483aa35132"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61784332b1bd1be9df7c09b1ded8d6d8"><td class="memTemplParams" colspan="2"><a id="a61784332b1bd1be9df7c09b1ded8d6d8" name="a61784332b1bd1be9df7c09b1ded8d6d8"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a61784332b1bd1be9df7c09b1ded8d6d8"><td class="memTemplItemLeft" align="right" valign="top">static cAttributeValue&#160;</td><td class="memTemplItemRight" valign="bottom"><b>storeValue</b> (T &amp;&amp;value)</td></tr>
-<tr class="separator:a61784332b1bd1be9df7c09b1ded8d6d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55ad6579be74b33f3b2c364984a82e0b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dae/classBHVR_1_1AttributeHandling.html#a55ad6579be74b33f3b2c364984a82e0b">getValue</a> (<a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> target, Attribute attr, <a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack)</td></tr>
+<tr class="memdesc:a55ad6579be74b33f3b2c364984a82e0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified attribute value of the target.  <br /></td></tr>
+<tr class="separator:a55ad6579be74b33f3b2c364984a82e0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee5b338673132a238d15984fedf6d585"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dae/classBHVR_1_1AttributeHandling.html#aee5b338673132a238d15984fedf6d585">setValue</a> (<a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> target, Attribute attr, <a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;state, <a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a> value)</td></tr>
+<tr class="memdesc:aee5b338673132a238d15984fedf6d585"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a targets attribute value.  <br /></td></tr>
+<tr class="separator:aee5b338673132a238d15984fedf6d585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf0a68d8e78f08fa0264b4f42f3e9a21"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dae/classBHVR_1_1AttributeHandling.html#abf0a68d8e78f08fa0264b4f42f3e9a21">scaleValue</a> (<a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> target, Attribute attr, <a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;state, <a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a> value)</td></tr>
+<tr class="memdesc:abf0a68d8e78f08fa0264b4f42f3e9a21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales a targets attribute value.  <br /></td></tr>
+<tr class="separator:abf0a68d8e78f08fa0264b4f42f3e9a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2fe0737e1168d9b76aa8d57dd7c1f26"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac2fe0737e1168d9b76aa8d57dd7c1f26"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d5/dae/classBHVR_1_1AttributeHandling.html#ac2fe0737e1168d9b76aa8d57dd7c1f26">storeValue</a> (Type type, T &amp;&amp;value)</td></tr>
+<tr class="memdesc:ac2fe0737e1168d9b76aa8d57dd7c1f26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an attribute value to the value store, for later use in atoms.  <br /></td></tr>
+<tr class="separator:ac2fe0737e1168d9b76aa8d57dd7c1f26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Handles all getting/setting of attributes in Behaviors. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a55ad6579be74b33f3b2c364984a82e0b" name="a55ad6579be74b33f3b2c364984a82e0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55ad6579be74b33f3b2c364984a82e0b">&#9670;&#160;</a></span>getValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a> BHVR::AttributeHandling::getValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Attribute&#160;</td>
+          <td class="paramname"><em>attr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>&#160;</td>
+          <td class="paramname"><em>pack</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the specified attribute value of the target. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>: target to get attribute from </td></tr>
+    <tr><td class="paramname">attr</td><td>: attribute type to get </td></tr>
+    <tr><td class="paramname">pack</td><td>: simulation pack </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html" title="Holds an immutable attribute value and its type.">CAttributeValue</a> </dd></dl>
+
+</div>
+</div>
+<a id="abf0a68d8e78f08fa0264b4f42f3e9a21" name="abf0a68d8e78f08fa0264b4f42f3e9a21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf0a68d8e78f08fa0264b4f42f3e9a21">&#9670;&#160;</a></span>scaleValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void BHVR::AttributeHandling::scaleValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Attribute&#160;</td>
+          <td class="paramname"><em>attr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>&#160;</td>
+          <td class="paramname"><em>pack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Scales a targets attribute value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>: target to scale the attribute of </td></tr>
+    <tr><td class="paramname">attr</td><td>: attribute to scale </td></tr>
+    <tr><td class="paramname">pack</td><td>: simulation pack </td></tr>
+    <tr><td class="paramname">state</td><td>: timestep state </td></tr>
+    <tr><td class="paramname">value</td><td>: value to scale attribute by </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aee5b338673132a238d15984fedf6d585" name="aee5b338673132a238d15984fedf6d585"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee5b338673132a238d15984fedf6d585">&#9670;&#160;</a></span>setValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void BHVR::AttributeHandling::setValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Attribute&#160;</td>
+          <td class="paramname"><em>attr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>&#160;</td>
+          <td class="paramname"><em>pack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets a targets attribute value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>: target to set the attribute of </td></tr>
+    <tr><td class="paramname">attr</td><td>: attribute to set </td></tr>
+    <tr><td class="paramname">pack</td><td>: simulation pack </td></tr>
+    <tr><td class="paramname">state</td><td>: timestep state </td></tr>
+    <tr><td class="paramname">value</td><td>: value to set attribute to </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac2fe0737e1168d9b76aa8d57dd7c1f26" name="ac2fe0737e1168d9b76aa8d57dd7c1f26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2fe0737e1168d9b76aa8d57dd7c1f26">&#9670;&#160;</a></span>storeValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html">CAttributeValue</a> BHVR::AttributeHandling::storeValue </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T &amp;&amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds an attribute value to the value store, for later use in atoms. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>: value type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: attribute type </td></tr>
+    <tr><td class="paramname">value</td><td>: attribute value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html" title="Holds an immutable attribute value and its type.">CAttributeValue</a> </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>VIPRA_Behaviors/include/targets/<a class="el" href="../../df/d6a/attributes_8hpp_source.html">attributes.hpp</a></li>
+<li>VIPRA_Behaviors/include/attributes/<a class="el" href="../../df/d6a/attributes_8hpp_source.html">attributes.hpp</a></li>
 <li>VIPRA_Behaviors/src/builder/behavior_builder.cpp</li>
 </ul>
 </div><!-- contents -->

@@ -8,5 +8,6 @@ var searchData=
   ['getendgoal_5',['getEndGoal',['../dc/d28/classCalmGoals.html#a2c207b7e69df6332facab7ac53322542',1,'CalmGoals']]],
   ['getgroup_6',['getGroup',['../d9/d1d/classBHVR_1_1GroupsContainer.html#a4a1c5abd22fe54e28cc7d960d53a6908',1,'BHVR::GroupsContainer']]],
   ['getname_7',['getName',['../d7/d88/classBHVR_1_1HumanBehavior.html#a2bbe2dfcb616280f1325e5ead79d06eb',1,'BHVR::HumanBehavior']]],
-  ['gettimestep_8',['getTimestep',['../d1/d7b/classSimulation.html#a31726a04300944cdbf344673464187e2',1,'Simulation']]]
+  ['gettimestep_8',['getTimestep',['../d1/d7b/classSimulation.html#a31726a04300944cdbf344673464187e2',1,'Simulation']]],
+  ['getvalue_9',['getValue',['../d5/dae/classBHVR_1_1AttributeHandling.html#a55ad6579be74b33f3b2c364984a82e0b',1,'BHVR::AttributeHandling']]]
 ];
