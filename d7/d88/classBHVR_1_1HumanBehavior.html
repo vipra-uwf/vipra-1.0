@@ -106,10 +106,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6b0ce2d3faf6948667ab0273ceae1992"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an action to the selectors with type.  <br /></td></tr>
 <tr class="separator:a6b0ce2d3faf6948667ab0273ceae1992"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaed1d8c6b62b28769f54ac6644390ae3"><td class="memItemLeft" align="right" valign="top">VIPRA::idx&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d88/classBHVR_1_1HumanBehavior.html#aaed1d8c6b62b28769f54ac6644390ae3">addEvent</a> (const <a class="el" href="../../dd/d86/classBHVR_1_1Event.html">Event</a> &amp;)</td></tr>
-<tr class="memdesc:aaed1d8c6b62b28769f54ac6644390ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">adds an event to the behavior and returns a pointer to it  <br /></td></tr>
+<tr class="memdesc:aaed1d8c6b62b28769f54ac6644390ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">adds an event to the behavior and its index in the behavior context  <br /></td></tr>
 <tr class="separator:aaed1d8c6b62b28769f54ac6644390ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a412d6189c8dd6025963be699725bcc40"><td class="memItemLeft" align="right" valign="top">VIPRA::idx&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d88/classBHVR_1_1HumanBehavior.html#a412d6189c8dd6025963be699725bcc40">addLocation</a> (<a class="el" href="../../dd/da1/classBHVR_1_1Location.html">Location</a>)</td></tr>
-<tr class="memdesc:a412d6189c8dd6025963be699725bcc40"><td class="mdescLeft">&#160;</td><td class="mdescRight">adds a location to the behavior and returns a pointer to it  <br /></td></tr>
+<tr class="memdesc:a412d6189c8dd6025963be699725bcc40"><td class="mdescLeft">&#160;</td><td class="mdescRight">adds a location to the behavior and its index in the behavior context  <br /></td></tr>
 <tr class="separator:a412d6189c8dd6025963be699725bcc40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb1c306f7c56a3ccc1ed3ca83e42c469"><td class="memItemLeft" align="right" valign="top">VIPRA::size&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d88/classBHVR_1_1HumanBehavior.html#abb1c306f7c56a3ccc1ed3ca83e42c469">eventCount</a> () const</td></tr>
 <tr class="memdesc:abb1c306f7c56a3ccc1ed3ca83e42c469"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of events the behavior has.  <br /></td></tr>
@@ -211,14 +211,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>adds an event to the behavior and returns a pointer to it </p>
+<p>adds an event to the behavior and its index in the behavior context </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">event</td><td>: event object to add </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Event* </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>VIPRA::idx </dd></dl>
 
 </div>
 </div>
@@ -238,14 +238,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>adds a location to the behavior and returns a pointer to it </p>
+<p>adds a location to the behavior and its index in the behavior context </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">loc</td><td>: location object to add </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Location* </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>VIPRA::idx </dd></dl>
 
 </div>
 </div>
@@ -426,7 +426,7 @@ Public Member Functions</h2></td></tr>
 <p>Sets the seed for the behavior. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>: </td></tr>
+    <tr><td class="paramname">s</td><td>: randomization seed </td></tr>
   </table>
   </dd>
 </dl>

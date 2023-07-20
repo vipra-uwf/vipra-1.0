@@ -85,8 +85,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aed0f381ca90c64392f166dbb491043b8"><td class="memItemLeft" align="right" valign="top"><a id="aed0f381ca90c64392f166dbb491043b8" name="aed0f381ca90c64392f166dbb491043b8"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SubConditionSpatial</b> (<a class="el" href="../../dc/d06/classBHVR_1_1NumericValue.html">NumericValue</a>)</td></tr>
 <tr class="separator:aed0f381ca90c64392f166dbb491043b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b7da0f5b5b14c216cd8468751bebc6f"><td class="memItemLeft" align="right" valign="top"><a id="a4b7da0f5b5b14c216cd8468751bebc6f" name="a4b7da0f5b5b14c216cd8468751bebc6f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (<a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) const</td></tr>
+<tr class="memitem:a4b7da0f5b5b14c216cd8468751bebc6f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d65/classBHVR_1_1SubConditionSpatial.html#a4b7da0f5b5b14c216cd8468751bebc6f">operator()</a> (<a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) const</td></tr>
+<tr class="memdesc:a4b7da0f5b5b14c216cd8468751bebc6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the target is within the condition distance.  <br /></td></tr>
 <tr class="separator:a4b7da0f5b5b14c216cd8468751bebc6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a743ecd9c05228cc36063c49f97baa4ab"><td class="memItemLeft" align="right" valign="top"><a id="a743ecd9c05228cc36063c49f97baa4ab" name="a743ecd9c05228cc36063c49f97baa4ab"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SubConditionSpatial</b> (const <a class="el" href="../../d6/d65/classBHVR_1_1SubConditionSpatial.html">SubConditionSpatial</a> &amp;)=default</td></tr>
@@ -101,6 +101,54 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (<a cl
 <a class="el" href="../../d6/d65/classBHVR_1_1SubConditionSpatial.html">SubConditionSpatial</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="../../d6/d65/classBHVR_1_1SubConditionSpatial.html">SubConditionSpatial</a> &amp;&amp;) noexcept=default</td></tr>
 <tr class="separator:a11a88ac77bc015bb8976d20dcc6d72d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4b7da0f5b5b14c216cd8468751bebc6f" name="a4b7da0f5b5b14c216cd8468751bebc6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b7da0f5b5b14c216cd8468751bebc6f">&#9670;&#160;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool BHVR::SubConditionSpatial::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>&#160;</td>
+          <td class="paramname"><em>pack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VIPRA::idx&#160;</td>
+          <td class="paramname"><em>pedIdx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if the target is within the condition distance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pack</td><td>: simulation pack </td></tr>
+    <tr><td class="paramname">pedIdx</td><td>: current pedestrians index </td></tr>
+    <tr><td class="paramname">target</td><td>: condition target </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>VIPRA_Behaviors/include/conditions/subconditions/<a class="el" href="../../d1/d9c/subcondition__spatial_8hpp_source.html">subcondition_spatial.hpp</a></li>
 <li>VIPRA_Behaviors/src/conditions/subconditions/subcondition_spatial.cpp</li>

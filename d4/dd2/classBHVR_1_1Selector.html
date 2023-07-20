@@ -79,6 +79,11 @@ $(function() {
   <div class="headertitle"><div class="title">BHVR::Selector Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Combines/Organizes SubSelectors to select pedestrians for types.  
+ <a href="../../d4/dd2/classBHVR_1_1Selector.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d8/df8/selector_8hpp_source.html">selector.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -97,20 +102,42 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a55da10d9bc873d0084d369aab059d434"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd2/classBHVR_1_1Selector.html#a55da10d9bc873d0084d369aab059d434">initialize</a> (const std::string &amp;, <a class="el" href="../../d8/d8f/classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a> &amp;, <a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>)</td></tr>
 <tr class="memdesc:a55da10d9bc873d0084d369aab059d434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the pedestrian groups, and runs the sub selectors over them.  <br /></td></tr>
 <tr class="separator:a55da10d9bc873d0084d369aab059d434"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37e4ca07ca7f82ac094b495bbb3d47fa"><td class="memItemLeft" align="right" valign="top"><a id="a37e4ca07ca7f82ac094b495bbb3d47fa" name="a37e4ca07ca7f82ac094b495bbb3d47fa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setAllTypes</b> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>)</td></tr>
+<tr class="memitem:a37e4ca07ca7f82ac094b495bbb3d47fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd2/classBHVR_1_1Selector.html#a37e4ca07ca7f82ac094b495bbb3d47fa">setAllTypes</a> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>)</td></tr>
+<tr class="memdesc:a37e4ca07ca7f82ac094b495bbb3d47fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets what types are available.  <br /></td></tr>
 <tr class="separator:a37e4ca07ca7f82ac094b495bbb3d47fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6707dbce3a9f19d5a81d5851d358d1d"><td class="memItemLeft" align="right" valign="top"><a id="ae6707dbce3a9f19d5a81d5851d358d1d" name="ae6707dbce3a9f19d5a81d5851d358d1d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addSubSelector</b> (const <a class="el" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a> &amp;)</td></tr>
 <tr class="separator:ae6707dbce3a9f19d5a81d5851d358d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefcb9291c2adca3c15dc0d23df430f2e"><td class="memItemLeft" align="right" valign="top"><a id="aefcb9291c2adca3c15dc0d23df430f2e" name="aefcb9291c2adca3c15dc0d23df430f2e"></a>
-const <a class="el" href="../../d9/d1d/classBHVR_1_1GroupsContainer.html">GroupsContainer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getGroups</b> () const</td></tr>
+<tr class="memitem:aefcb9291c2adca3c15dc0d23df430f2e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d9/d1d/classBHVR_1_1GroupsContainer.html">GroupsContainer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd2/classBHVR_1_1Selector.html#aefcb9291c2adca3c15dc0d23df430f2e">getGroups</a> () const</td></tr>
+<tr class="memdesc:aefcb9291c2adca3c15dc0d23df430f2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the groups container.  <br /></td></tr>
 <tr class="separator:aefcb9291c2adca3c15dc0d23df430f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7ca6d1266fa1020d1fe1921f0a7a8c0"><td class="memItemLeft" align="right" valign="top"><a id="ad7ca6d1266fa1020d1fe1921f0a7a8c0" name="ad7ca6d1266fa1020d1fe1921f0a7a8c0"></a>
-VIPRA::size&#160;</td><td class="memItemRight" valign="bottom"><b>selectorCount</b> () const</td></tr>
+<tr class="memitem:ad7ca6d1266fa1020d1fe1921f0a7a8c0"><td class="memItemLeft" align="right" valign="top">VIPRA::size&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd2/classBHVR_1_1Selector.html#ad7ca6d1266fa1020d1fe1921f0a7a8c0">selectorCount</a> () const</td></tr>
+<tr class="memdesc:ad7ca6d1266fa1020d1fe1921f0a7a8c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns how many subselectors the selector has.  <br /></td></tr>
 <tr class="separator:ad7ca6d1266fa1020d1fe1921f0a7a8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Combines/Organizes SubSelectors to select pedestrians for types. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aefcb9291c2adca3c15dc0d23df430f2e" name="aefcb9291c2adca3c15dc0d23df430f2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefcb9291c2adca3c15dc0d23df430f2e">&#9670;&#160;</a></span>getGroups()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="../../d9/d1d/classBHVR_1_1GroupsContainer.html">GroupsContainer</a> &amp; BHVR::Selector::getGroups </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the groups container. </p>
+<dl class="section return"><dt>Returns</dt><dd>const GroupsContainer&amp; </dd></dl>
+
+</div>
+</div>
 <a id="a55da10d9bc873d0084d369aab059d434" name="a55da10d9bc873d0084d369aab059d434"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a55da10d9bc873d0084d369aab059d434">&#9670;&#160;</a></span>initialize()</h2>
 
@@ -151,6 +178,52 @@ VIPRA::size&#160;</td><td class="memItemRight" valign="bottom"><b>selectorCount<
     <tr><td class="paramname">pedSet</td><td>: </td></tr>
     <tr><td class="paramname">obsSet</td><td>: </td></tr>
     <tr><td class="paramname">goals</td><td>: </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad7ca6d1266fa1020d1fe1921f0a7a8c0" name="ad7ca6d1266fa1020d1fe1921f0a7a8c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7ca6d1266fa1020d1fe1921f0a7a8c0">&#9670;&#160;</a></span>selectorCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VIPRA::size BHVR::Selector::selectorCount </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns how many subselectors the selector has. </p>
+<dl class="section return"><dt>Returns</dt><dd>VIPRA::size </dd></dl>
+
+</div>
+</div>
+<a id="a37e4ca07ca7f82ac094b495bbb3d47fa" name="a37e4ca07ca7f82ac094b495bbb3d47fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37e4ca07ca7f82ac094b495bbb3d47fa">&#9670;&#160;</a></span>setAllTypes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BHVR::Selector::setAllTypes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td>
+          <td class="paramname"><em>pedTypes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets what types are available. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pedTypes</td><td>: available types </td></tr>
   </table>
   </dd>
 </dl>

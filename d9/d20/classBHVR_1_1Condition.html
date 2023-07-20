@@ -94,17 +94,69 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf6e230e4676da11e95faf587ebc5330"><td class="memItemLeft" align="right" valign="top"><a id="abf6e230e4676da11e95faf587ebc5330" name="abf6e230e4676da11e95faf587ebc5330"></a>
 <a class="el" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a> &amp;&amp;) noexcept=default</td></tr>
 <tr class="separator:abf6e230e4676da11e95faf587ebc5330"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a062183bc68ed7c65c19d3d8c1651b140"><td class="memItemLeft" align="right" valign="top"><a id="a062183bc68ed7c65c19d3d8c1651b140" name="a062183bc68ed7c65c19d3d8c1651b140"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addAndOr</b> (bool)</td></tr>
+<tr class="memitem:a062183bc68ed7c65c19d3d8c1651b140"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d20/classBHVR_1_1Condition.html#a062183bc68ed7c65c19d3d8c1651b140">addAndOr</a> (bool)</td></tr>
+<tr class="memdesc:a062183bc68ed7c65c19d3d8c1651b140"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a logical and/or operator to the condition.  <br /></td></tr>
 <tr class="separator:a062183bc68ed7c65c19d3d8c1651b140"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4f9945f6b82b1b6148838ed93e97015"><td class="memItemLeft" align="right" valign="top"><a id="ab4f9945f6b82b1b6148838ed93e97015" name="ab4f9945f6b82b1b6148838ed93e97015"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addSubCondition</b> (SubCondition &amp;&amp;)</td></tr>
+<tr class="memitem:ab4f9945f6b82b1b6148838ed93e97015"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d20/classBHVR_1_1Condition.html#ab4f9945f6b82b1b6148838ed93e97015">addSubCondition</a> (SubCondition &amp;&amp;)</td></tr>
+<tr class="memdesc:ab4f9945f6b82b1b6148838ed93e97015"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new subcondition to the condition.  <br /></td></tr>
 <tr class="separator:ab4f9945f6b82b1b6148838ed93e97015"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33741809982c40a6345986996ad9b368"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d20/classBHVR_1_1Condition.html#a33741809982c40a6345986996ad9b368">evaluate</a> (<a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) const</td></tr>
 <tr class="memdesc:a33741809982c40a6345986996ad9b368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests whether a condition is met, by running through each sub condition sequentially.  <br /></td></tr>
 <tr class="separator:a33741809982c40a6345986996ad9b368"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a062183bc68ed7c65c19d3d8c1651b140" name="a062183bc68ed7c65c19d3d8c1651b140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a062183bc68ed7c65c19d3d8c1651b140">&#9670;&#160;</a></span>addAndOr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BHVR::Condition::addAndOr </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>andor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a logical and/or operator to the condition. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">andor</td><td>: </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab4f9945f6b82b1b6148838ed93e97015" name="ab4f9945f6b82b1b6148838ed93e97015"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4f9945f6b82b1b6148838ed93e97015">&#9670;&#160;</a></span>addSubCondition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BHVR::Condition::addSubCondition </td>
+          <td>(</td>
+          <td class="paramtype">SubCondition &amp;&amp;&#160;</td>
+          <td class="paramname"><em>condition</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a new subcondition to the condition. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">condition</td><td>: </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a33741809982c40a6345986996ad9b368" name="a33741809982c40a6345986996ad9b368"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33741809982c40a6345986996ad9b368">&#9670;&#160;</a></span>evaluate()</h2>
 

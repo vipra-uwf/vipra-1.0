@@ -112,15 +112,15 @@ Ex. Creating An Example Behavior</h3>
 <h1>L. Behavior Layout </h1>
 <p></p>
 <p></p>
-<p>The general layout of a <code>Behavior</code> is as follows: </p><div class="fragment"><div class="line">Consideration.       // section (§T.)</div>
+<p>The general layout of a <code>Behavior</code> is as follows: </p><div class="fragment"><div class="line">Types Declaration.       // section (§T.)</div>
 <div class="line"> </div>
-<div class="line">State declarations.  // section (§St.)</div>
+<div class="line">States Declaration.  // section (§St.)</div>
 <div class="line"> </div>
-<div class="line">Selector statements. // section (§S.)</div>
+<div class="line">Selector Declarations. // section (§S.)</div>
 <div class="line"> </div>
-<div class="line">Event definitions.   // section (§E.)</div>
+<div class="line">Event Declartions.   // section (§E.)</div>
 <div class="line"> </div>
-<div class="line">Action statements.   // section (§A.)</div>
+<div class="line">Action Declarations.   // section (§A.)</div>
 </div><!-- fragment --><p></p>
 </details>
 <hr  />
@@ -133,17 +133,19 @@ Ex. Creating An Example Behavior</h3>
 <p>This section has some simple <code>Syntax</code> rules that must be followed for a <code>Behavior</code> to be considered correct.</p>
 <p>The other sections will have the specific <code>Syntax</code> rules for their respective parts, in a <code>Section - General Syntax Rules</code> section</p>
 <ol type="1">
-<li>All statements must end in a '.' <sub>A statement being an <code>Action</code>, <code>Selector</code>, <code>Event</code>, or <code>Consideration</code></sub> <div class="fragment"><div class="line">correct:</div>
-<div class="line">  An injured_person will always @stop.</div>
+<li>All Declarations must end in a '.' <div class="fragment"><div class="line">correct:</div>
+<div class="line">  Event:</div>
+<div class="line">    Name: Example</div>
+<div class="line">  .</div>
 <div class="line"> </div>
 <div class="line">incorrect:</div>
-<div class="line">  An injured_person will always @stop</div>
+<div class="line">  Event:</div>
+<div class="line">    Name: Example</div>
 </div><!-- fragment --></li>
-<li>Each <code>Behavior</code> (§B) must start with a <code>Consideration</code> (§T.1)</li>
-<li>Each <code>Behavior</code> (§B) must only have 1 <code>Consideration</code> (§T.1)</li>
+<li>Each <code>Behavior</code> (§B) must start with a <code>Types Declaration</code> (§T.1)</li>
+<li>Each <code>Behavior</code> (§B) must only have 1 <code>Types Declaration</code> (§T.1)</li>
 <li>Each <code>Behavior</code> (§B) must have at least 1 <code>Selector</code> (§S)</li>
 <li><code>Behaviors</code> are case in-sensitive so <code>Consider</code>, <code>consider</code>, and <code>ConSiDEr</code> are all valid.</li>
-<li>'A' and 'An' are interchangeable, use whichever sounds grammatically correct.</li>
 <li>Comments can be added following '//' or between '/*' and '*/' <div class="fragment"><div class="line">// This is a comment and does not affect the behavior</div>
 <div class="line"> </div>
 <div class="line">/*</div>
@@ -151,15 +153,15 @@ Ex. Creating An Example Behavior</h3>
 <div class="line">and does not affect the behavior</div>
 <div class="line">*/</div>
 </div><!-- fragment --></li>
-<li>Whitespace does not affect <code>Behaviors</code>, the following are valid and equivalent. <div class="fragment"><div class="line">A typeA will always @stop.</div>
+<li>Whitespace does not affect <code>Behaviors</code>, the following are valid and equivalent. <div class="fragment"><div class="line">Types: typeA typeB.</div>
 <div class="line"> </div>
 <div class="line">// and</div>
 <div class="line"> </div>
-<div class="line">A</div>
-<div class="line">typeA will</div>
-<div class="line">always          @stop.</div>
-</div><!-- fragment --></li>
-<li>All commas are optional. </li>
+<div class="line">Types:</div>
+<div class="line">  typeA</div>
+<div class="line">  typeB</div>
+<div class="line">.</div>
+</div><!-- fragment --> </li>
 </ol>
 </details>
 <hr  />
@@ -174,28 +176,33 @@ Ex. Creating An Example Behavior</h3>
 <details >
 <summary >
 </summary>
-<h2>T.1. Considerations </h2>
+<h2>T.1. Types Declaration </h2>
 <p></p>
 <p></p>
-<p>A <code>Consideration</code> is what says which types are being used in the <code>Behavior</code>.</p>
-<p><code>Behaviors</code> can only have 1 <code>Consideration</code> with up to 64 types.</p>
-<p>Single <code>Type</code> <code>Consideration</code>: </p><div class="fragment"><div class="line">Consider an injured_person.</div>
-</div><!-- fragment --><p>Multiple <code>Types</code> <code>Consideration</code>: </p><div class="fragment"><div class="line">Consider an injured_person, and a helper.</div>
+<p>A <code>Types Declaration</code> is what says which types are being used in the <code>Behavior</code>.</p>
+<p><code>Behaviors</code> can only have 1 <code>Types Declaration</code> with up to 64 types.</p>
+<p>Single <code>Type</code>: </p><div class="fragment"><div class="line">Types:</div>
+<div class="line">  injured_person</div>
+<div class="line">.</div>
+</div><!-- fragment --><p>Multiple <code>Types</code>: </p><div class="fragment"><div class="line">Types:</div>
+<div class="line"> injured_person</div>
+<div class="line"> helper</div>
+<div class="line">.</div>
 </div><!-- fragment --><details >
 <summary >
 </summary>
-<h3>T.1.1. Consideration - General Syntax Rules </h3>
+<h3>T.1.1. Types Declaration - General Syntax Rules </h3>
 <p></p>
 <p></p>
 <ol type="1">
-<li><code>Types</code> in <code>Considerations</code> can be connected in several ways, the following are all valid and equivalent: <div class="fragment"><div class="line">Consider an injured_person, a helper.</div>
-<div class="line">Consider an injured_person and a helper.</div>
-<div class="line">Consider an injured_person, and a helper.</div>
-<div class="line">Consider an injured_person, and helper.</div>
+<li><code>Types Declarations</code> can be any length up to 64 <code>Types</code> <div class="fragment"><div class="line">Types:</div>
+<div class="line">  typeA</div>
+<div class="line">  typeB</div>
+<div class="line">  typeC</div>
+<div class="line">  typeD</div>
+<div class="line">.</div>
 </div><!-- fragment --></li>
-<li><code>Considerations</code> can be any length up to 64 <code>Types</code> <div class="fragment"><div class="line">Consider a typeA, a typeB, a typeC, and typeD.</div>
-</div><!-- fragment --></li>
-<li><code>Considerations</code> must be the first statement in a <code>Behavior</code></li>
+<li><code>Types Declarations</code> must be the first declaration in a <code>Behavior</code></li>
 </ol>
 <p></p>
 </details>
@@ -244,11 +251,12 @@ Ex. Creating An Example Behavior</h3>
 <h1>S. Selectors   <code>Selectors</code> are how pedestrians are selected for a certain <code>Type</code> (§T).  S.1. Selecting Pedestrians</h1>
 <p></p>
 <p></p>
-<p>Selecting pedestrians is done through a <code>Selector</code> statement. The basic syntax is as follows: </p><div class="fragment"><div class="line">*Selector* of *Group* are a *Type*.</div>
-<div class="line">or</div>
-<div class="line">*Selector* of *Group* are a *TypeA* and *TypeB*.</div>
+<p>Selecting pedestrians is done through a <code>Selector</code> statement. The basic syntax is as follows: </p><div class="fragment"><div class="line">Selector:</div>
+<div class="line">  Type: *types*</div>
+<div class="line">  Group: *type*     // optional, defaults to base pedestrians group</div>
+<div class="line">  Select: *selection criteria*</div>
 </div><!-- fragment --><ul>
-<li>*Selector* - The exact <code>Selector</code> to use, available <code>Selectors</code> are in (§S.5.)</li>
+<li>*Select* - The exact <code>Select</code> criteria to use, available <code>Select</code> criteria are in (§S.5.)</li>
 <li>*Group* - The <code>Group</code> (§T.3) to select pedestrians from</li>
 <li>*Type* - The <code>Type</code> (§T.) to assign to selected pedestrians</li>
 </ul>
@@ -257,16 +265,24 @@ Ex. Creating An Example Behavior</h3>
 <summary >
 <b>Example:</b></summary>
 <p></p>
-<div class="fragment"><div class="line">Consider a typeA, and a typeB.     // Consideration (§T.1.), saying what types the behavior uses</div>
+<div class="fragment"><div class="line">Types: // Types Declaration (§T.1.), saying what types the behavior uses</div>
+<div class="line"> typeA</div>
+<div class="line"> typeB</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">Exactly 10 pedestrians is a typeA. // Exactly N Selector statement</div>
-<div class="line">50% of pedestrians is a typeB.     // Percent Selector statement</div>
+<div class="line">Selector:   // Selects exactly 10 pedestrians to be of typeA</div>
+<div class="line">  Type: typeA</div>
+<div class="line">  Select: 10</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Selector:   // Selects 50% of pedestrians to be of typeB</div>
+<div class="line">  Type: typeB</div>
+<div class="line">  Select 50%</div>
+<div class="line">.</div>
 </div><!-- fragment --><p></p>
 </details>
 <p><br  />
-</p>
-<p><b>Note:</b> The <code>Everyone</code> <code>Selector</code> has a special syntax </p><div class="fragment"><div class="line">Everyone is a typeA.</div>
-</div><!-- fragment --><p></p>
+ </p>
 </details>
 <hr  />
 <details >
@@ -281,11 +297,28 @@ Ex. Creating An Example Behavior</h3>
 <summary >
 <b>Example:</b></summary>
 <p></p>
-<div class="fragment"><div class="line">Consider a typeA, typeB and typeC.</div>
+<div class="fragment"><div class="line">Types:</div>
+<div class="line">  typeA</div>
+<div class="line">  typeB</div>
+<div class="line">  typeC</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">50% of pedestrians are a typeA. // Selects from the &#39;Pedestrians Group&#39;</div>
-<div class="line">15% of typeA are a typeB.       // Selects from typeA pedestrians</div>
-<div class="line">5% of typeA are a typeC.        // Selects from typeA pedestrians</div>
+<div class="line">Select:        // Selects 50% of pedestrians for typeA</div>
+<div class="line">  Type: typeA</div>
+<div class="line">  Select: 50%</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Select:        // Selects 15% of typeA pedestrians for typeA &amp; typeB</div>
+<div class="line">  Type: typeB</div>
+<div class="line">  Group: typeA</div>
+<div class="line">  Select: 15%</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Select:       // Selects 5% of typeA pedestrians for typeA &amp; typeC</div>
+<div class="line">  Type: typeC</div>
+<div class="line">  Group: type</div>
+<div class="line">  Select: 5%</div>
+<div class="line">.</div>
 </div><!-- fragment --><p>With 100 pedestrians: 39 pedestrians are typeA. 8 pedestrians are typeA and typeB. 3 pedestrians are typeA and typeC.</p>
 <p></p>
 </details>
@@ -299,8 +332,18 @@ Ex. Creating An Example Behavior</h3>
 <p></p>
 <p>When a pedestrian is selected from a <code>Group</code>, it is marked as used and can not be selected by another <code>Selector</code>.</p>
 <p>This has the affect of making <code>Selector</code> statements strictly interpreted.</p>
-<div class="fragment"><div class="line">15% of typeA are typeB.</div>
-</div><!-- fragment --><p> Means: 15% of 'typeA' pedestrians are strictly 'typeA' and 'typeB', with no chance of being anything else.</p>
+<div class="fragment"><div class="line">Select:</div>
+<div class="line">  Type: typeB</div>
+<div class="line">  Group: typeA</div>
+<div class="line">  Select: 15%</div>
+<div class="line">.</div>
+</div><!-- fragment --><p> Means: Those 15% of 'typeA' pedestrians can not be selected from again. However, they can be selected from 'typeB'.</p>
+<div class="fragment"><div class="line">Select:</div>
+<div class="line">  Type: typeC</div>
+<div class="line">  Group: typeB</div>
+<div class="line">  Select: 15%</div>
+<div class="line">.</div>
+</div><!-- fragment --><p>This may result in some pedestrians being of types: typeA, typeB, and typeC.</p>
 <p></p>
 </details>
 <hr  />
@@ -310,17 +353,27 @@ Ex. Creating An Example Behavior</h3>
 <h2>S.4. Required Selectors </h2>
 <p></p>
 <p></p>
-<p><code>Selectors</code> can be marked as <code>Required</code> with 'Required:' before the <code>Selector</code> statement.</p>
+<p><code>Selectors</code> can be marked as <code>Required</code> with a 'Required' <code>Sub-component</code>.</p>
 <p>This means, given the <code>Selector</code> is unable to be filled an error will be thrown, and the simulation will stop.</p>
 <details >
 <summary >
 <b>Example:</b></summary>
 <p></p>
-<div class="fragment"><div class="line">Consider a typeA, and a typeB.</div>
+<div class="fragment"><div class="line">Types:</div>
+<div class="line">  typeA</div>
+<div class="line">  typeB</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">Everyone is a typeA.</div>
+<div class="line">Selector:</div>
+<div class="line">  Type: typeA</div>
+<div class="line">  Select: Everyone</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">Required: 50% of pedestrians are a typeB.</div>
+<div class="line">Selector:</div>
+<div class="line">  Required</div>
+<div class="line">  Type: typeB</div>
+<div class="line">  Select: 50%</div>
+<div class="line">.</div>
 </div><!-- fragment --><p> Output: </p><div class="fragment"><div class="line">Behavior: Example, Required Selector Starved For Type: 2 From Group: 0&quot;</div>
 </div><!-- fragment --> </details>
 </details>
@@ -328,30 +381,30 @@ Ex. Creating An Example Behavior</h3>
 <details >
 <summary >
 </summary>
-<h2>S.5. Available Selectors </h2>
+<h2>S.5. Available Select Criteria </h2>
 <p></p>
 <p></p>
 <ol type="1">
-<li>Everyone Selector</li>
-<li>Percent Selector</li>
-<li>N Selector</li>
+<li>Everyone</li>
+<li>Percent</li>
+<li>Exactly N</li>
 </ol>
 <hr  />
 <details >
 <summary >
 </summary>
-<h3>S.5.1. Everyone Selector </h3>
+<h3>S.5.1. Everyone </h3>
 <p></p>
 <p></p>
-<div class="fragment"><div class="line">Everyone is a *Type*.</div>
-</div><!-- fragment --><p>This selector chooses every pedestrian to have the selected <code>Type</code> (§T)</p>
+<div class="fragment"><div class="line">Select: Everyone</div>
+</div><!-- fragment --><p>This select criteria chooses every pedestrian to have the selected <code>Type</code> (§T)</p>
 <p></p>
 </details>
 <hr  />
 <details >
 <summary >
 </summary>
-<h3>S.5.2 Percent Selector </h3>
+<h3>S.5.2 Percent </h3>
 <p></p>
 <p></p>
 <p>Selects a percentage of a <code>Group</code> for the provided <code>Type</code></p>
@@ -361,7 +414,7 @@ Ex. Creating An Example Behavior</h3>
 <summary >
 <b>Example:</b></summary>
 <p></p>
-<div class="fragment"><div class="line">15% of pedestrians are a injured_person.</div>
+<div class="fragment"><div class="line">Select: 15%</div>
 </div><!-- fragment --><p></p>
 </details>
 </details>
@@ -369,7 +422,7 @@ Ex. Creating An Example Behavior</h3>
 <details >
 <summary >
 </summary>
-<h3>S.5.3 N Selector </h3>
+<h3>S.5.3 Exactly N </h3>
 <p></p>
 <p></p>
 <p>Selects an exact number of pedestrians from a <code>Group</code>.</p>
@@ -379,7 +432,7 @@ Ex. Creating An Example Behavior</h3>
 <summary >
 <b>Example:</b></summary>
 <p></p>
-<div class="fragment"><div class="line">Exactly 10 pedestrians is a injured_person.</div>
+<div class="fragment"><div class="line">Select: 10</div>
 </div><!-- fragment --><p></p>
 </details>
 </details>
@@ -391,9 +444,6 @@ Ex. Creating An Example Behavior</h3>
 <h2>S.6 Selectors - General Syntax Rules </h2>
 <p></p>
 <p></p>
-<ol type="1">
-<li>The 'of' in 'of *Group*' can be removed if it makes more grammatical sense.</li>
-</ol>
 <p></p>
 </details>
 <hr  />

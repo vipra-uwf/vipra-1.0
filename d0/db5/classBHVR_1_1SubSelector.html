@@ -80,12 +80,17 @@ $(function() {
   <div class="headertitle"><div class="title">BHVR::SubSelector Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Selects pedestrians for one type, gets combined with other SubSelectors in Selector.  
+ <a href="../../d0/db5/classBHVR_1_1SubSelector.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d4/d3c/subselector_8hpp_source.html">subselector.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for BHVR::SubSelector:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d0/d7f/classBHVR_1_1SubSelector__coll__graph.png" border="0" usemap="#aBHVR_1_1SubSelector_coll__map" alt="Collaboration graph"/></div>
 <map name="aBHVR_1_1SubSelector_coll__map" id="aBHVR_1_1SubSelector_coll__map">
-<area shape="rect" title=" " alt="" coords="5,94,141,120"/>
+<area shape="rect" title="Selects pedestrians for one type, gets combined with other SubSelectors in Selector." alt="" coords="5,94,141,120"/>
 <area shape="rect" href="../../d4/d2e/classBHVR_1_1Ptype.html" title="Pedestrian Type, used as a composite of typeUIDs." alt="" coords="24,5,122,31"/>
 <area shape="poly" title=" " alt="" coords="76,46,76,94,70,94,70,46"/>
 </map>
@@ -96,8 +101,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa2b39f5ad6e55bba5c865f4294b496ce"><td class="memItemLeft" align="right" valign="top"><a id="aa2b39f5ad6e55bba5c865f4294b496ce" name="aa2b39f5ad6e55bba5c865f4294b496ce"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SubSelector</b> (typeUID, <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>, bool, SelectorFunc)</td></tr>
 <tr class="separator:aa2b39f5ad6e55bba5c865f4294b496ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b6d6d875d3cba27ed3b1c7faffa36d9"><td class="memItemLeft" align="right" valign="top"><a id="a7b6d6d875d3cba27ed3b1c7faffa36d9" name="a7b6d6d875d3cba27ed3b1c7faffa36d9"></a>
-<a class="el" href="../../dd/d8d/structBHVR_1_1SelectorResult.html">SelectorResult</a>&#160;</td><td class="memItemRight" valign="bottom"><b>selectPeds</b> (<a class="el" href="../../d8/d8f/classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a> &amp;, const VIPRA::idxVec &amp;, const VIPRA::idxVec &amp;, const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;)</td></tr>
+<tr class="memitem:a7b6d6d875d3cba27ed3b1c7faffa36d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d8d/structBHVR_1_1SelectorResult.html">SelectorResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db5/classBHVR_1_1SubSelector.html#a7b6d6d875d3cba27ed3b1c7faffa36d9">selectPeds</a> (<a class="el" href="../../d8/d8f/classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a> &amp;, const VIPRA::idxVec &amp;, const VIPRA::idxVec &amp;, const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;)</td></tr>
+<tr class="memdesc:a7b6d6d875d3cba27ed3b1c7faffa36d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the select function to select pedestrians.  <br /></td></tr>
 <tr class="separator:a7b6d6d875d3cba27ed3b1c7faffa36d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaae93da01097f512add24651d6225442"><td class="memItemLeft" align="right" valign="top"><a id="aaae93da01097f512add24651d6225442" name="aaae93da01097f512add24651d6225442"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SubSelector</b> (<a class="el" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a> &amp;&amp;) noexcept=default</td></tr>
@@ -124,6 +129,75 @@ typeUID&#160;</td><td class="memItemRight" valign="bottom"><b>group</b></td></tr
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>required</b></td></tr>
 <tr class="separator:a39980cec804af460e8d2889c55c50d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Selects pedestrians for one type, gets combined with other SubSelectors in Selector. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7b6d6d875d3cba27ed3b1c7faffa36d9" name="a7b6d6d875d3cba27ed3b1c7faffa36d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b6d6d875d3cba27ed3b1c7faffa36d9">&#9670;&#160;</a></span>selectPeds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d8d/structBHVR_1_1SelectorResult.html">SelectorResult</a> BHVR::SubSelector::selectPeds </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/d8f/classVIPRA_1_1pRNG__Engine.html">VIPRA::pRNG_Engine</a> &amp;&#160;</td>
+          <td class="paramname"><em>rngEngine</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const VIPRA::idxVec &amp;&#160;</td>
+          <td class="paramname"><em>totalGroup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const VIPRA::idxVec &amp;&#160;</td>
+          <td class="paramname"><em>usableGroup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;&#160;</td>
+          <td class="paramname"><em>pedSet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;&#160;</td>
+          <td class="paramname"><em>obsSet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;&#160;</td>
+          <td class="paramname"><em>goals</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs the select function to select pedestrians. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rngEngine</td><td>: randomization engine </td></tr>
+    <tr><td class="paramname">totalGroup</td><td>: the whole group the selector pulls from </td></tr>
+    <tr><td class="paramname">usableGroup</td><td>: the actual selectable pedestrians from that group </td></tr>
+    <tr><td class="paramname">pedSet</td><td>: pedestrian set </td></tr>
+    <tr><td class="paramname">obsSet</td><td>: obstacle set </td></tr>
+    <tr><td class="paramname">goals</td><td>: goals module </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>SelectorResult </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>VIPRA_Behaviors/include/selectors/<a class="el" href="../../d4/d3c/subselector_8hpp_source.html">subselector.hpp</a></li>
 <li>VIPRA_Behaviors/src/selectors/subselector.cpp</li>

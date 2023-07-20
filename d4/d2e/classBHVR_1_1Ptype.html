@@ -95,7 +95,7 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Ptype</b> (typeU
 <tr class="memdesc:a136a6163d750eab4d5558b6120954e20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of different types, excluding the base type (0)  <br /></td></tr>
 <tr class="separator:a136a6163d750eab4d5558b6120954e20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61425b08917864a30c7b26d4e84748d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#a61425b08917864a30c7b26d4e84748d8">forEachType</a> (const std::function&lt; void(typeUID)&gt; &amp;func) const</td></tr>
-<tr class="memdesc:a61425b08917864a30c7b26d4e84748d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops through each individual type, starting from 1. example(1, 2, 4, 8)  <br /></td></tr>
+<tr class="memdesc:a61425b08917864a30c7b26d4e84748d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops through each individual type, starting from 1, calling func with the type. example(1, 2, 4, 8)  <br /></td></tr>
 <tr class="separator:a61425b08917864a30c7b26d4e84748d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeabb83cb54583194bb72f4efa9cbc72e"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#aeabb83cb54583194bb72f4efa9cbc72e">isType</a> (typeUID type) const noexcept</td></tr>
 <tr class="memdesc:aeabb83cb54583194bb72f4efa9cbc72e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the Ptype has the given type.  <br /></td></tr>
@@ -103,35 +103,35 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Ptype</b> (typeU
 <tr class="memitem:af2e0ebd0565df0b3cbdf9755fa0de75a"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#af2e0ebd0565df0b3cbdf9755fa0de75a">hasType</a> (typeUID type) const noexcept</td></tr>
 <tr class="memdesc:af2e0ebd0565df0b3cbdf9755fa0de75a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the Ptype has the given type.  <br /></td></tr>
 <tr class="separator:af2e0ebd0565df0b3cbdf9755fa0de75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abca53157b40b6231c621760e47347dfd"><td class="memItemLeft" align="right" valign="top"><a id="abca53157b40b6231c621760e47347dfd" name="abca53157b40b6231c621760e47347dfd"></a>
-constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (typeUID type) const noexcept</td></tr>
+<tr class="memitem:abca53157b40b6231c621760e47347dfd"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#abca53157b40b6231c621760e47347dfd">operator+</a> (typeUID type) const noexcept</td></tr>
+<tr class="memdesc:abca53157b40b6231c621760e47347dfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns they union of the ptype and the type provided.  <br /></td></tr>
 <tr class="separator:abca53157b40b6231c621760e47347dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c3d20229b0e9d4cf29e5670bb4431ed"><td class="memItemLeft" align="right" valign="top"><a id="a9c3d20229b0e9d4cf29e5670bb4431ed" name="a9c3d20229b0e9d4cf29e5670bb4431ed"></a>
-constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (typeUID type) noexcept</td></tr>
+<tr class="memitem:a9c3d20229b0e9d4cf29e5670bb4431ed"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#a9c3d20229b0e9d4cf29e5670bb4431ed">operator+=</a> (typeUID type) noexcept</td></tr>
+<tr class="memdesc:a9c3d20229b0e9d4cf29e5670bb4431ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a type to the ptype.  <br /></td></tr>
 <tr class="separator:a9c3d20229b0e9d4cf29e5670bb4431ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a889738b7dbcb15ebdc6e538991ac08c9"><td class="memItemLeft" align="right" valign="top"><a id="a889738b7dbcb15ebdc6e538991ac08c9" name="a889738b7dbcb15ebdc6e538991ac08c9"></a>
-constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) const noexcept</td></tr>
+<tr class="memitem:a889738b7dbcb15ebdc6e538991ac08c9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#a889738b7dbcb15ebdc6e538991ac08c9">operator+</a> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) const noexcept</td></tr>
+<tr class="memdesc:a889738b7dbcb15ebdc6e538991ac08c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the union of the two ptypes.  <br /></td></tr>
 <tr class="separator:a889738b7dbcb15ebdc6e538991ac08c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43d0ca24ae9b6d05043fdf9d202c14e2"><td class="memItemLeft" align="right" valign="top"><a id="a43d0ca24ae9b6d05043fdf9d202c14e2" name="a43d0ca24ae9b6d05043fdf9d202c14e2"></a>
-constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) noexcept</td></tr>
+<tr class="memitem:a43d0ca24ae9b6d05043fdf9d202c14e2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#a43d0ca24ae9b6d05043fdf9d202c14e2">operator+=</a> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) noexcept</td></tr>
+<tr class="memdesc:a43d0ca24ae9b6d05043fdf9d202c14e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the given ptype.  <br /></td></tr>
 <tr class="separator:a43d0ca24ae9b6d05043fdf9d202c14e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab37c734ee5b700f30232fa10284b4455"><td class="memItemLeft" align="right" valign="top"><a id="ab37c734ee5b700f30232fa10284b4455" name="ab37c734ee5b700f30232fa10284b4455"></a>
-constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (typeUID type) const noexcept</td></tr>
+<tr class="memitem:ab37c734ee5b700f30232fa10284b4455"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#ab37c734ee5b700f30232fa10284b4455">operator-</a> (typeUID type) const noexcept</td></tr>
+<tr class="memdesc:ab37c734ee5b700f30232fa10284b4455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a ptype without the given type.  <br /></td></tr>
 <tr class="separator:ab37c734ee5b700f30232fa10284b4455"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab61b179da186a603665b6aea2e410ef6"><td class="memItemLeft" align="right" valign="top"><a id="ab61b179da186a603665b6aea2e410ef6" name="ab61b179da186a603665b6aea2e410ef6"></a>
-constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-=</b> (typeUID type) noexcept</td></tr>
+<tr class="memitem:ab61b179da186a603665b6aea2e410ef6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#ab61b179da186a603665b6aea2e410ef6">operator-=</a> (typeUID type) noexcept</td></tr>
+<tr class="memdesc:ab61b179da186a603665b6aea2e410ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the type from the ptype.  <br /></td></tr>
 <tr class="separator:ab61b179da186a603665b6aea2e410ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a511d5417f77bae04b78bd75b43f1a379"><td class="memItemLeft" align="right" valign="top"><a id="a511d5417f77bae04b78bd75b43f1a379" name="a511d5417f77bae04b78bd75b43f1a379"></a>
-constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) const noexcept</td></tr>
+<tr class="memitem:a511d5417f77bae04b78bd75b43f1a379"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#a511d5417f77bae04b78bd75b43f1a379">operator-</a> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) const noexcept</td></tr>
+<tr class="memdesc:a511d5417f77bae04b78bd75b43f1a379"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the difference of the two ptypes.  <br /></td></tr>
 <tr class="separator:a511d5417f77bae04b78bd75b43f1a379"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf4508e49a09228b5794fd2625e9793e"><td class="memItemLeft" align="right" valign="top"><a id="acf4508e49a09228b5794fd2625e9793e" name="acf4508e49a09228b5794fd2625e9793e"></a>
-constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-=</b> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) noexcept</td></tr>
+<tr class="memitem:acf4508e49a09228b5794fd2625e9793e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#acf4508e49a09228b5794fd2625e9793e">operator-=</a> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) noexcept</td></tr>
+<tr class="memdesc:acf4508e49a09228b5794fd2625e9793e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the ptype as the difference of the two types.  <br /></td></tr>
 <tr class="separator:acf4508e49a09228b5794fd2625e9793e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a605c937aa85f42e094b41d6753de824c"><td class="memItemLeft" align="right" valign="top"><a id="a605c937aa85f42e094b41d6753de824c" name="a605c937aa85f42e094b41d6753de824c"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) const noexcept</td></tr>
+<tr class="memitem:a605c937aa85f42e094b41d6753de824c"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#a605c937aa85f42e094b41d6753de824c">operator==</a> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) const noexcept</td></tr>
+<tr class="memdesc:a605c937aa85f42e094b41d6753de824c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if two ptypes are the same.  <br /></td></tr>
 <tr class="separator:a605c937aa85f42e094b41d6753de824c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec24ed9f4519544a9612a0d46a154cf8"><td class="memItemLeft" align="right" valign="top"><a id="aec24ed9f4519544a9612a0d46a154cf8" name="aec24ed9f4519544a9612a0d46a154cf8"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) const noexcept</td></tr>
+<tr class="memitem:aec24ed9f4519544a9612a0d46a154cf8"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html#aec24ed9f4519544a9612a0d46a154cf8">operator!=</a> (<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> type) const noexcept</td></tr>
+<tr class="memdesc:aec24ed9f4519544a9612a0d46a154cf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if two ptypes are different.  <br /></td></tr>
 <tr class="separator:aec24ed9f4519544a9612a0d46a154cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46809c317f24bafcc2fab6a58fac2add"><td class="memItemLeft" align="right" valign="top"><a id="a46809c317f24bafcc2fab6a58fac2add" name="a46809c317f24bafcc2fab6a58fac2add"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Ptype</b> (const <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp;other)=default</td></tr>
@@ -179,10 +179,10 @@ typeUID&#160;</td><td class="memItemRight" valign="bottom"><b>fullType</b> = 0</
 </table>
 </div><div class="memdoc">
 
-<p>Loops through each individual type, starting from 1. example(1, 2, 4, 8) </p>
+<p>Loops through each individual type, starting from 1, calling func with the type. example(1, 2, 4, 8) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">func</td><td>: </td></tr>
+    <tr><td class="paramname">func</td><td>: function to apply to each type </td></tr>
   </table>
   </dd>
 </dl>
@@ -254,6 +254,360 @@ typeUID&#160;</td><td class="memItemRight" valign="bottom"><b>fullType</b> = 0</
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aec24ed9f4519544a9612a0d46a154cf8" name="aec24ed9f4519544a9612a0d46a154cf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec24ed9f4519544a9612a0d46a154cf8">&#9670;&#160;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool BHVR::Ptype::operator!= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if two ptypes are different. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+
+</div>
+</div>
+<a id="a889738b7dbcb15ebdc6e538991ac08c9" name="a889738b7dbcb15ebdc6e538991ac08c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a889738b7dbcb15ebdc6e538991ac08c9">&#9670;&#160;</a></span>operator+() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> BHVR::Ptype::operator+ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the union of the two ptypes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: ptype to union </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr Ptype </dd></dl>
+
+</div>
+</div>
+<a id="abca53157b40b6231c621760e47347dfd" name="abca53157b40b6231c621760e47347dfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abca53157b40b6231c621760e47347dfd">&#9670;&#160;</a></span>operator+() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> BHVR::Ptype::operator+ </td>
+          <td>(</td>
+          <td class="paramtype">typeUID&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns they union of the ptype and the type provided. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: type to union with </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr Ptype </dd></dl>
+
+</div>
+</div>
+<a id="a43d0ca24ae9b6d05043fdf9d202c14e2" name="a43d0ca24ae9b6d05043fdf9d202c14e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43d0ca24ae9b6d05043fdf9d202c14e2">&#9670;&#160;</a></span>operator+=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp; BHVR::Ptype::operator+= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds the given ptype. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: ptype to add </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr Ptype&amp; </dd></dl>
+
+</div>
+</div>
+<a id="a9c3d20229b0e9d4cf29e5670bb4431ed" name="a9c3d20229b0e9d4cf29e5670bb4431ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c3d20229b0e9d4cf29e5670bb4431ed">&#9670;&#160;</a></span>operator+=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp; BHVR::Ptype::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">typeUID&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds a type to the ptype. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: type to add </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr Ptype&amp; </dd></dl>
+
+</div>
+</div>
+<a id="a511d5417f77bae04b78bd75b43f1a379" name="a511d5417f77bae04b78bd75b43f1a379"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a511d5417f77bae04b78bd75b43f1a379">&#9670;&#160;</a></span>operator-() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> BHVR::Ptype::operator- </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the difference of the two ptypes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: ptype to compare </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr Ptype </dd></dl>
+
+</div>
+</div>
+<a id="ab37c734ee5b700f30232fa10284b4455" name="ab37c734ee5b700f30232fa10284b4455"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab37c734ee5b700f30232fa10284b4455">&#9670;&#160;</a></span>operator-() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> BHVR::Ptype::operator- </td>
+          <td>(</td>
+          <td class="paramtype">typeUID&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a ptype without the given type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: type to remove </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr Ptype </dd></dl>
+
+</div>
+</div>
+<a id="acf4508e49a09228b5794fd2625e9793e" name="acf4508e49a09228b5794fd2625e9793e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf4508e49a09228b5794fd2625e9793e">&#9670;&#160;</a></span>operator-=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp; BHVR::Ptype::operator-= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the ptype as the difference of the two types. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: type to compare </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr Ptype&amp; </dd></dl>
+
+</div>
+</div>
+<a id="ab61b179da186a603665b6aea2e410ef6" name="ab61b179da186a603665b6aea2e410ef6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab61b179da186a603665b6aea2e410ef6">&#9670;&#160;</a></span>operator-=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a> &amp; BHVR::Ptype::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">typeUID&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes the type from the ptype. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: type to remove </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr Ptype&amp; </dd></dl>
+
+</div>
+</div>
+<a id="a605c937aa85f42e094b41d6753de824c" name="a605c937aa85f42e094b41d6753de824c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a605c937aa85f42e094b41d6753de824c">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool BHVR::Ptype::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if two ptypes are the same. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>: ptype to compare </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
 
 </div>
 </div>

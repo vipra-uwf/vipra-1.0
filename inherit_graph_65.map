@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$d0/d61/classPedestrianDynamicsModel.html" title=" " alt="" coords="5,5,181,31"/>
-<area shape="rect" id="Node000001" href="$d5/d12/classCalmPedestrianModel.html" title=" " alt="" coords="229,5,377,31"/>
-<area shape="poly" id="edge11_Node000000_Node000001" title=" " alt="" coords="195,16,228,16,228,21,195,21"/>
+<area shape="rect" id="Node000000" href="$dd/d90/classPedestrianLoader.html" title=" " alt="" coords="5,5,129,31"/>
+<area shape="rect" id="Node000001" href="$da/d59/classJsonPedestrianLoader.html" title="A class for loading pedestrian positions from a JSON file." alt="" coords="177,5,328,31"/>
+<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="144,16,176,16,176,21,144,21"/>
 </map>

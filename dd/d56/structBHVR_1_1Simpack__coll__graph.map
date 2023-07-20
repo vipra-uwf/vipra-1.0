@@ -1,5 +1,5 @@
 <map id="BHVR::Simpack" name="BHVR::Simpack">
-<area shape="rect" id="Node000001" title=" " alt="" coords="221,94,336,120"/>
+<area shape="rect" id="Node000001" title="Holds references to commonly used parameters for simpler passing." alt="" coords="221,94,336,120"/>
 <area shape="rect" id="Node000002" href="$d5/d90/classPedestrianSet.html" title=" " alt="" coords="5,5,109,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,36,166,68,236,91,234,96,164,72,92,40"/>
 <area shape="rect" id="Node000003" href="$d5/dff/classObstacleSet.html" title=" " alt="" coords="133,5,226,31"/>

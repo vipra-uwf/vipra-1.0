@@ -87,43 +87,46 @@ $(function() {
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;targets/target.hpp&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span>BHVR {</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="../../db/dcb/structBHVR_1_1TargetNearest.html">   12</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../db/dcb/structBHVR_1_1TargetNearest.html">TargetNearest</a> {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  typeUID type;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keyword">inline</span> <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> operator()(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> self)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    VIPRA::idx groupIdx = <a class="code hl_function" href="../../d9/d1d/classBHVR_1_1GroupsContainer.html#acfa203d9ca0496c22caf1471c3e78de2">GroupsContainer::index</a>(type);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp;      coords = pack.pedSet.getCoordinates();</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> currCoords = coords.at(self.targetIdx);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="../../db/dcb/structBHVR_1_1TargetNearest.html">   16</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../db/dcb/structBHVR_1_1TargetNearest.html">TargetNearest</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  typeUID type;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="comment">// TODO (rolland): this can only handle one type at a time</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    VIPRA::dist shortest = std::numeric_limits&lt;VIPRA::dist&gt;::max();</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    VIPRA::idx  nearest = VIPRA::idx_INVALID;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordflow">for</span> (VIPRA::idx pedIdx : pack.groups.at(groupIdx)) {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <span class="keywordflow">if</span> (pedIdx == self.targetIdx) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      <span class="keywordflow">if</span> (pack.goals.isPedestianGoalMet(pedIdx)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      <span class="keywordflow">if</span> (pack.obsSet.rayHit(currCoords, coords.at(pedIdx)) != -1) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      VIPRA::dist curr = currCoords.distanceTo(coords.at(pedIdx));</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <span class="keywordflow">if</span> (curr &lt; shortest) {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        shortest = curr;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        nearest = pedIdx;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      }</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    }</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">if</span> (nearest == VIPRA::idx_INVALID) {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>{TargetType::INVALID, 0};</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    }</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>{TargetType::PEDESTRIAN, nearest};</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>};</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}  <span class="comment">// namespace BHVR</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keyword">inline</span> <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> operator()(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> self)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    VIPRA::idx groupIdx = <a class="code hl_function" href="../../d9/d1d/classBHVR_1_1GroupsContainer.html#acfa203d9ca0496c22caf1471c3e78de2">GroupsContainer::index</a>(type);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp;      coords = pack.pedSet.getCoordinates();</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">const</span> <a class="code hl_struct" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> currCoords = coords.at(self.targetIdx);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    VIPRA::dist shortest = std::numeric_limits&lt;VIPRA::dist&gt;::max();</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    VIPRA::idx  nearest = VIPRA::idx_INVALID;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">for</span> (VIPRA::idx pedIdx : pack.groups.<a class="code hl_function" href="../../d9/d1d/classBHVR_1_1GroupsContainer.html#a43ea83ae474d4b9691eac0540898f6fc">at</a>(groupIdx)) {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      <span class="keywordflow">if</span> (pedIdx == self.targetIdx) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <span class="keywordflow">if</span> (pack.goals.isPedestianGoalMet(pedIdx)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      <span class="keywordflow">if</span> (pack.obsSet.rayHit(currCoords, coords.at(pedIdx)) != -1) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      VIPRA::dist curr = currCoords.distanceTo(coords.at(pedIdx));</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      <span class="keywordflow">if</span> (curr &lt; shortest) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        shortest = curr;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        nearest = pedIdx;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> (nearest == VIPRA::idx_INVALID) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>{TargetType::INVALID, 0};</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">return</span> <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>{TargetType::PEDESTRIAN, nearest};</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}  <span class="comment">// namespace BHVR</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassBHVR_1_1GroupsContainer_html_a43ea83ae474d4b9691eac0540898f6fc"><div class="ttname"><a href="../../d9/d1d/classBHVR_1_1GroupsContainer.html#a43ea83ae474d4b9691eac0540898f6fc">BHVR::GroupsContainer::at</a></div><div class="ttdeci">const VIPRA::idxVec &amp; at(VIPRA::idx) const</div><div class="ttdoc">Gets the group at index.</div><div class="ttdef"><b>Definition</b> pedestrian_groups.cpp:134</div></div>
 <div class="ttc" id="aclassBHVR_1_1GroupsContainer_html_acfa203d9ca0496c22caf1471c3e78de2"><div class="ttname"><a href="../../d9/d1d/classBHVR_1_1GroupsContainer.html#acfa203d9ca0496c22caf1471c3e78de2">BHVR::GroupsContainer::index</a></div><div class="ttdeci">static constexpr VIPRA::idx index(typeUID type)</div><div class="ttdoc">Gets the index into the container for a given type.</div><div class="ttdef"><b>Definition</b> pedestrian_groups.hpp:25</div></div>
-<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdef"><b>Definition</b> sim_pack.hpp:12</div></div>
-<div class="ttc" id="astructBHVR_1_1TargetNearest_html"><div class="ttname"><a href="../../db/dcb/structBHVR_1_1TargetNearest.html">BHVR::TargetNearest</a></div><div class="ttdef"><b>Definition</b> target_nearest.hpp:12</div></div>
-<div class="ttc" id="astructBHVR_1_1Target_html"><div class="ttname"><a href="../../d1/d49/structBHVR_1_1Target.html">BHVR::Target</a></div><div class="ttdef"><b>Definition</b> target.hpp:21</div></div>
+<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:16</div></div>
+<div class="ttc" id="astructBHVR_1_1TargetNearest_html"><div class="ttname"><a href="../../db/dcb/structBHVR_1_1TargetNearest.html">BHVR::TargetNearest</a></div><div class="ttdoc">Selects the nearest pedestrian of a given type.</div><div class="ttdef"><b>Definition</b> target_nearest.hpp:16</div></div>
+<div class="ttc" id="astructBHVR_1_1Target_html"><div class="ttname"><a href="../../d1/d49/structBHVR_1_1Target.html">BHVR::Target</a></div><div class="ttdoc">Holds information about what to target.</div><div class="ttdef"><b>Definition</b> target.hpp:25</div></div>
 <div class="ttc" id="astructVIPRA_1_1f3d_html"><div class="ttname"><a href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a></div><div class="ttdef"><b>Definition</b> dimensions.hpp:135</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

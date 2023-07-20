@@ -87,7 +87,7 @@ $(function() {
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="../../d6/d65/classBHVR_1_1SubConditionSpatial.html">SubConditionSpatial</a>(<a class="code hl_class" href="../../dc/d06/classBHVR_1_1NumericValue.html">NumericValue</a>);</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordtype">bool</span> operator()(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d6/d65/classBHVR_1_1SubConditionSpatial.html#a4b7da0f5b5b14c216cd8468751bebc6f">operator()</a>(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <a class="code hl_class" href="../../dc/d06/classBHVR_1_1NumericValue.html">NumericValue</a> within;</div>
@@ -103,10 +103,11 @@ $(function() {
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}  <span class="comment">// namespace BHVR</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassBHVR_1_1NumericValue_html"><div class="ttname"><a href="../../dc/d06/classBHVR_1_1NumericValue.html">BHVR::NumericValue</a></div><div class="ttdef"><b>Definition</b> numeric_value.hpp:16</div></div>
+<div class="ttc" id="aclassBHVR_1_1NumericValue_html"><div class="ttname"><a href="../../dc/d06/classBHVR_1_1NumericValue.html">BHVR::NumericValue</a></div><div class="ttdoc">Numeric Values hold runtime float values taken from Behaviors.</div><div class="ttdef"><b>Definition</b> numeric_value.hpp:23</div></div>
 <div class="ttc" id="aclassBHVR_1_1SubConditionSpatial_html"><div class="ttname"><a href="../../d6/d65/classBHVR_1_1SubConditionSpatial.html">BHVR::SubConditionSpatial</a></div><div class="ttdef"><b>Definition</b> subcondition_spatial.hpp:8</div></div>
-<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdef"><b>Definition</b> sim_pack.hpp:12</div></div>
-<div class="ttc" id="astructBHVR_1_1Target_html"><div class="ttname"><a href="../../d1/d49/structBHVR_1_1Target.html">BHVR::Target</a></div><div class="ttdef"><b>Definition</b> target.hpp:21</div></div>
+<div class="ttc" id="aclassBHVR_1_1SubConditionSpatial_html_a4b7da0f5b5b14c216cd8468751bebc6f"><div class="ttname"><a href="../../d6/d65/classBHVR_1_1SubConditionSpatial.html#a4b7da0f5b5b14c216cd8468751bebc6f">BHVR::SubConditionSpatial::operator()</a></div><div class="ttdeci">bool operator()(Simpack, VIPRA::idx, Target) const</div><div class="ttdoc">Returns true if the target is within the condition distance.</div><div class="ttdef"><b>Definition</b> subcondition_spatial.cpp:16</div></div>
+<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:16</div></div>
+<div class="ttc" id="astructBHVR_1_1Target_html"><div class="ttname"><a href="../../d1/d49/structBHVR_1_1Target.html">BHVR::Target</a></div><div class="ttdoc">Holds information about what to target.</div><div class="ttdef"><b>Definition</b> target.hpp:25</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
