@@ -4,6 +4,10 @@
 #include <cstring>
 #include <string>
 
+/**
+ * @brief Struct for caseless look up in a std::map
+ * 
+ */
 struct CaselessStrCompare {
   struct Comp {
     bool operator()(const std::string& str1, const std::string& str2) const {

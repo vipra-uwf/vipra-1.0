@@ -6,6 +6,10 @@
 #include <values/numeric_value.hpp>
 
 namespace BHVR {
+/**
+ * @brief Selects an exact number of pedestrians
+ * 
+ */
 struct SelectorExactlyN {
   NumericValue   selectCount;
   SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,

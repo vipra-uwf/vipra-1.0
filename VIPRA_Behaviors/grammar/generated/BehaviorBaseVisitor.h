@@ -131,30 +131,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitDirection(BehaviorParser::DirectionContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitDir(BehaviorParser::DirContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitDirection_of(BehaviorParser::Direction_ofContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitInfront(BehaviorParser::InfrontContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitBehind(BehaviorParser::BehindContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitAround(BehaviorParser::AroundContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitDuration(BehaviorParser::DurationContext *ctx) override {
     return visitChildren(ctx);
   }

@@ -5,6 +5,11 @@
 #include <targets/target.hpp>
 
 namespace BHVR {
+
+/**
+ * @brief Returns the target that calls this
+ * 
+ */
 struct TargetSelf {
   inline Target operator()(Simpack, Target self) { return self; }
 };

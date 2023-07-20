@@ -20,16 +20,16 @@ public:
     EVENT = 32, EXACTLY = 33, EVERY = 34, EVERYONE = 35, ENDING = 36, FOR = 37, 
     FROM = 38, FRONT = 39, FASTER = 40, GIVEN = 41, GOAL = 42, GROUP = 43, 
     HAS = 44, IN = 45, INTEGER = 46, IS = 47, IF = 48, LENGTH = 49, LOCATION = 50, 
-    METERS = 51, NAME = 52, NEAREST = 53, NORMAL = 54, OBSTACLE = 55, OCCUR = 56, 
-    OCCURRED = 57, OCCURRING = 58, OF = 59, ON = 60, OR = 61, PEDESTRIAN = 62, 
-    PEDESTRIANS = 63, POSSIBLE = 64, POSITION = 65, RADIUS = 66, RANDOM = 67, 
-    REQUIRED = 68, RESPONSE = 69, SCALE = 70, SELF = 71, SELECT = 72, SELECTOR = 73, 
-    SET = 74, SECOND = 75, SECONDS = 76, STATUS = 77, STARTING = 78, SLOWER = 79, 
-    STATES = 80, START = 81, STATE = 82, STARTS = 83, SPEED = 84, SUBTRACT = 85, 
-    STIMULUS = 86, TARGET = 87, TO = 88, THE = 89, THAT = 90, THEN = 91, 
-    THEIR = 92, THERES = 93, TYPES = 94, TYPE = 95, UNCONDITIONALLY = 96, 
-    VALUE = 97, VELOCITY = 98, WHEN = 99, WHILE = 100, WIDTH = 101, WILL = 102, 
-    WITH = 103, WITHIN = 104, ID = 105, NUMBER = 106, FLOAT = 107
+    MAX = 51, METERS = 52, NAME = 53, NEAREST = 54, NORMAL = 55, OBSTACLE = 56, 
+    OCCUR = 57, OCCURRED = 58, OCCURRING = 59, OF = 60, ON = 61, OR = 62, 
+    PEDESTRIAN = 63, PEDESTRIANS = 64, POSSIBLE = 65, POSITION = 66, RADIUS = 67, 
+    RANDOM = 68, REQUIRED = 69, RESPONSE = 70, SCALE = 71, SELF = 72, SELECT = 73, 
+    SELECTOR = 74, SET = 75, SECOND = 76, SECONDS = 77, STATUS = 78, STARTING = 79, 
+    SLOWER = 80, STATES = 81, START = 82, STATE = 83, STARTS = 84, SPEED = 85, 
+    SUBTRACT = 86, STIMULUS = 87, TARGET = 88, TO = 89, THE = 90, THAT = 91, 
+    THEN = 92, THEIR = 93, THERES = 94, TYPES = 95, TYPE = 96, UNCONDITIONALLY = 97, 
+    VALUE = 98, VELOCITY = 99, WHEN = 100, WHILE = 101, WIDTH = 102, WILL = 103, 
+    WITH = 104, WITHIN = 105, ID = 106, NUMBER = 107, FLOAT = 108
   };
 
   enum {
@@ -42,19 +42,17 @@ public:
     RuleValue_numeric = 19, RuleValue_number = 20, RuleValue_float = 21, 
     RuleValue_range = 22, RuleValue_random = 23, RuleRandom_number = 24, 
     RuleRandom_float = 25, RuleFloat_range = 26, RuleNumber_range = 27, 
-    RuleValue_coord = 28, RuleDirection = 29, RuleDir = 30, RuleDirection_of = 31, 
-    RuleInfront = 32, RuleBehind = 33, RuleAround = 34, RuleDuration = 35, 
-    RuleAttribute = 36, RuleAttr_value = 37, RulePed_Selector = 38, RuleSelector_attribute = 39, 
-    RuleSelector_type = 40, RuleSelector_selector = 41, RuleSelector_from = 42, 
-    RuleSelector_required = 43, RuleSelector = 44, RuleSelector_Percent = 45, 
-    RuleSelector_Exactly_N_Random = 46, RuleSelector_Everyone = 47, RuleGroup = 48, 
-    RuleId_list = 49, RuleAction = 50, RuleAction_attribute = 51, RuleAction_stimulus = 52, 
-    RuleAction_response = 53, RuleAction_duration = 54, RuleAction_target = 55, 
-    RuleSub_action = 56, RuleAction_atom = 57, RuleSet_atom = 58, RuleScale_atom = 59, 
-    RuleTarget = 60, RuleSelf = 61, RuleNearest_type = 62, RuleDeclaration = 63, 
-    RuleDecl_Loc = 64, RuleDecl_Ped_State = 65, RuleDecl_Env_State = 66, 
-    RuleDecl_Loc_Area_Circle = 67, RuleDecl_Loc_Area_Rect = 68, RuleDecl_Loc_Point = 69, 
-    RuleDecl_Ped = 70
+    RuleValue_coord = 28, RuleDuration = 29, RuleAttribute = 30, RuleAttr_value = 31, 
+    RulePed_Selector = 32, RuleSelector_attribute = 33, RuleSelector_type = 34, 
+    RuleSelector_selector = 35, RuleSelector_from = 36, RuleSelector_required = 37, 
+    RuleSelector = 38, RuleSelector_Percent = 39, RuleSelector_Exactly_N_Random = 40, 
+    RuleSelector_Everyone = 41, RuleGroup = 42, RuleId_list = 43, RuleAction = 44, 
+    RuleAction_attribute = 45, RuleAction_stimulus = 46, RuleAction_response = 47, 
+    RuleAction_duration = 48, RuleAction_target = 49, RuleSub_action = 50, 
+    RuleAction_atom = 51, RuleSet_atom = 52, RuleScale_atom = 53, RuleTarget = 54, 
+    RuleSelf = 55, RuleNearest_type = 56, RuleDeclaration = 57, RuleDecl_Loc = 58, 
+    RuleDecl_Ped_State = 59, RuleDecl_Env_State = 60, RuleDecl_Loc_Area_Circle = 61, 
+    RuleDecl_Loc_Area_Rect = 62, RuleDecl_Loc_Point = 63, RuleDecl_Ped = 64
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -103,12 +101,6 @@ public:
   class Float_rangeContext;
   class Number_rangeContext;
   class Value_coordContext;
-  class DirectionContext;
-  class DirContext;
-  class Direction_ofContext;
-  class InfrontContext;
-  class BehindContext;
-  class AroundContext;
   class DurationContext;
   class AttributeContext;
   class Attr_valueContext;
@@ -577,94 +569,6 @@ public:
 
   Value_coordContext* value_coord();
 
-  class  DirectionContext : public antlr4::ParserRuleContext {
-  public:
-    DirectionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    DirContext *dir();
-    antlr4::tree::TerminalNode *WITHIN();
-    antlr4::tree::TerminalNode *NUMBER();
-    antlr4::tree::TerminalNode *METERS();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  DirectionContext* direction();
-
-  class  DirContext : public antlr4::ParserRuleContext {
-  public:
-    DirContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    Direction_ofContext *direction_of();
-    InfrontContext *infront();
-    BehindContext *behind();
-    AroundContext *around();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  DirContext* dir();
-
-  class  Direction_ofContext : public antlr4::ParserRuleContext {
-  public:
-    Direction_ofContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *IN();
-    antlr4::tree::TerminalNode *DIRECTION();
-    antlr4::tree::TerminalNode *OF();
-    antlr4::tree::TerminalNode *ID();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Direction_ofContext* direction_of();
-
-  class  InfrontContext : public antlr4::ParserRuleContext {
-  public:
-    InfrontContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *IN();
-    antlr4::tree::TerminalNode *FRONT();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  InfrontContext* infront();
-
-  class  BehindContext : public antlr4::ParserRuleContext {
-  public:
-    BehindContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *BEHIND();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  BehindContext* behind();
-
-  class  AroundContext : public antlr4::ParserRuleContext {
-  public:
-    AroundContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *AROUND();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  AroundContext* around();
-
   class  DurationContext : public antlr4::ParserRuleContext {
   public:
     DurationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -690,6 +594,8 @@ public:
     antlr4::tree::TerminalNode *STATE();
     antlr4::tree::TerminalNode *LOCATION();
     antlr4::tree::TerminalNode *STATUS();
+    antlr4::tree::TerminalNode *MAX();
+    antlr4::tree::TerminalNode *SPEED();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -880,10 +786,6 @@ public:
     antlr4::tree::TerminalNode* ID(size_t i);
     std::vector<antlr4::tree::TerminalNode *> COMMA();
     antlr4::tree::TerminalNode* COMMA(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> AND();
-    antlr4::tree::TerminalNode* AND(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> AN();
-    antlr4::tree::TerminalNode* AN(size_t i);
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

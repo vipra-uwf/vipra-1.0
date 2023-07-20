@@ -6,6 +6,11 @@
 #include "targets/target_selectors/target_self.hpp"
 
 namespace BHVR {
+
+/**
+ * @brief Used to grab a target for either conditions or actions
+ * 
+ */
 class TargetSelector {
  public:
   TargetSelector() : select(TargetSelf()) {}

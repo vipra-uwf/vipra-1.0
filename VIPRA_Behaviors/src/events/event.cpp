@@ -44,20 +44,66 @@ void Event::evaluate(Simpack pack) {
   }
 }
 
+/**
+ * @brief Sets the events current status
+ * 
+ * @param stat : 
+ */
 void Event::setStatus(EventStatus stat) { status = stat; }
 
-bool Event::isOccurring() const { return status == EventStatus::OCCURRING; }
+/**
+ * @brief Checks if the event is occurring
+ * 
+ * @return true 
+ * @return false 
+ */
+bool Event::isOccurring() const {
+  return status == EventStatus::OCCURRING || status == EventStatus::STARTING;
+}
 
+/**
+ * @brief Checks if the event has occurred at all during the simulation
+ * 
+ * @return true 
+ * @return false 
+ */
 bool Event::hasOccurred() const { return occurred; }
 
+/**
+ * @brief Checks if the event is starting
+ * 
+ * @return true 
+ * @return false 
+ */
 bool Event::isStarting() const { return status == EventStatus::STARTING; }
 
+/**
+ * @brief Checks if the event is ending
+ * 
+ * @return true 
+ * @return false 
+ */
 bool Event::isEnding() const { return status == EventStatus::ENDING; }
 
+/**
+ * @brief Sets the condition for the event to start
+ * 
+ * @param condition : condition for event to start
+ */
 void Event::setStartCondition(const Condition& condition) { startCondition = condition; }
 
+/**
+ * @brief Sets the condition for the event to end
+ * 
+ * @param condition : condition for event to end
+ */
 void Event::setEndCondition(const Condition& condition) { endCondition = condition; }
 
+/**
+ * @brief Returns the events name
+ * 
+ * @return const std::string& 
+ */
 const std::string& Event::getName() const { return name; }
 
 // ---------------------------------- CONSTRUCTORS -----------------------------------------------------------

@@ -8,6 +8,13 @@
 #include "selectors/selector_exactly_N.hpp"
 
 namespace BHVR {
+/**
+   * @brief Selects an exact number of pedestrians from a group
+   * 
+   * @param rngEngine : randomization engine
+   * @param group : group to pull from
+   * @return SelectorResult 
+   */
 SelectorResult SelectorExactlyN::operator()(VIPRA::pRNG_Engine& rngEngine,
                                             const VIPRA::idxVec&,
                                             const VIPRA::idxVec& group,

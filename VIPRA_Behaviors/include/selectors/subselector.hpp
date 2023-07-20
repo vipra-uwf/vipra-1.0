@@ -17,15 +17,27 @@
 
 namespace BHVR {
 
+/**
+ * @brief Result of a selection
+ * 
+ */
 struct SelectorResult {
   bool          starved;
   VIPRA::idxVec group;
 };
 
+/**
+ * @brief Function for choosing which pedestrians have a type
+ * 
+ */
 using SelectorFunc = std::function<SelectorResult(
     VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&,
     const ObstacleSet&, const Goals&)>;
 
+/**
+ * @brief Selects pedestrians for one type, gets combined with other SubSelectors in Selector
+ * 
+ */
 class SubSelector {
  public:
   SubSelector(typeUID, Ptype, bool, SelectorFunc);

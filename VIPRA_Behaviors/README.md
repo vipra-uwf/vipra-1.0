@@ -34,15 +34,15 @@
 
 The general layout of a `Behavior` is as follows:
 ```
-Consideration.       // section (§T.)
+Types Declaration.       // section (§T.)
 
-State declarations.  // section (§St.)
+States Declaration.  // section (§St.)
 
-Selector statements. // section (§S.)
+Selector Declarations. // section (§S.)
 
-Event definitions.   // section (§E.)
+Event Declartions.   // section (§E.)
 
-Action statements.   // section (§A.)
+Action Declarations.   // section (§A.)
 ```
 
 </details>
@@ -60,21 +60,23 @@ This section has some simple `Syntax` rules that must be followed for a `Behavio
 
 The other sections will have the specific `Syntax` rules for their respective parts, in a `Section - General Syntax Rules` section
 
-1. All statements must end in a '.' <sub>A statement being an `Action`, `Selector`, `Event`, or `Consideration`</sub>
+1. All Declarations must end in a '.'
 ```
 correct:
-  An injured_person will always @stop.
+  Event:
+    Name: Example
+  .
 
 incorrect:
-  An injured_person will always @stop
+  Event:
+    Name: Example
 ```
 
-2. Each `Behavior` (§B) must start with a `Consideration` (§T.1)
-3. Each `Behavior` (§B) must only have 1 `Consideration` (§T.1)
+2. Each `Behavior` (§B) must start with a `Types Declaration` (§T.1)
+3. Each `Behavior` (§B) must only have 1 `Types Declaration` (§T.1)
 4. Each `Behavior` (§B) must have at least 1 `Selector` (§S)
 5. `Behaviors` are case in-sensitive so `Consider`, `consider`, and `ConSiDEr` are all valid.
-6. 'A' and 'An' are interchangeable, use whichever sounds grammatically correct.
-7. Comments can be added following '//' or between '/*' and '\*/'
+6. Comments can be added following '//' or between '/*' and '\*/'
 ```
 // This is a comment and does not affect the behavior
 
@@ -83,17 +85,17 @@ This is a multi-line comment
 and does not affect the behavior
 */
 ```
-8. Whitespace does not affect `Behaviors`, the following are valid and equivalent.
+7. Whitespace does not affect `Behaviors`, the following are valid and equivalent.
 ```
-A typeA will always @stop.
+Types: typeA typeB.
 
 // and
 
-A
-typeA will
-always          @stop.
+Types:
+  typeA
+  typeB
+.
 ```
-9. All commas are optional.
 </details>
 
 ---
@@ -112,43 +114,46 @@ Each pedestrian is assigned a user defined `Type`, and based on their `Type` the
 <details>
   <summary>
     <h2>
-      T.1. Considerations
+      T.1. Types Declaration
     </h2>
   </summary>
 
-A `Consideration` is what says which types are being used in the `Behavior`. 
+A `Types Declaration` is what says which types are being used in the `Behavior`. 
 
-`Behaviors` can only have 1 `Consideration` with up to 64 types.
+`Behaviors` can only have 1 `Types Declaration` with up to 64 types.
 
-Single `Type` `Consideration`:
+Single `Type`:
 ```
-Consider an injured_person.
+Types:
+  injured_person
+.
 ```
 
-Multiple `Types` `Consideration`:
+Multiple `Types`:
 ```
-Consider an injured_person, and a helper.
+Types:
+ injured_person
+ helper
+.
 ```
 
 <details>
   <summary>
     <h3>
-      T.1.1. Consideration - General Syntax Rules
+      T.1.1. Types Declaration - General Syntax Rules
     </h3>
   </summary>
 
-1. `Types` in `Considerations` can be connected in several ways, the following are all valid and equivalent:
+1. `Types Declarations` can be any length up to 64 `Types`
 ```
-Consider an injured_person, a helper.
-Consider an injured_person and a helper.
-Consider an injured_person, and a helper.
-Consider an injured_person, and helper.
+Types:
+  typeA
+  typeB
+  typeC
+  typeD
+.
 ```
-2. `Considerations` can be any length up to 64 `Types`
-```
-Consider a typeA, a typeB, a typeC, and typeD.
-```
-3. `Considerations` must be the first statement in a `Behavior`
+2. `Types Declarations` must be the first declaration in a `Behavior`
 
 </details>
 </details>
@@ -219,12 +224,13 @@ Pedestrians with `Composite Types` are in a `Group` for each `Type`.
 
 Selecting pedestrians is done through a `Selector` statement. The basic syntax is as follows:
 ```
-*Selector* of *Group* are a *Type*.
-or
-*Selector* of *Group* are a *TypeA* and *TypeB*.
+Selector:
+  Type: *types*
+  Group: *type*     // optional, defaults to base pedestrians group
+  Select: *selection criteria*
 ```
 
-- \*Selector* - The exact `Selector` to use, available `Selectors` are in (§S.5.)
+- \*Select* - The exact `Select` criteria to use, available `Select` criteria are in (§S.5.)
 - \*Group* - The `Group` (§T.3) to select pedestrians from
 - \*Type* - The `Type` (§T.) to assign to selected pedestrians
 
@@ -234,21 +240,24 @@ Selectors are applied with precedence equal to the order they appear in the `Beh
 <summary><b>Example:</b></summary>
 
 ```
-Consider a typeA, and a typeB.     // Consideration (§T.1.), saying what types the behavior uses
+Types: // Types Declaration (§T.1.), saying what types the behavior uses
+ typeA
+ typeB
+.
 
-Exactly 10 pedestrians is a typeA. // Exactly N Selector statement
-50% of pedestrians is a typeB.     // Percent Selector statement
+Selector:   // Selects exactly 10 pedestrians to be of typeA
+  Type: typeA
+  Select: 10
+.
+
+Selector:   // Selects 50% of pedestrians to be of typeB
+  Type: typeB
+  Select 50%
+.
 ```
 
 </details>
 <br/>
-
-**Note:**
-The `Everyone` `Selector` has a special syntax
-```
-Everyone is a typeA.
-```
-
 </details>
 
 ---
@@ -268,11 +277,28 @@ This has the effect of selecting the pedestrians for a `Composite Type` (§T.2) 
 <summary><b>Example:</b></summary>
 
 ```
-Consider a typeA, typeB and typeC.
+Types:
+  typeA
+  typeB
+  typeC
+.
 
-50% of pedestrians are a typeA. // Selects from the 'Pedestrians Group'
-15% of typeA are a typeB.       // Selects from typeA pedestrians
-5% of typeA are a typeC.        // Selects from typeA pedestrians
+Select:        // Selects 50% of pedestrians for typeA
+  Type: typeA
+  Select: 50%
+.
+
+Select:        // Selects 15% of typeA pedestrians for typeA & typeB
+  Type: typeB
+  Group: typeA
+  Select: 15%
+.
+
+Select:       // Selects 5% of typeA pedestrians for typeA & typeC
+  Type: typeC
+  Group: type
+  Select: 5%
+.
 ```
 
 With 100 pedestrians:
@@ -297,10 +323,25 @@ When a pedestrian is selected from a `Group`, it is marked as used and can not b
 This has the affect of making `Selector` statements strictly interpreted.
 
 ```
-15% of typeA are typeB.
+Select:
+  Type: typeB
+  Group: typeA
+  Select: 15%
+.
 ```
 Means:
-15% of 'typeA' pedestrians are strictly 'typeA' and 'typeB', with no chance of being anything else.
+Those 15% of 'typeA' pedestrians can not be selected from again.
+However, they can be selected from 'typeB'.
+
+```
+Select:
+  Type: typeC
+  Group: typeB
+  Select: 15%
+.
+```
+
+This may result in some pedestrians being of types: typeA, typeB, and typeC.
 
 </details>
 
@@ -313,7 +354,7 @@ Means:
     </h2>
   </summary>
 
-`Selectors` can be marked as `Required` with 'Required:' before the `Selector` statement. 
+`Selectors` can be marked as `Required` with a 'Required' `Sub-component`. 
 
 This means, given the `Selector` is unable to be filled an error will be thrown, and the simulation will stop.
 
@@ -321,11 +362,21 @@ This means, given the `Selector` is unable to be filled an error will be thrown,
 <summary><b>Example:</b></summary>
 
 ```
-Consider a typeA, and a typeB.
+Types:
+  typeA
+  typeB
+.
 
-Everyone is a typeA.
+Selector:
+  Type: typeA
+  Select: Everyone
+.
 
-Required: 50% of pedestrians are a typeB.
+Selector:
+  Required
+  Type: typeB
+  Select: 50%
+.
 ```
 Output:
 ```
@@ -339,28 +390,28 @@ Behavior: Example, Required Selector Starved For Type: 2 From Group: 0"
 <details>
   <summary>
     <h2>
-      S.5. Available Selectors
+      S.5. Available Select Criteria
     </h2>
   </summary>
 
-1. Everyone Selector
-2. Percent Selector
-3. N Selector
+1. Everyone
+2. Percent
+3. Exactly N
 
 ---
 
 <details>
   <summary>
     <h3>
-      S.5.1. Everyone Selector
+      S.5.1. Everyone
     </h3>
   </summary>
 
 ```
-Everyone is a *Type*.
+Select: Everyone
 ```
 
-This selector chooses every pedestrian to have the selected `Type` (§T)
+This select criteria chooses every pedestrian to have the selected `Type` (§T)
 
 </details>
 
@@ -369,7 +420,7 @@ This selector chooses every pedestrian to have the selected `Type` (§T)
 <details>
   <summary>
     <h3>
-      S.5.2 Percent Selector
+      S.5.2 Percent
     </h3>
   </summary>
 
@@ -386,7 +437,7 @@ Selects a percentage of a `Group` for the provided `Type`
 <summary><b>Example:</b></summary>
 
 ```
-15% of pedestrians are a injured_person.
+Select: 15%
 ```
 
 </details>
@@ -397,7 +448,7 @@ Selects a percentage of a `Group` for the provided `Type`
 <details>
   <summary>
     <h3>
-      S.5.3 N Selector
+      S.5.3 Exactly N 
     </h3>
   </summary>
 
@@ -413,7 +464,7 @@ Exaclty *X*
 <summary><b>Example:</b></summary>
 
 ```
-Exactly 10 pedestrians is a injured_person.
+Select: 10
 ```
 
 </details>
@@ -428,8 +479,6 @@ Exactly 10 pedestrians is a injured_person.
       S.6 Selectors - General Syntax Rules
     </h2>
   </summary>
-
-1. The 'of' in 'of \*Group*' can be removed if it makes more grammatical sense.
 
 </details>
 </details>

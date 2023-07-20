@@ -10,9 +10,16 @@
 #include <utility>
 
 namespace BHVR {
-
+/**
+ * @brief Function for getting the value of a numeric
+ * 
+ */
 using ValueFunc = std::function<float(BHVR::seed, VIPRA::idx)>;
 
+/**
+ * @brief Numeric Values hold runtime float values taken from Behaviors
+ * 
+ */
 class NumericValue {
  public:
   explicit NumericValue(BHVR::seed seedNum, ValueFunc func)
@@ -28,11 +35,19 @@ class NumericValue {
   NumericValue() = default;
 };
 
+/**
+ * @brief Holds an exact float value
+ * 
+ */
 struct ExactValue {
   float        value;
   inline float operator()(BHVR::seed, VIPRA::idx) const { return value; }
 };
 
+/**
+ * @brief Holds a random float value for each pedestrian
+ * 
+ */
 struct RandomFloatValue {
   float min{};
   float max{};
@@ -42,6 +57,10 @@ struct RandomFloatValue {
   }
 };
 
+/**
+ * @brief Holds a random whole number value for each pedestrian
+ * 
+ */
 struct RandomNumberValue {
   float min{};
   float max{};

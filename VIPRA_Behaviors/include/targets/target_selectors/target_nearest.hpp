@@ -9,8 +9,14 @@
 #include <targets/target.hpp>
 
 namespace BHVR {
+/**
+  * @brief Selects the nearest pedestrian of a given type
+  * 
+  */
 struct TargetNearest {
   typeUID type;
+
+  // TODO (rolland): this can only handle one type at a time
 
   inline Target operator()(Simpack pack, Target self) const {
     VIPRA::idx groupIdx = GroupsContainer::index(type);
