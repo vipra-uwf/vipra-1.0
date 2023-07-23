@@ -104,8 +104,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aaf3dafafe05223c6db3345187cebfd42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1087078e613d7122559d233ed253bda"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::veloc</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#af1087078e613d7122559d233ed253bda">getPedVelocity</a> (VIPRA::idx) const =0</td></tr>
 <tr class="separator:af1087078e613d7122559d233ed253bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20f39d5e852fff27308ad2ae5cb05781"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>, VIPRA::idx &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a20f39d5e852fff27308ad2ae5cb05781">getNearestPedestrian</a> (VIPRA::idx) const =0</td></tr>
-<tr class="separator:a20f39d5e852fff27308ad2ae5cb05781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44ffdb6d3204b7994c4717dac2f9121f"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>, VIPRA::idx &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a44ffdb6d3204b7994c4717dac2f9121f">getNearestPedestrian</a> (VIPRA::idx, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;) const =0</td></tr>
+<tr class="separator:a44ffdb6d3204b7994c4717dac2f9121f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64196e1ea662ce74071485fa194b6c11"><td class="memItemLeft" align="right" valign="top"><a id="a64196e1ea662ce74071485fa194b6c11" name="a64196e1ea662ce74071485fa194b6c11"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PedestrianSet</b> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;)=default</td></tr>
 <tr class="separator:a64196e1ea662ce74071485fa194b6c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,8 +175,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a20f39d5e852fff27308ad2ae5cb05781" name="a20f39d5e852fff27308ad2ae5cb05781"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20f39d5e852fff27308ad2ae5cb05781">&#9670;&#160;</a></span>getNearestPedestrian()</h2>
+<a id="a44ffdb6d3204b7994c4717dac2f9121f" name="a44ffdb6d3204b7994c4717dac2f9121f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44ffdb6d3204b7994c4717dac2f9121f">&#9670;&#160;</a></span>getNearestPedestrian()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -188,8 +188,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual std::pair&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>, VIPRA::idx &gt; PedestrianSet::getNearestPedestrian </td>
           <td>(</td>
           <td class="paramtype">VIPRA::idx&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -199,7 +209,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#abf8b55699c7232dbc7b7ea837b7e704f">CalmPedestrianSet</a>.</p>
+<p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#a584b49ddd12b38c4dac2481e3a972ad4">CalmPedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -254,7 +264,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#aa1cd0b985c2a6411715330440c507956">CalmPedestrianSet</a>.</p>
+<p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#a465f09f19f41fe3d4203a1dfb66952ac">CalmPedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -282,7 +292,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#a9ae6b7b3afcadf03b35cba37acc08326">CalmPedestrianSet</a>.</p>
+<p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#a8035abcd3caccf65efe073e03fe1cf35">CalmPedestrianSet</a>.</p>
 
 </div>
 </div>

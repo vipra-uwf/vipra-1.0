@@ -90,8 +90,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af8026e29fb156c50d689e8e2ce0c885c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d1c/structCalmPath_1_1GridPointHash.html#af8026e29fb156c50d689e8e2ce0c885c">operator()</a> (const <a class="el" href="../../d0/def/structCalmPath_1_1GridPoint.html">GridPoint</a> &amp;object) const</td></tr>
 <tr class="memdesc:af8026e29fb156c50d689e8e2ce0c885c"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates hash of a GridPoint object.  <br /></td></tr>
 <tr class="separator:af8026e29fb156c50d689e8e2ce0c885c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa703700b9f8c66349f44acb10d3b96c1"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d1c/structCalmPath_1_1GridPointHash.html#aa703700b9f8c66349f44acb10d3b96c1">operator()</a> (const <a class="el" href="../../d0/def/structCalmPath_1_1GridPoint.html">GridPoint</a> *object) const</td></tr>
-<tr class="memdesc:aa703700b9f8c66349f44acb10d3b96c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">passes in the proper value to the hash if a pointer is given.  <br /></td></tr>
+<tr class="memitem:aa703700b9f8c66349f44acb10d3b96c1"><td class="memItemLeft" align="right" valign="top"><a id="aa703700b9f8c66349f44acb10d3b96c1" name="aa703700b9f8c66349f44acb10d3b96c1"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const <a class="el" href="../../d0/def/structCalmPath_1_1GridPoint.html">GridPoint</a> *object) const</td></tr>
 <tr class="separator:aa703700b9f8c66349f44acb10d3b96c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -99,7 +99,7 @@ Public Member Functions</h2></td></tr>
 <p>This struct provides implementations for hashing a GridPoint in a hash map. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af8026e29fb156c50d689e8e2ce0c885c" name="af8026e29fb156c50d689e8e2ce0c885c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8026e29fb156c50d689e8e2ce0c885c">&#9670;&#160;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8026e29fb156c50d689e8e2ce0c885c">&#9670;&#160;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -126,41 +126,6 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">object</td><td>GridPoint being hashed. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>std::size_t </dd></dl>
-
-</div>
-</div>
-<a id="aa703700b9f8c66349f44acb10d3b96c1" name="aa703700b9f8c66349f44acb10d3b96c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa703700b9f8c66349f44acb10d3b96c1">&#9670;&#160;</a></span>operator()() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t CalmPath::GridPointHash::operator() </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../d0/def/structCalmPath_1_1GridPoint.html">GridPoint</a> *&#160;</td>
-          <td class="paramname"><em>object</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>passes in the proper value to the hash if a pointer is given. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">object</td><td>GridPoint pointer being hashed. </td></tr>
   </table>
   </dd>
 </dl>

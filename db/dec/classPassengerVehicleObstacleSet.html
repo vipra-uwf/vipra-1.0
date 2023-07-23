@@ -109,14 +109,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa04c5fd151d2d8fb23b7bbc13c613d59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dec/classPassengerVehicleObstacleSet.html#aa04c5fd151d2d8fb23b7bbc13c613d59">configure</a> (const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;configMap) override</td></tr>
 <tr class="memdesc:aa04c5fd151d2d8fb23b7bbc13c613d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures the PassengerVehicleObstacleSet with the given configuration map.  <br /></td></tr>
 <tr class="separator:aa04c5fd151d2d8fb23b7bbc13c613d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd655bf72b1db8f529427c4847fa8248"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dec/classPassengerVehicleObstacleSet.html#afd655bf72b1db8f529427c4847fa8248">getMapDimensions</a> () const override</td></tr>
-<tr class="memdesc:afd655bf72b1db8f529427c4847fa8248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the dimensions of the map.  <br /></td></tr>
-<tr class="separator:afd655bf72b1db8f529427c4847fa8248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad55bd46f89a5be684f965098fa278a72"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>, <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dec/classPassengerVehicleObstacleSet.html#ad55bd46f89a5be684f965098fa278a72">getMapDimensions</a> () const override</td></tr>
+<tr class="memdesc:ad55bd46f89a5be684f965098fa278a72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the dimensions of the map.  <br /></td></tr>
+<tr class="separator:ad55bd46f89a5be684f965098fa278a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e3a7fa2be4cb6cdddbc6525c96be08a"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dec/classPassengerVehicleObstacleSet.html#a3e3a7fa2be4cb6cdddbc6525c96be08a">getObjectTypes</a> () const override</td></tr>
-<tr class="memdesc:a3e3a7fa2be4cb6cdddbc6525c96be08a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the types of objects in the obstacle set.  <br /></td></tr>
+<tr class="memdesc:a3e3a7fa2be4cb6cdddbc6525c96be08a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the types of objects in the obstacle set.  <br /></td></tr>
 <tr class="separator:a3e3a7fa2be4cb6cdddbc6525c96be08a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab58421d870ec786b1222d6907a4a80d"><td class="memItemLeft" align="right" valign="top">const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dec/classPassengerVehicleObstacleSet.html#aab58421d870ec786b1222d6907a4a80d">getObjectsofType</a> (const std::string &amp;type) const override</td></tr>
-<tr class="memdesc:aab58421d870ec786b1222d6907a4a80d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the objects of the specified type from the obstacle set.  <br /></td></tr>
+<tr class="memdesc:aab58421d870ec786b1222d6907a4a80d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the objects of the specified type from the obstacle set.  <br /></td></tr>
 <tr class="separator:aab58421d870ec786b1222d6907a4a80d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60f74b1a39a69e15944c1da3414f0f4f"><td class="memItemLeft" align="right" valign="top">VIPRA::f3dVec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dec/classPassengerVehicleObstacleSet.html#a60f74b1a39a69e15944c1da3414f0f4f">nearestObstacle</a> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;) const override</td></tr>
 <tr class="memdesc:a60f74b1a39a69e15944c1da3414f0f4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the nearest obstacles for each pedestrian in the PedestrianSet.  <br /></td></tr>
@@ -141,8 +141,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae39cd0bf21c10f13b31dc61ee0a2eae1 inherit pub_methods_classObstacleSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a698a286c4ac63a034271284ebf403246 inherit pub_methods_classObstacleSet"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dff/classObstacleSet.html#a698a286c4ac63a034271284ebf403246">configure</a> (const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;configMap)=0</td></tr>
 <tr class="separator:a698a286c4ac63a034271284ebf403246 inherit pub_methods_classObstacleSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a426013fa75b74c30e091eba6cc2fa2cf inherit pub_methods_classObstacleSet"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dff/classObstacleSet.html#a426013fa75b74c30e091eba6cc2fa2cf">getMapDimensions</a> () const =0</td></tr>
-<tr class="separator:a426013fa75b74c30e091eba6cc2fa2cf inherit pub_methods_classObstacleSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c3685af96ebf7181da5beab19c8295b inherit pub_methods_classObstacleSet"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>, <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dff/classObstacleSet.html#a0c3685af96ebf7181da5beab19c8295b">getMapDimensions</a> () const =0</td></tr>
+<tr class="separator:a0c3685af96ebf7181da5beab19c8295b inherit pub_methods_classObstacleSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3aa3883e009346a0b0260a2b0040cc4 inherit pub_methods_classObstacleSet"><td class="memItemLeft" align="right" valign="top">virtual const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dff/classObstacleSet.html#ad3aa3883e009346a0b0260a2b0040cc4">getObjectTypes</a> () const =0</td></tr>
 <tr class="separator:ad3aa3883e009346a0b0260a2b0040cc4 inherit pub_methods_classObstacleSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63fee88e254f77f5c7f27698fea02896 inherit pub_methods_classObstacleSet"><td class="memItemLeft" align="right" valign="top">virtual const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dff/classObstacleSet.html#a63fee88e254f77f5c7f27698fea02896">getObjectsofType</a> (const std::string &amp;type) const =0</td></tr>
@@ -207,13 +207,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if a collision occurs, false otherwise.</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">coords</td><td>The coordinates. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>True if a collision occurs, false otherwise. </dd></dl>
 
 <p>Implements <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a>.</p>
@@ -247,12 +240,6 @@ Public Member Functions</h2></td></tr>
 <p>Configures the PassengerVehicleObstacleSet with the given configuration map. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">configMap</td><td>The configuration map.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
     <tr><td class="paramname">configMap</td><td>The configuration map. </td></tr>
   </table>
   </dd>
@@ -262,8 +249,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afd655bf72b1db8f529427c4847fa8248" name="afd655bf72b1db8f529427c4847fa8248"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd655bf72b1db8f529427c4847fa8248">&#9670;&#160;</a></span>getMapDimensions()</h2>
+<a id="ad55bd46f89a5be684f965098fa278a72" name="ad55bd46f89a5be684f965098fa278a72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad55bd46f89a5be684f965098fa278a72">&#9670;&#160;</a></span>getMapDimensions()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -272,7 +259,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> PassengerVehicleObstacleSet::getMapDimensions </td>
+          <td class="memname">std::pair&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>, <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> &gt; PassengerVehicleObstacleSet::getMapDimensions </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -285,10 +272,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the dimensions of the map. </p>
-<p>Retrieves the dimensions of the map.</p>
-<dl class="section return"><dt>Returns</dt><dd>The map dimensions as a 3D vector.</dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The map dimensions as a VIPRA::f3d object. </dd></dl>
+<p>Retrieves the dimensions of the map. </p>
+<dl class="section return"><dt>Returns</dt><dd>The map dimensions as a pair of VIPRA::f3d. </dd></dl>
 
 <p>Implements <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a>.</p>
 
@@ -318,15 +303,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the objects of the specified type from the obstacle set. </p>
-<p>Retrieves the objects of the specified type from the obstacle set.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">type</td><td>The type of objects. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A reference to the vector of objects.</dd></dl>
+<p>Retrieves the objects of the specified type from the obstacle set. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">type</td><td>The type of objects. </td></tr>
@@ -362,9 +339,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the types of objects in the obstacle set. </p>
-<p>Retrieves the types of objects in the obstacle set.</p>
-<dl class="section return"><dt>Returns</dt><dd>A reference to the vector of object types.</dd></dl>
+<p>Retrieves the types of objects in the obstacle set. </p>
 <dl class="section return"><dt>Returns</dt><dd>A reference to the vector of object types. </dd></dl>
 
 <p>Implements <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a>.</p>
@@ -396,12 +371,6 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initializes the PassengerVehicleObstacleSet with the given map data. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">map</td><td>The map data.</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">map</td><td>The map data. </td></tr>
@@ -438,13 +407,6 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Finds the nearest obstacles for each pedestrian in the PedestrianSet. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">PedSet</td><td>The PedestrianSet. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A vector containing the nearest obstacles for each pedestrian.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">PedSet</td><td>The PedestrianSet. </td></tr>
@@ -488,13 +450,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The nearest obstacle.</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">coordinates</td><td>The coordinates. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>The nearest obstacle. </dd></dl>
 
 <p>Implements <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a>.</p>
@@ -526,13 +481,6 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Finds the nearest obstacles in the direction of each pedestrian's velocity in the PedestrianSet. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pedSet</td><td>The PedestrianSet. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A vector containing the nearest obstacles in the direction of each pedestrian's velocity.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pedSet</td><td>The PedestrianSet. </td></tr>
@@ -587,14 +535,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The nearest obstacle in the given direction.</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">coordinates</td><td>The coordinates. </td></tr>
-    <tr><td class="paramname">velocity</td><td>The velocity. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>The nearest obstacle in the given direction. </dd></dl>
 
 <p>Implements <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a>.</p>
@@ -636,14 +576,6 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Performs a ray hit test between two points in the obstacle set. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">point1</td><td>The first point. </td></tr>
-    <tr><td class="paramname">point2</td><td>The second point. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The distance of the hit point from point1 if a hit occurs, or -1 if no hit occurs.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">point1</td><td>The first point. </td></tr>

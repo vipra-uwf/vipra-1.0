@@ -90,9 +90,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8b5c8c43272ecb37e6be1cc9be3b9b6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/def/structCalmPath_1_1GridPoint.html">GridPoint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dbd/classCalmPath_1_1PathingGraph.html#a8b5c8c43272ecb37e6be1cc9be3b9b6b">search</a> (<a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>)</td></tr>
 <tr class="memdesc:a8b5c8c43272ecb37e6be1cc9be3b9b6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">searches the graph for a desired point.  <br /></td></tr>
 <tr class="separator:a8b5c8c43272ecb37e6be1cc9be3b9b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a178d38af7a51583597e26bed479fe23f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dbd/classCalmPath_1_1PathingGraph.html#a178d38af7a51583597e26bed479fe23f">build</a> (const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, float gridSize, float obsBufferDist)</td></tr>
-<tr class="memdesc:a178d38af7a51583597e26bed479fe23f"><td class="mdescLeft">&#160;</td><td class="mdescRight">starts processes to build the points and adjacencies for the obstacle set.  <br /></td></tr>
-<tr class="separator:a178d38af7a51583597e26bed479fe23f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2125957ca38dc76da58706ea609bf218"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dbd/classCalmPath_1_1PathingGraph.html#a2125957ca38dc76da58706ea609bf218">build</a> (const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;obsSet, float gridSz, float obsBufferDist)</td></tr>
+<tr class="memdesc:a2125957ca38dc76da58706ea609bf218"><td class="mdescLeft">&#160;</td><td class="mdescRight">starts processes to build the points and adjacencies for the obstacle set.  <br /></td></tr>
+<tr class="separator:a2125957ca38dc76da58706ea609bf218"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ea3591282b5c7d95c98ce09cf1bf556"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dbd/classCalmPath_1_1PathingGraph.html#a9ea3591282b5c7d95c98ce09cf1bf556">toString</a> () const</td></tr>
 <tr class="memdesc:a9ea3591282b5c7d95c98ce09cf1bf556"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns a string representation of the pathing graph.  <br /></td></tr>
 <tr class="separator:a9ea3591282b5c7d95c98ce09cf1bf556"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -101,8 +101,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>A class that builds a graph of points for the paths to be built upon. </p>
 <p>This class provides implementations for creating, searching, and representing the graph that the pedestrians paths are created from, which is used in the simulation. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a178d38af7a51583597e26bed479fe23f" name="a178d38af7a51583597e26bed479fe23f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a178d38af7a51583597e26bed479fe23f">&#9670;&#160;</a></span>build()</h2>
+<a id="a2125957ca38dc76da58706ea609bf218" name="a2125957ca38dc76da58706ea609bf218"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2125957ca38dc76da58706ea609bf218">&#9670;&#160;</a></span>build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,14 +142,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">obsSet</td><td>Obstacle set for the simulation. </td></tr>
-    <tr><td class="paramname">gridSz</td><td>Size of the grid being built. </td></tr>
-    <tr><td class="paramname">obsBufferDist</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -176,13 +168,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>GridPoint*</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pos</td><td>Desired position to see if it is in the graph. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>GridPoint* </dd></dl>
 
 </div>
@@ -203,7 +188,6 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Creates and returns a string representation of the pathing graph. </p>
-<dl class="section return"><dt>Returns</dt><dd>std::string</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>std::string </dd></dl>
 
 </div>
