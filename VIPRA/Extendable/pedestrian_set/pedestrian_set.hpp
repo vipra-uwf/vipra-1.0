@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <memory>
+#include <obstacle_set/obstacle_set.hpp>
 #include <stdexcept>
 
 #include <definitions/config_map.hpp>
@@ -10,6 +11,8 @@
 #include <definitions/state.hpp>
 #include <definitions/type_definitions.hpp>
 #include <pedestrian_loader/pedestrian_loader.hpp>
+
+class ObstacleSet;
 
 class PedestrianSetException : public std::runtime_error {
  public:
@@ -31,7 +34,7 @@ class PedestrianSet {
   [[nodiscard]] virtual const VIPRA::veloc&  getPedVelocity(VIPRA::idx) const = 0;
 
   [[nodiscard]] virtual std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(
-      VIPRA::idx) const = 0;
+      VIPRA::idx, const ObstacleSet&) const = 0;
 
   virtual ~PedestrianSet() = default;
   PedestrianSet() = default;

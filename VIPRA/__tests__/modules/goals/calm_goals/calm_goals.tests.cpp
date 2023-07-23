@@ -16,7 +16,8 @@
 
 // class CalmGoalsTester : public CalmGoals {
 //  public:
-//   const VIPRA::f3d& testNearestObjective(const std::string& type, const VIPRA::f3d& point, const ObstacleSet& obsSet) {
+//   const VIPRA::f3d& testNearestObjective(const std::string& type, const VIPRA::f3d& point,
+//                                          const ObstacleSet& obsSet) {
 //     return nearestObjective(type, point, obsSet);
 //   }
 
@@ -37,18 +38,22 @@
 //   const ObstacleSetMock   obsSet;
 //   const PedestrianSetMock pedSet;
 
-//   const VIPRA::CONFIG::Map config{std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
-//                                               "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
+//   const VIPRA::CONFIG::Map config{
+//       std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
+//                   "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
 //   test.configure(config);
 
 //   EXPECT_CALL(obsSet, getObjectTypes()).WillRepeatedly(ReturnRef(goodmap_types));
-//   EXPECT_CALL(obsSet, getObjectsofType("obstacle")).WillRepeatedly(ReturnRef(goodmap_obstacles));
-//   EXPECT_CALL(obsSet, getObjectsofType("endOfAisle")).WillRepeatedly(ReturnRef(goodmap_seats));
+//   EXPECT_CALL(obsSet, getObjectsofType("obstacle"))
+//       .WillRepeatedly(ReturnRef(goodmap_obstacles));
+//   EXPECT_CALL(obsSet, getObjectsofType("endOfAisle"))
+//       .WillRepeatedly(ReturnRef(goodmap_seats));
 //   EXPECT_CALL(obsSet, getObjectsofType("exit")).WillRepeatedly(ReturnRef(goodmap_exits));
 //   EXPECT_CALL(obsSet, getObjectsofType("aisle")).WillRepeatedly(ReturnRef(goodmap_aisle));
 
 //   EXPECT_CALL(pedSet, getNumPedestrians()).WillRepeatedly(Return(4));
-//   EXPECT_CALL(pedSet, getPedestrianCoordinates()).WillRepeatedly(ReturnRef(goodmap_pedestrians));
+//   EXPECT_CALL(pedSet, getPedestrianCoordinates())
+//       .WillRepeatedly(ReturnRef(goodmap_pedestrians));
 
 //   test.initialize(obsSet, pedSet);
 
@@ -66,19 +71,23 @@
 //   CalmGoalsTester          test;
 //   const ObstacleSetMock    obsSet;
 //   const PedestrianSetMock  pedSet;
-//   const VIPRA::CONFIG::Map config{std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
-//                                               "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
+//   const VIPRA::CONFIG::Map config{
+//       std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
+//                   "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
 //   test.configure(config);
 
 //   EXPECT_CALL(obsSet, getObjectTypes()).WillRepeatedly(ReturnRef(goodmap_types));
-//   EXPECT_CALL(obsSet, getObjectsofType("obstacle")).WillRepeatedly(ReturnRef(goodmap_obstacles));
-//   EXPECT_CALL(obsSet, getObjectsofType("endOfAisle")).WillRepeatedly(ReturnRef(goodmap_endOfAisle));
+//   EXPECT_CALL(obsSet, getObjectsofType("obstacle"))
+//       .WillRepeatedly(ReturnRef(goodmap_obstacles));
+//   EXPECT_CALL(obsSet, getObjectsofType("endOfAisle"))
+//       .WillRepeatedly(ReturnRef(goodmap_endOfAisle));
 //   EXPECT_CALL(obsSet, getObjectsofType("exit")).WillRepeatedly(ReturnRef(goodmap_exits));
 //   EXPECT_CALL(obsSet, getObjectsofType("aisle")).WillRepeatedly(ReturnRef(goodmap_aisle));
 
 //   EXPECT_CALL(pedSet, getNumPedestrians()).WillRepeatedly(Return(4));
 //   VIPRA::f3dVec updatedCoords = goodmap_pedestrians;
-//   EXPECT_CALL(pedSet, getPedestrianCoordinates()).WillRepeatedly(ReturnRef(updatedCoords));
+//   EXPECT_CALL(pedSet, getPedestrianCoordinates())
+//       .WillRepeatedly(ReturnRef(updatedCoords));
 
 //   test.initialize(obsSet, pedSet);
 

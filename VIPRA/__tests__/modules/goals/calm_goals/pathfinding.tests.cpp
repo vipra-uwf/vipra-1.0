@@ -19,14 +19,15 @@ TEST(Calm_Goals_Pathfinding, Pathfinding) {
   PassengerVehicleObstacleSet map;
   CalmPath::PathingGraph      test;
   map.initialize(
-      loader.loadMap("/mnt/c/Users/gabeb/Research-Vipra/vipra/Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap"));
+      loader.loadMap("/home/rolland/Documents/VIPRA/vipra/Maps/obstacle_maps/"
+                     "757_200_182_obstacles/757_200_182_obstacles.omap"));
 
-  test.build(map, 0.1, 0.2);
+  test.build(map, 0.05, 0.20);
   spdlog::info("Done Building");
 
   std::cerr << "{ \"Paths\": [";
-  for (const auto& coords : all_peds) {
-    auto t = CalmPath::pathFind(coords, goodmap_exits[0], test);
+  for (const auto& coords : allPeds2) {
+    auto t = CalmPath::pathFind(coords, VIPRA::f3d{30.7, 1.75}, test);
     std::cerr << "{ \"points\": [";
     while (!t.empty()) {
       auto coord = t.front();

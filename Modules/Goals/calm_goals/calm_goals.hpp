@@ -31,7 +31,7 @@ class CalmGoals : public Goals {
 
  private:
   float goalRange;
-  float quadSize;
+  float gridSize;
   float closestObs;
 
   std::string endGoalType;
@@ -47,11 +47,9 @@ class CalmGoals : public Goals {
 
   void initializePaths(const PedestrianSet&, const ObstacleSet&);
   void findNearestEndGoal(const ObstacleSet&, const PedestrianSet&);
-  [[nodiscard]] static std::queue<VIPRA::f3d> disembarkPath(const VIPRA::f3d&,
-                                                            const ObstacleSet&);
-  [[nodiscard]] static const VIPRA::f3d&      nearestObjective(const std::string&,
-                                                               const VIPRA::f3d&,
-                                                               const ObstacleSet&);
+  [[nodiscard]] static const VIPRA::f3d& nearestObjective(const std::string&,
+                                                          const VIPRA::f3d&,
+                                                          const ObstacleSet&);
 };
 
 #endif

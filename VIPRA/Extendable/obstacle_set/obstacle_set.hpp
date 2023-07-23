@@ -4,7 +4,8 @@
 #include <definitions/config_map.hpp>
 #include <definitions/type_definitions.hpp>
 #include <map_loader/map_loader.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
+
+class PedestrianSet;
 
 class ObstacleSetException : public std::runtime_error {
  public:
@@ -18,7 +19,7 @@ class ObstacleSet {
   virtual void initialize(std::unique_ptr<VIPRA::MapData>) = 0;
   virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
 
-  [[nodiscard]] virtual VIPRA::f3d getMapDimensions() const = 0;
+  [[nodiscard]] virtual std::pair<VIPRA::f3d, VIPRA::f3d> getMapDimensions() const = 0;
 
   [[nodiscard]] virtual const std::vector<std::string>& getObjectTypes() const = 0;
   [[nodiscard]] virtual const VIPRA::f3dVec&            getObjectsofType(

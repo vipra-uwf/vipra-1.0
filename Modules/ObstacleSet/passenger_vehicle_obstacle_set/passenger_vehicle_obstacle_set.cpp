@@ -1,20 +1,5 @@
 #include "passenger_vehicle_obstacle_set.hpp"
 
-/**
- * @brief Calculates the maximum dimensions among the entities.
- *
- * @param objects The entity set.
- * @return The maximum dimensions as a 3D vector.
- */
-VIPRA::f3d  makeDimensions(const VIPRA::EntitySet& objects);
-/**
- * @brief Tests if an object is in the opposite direction of the pedestrian's movement.
- *
- * @param pedCoords The pedestrian coordinates.
- * @param pedVelocity The pedestrian velocity.
- * @param objCoords The object coordinates.
- * @return True if the object is in the opposite direction, false otherwise.
- */
 inline bool objectDirectionTest(const VIPRA::f3d& pedCoords,
                                 const VIPRA::f3d& pedVelocity,
                                 const VIPRA::f3d& objCoords);
@@ -25,8 +10,9 @@ inline bool objectDirectionTest(const VIPRA::f3d& pedCoords,
  * @param objects The entity set.
  * @return The maximum dimensions as a 3D vector.
  */
-VIPRA::f3d makeDimensions(const VIPRA::EntitySet& objects) {
-  VIPRA::f3d maxDim{0, 0, 0};
+std::pair<VIPRA::f3d, VIPRA::f3d> makeDimensions(const VIPRA::EntitySet& objects) {
+  VIPRA::f3d minDim = VIPRA::_emptyf3d_;
+  VIPRA::f3d maxDim = -VIPRA::_emptyf3d_;
   for (const auto& mapIterator : objects) {
     for (auto coordinates : mapIterator.second) {
       if (coordinates.x > maxDim.x) {
@@ -38,10 +24,19 @@ VIPRA::f3d makeDimensions(const VIPRA::EntitySet& objects) {
       if (coordinates.z > maxDim.z) {
         maxDim.z = coordinates.z;
       }
+      if (coordinates.x < minDim.x) {
+        minDim.x = coordinates.x;
+      }
+      if (coordinates.y < minDim.y) {
+        minDim.y = coordinates.y;
+      }
+      if (coordinates.z < minDim.z) {
+        minDim.z = coordinates.z;
+      }
     }
   }
 
-  return maxDim;
+  return {minDim, maxDim};
 }
 
 /**
@@ -54,7 +49,6 @@ void PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map
     ObstacleSetException::error("Improper Map Type, Expected \"PointMap\"");
   }
   objects = dynamic_cast<PointMap*>(map.get())->entities;
-  checkMap();
   mapDimensions = makeDimensions(objects);
 }
 
@@ -189,9 +183,11 @@ const std::vector<std::string>& PassengerVehicleObstacleSet::getObjectTypes() co
 /**
  * @brief Retrieves the dimensions of the map.
  *
- * @return The map dimensions as a VIPRA::f3d object.
+ * @return The map dimensions as a pair of VIPRA::f3d.
  */
-VIPRA::f3d PassengerVehicleObstacleSet::getMapDimensions() const { return mapDimensions; }
+std::pair<VIPRA::f3d, VIPRA::f3d> PassengerVehicleObstacleSet::getMapDimensions() const {
+  return mapDimensions;
+}
 
 /**
  * @brief Performs a ray hit test between two points in the obstacle set.
@@ -244,35 +240,6 @@ bool PassengerVehicleObstacleSet::collision(VIPRA::f3d coords) const {
                      [&](const VIPRA::f3d& obs) {
                        return obs.distanceTo(coords) < obstacleCollisionDistance;
                      });
-}
-
-/**
- * @brief Checks if the required objects exist in the obstacle map.
- */
-void PassengerVehicleObstacleSet::checkMap() const {
-  // check that seat, exit, aisle, and endOfAilse exists
-  if (objects.find("exit") == objects.end()) {
-    ObstacleSetException::error(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"exit\"");
-  }
-  if (objects.find("endOfAisle") == objects.end()) {
-    ObstacleSetException::error(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: "
-        "\"endOfAisle\"");
-  }
-  if (objects.find("aisle") == objects.end()) {
-    ObstacleSetException::error(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"aisle\"");
-  }
-  if (objects.find("seat") == objects.end()) {
-    ObstacleSetException::error(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: \"seat\"");
-  }
-  if (objects.find("obstacle") == objects.end()) {
-    ObstacleSetException::error(
-        "PassengerVehicleObstacleSet: Obstacle Map missing Objects of Type: "
-        "\"obstacle\"");
-  }
 }
 
 /**
