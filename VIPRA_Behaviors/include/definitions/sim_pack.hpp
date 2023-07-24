@@ -9,6 +9,10 @@
 #include <selectors/pedestrian_groups.hpp>
 
 namespace BHVR {
+/**
+  * @brief Holds references to commonly used parameters for simpler passing
+  * 
+  */
 struct Simpack {
   // NOLINTBEGIN (rolland) this is only used to pass references around : ignores (cppcoreguidelines-avoid-const-or-ref-data-members)
   const PedestrianSet&   pedSet;

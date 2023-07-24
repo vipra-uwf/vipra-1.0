@@ -14,6 +14,10 @@
 
 namespace BHVR {
 
+/**
+ * @brief Combines/Organizes SubSelectors to select pedestrians for types
+ * 
+ */
 class Selector {
  public:
   Selector() = default;

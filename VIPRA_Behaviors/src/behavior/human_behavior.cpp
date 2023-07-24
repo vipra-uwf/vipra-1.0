@@ -84,10 +84,10 @@ void HumanBehavior::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& 
 }
 
 /**
- * @brief adds an event to the behavior and returns a pointer to it
+ * @brief adds an event to the behavior and its index in the behavior context
  * 
  * @param event : event object to add
- * @return Event* 
+ * @return VIPRA::idx
  */
 VIPRA::idx HumanBehavior::addEvent(const Event& event) {
   context.events.emplace_back(event);
@@ -95,10 +95,10 @@ VIPRA::idx HumanBehavior::addEvent(const Event& event) {
 }
 
 /**
- * @brief adds a location to the behavior and returns a pointer to it
+ * @brief adds a location to the behavior and its index in the behavior context
  * 
  * @param loc : location object to add
- * @return Location*
+ * @return VIPRA::idx
 */
 VIPRA::idx HumanBehavior::addLocation(Location loc) {
   context.locations.emplace_back(loc);
@@ -136,13 +136,21 @@ VIPRA::size HumanBehavior::actionCount() const {
 /**
  * @brief Sets the seed for the behavior
  * 
- * @param s : 
+ * @param s : randomization seed
  */
 void HumanBehavior::setSeed(BHVR::seed bSeed) {
   rngEngine.reseed(bSeed);
   seedNum = bSeed;
 }
 
+/**
+ * @brief Updates each events status, through the events update function
+ * 
+ * @param pedSet : pedestrian set
+ * @param obsSet : obstacle set
+ * @param goals : goals module
+ * @param dT : time between timesteps
+ */
 void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
                                    Goals& goals, VIPRA::delta_t dT) {
   for (auto& event : context.events) {
@@ -150,6 +158,15 @@ void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
   }
 }
 
+/**
+ * @brief Runs each action in the behavior
+ * 
+ * @param pedSet : pedestrian set
+ * @param obsSet : obstacle set
+ * @param goals : goals module
+ * @param state : next timestep state from pedestrian model 
+ * @param dT : timestep size
+ */
 void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
                                  VIPRA::State& state, VIPRA::delta_t dT) {
   const GroupsContainer& groups = selector.getGroups();

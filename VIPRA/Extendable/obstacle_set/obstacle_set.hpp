@@ -4,7 +4,8 @@
 #include <definitions/config_map.hpp>
 #include <definitions/type_definitions.hpp>
 #include <map_loader/map_loader.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
+
+class PedestrianSet;
 
 /**
  * @class ObstacleSetException
@@ -56,7 +57,7 @@ class ObstacleSet {
    *
    * @return The dimensions of the map as a 3D vector.
    */
-  [[nodiscard]] virtual VIPRA::f3d getMapDimensions() const = 0;
+  [[nodiscard]] virtual std::pair<VIPRA::f3d, VIPRA::f3d> getMapDimensions() const = 0;
 
   /**
    * @brief Get the types of objects in the obstacle set.

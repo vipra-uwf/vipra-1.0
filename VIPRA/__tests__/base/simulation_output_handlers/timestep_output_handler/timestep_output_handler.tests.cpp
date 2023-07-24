@@ -1,9 +1,9 @@
 
 #include <gtest/gtest.h>
 
-#include "mocks/goals/goals.mock.hpp"
-#include "mocks/obstacle_set/obstacle_set.mock.hpp"
-#include "mocks/pedestrian_set/pedestrian_set.mock.hpp"
+#include "../../../mocks/goals/goals.mock.hpp"
+#include "../../../mocks/obstacle_set/obstacle_set.mock.hpp"
+#include "../../../mocks/pedestrian_set/pedestrian_set.mock.hpp"
 
 #include "simulation_output_handler/timestep_output_handler/timestep_output_handler.hpp"
 

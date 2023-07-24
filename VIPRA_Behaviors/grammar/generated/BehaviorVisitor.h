@@ -77,18 +77,6 @@ public:
 
     virtual std::any visitValue_coord(BehaviorParser::Value_coordContext *context) = 0;
 
-    virtual std::any visitDirection(BehaviorParser::DirectionContext *context) = 0;
-
-    virtual std::any visitDir(BehaviorParser::DirContext *context) = 0;
-
-    virtual std::any visitDirection_of(BehaviorParser::Direction_ofContext *context) = 0;
-
-    virtual std::any visitInfront(BehaviorParser::InfrontContext *context) = 0;
-
-    virtual std::any visitBehind(BehaviorParser::BehindContext *context) = 0;
-
-    virtual std::any visitAround(BehaviorParser::AroundContext *context) = 0;
-
     virtual std::any visitDuration(BehaviorParser::DurationContext *context) = 0;
 
     virtual std::any visitAttribute(BehaviorParser::AttributeContext *context) = 0;

@@ -11,6 +11,11 @@
 
 namespace BHVR {
 
+/**
+ * @brief Initializes the actions duration container
+ * 
+ * @param pack : simulation pack
+ */
 void Action::initialize(Simpack pack) {
   if (duration) {
     duration->resize(pack.pedSet.getNumPedestrians());
@@ -32,7 +37,8 @@ void Action::performAction(Simpack pack, VIPRA::idx pedIdx, VIPRA::State& state)
   Target self = {TargetType::PEDESTRIAN, pedIdx};
   Target target = targets.getTarget(pack, self);
   if (evaluate(pack, pedIdx, target)) {
-    std::for_each(atoms.begin(), atoms.end(), [&](Atom& atom) { atom(pack, self, target, state); });
+    std::for_each(atoms.begin(), atoms.end(),
+                  [&](Atom& atom) { atom(pack, self, target, state); });
   }
 }
 
@@ -55,10 +61,12 @@ void Action::addAtom(const Atom& atom) { atoms.emplace_back(atom); }
  * 
  * @param range
  */
-void Action::addDuration(const BHVR::NumericValue& dur) { duration = TimedLatchCollection(dur); }
+void Action::addDuration(const BHVR::NumericValue& dur) {
+  duration = TimedLatchCollection(dur);
+}
 
 /**
- * @brief Checks whether the condition should
+ * @brief Checks whether the condition should run
  * 
  */
 inline bool Action::evaluate(Simpack pack, VIPRA::idx pedIdx, Target target) {
@@ -78,6 +86,11 @@ inline bool Action::evaluate(Simpack pack, VIPRA::idx pedIdx, Target target) {
   return run;
 }
 
+/**
+ * @brief Sets the target selector for the action
+ * 
+ * @param target : target selector
+ */
 void Action::addTarget(TargetSelector&& target) { targets = target; }
 
 }  // namespace BHVR

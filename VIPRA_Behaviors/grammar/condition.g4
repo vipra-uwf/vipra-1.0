@@ -1,6 +1,6 @@
 grammar condition;
 
-import lexer_rules, values, directions, time, attributes;
+import lexer_rules, values, time, attributes;
 
 condition:
   sub_condition connector*;

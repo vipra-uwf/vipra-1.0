@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <memory>
+#include <obstacle_set/obstacle_set.hpp>
 #include <stdexcept>
 
 #include <definitions/config_map.hpp>
@@ -10,6 +11,8 @@
 #include <definitions/state.hpp>
 #include <definitions/type_definitions.hpp>
 #include <pedestrian_loader/pedestrian_loader.hpp>
+
+class ObstacleSet;
 
 /**
  * @class PedestrianSetException
@@ -102,7 +105,7 @@ class PedestrianSet {
    * @return A pair containing the coordinates and index of the nearest pedestrian.
    */
   [[nodiscard]] virtual std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(
-      VIPRA::idx) const = 0;
+      VIPRA::idx, const ObstacleSet&) const = 0;
 
   virtual ~PedestrianSet() = default;
   PedestrianSet() = default;

@@ -196,14 +196,29 @@ VIPRA::idxVec Selector::orderSelectors() {
 
 // ----------------- GETTERS/SETTERS --------------------------------------------------------------------
 
+/**
+ * @brief Sets what types are available
+ * 
+ * @param pedTypes : available types
+ */
 void Selector::setAllTypes(Ptype pedTypes) { allTypes = pedTypes; }
 
 void Selector::addSubSelector(const SubSelector& subSelector) {
   subSelectors.emplace_back(subSelector);
 }
 
+/**
+ * @brief Returns how many subselectors the selector has
+ * 
+ * @return VIPRA::size 
+ */
 VIPRA::size Selector::selectorCount() const { return subSelectors.size(); }
 
+/**
+ * @brief Returns the groups container
+ * 
+ * @return const GroupsContainer& 
+ */
 const GroupsContainer& Selector::getGroups() const { return pedGroups; }
 
 // ----------------- END GETTERS/SETTERS --------------------------------------------------------------------

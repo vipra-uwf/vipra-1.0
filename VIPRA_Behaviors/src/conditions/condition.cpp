@@ -40,9 +40,19 @@ bool Condition::evaluate(Simpack pack, VIPRA::idx pedIndex, Target target) const
   return result;
 }
 
+/**
+ * @brief Adds a new subcondition to the condition
+ * 
+ * @param condition : 
+ */
 void Condition::addSubCondition(SubCondition&& condition) {
   conditions.emplace_back(condition);
 }
 
+/**
+ * @brief Adds a logical and/or operator to the condition
+ * 
+ * @param andor : 
+ */
 void Condition::addAndOr(bool andor) { operations.push_back(andor); }
 }  // namespace BHVR

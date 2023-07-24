@@ -4,11 +4,7 @@
 #include "definitions/sim_pack.hpp"
 
 namespace BHVR {
-/**
-   * @brief Constructor, adds start and end listeners to the provided event
-   * 
-   * @param event : 
-   */
+
 SubConditionEventOccurring::SubConditionEventOccurring(VIPRA::idx ev) : event(ev) {}
 
 /**

@@ -13,16 +13,24 @@
 
 namespace BHVR {
 enum class TargetType {
+  INVALID,
   PEDESTRIAN,
   EVENT,
-  INVALID,
 };
 
+/**
+ * @brief Holds information about what to target
+ * 
+ */
 struct Target {
   TargetType type;
   VIPRA::idx targetIdx;
 };
 
+/**
+ * @brief Function for selecting targets
+ * 
+ */
 using TargetFunc = std::function<Target(Simpack, Target)>;
 
 }  // namespace BHVR

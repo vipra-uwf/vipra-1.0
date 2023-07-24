@@ -17,18 +17,40 @@ namespace BHVR {
 using RandomVal = std::pair<float, float>;
 using RangeVal = std::pair<float, float>;
 
+/**
+ * @brief Returns a random value in the provided range
+ * 
+ * @param seed : randomization seed
+ * @param min : minimum value
+ * @param max : maximum value
+ * @return float 
+ */
 [[nodiscard]] inline float collapseRangeValue(BHVR::seed seed, float min, float max) {
   VIPRA::pRNG_Engine                 eng{seed};
   VIPRA::uniform_distribution<float> distr{min, max};
   return distr(eng);
 }
 
+/**
+ * @brief Gets an exact numeric value from a value number context
+ * 
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return NumericValue 
+ */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_numberContext* ctx,
                                              BHVR::seed                           seed) {
   float val = std::stof(ctx->NUMBER()->toString());
   return NumericValue(seed, ExactValue{val});
 }
 
+/**
+ * @brief Gets a random numeric value from a value random context
+ * 
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return NumericValue 
+ */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_randomContext* ctx,
                                              BHVR::seed                           seed) {
   if (ctx->random_float()) {
@@ -44,6 +66,13 @@ using RangeVal = std::pair<float, float>;
   return NumericValue(seed, RandomNumberValue{min, max});
 }
 
+/**
+ * @brief Gets an exact numeric value from a value range context 
+ * 
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return NumericValue 
+ */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_rangeContext* ctx,
                                              BHVR::seed                          seed) {
   if (ctx->float_range()) {
@@ -59,12 +88,26 @@ using RangeVal = std::pair<float, float>;
   return NumericValue(seed, ExactValue{std::round(collapseRangeValue(seed, min, max))});
 }
 
+/**
+ * @brief Gets an exact numeric value from a value float context
+ * 
+ * @param ctx : value context
+ * @param seed : not used
+ * @return NumericValue 
+ */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_floatContext* ctx,
                                              BHVR::seed                          seed) {
   float val = std::stof(ctx->FLOAT()->toString());
   return NumericValue(seed, ExactValue{val});
 }
 
+/**
+ * @brief Gets a numeric value from a numeric value context
+ * 
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return NumericValue 
+ */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_numericContext* ctx,
                                              BHVR::seed                            seed) {
   if (ctx->value_float()) return getNumeric(ctx->value_float(), seed);
@@ -81,6 +124,13 @@ using RangeVal = std::pair<float, float>;
   return {};
 }
 
+/**
+ * @brief Creates a f3d from a Value Coord Context
+ * 
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return VIPRA::f3d 
+ */
 [[nodiscard]] inline VIPRA::f3d getCoord(BehaviorParser::Value_coordContext* ctx,
                                          BHVR::seed                          seed) {
   auto       values = ctx->value_numeric();

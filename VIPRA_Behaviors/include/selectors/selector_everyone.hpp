@@ -4,6 +4,10 @@
 #include <selectors/selector.hpp>
 
 namespace BHVR {
+/**
+  * @brief Selects every pedestrian
+  * 
+  */
 struct SelectorEveryone {
   SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
                             const VIPRA::idxVec&, const PedestrianSet&,

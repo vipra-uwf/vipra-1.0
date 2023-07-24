@@ -12,6 +12,7 @@
 #include <definitions/type_definitions.hpp>
 #include <pedestrian_loader/pedestrian_loader.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
+#include "obstacle_set/obstacle_set.hpp"
 
 /**
  * @class CalmPedestrianSet
@@ -67,14 +68,14 @@ class CalmPedestrianSet : public PedestrianSet {
    * @param index The index of the pedestrian.
    * @return The coordinates of the pedestrian.
    */
-  [[nodiscard]] const VIPRA::f3d&    getPedCoords(VIPRA::idx) const override;
+  [[nodiscard]] const VIPRA::f3d& getPedCoords(VIPRA::idx) const override;
   /**
    * @brief Gets the velocity of the pedestrian at the specified index.
    *
    * @param index The index of the pedestrian.
    * @return The velocity of the pedestrian.
    */
-  [[nodiscard]] const VIPRA::f3d&    getPedVelocity(VIPRA::idx) const override;
+  [[nodiscard]] const VIPRA::f3d& getPedVelocity(VIPRA::idx) const override;
 
   /**
    * @brief Get the nearest pedestrian to the specified pedestrian.
@@ -82,7 +83,8 @@ class CalmPedestrianSet : public PedestrianSet {
    * @param pedIdx The index of the pedestrian for which to find the nearest pedestrian.
    * @return A pair containing the coordinates and index of the nearest pedestrian.
    */
-  [[nodiscard]] std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(VIPRA::idx) const override;
+  [[nodiscard]] std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(
+      VIPRA::idx, const ObstacleSet&) const override;
 
  private:
   VIPRA::f3dVec coords;

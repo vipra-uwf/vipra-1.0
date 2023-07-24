@@ -1,10 +1,8 @@
-#ifndef DSL_HUMAN_BEHAVIOR_HPP
-#define DSL_HUMAN_BEHAVIOR_HPP
+#ifndef VIPRA_BEHAVIORS_BEHAVIOR_BUILDER_HPP
+#define VIPRA_BEHAVIORS_BEHAVIOR_BUILDER_HPP
 
 #include <filesystem>
 #include <stdexcept>
-#include <string>
-#include <unordered_map>
 
 #include <spdlog/spdlog.h>
 
@@ -19,37 +17,16 @@
 #include <events/event.hpp>
 #include <locations/location.hpp>
 
-#include <util/caseless_str_comp.hpp>
-
 #include <attributes/attributes.hpp>
+#include <conditions/condition.hpp>
+#include <definitions/dsl_types.hpp>
 #include <time/time.hpp>
 #include <values/values.hpp>
-#include "definitions/dsl_types.hpp"
+
+#include <builder/builder_maps.hpp>
+#include <builder/declaration_components.hpp>
 
 namespace BHVR {
-
-using StateMap = std::unordered_map<std::string, BHVR::stateUID, CaselessStrCompare::Hash,
-                                    CaselessStrCompare::Comp>;
-using TypeMap = std::unordered_map<std::string, BHVR::typeUID, CaselessStrCompare::Hash,
-                                   CaselessStrCompare::Comp>;
-using EventMap = std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash,
-                                    CaselessStrCompare::Comp>;
-using LocationMap = std::unordered_map<std::string, VIPRA::idx, CaselessStrCompare::Hash,
-                                       CaselessStrCompare::Comp>;
-
-using evEnd = BehaviorParser::Event_endContext*;
-using evStart = BehaviorParser::Event_startContext*;
-using evName = std::string;
-
-using acStimulus = BehaviorParser::Action_stimulusContext*;
-using acResponse = BehaviorParser::Action_responseContext*;
-using acDuration = BehaviorParser::Action_durationContext*;
-using acTarget = BehaviorParser::Action_targetContext*;
-
-using slType = BehaviorParser::Selector_typeContext*;
-using slSelector = BehaviorParser::Selector_selectorContext*;
-using slGroup = BehaviorParser::Selector_fromContext*;
-using slRequired = BehaviorParser::Selector_requiredContext*;
 
 class BehaviorBuilder : public BehaviorBaseVisitor {
  public:
@@ -98,12 +75,12 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
       -> std::pair<BHVR::typeUID, std::string>;
   [[nodiscard]] auto getCompositeType(
       const std::vector<antlr4::tree::TerminalNode*>&) const -> BHVR::Ptype;
+  [[nodiscard]] static auto getAttribute(std::string) -> BHVR::Attribute;
 
   [[nodiscard]] auto addEvent(BehaviorParser::Event_nameContext*) -> VIPRA::idx;
 
   [[nodiscard]] auto makeAttributeValue(BehaviorParser::Attr_valueContext*)
       -> BHVR::CAttributeValue;
-  [[nodiscard]] static auto makeAttribute(std::string) -> BHVR::Attribute;
   [[nodiscard]] static auto makeAttributeStr(BehaviorParser::AttributeContext*)
       -> std::string;
   [[nodiscard]] static auto makeListStrs(const std::vector<antlr4::tree::TerminalNode*>&)
@@ -125,10 +102,38 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext*) override;
   antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext*) override;
 
+  // --------------------------------- ATOMS ------------------------------------------------------------------------------------------------
+
+  void addSetAtom(Action&, BehaviorParser::Set_atomContext*);
+  void addScaleAtom(Action&, BehaviorParser::Scale_atomContext*);
+
+  // --------------------------------- SUBCONDITIONS ------------------------------------------------------------------------------------------------
+
+  void addTimeElapsed(Condition&,
+                      BehaviorParser::Condition_Time_Elapsed_From_EventContext*);
+  void addEventOccurred(Condition&, BehaviorParser::Condition_Event_OccurredContext*);
+  void addEventOccurring(Condition&, BehaviorParser::Condition_Event_OccurringContext*);
+  void addEventStarting(Condition&, BehaviorParser::Condition_Event_StartingContext*);
+  void addEventEnding(Condition&, BehaviorParser::Condition_Event_EndingContext*);
+  void addSpatial(Condition&, BehaviorParser::Condition_SpatialContext*);
+
+  // --------------------------------- SUBSELECTORS ------------------------------------------------------------------------------------------------
+
+  auto buildEveryone(slType, bool) -> SubSelector;
+  auto buildExactlyN(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
+  auto buildPercent(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
+
   // -------------------------------- FINDERS ------------------------------------------------------------------------------------------------
 
+  /**
+   * @brief Gets components from an event declaration context
+   * 
+   * @tparam T : type of component
+   * @param ctx : event context
+   * @return std::optional<T> 
+   */
   template <typename T>
-  [[nodiscard]] static auto findEventAttribute(BehaviorParser::EventContext* ctx)
+  [[nodiscard]] static auto findEventComponent(BehaviorParser::EventContext* ctx)
       -> std::optional<T> {
     for (const auto& attr : ctx->event_attribute()) {
       // Name
@@ -147,8 +152,15 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
     return std::nullopt;
   }
 
+  /**
+   * @brief Gets components from an action declaration context
+   * 
+   * @tparam T : type of component
+   * @param ctx : action context
+   * @return std::optional<T> 
+   */
   template <typename T>
-  [[nodiscard]] static auto findActionAttribute(BehaviorParser::ActionContext* ctx)
+  [[nodiscard]] static auto findActionComponent(BehaviorParser::ActionContext* ctx)
       -> std::optional<T> {
     for (const auto& attr : ctx->action_attribute()) {
       // Stimulus
@@ -171,8 +183,15 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
     return std::nullopt;
   }
 
+  /**
+   * @brief Gets components from an selector declaration context
+   * 
+   * @tparam T : type of component
+   * @param ctx : selector context
+   * @return std::optional<T> 
+   */
   template <typename T>
-  [[nodiscard]] static auto findSelectorAttribute(
+  [[nodiscard]] static auto findSelectorComponent(
       BehaviorParser::Ped_SelectorContext* ctx) -> std::optional<T> {
     for (const auto& attr : ctx->selector_attribute()) {
       // Type

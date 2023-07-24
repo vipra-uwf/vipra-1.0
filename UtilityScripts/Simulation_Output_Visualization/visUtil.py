@@ -25,64 +25,64 @@ def getArgs():
   diflines = False
   diflineMax = None
 
-  for arg in sys.argv[1::]:
-    if arg == '-idx':
+  for i in range(1, len(sys.argv)):
+    if sys.argv[i] == '-idx':
       indexes = True
-      flagCnt += 1
-    elif arg == '-shldr':
-      shldrLen = float(sys.argv[flagCnt + 1])
+      i += 1
+    elif sys.argv[i] == '-shldr':
+      shldrLen = float(sys.argv[i + 1])
       shoulders = True
-      flagCnt += 2
-    elif arg == '-outpath':
-      outpath = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-peds':
-      peds = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-obs':
-      obs = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-xDim':
-      dims = sys.argv[flagCnt + 1].split(',')
+      i += 2
+    elif sys.argv[i] == '-outpath':
+      outpath = sys.argv[i + 1]
+      i += 2
+    elif sys.argv[i] == '-peds':
+      peds = sys.argv[i + 1]
+      i += 2
+    elif sys.argv[i] == '-obs':
+      obs = sys.argv[i + 1]
+      i += 2
+    elif sys.argv[i] == '-xDim':
+      dims = sys.argv[i + 1].split(',')
       xMin = float(dims[0])
       xMax = float(dims[1])
-      flagCnt += 2
-    elif arg == '-yDim':
-      dims = sys.argv[flagCnt + 1].split(',')
+      i += 2
+    elif sys.argv[i] == '-yDim':
+      dims = sys.argv[i + 1].split(',')
       yMin = float(dims[0])
       yMax = float(dims[1])
-      flagCnt += 2
-    elif arg == '-fps':
-      fps = float(sys.argv[flagCnt + 1])
-      flagCnt += 2
-    elif arg == '-idxClr':
+      i += 2
+    elif sys.argv[i] == '-fps':
+      fps = float(sys.argv[i + 1])
+      i += 2
+    elif sys.argv[i] == '-idxClr':
       idxColor = True
-      flagCnt += 1
-    elif arg == '-pedClr':
+      i += 1
+    elif sys.argv[i] == '-pedClr':
       pedColor = True
-      flagCnt += 1
-    elif arg == '-obsClr':
-      obsColor = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-bckClr':
-      bckColor = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-dif':
-      dif = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-difalpha':
-      difalpha = float(sys.argv[flagCnt + 1])
-      flagCnt += 2
-    elif arg == '-diflines':
+      i += 1
+    elif sys.argv[i] == '-obsClr':
+      obsColor = sys.argv[i + 1]
+      i += 2
+    elif sys.argv[i] == '-bckClr':
+      bckColor = sys.argv[i + 1]
+      i += 2
+    elif sys.argv[i] == '-dif':
+      dif = sys.argv[i + 1]
+      i += 2
+    elif sys.argv[i] == '-difalpha':
+      difalpha = float(sys.argv[i + 1])
+      i += 2
+    elif sys.argv[i] == '-diflines':
       diflines = True
-      flagCnt += 1
-    elif arg == '-dlmax':
-      diflineMax = float(sys.argv[flagCnt + 1])
-      flagCnt += 2
-    else:
-      if (arg[0] == '-'):
-        print(f'Unknown Flag: {arg}')
-        exit(-1)
+      i += 1
+    elif sys.argv[i] == '-dlmax':
+      diflineMax = float(sys.argv[i + 1])
+      i += 2
+    # else:
+    #   if (sys.argv[i][0] == '-'):
+    #     print(f'Unknown Flag: {sys.argv[i]}')
+    #     exit(-1)
     
 
   if peds == "" or obs == "":
