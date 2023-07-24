@@ -86,5 +86,6 @@ The `Output Handler` module handles determining when to write output and what ou
 
 ---
 
-[Return to Getting Started - Test Functionality](User-test.md) or
-[Return to Getting Started - Add Functionality](User-add.md)
+[Return to Getting Started - Researchers](User-test.md) 
+
+[Return to Getting Started - Developers](User-add.md)

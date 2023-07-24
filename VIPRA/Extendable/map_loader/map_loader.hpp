@@ -7,8 +7,20 @@
 #include <definitions/type_definitions.hpp>
 
 namespace VIPRA {
+
+/**
+ * @struct MapData
+ * @brief Represents data for a map.
+ *
+ * This struct holds information about the type of the map.
+ */
 struct MapData {
   std::string type;
+  /**
+   * @brief Constructor for MapData.
+   *
+   * @param type The type of the map.
+   */
   explicit MapData(std::string type) : type(std::move(type)) {}
 
   MapData(const MapData&) = default;
@@ -20,16 +32,57 @@ struct MapData {
 };
 }  // namespace VIPRA
 
+/**
+ * @class MapLoaderException
+ * @brief Custom exception class for handling errors related to MapLoader.
+ *
+ * This class is a custom exception class derived from std::runtime_error.
+ * It is used to handle errors that may occur during the loading of a map.
+ */
 class MapLoaderException : public std::runtime_error {
  public:
+  /**
+   * @brief Constructor for MapLoaderException.
+   *
+   * @param message The error message to be associated with the exception.
+   */
   explicit MapLoaderException(const std::string& message) : std::runtime_error(message) {}
+  
+  /**
+   * @brief Static function to throw a MapLoaderException with the given error message.
+   *
+   * This static function can be used to throw a MapLoaderException with the specified error message.
+   * It is a convenient way to create and throw exceptions.
+   *
+   * @param message The error message for the exception.
+   */
   static void error(const std::string& message) { throw MapLoaderException(message); }
 };
 
+/**
+ * @class MapLoader
+ * @brief Interface for loading map data.
+ *
+ * This class is an interface for loading map data from different sources.
+ */
 class MapLoader {
  public:
+  /**
+   * @brief Configure the MapLoader with the given configuration map.
+   *
+   * @param configMap The configuration map containing settings for the MapLoader.
+   */
   virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
+  /**
+   * @brief Initialize the MapLoader.
+   */
   virtual void initialize() = 0;
+  /**
+   * @brief Load map data from the specified file path.
+   *
+   * @param filePath The file path to the map data.
+   * @return A unique pointer to MapData containing the loaded map data.
+   */
   [[nodiscard]] virtual std::unique_ptr<VIPRA::MapData> loadMap(
       const std::string& filePath) const = 0;
 
