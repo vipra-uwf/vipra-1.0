@@ -9,5 +9,7 @@ var searchData=
   ['maploaderexception_6',['MapLoaderException',['../dd/d01/classMapLoaderException.html',1,'']]],
   ['max_7',['max',['../d8/d8f/classVIPRA_1_1pRNG__Engine.html#a8693cd6c2edc516aff2937ae85237e05',1,'VIPRA::pRNG_Engine']]],
   ['min_8',['min',['../d8/d8f/classVIPRA_1_1pRNG__Engine.html#aee9acb35389b892b36d4d904ffd4d247',1,'VIPRA::pRNG_Engine']]],
-  ['modeldata_9',['ModelData',['../de/dbf/structModelData.html',1,'']]]
+  ['modeldata_9',['ModelData',['../de/dbf/structModelData.html',1,'']]],
+  ['modifierdirection_10',['ModifierDirection',['../d6/d33/classBHVR_1_1ModifierDirection.html',1,'BHVR']]],
+  ['modifierdistance_11',['ModifierDistance',['../de/db1/classBHVR_1_1ModifierDistance.html',1,'BHVR']]]
 ];

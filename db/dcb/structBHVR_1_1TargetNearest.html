@@ -81,26 +81,89 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Selects the nearest pedestrian of a given type.  
+<p>Selects the nearest pedestrian with any of the given types.  
  <a href="../../db/dcb/structBHVR_1_1TargetNearest.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../d5/df7/target__nearest_8hpp_source.html">target_nearest.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for BHVR::TargetNearest:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d0/db3/structBHVR_1_1TargetNearest__coll__graph.png" border="0" usemap="#aBHVR_1_1TargetNearest_coll__map" alt="Collaboration graph"/></div>
+<map name="aBHVR_1_1TargetNearest_coll__map" id="aBHVR_1_1TargetNearest_coll__map">
+<area shape="rect" title="Selects the nearest pedestrian with any of the given types." alt="" coords="5,94,153,120"/>
+<area shape="rect" href="../../d4/d2e/classBHVR_1_1Ptype.html" title="Pedestrian Type, used as a composite of typeUIDs." alt="" coords="30,5,128,31"/>
+<area shape="poly" title=" " alt="" coords="82,46,82,94,76,94,76,46"/>
+</map>
+<center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a58995cbb663bae59fb863bf886c2c208"><td class="memItemLeft" align="right" valign="top"><a id="a58995cbb663bae59fb863bf886c2c208" name="a58995cbb663bae59fb863bf886c2c208"></a>
-<a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (<a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, <a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> self) const</td></tr>
+<tr class="memitem:a58995cbb663bae59fb863bf886c2c208"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dcb/structBHVR_1_1TargetNearest.html#a58995cbb663bae59fb863bf886c2c208">operator()</a> (<a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, <a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> self) const</td></tr>
+<tr class="memdesc:a58995cbb663bae59fb863bf886c2c208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the nearest pedestrian that has any of the target types.  <br /></td></tr>
 <tr class="separator:a58995cbb663bae59fb863bf886c2c208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a0ea1dfef74bfbf5d036a604ac55e5cb7"><td class="memItemLeft" align="right" valign="top"><a id="a0ea1dfef74bfbf5d036a604ac55e5cb7" name="a0ea1dfef74bfbf5d036a604ac55e5cb7"></a>
-typeUID&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
-<tr class="separator:a0ea1dfef74bfbf5d036a604ac55e5cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc2b568243f0308858719ddc4d29c2f5"><td class="memItemLeft" align="right" valign="top"><a id="adc2b568243f0308858719ddc4d29c2f5" name="adc2b568243f0308858719ddc4d29c2f5"></a>
+<a class="el" href="../../d4/d2e/classBHVR_1_1Ptype.html">Ptype</a>&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="separator:adc2b568243f0308858719ddc4d29c2f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee344a856f0f8ae6bf02134b1b23b623"><td class="memItemLeft" align="right" valign="top"><a id="aee344a856f0f8ae6bf02134b1b23b623" name="aee344a856f0f8ae6bf02134b1b23b623"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>allPeds</b></td></tr>
+<tr class="separator:aee344a856f0f8ae6bf02134b1b23b623"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab005d36fdd9d4bc02c76880fe03690ca"><td class="memItemLeft" align="right" valign="top"><a id="ab005d36fdd9d4bc02c76880fe03690ca" name="ab005d36fdd9d4bc02c76880fe03690ca"></a>
+std::optional&lt; <a class="el" href="../../de/dc5/classBHVR_1_1TargetModifier.html">TargetModifier</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>modifier</b></td></tr>
+<tr class="separator:ab005d36fdd9d4bc02c76880fe03690ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Selects the nearest pedestrian of a given type. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<div class="textblock"><p>Selects the nearest pedestrian with any of the given types. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a58995cbb663bae59fb863bf886c2c208" name="a58995cbb663bae59fb863bf886c2c208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58995cbb663bae59fb863bf886c2c208">&#9670;&#160;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> BHVR::TargetNearest::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>&#160;</td>
+          <td class="paramname"><em>pack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the nearest pedestrian that has any of the target types. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pack</td><td>: simulation pack </td></tr>
+    <tr><td class="paramname">self</td><td>: pedestrain calling the function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Target </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>VIPRA_Behaviors/include/targets/target_selectors/<a class="el" href="../../d5/df7/target__nearest_8hpp_source.html">target_nearest.hpp</a></li>
 </ul>
 </div><!-- contents -->

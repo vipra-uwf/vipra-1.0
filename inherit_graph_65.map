@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$dd/d90/classPedestrianLoader.html" title=" " alt="" coords="5,5,129,31"/>
-<area shape="rect" id="Node000001" href="$da/d59/classJsonPedestrianLoader.html" title="A class for loading pedestrian positions from a JSON file." alt="" coords="177,5,328,31"/>
-<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="144,16,176,16,176,21,144,21"/>
+<area shape="rect" id="Node000000" href="$d5/dff/classObstacleSet.html" title=" " alt="" coords="5,5,99,31"/>
+<area shape="rect" id="Node000001" href="$db/dec/classPassengerVehicleObstacleSet.html" title="A class representing the obstacle set for passenger vehicles." alt="" coords="147,5,345,31"/>
+<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="114,16,146,16,146,21,114,21"/>
 </map>
