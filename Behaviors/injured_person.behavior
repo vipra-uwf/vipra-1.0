@@ -4,9 +4,9 @@ Types:
 
 Selector:
   Type: injured_person
-  Select: 2
+  Select: Everyone
 .
 
 Action (injured_person):
-  Response: scale velocity 0.5x
+  Response: scale velocity 0.5
 .

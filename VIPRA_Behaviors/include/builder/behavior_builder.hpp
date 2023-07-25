@@ -25,9 +25,14 @@
 
 #include <builder/builder_maps.hpp>
 #include <builder/declaration_components.hpp>
+#include "targets/target_modifier.hpp"
+#include "values/direction.hpp"
 
 namespace BHVR {
-
+/**
+ * @brief Parses Behavior Files and Creates the Runtime Functionality they describe
+ * 
+ */
 class BehaviorBuilder : public BehaviorBaseVisitor {
  public:
   HumanBehavior build(std::string, const std::filesystem::path&, BHVR::seed);
@@ -61,6 +66,8 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   void addTargetToAction(Action&, BehaviorParser::TargetContext*);
   void addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
 
+  [[nodiscard]] auto addEvent(BehaviorParser::Event_nameContext*) -> VIPRA::idx;
+
   [[nodiscard]] auto buildCondition(BehaviorParser::ConditionContext*) -> Condition;
   [[nodiscard]] auto buildSubSelector(slType, slSelector, std::optional<slGroup>, bool)
       -> SubSelector;
@@ -77,15 +84,23 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
       const std::vector<antlr4::tree::TerminalNode*>&) const -> BHVR::Ptype;
   [[nodiscard]] static auto getAttribute(std::string) -> BHVR::Attribute;
 
-  [[nodiscard]] auto addEvent(BehaviorParser::Event_nameContext*) -> VIPRA::idx;
-
   [[nodiscard]] auto makeAttributeValue(BehaviorParser::Attr_valueContext*)
       -> BHVR::CAttributeValue;
   [[nodiscard]] static auto makeAttributeStr(BehaviorParser::AttributeContext*)
       -> std::string;
   [[nodiscard]] static auto makeListStrs(const std::vector<antlr4::tree::TerminalNode*>&)
       -> std::vector<std::string>;
+  [[nodiscard]] auto makeTargetModifier(std::vector<BehaviorParser::ModifierContext*>&)
+      -> std::optional<TargetModifier>;
+  [[nodiscard]] static auto makeDirection(BehaviorParser::DirectionContext*) -> Direction;
 
+  /**
+   * @brief Logs an error to the console and throws an exception
+   * 
+   * @tparam T : 
+   * @param message : message to log to console
+   * @param values : values to format message with
+   */
   template <typename... T>
   static void error(const std::string& message, T&&... values) {
     spdlog::error(message, std::forward<T>(values)...);
@@ -107,15 +122,30 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   void addSetAtom(Action&, BehaviorParser::Set_atomContext*);
   void addScaleAtom(Action&, BehaviorParser::Scale_atomContext*);
 
+  // --------------------------------- TARGET SELECTORS ------------------------------------------------------------------------------------------------
+
+  void addNearestTypeTarget(Action&, BehaviorParser::Nearest_typeContext*,
+                            std::optional<TargetModifier>);
+
+  // --------------------------------- TARGET MODIFIERS ------------------------------------------------------------------------------------------------
+
+  void addModifier(TargetModifier&, BehaviorParser::ModifierContext*) const;
+
+  void addDistanceModifier(TargetModifier&, BehaviorParser::DistanceContext*) const;
+  static void addDirectionModifier(TargetModifier&, BehaviorParser::DirectionContext*);
+
   // --------------------------------- SUBCONDITIONS ------------------------------------------------------------------------------------------------
 
-  void addTimeElapsed(Condition&,
-                      BehaviorParser::Condition_Time_Elapsed_From_EventContext*);
-  void addEventOccurred(Condition&, BehaviorParser::Condition_Event_OccurredContext*);
-  void addEventOccurring(Condition&, BehaviorParser::Condition_Event_OccurringContext*);
-  void addEventStarting(Condition&, BehaviorParser::Condition_Event_StartingContext*);
-  void addEventEnding(Condition&, BehaviorParser::Condition_Event_EndingContext*);
-  void addSpatial(Condition&, BehaviorParser::Condition_SpatialContext*);
+  void addTimeElapsedSubCond(Condition&,
+                             BehaviorParser::Condition_Time_Elapsed_From_EventContext*);
+  void addEventOccurredSubCond(Condition&,
+                               BehaviorParser::Condition_Event_OccurredContext*);
+  void addEventOccurringSubCond(Condition&,
+                                BehaviorParser::Condition_Event_OccurringContext*);
+  void addEventStartingSubCond(Condition&,
+                               BehaviorParser::Condition_Event_StartingContext*);
+  void addEventEndingSubCond(Condition&, BehaviorParser::Condition_Event_EndingContext*);
+  void addSpatialSubCond(Condition&, BehaviorParser::Condition_SpatialContext*);
 
   // --------------------------------- SUBSELECTORS ------------------------------------------------------------------------------------------------
 

@@ -74,6 +74,11 @@ struct AttributeValue {
   Type  type;
   void* value;
 
+  /**
+   * @brief Checks that the value is a given type, throws exception if not correct type
+   * 
+   * @param check : type value should be
+   */
   inline void typeCheck(Type check) const {
     if (type != check) DSLException::error("Invalid Type");
   }
@@ -148,6 +153,35 @@ class AttributeHandling {
         return;
       case TargetType::INVALID:
         return;
+    }
+  }
+
+  /**
+   * @brief Checks if two AttributeValues are equal
+   * 
+   * @param value1 : first value
+   * @param value2 : second value
+   * @return true : if equal
+   * @return false : if not equal or not same type
+   */
+  [[nodiscard]] inline static bool equal(CAttributeValue value1, CAttributeValue value2) {
+    if (value1.type != value2.type) return false;
+
+    switch (value1.type) {
+      case Type::INVALID:
+        return false;
+      case Type::NUMBER:
+        return *static_cast<const float*>(value1.value) ==
+               *static_cast<const float*>(value2.value);
+      case Type::COORD:
+        return *static_cast<const VIPRA::f3d*>(value1.value) ==
+               *static_cast<const VIPRA::f3d*>(value2.value);
+      case Type::STATE:
+        return *static_cast<const BHVR::stateUID*>(value1.value) ==
+               *static_cast<const BHVR::stateUID*>(value2.value);
+      case Type::STATUS:
+        return *static_cast<const BHVR::EventStatus*>(value1.value) ==
+               *static_cast<const BHVR::EventStatus*>(value2.value);
     }
   }
 
@@ -298,6 +332,13 @@ class AttributeHandling {
 
   // ------------------------------------------- SETTERS ------------------------------------------------------------------------
 
+  /**
+   * @brief Sets a pedesetrians position
+   * 
+   * @param target : pedestrian to set the position of
+   * @param state : next time step state
+   * @param value : value to set position to
+   */
   static inline void setPosition(Target target, VIPRA::State& state,
                                  CAttributeValue value) {
     value.typeCheck(Type::COORD);
@@ -356,10 +397,10 @@ class AttributeHandling {
     const NumericValue& scale = *static_cast<const NumericValue*>(value.value);
     // TODO (rolland): get magnitude, scale that then apply to the unit vector
     float scaleVal = scale.value(target.targetIdx);
-    auto& vel = state.velocities.at(target.targetIdx);
-    vel *= scaleVal;
-    state.coords.at(target.targetIdx) = pack.pedSet.getPedCoords(target.targetIdx) +
-                                        (state.velocities.at(target.targetIdx) * pack.dT);
+    auto  tempvel = state.velocities.at(target.targetIdx);
+    tempvel *= scaleVal;
+    state.coords.at(target.targetIdx) =
+        pack.pedSet.getPedCoords(target.targetIdx) + (tempvel * pack.dT);
   }
 
   // --------------------------------------------- END SCALING ------------------------------------------------------------------------

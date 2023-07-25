@@ -94,6 +94,7 @@ METERS: M E T E R S;
 NAME: N A M E;
 NEAREST: N E A R E S T;
 NORMAL: N O R M A L;
+NONE: N O N E;
 
 OBSTACLE: O B S T A C L E;
 OCCUR: O C C U R;
@@ -157,5 +158,5 @@ WITHIN: W I T H I N;
 // ---------- Keep The Following At The End Of The File ------------
 
 ID: [a-zA-Z_\-]+;
-NUMBER : [0-9]+;
-FLOAT: [0-9]+'.'[0-9]+;
+NUMBER : '-'?[0-9]+;
+FLOAT: '-'?[0-9]+'.'[0-9]+;

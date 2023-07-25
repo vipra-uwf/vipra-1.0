@@ -1,16 +1,26 @@
 grammar targets;
 
-import lexer_rules;
+import common, directions, values, lexer_rules;
 
 target:
   self |
-  nearest_type
-  ;
+  other (modifier)*
+;
 
 self:
   SELF
-  ;
+;
+
+other:
+  nearest_type
+;
 
 nearest_type:
-  NEAREST ID
-  ;
+  NEAREST id_list
+;
+
+modifier:
+  direction |
+  distance
+;
+

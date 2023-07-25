@@ -203,6 +203,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitNone(BehaviorParser::NoneContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitAction_response(BehaviorParser::Action_responseContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -239,7 +243,31 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitOther(BehaviorParser::OtherContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitNearest_type(BehaviorParser::Nearest_typeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitModifier(BehaviorParser::ModifierContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDistance(BehaviorParser::DistanceContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDirection(BehaviorParser::DirectionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFront(BehaviorParser::FrontContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitBehind(BehaviorParser::BehindContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -5,9 +5,13 @@
 #include <conditions/sub_condition.hpp>
 
 namespace BHVR {
+/**
+ * @brief SubCondition for target attribute to equal a value
+ * 
+ */
 class SubConditionAttribute {
  public:
-  explicit SubConditionAttribute(CAttributeValue);
+  explicit SubConditionAttribute(Attribute, CAttributeValue);
 
   bool operator()(Simpack, VIPRA::idx, Target) const;
 
