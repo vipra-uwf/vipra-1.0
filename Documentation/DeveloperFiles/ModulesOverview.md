@@ -1,5 +1,7 @@
 # M. Modules
 
+**File Path:** [Home](../MainPage.md) / [Developers](Developers.md) / [Modules Overview](ModulesOverview.md)
+
 ## M.1. Extendable Modules
 
 Extendable Modules are the modules that are meant to be implemented by end users.
@@ -86,6 +88,4 @@ The `Output Handler` module handles determining when to write output and what ou
 
 ---
 
-[Return to Getting Started - Researchers](User-test.md) 
-
-[Return to Getting Started - Developers](User-add.md)
+[Return to Getting Started - Developers](Developers.md)

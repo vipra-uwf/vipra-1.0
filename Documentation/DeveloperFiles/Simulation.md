@@ -1,5 +1,7 @@
 ## S. Simulation
 
+**File Path:** [Home](../MainPage.md) / [Developers](Developers.md) / [Simulation](Simulation.md)
+
 The main path a simulation takes is as follows:
 
 ### S.1. Module Selection / Configuration
@@ -30,6 +32,4 @@ Once the simulation is finished the buffered output is written to an output file
 
 ---
 
-[Return to Getting Started - Researchers](User-test.md)
-
-[Return to Getting Started - Developers](User-add.md)
+[Return to Getting Started - Developers](Developers.md)

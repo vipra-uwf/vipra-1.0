@@ -1,5 +1,8 @@
 # Installation and Setup
 
+**File Path:** [Home](../MainPage.md) / [Researchers](Researchers.md) / [Installation and Setup](InstallationSetup.md) / 
+
+
 This page is a guide to install and set up the project.
 
 # R. Requirements
@@ -88,6 +91,4 @@ To run:
 
 ---
 
-[Return to Getting Started - Researchers](User-test.md) 
-
-[Return to Getting Started - Developers](User-add.md)
+[Return to Getting Started - Researchers](Researchers.md) 
