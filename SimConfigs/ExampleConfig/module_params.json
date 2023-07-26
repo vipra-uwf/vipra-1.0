@@ -14,10 +14,9 @@
         "obstacleCollisionDistance": 0.05
     },
     "goals": {
-        "pathFinding": "Astar",
         "endGoalType": "exit",
-        "quadSize": 0.1,
-        "closestObstacle": 0.2,
+        "gridSize": 0.05,
+        "closestObstacle": 0.25,
         "goalRange": 0.05
     },
     "pedestrian_dynamics_model": {

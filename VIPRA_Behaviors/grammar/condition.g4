@@ -26,7 +26,7 @@ sub_condition:
   ;
 
 condition_Time_Elapsed_From_Event:
-  value_numeric SECONDS FROM EVNT
+  value_numeric SECONDS AFTER EVNT
   ;
 
 condition_Event_Occurred:

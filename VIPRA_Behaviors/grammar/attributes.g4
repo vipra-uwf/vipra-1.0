@@ -9,8 +9,7 @@ attribute:
   GOAL      |
   STATE     |
   LOCATION  |
-  STATUS    |
-  MAX SPEED |
+  STATUS
   ;
 
 attr_value:

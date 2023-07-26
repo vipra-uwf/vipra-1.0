@@ -1,5 +1,6 @@
 Types:
   individual
+  aggressive
 .
 
 Selector:
@@ -7,12 +8,29 @@ Selector:
   Select: Everyone
 .
 
-Event:
-  Name: Fire
-  Start: 10 seconds after !Start
+Selector: 
+  Type: aggressive
+  From: individual
+  Select: 50%
 .
 
+Event:
+  Name: Fire
+  Start: 0 seconds after !Start
+.
+
+/*
 Action (individual):
   Stimulus: !Fire occurring
-  Response: scale velocity 2.0x
+  Response: scale velocity 2.0
+.
+*/
+
+Action (aggressive):
+  Stimulus:
+    !Fire occurring
+  Response:
+    scale target velocity -0.5
+  Target: 
+    nearest pedestrian in front within 0.5
 .

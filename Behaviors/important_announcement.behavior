@@ -16,8 +16,8 @@ Selector:
 
 Event:
   Name: Announcement
-  Start: 10 seconds from !Start
-  End: 15 seconds from !Announcement
+  Start: 10 seconds after !Start
+  End: 15 seconds after !Announcement
 .
 
 Action (Listener):

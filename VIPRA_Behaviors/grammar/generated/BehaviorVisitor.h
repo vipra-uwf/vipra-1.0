@@ -113,6 +113,8 @@ public:
 
     virtual std::any visitAction_stimulus(BehaviorParser::Action_stimulusContext *context) = 0;
 
+    virtual std::any visitNone(BehaviorParser::NoneContext *context) = 0;
+
     virtual std::any visitAction_response(BehaviorParser::Action_responseContext *context) = 0;
 
     virtual std::any visitAction_duration(BehaviorParser::Action_durationContext *context) = 0;
@@ -131,7 +133,19 @@ public:
 
     virtual std::any visitSelf(BehaviorParser::SelfContext *context) = 0;
 
+    virtual std::any visitOther(BehaviorParser::OtherContext *context) = 0;
+
     virtual std::any visitNearest_type(BehaviorParser::Nearest_typeContext *context) = 0;
+
+    virtual std::any visitModifier(BehaviorParser::ModifierContext *context) = 0;
+
+    virtual std::any visitDistance(BehaviorParser::DistanceContext *context) = 0;
+
+    virtual std::any visitDirection(BehaviorParser::DirectionContext *context) = 0;
+
+    virtual std::any visitFront(BehaviorParser::FrontContext *context) = 0;
+
+    virtual std::any visitBehind(BehaviorParser::BehindContext *context) = 0;
 
     virtual std::any visitDeclaration(BehaviorParser::DeclarationContext *context) = 0;
 

@@ -41,8 +41,14 @@
 #include <targets/target_selectors/target_nearest.hpp>
 #include <targets/target_selectors/target_self.hpp>
 #include <time/time.hpp>
+#include <utility>
 #include <values/numeric_value.hpp>
 #include <values/values.hpp>
+#include "targets/target.hpp"
+#include "targets/target_modifier.hpp"
+#include "targets/target_modifiers/modifier_direction.hpp"
+#include "targets/target_modifiers/modifier_distance.hpp"
+#include "values/direction.hpp"
 
 namespace BHVR {
 
@@ -232,37 +238,57 @@ SubSelector BehaviorBuilder::buildSubSelector(slType type, slSelector selector,
 void BehaviorBuilder::addSubCondToCondtion(
     Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
   if (subcond->condition_Time_Elapsed_From_Event()) {
-    addTimeElapsed(condition, subcond->condition_Time_Elapsed_From_Event());
+    addTimeElapsedSubCond(condition, subcond->condition_Time_Elapsed_From_Event());
     return;
   }
 
   if (subcond->condition_Event_Occurred()) {
-    addEventOccurred(condition, subcond->condition_Event_Occurred());
+    addEventOccurredSubCond(condition, subcond->condition_Event_Occurred());
     return;
   }
 
   if (subcond->condition_Event_Occurring()) {
-    addEventOccurring(condition, subcond->condition_Event_Occurring());
+    addEventOccurringSubCond(condition, subcond->condition_Event_Occurring());
     return;
   }
 
   if (subcond->condition_Event_Starting()) {
-    addEventStarting(condition, subcond->condition_Event_Starting());
+    addEventStartingSubCond(condition, subcond->condition_Event_Starting());
     return;
   }
 
   if (subcond->condition_Event_Ending()) {
-    addEventEnding(condition, subcond->condition_Event_Ending());
+    addEventEndingSubCond(condition, subcond->condition_Event_Ending());
     return;
   }
 
   if (subcond->condition_Spatial()) {
-    addSpatial(condition, subcond->condition_Spatial());
+    addSpatialSubCond(condition, subcond->condition_Spatial());
     return;
   }
 
   spdlog::error("Behavior Error: No Valid SubCondition For: \"{}\"", subcond->getText());
   BuilderException::error();
+}
+
+/**
+ * @brief Adds the modifier described by the modifier context to a target modifier
+ * 
+ * @param targetModifier : target modifier to add to
+ * @param modifier : modifier context
+ */
+void BehaviorBuilder::addModifier(TargetModifier&                  targetModifier,
+                                  BehaviorParser::ModifierContext* modifier) const {
+  if (modifier->direction()) {
+    addDirectionModifier(targetModifier, modifier->direction());
+    return;
+  }
+  if (modifier->distance()) {
+    addDistanceModifier(targetModifier, modifier->distance());
+    return;
+  }
+
+  error("Behavior Error: No Valid Target Modifier For: \"{}\"", modifier->getText());
 }
 
 /**
@@ -293,16 +319,35 @@ void BehaviorBuilder::addAtomToAction(Action&                             action
  */
 void BehaviorBuilder::addTargetToAction(Action&                        action,
                                         BehaviorParser::TargetContext* ctx) {
-  if (ctx->nearest_type()) {
-    auto typeStr = ctx->nearest_type()->ID()->toString();
-    auto type = getType(typeStr);
-    spdlog::debug(R"(Behavior: "{}": Adding Target: Nearest "{}")",
-                  currentBehavior.getName(), typeStr);
-    action.addTarget(TargetSelector(TargetNearest{type}));
-    return;
+  if (ctx->other()) {
+    auto modList = ctx->modifier();
+    auto modifiers = makeTargetModifier(modList);
+    if (ctx->other()->nearest_type()) {
+      addNearestTypeTarget(action, ctx->other()->nearest_type(), modifiers);
+      return;
+    }
   }
 
   action.addTarget(TargetSelector(TargetSelf{}));
+}
+
+/**
+ * @brief Creates a target modifier from a vector of modifier contexts
+ * 
+ * @param modifiers : modifiers to add to target modifier
+ * @return std::optional<TargetModifier> 
+ */
+auto BehaviorBuilder::makeTargetModifier(
+    std::vector<BehaviorParser::ModifierContext*>& modifiers)
+    -> std::optional<TargetModifier> {
+  if (modifiers.empty()) return std::nullopt;
+
+  TargetModifier mod;
+  for (auto* modifier : modifiers) {
+    addModifier(mod, modifier);
+  }
+
+  return mod;
 }
 
 // --------------------------------------------------- END HELPERS ---------------------------------------------------------------------------------------------
@@ -500,6 +545,25 @@ std::string BehaviorBuilder::makeAttributeStr(BehaviorParser::AttributeContext* 
   }
 
   return "";
+}
+
+/**
+ * @brief Returns the Direction enum that matches the Direction context
+ * 
+ * @param ctx : direction context
+ * @return Direction 
+ */
+auto BehaviorBuilder::makeDirection(BehaviorParser::DirectionContext* ctx) -> Direction {
+  if (ctx->front()) {
+    return Direction::FRONT;
+  }
+
+  if (ctx->behind()) {
+    return Direction::BEHIND;
+  }
+
+  error("Behavior Error: Unkown Direction {}", ctx->toString());
+  return Direction::FRONT;
 }
 
 // --------------------------------------------------- END MAKERS --------------------------------------------------------------------------------------------------
@@ -788,7 +852,7 @@ void BehaviorBuilder::addScaleAtom(Action&                            action,
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::addTimeElapsed(
+void BehaviorBuilder::addTimeElapsedSubCond(
     Condition& condition, BehaviorParser::Condition_Time_Elapsed_From_EventContext* ctx) {
   BHVR::NumericValue dur = getNumeric(ctx->value_numeric(), currSeed);
   std::string        evName = ctx->EVNT()->toString();
@@ -808,7 +872,7 @@ void BehaviorBuilder::addTimeElapsed(
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::addEventOccurred(
+void BehaviorBuilder::addEventOccurredSubCond(
     Condition& condition, BehaviorParser::Condition_Event_OccurredContext* ctx) {
   std::string evName = ctx->EVNT()->toString();
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurred)",
@@ -827,7 +891,7 @@ void BehaviorBuilder::addEventOccurred(
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::addEventOccurring(
+void BehaviorBuilder::addEventOccurringSubCond(
     Condition& condition, BehaviorParser::Condition_Event_OccurringContext* ctx) {
   std::string evName = ctx->EVNT()->toString();
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurring)",
@@ -846,7 +910,7 @@ void BehaviorBuilder::addEventOccurring(
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::addEventStarting(
+void BehaviorBuilder::addEventStartingSubCond(
     Condition& condition, BehaviorParser::Condition_Event_StartingContext* ctx) {
   std::string evName = ctx->EVNT()->toString();
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurring)",
@@ -865,8 +929,8 @@ void BehaviorBuilder::addEventStarting(
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::addEventEnding(Condition& condition,
-                                     BehaviorParser::Condition_Event_EndingContext* ctx) {
+void BehaviorBuilder::addEventEndingSubCond(
+    Condition& condition, BehaviorParser::Condition_Event_EndingContext* ctx) {
   std::string evName = ctx->EVNT()->toString();
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurring)",
                 currentBehavior.getName(), evName);
@@ -884,8 +948,8 @@ void BehaviorBuilder::addEventEnding(Condition& condition,
  * @param condition : condition to add to
  * @param ctx : spatial condition context
  */
-void BehaviorBuilder::addSpatial(Condition&                                condition,
-                                 BehaviorParser::Condition_SpatialContext* ctx) {
+void BehaviorBuilder::addSpatialSubCond(Condition& condition,
+                                        BehaviorParser::Condition_SpatialContext* ctx) {
   auto distance = getNumeric(ctx->value_numeric(), currSeed);
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Spatial)",
                 currentBehavior.getName());
@@ -893,6 +957,57 @@ void BehaviorBuilder::addSpatial(Condition&                                condi
 }
 
 // ------------------------------- END SUBCONDITIONS -----------------------------------------------------------------------------------------
+
+// ------------------------------- TARGET SELECTORS -----------------------------------------------------------------------------------------
+
+/**
+ * @brief Adds a target selector for nearest of a type to an action
+ * 
+ * @param action : action to add target to
+ * @param ctx : target context
+ */
+void BehaviorBuilder::addNearestTypeTarget(Action&                              action,
+                                           BehaviorParser::Nearest_typeContext* ctx,
+                                           std::optional<TargetModifier> modifier) {
+  auto  types = ctx->id_list()->ID();
+  Ptype comPtype = getCompositeType(types);
+  auto  typeStrs = makeListStrs(types);
+  bool  allPeds = !ctx->id_list()->PEDESTRIAN().empty();
+
+  spdlog::debug(R"(Behavior: "{}": Adding Target: Nearest "{}")",
+                currentBehavior.getName(), fmt::join(typeStrs, " or "));
+  action.addTarget(TargetSelector(TargetNearest{comPtype, allPeds, std::move(modifier)}));
+}
+
+// ------------------------------- END TARGET SELECTORS -----------------------------------------------------------------------------------------
+
+// --------------------------------- TARGET MODIFIERS ------------------------------------------------------------------------------------------------
+
+/**
+ * @brief Adds a distance modifier to a target modifier
+ * 
+ * @param modifier : 
+ * @param ctx : 
+ */
+void BehaviorBuilder::addDistanceModifier(TargetModifier&                  modifier,
+                                          BehaviorParser::DistanceContext* ctx) const {
+  NumericValue value = getNumeric(ctx->value_numeric(), currSeed);
+  modifier.addCheck(ModifierDistance{value});
+}
+
+/**
+ * @brief Adds a direction modifier to a target modifier
+ * 
+ * @param modifier : 
+ * @param ctx : 
+ */
+void BehaviorBuilder::addDirectionModifier(TargetModifier&                   modifier,
+                                           BehaviorParser::DirectionContext* ctx) {
+  auto direction = makeDirection(ctx);
+  modifier.addCheck(ModifierDirection{direction});
+}
+
+// ------------------------------- END TARGET MODIFIERS -----------------------------------------------------------------------------------------
 
 // ------------------------------- SUBSELECTORS -----------------------------------------------------------------------------------------
 

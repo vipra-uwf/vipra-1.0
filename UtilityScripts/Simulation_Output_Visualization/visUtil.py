@@ -25,64 +25,63 @@ def getArgs():
   diflines = False
   diflineMax = None
 
-  for i in range(1, len(sys.argv)):
+  i = 1
+  while i < len(sys.argv):
     if sys.argv[i] == '-idx':
       indexes = True
-      i += 1
     elif sys.argv[i] == '-shldr':
-      shldrLen = float(sys.argv[i + 1])
+      i += 1
+      shldrLen = float(sys.argv[i])
       shoulders = True
-      i += 2
     elif sys.argv[i] == '-outpath':
       outpath = sys.argv[i + 1]
-      i += 2
+      i += 1
     elif sys.argv[i] == '-peds':
-      peds = sys.argv[i + 1]
-      i += 2
+      i += 1
+      peds = sys.argv[i]
     elif sys.argv[i] == '-obs':
-      obs = sys.argv[i + 1]
-      i += 2
+      i += 1
+      obs = sys.argv[i]
     elif sys.argv[i] == '-xDim':
-      dims = sys.argv[i + 1].split(',')
+      i += 1
+      dims = sys.argv[i].split(',')
       xMin = float(dims[0])
       xMax = float(dims[1])
-      i += 2
     elif sys.argv[i] == '-yDim':
-      dims = sys.argv[i + 1].split(',')
+      i += 1
+      dims = sys.argv[i].split(',')
       yMin = float(dims[0])
       yMax = float(dims[1])
-      i += 2
     elif sys.argv[i] == '-fps':
-      fps = float(sys.argv[i + 1])
-      i += 2
+      i += 1
+      fps = float(sys.argv[i])
     elif sys.argv[i] == '-idxClr':
       idxColor = True
-      i += 1
     elif sys.argv[i] == '-pedClr':
       pedColor = True
-      i += 1
     elif sys.argv[i] == '-obsClr':
-      obsColor = sys.argv[i + 1]
-      i += 2
+      i += 1
+      obsColor = sys.argv[i]
     elif sys.argv[i] == '-bckClr':
-      bckColor = sys.argv[i + 1]
-      i += 2
+      i += 1
+      bckColor = sys.argv[i]
     elif sys.argv[i] == '-dif':
-      dif = sys.argv[i + 1]
-      i += 2
+      i += 1
+      dif = sys.argv[i]
     elif sys.argv[i] == '-difalpha':
-      difalpha = float(sys.argv[i + 1])
-      i += 2
+      i += 1
+      difalpha = float(sys.argv[i])
     elif sys.argv[i] == '-diflines':
       diflines = True
-      i += 1
     elif sys.argv[i] == '-dlmax':
-      diflineMax = float(sys.argv[i + 1])
-      i += 2
-    # else:
-    #   if (sys.argv[i][0] == '-'):
-    #     print(f'Unknown Flag: {sys.argv[i]}')
-    #     exit(-1)
+      i += 1
+      diflineMax = float(sys.argv[i])
+    else:
+      if (sys.argv[i][0] == '-'):
+        print(f'Unknown Flag: {sys.argv[i]}')
+        exit(-1)
+    
+    i += 1
     
 
   if peds == "" or obs == "":
