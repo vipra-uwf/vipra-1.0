@@ -75,12 +75,17 @@ $(function() {
   <div class="headertitle"><div class="title">PedestrianSet Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Interface for managing pedestrian information in a simulation.  
+ <a href="../../d5/d90/classPedestrianSet.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d4/d97/pedestrian__set_8hpp_source.html">pedestrian_set.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for PedestrianSet:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d1/dff/classPedestrianSet__inherit__graph.png" border="0" usemap="#aPedestrianSet_inherit__map" alt="Inheritance graph"/></div>
 <map name="aPedestrianSet_inherit__map" id="aPedestrianSet_inherit__map">
-<area shape="rect" title=" " alt="" coords="20,5,124,31"/>
+<area shape="rect" title="Interface for managing pedestrian information in a simulation." alt="" coords="20,5,124,31"/>
 <area shape="rect" href="../../db/df2/classCalmPedestrianSet.html" title="A class representing a set of calm pedestrians." alt="" coords="5,79,139,105"/>
 <area shape="poly" title=" " alt="" coords="75,46,75,79,69,79,69,46"/>
 </map>
@@ -89,22 +94,31 @@ Inheritance diagram for PedestrianSet:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa38144285f065e6be13ef2f73e614686"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#aa38144285f065e6be13ef2f73e614686">configure</a> (const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;configMap)=0</td></tr>
+<tr class="memdesc:aa38144285f065e6be13ef2f73e614686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the PedestrianSet with the given configuration map.  <br /></td></tr>
 <tr class="separator:aa38144285f065e6be13ef2f73e614686"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae0e9dfda6a0c18f9930e949b6f2e4d2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#aae0e9dfda6a0c18f9930e949b6f2e4d2">initialize</a> (const std::vector&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::pcoord</a> &gt; &amp;)=0</td></tr>
+<tr class="memdesc:aae0e9dfda6a0c18f9930e949b6f2e4d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the PedestrianSet with the given pedestrian coordinates.  <br /></td></tr>
 <tr class="separator:aae0e9dfda6a0c18f9930e949b6f2e4d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a135a427c2bf2c10cdcda554f36f23bba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a135a427c2bf2c10cdcda554f36f23bba">updateState</a> (<a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;)=0</td></tr>
+<tr class="memdesc:a135a427c2bf2c10cdcda554f36f23bba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the state of the pedestrian set.  <br /></td></tr>
 <tr class="separator:a135a427c2bf2c10cdcda554f36f23bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3990a8c86b39a21a27895a5219e375d5"><td class="memItemLeft" align="right" valign="top">virtual VIPRA::size&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a3990a8c86b39a21a27895a5219e375d5">getNumPedestrians</a> () const =0</td></tr>
+<tr class="memdesc:a3990a8c86b39a21a27895a5219e375d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of pedestrians in the set.  <br /></td></tr>
 <tr class="separator:a3990a8c86b39a21a27895a5219e375d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a361e386ebc8d7cc83ddb56031a6d404f"><td class="memItemLeft" align="right" valign="top">virtual const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a361e386ebc8d7cc83ddb56031a6d404f">getCoordinates</a> () const =0</td></tr>
+<tr class="memdesc:a361e386ebc8d7cc83ddb56031a6d404f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the vector of pedestrian coordinates.  <br /></td></tr>
 <tr class="separator:a361e386ebc8d7cc83ddb56031a6d404f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b9daf76b84b6725ed2967eb0c21f8d6"><td class="memItemLeft" align="right" valign="top">virtual const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a5b9daf76b84b6725ed2967eb0c21f8d6">getVelocities</a> () const =0</td></tr>
+<tr class="memdesc:a5b9daf76b84b6725ed2967eb0c21f8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the vector of pedestrian velocities.  <br /></td></tr>
 <tr class="separator:a5b9daf76b84b6725ed2967eb0c21f8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf3dafafe05223c6db3345187cebfd42"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::pcoord</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#aaf3dafafe05223c6db3345187cebfd42">getPedCoords</a> (VIPRA::idx) const =0</td></tr>
+<tr class="memdesc:aaf3dafafe05223c6db3345187cebfd42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the coordinates of a specific pedestrian.  <br /></td></tr>
 <tr class="separator:aaf3dafafe05223c6db3345187cebfd42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1087078e613d7122559d233ed253bda"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::veloc</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#af1087078e613d7122559d233ed253bda">getPedVelocity</a> (VIPRA::idx) const =0</td></tr>
+<tr class="memdesc:af1087078e613d7122559d233ed253bda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the velocity of a specific pedestrian.  <br /></td></tr>
 <tr class="separator:af1087078e613d7122559d233ed253bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44ffdb6d3204b7994c4717dac2f9121f"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>, VIPRA::idx &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a44ffdb6d3204b7994c4717dac2f9121f">getNearestPedestrian</a> (VIPRA::idx, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;) const =0</td></tr>
+<tr class="memdesc:a44ffdb6d3204b7994c4717dac2f9121f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the nearest pedestrian to the pedestrian at the specified index.  <br /></td></tr>
 <tr class="separator:a44ffdb6d3204b7994c4717dac2f9121f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64196e1ea662ce74071485fa194b6c11"><td class="memItemLeft" align="right" valign="top"><a id="a64196e1ea662ce74071485fa194b6c11" name="a64196e1ea662ce74071485fa194b6c11"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PedestrianSet</b> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;)=default</td></tr>
@@ -119,7 +133,10 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;&amp;)=default</td></tr>
 <tr class="separator:aab84a0b7d917c6266c80bf549f73971d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Interface for managing pedestrian information in a simulation. </p>
+<p>This class is an interface for managing pedestrian information in a simulation. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa38144285f065e6be13ef2f73e614686" name="aa38144285f065e6be13ef2f73e614686"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa38144285f065e6be13ef2f73e614686">&#9670;&#160;</a></span>configure()</h2>
 
@@ -143,6 +160,14 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Configure the PedestrianSet with the given configuration map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">configMap</td><td>The configuration map containing settings for the PedestrianSet. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#a8e5cd51ac7cb44f32ccff7eff85b6e25">CalmPedestrianSet</a>.</p>
 
@@ -170,6 +195,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Get the vector of pedestrian coordinates. </p>
+<dl class="section return"><dt>Returns</dt><dd>The vector of pedestrian coordinates. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#aeefebfe7617ed6bc0e9138cd2c8461b8">CalmPedestrianSet</a>.</p>
 
@@ -209,6 +237,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Get the nearest pedestrian to the pedestrian at the specified index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pedIdx</td><td>The index of the pedestrian. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair containing the coordinates and index of the nearest pedestrian. </dd></dl>
+
 <p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#a584b49ddd12b38c4dac2481e3a972ad4">CalmPedestrianSet</a>.</p>
 
 </div>
@@ -235,6 +272,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Get the number of pedestrians in the set. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of pedestrians in the set. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#a9183fabd964b64588b891fe48e417adf">CalmPedestrianSet</a>.</p>
 
@@ -264,6 +304,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Get the coordinates of a specific pedestrian. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>The index of the pedestrian. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The coordinates of the pedestrian at the specified index. </dd></dl>
+
 <p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#a465f09f19f41fe3d4203a1dfb66952ac">CalmPedestrianSet</a>.</p>
 
 </div>
@@ -292,6 +341,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Get the velocity of a specific pedestrian. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>The index of the pedestrian. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The velocity of the pedestrian at the specified index. </dd></dl>
+
 <p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#a8035abcd3caccf65efe073e03fe1cf35">CalmPedestrianSet</a>.</p>
 
 </div>
@@ -318,6 +376,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Get the vector of pedestrian velocities. </p>
+<dl class="section return"><dt>Returns</dt><dd>The vector of pedestrian velocities. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#ab2e2bd07cb1825c44c04c0b8386c53e6">CalmPedestrianSet</a>.</p>
 
@@ -347,6 +408,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Initialize the PedestrianSet with the given pedestrian coordinates. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pedCoords</td><td>The vector of pedestrian coordinates. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#abb44333ac7a77f8dac9652e4203be1cf">CalmPedestrianSet</a>.</p>
 
 </div>
@@ -374,6 +443,14 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Update the state of the pedestrian set. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>The current simulation state. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implemented in <a class="el" href="../../db/df2/classCalmPedestrianSet.html#afe6fa177a532a3d76cbce7e69ff6da42">CalmPedestrianSet</a>.</p>
 

@@ -76,12 +76,17 @@ $(function() {
   <div class="headertitle"><div class="title">GoalsException Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Custom exception class for handling errors related to Goals.  
+ <a href="../../d8/d97/classGoalsException.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d9/df3/goals_8hpp_source.html">goals.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for GoalsException:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../db/d01/classGoalsException__inherit__graph.png" border="0" usemap="#aGoalsException_inherit__map" alt="Inheritance graph"/></div>
 <map name="aGoalsException_inherit__map" id="aGoalsException_inherit__map">
-<area shape="rect" title=" " alt="" coords="10,79,122,105"/>
+<area shape="rect" title="Custom exception class for handling errors related to Goals." alt="" coords="10,79,122,105"/>
 <area shape="rect" title=" " alt="" coords="5,5,127,31"/>
 <area shape="poly" title=" " alt="" coords="69,46,69,79,63,79,63,46"/>
 </map>
@@ -91,7 +96,7 @@ Collaboration diagram for GoalsException:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d8/d62/classGoalsException__coll__graph.png" border="0" usemap="#aGoalsException_coll__map" alt="Collaboration graph"/></div>
 <map name="aGoalsException_coll__map" id="aGoalsException_coll__map">
-<area shape="rect" title=" " alt="" coords="10,79,122,105"/>
+<area shape="rect" title="Custom exception class for handling errors related to Goals." alt="" coords="10,79,122,105"/>
 <area shape="rect" title=" " alt="" coords="5,5,127,31"/>
 <area shape="poly" title=" " alt="" coords="69,46,69,79,63,79,63,46"/>
 </map>
@@ -99,16 +104,89 @@ Collaboration diagram for GoalsException:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3b8837e9625a0bf98bb86f5270356dd3"><td class="memItemLeft" align="right" valign="top"><a id="a3b8837e9625a0bf98bb86f5270356dd3" name="a3b8837e9625a0bf98bb86f5270356dd3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>GoalsException</b> (const std::string &amp;message)</td></tr>
+<tr class="memitem:a3b8837e9625a0bf98bb86f5270356dd3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d97/classGoalsException.html#a3b8837e9625a0bf98bb86f5270356dd3">GoalsException</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:a3b8837e9625a0bf98bb86f5270356dd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for GoalsException.  <br /></td></tr>
 <tr class="separator:a3b8837e9625a0bf98bb86f5270356dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a6a6eb77fb08a12da2a68d1ca38cf64dc"><td class="memItemLeft" align="right" valign="top"><a id="a6a6eb77fb08a12da2a68d1ca38cf64dc" name="a6a6eb77fb08a12da2a68d1ca38cf64dc"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>error</b> (const std::string &amp;message)</td></tr>
+<tr class="memitem:a6a6eb77fb08a12da2a68d1ca38cf64dc"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d97/classGoalsException.html#a6a6eb77fb08a12da2a68d1ca38cf64dc">error</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:a6a6eb77fb08a12da2a68d1ca38cf64dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static function to throw a GoalsException with the given error message.  <br /></td></tr>
 <tr class="separator:a6a6eb77fb08a12da2a68d1ca38cf64dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Custom exception class for handling errors related to Goals. </p>
+<p>This class is a custom exception class derived from std::runtime_error. It is used to handle errors that may occur during the Goals configuration or initialization. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a3b8837e9625a0bf98bb86f5270356dd3" name="a3b8837e9625a0bf98bb86f5270356dd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b8837e9625a0bf98bb86f5270356dd3">&#9670;&#160;</a></span>GoalsException()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">GoalsException::GoalsException </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor for GoalsException. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The error message to be associated with the exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6a6eb77fb08a12da2a68d1ca38cf64dc" name="a6a6eb77fb08a12da2a68d1ca38cf64dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a6eb77fb08a12da2a68d1ca38cf64dc">&#9670;&#160;</a></span>error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void GoalsException::error </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Static function to throw a GoalsException with the given error message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The error message for the exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>VIPRA/Extendable/goals/<a class="el" href="../../d9/df3/goals_8hpp_source.html">goals.hpp</a></li>
 </ul>

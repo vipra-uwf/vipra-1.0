@@ -1,5 +1,5 @@
 <map id="PedestrianSet" name="PedestrianSet">
-<area shape="rect" id="Node000001" title=" " alt="" coords="20,5,124,31"/>
+<area shape="rect" id="Node000001" title="Interface for managing pedestrian information in a simulation." alt="" coords="20,5,124,31"/>
 <area shape="rect" id="Node000002" href="$db/df2/classCalmPedestrianSet.html" title="A class representing a set of calm pedestrians." alt="" coords="5,79,139,105"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,46,75,79,69,79,69,46"/>
 </map>

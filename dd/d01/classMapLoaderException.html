@@ -76,12 +76,17 @@ $(function() {
   <div class="headertitle"><div class="title">MapLoaderException Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Custom exception class for handling errors related to MapLoader.  
+ <a href="../../dd/d01/classMapLoaderException.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d0/de2/map__loader_8hpp_source.html">map_loader.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for MapLoaderException:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../db/d1e/classMapLoaderException__inherit__graph.png" border="0" usemap="#aMapLoaderException_inherit__map" alt="Inheritance graph"/></div>
 <map name="aMapLoaderException_inherit__map" id="aMapLoaderException_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,148,105"/>
+<area shape="rect" title="Custom exception class for handling errors related to MapLoader." alt="" coords="5,79,148,105"/>
 <area shape="rect" title=" " alt="" coords="16,5,137,31"/>
 <area shape="poly" title=" " alt="" coords="79,46,79,79,74,79,74,46"/>
 </map>
@@ -91,7 +96,7 @@ Collaboration diagram for MapLoaderException:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d1b/classMapLoaderException__coll__graph.png" border="0" usemap="#aMapLoaderException_coll__map" alt="Collaboration graph"/></div>
 <map name="aMapLoaderException_coll__map" id="aMapLoaderException_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,148,105"/>
+<area shape="rect" title="Custom exception class for handling errors related to MapLoader." alt="" coords="5,79,148,105"/>
 <area shape="rect" title=" " alt="" coords="16,5,137,31"/>
 <area shape="poly" title=" " alt="" coords="79,46,79,79,74,79,74,46"/>
 </map>
@@ -99,16 +104,90 @@ Collaboration diagram for MapLoaderException:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aad978d599acf611564aeccd61e2aac86"><td class="memItemLeft" align="right" valign="top"><a id="aad978d599acf611564aeccd61e2aac86" name="aad978d599acf611564aeccd61e2aac86"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MapLoaderException</b> (const std::string &amp;message)</td></tr>
+<tr class="memitem:aad978d599acf611564aeccd61e2aac86"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d01/classMapLoaderException.html#aad978d599acf611564aeccd61e2aac86">MapLoaderException</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:aad978d599acf611564aeccd61e2aac86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for MapLoaderException.  <br /></td></tr>
 <tr class="separator:aad978d599acf611564aeccd61e2aac86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af9eaaa6bd69e2ae2b586b9f5f6f05c15"><td class="memItemLeft" align="right" valign="top"><a id="af9eaaa6bd69e2ae2b586b9f5f6f05c15" name="af9eaaa6bd69e2ae2b586b9f5f6f05c15"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>error</b> (const std::string &amp;message)</td></tr>
+<tr class="memitem:af9eaaa6bd69e2ae2b586b9f5f6f05c15"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d01/classMapLoaderException.html#af9eaaa6bd69e2ae2b586b9f5f6f05c15">error</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:af9eaaa6bd69e2ae2b586b9f5f6f05c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static function to throw a MapLoaderException with the given error message.  <br /></td></tr>
 <tr class="separator:af9eaaa6bd69e2ae2b586b9f5f6f05c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Custom exception class for handling errors related to MapLoader. </p>
+<p>This class is a custom exception class derived from std::runtime_error. It is used to handle errors that may occur during the loading of a map. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aad978d599acf611564aeccd61e2aac86" name="aad978d599acf611564aeccd61e2aac86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad978d599acf611564aeccd61e2aac86">&#9670;&#160;</a></span>MapLoaderException()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">MapLoaderException::MapLoaderException </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor for MapLoaderException. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The error message to be associated with the exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af9eaaa6bd69e2ae2b586b9f5f6f05c15" name="af9eaaa6bd69e2ae2b586b9f5f6f05c15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9eaaa6bd69e2ae2b586b9f5f6f05c15">&#9670;&#160;</a></span>error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void MapLoaderException::error </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Static function to throw a MapLoaderException with the given error message. </p>
+<p>This static function can be used to throw a MapLoaderException with the specified error message. It is a convenient way to create and throw exceptions.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The error message for the exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>VIPRA/Extendable/map_loader/<a class="el" href="../../d0/de2/map__loader_8hpp_source.html">map_loader.hpp</a></li>
 </ul>

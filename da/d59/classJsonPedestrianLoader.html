@@ -86,7 +86,7 @@ Inheritance diagram for JsonPedestrianLoader:</div>
 <div class="center"><img src="../../dd/d8c/classJsonPedestrianLoader__inherit__graph.png" border="0" usemap="#aJsonPedestrianLoader_inherit__map" alt="Inheritance graph"/></div>
 <map name="aJsonPedestrianLoader_inherit__map" id="aJsonPedestrianLoader_inherit__map">
 <area shape="rect" title="A class for loading pedestrian positions from a JSON file." alt="" coords="5,79,157,105"/>
-<area shape="rect" href="../../dd/d90/classPedestrianLoader.html" title=" " alt="" coords="19,5,143,31"/>
+<area shape="rect" href="../../dd/d90/classPedestrianLoader.html" title="Interface for loading pedestrian data from a file." alt="" coords="19,5,143,31"/>
 <area shape="poly" title=" " alt="" coords="84,46,84,79,78,79,78,46"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -96,7 +96,7 @@ Collaboration diagram for JsonPedestrianLoader:</div>
 <div class="center"><img src="../../df/d17/classJsonPedestrianLoader__coll__graph.png" border="0" usemap="#aJsonPedestrianLoader_coll__map" alt="Collaboration graph"/></div>
 <map name="aJsonPedestrianLoader_coll__map" id="aJsonPedestrianLoader_coll__map">
 <area shape="rect" title="A class for loading pedestrian positions from a JSON file." alt="" coords="5,79,157,105"/>
-<area shape="rect" href="../../dd/d90/classPedestrianLoader.html" title=" " alt="" coords="19,5,143,31"/>
+<area shape="rect" href="../../dd/d90/classPedestrianLoader.html" title="Interface for loading pedestrian data from a file." alt="" coords="19,5,143,31"/>
 <area shape="poly" title=" " alt="" coords="84,46,84,79,78,79,78,46"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -118,10 +118,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a349dbb069e0019bf2bd532cd21f87006"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classPedestrianLoader"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classPedestrianLoader')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../dd/d90/classPedestrianLoader.html">PedestrianLoader</a></td></tr>
 <tr class="memitem:a7d46a44012cb6e492eddca32badade4e inherit pub_methods_classPedestrianLoader"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d90/classPedestrianLoader.html#a7d46a44012cb6e492eddca32badade4e">configure</a> (const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;configMap)=0</td></tr>
+<tr class="memdesc:a7d46a44012cb6e492eddca32badade4e inherit pub_methods_classPedestrianLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the PedestrianLoader with the given configuration map.  <br /></td></tr>
 <tr class="separator:a7d46a44012cb6e492eddca32badade4e inherit pub_methods_classPedestrianLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac21c35a9809cedf806c9527557ef0262 inherit pub_methods_classPedestrianLoader"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d90/classPedestrianLoader.html#ac21c35a9809cedf806c9527557ef0262">initialize</a> ()=0</td></tr>
+<tr class="memdesc:ac21c35a9809cedf806c9527557ef0262 inherit pub_methods_classPedestrianLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the PedestrianLoader.  <br /></td></tr>
 <tr class="separator:ac21c35a9809cedf806c9527557ef0262 inherit pub_methods_classPedestrianLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1528c00b8a4db15d2eb814c1eca3a32 inherit pub_methods_classPedestrianLoader"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::pcoord</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d90/classPedestrianLoader.html#ac1528c00b8a4db15d2eb814c1eca3a32">loadPedestrians</a> (const std::string &amp;filePath) const =0</td></tr>
+<tr class="memdesc:ac1528c00b8a4db15d2eb814c1eca3a32 inherit pub_methods_classPedestrianLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load pedestrian data from the specified file path.  <br /></td></tr>
 <tr class="separator:ac1528c00b8a4db15d2eb814c1eca3a32 inherit pub_methods_classPedestrianLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4db62c77cac5969314bc9310af82b350 inherit pub_methods_classPedestrianLoader"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>PedestrianLoader</b> (const <a class="el" href="../../dd/d90/classPedestrianLoader.html">PedestrianLoader</a> &amp;)=default</td></tr>
@@ -179,7 +182,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../dd/d90/classPedestrianLoader.html">PedestrianLoader</a>.</p>
+<p>Implements <a class="el" href="../../dd/d90/classPedestrianLoader.html#a7d46a44012cb6e492eddca32badade4e">PedestrianLoader</a>.</p>
 
 </div>
 </div>
@@ -208,7 +211,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Initializes the JsonPedestrianLoader. </p>
 
-<p>Implements <a class="el" href="../../dd/d90/classPedestrianLoader.html">PedestrianLoader</a>.</p>
+<p>Implements <a class="el" href="../../dd/d90/classPedestrianLoader.html#ac21c35a9809cedf806c9527557ef0262">PedestrianLoader</a>.</p>
 
 </div>
 </div>
@@ -253,7 +256,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A vector of pedestrians data. </dd></dl>
 
-<p>Implements <a class="el" href="../../dd/d90/classPedestrianLoader.html">PedestrianLoader</a>.</p>
+<p>Implements <a class="el" href="../../dd/d90/classPedestrianLoader.html#ac1528c00b8a4db15d2eb814c1eca3a32">PedestrianLoader</a>.</p>
 
 </div>
 </div>

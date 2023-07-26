@@ -1,5 +1,5 @@
 <map id="PedestrianDynamicsModel" name="PedestrianDynamicsModel">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,181,31"/>
+<area shape="rect" id="Node000001" title="Interface for modeling pedestrian dynamics." alt="" coords="5,5,181,31"/>
 <area shape="rect" id="Node000002" href="$d5/d12/classCalmPedestrianModel.html" title=" " alt="" coords="19,79,167,105"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,46,96,79,90,79,90,46"/>
 </map>

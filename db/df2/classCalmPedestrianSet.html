@@ -86,7 +86,7 @@ Inheritance diagram for CalmPedestrianSet:</div>
 <div class="center"><img src="../../d0/d5d/classCalmPedestrianSet__inherit__graph.png" border="0" usemap="#aCalmPedestrianSet_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCalmPedestrianSet_inherit__map" id="aCalmPedestrianSet_inherit__map">
 <area shape="rect" title="A class representing a set of calm pedestrians." alt="" coords="5,79,139,105"/>
-<area shape="rect" href="../../d5/d90/classPedestrianSet.html" title=" " alt="" coords="20,5,124,31"/>
+<area shape="rect" href="../../d5/d90/classPedestrianSet.html" title="Interface for managing pedestrian information in a simulation." alt="" coords="20,5,124,31"/>
 <area shape="poly" title=" " alt="" coords="75,46,75,79,69,79,69,46"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -96,7 +96,7 @@ Collaboration diagram for CalmPedestrianSet:</div>
 <div class="center"><img src="../../de/dcc/classCalmPedestrianSet__coll__graph.png" border="0" usemap="#aCalmPedestrianSet_coll__map" alt="Collaboration graph"/></div>
 <map name="aCalmPedestrianSet_coll__map" id="aCalmPedestrianSet_coll__map">
 <area shape="rect" title="A class representing a set of calm pedestrians." alt="" coords="5,79,139,105"/>
-<area shape="rect" href="../../d5/d90/classPedestrianSet.html" title=" " alt="" coords="20,5,124,31"/>
+<area shape="rect" href="../../d5/d90/classPedestrianSet.html" title="Interface for managing pedestrian information in a simulation." alt="" coords="20,5,124,31"/>
 <area shape="poly" title=" " alt="" coords="75,46,75,79,69,79,69,46"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -132,22 +132,31 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a584b49ddd12b38c4dac2481e3a972ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classPedestrianSet"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classPedestrianSet')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a></td></tr>
 <tr class="memitem:aa38144285f065e6be13ef2f73e614686 inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#aa38144285f065e6be13ef2f73e614686">configure</a> (const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;configMap)=0</td></tr>
+<tr class="memdesc:aa38144285f065e6be13ef2f73e614686 inherit pub_methods_classPedestrianSet"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the PedestrianSet with the given configuration map.  <br /></td></tr>
 <tr class="separator:aa38144285f065e6be13ef2f73e614686 inherit pub_methods_classPedestrianSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae0e9dfda6a0c18f9930e949b6f2e4d2 inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#aae0e9dfda6a0c18f9930e949b6f2e4d2">initialize</a> (const std::vector&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::pcoord</a> &gt; &amp;)=0</td></tr>
+<tr class="memdesc:aae0e9dfda6a0c18f9930e949b6f2e4d2 inherit pub_methods_classPedestrianSet"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the PedestrianSet with the given pedestrian coordinates.  <br /></td></tr>
 <tr class="separator:aae0e9dfda6a0c18f9930e949b6f2e4d2 inherit pub_methods_classPedestrianSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a135a427c2bf2c10cdcda554f36f23bba inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a135a427c2bf2c10cdcda554f36f23bba">updateState</a> (<a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;)=0</td></tr>
+<tr class="memdesc:a135a427c2bf2c10cdcda554f36f23bba inherit pub_methods_classPedestrianSet"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the state of the pedestrian set.  <br /></td></tr>
 <tr class="separator:a135a427c2bf2c10cdcda554f36f23bba inherit pub_methods_classPedestrianSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3990a8c86b39a21a27895a5219e375d5 inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">virtual VIPRA::size&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a3990a8c86b39a21a27895a5219e375d5">getNumPedestrians</a> () const =0</td></tr>
+<tr class="memdesc:a3990a8c86b39a21a27895a5219e375d5 inherit pub_methods_classPedestrianSet"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of pedestrians in the set.  <br /></td></tr>
 <tr class="separator:a3990a8c86b39a21a27895a5219e375d5 inherit pub_methods_classPedestrianSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a361e386ebc8d7cc83ddb56031a6d404f inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">virtual const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a361e386ebc8d7cc83ddb56031a6d404f">getCoordinates</a> () const =0</td></tr>
+<tr class="memdesc:a361e386ebc8d7cc83ddb56031a6d404f inherit pub_methods_classPedestrianSet"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the vector of pedestrian coordinates.  <br /></td></tr>
 <tr class="separator:a361e386ebc8d7cc83ddb56031a6d404f inherit pub_methods_classPedestrianSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b9daf76b84b6725ed2967eb0c21f8d6 inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">virtual const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a5b9daf76b84b6725ed2967eb0c21f8d6">getVelocities</a> () const =0</td></tr>
+<tr class="memdesc:a5b9daf76b84b6725ed2967eb0c21f8d6 inherit pub_methods_classPedestrianSet"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the vector of pedestrian velocities.  <br /></td></tr>
 <tr class="separator:a5b9daf76b84b6725ed2967eb0c21f8d6 inherit pub_methods_classPedestrianSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf3dafafe05223c6db3345187cebfd42 inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::pcoord</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#aaf3dafafe05223c6db3345187cebfd42">getPedCoords</a> (VIPRA::idx) const =0</td></tr>
+<tr class="memdesc:aaf3dafafe05223c6db3345187cebfd42 inherit pub_methods_classPedestrianSet"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the coordinates of a specific pedestrian.  <br /></td></tr>
 <tr class="separator:aaf3dafafe05223c6db3345187cebfd42 inherit pub_methods_classPedestrianSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1087078e613d7122559d233ed253bda inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::veloc</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#af1087078e613d7122559d233ed253bda">getPedVelocity</a> (VIPRA::idx) const =0</td></tr>
+<tr class="memdesc:af1087078e613d7122559d233ed253bda inherit pub_methods_classPedestrianSet"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the velocity of a specific pedestrian.  <br /></td></tr>
 <tr class="separator:af1087078e613d7122559d233ed253bda inherit pub_methods_classPedestrianSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44ffdb6d3204b7994c4717dac2f9121f inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>, VIPRA::idx &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d90/classPedestrianSet.html#a44ffdb6d3204b7994c4717dac2f9121f">getNearestPedestrian</a> (VIPRA::idx, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;) const =0</td></tr>
+<tr class="memdesc:a44ffdb6d3204b7994c4717dac2f9121f inherit pub_methods_classPedestrianSet"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the nearest pedestrian to the pedestrian at the specified index.  <br /></td></tr>
 <tr class="separator:a44ffdb6d3204b7994c4717dac2f9121f inherit pub_methods_classPedestrianSet"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64196e1ea662ce74071485fa194b6c11 inherit pub_methods_classPedestrianSet"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>PedestrianSet</b> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;)=default</td></tr>
@@ -204,7 +213,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a>.</p>
+<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html#aa38144285f065e6be13ef2f73e614686">PedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -235,7 +244,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>A constant reference to the vector of pedestrian coordinates.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>A constant reference to the vector of pedestrian coordinates. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a>.</p>
+<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html#a361e386ebc8d7cc83ddb56031a6d404f">PedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -289,7 +298,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pair containing the coordinates and index of the nearest pedestrian. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a>.</p>
+<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html#a44ffdb6d3204b7994c4717dac2f9121f">PedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -320,7 +329,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The number of pedestrians.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of pedestrians. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a>.</p>
+<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html#a3990a8c86b39a21a27895a5219e375d5">PedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -364,7 +373,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The coordinates of the pedestrian. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a>.</p>
+<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html#aaf3dafafe05223c6db3345187cebfd42">PedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -408,7 +417,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The velocity of the pedestrian. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a>.</p>
+<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html#af1087078e613d7122559d233ed253bda">PedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -439,7 +448,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>A constant reference to the vector of pedestrian velocities.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>A constant reference to the vector of pedestrian velocities. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a>.</p>
+<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html#a5b9daf76b84b6725ed2967eb0c21f8d6">PedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -481,7 +490,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a>.</p>
+<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html#aae0e9dfda6a0c18f9930e949b6f2e4d2">PedestrianSet</a>.</p>
 
 </div>
 </div>
@@ -523,7 +532,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a>.</p>
+<p>Implements <a class="el" href="../../d5/d90/classPedestrianSet.html#a135a427c2bf2c10cdcda554f36f23bba">PedestrianSet</a>.</p>
 
 </div>
 </div>

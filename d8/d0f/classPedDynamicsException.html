@@ -76,12 +76,17 @@ $(function() {
   <div class="headertitle"><div class="title">PedDynamicsException Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Custom exception class for handling errors related to PedestrianDynamicsModel.  
+ <a href="../../d8/d0f/classPedDynamicsException.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d6/de3/pedestrian__dynamics__model_8hpp_source.html">pedestrian_dynamics_model.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for PedDynamicsException:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/dd3/classPedDynamicsException__inherit__graph.png" border="0" usemap="#aPedDynamicsException_inherit__map" alt="Inheritance graph"/></div>
 <map name="aPedDynamicsException_inherit__map" id="aPedDynamicsException_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,163,105"/>
+<area shape="rect" title="Custom exception class for handling errors related to PedestrianDynamicsModel." alt="" coords="5,79,163,105"/>
 <area shape="rect" title=" " alt="" coords="23,5,145,31"/>
 <area shape="poly" title=" " alt="" coords="87,46,87,79,81,79,81,46"/>
 </map>
@@ -91,7 +96,7 @@ Collaboration diagram for PedDynamicsException:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d6/dc8/classPedDynamicsException__coll__graph.png" border="0" usemap="#aPedDynamicsException_coll__map" alt="Collaboration graph"/></div>
 <map name="aPedDynamicsException_coll__map" id="aPedDynamicsException_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,163,105"/>
+<area shape="rect" title="Custom exception class for handling errors related to PedestrianDynamicsModel." alt="" coords="5,79,163,105"/>
 <area shape="rect" title=" " alt="" coords="23,5,145,31"/>
 <area shape="poly" title=" " alt="" coords="87,46,87,79,81,79,81,46"/>
 </map>
@@ -99,16 +104,89 @@ Collaboration diagram for PedDynamicsException:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a765b12912fa6f5de90867a5352d3a4c3"><td class="memItemLeft" align="right" valign="top"><a id="a765b12912fa6f5de90867a5352d3a4c3" name="a765b12912fa6f5de90867a5352d3a4c3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PedDynamicsException</b> (const std::string &amp;message)</td></tr>
+<tr class="memitem:a765b12912fa6f5de90867a5352d3a4c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d0f/classPedDynamicsException.html#a765b12912fa6f5de90867a5352d3a4c3">PedDynamicsException</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:a765b12912fa6f5de90867a5352d3a4c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for PedDynamicsException.  <br /></td></tr>
 <tr class="separator:a765b12912fa6f5de90867a5352d3a4c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ad69942a48908838e0276bdd8650d3ee3"><td class="memItemLeft" align="right" valign="top"><a id="ad69942a48908838e0276bdd8650d3ee3" name="ad69942a48908838e0276bdd8650d3ee3"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>error</b> (const std::string &amp;message)</td></tr>
+<tr class="memitem:ad69942a48908838e0276bdd8650d3ee3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d0f/classPedDynamicsException.html#ad69942a48908838e0276bdd8650d3ee3">error</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:ad69942a48908838e0276bdd8650d3ee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static function to throw a PedDynamicsException with the given error message.  <br /></td></tr>
 <tr class="separator:ad69942a48908838e0276bdd8650d3ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Custom exception class for handling errors related to PedestrianDynamicsModel. </p>
+<p>This class is a custom exception class derived from std::runtime_error. It is used to handle errors that may occur in the PedestrianDynamicsModel class. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a765b12912fa6f5de90867a5352d3a4c3" name="a765b12912fa6f5de90867a5352d3a4c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a765b12912fa6f5de90867a5352d3a4c3">&#9670;&#160;</a></span>PedDynamicsException()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PedDynamicsException::PedDynamicsException </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor for PedDynamicsException. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The error message to be associated with the exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad69942a48908838e0276bdd8650d3ee3" name="ad69942a48908838e0276bdd8650d3ee3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad69942a48908838e0276bdd8650d3ee3">&#9670;&#160;</a></span>error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void PedDynamicsException::error </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Static function to throw a PedDynamicsException with the given error message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The error message for the exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>VIPRA/Extendable/pedestrian_model/<a class="el" href="../../d6/de3/pedestrian__dynamics__model_8hpp_source.html">pedestrian_dynamics_model.hpp</a></li>
 </ul>

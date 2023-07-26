@@ -76,12 +76,17 @@ $(function() {
   <div class="headertitle"><div class="title">ObstacleSetException Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Custom exception class for handling errors related to ObstacleSet.  
+ <a href="../../d6/de8/classObstacleSetException.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../de/d55/obstacle__set_8hpp_source.html">obstacle_set.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ObstacleSetException:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d5/dac/classObstacleSetException__inherit__graph.png" border="0" usemap="#aObstacleSetException_inherit__map" alt="Inheritance graph"/></div>
 <map name="aObstacleSetException_inherit__map" id="aObstacleSetException_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,155,105"/>
+<area shape="rect" title="Custom exception class for handling errors related to ObstacleSet." alt="" coords="5,79,155,105"/>
 <area shape="rect" title=" " alt="" coords="19,5,141,31"/>
 <area shape="poly" title=" " alt="" coords="83,46,83,79,77,79,77,46"/>
 </map>
@@ -91,7 +96,7 @@ Collaboration diagram for ObstacleSetException:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d78/classObstacleSetException__coll__graph.png" border="0" usemap="#aObstacleSetException_coll__map" alt="Collaboration graph"/></div>
 <map name="aObstacleSetException_coll__map" id="aObstacleSetException_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,155,105"/>
+<area shape="rect" title="Custom exception class for handling errors related to ObstacleSet." alt="" coords="5,79,155,105"/>
 <area shape="rect" title=" " alt="" coords="19,5,141,31"/>
 <area shape="poly" title=" " alt="" coords="83,46,83,79,77,79,77,46"/>
 </map>
@@ -99,16 +104,89 @@ Collaboration diagram for ObstacleSetException:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab39b2c2727825f4bd75337ce1cbae291"><td class="memItemLeft" align="right" valign="top"><a id="ab39b2c2727825f4bd75337ce1cbae291" name="ab39b2c2727825f4bd75337ce1cbae291"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ObstacleSetException</b> (const std::string &amp;message)</td></tr>
+<tr class="memitem:ab39b2c2727825f4bd75337ce1cbae291"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/de8/classObstacleSetException.html#ab39b2c2727825f4bd75337ce1cbae291">ObstacleSetException</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:ab39b2c2727825f4bd75337ce1cbae291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for ObstacleSetException.  <br /></td></tr>
 <tr class="separator:ab39b2c2727825f4bd75337ce1cbae291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a2fbbd8eaf6560a4df5cebbd50ed94af8"><td class="memItemLeft" align="right" valign="top"><a id="a2fbbd8eaf6560a4df5cebbd50ed94af8" name="a2fbbd8eaf6560a4df5cebbd50ed94af8"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>error</b> (const std::string &amp;message)</td></tr>
+<tr class="memitem:a2fbbd8eaf6560a4df5cebbd50ed94af8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/de8/classObstacleSetException.html#a2fbbd8eaf6560a4df5cebbd50ed94af8">error</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:a2fbbd8eaf6560a4df5cebbd50ed94af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static function to throw an ObstacleSetException with the given error message.  <br /></td></tr>
 <tr class="separator:a2fbbd8eaf6560a4df5cebbd50ed94af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Custom exception class for handling errors related to ObstacleSet. </p>
+<p>This class is a custom exception class derived from std::runtime_error. It is used to handle errors that may occur in the ObstacleSet class. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ab39b2c2727825f4bd75337ce1cbae291" name="ab39b2c2727825f4bd75337ce1cbae291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab39b2c2727825f4bd75337ce1cbae291">&#9670;&#160;</a></span>ObstacleSetException()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ObstacleSetException::ObstacleSetException </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor for ObstacleSetException. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The error message to be associated with the exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2fbbd8eaf6560a4df5cebbd50ed94af8" name="a2fbbd8eaf6560a4df5cebbd50ed94af8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fbbd8eaf6560a4df5cebbd50ed94af8">&#9670;&#160;</a></span>error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ObstacleSetException::error </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Static function to throw an ObstacleSetException with the given error message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The error message for the exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>VIPRA/Extendable/obstacle_set/<a class="el" href="../../de/d55/obstacle__set_8hpp_source.html">obstacle_set.hpp</a></li>
 </ul>

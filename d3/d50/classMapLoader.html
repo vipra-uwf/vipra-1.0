@@ -75,12 +75,17 @@ $(function() {
   <div class="headertitle"><div class="title">MapLoader Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Interface for loading map data.  
+ <a href="../../d3/d50/classMapLoader.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d0/de2/map__loader_8hpp_source.html">map_loader.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for MapLoader:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d1/d62/classMapLoader__inherit__graph.png" border="0" usemap="#aMapLoader_inherit__map" alt="Inheritance graph"/></div>
 <map name="aMapLoader_inherit__map" id="aMapLoader_inherit__map">
-<area shape="rect" title=" " alt="" coords="20,5,107,31"/>
+<area shape="rect" title="Interface for loading map data." alt="" coords="20,5,107,31"/>
 <area shape="rect" href="../../d8/d73/classPointMapLoader.html" title="A class responsible for loading PointMap data." alt="" coords="5,79,122,105"/>
 <area shape="poly" title=" " alt="" coords="66,46,66,79,61,79,61,46"/>
 </map>
@@ -89,10 +94,13 @@ Inheritance diagram for MapLoader:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a55b4c590ac11c6fbd0cd0c2a7982e84c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d50/classMapLoader.html#a55b4c590ac11c6fbd0cd0c2a7982e84c">configure</a> (const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;configMap)=0</td></tr>
+<tr class="memdesc:a55b4c590ac11c6fbd0cd0c2a7982e84c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the MapLoader with the given configuration map.  <br /></td></tr>
 <tr class="separator:a55b4c590ac11c6fbd0cd0c2a7982e84c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90f3081c9452a7f9335fdab4c9ea5eda"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d50/classMapLoader.html#a90f3081c9452a7f9335fdab4c9ea5eda">initialize</a> ()=0</td></tr>
+<tr class="memdesc:a90f3081c9452a7f9335fdab4c9ea5eda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the MapLoader.  <br /></td></tr>
 <tr class="separator:a90f3081c9452a7f9335fdab4c9ea5eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37e4d76f67b42f885c7ba65230ccf507"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="../../db/d79/structVIPRA_1_1MapData.html">VIPRA::MapData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d50/classMapLoader.html#a37e4d76f67b42f885c7ba65230ccf507">loadMap</a> (const std::string &amp;filePath) const =0</td></tr>
+<tr class="memdesc:a37e4d76f67b42f885c7ba65230ccf507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load map data from the specified file path.  <br /></td></tr>
 <tr class="separator:a37e4d76f67b42f885c7ba65230ccf507"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e28b879ae31ac4f965f2f138c7b48b1"><td class="memItemLeft" align="right" valign="top"><a id="a4e28b879ae31ac4f965f2f138c7b48b1" name="a4e28b879ae31ac4f965f2f138c7b48b1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MapLoader</b> (const <a class="el" href="../../d3/d50/classMapLoader.html">MapLoader</a> &amp;)=default</td></tr>
@@ -107,7 +115,10 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="../../d3/d50/classMapLoader.html">MapLoader</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="../../d3/d50/classMapLoader.html">MapLoader</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:a61184e7d7f0a0124ff17674eec7f6401"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Interface for loading map data. </p>
+<p>This class is an interface for loading map data from different sources. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a55b4c590ac11c6fbd0cd0c2a7982e84c" name="a55b4c590ac11c6fbd0cd0c2a7982e84c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a55b4c590ac11c6fbd0cd0c2a7982e84c">&#9670;&#160;</a></span>configure()</h2>
 
@@ -131,6 +142,14 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Configure the MapLoader with the given configuration map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">configMap</td><td>The configuration map containing settings for the MapLoader. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implemented in <a class="el" href="../../d8/d73/classPointMapLoader.html#a052baa2e62b611e97e20c4b790ffc800">PointMapLoader</a>.</p>
 
@@ -159,6 +178,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Initialize the MapLoader. </p>
+
 <p>Implemented in <a class="el" href="../../d8/d73/classPointMapLoader.html#a164b26ad4062b420c36bbb1027f23546">PointMapLoader</a>.</p>
 
 </div>
@@ -186,6 +207,15 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Load map data from the specified file path. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td>The file path to the map data. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A unique pointer to MapData containing the loaded map data. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../d8/d73/classPointMapLoader.html#a799f310dff5111aab8e80efd6aa3ba55">PointMapLoader</a>.</p>
 

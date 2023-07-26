@@ -82,7 +82,7 @@ Inheritance diagram for CalmPedestrianModel:</div>
 <div class="center"><img src="../../de/d74/classCalmPedestrianModel__inherit__graph.png" border="0" usemap="#aCalmPedestrianModel_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCalmPedestrianModel_inherit__map" id="aCalmPedestrianModel_inherit__map">
 <area shape="rect" title=" " alt="" coords="19,79,167,105"/>
-<area shape="rect" href="../../d0/d61/classPedestrianDynamicsModel.html" title=" " alt="" coords="5,5,181,31"/>
+<area shape="rect" href="../../d0/d61/classPedestrianDynamicsModel.html" title="Interface for modeling pedestrian dynamics." alt="" coords="5,5,181,31"/>
 <area shape="poly" title=" " alt="" coords="96,46,96,79,90,79,90,46"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -92,7 +92,7 @@ Collaboration diagram for CalmPedestrianModel:</div>
 <div class="center"><img src="../../d3/dab/classCalmPedestrianModel__coll__graph.png" border="0" usemap="#aCalmPedestrianModel_coll__map" alt="Collaboration graph"/></div>
 <map name="aCalmPedestrianModel_coll__map" id="aCalmPedestrianModel_coll__map">
 <area shape="rect" title=" " alt="" coords="19,79,167,105"/>
-<area shape="rect" href="../../d0/d61/classPedestrianDynamicsModel.html" title=" " alt="" coords="5,5,181,31"/>
+<area shape="rect" href="../../d0/d61/classPedestrianDynamicsModel.html" title="Interface for modeling pedestrian dynamics." alt="" coords="5,5,181,31"/>
 <area shape="poly" title=" " alt="" coords="96,46,96,79,90,79,90,46"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -105,10 +105,13 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae345f64c0da6a9a8a4efdad015bab96f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/classCalmPedestrianModel.html#ae345f64c0da6a9a8a4efdad015bab96f">configure</a> (const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;) override</td></tr>
+<tr class="memdesc:ae345f64c0da6a9a8a4efdad015bab96f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the PedestrianDynamicsModel with the given configuration map.  <br /></td></tr>
 <tr class="separator:ae345f64c0da6a9a8a4efdad015bab96f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa732aae5f572a68ffcfa910e64855909"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/classCalmPedestrianModel.html#aa732aae5f572a68ffcfa910e64855909">initialize</a> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;) override</td></tr>
+<tr class="memdesc:aa732aae5f572a68ffcfa910e64855909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the PedestrianDynamicsModel with the given sets and goals.  <br /></td></tr>
 <tr class="separator:aa732aae5f572a68ffcfa910e64855909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32e4e3fb0cf7457f4434d663f33611df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/classCalmPedestrianModel.html#a32e4e3fb0cf7457f4434d663f33611df">timestep</a> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;, VIPRA::delta_t, VIPRA::t_step) override</td></tr>
+<tr class="memdesc:a32e4e3fb0cf7457f4434d663f33611df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a timestep of the pedestrian dynamics model.  <br /></td></tr>
 <tr class="separator:a32e4e3fb0cf7457f4434d663f33611df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af69a13fbd95724c8d420a8b4bd9906c7"><td class="memItemLeft" align="right" valign="top"><a id="af69a13fbd95724c8d420a8b4bd9906c7" name="af69a13fbd95724c8d420a8b4bd9906c7"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CalmPedestrianModel</b> (const <a class="el" href="../../d5/d12/classCalmPedestrianModel.html">CalmPedestrianModel</a> &amp;)=default</td></tr>
@@ -123,14 +126,14 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="../../d5/d12/classCalmPedestrianModel.html">CalmPedestrianModel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="../../d5/d12/classCalmPedestrianModel.html">CalmPedestrianModel</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:ad6f3632bd15482777caa8232f7a77abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classPedestrianDynamicsModel"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classPedestrianDynamicsModel')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html">PedestrianDynamicsModel</a></td></tr>
-<tr class="memitem:ac4f07ff755f477672947d7b2607ccbd2 inherit pub_methods_classPedestrianDynamicsModel"><td class="memItemLeft" align="right" valign="top">
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>configure</b> (const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;configMap)=0</td></tr>
+<tr class="memitem:ac4f07ff755f477672947d7b2607ccbd2 inherit pub_methods_classPedestrianDynamicsModel"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html#ac4f07ff755f477672947d7b2607ccbd2">configure</a> (const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;configMap)=0</td></tr>
+<tr class="memdesc:ac4f07ff755f477672947d7b2607ccbd2 inherit pub_methods_classPedestrianDynamicsModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the PedestrianDynamicsModel with the given configuration map.  <br /></td></tr>
 <tr class="separator:ac4f07ff755f477672947d7b2607ccbd2 inherit pub_methods_classPedestrianDynamicsModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32a5072edadc6162ada8fe4f31abe125 inherit pub_methods_classPedestrianDynamicsModel"><td class="memItemLeft" align="right" valign="top">
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;)=0</td></tr>
+<tr class="memitem:a32a5072edadc6162ada8fe4f31abe125 inherit pub_methods_classPedestrianDynamicsModel"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html#a32a5072edadc6162ada8fe4f31abe125">initialize</a> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;)=0</td></tr>
+<tr class="memdesc:a32a5072edadc6162ada8fe4f31abe125 inherit pub_methods_classPedestrianDynamicsModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the PedestrianDynamicsModel with the given sets and goals.  <br /></td></tr>
 <tr class="separator:a32a5072edadc6162ada8fe4f31abe125 inherit pub_methods_classPedestrianDynamicsModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a48785caf6be9a38e06666bc978b048 inherit pub_methods_classPedestrianDynamicsModel"><td class="memItemLeft" align="right" valign="top">
-virtual <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>timestep</b> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;, VIPRA::delta_t, VIPRA::t_step)=0</td></tr>
+<tr class="memitem:a5a48785caf6be9a38e06666bc978b048 inherit pub_methods_classPedestrianDynamicsModel"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html#a5a48785caf6be9a38e06666bc978b048">timestep</a> (const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;, const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;, const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;, VIPRA::delta_t, VIPRA::t_step)=0</td></tr>
+<tr class="memdesc:a5a48785caf6be9a38e06666bc978b048 inherit pub_methods_classPedestrianDynamicsModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a timestep of the pedestrian dynamics model.  <br /></td></tr>
 <tr class="separator:a5a48785caf6be9a38e06666bc978b048 inherit pub_methods_classPedestrianDynamicsModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe4091c2e92b58339676b7bc417a0576 inherit pub_methods_classPedestrianDynamicsModel"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>PedestrianDynamicsModel</b> (const <a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html">PedestrianDynamicsModel</a> &amp;)=default</td></tr>
@@ -159,7 +162,7 @@ virtual <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State
           <td class="memname">void CalmPedestrianModel::configure </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../d7/d04/classVIPRA_1_1CONFIG_1_1Map.html">VIPRA::CONFIG::Map</a> &amp;&#160;</td>
-          <td class="paramname"><em>confMap</em></td><td>)</td>
+          <td class="paramname"><em>configMap</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -170,7 +173,15 @@ virtual <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html">PedestrianDynamicsModel</a>.</p>
+<p>Configure the PedestrianDynamicsModel with the given configuration map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">configMap</td><td>The configuration map containing settings for the PedestrianDynamicsModel. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html#ac4f07ff755f477672947d7b2607ccbd2">PedestrianDynamicsModel</a>.</p>
 
 </div>
 </div>
@@ -187,7 +198,7 @@ virtual <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State
           <td class="memname">void CalmPedestrianModel::initialize </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>pedSet</em>, </td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -199,7 +210,7 @@ virtual <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;&#160;</td>
-          <td class="paramname"><em>goals</em>&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -214,7 +225,17 @@ virtual <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html">PedestrianDynamicsModel</a>.</p>
+<p>Initialize the PedestrianDynamicsModel with the given sets and goals. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pedSet</td><td>The PedestrianSet to be used for modeling. </td></tr>
+    <tr><td class="paramname">obsSet</td><td>The ObstacleSet to be used for modeling. </td></tr>
+    <tr><td class="paramname">goals</td><td>The Goals to be used for modeling. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html#a32a5072edadc6162ada8fe4f31abe125">PedestrianDynamicsModel</a>.</p>
 
 </div>
 </div>
@@ -231,31 +252,31 @@ virtual <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State
           <td class="memname"><a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp; CalmPedestrianModel::timestep </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../d5/d90/classPedestrianSet.html">PedestrianSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>pedSet</em>, </td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="../../d5/dff/classObstacleSet.html">ObstacleSet</a> &amp;&#160;</td>
-          <td class="paramname"><em>obstacleSet</em>, </td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="../../d0/d1a/classGoals.html">Goals</a> &amp;&#160;</td>
-          <td class="paramname"><em>goals</em>, </td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">VIPRA::delta_t&#160;</td>
-          <td class="paramname"><em>time</em>, </td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">VIPRA::t_step&#160;</td>
-          <td class="paramname"><em>timestep</em>&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -270,7 +291,20 @@ virtual <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html">PedestrianDynamicsModel</a>.</p>
+<p>Perform a timestep of the pedestrian dynamics model. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pedSet</td><td>The PedestrianSet used for the current timestep. </td></tr>
+    <tr><td class="paramname">obsSet</td><td>The ObstacleSet used for the current timestep. </td></tr>
+    <tr><td class="paramname">goals</td><td>The Goals used for the current timestep. </td></tr>
+    <tr><td class="paramname">deltaT</td><td>The time step duration. </td></tr>
+    <tr><td class="paramname">tStep</td><td>The current simulation time step. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The updated State after the timestep. </dd></dl>
+
+<p>Implements <a class="el" href="../../d0/d61/classPedestrianDynamicsModel.html#a5a48785caf6be9a38e06666bc978b048">PedestrianDynamicsModel</a>.</p>
 
 </div>
 </div>
