@@ -16,20 +16,14 @@
             "multiple": false
         },
         {
-            "name": "pathingType",
-            "type": "string",
-            "description": "Which Pathfinding Method to use, currently (Astar, Disembark)",
-            "multiple": false
-        },
-        {
-            "name": "quadSize",
+            "name": "gridSize",
             "type": "float",
-            "description": "Minimum Size for quad tree quads",
+            "description": "Size of grids for pathfinding",
             "multiple": false
         },{
             "name": "closestObstacle",
             "type": "float",
-            "description": "Closest a Quad can be to an obstacle without being considered not traversable",
+            "description": "Closest a grid can be to an obstacle without being considered not traversable",
             "multiple": false
         }
     ],

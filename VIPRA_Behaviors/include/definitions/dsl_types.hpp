@@ -8,13 +8,13 @@
 
 namespace BHVR {
 /**
-  * @brief Used for random engine seeds
+  * @brief Seed for randomization
   * 
   */
 using seed = uint64_t;
 
 /**
- * @brief Unique id for a state value
+ * @brief Unique identifier for a pedestrian/environment state
  * 
  */
 using stateUID = uint64_t;

@@ -5,20 +5,21 @@
 
 #include <conditions/condition.hpp>
 #include <definitions/behavior_context.hpp>
+#include <events/event_status.hpp>
+#include "definitions/sim_pack.hpp"
 #include "util/bool_latch.hpp"
 
 namespace BHVR {
 
 /**
-   * @brief An Event is something that occurs during a simulation 
+   * @brief An Event is something that occurs during a simulation, when an event starts it notifies it's subscribing functions and same when it ends
    *
    */
 class Event {
  public:
   explicit Event(std::string);
 
-  void evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, BehaviorContext&,
-                VIPRA::delta_t);
+  void evaluate(Simpack);
 
   void setStartCondition(const Condition&);
   void setEndCondition(const Condition&);
@@ -28,14 +29,15 @@ class Event {
   [[nodiscard]] bool isStarting() const;
   [[nodiscard]] bool isEnding() const;
 
+  void                             setStatus(EventStatus);
+  [[nodiscard]] const EventStatus& getStatus() const;
+
   [[nodiscard]] const std::string& getName() const;
 
  private:
   std::string name;
+  EventStatus status{EventStatus::NOT_OCCURRING};
   bool        occurred = false;
-  bool        occurring = false;
-  bool        ending = false;
-  bool        starting = false;
 
   Latch     latch;
   Condition startCondition;

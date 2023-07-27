@@ -3,18 +3,14 @@
 
 #include <conditions/sub_condition.hpp>
 #include <events/event.hpp>
+#include "definitions/sim_pack.hpp"
 
 namespace BHVR {
-/**
-  * @brief Returns true if the chosen event has occurred at all during a simulation run
-  * 
-  */
 class SubConditionEventOccurred {
  public:
   explicit SubConditionEventOccurred(VIPRA::idx);
 
-  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
-                  const BehaviorContext&, VIPRA::idx, VIPRA::delta_t) const;
+  bool operator()(Simpack, VIPRA::idx, Target) const;
 
  private:
   VIPRA::idx event;
@@ -27,6 +23,7 @@ class SubConditionEventOccurred {
   SubConditionEventOccurred(SubConditionEventOccurred&&) noexcept = default;
   SubConditionEventOccurred& operator=(SubConditionEventOccurred&&) noexcept = default;
 };
+
 }  // namespace BHVR
 
 #endif

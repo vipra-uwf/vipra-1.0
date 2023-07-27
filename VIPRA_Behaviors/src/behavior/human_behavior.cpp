@@ -2,6 +2,9 @@
 
 #include <numeric>
 #include <utility>
+#include "definitions/dsl_types.hpp"
+#include "definitions/pedestrian_types.hpp"
+#include "definitions/sim_pack.hpp"
 #include "selectors/selector.hpp"
 
 namespace BHVR {
@@ -51,14 +54,15 @@ void HumanBehavior::setAllPedTypes(Ptype types) {
 void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet,
                                const Goals& goals) {
   context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
-  context.types = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
+  context.types = std::vector<BHVR::typeUID>(pedSet.getNumPedestrians());
 
+  Simpack pack{pedSet, obsSet, goals, context, selector.getGroups(), 0};
   spdlog::debug("Initializing {} Selectors, Seed: {}", selector.selectorCount(), seedNum);
-  selector.initialize(name, rngEngine, context, pedSet, obsSet, goals);
+  selector.initialize(name, rngEngine, pack);
 
   for (auto& actionGroup : actions) {
     for (auto& action : actionGroup) {
-      action.initialize(pedSet, obsSet, goals, context);
+      action.initialize(pack);
     }
   }
 }
@@ -80,10 +84,10 @@ void HumanBehavior::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& 
 }
 
 /**
- * @brief adds an event to the behavior and returns a pointer to it
+ * @brief adds an event to the behavior and its index in the behavior context
  * 
  * @param event : event object to add
- * @return Event* 
+ * @return VIPRA::idx
  */
 VIPRA::idx HumanBehavior::addEvent(const Event& event) {
   context.events.emplace_back(event);
@@ -91,13 +95,13 @@ VIPRA::idx HumanBehavior::addEvent(const Event& event) {
 }
 
 /**
- * @brief adds a location to the behavior and returns a pointer to it
+ * @brief adds a location to the behavior and its index in the behavior context
  * 
  * @param loc : location object to add
- * @return Location*
+ * @return VIPRA::idx
 */
-VIPRA::idx HumanBehavior::addLocation(Location&& loc) {
-  context.locations.push_back(std::move(loc));
+VIPRA::idx HumanBehavior::addLocation(Location loc) {
+  context.locations.emplace_back(loc);
   return context.locations.size() - 1;
 }
 
@@ -132,7 +136,7 @@ VIPRA::size HumanBehavior::actionCount() const {
 /**
  * @brief Sets the seed for the behavior
  * 
- * @param bSeed : 
+ * @param s : randomization seed
  */
 void HumanBehavior::setSeed(BHVR::seed bSeed) {
   rngEngine.reseed(bSeed);
@@ -140,28 +144,28 @@ void HumanBehavior::setSeed(BHVR::seed bSeed) {
 }
 
 /**
- * @brief Updates each event in the behavior
+ * @brief Updates each events status, through the events update function
  * 
- * @param pedSet
- * @param obsSet 
- * @param goals 
- * @param dT
+ * @param pedSet : pedestrian set
+ * @param obsSet : obstacle set
+ * @param goals : goals module
+ * @param dT : time between timesteps
  */
 void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
                                    Goals& goals, VIPRA::delta_t dT) {
   for (auto& event : context.events) {
-    event.evaluate(pedSet, obsSet, goals, context, dT);
+    event.evaluate({pedSet, obsSet, goals, context, selector.getGroups(), dT});
   }
 }
 
 /**
- * @brief Goes through each pedestiran group and runs their actions
+ * @brief Runs each action in the behavior
  * 
- * @param pedSet : 
- * @param obsSet : 
- * @param goals : 
- * @param state : 
- * @param dT : 
+ * @param pedSet : pedestrian set
+ * @param obsSet : obstacle set
+ * @param goals : goals module
+ * @param state : next timestep state from pedestrian model 
+ * @param dT : timestep size
  */
 void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
                                  VIPRA::State& state, VIPRA::delta_t dT) {
@@ -171,9 +175,11 @@ void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goa
   for (VIPRA::idx i = 0; i < groupCnt; ++i) {
     const auto& pedestrians = groups.at(i);
     std::for_each(pedestrians.begin(), pedestrians.end(), [&](VIPRA::idx ped) {
-      for (auto& action : actions[i]) {
-        action.performAction(pedSet, obsSet, goals, context, ped, dT, state);
-      }
+      if (!goals.isPedestianGoalMet(ped))
+        for (auto& action : actions[i]) {
+          action.performAction({pedSet, obsSet, goals, context, selector.getGroups(), dT},
+                               ped, state);
+        }
     });
   }
 }

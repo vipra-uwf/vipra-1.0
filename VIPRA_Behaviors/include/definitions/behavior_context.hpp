@@ -11,13 +11,9 @@
 namespace BHVR {
 class Event;
 class Location;
-/**
- * @brief Holds information about the current Behavior, ped states, events, location, types.
- * 
- */
 struct BehaviorContext {
   VIPRA::delta_t              elapsedTime = 0;
-  BHVR::stateUID              environmentState = 0;
+  BHVR::stateUID              environmentState;
   std::vector<BHVR::stateUID> pedStates;
   std::vector<BHVR::typeUID>  types;
   std::vector<BHVR::Event>    events;

@@ -25,64 +25,63 @@ def getArgs():
   diflines = False
   diflineMax = None
 
-  for arg in sys.argv[1::]:
-    if arg == '-idx':
+  i = 1
+  while i < len(sys.argv):
+    if sys.argv[i] == '-idx':
       indexes = True
-      flagCnt += 1
-    elif arg == '-shldr':
-      shldrLen = float(sys.argv[flagCnt + 1])
+    elif sys.argv[i] == '-shldr':
+      i += 1
+      shldrLen = float(sys.argv[i])
       shoulders = True
-      flagCnt += 2
-    elif arg == '-outpath':
-      outpath = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-peds':
-      peds = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-obs':
-      obs = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-xDim':
-      dims = sys.argv[flagCnt + 1].split(',')
+    elif sys.argv[i] == '-outpath':
+      outpath = sys.argv[i + 1]
+      i += 1
+    elif sys.argv[i] == '-peds':
+      i += 1
+      peds = sys.argv[i]
+    elif sys.argv[i] == '-obs':
+      i += 1
+      obs = sys.argv[i]
+    elif sys.argv[i] == '-xDim':
+      i += 1
+      dims = sys.argv[i].split(',')
       xMin = float(dims[0])
       xMax = float(dims[1])
-      flagCnt += 2
-    elif arg == '-yDim':
-      dims = sys.argv[flagCnt + 1].split(',')
+    elif sys.argv[i] == '-yDim':
+      i += 1
+      dims = sys.argv[i].split(',')
       yMin = float(dims[0])
       yMax = float(dims[1])
-      flagCnt += 2
-    elif arg == '-fps':
-      fps = float(sys.argv[flagCnt + 1])
-      flagCnt += 2
-    elif arg == '-idxClr':
+    elif sys.argv[i] == '-fps':
+      i += 1
+      fps = float(sys.argv[i])
+    elif sys.argv[i] == '-idxClr':
       idxColor = True
-      flagCnt += 1
-    elif arg == '-pedClr':
+    elif sys.argv[i] == '-pedClr':
       pedColor = True
-      flagCnt += 1
-    elif arg == '-obsClr':
-      obsColor = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-bckClr':
-      bckColor = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-dif':
-      dif = sys.argv[flagCnt + 1]
-      flagCnt += 2
-    elif arg == '-difalpha':
-      difalpha = float(sys.argv[flagCnt + 1])
-      flagCnt += 2
-    elif arg == '-diflines':
+    elif sys.argv[i] == '-obsClr':
+      i += 1
+      obsColor = sys.argv[i]
+    elif sys.argv[i] == '-bckClr':
+      i += 1
+      bckColor = sys.argv[i]
+    elif sys.argv[i] == '-dif':
+      i += 1
+      dif = sys.argv[i]
+    elif sys.argv[i] == '-difalpha':
+      i += 1
+      difalpha = float(sys.argv[i])
+    elif sys.argv[i] == '-diflines':
       diflines = True
-      flagCnt += 1
-    elif arg == '-dlmax':
-      diflineMax = float(sys.argv[flagCnt + 1])
-      flagCnt += 2
+    elif sys.argv[i] == '-dlmax':
+      i += 1
+      diflineMax = float(sys.argv[i])
     else:
-      if (arg[0] == '-'):
-        print(f'Unknown Flag: {arg}')
+      if (sys.argv[i][0] == '-'):
+        print(f'Unknown Flag: {sys.argv[i]}')
         exit(-1)
+    
+    i += 1
     
 
   if peds == "" or obs == "":
@@ -140,7 +139,7 @@ def makeColors(pedCoords, args):
   if args['pedColor']:
     return np.random.rand(len(pedCoords["0"]), 3)
   else:
-    return [1,0.5,0]
+    return np.full((len(pedCoords["0"]),3),[1,0.5,0])
 
 def plotShoulders(pointsX, pointsY, colors, ax, args):
   shldrLen = args['shldrLen']

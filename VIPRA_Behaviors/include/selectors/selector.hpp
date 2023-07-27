@@ -10,11 +10,12 @@
 #include <randomization/random.hpp>
 #include <selectors/pedestrian_groups.hpp>
 #include <selectors/subselector.hpp>
+#include "definitions/sim_pack.hpp"
 
 namespace BHVR {
 
 /**
- * @brief Selectors choose which pedestrians belong to which type, through subselectors
+ * @brief Combines/Organizes SubSelectors to select pedestrians for types
  * 
  */
 class Selector {
@@ -26,8 +27,7 @@ class Selector {
   Selector(Selector&&) noexcept = default;
   Selector& operator=(Selector&&) noexcept = default;
 
-  void initialize(const std::string&, VIPRA::pRNG_Engine&, BehaviorContext&,
-                  const PedestrianSet&, const ObstacleSet&, const Goals&);
+  void initialize(const std::string&, VIPRA::pRNG_Engine&, Simpack);
 
   void setAllTypes(Ptype);
   void addSubSelector(const SubSelector&);
@@ -51,8 +51,7 @@ class Selector {
                                                     const std::vector<bool>&);
 
   void runSelectors(const VIPRA::idxVec&, const std::string&, VIPRA::pRNG_Engine&,
-                    BehaviorContext&, const PedestrianSet&, const ObstacleSet&,
-                    const Goals&);
+                    Simpack);
   void updateUsedPeds(const VIPRA::idxVec&, std::vector<bool>&);
   void updatePedGroups(const VIPRA::idxVec&, SubSelector&, BehaviorContext&,
                        const std::string&);

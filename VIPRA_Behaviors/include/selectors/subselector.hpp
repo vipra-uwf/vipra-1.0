@@ -18,7 +18,7 @@
 namespace BHVR {
 
 /**
- * @brief Result of a call to a subselector
+ * @brief Result of a selection
  * 
  */
 struct SelectorResult {
@@ -27,7 +27,7 @@ struct SelectorResult {
 };
 
 /**
- * @brief Functor type for sub selectors
+ * @brief Function for choosing which pedestrians have a type
  * 
  */
 using SelectorFunc = std::function<SelectorResult(
@@ -35,7 +35,7 @@ using SelectorFunc = std::function<SelectorResult(
     const ObstacleSet&, const Goals&)>;
 
 /**
- * @brief Subselectors are combined in a Selector to group pedestrians by type
+ * @brief Selects pedestrians for one type, gets combined with other SubSelectors in Selector
  * 
  */
 class SubSelector {

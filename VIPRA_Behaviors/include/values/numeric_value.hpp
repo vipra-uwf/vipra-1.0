@@ -10,15 +10,14 @@
 #include <utility>
 
 namespace BHVR {
-
 /**
- * @brief Used by Numeric Values to get their run-time value
+ * @brief Function for getting the value of a numeric
  * 
  */
 using ValueFunc = std::function<float(BHVR::seed, VIPRA::idx)>;
 
 /**
- * @brief Holds a runtime value for a Behavior
+ * @brief Numeric Values hold runtime float values taken from Behaviors
  * 
  */
 class NumericValue {
@@ -37,7 +36,7 @@ class NumericValue {
 };
 
 /**
- * @brief Holds an exact runtime value
+ * @brief Holds an exact float value
  * 
  */
 struct ExactValue {
@@ -46,7 +45,7 @@ struct ExactValue {
 };
 
 /**
- * @brief Holds a float runtime value that is different for each pedestrian, but the same for the given pedestrian
+ * @brief Holds a random float value for each pedestrian
  * 
  */
 struct RandomFloatValue {
@@ -59,7 +58,7 @@ struct RandomFloatValue {
 };
 
 /**
- * @brief Holds a whole number runtime value that is different for each pedestrian, but the same for the given pedestrian
+ * @brief Holds a random whole number value for each pedestrian
  * 
  */
 struct RandomNumberValue {

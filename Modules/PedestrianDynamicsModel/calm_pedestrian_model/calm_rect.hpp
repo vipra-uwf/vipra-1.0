@@ -76,8 +76,8 @@ struct Rect {
    * @return false 
    */
   [[nodiscard]] inline bool isPointInRect(VIPRA::f3d point) const noexcept {
-    std::vector<VIPRA::f3d> rectPoints{p1, p2, p3, p4};
-    float maxX = p1.x;
+    std::array<VIPRA::f3d, 4> rectPoints{p1, p2, p3, p4};
+    float                     maxX = p1.x;
     for (auto& rectPoint : rectPoints) {
       maxX = std::max(maxX, rectPoint.x);
     }
@@ -85,9 +85,11 @@ struct Rect {
 
     int cnt = 0;
     for (size_t i = 0; i < rectPoints.size(); i++) {
-      auto pt1 = rectPoints[i];
-      auto pt2 = rectPoints[(i + 1) % rectPoints.size()];
-      if (Line::checkIfOnLineSegment(pt1,pt2,point) && Line::orientation(pt1,point,pt2)==0) return true;
+      auto pt1 = rectPoints.at(i);
+      auto pt2 = rectPoints.at((i + 1) % rectPoints.size());
+      if (Line::checkIfOnLineSegment(pt1, pt2, point) &&
+          Line::orientation(pt1, point, pt2) == 0)
+        return true;
 
       Line segment(pt1, pt2);
       Line ptToInf(point, ptInf);
@@ -98,10 +100,10 @@ struct Rect {
 
   // /**
   //  * @brief Returns if the rectangle intersects another
-  //  * 
-  //  * @param other : 
-  //  * @return true 
-  //  * @return false 
+  //  *
+  //  * @param other :
+  //  * @return true
+  //  * @return false
   //  */
   // [[nodiscard]] constexpr bool doesIntersect(const Rect& other) const {
   //   for (VIPRA::idx i1 = 0; i1 < 4; ++i1) {
@@ -135,8 +137,10 @@ struct Rect {
    * @return false 
    */
   [[nodiscard]] static bool doRectanglesIntersect(Rect& r1, Rect& r2) {
-    std::array<Line, 4> s1{Line{r1.p1, r1.p2}, {r1.p2, r1.p3}, {r1.p3, r1.p4}, {r1.p4, r1.p1}};
-    std::array<Line, 4> s2{Line{r2.p1, r2.p2}, {r2.p2, r2.p3}, {r2.p3, r2.p4}, {r2.p4, r2.p1}};
+    std::array<Line, 4> s1{
+        Line{r1.p1, r1.p2}, {r1.p2, r1.p3}, {r1.p3, r1.p4}, {r1.p4, r1.p1}};
+    std::array<Line, 4> s2{
+        Line{r2.p1, r2.p2}, {r2.p2, r2.p3}, {r2.p3, r2.p4}, {r2.p4, r2.p1}};
 
     for (size_t i = 0; i < 4; i++) {
       for (size_t j = 0; j < 4; j++) {
@@ -156,12 +160,14 @@ struct Rect {
    */
   [[nodiscard]] bool doesIntersect(Rect& other) {
     std::array<Line, 4> s1{Line{p1, p2}, {p2, p3}, {p3, p4}, {p4, p1}};
-    std::array<Line, 4> s2{Line{other.p1, other.p2}, {other.p2, other.p3}, {other.p3, other.p4}, {other.p4, other.p1}};
+    std::array<Line, 4> s2{Line{other.p1, other.p2},
+                           {other.p2, other.p3},
+                           {other.p3, other.p4},
+                           {other.p4, other.p1}};
 
     for (size_t i = 0; i < 4; i++) {
       for (size_t j = 0; j < 4; j++) {
-        if (s1.at(i).doesIntersect(s2.at(j)))
-          return true;
+        if (s1.at(i).doesIntersect(s2.at(j))) return true;
       }
     }
 

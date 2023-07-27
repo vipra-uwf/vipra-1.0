@@ -20,8 +20,9 @@ TEST(Calm_Goals_Graph, Graph_Building) {
   PassengerVehicleObstacleSet map;
   CalmPath::PathingGraph      test;
   map.initialize(
-      loader.loadMap("/home/rolland/Documents/VIPRA/vipra/Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap"));
+      loader.loadMap("/home/rolland/Documents/VIPRA/vipra/Maps/obstacle_maps/"
+                     "757_200_182_obstacles/757_200_182_obstacles.omap"));
 
-  test.build(map, 0.1, 0.2);
+  test.build(map, 0.05, 0.25);
   std::cerr << test.toString();
 }

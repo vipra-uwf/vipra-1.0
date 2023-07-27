@@ -5,8 +5,7 @@
 #include <string>
 
 /**
- * @brief Struct for std::unordered_map to allow for lookup with any capitalization
- * @example KEY Key key kEy: all return the same hash
+ * @brief Struct for caseless look up in a std::map
  * 
  */
 struct CaselessStrCompare {

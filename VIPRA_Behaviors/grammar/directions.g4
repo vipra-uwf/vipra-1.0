@@ -1,25 +1,20 @@
 grammar directions;
 
-import lexer_rules;
+import values, lexer_rules;
+
+distance:
+  WITHIN value_numeric
+;
 
 direction:
-  dir WITHIN NUMBER METERS;
+  front |
+  behind
+;
 
-dir:
-  direction_of |
-  infront |
-  behind |
-  around 
-  ;
-
-direction_of:
-  IN DIRECTION OF ID;
-
-infront:
-  IN FRONT;
+front:
+  IN FRONT
+;
 
 behind:
-  BEHIND;
-
-around:
-  AROUND;
+  BEHIND
+;

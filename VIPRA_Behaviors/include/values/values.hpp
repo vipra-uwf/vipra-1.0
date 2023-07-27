@@ -18,11 +18,11 @@ using RandomVal = std::pair<float, float>;
 using RangeVal = std::pair<float, float>;
 
 /**
- * @brief Collapses a range value into one float
+ * @brief Returns a random value in the provided range
  * 
- * @param seed : seed for random engine
- * @param min : minimum value for the range
- * @param max : maximum value for the range
+ * @param seed : randomization seed
+ * @param min : minimum value
+ * @param max : maximum value
  * @return float 
  */
 [[nodiscard]] inline float collapseRangeValue(BHVR::seed seed, float min, float max) {
@@ -32,11 +32,11 @@ using RangeVal = std::pair<float, float>;
 }
 
 /**
- * @brief Gets an ExactValue NumericValue from a Value Number context
+ * @brief Gets an exact numeric value from a value number context
  * 
- * @param ctx : value number context
- * @param seed : seed for random engine
- * @return NumericValue (ExactValue)
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return NumericValue 
  */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_numberContext* ctx,
                                              BHVR::seed                           seed) {
@@ -45,11 +45,11 @@ using RangeVal = std::pair<float, float>;
 }
 
 /**
- * @brief Gets a RandomValue NumericValue from a Random Value context, either number or float
+ * @brief Gets a random numeric value from a value random context
  * 
- * @param ctx : Random value context
- * @param seed : seed for random engine
- * @return NumericValue (RandomNumberValue or RandomFloatValue)
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return NumericValue 
  */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_randomContext* ctx,
                                              BHVR::seed                           seed) {
@@ -67,11 +67,11 @@ using RangeVal = std::pair<float, float>;
 }
 
 /**
- * @brief Gets an ExactValue NumericValue from a range context
+ * @brief Gets an exact numeric value from a value range context 
  * 
- * @param ctx : range value context
- * @param seed : seed for random engine
- * @return NumericValue (ExactValue)
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return NumericValue 
  */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_rangeContext* ctx,
                                              BHVR::seed                          seed) {
@@ -89,10 +89,10 @@ using RangeVal = std::pair<float, float>;
 }
 
 /**
- * @brief Gets an ExactValue NumericValue from a value float context
+ * @brief Gets an exact numeric value from a value float context
  * 
- * @param ctx : value float context
- * @param seed : seed for random engine
+ * @param ctx : value context
+ * @param seed : not used
  * @return NumericValue 
  */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_floatContext* ctx,
@@ -102,11 +102,11 @@ using RangeVal = std::pair<float, float>;
 }
 
 /**
- * @brief Gets a NumericValue from a Value Numeric context, Can be exact or random depending on the context
+ * @brief Gets a numeric value from a numeric value context
  * 
- * @param ctx : numeric value context
- * @param seed : seed for random engine
- * @return NumericValue (ExactValue or RandomValue)
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return NumericValue 
  */
 [[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_numericContext* ctx,
                                              BHVR::seed                            seed) {
@@ -123,6 +123,27 @@ using RangeVal = std::pair<float, float>;
   throw std::runtime_error("");
   return {};
 }
+
+/**
+ * @brief Creates a f3d from a Value Coord Context
+ * 
+ * @param ctx : value context
+ * @param seed : randomization seed
+ * @return VIPRA::f3d 
+ */
+[[nodiscard]] inline VIPRA::f3d getCoord(BehaviorParser::Value_coordContext* ctx,
+                                         BHVR::seed                          seed) {
+  auto       values = ctx->value_numeric();
+  VIPRA::f3d val;
+
+  for (VIPRA::idx i = 0; i < values.size(); ++i) {
+    auto num = getNumeric(values.at(i), seed);
+    val[i] = num.value(0);
+  }
+
+  return val;
+}
+
 }  // namespace BHVR
 
 #endif

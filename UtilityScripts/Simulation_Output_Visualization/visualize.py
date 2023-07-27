@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation, PillowWriter
+from matplotlib.animation import FuncAnimation, PillowWriter, FFMpegFileWriter
 import numpy as np
 
 from visUtil import getArgs, plotDif, getPeds, getObs, makeColors, printProgressBar, getPoints, prepPlot, plotObs, plotShoulders, plotPeds, plotIndexes, printProgressBar, printProgressBar
@@ -29,5 +29,5 @@ def animate(i):
 
 
 ani = FuncAnimation(fig, animate, frames=pedCoords, blit=True)
-ani.save(args['outpath'], dpi=300, writer=PillowWriter(fps=args['fps']), progress_callback=printProgressBar)
+ani.save(args['outpath'], dpi=300, writer=FFMpegFileWriter(fps=args['fps']), progress_callback=printProgressBar)
 printProgressBar(timestepCnt, timestepCnt, 'Done')

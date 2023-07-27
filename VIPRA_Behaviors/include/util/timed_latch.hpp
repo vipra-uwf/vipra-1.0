@@ -10,25 +10,26 @@
 namespace BHVR {
 
 /**
- * @brief Collection of timed latches, one for each pedestrian
- * @note Need to resize the collection to the correct number of pedestrians before use
+ * @brief Holds time released latches
+ * 
  */
 class TimedLatchCollection {
  public:
   explicit TimedLatchCollection(BHVR::NumericValue value) : duration(std::move(value)) {}
 
   /**
-   * @brief Sets the amount of latches
+   * @brief Sets the size of the container
    * 
-   * @param latchCnt : number of pedestrians
+   * @param latchCnt : number of latches
    */
   void resize(VIPRA::size latchCnt) { startTimes.resize(latchCnt, -1); }
 
   /**
-   * @brief Sets the pedestrians latch, it stays latched until the pedestrians duration time has passed. Subsequent calls do not reset the time for unlatching.
+   * @brief Sets the latch for pedestrian at pedIdx
+   * @note subsequent calls do not update the latched time, until the latch is unlatched
    * 
    * @param startTime : current simulation time
-   * @param pedIdx : pedestrian latch to latch
+   * @param pedIdx : pedestrian index to latch
    */
   void latch(VIPRA::time_s startTime, VIPRA::idx pedIdx) {
     if (startTimes.at(pedIdx) == -1) {
@@ -37,12 +38,12 @@ class TimedLatchCollection {
   }
 
   /**
-   * @brief Checks if the duration time has elapsed since the latch was toggled
+   * @brief Checks if the latches duration time has passed since it was latched
    * 
    * @param currTime : current simulation time
-   * @param pedIdx : pedestrian index to check
-   * @return true, duration has not passed
-   * @return false, latch not set or duration has passed
+   * @param pedIdx : pedestrian index latch to check
+   * @return true : if the latch is set and the duration has not elapsed
+   * @return false : if the latch is NOT set or the latch is unlatched
    */
   bool check(VIPRA::time_s currTime, VIPRA::idx pedIdx) {
     if (startTimes.at(pedIdx) == -1) return false;
@@ -57,10 +58,10 @@ class TimedLatchCollection {
   }
 
   /**
-   * @brief Returns the duration value for the given ped
+   * @brief Returns the duration for a pedestrians latch
    * 
-   * @param pedIdx : pedestrian index
-   * @return float, duration time
+   * @param pedIdx : pedestrian index to get duration of
+   * @return float 
    */
   float getDuration(VIPRA::idx pedIdx) { return duration.value(pedIdx); }
 
@@ -69,13 +70,13 @@ class TimedLatchCollection {
   std::vector<VIPRA::time_s> startTimes;
 
   /**
-   * @brief Checks if the current time is within the duration
+   * @brief Checks if the current time is within checkTime +- timestep size
    * 
    * @param currTime : current simulation time
-   * @param checkTime : time duration ends
+   * @param checkTime : middle of time range
    * @param dT : timestep size
-   * @return true - in same timestep as duration end
-   * @return false - not in same timestep as duration end
+   * @return true : if inside time range
+   * @return false : if NOT inside time range
    */
   static inline constexpr bool inTimeStep(VIPRA::time_s currTime, VIPRA::time_s checkTime,
                                           VIPRA::delta_t dT) {

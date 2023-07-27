@@ -9,7 +9,9 @@
 
 namespace fs = std::filesystem;
 
-const auto testValues = fs::current_path().string() + "/modules/obstacle_set/passenger_vehicle_obstacle_set/test_values/";
+const auto testValues =
+    fs::current_path().string() +
+    "/modules/obstacle_set/passenger_vehicle_obstacle_set/test_values/";
 
 PointMapLoader mapLoader;
 
@@ -40,8 +42,8 @@ TEST(Passenger_Vehicle_ObstacleSet, Get_Map_Dimensions) {
   PassengerVehicleObstacleSet sut;
   sut.initialize(mapLoader.loadMap(testValues + "goodmap.omap"));
   auto dims = sut.getMapDimensions();
-  EXPECT_NEAR(dims['x'], 24.2, 0.001);
-  EXPECT_NEAR(dims['y'], 7, 0.001);
+  EXPECT_NEAR(dims.second['x'], 24.2, 0.001);
+  EXPECT_NEAR(dims.second['y'], 7, 0.001);
 }
 
 TEST(Passenger_Vehicle_ObstacleSet, Get_Object_Types) {
@@ -88,10 +90,12 @@ TEST(Passenger_Vehicle_ObstacleSet, Nearest_Obstacle_In_Direction_For_Set) {
 TEST(Passenger_Vehicle_ObstacleSet, Nearest_Obstacle_In_Direction_For_Individual) {
   PassengerVehicleObstacleSet sut;
   sut.initialize(mapLoader.loadMap(testValues + "goodmap.omap"));
-  const auto nearestObs = sut.nearestObstacleInDirection(VIPRA::f3d{0, 1}, VIPRA::f3d{0, -1});
+  const auto nearestObs =
+      sut.nearestObstacleInDirection(VIPRA::f3d{0, 1}, VIPRA::f3d{0, -1});
   EXPECT_EQ(nearestObs, VIPRA::f3d(0, 0, 0));
 
-  const auto nearestObs2 = sut.nearestObstacleInDirection(VIPRA::f3d{0, 1}, VIPRA::f3d{0, 1});
+  const auto nearestObs2 =
+      sut.nearestObstacleInDirection(VIPRA::f3d{0, 1}, VIPRA::f3d{0, 1});
   EXPECT_EQ(nearestObs2, VIPRA::f3d(0, 3.46, 0));
 }
 

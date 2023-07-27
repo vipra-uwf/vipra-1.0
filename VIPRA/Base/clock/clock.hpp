@@ -76,14 +76,14 @@ struct fmt::v9::formatter<VIPRA::seconds> {
                      seconds.count(), milliseconds.count());
   }
 };
-interval
-    /**
+
+/**
  * @brief Formatter for time in spdlog
  * 
  * @tparam  : 
  */
-    template <>
-    struct fmt::v9::formatter<VIPRA::milli> {
+template <>
+struct fmt::v9::formatter<VIPRA::milli> {
   static constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
     return ctx.end();
   }

@@ -2,10 +2,24 @@
 #include "json_pedestrian_loader.hpp"
 #include "definitions/type_definitions.hpp"
 
+/**
+ * @brief Configures the JsonPedestrianLoader.
+ *
+ * @param config The configuration map.
+ */
 void JsonPedestrianLoader::configure(const VIPRA::CONFIG::Map&) {}
 
+/**
+ * @brief Initializes the JsonPedestrianLoader.
+ */
 void JsonPedestrianLoader::initialize() {}
 
+/**
+ * @brief Loads pedestrians from a file.
+ *
+ * @param filePath The path to the pedestrian file.
+ * @return A vector of pedestrians data.
+ */
 std::vector<VIPRA::pcoord> JsonPedestrianLoader::loadPedestrians(
     const std::string& filePath) const {
   Json::Value             jsonDocument;

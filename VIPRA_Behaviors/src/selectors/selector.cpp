@@ -4,6 +4,7 @@
 #include <randomization/random.hpp>
 #include <selectors/selector.hpp>
 #include "behavior/exceptions.hpp"
+#include "definitions/sim_pack.hpp"
 
 namespace BHVR {
 
@@ -17,12 +18,11 @@ namespace BHVR {
  * @param goals : 
  */
 void Selector::initialize(const std::string& behaviorName, VIPRA::pRNG_Engine& rngEngine,
-                          BehaviorContext& context, const PedestrianSet& pedSet,
-                          const ObstacleSet& obsSet, const Goals& goals) {
-  pedGroups.initialize(allTypes, pedSet.getNumPedestrians());
+                          Simpack pack) {
+  pedGroups.initialize(allTypes, pack.pedSet.getNumPedestrians());
 
   auto selectorIdxs = orderSelectors();
-  runSelectors(selectorIdxs, behaviorName, rngEngine, context, pedSet, obsSet, goals);
+  runSelectors(selectorIdxs, behaviorName, rngEngine, pack);
   sortGroups();
   pedGroups.cleanUsed();
 }
@@ -40,17 +40,15 @@ void Selector::initialize(const std::string& behaviorName, VIPRA::pRNG_Engine& r
  */
 void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs,
                             const std::string&   behaviorName,
-                            VIPRA::pRNG_Engine& rngEngine, BehaviorContext& context,
-                            const PedestrianSet& pedSet, const ObstacleSet& obsSet,
-                            const Goals& goals) {
+                            VIPRA::pRNG_Engine& rngEngine, Simpack pack) {
   std::for_each(selectorIdxs.begin(), selectorIdxs.end(), [&](VIPRA::idx index) {
     auto& selector = subSelectors[index];
-    auto  selectedPeds =
-        selectPedsFromGroup(selector, rngEngine, pedSet, obsSet, goals, behaviorName);
-    updatePedGroups(selectedPeds, selector, context, behaviorName);
+    auto selectedPeds = selectPedsFromGroup(selector, rngEngine, pack.pedSet, pack.obsSet,
+                                            pack.goals, behaviorName);
+    updatePedGroups(selectedPeds, selector, pack.context, behaviorName);
   });
 
-  pedGroups[0].resize(pedSet.getNumPedestrians());
+  pedGroups[0].resize(pack.pedSet.getNumPedestrians());
   std::iota(pedGroups[0].begin(), pedGroups[0].end(), 0);
 }
 
@@ -198,14 +196,29 @@ VIPRA::idxVec Selector::orderSelectors() {
 
 // ----------------- GETTERS/SETTERS --------------------------------------------------------------------
 
+/**
+ * @brief Sets what types are available
+ * 
+ * @param pedTypes : available types
+ */
 void Selector::setAllTypes(Ptype pedTypes) { allTypes = pedTypes; }
 
 void Selector::addSubSelector(const SubSelector& subSelector) {
   subSelectors.emplace_back(subSelector);
 }
 
+/**
+ * @brief Returns how many subselectors the selector has
+ * 
+ * @return VIPRA::size 
+ */
 VIPRA::size Selector::selectorCount() const { return subSelectors.size(); }
 
+/**
+ * @brief Returns the groups container
+ * 
+ * @return const GroupsContainer& 
+ */
 const GroupsContainer& Selector::getGroups() const { return pedGroups; }
 
 // ----------------- END GETTERS/SETTERS --------------------------------------------------------------------

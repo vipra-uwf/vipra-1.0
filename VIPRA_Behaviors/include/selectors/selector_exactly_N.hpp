@@ -7,9 +7,9 @@
 
 namespace BHVR {
 /**
-   * @brief Selects exactly N pedestrians from a group to be given a type
-   * 
-   */
+ * @brief Selects an exact number of pedestrians
+ * 
+ */
 struct SelectorExactlyN {
   NumericValue   selectCount;
   SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,

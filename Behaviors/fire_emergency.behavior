@@ -1,8 +1,36 @@
+Types:
+  individual
+  aggressive
+.
 
-consider a person.
+Selector:
+  Type: individual
+  Select: Everyone
+.
 
-everyone is a person.
+Selector: 
+  Type: aggressive
+  From: individual
+  Select: 50%
+.
 
-a !fire will occur after 0 seconds from the !start.
+Event:
+  Name: Fire
+  Start: 0 seconds after !Start
+.
 
-a person will @walk 2.0x their normal speed given a !fire has occurred.
+/*
+Action (individual):
+  Stimulus: !Fire occurring
+  Response: scale velocity 2.0
+.
+*/
+
+Action (aggressive):
+  Stimulus:
+    !Fire occurring
+  Response:
+    scale target velocity -0.5
+  Target: 
+    nearest pedestrian in front within 0.5
+.

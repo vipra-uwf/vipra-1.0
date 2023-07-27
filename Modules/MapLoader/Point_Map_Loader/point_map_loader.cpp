@@ -1,10 +1,24 @@
 
 #include "point_map_loader.hpp"
 
+/**
+ * @brief Configures the PointMapLoader.
+ *
+ * @param config The configuration map.
+ */
 void PointMapLoader::configure(const VIPRA::CONFIG::Map&) {}
 
+/**
+ * @brief Initializes the PointMapLoader.
+ */
 void PointMapLoader::initialize() {}
 
+/**
+ * @brief Loads PointMap data from a file.
+ *
+ * @param filePath The path to the PointMap file.
+ * @return A unique pointer to the loaded PointMap data.
+ */
 std::unique_ptr<VIPRA::MapData> PointMapLoader::loadMap(
     const std::string& filePath) const {
   Json::Value             jsonDocument;

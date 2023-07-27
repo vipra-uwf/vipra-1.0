@@ -1,9 +1,0 @@
-consider an person.
-
-everyone is a person.
-
-consider a location abc at (0.0,0.0) with a radius of 10.5.
-consider a location bca at (5, 2).
-consider a location rect at (3.1, 5) with a length of 2 and a width of 5.
-
-a person will always @stop.

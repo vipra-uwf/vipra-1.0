@@ -4,7 +4,12 @@
 #include "selectors/selector_everyone.hpp"
 
 namespace BHVR {
-
+/**
+ * @brief Selects all pedestrians from a group
+ * 
+ * @param group : group to pull from
+ * @return SelectorResult 
+ */
 SelectorResult SelectorEveryone::operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
                                             const VIPRA::idxVec& group,
                                             const PedestrianSet&, const ObstacleSet&,

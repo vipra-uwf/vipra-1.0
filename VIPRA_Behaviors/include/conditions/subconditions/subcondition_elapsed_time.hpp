@@ -8,18 +8,14 @@
 #include <time/time.hpp>
 #include <util/timed_latch.hpp>
 #include <values/numeric_value.hpp>
+#include "definitions/sim_pack.hpp"
 
 namespace BHVR {
-/**
- * @brief Returns true after a given duration from an event starting
- * 
- */
 class SubConditionElapsedTimeFromEvent {
  public:
   SubConditionElapsedTimeFromEvent(BHVR::NumericValue, VIPRA::idx);
 
-  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&,
-                  const BehaviorContext&, VIPRA::idx, VIPRA::delta_t);
+  bool operator()(Simpack, VIPRA::idx, Target);
 
  private:
   VIPRA::idx         event;
