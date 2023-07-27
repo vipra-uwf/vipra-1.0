@@ -47,6 +47,11 @@ struct Rect {
     return p1;
   }
 
+  /**
+   * @brief Returns the area of the rectangle
+   * 
+   * @return constexpr float 
+   */
   [[nodiscard]] inline constexpr float area() const {
     // Area = abs( (Bx * Ay - Ax * By) + (Cx * By - Bx * Cy) + (Ax * Cy - Cx * Ay) ) / 2
 

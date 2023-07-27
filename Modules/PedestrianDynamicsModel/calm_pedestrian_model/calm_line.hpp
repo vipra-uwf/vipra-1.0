@@ -13,6 +13,13 @@ struct Line {
     return ((p1 == other.p1) && (p2 == other.p2)) || ((p1 == other.p2) && (p2 == other.p1));
   }
 
+  /**
+   * @brief Check if the line segment intersects with another line segment
+   * 
+   * @param other 
+   * @return true 
+   * @return false 
+   */
   [[nodiscard]] inline constexpr bool doesIntersect(const Line& other) const {
     if (p1 == other.p1 || p1 == other.p2 || p2 == other.p1 || p2 == other.p2)
       return true;
@@ -42,11 +49,28 @@ struct Line {
            point.y >= std::min(p1.y, p2.y);
   }
 
+  /**
+   * @brief Checks if pt is on the line segment, provided the orientation between the 3 points is known to be 0
+   * 
+   * @param lineStart 
+   * @param lineEnd 
+   * @param pt 
+   * @return true 
+   * @return false 
+   */
   [[nodiscard]] static inline constexpr bool checkIfOnLineSegment(VIPRA::f3d lineStart, VIPRA::f3d lineEnd, VIPRA::f3d pt) {
     return pt.x <= std::max(lineStart.x, lineEnd.x) && pt.y <= std::max(lineStart.y, lineEnd.y) &&
            pt.x >= std::min(lineStart.x, lineEnd.x) && pt.y >= std::min(lineStart.y, lineEnd.y);
   }
 
+  /**
+   * @brief Calculates the orientation of point1, point2, point 3.
+   * 
+   * @param point1 
+   * @param point2 
+   * @param point3 
+   * @return The function returns following values: 0 --> p, q and r are collinear; 1 --> Clockwise; 2 --> Counterclockwise
+   */
   [[nodiscard]] static constexpr int orientation(VIPRA::f3d point1, VIPRA::f3d point2, VIPRA::f3d point3) {
     float val = (point2.y - point1.y) * (point3.x - point2.x) - (point2.x - point1.x) * (point3.y - point2.y);
 
@@ -59,6 +83,12 @@ struct Line {
     return 0;
   }
 
+  /**
+   * @brief Calculate the shortest distance from the line to a point
+   * 
+   * @param point 
+   * @return float 
+   */
   [[nodiscard]] float shortestDistanceTo(VIPRA::f3d point) const {
     float dotProd = (p2.x - p1.x) * (point.x - p1.x) + (p2.y - p1.y) * (point.y - p1.y);
 
