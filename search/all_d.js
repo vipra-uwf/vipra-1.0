@@ -10,6 +10,7 @@ var searchData=
   ['operator_2d_3d_7',['operator-=',['../d4/d2e/classBHVR_1_1Ptype.html#ab61b179da186a603665b6aea2e410ef6',1,'BHVR::Ptype::operator-=(typeUID type) noexcept'],['../d4/d2e/classBHVR_1_1Ptype.html#acf4508e49a09228b5794fd2625e9793e',1,'BHVR::Ptype::operator-=(Ptype type) noexcept']]],
   ['operator_3d_3d_8',['operator==',['../d0/def/structCalmPath_1_1GridPoint.html#a087d202d9429ec96b2482ada8dd04493',1,'CalmPath::GridPoint::operator==()'],['../d4/d2e/classBHVR_1_1Ptype.html#a605c937aa85f42e094b41d6753de824c',1,'BHVR::Ptype::operator==()']]],
   ['operator_5b_5d_9',['operator[]',['../d9/d1d/classBHVR_1_1GroupsContainer.html#a4059372a1d6d45a98e911d692de8c782',1,'BHVR::GroupsContainer']]],
-  ['outputdatawriter_10',['OutputDataWriter',['../d9/d09/classOutputDataWriter.html',1,'']]],
-  ['outputdatawriterexception_11',['OutputDataWriterException',['../dd/dec/classOutputDataWriterException.html',1,'']]]
+  ['orientation_10',['orientation',['../da/d05/structLine.html#ab66ec6442d7d0f5c117028939be2ef15',1,'Line']]],
+  ['outputdatawriter_11',['OutputDataWriter',['../d9/d09/classOutputDataWriter.html',1,'']]],
+  ['outputdatawriterexception_12',['OutputDataWriterException',['../dd/dec/classOutputDataWriterException.html',1,'']]]
 ];

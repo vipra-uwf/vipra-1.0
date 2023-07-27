@@ -12,9 +12,10 @@ var searchData=
   ['setstatus_9',['setStatus',['../dd/d86/classBHVR_1_1Event.html#a2f162645c29c43bf154d270373214789',1,'BHVR::Event']]],
   ['setused_10',['setUsed',['../d9/d1d/classBHVR_1_1GroupsContainer.html#a6b4d0711f4cc03922501316795960e73',1,'BHVR::GroupsContainer']]],
   ['setvalue_11',['setValue',['../d5/dae/classBHVR_1_1AttributeHandling.html#aee5b338673132a238d15984fedf6d585',1,'BHVR::AttributeHandling']]],
-  ['size_12',['size',['../d9/d1d/classBHVR_1_1GroupsContainer.html#af31df9f26b1833d21bb67e0f66ee6bf6',1,'BHVR::GroupsContainer']]],
-  ['start_13',['start',['../d8/d95/classVIPRA_1_1Clock.html#a98d4e8003e6b86c7f3dc9cc264a99483',1,'VIPRA::Clock']]],
-  ['stop_14',['stop',['../d8/d95/classVIPRA_1_1Clock.html#aea598c35321dd78197ec3bc6bc05de51',1,'VIPRA::Clock']]],
-  ['storevalue_15',['storeValue',['../d5/dae/classBHVR_1_1AttributeHandling.html#ac2fe0737e1168d9b76aa8d57dd7c1f26',1,'BHVR::AttributeHandling']]],
-  ['subconditionelapsedtimefromevent_16',['SubConditionElapsedTimeFromEvent',['../d8/d01/classBHVR_1_1SubConditionElapsedTimeFromEvent.html#a22c9b0781219d24d1506ae7bd07ecdee',1,'BHVR::SubConditionElapsedTimeFromEvent']]]
+  ['shortestdistanceto_12',['shortestDistanceTo',['../da/d05/structLine.html#a4e9edc02c17af67385d135dfad9bfe38',1,'Line']]],
+  ['size_13',['size',['../d9/d1d/classBHVR_1_1GroupsContainer.html#af31df9f26b1833d21bb67e0f66ee6bf6',1,'BHVR::GroupsContainer']]],
+  ['start_14',['start',['../d8/d95/classVIPRA_1_1Clock.html#a98d4e8003e6b86c7f3dc9cc264a99483',1,'VIPRA::Clock']]],
+  ['stop_15',['stop',['../d8/d95/classVIPRA_1_1Clock.html#aea598c35321dd78197ec3bc6bc05de51',1,'VIPRA::Clock']]],
+  ['storevalue_16',['storeValue',['../d5/dae/classBHVR_1_1AttributeHandling.html#ac2fe0737e1168d9b76aa8d57dd7c1f26',1,'BHVR::AttributeHandling']]],
+  ['subconditionelapsedtimefromevent_17',['SubConditionElapsedTimeFromEvent',['../d8/d01/classBHVR_1_1SubConditionElapsedTimeFromEvent.html#a22c9b0781219d24d1506ae7bd07ecdee',1,'BHVR::SubConditionElapsedTimeFromEvent']]]
 ];
