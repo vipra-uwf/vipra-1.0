@@ -50,53 +50,94 @@ struct Rect {
   /**
    * @brief Returns the area of the rectangle
    * 
-   * @return constexpr float 
+   * @return constexpr float : area
    */
   [[nodiscard]] inline constexpr float area() const {
-    // Area = abs( (Bx * Ay - Ax * By) + (Cx * By - Bx * Cy) + (Ax * Cy - Cx * Ay) ) / 2
+    float area1 = triangleArea(p1, p2, p3);
 
-    // p1, p2, p4
-    float area1 = std::abs((p2.x * p1.y - p1.x * p2.y) + (p4.x * p2.y - p2.x * p4.y) +
-                           (p1.x * p4.y - p4.x * p1.y)) /
-                  two;
-
-    // p3, p4, p2
-    float area2 = std::abs((p4.x * p3.y - p3.x * p4.y) + (p2.x * p4.y - p4.x * p2.y) +
-                           (p3.x * p2.y - p2.x * p3.y)) /
-                  two;
+    float area2 = triangleArea(p1, p3, p4);
 
     return (area1 += area2);
   }
 
   /**
    * @brief Returns if the point is inside the rectangle
-   * 
-   * @param point : 
-   * @return true 
-   * @return false 
+   *
+   * @param point : point to check
+   * @return true : if inside rectangle
+   * @return false : if NOT inside rectangle
    */
-  [[nodiscard]] inline bool isPointInRect(VIPRA::f3d point) const noexcept {
-    std::array<VIPRA::f3d, 4> rectPoints{p1, p2, p3, p4};
-    float                     maxX = p1.x;
-    for (auto& rectPoint : rectPoints) {
-      maxX = std::max(maxX, rectPoint.x);
-    }
-    VIPRA::f3d ptInf(2 * maxX, point.y);
+  [[nodiscard]] inline constexpr bool isPointInRect(VIPRA::f3d point) const noexcept {
+    float areaTri1 = triangleArea(p1, p2, point);
 
-    int cnt = 0;
-    for (size_t i = 0; i < rectPoints.size(); i++) {
-      auto pt1 = rectPoints.at(i);
-      auto pt2 = rectPoints.at((i + 1) % rectPoints.size());
-      if (Line::checkIfOnLineSegment(pt1, pt2, point) &&
-          Line::orientation(pt1, point, pt2) == 0)
-        return true;
+    float areaTri2 = triangleArea(p2, p3, point);
 
-      Line segment(pt1, pt2);
-      Line ptToInf(point, ptInf);
-      if (segment.doesIntersect(ptToInf)) cnt++;
-    }
-    return (cnt % 2 == 1);
+    float areaTri3 = triangleArea(p3, p4, point);
+
+    float areaTri4 = triangleArea(p4, p1, point);
+
+    return (areaTri1 += areaTri2 += areaTri3 += areaTri4) <= area() + areaError;
   }
+
+  // /**
+  //  * @brief Returns if the point is inside the rectangle
+  //  *
+  //  * @param point :
+  //  * @return true
+  //  * @return false
+  //  */
+  // [[nodiscard]] inline bool isPointInRect(VIPRA::f3d point) const noexcept {
+  //   std::array<VIPRA::f3d, 4> rectPoints{p1, p2, p3, p4};
+  //   float                     maxX = p1.x;
+  //   for (auto& rectPoint : rectPoints) {
+  //     maxX = std::max(maxX, rectPoint.x);
+  //   }
+  //   VIPRA::f3d ptInf(2 * maxX, point.y);
+
+  //   int cnt = 0;
+  //   for (size_t i = 0; i < rectPoints.size(); i++) {
+  //     auto pt1 = rectPoints.at(i);
+  //     auto pt2 = rectPoints.at((i + 1) % rectPoints.size());
+  //     if (Line::checkIfOnLineSegment(pt1, pt2, point) &&
+  //         Line::orientation(pt1, point, pt2) == 0)
+  //       return true;
+
+  //     Line segment(pt1, pt2);
+  //     Line ptToInf(point, ptInf);
+  //     if (segment.doesIntersect(ptToInf)) cnt++;
+  //   }
+  //   return (cnt % 2 == 1);
+  // }
+
+  // /**
+  //  * @brief Returns if the point is inside the rectangle
+  //  *
+  //  * @param point :
+  //  * @return true
+  //  * @return false
+  //  */
+  // [[nodiscard]] inline bool isPointInRect(VIPRA::f3d point) const noexcept {
+  //   std::array<VIPRA::f3d, 4> rectPoints{p1, p2, p3, p4};
+  //   float                     maxX = p1.x;
+  //   for (auto& rectPoint : rectPoints) {
+  //     maxX = std::max(maxX, rectPoint.x);
+  //   }
+  //   VIPRA::f3d ptInf(2 * maxX, point.y);
+
+  //   int cnt = 0;
+  //   for (size_t i = 0; i < rectPoints.size(); i++) {
+  //     auto pt1 = rectPoints.at(i);
+  //     auto pt2 = rectPoints.at((i + 1) % rectPoints.size());
+  //     if (Line::checkIfOnLineSegment(pt1, pt2, point) &&
+  //         Line::orientation(pt1, point, pt2) == 0)
+  //       return true;
+
+  //     Line segment(pt1, pt2);
+  //     Line ptToInf(point, ptInf);
+  //     if (segment.doesIntersect(ptToInf)) cnt++;
+  //   }
+  //   return (cnt % 2 == 1);
+  // }
 
   // /**
   //  * @brief Returns if the rectangle intersects another
@@ -189,6 +230,25 @@ struct Rect {
     }
 
     return minMax;
+  }
+
+  static constexpr float areaError = 0.0001;
+
+  /**
+   * @brief Gets the area of a triangle from 3 points
+   * 
+   * @param point1 : tri point 
+   * @param point2 : tri point 
+   * @param point3 : tri point 
+   * @return constexpr float : triangle area
+   */
+  [[nodiscard]] static inline constexpr float triangleArea(VIPRA::f3d point1,
+                                                           VIPRA::f3d point2,
+                                                           VIPRA::f3d point3) {
+    return std::abs((point2.x * point1.y - point1.x * point2.y) +
+                    (point3.x * point2.y - point2.x * point3.y) +
+                    (point1.x * point3.y - point3.x * point1.y)) /
+           2;
   }
 };
 

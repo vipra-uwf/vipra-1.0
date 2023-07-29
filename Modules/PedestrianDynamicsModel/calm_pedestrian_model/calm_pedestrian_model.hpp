@@ -56,12 +56,15 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   VIPRA::State       modelState;
   VIPRA::pRNG_Engine rand{};
 
+  std::vector<Line> pedShoulders;
+
   static constexpr VIPRA::delta_t slidingGoalTime = 0.1F;
 
   void calculatePropulsion(const PedestrianSet&, const Goals&);
   void calculateRepulsion(const PedestrianSet&, const Goals&);
   void calculateBetas(const PedestrianSet&);
 
+  void calculateShoulders(const PedestrianSet&, const Goals&);
   void calculateNeartestNeighbors(const PedestrianSet&, const ObstacleSet&, const Goals&);
   void calculateDistanceMatrices(const PedestrianSet&);
   void updateModelState(const PedestrianSet&, const Goals&, VIPRA::delta_t,
@@ -70,14 +73,13 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   [[nodiscard]] static bool objectSpatialTest(const Rect&, VIPRA::f3d objLeft,
                                               VIPRA::f3d objRight);
 
-  [[nodiscard]] static bool  isPedInDirectionOfGoal(VIPRA::pcoord, VIPRA::goal,
-                                                    VIPRA::pcoord other);
-  [[nodiscard]] static bool  objectDirectionTest(VIPRA::pcoord, VIPRA::veloc,
-                                                 VIPRA::f3d objCoords);
-  [[nodiscard]] static float checkBlockedPath(VIPRA::pcoord, VIPRA::veloc, float shldrWid,
-                                              VIPRA::dist maxDist, const ObstacleSet&);
-  [[nodiscard]] static Line  getShoulderPoints(VIPRA::pcoord, VIPRA::goal, float);
-  [[nodiscard]] static Rect  makeRectFromShldrs(VIPRA::pcoord, VIPRA::goal, float);
+  [[nodiscard]] static bool isPedInDirectionOfGoal(VIPRA::pcoord, VIPRA::goal,
+                                                   VIPRA::pcoord other);
+  [[nodiscard]] static bool objectDirectionTest(VIPRA::pcoord, VIPRA::veloc,
+                                                VIPRA::f3d objCoords);
+  [[nodiscard]] float checkBlockedPath(VIPRA::idx, VIPRA::veloc, VIPRA::dist maxDist,
+                                       const ObstacleSet&);
+  [[nodiscard]] Rect  makeRectFromShldrs(VIPRA::idx, VIPRA::pcoord, VIPRA::goal);
   [[nodiscard]] static VIPRA::f3d calculateSpeedDensity(const PedestrianSet&);
   [[nodiscard]] static float      calculateBeta(VIPRA::dist);
 
