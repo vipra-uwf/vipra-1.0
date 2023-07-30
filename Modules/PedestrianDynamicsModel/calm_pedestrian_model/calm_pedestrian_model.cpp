@@ -14,14 +14,13 @@ VIPRA::State& CalmPedestrianModel::timestep(const PedestrianSet& pedSet,
                                             const ObstacleSet&   obstacleSet,
                                             const Goals& goals, VIPRA::delta_t time,
                                             VIPRA::t_step timestep) {
+  calculateShoulders(pedSet, goals);
   calculateNeartestNeighbors(pedSet, obstacleSet, goals);
   calculateBetas(pedSet);
   calculatePropulsion(pedSet, goals);
   updateModelState(pedSet, goals, time, timestep);
 
-  // TODO(rolland) : re-enable collision detection
-  if(timestep>0)
-    collision.raceDetection(dynamic_cast<const PedestrianSet&>(pedSet), peds, goals, timestep);
+  if (timestep > 0) collision.raceDetection(pedSet, peds, goals, timestep);
 
   return modelState;
 }
@@ -43,7 +42,7 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const PedestrianSet& pedSet
 
     VIPRA::pcoord pedCoords = coords.at(i);
     VIPRA::goal   pedGoal = goals.getCurrentGoal(i);
-    Rect          pedRect = makeRectFromShldrs(pedCoords, pedGoal, peds.shoulders.at(i));
+    Rect          pedRect = makeRectFromShldrs(i, pedCoords, pedGoal);
 
     VIPRA::dist nearestDist = std::numeric_limits<VIPRA::dist>::max();
 
@@ -55,12 +54,10 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const PedestrianSet& pedSet
 
       if (distance >= nearestDist) continue;
 
-      Line otherShldrs =
-          getShoulderPoints(otherCoords, goals.getCurrentGoal(j), peds.shoulders.at(j));
-
       if (!isPedInDirectionOfGoal(pedCoords, pedGoal, otherCoords)) continue;
 
-      if (!objectSpatialTest(pedRect, otherShldrs.p1, otherShldrs.p2)) continue;
+      if (!objectSpatialTest(pedRect, pedShoulders.at(j).p1, pedShoulders.at(j).p2))
+        continue;
 
       nearestDist = distance;
     }
@@ -140,8 +137,6 @@ void CalmPedestrianModel::updateModelState(const PedestrianSet& pedSet,
     }
 
     modelState.coords[i] = pedCoord + (modelState.velocities[i] * time);
-
-    modelState.affector[i] = VIPRA::Affector::PED_MODEL;
   }
 }
 
@@ -210,10 +205,10 @@ bool CalmPedestrianModel::objectSpatialTest(const Rect& collisionRect, VIPRA::f3
  * @param obsSet :
  * @return float
  */
-float CalmPedestrianModel::checkBlockedPath(VIPRA::pcoord coords, VIPRA::veloc velocity,
-                                            float shldrWid, VIPRA::dist maxDist,
+float CalmPedestrianModel::checkBlockedPath(VIPRA::idx pedIdx, VIPRA::veloc velocity,
+                                            VIPRA::dist        maxDist,
                                             const ObstacleSet& obsSet) {
-  const Line shoulders = getShoulderPoints(coords, velocity, shldrWid);
+  Line& shoulders = pedShoulders.at(pedIdx);
   if (shoulders.p1 == shoulders.p2) {
     return -1;
   }
@@ -244,27 +239,27 @@ inline float CalmPedestrianModel::calculateBeta(VIPRA::dist distance) {
   return (valC - std::exp(valA * (distance - valB)));
 }
 
-/**
- * @brief Get the Shoulder Points for a pedestrian
- * @note All pedestrians face their current goal
- * @param coords
- * @param velocity
- * @param shldrWid
- */
-Line CalmPedestrianModel::getShoulderPoints(VIPRA::pcoord coords, VIPRA::goal goal,
-                                            float shldrWid) {
-  VIPRA::f3d direction = (goal -= coords).unit();
-
-  return {(VIPRA::f3d{-direction.y, direction.x}.unit() * shldrWid) + coords,
-          (VIPRA::f3d{direction.y, -direction.x}.unit() * shldrWid) + coords};
-}
-
-Rect CalmPedestrianModel::makeRectFromShldrs(VIPRA::pcoord pedCoords, VIPRA::goal goal,
-                                             float shldrWid) {
-  const Line       pedShldr = getShoulderPoints(pedCoords, goal, shldrWid);
+Rect CalmPedestrianModel::makeRectFromShldrs(VIPRA::idx pedIdx, VIPRA::pcoord pedCoords,
+                                             VIPRA::goal goal) {
+  const Line&      pedShldr = pedShoulders.at(pedIdx);
   const VIPRA::f3d range = (goal - pedCoords).unit();
 
   return Rect{pedShldr.p1, pedShldr.p1 + range, pedShldr.p2 + range, pedShldr.p2};
+}
+
+void CalmPedestrianModel::calculateShoulders(const PedestrianSet& pedSet,
+                                             const Goals&         goals) {
+  VIPRA::size pedCnt = pedSet.getNumPedestrians();
+  const auto& coords = pedSet.getCoordinates();
+
+  for (VIPRA::idx i = 0; i < pedCnt; ++i) {
+    VIPRA::f3d coord = coords.at(i);
+    VIPRA::f3d direction = (goals.getCurrentGoal(i) - coord).unit();
+
+    pedShoulders.at(i) = {
+        (VIPRA::f3d{-direction.y, direction.x}.unit() * peds.shoulders.at(i)) + coord,
+        (VIPRA::f3d{direction.y, -direction.x}.unit() * peds.shoulders.at(i)) + coord};
+  }
 }
 
 // NOLINTBEGIN : (rolland) - Debug output, so formatting isn't as important    :  ignoring(all)
@@ -321,7 +316,7 @@ void CalmPedestrianModel::configure(const VIPRA::CONFIG::Map& confMap) {
 }
 
 void CalmPedestrianModel::initialize(const PedestrianSet& pedSet, const ObstacleSet&,
-                                     const Goals& goals) {
+                                     const Goals&         goals) {
   modelState = VIPRA::State(pedSet.getNumPedestrians());
   setModelData(pedSet);
   collision.initialize(pedSet, goals, dynamic_cast<const ModelData&>(peds));
@@ -344,4 +339,6 @@ void CalmPedestrianModel::setModelData(const PedestrianSet& pedSet) {
   peds.betas = std::vector<float>(pedCnt, 0);
   peds.nearestNeighborDists = std::vector<float>(pedCnt, 0);
   peds.propulsionForces = VIPRA::f3dVec(pedCnt, VIPRA::f3d{});
+
+  pedShoulders = std::vector<Line>(pedCnt);
 }

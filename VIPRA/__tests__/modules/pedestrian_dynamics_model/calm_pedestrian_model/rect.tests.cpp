@@ -5,7 +5,8 @@
 #include <PedestrianDynamicsModel/calm_pedestrian_model/calm_rect.hpp>
 
 TEST(CalmRect, IsPointInRect) {
-  Rect sut{VIPRA::f3d{0, 0, 0}, VIPRA::f3d{0, 1, 0}, VIPRA::f3d{1, 1, 0}, VIPRA::f3d{1, 0, 0}};
+  Rect sut{VIPRA::f3d{0, 0, 0}, VIPRA::f3d{0, 1, 0}, VIPRA::f3d{1, 1, 0},
+           VIPRA::f3d{1, 0, 0}};
 
   EXPECT_FALSE(sut.isPointInRect(VIPRA::f3d{2, 0, 0}));
   EXPECT_FALSE(sut.isPointInRect(VIPRA::f3d{1.1, 0, 0}));
@@ -19,7 +20,8 @@ TEST(CalmRect, IsPointInRect) {
   EXPECT_TRUE(sut.isPointInRect(VIPRA::f3d{1, 1, 0}));
   EXPECT_TRUE(sut.isPointInRect(VIPRA::f3d{.2, .7, 0}));
 
-  Rect sut1{VIPRA::f3d{-1, -1, 0}, VIPRA::f3d{-1, 1, 0}, VIPRA::f3d{1, 1, 0}, VIPRA::f3d{1, -1, 0}};
+  Rect sut1{VIPRA::f3d{-1, -1, 0}, VIPRA::f3d{-1, 1, 0}, VIPRA::f3d{1, 1, 0},
+            VIPRA::f3d{1, -1, 0}};
 
   EXPECT_FALSE(sut1.isPointInRect(VIPRA::f3d{2, 0, 0}));
   EXPECT_FALSE(sut1.isPointInRect(VIPRA::f3d{1.1, 0, 0}));
@@ -35,8 +37,8 @@ TEST(CalmRect, IsPointInRect) {
 }
 
 TEST(CalmRect, InPointInRectROTATED) {
-  Rect sut{
-      VIPRA::f3d{-0.076, 1.411, 0}, VIPRA::f3d{3.111, 2.576, 0}, VIPRA::f3d{4.276, -0.611, 0}, VIPRA::f3d{1.089, -1.776, 0}};
+  Rect sut{VIPRA::f3d{-0.076, 1.411, 0}, VIPRA::f3d{3.111, 2.576, 0},
+           VIPRA::f3d{4.276, -0.611, 0}, VIPRA::f3d{1.089, -1.776, 0}};
 
   EXPECT_TRUE(sut.isPointInRect(VIPRA::f3d{.2, .7, 0}));
   EXPECT_TRUE(sut.isPointInRect(VIPRA::f3d{2.69, 1.23, 0}));
@@ -46,8 +48,8 @@ TEST(CalmRect, InPointInRectROTATED) {
   EXPECT_FALSE(sut.isPointInRect(VIPRA::f3d{2.9, -2.18, 0}));
   EXPECT_FALSE(sut.isPointInRect(VIPRA::f3d{-1.16, 1.37, 0}));
 
-  Rect sut1{
-      VIPRA::f3d{6.016, 4.092, 0}, VIPRA::f3d{3.892, 0.584, 0}, VIPRA::f3d{0.384, 2.708, 0}, VIPRA::f3d{2.508, 6.216, 0}};
+  Rect sut1{VIPRA::f3d{6.016, 4.092, 0}, VIPRA::f3d{3.892, 0.584, 0},
+            VIPRA::f3d{0.384, 2.708, 0}, VIPRA::f3d{2.508, 6.216, 0}};
 
   EXPECT_TRUE(sut1.isPointInRect(VIPRA::f3d{5.54, 3.99, 0}));
   EXPECT_TRUE(sut1.isPointInRect(VIPRA::f3d{1.2, 2.8, 0}));
@@ -130,20 +132,20 @@ TEST(CalmRect, DoRectIntersect) {
       VIPRA::f3d{-0.99, -2.09},
   };
 
-  // EXPECT_FALSE(sut5_1.doesIntersect(sut6));
-  // EXPECT_FALSE(sut6.doesIntersect(sut5_1));
+  //   EXPECT_FALSE(sut5_1.doesIntersect(sut6));
+  //   EXPECT_FALSE(sut6.doesIntersect(sut5_1));
 
-  // EXPECT_FALSE(sut5_2.doesIntersect(sut6));
-  // EXPECT_FALSE(sut6.doesIntersect(sut5_2));
+  //   EXPECT_FALSE(sut5_2.doesIntersect(sut6));
+  //   EXPECT_FALSE(sut6.doesIntersect(sut5_2));
 
-  // EXPECT_FALSE(sut5_3.doesIntersect(sut6));
-  // EXPECT_FALSE(sut6.doesIntersect(sut5_3));
+  //   EXPECT_FALSE(sut5_3.doesIntersect(sut6));
+  //   EXPECT_FALSE(sut6.doesIntersect(sut5_3));
 
-  // EXPECT_FALSE(sut5_4.doesIntersect(sut6));
-  // EXPECT_FALSE(sut6.doesIntersect(sut5_4));
+  //   EXPECT_FALSE(sut5_4.doesIntersect(sut6));
+  //   EXPECT_FALSE(sut6.doesIntersect(sut5_4));
 
-  // EXPECT_TRUE(sut5_2.doesIntersect(sut2));
-  // EXPECT_TRUE(sut2.doesIntersect(sut5_2));
+  //   EXPECT_TRUE(sut5_2.doesIntersect(sut2));
+  //   EXPECT_TRUE(sut2.doesIntersect(sut5_2));
 
   Rect sut7{
       VIPRA::f3d{2.93, -0.78},
