@@ -99,9 +99,9 @@ constexpr const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA:
 <tr class="memitem:a78dab55e4a5f2cbe99bf92f479ae6652"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d14/structRect.html#a78dab55e4a5f2cbe99bf92f479ae6652">area</a> () const</td></tr>
 <tr class="memdesc:a78dab55e4a5f2cbe99bf92f479ae6652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the area of the rectangle.  <br /></td></tr>
 <tr class="separator:a78dab55e4a5f2cbe99bf92f479ae6652"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec29d3597699bc1ced9b5ca6563bc843"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d14/structRect.html#aec29d3597699bc1ced9b5ca6563bc843">isPointInRect</a> (<a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> point) const noexcept</td></tr>
-<tr class="memdesc:aec29d3597699bc1ced9b5ca6563bc843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the point is inside the rectangle.  <br /></td></tr>
-<tr class="separator:aec29d3597699bc1ced9b5ca6563bc843"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f19d2bf6e49d4f130719efbffe99a6c"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d14/structRect.html#a7f19d2bf6e49d4f130719efbffe99a6c">isPointInRect</a> (<a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> point) const noexcept</td></tr>
+<tr class="memdesc:a7f19d2bf6e49d4f130719efbffe99a6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the point is inside the rectangle.  <br /></td></tr>
+<tr class="separator:a7f19d2bf6e49d4f130719efbffe99a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6634da722869b5fec4cc084143e7f319"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d14/structRect.html#a6634da722869b5fec4cc084143e7f319">doesIntersect</a> (<a class="el" href="../../db/d14/structRect.html">Rect</a> &amp;other)</td></tr>
 <tr class="memdesc:a6634da722869b5fec4cc084143e7f319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the rectangle intersects another.  <br /></td></tr>
 <tr class="separator:a6634da722869b5fec4cc084143e7f319"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,7 +152,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the area of the rectangle. </p>
-<dl class="section return"><dt>Returns</dt><dd>constexpr float </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr float : area </dd></dl>
 
 </div>
 </div>
@@ -240,8 +240,8 @@ false </dd></dl>
 
 </div>
 </div>
-<a id="aec29d3597699bc1ced9b5ca6563bc843" name="aec29d3597699bc1ced9b5ca6563bc843"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec29d3597699bc1ced9b5ca6563bc843">&#9670;&#160;</a></span>isPointInRect()</h2>
+<a id="a7f19d2bf6e49d4f130719efbffe99a6c" name="a7f19d2bf6e49d4f130719efbffe99a6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f19d2bf6e49d4f130719efbffe99a6c">&#9670;&#160;</a></span>isPointInRect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -250,7 +250,7 @@ false </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Rect::isPointInRect </td>
+          <td class="memname">constexpr bool Rect::isPointInRect </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>&#160;</td>
           <td class="paramname"><em>point</em></td><td>)</td>
@@ -259,7 +259,7 @@ false </dd></dl>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -267,13 +267,13 @@ false </dd></dl>
 <p>Returns if the point is inside the rectangle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">point</td><td>: </td></tr>
+    <tr><td class="paramname">point</td><td>: point to check </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dl class="section return"><dt>Returns</dt><dd>true : if inside rectangle </dd>
 <dd>
-false </dd></dl>
+false : if NOT inside rectangle </dd></dl>
 
 </div>
 </div>
