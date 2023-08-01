@@ -15,12 +15,7 @@ action_attribute:
 ;
 
 action_stimulus:
-  none |
-  STIMULUS ':' condition
-;
-
-none:
-  STIMULUS ':' NONE
+  CONDITION ':' condition
 ;
 
 action_response:
