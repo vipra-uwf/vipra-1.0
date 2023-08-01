@@ -46,7 +46,7 @@ condition_Event_Ending:
   ;
 
 condition_Spatial:
-  TARGET WITHIN value_numeric METERS
+  TARGET WITHIN value_numeric
   ;
 
 condition_Attribute:
