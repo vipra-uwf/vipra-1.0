@@ -28,10 +28,6 @@ target_compile_options(
   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Werror -Wpedantic>
 )
 
-include(CheckIPOSupported)
-check_ipo_supported(RESULT supported OUTPUT error)
-set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-
 add_subdirectory(${SRC_DIR})
 add_subdirectory(${GRAMMAR_DIR})
 
