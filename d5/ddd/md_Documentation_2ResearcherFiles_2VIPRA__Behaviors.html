@@ -72,40 +72,14 @@ $(function() {
   <div class="headertitle"><div class="title">VIPRA Behaviors</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md255"></a> </p>
-<h1><a class="anchor" id="autotoc_md256"></a>
-Sections</h1>
-<h3><a class="anchor" id="autotoc_md257"></a>
-B. Behaviors</h3>
-<h3><a class="anchor" id="autotoc_md258"></a>
-L. Layout</h3>
-<h3><a class="anchor" id="autotoc_md259"></a>
-Sy. General Syntax Rules</h3>
-<h3><a class="anchor" id="autotoc_md260"></a>
-T. Types</h3>
-<h3><a class="anchor" id="autotoc_md261"></a>
-S. Selectors</h3>
-<h3><a class="anchor" id="autotoc_md262"></a>
-A. Actions</h3>
-<h3><a class="anchor" id="autotoc_md263"></a>
-C. Conditions</h3>
-<h3><a class="anchor" id="autotoc_md264"></a>
-E. Events</h3>
-<h3><a class="anchor" id="autotoc_md265"></a>
-V. Values</h3>
-<h3><a class="anchor" id="autotoc_md266"></a>
-St. State</h3>
-<h3><a class="anchor" id="autotoc_md267"></a>
-Ex. Creating An Example Behavior</h3>
-<hr  />
- <h1>B. Behaviors </h1>
-<p><code>Behaviors</code> are a way to describe <code>Actions</code> that pedestrians take under certain <code>Conditions</code> without the use of a traditional programming language.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md167"></a> VIPRA Behaviors is a DSL for programming human behaviors for use in pedestrian dynamics simulations. Its goal is to provide an easy way for researchers without programming experience to test how human behaviors may affect pedestrian dynamics.</p>
+<h1>B. Behaviors </h1>
+<p><code>Behaviors</code> are a way to describe <code>Actions</code> that pedestrians take under a certain <code>Condition</code> without the use of a traditional programming language.</p>
 <p><code>Behaviors</code> are comprised of several major parts:</p><ol type="1">
 <li><code>Selectors</code> (§S.)</li>
 <li><code>Actions</code> (§A.)</li>
 <li><code>Events</code> (§E.)</li>
 </ol>
-<hr  />
 <details >
 <summary >
 </summary>
@@ -121,7 +95,23 @@ Ex. Creating An Example Behavior</h3>
 <div class="line">Event Declartions.   // section (§E.)</div>
 <div class="line"> </div>
 <div class="line">Action Declarations.   // section (§A.)</div>
-</div><!-- fragment --><p></p>
+</div><!-- fragment --><p>Each Declaration has a subset of components.</p>
+<div class="fragment"><div class="line">*Declaration Type*:</div>
+<div class="line">  *Component Name* : *Component Value*</div>
+<div class="line">  *...*</div>
+<div class="line">.</div>
+</div><!-- fragment --><p>Each section goes over what components are available for each.</p>
+<details >
+<summary >
+<b>Example:</b></summary>
+<p></p>
+<div class="fragment"><div class="line">Selector:</div>
+<div class="line">  Type: injured_person</div>
+<div class="line">  Select: 10%</div>
+<div class="line">.</div>
+</div><!-- fragment --><p><code>Type</code> and <code>Select</code> are both components of the <code>Selector</code> declaration</p>
+<p></p>
+</details>
 </details>
 <hr  />
 <details >
@@ -136,16 +126,18 @@ Ex. Creating An Example Behavior</h3>
 <li>All Declarations must end in a '.' <div class="fragment"><div class="line">correct:</div>
 <div class="line">  Event:</div>
 <div class="line">    Name: Example</div>
+<div class="line">    *...*</div>
 <div class="line">  .</div>
 <div class="line"> </div>
 <div class="line">incorrect:</div>
 <div class="line">  Event:</div>
 <div class="line">    Name: Example</div>
+<div class="line">    *...*</div>
 </div><!-- fragment --></li>
 <li>Each <code>Behavior</code> (§B) must start with a <code>Types Declaration</code> (§T.1)</li>
 <li>Each <code>Behavior</code> (§B) must only have 1 <code>Types Declaration</code> (§T.1)</li>
 <li>Each <code>Behavior</code> (§B) must have at least 1 <code>Selector</code> (§S)</li>
-<li><code>Behaviors</code> are case in-sensitive so <code>Consider</code>, <code>consider</code>, and <code>ConSiDEr</code> are all valid.</li>
+<li><code>Behaviors</code> are NOT case-sensitive so <code>Consider</code>, <code>consider</code>, and <code>ConSiDEr</code> are all valid.</li>
 <li>Comments can be added following '//' or between '/*' and '*/' <div class="fragment"><div class="line">// This is a comment and does not affect the behavior</div>
 <div class="line"> </div>
 <div class="line">/*</div>
@@ -160,6 +152,16 @@ Ex. Creating An Example Behavior</h3>
 <div class="line">Types:</div>
 <div class="line">  typeA</div>
 <div class="line">  typeB</div>
+<div class="line">.</div>
+</div><!-- fragment --></li>
+<li>Declaration Components can be written in any order, the following are equivalent <div class="fragment"><div class="line">Event:</div>
+<div class="line">  Name: Example</div>
+<div class="line">  Start: *start condition*</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Event:</div>
+<div class="line">  Start: *start condition*</div>
+<div class="line">  Name: Example</div>
 <div class="line">.</div>
 </div><!-- fragment --> </li>
 </ol>
@@ -181,6 +183,7 @@ Ex. Creating An Example Behavior</h3>
 <p></p>
 <p>A <code>Types Declaration</code> is what says which types are being used in the <code>Behavior</code>.</p>
 <p><code>Behaviors</code> can only have 1 <code>Types Declaration</code> with up to 64 types.</p>
+<p><code>Types Declarations</code> are slightly different from other declarations, in that they do not have components; instead each type is simply listed out.</p>
 <p>Single <code>Type</code>: </p><div class="fragment"><div class="line">Types:</div>
 <div class="line">  injured_person</div>
 <div class="line">.</div>
@@ -225,8 +228,9 @@ Ex. Creating An Example Behavior</h3>
 </summary>
 <h2>T.3. Groups </h2>
 <p></p>
-<p>Effectively, <code>Groups</code> and <code>Types</code> refer to the same thing.</p>
-<p>The main difference between a <code>Type</code> and a <code>Group</code> is that there is a base <code>Group</code> for each <code>Behavior</code>, being 'Pedestrian' or 'Pedestrians'.</p>
+<p></p>
+<p>For most users, <code>Groups</code> and <code>Types</code> refer to the same thing.</p>
+<p>The main difference between a <code>Type</code> and a <code>Group</code> is that there is a base <code>Group</code> for each <code>Behavior</code>, being 'Pedestrian' (or 'Pedestrians').</p>
 <p>Each pedestrian with a <code>Type</code> is considered in that <code>Types</code> <code>Group</code>.</p>
 <p>Pedestrians with <code>Composite Types</code> are in a <code>Group</code> for each <code>Type</code>.</p>
 <p></p>
@@ -251,13 +255,13 @@ Ex. Creating An Example Behavior</h3>
 <h1>S. Selectors   <code>Selectors</code> are how pedestrians are selected for a certain <code>Type</code> (§T).  S.1. Selecting Pedestrians</h1>
 <p></p>
 <p></p>
-<p>Selecting pedestrians is done through a <code>Selector</code> statement. The basic syntax is as follows: </p><div class="fragment"><div class="line">Selector:</div>
+<p>Selecting pedestrians is done through a <code>Selector</code> declaration. The basic syntax is as follows: </p><div class="fragment"><div class="line">Selector:</div>
 <div class="line">  Type: *types*</div>
-<div class="line">  Group: *type*     // optional, defaults to base pedestrians group</div>
+<div class="line">  From: *type*     // optional, defaults to base pedestrians group</div>
 <div class="line">  Select: *selection criteria*</div>
 </div><!-- fragment --><ul>
 <li>*Select* - The exact <code>Select</code> criteria to use, available <code>Select</code> criteria are in (§S.5.)</li>
-<li>*Group* - The <code>Group</code> (§T.3) to select pedestrians from</li>
+<li>*From* - The <code>Group</code> (§T.3) to select pedestrians from</li>
 <li>*Type* - The <code>Type</code> (§T.) to assign to selected pedestrians</li>
 </ul>
 <p>Selectors are applied with precedence equal to the order they appear in the <code>Behavior</code> file.</p>
@@ -265,12 +269,7 @@ Ex. Creating An Example Behavior</h3>
 <summary >
 <b>Example:</b></summary>
 <p></p>
-<div class="fragment"><div class="line">Types: // Types Declaration (§T.1.), saying what types the behavior uses</div>
-<div class="line"> typeA</div>
-<div class="line"> typeB</div>
-<div class="line">.</div>
-<div class="line"> </div>
-<div class="line">Selector:   // Selects exactly 10 pedestrians to be of typeA</div>
+<div class="fragment"><div class="line">Selector:   // Selects exactly 10 pedestrians to be of typeA</div>
 <div class="line">  Type: typeA</div>
 <div class="line">  Select: 10</div>
 <div class="line">.</div>
@@ -310,16 +309,20 @@ Ex. Creating An Example Behavior</h3>
 <div class="line"> </div>
 <div class="line">Select:        // Selects 15% of typeA pedestrians for typeA &amp; typeB</div>
 <div class="line">  Type: typeB</div>
-<div class="line">  Group: typeA</div>
+<div class="line">  From: typeA</div>
 <div class="line">  Select: 15%</div>
 <div class="line">.</div>
 <div class="line"> </div>
 <div class="line">Select:       // Selects 5% of typeA pedestrians for typeA &amp; typeC</div>
 <div class="line">  Type: typeC</div>
-<div class="line">  Group: type</div>
+<div class="line">  From: type</div>
 <div class="line">  Select: 5%</div>
 <div class="line">.</div>
-</div><!-- fragment --><p>With 100 pedestrians: 39 pedestrians are typeA. 8 pedestrians are typeA and typeB. 3 pedestrians are typeA and typeC.</p>
+</div><!-- fragment --><p>With 100 pedestrians:</p><ul>
+<li>39 pedestrians are typeA.</li>
+<li>8 pedestrians are typeA and typeB.</li>
+<li>3 pedestrians are typeA and typeC.</li>
+</ul>
 <p></p>
 </details>
 </details>
@@ -331,7 +334,6 @@ Ex. Creating An Example Behavior</h3>
 <p></p>
 <p></p>
 <p>When a pedestrian is selected from a <code>Group</code>, it is marked as used and can not be selected by another <code>Selector</code>.</p>
-<p>This has the affect of making <code>Selector</code> statements strictly interpreted.</p>
 <div class="fragment"><div class="line">Select:</div>
 <div class="line">  Type: typeB</div>
 <div class="line">  Group: typeA</div>
@@ -353,8 +355,8 @@ Ex. Creating An Example Behavior</h3>
 <h2>S.4. Required Selectors </h2>
 <p></p>
 <p></p>
-<p><code>Selectors</code> can be marked as <code>Required</code> with a 'Required' <code>Sub-component</code>.</p>
-<p>This means, given the <code>Selector</code> is unable to be filled an error will be thrown, and the simulation will stop.</p>
+<p><code>Selectors</code> can be marked as <code>Required</code> with a 'Required' <code>Component</code>.</p>
+<p>This means, if the <code>Selector</code> is unable to be filled an error will be thrown, and the simulation will stop.</p>
 <details >
 <summary >
 <b>Example:</b></summary>
@@ -397,7 +399,7 @@ Ex. Creating An Example Behavior</h3>
 <p></p>
 <p></p>
 <div class="fragment"><div class="line">Select: Everyone</div>
-</div><!-- fragment --><p>This select criteria chooses every pedestrian to have the selected <code>Type</code> (§T)</p>
+</div><!-- fragment --><p>This select criteria will select every pedestrian to have the selected <code>Type</code> (§T)</p>
 <p></p>
 </details>
 <hr  />
@@ -454,15 +456,17 @@ Ex. Creating An Example Behavior</h3>
 <p></p>
 <p></p>
 <p><code>Actions</code> are what affect a Pedestrian's position, velocity, state, etc.</p>
-<p><code>Actions</code> are comprised of <code>Atoms</code> and, optionally, a <code>Condition</code>.</p>
+<p><code>Actions</code> work by applying their <code>Atoms</code> each time step their <code>Condition</code> is satisfied.</p>
 <details >
 <summary >
 </summary>
 <h2>A.1. Unconditional Actions </h2>
 <p></p>
 <p></p>
-<p>An <code>Unconditional Action</code> will ALWAYS take effect.</p>
-<p><code>Unconditional Actions</code> are written as follows: </p><div class="fragment"><div class="line">A *Type* will always *Atoms*.</div>
+<p>An <code>Unconditional Action</code> will ALWAYS take effect, applying its <code>Atoms</code> each timestep.</p>
+<div class="fragment"><div class="line">Action (*type*):</div>
+<div class="line">  Response: *atoms*</div>
+<div class="line">.</div>
 </div><!-- fragment --><ul>
 <li>Type being the pedestrian type that follows this <code>Action</code></li>
 <li>Atoms being the steps taken in an action, more in (§A.3.)</li>
@@ -472,8 +476,11 @@ Ex. Creating An Example Behavior</h3>
 </summary>
 <p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">A typeA will always @stop.</div>
-</div><!-- fragment --><p></p>
+<div class="fragment"><div class="line">Action (injured_person):         // Action Declaration for &quot;injured_person&quot;s</div>
+<div class="line">  Response: scale velocity 0.75  // Scale Atom (§A.5.2.)</div>
+<div class="line">.</div>
+</div><!-- fragment --><p> With this Behavior, an injured person will always walk at 75% speed.</p>
+<p></p>
 </details>
 </details>
 <hr  />
@@ -483,13 +490,11 @@ Ex. Creating An Example Behavior</h3>
 <h2>A.2. Conditional Actions </h2>
 <p></p>
 <p></p>
-<p></p>
-</details>
-</details>
-<h1><a class="anchor" id="autotoc_md286"></a>
-A.2. Conditional Actions</h1>
 <p>A <code>Conditional Action</code> will only take effect if its <code>Condition</code> is satisfied.</p>
-<p><code>Conditional Actions</code> are written as follows: </p><div class="fragment"><div class="line">A *Type* will *Atoms* *Condition*.</div>
+<p><code>Conditional Actions</code> are written as follows: </p><div class="fragment"><div class="line">Action (*type*):</div>
+<div class="line">  Condition: *condition*</div>
+<div class="line">  Response: *atoms*</div>
+<div class="line">.</div>
 </div><!-- fragment --><ul>
 <li>*Type* being the pedestrian type that follows this <code>Action</code></li>
 <li>*Atoms* being the steps taken in an action, more in (§A.4.)</li>
@@ -500,10 +505,13 @@ A.2. Conditional Actions</h1>
 </summary>
 <p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">A typeA will </div>
-<div class="line">  @stop                                  // Atom (§A.4.)</div>
-<div class="line">  given the !example event is occurring. // Condition (§C.)</div>
-</div><!-- fragment --><p></p>
+<div class="fragment"><div class="line">Action (listener): </div>
+<div class="line">  Condition: !announcement occurring. // Condition (§C.)</div>
+<div class="line">  Response: set velocity {0}          // Set Atom (§A.5.1.)</div>
+<div class="line">.</div>
+</div><!-- fragment --><p> Pedestrians of listener will stop moving while the announcement event is occurring.</p>
+<p></p>
+</details>
 </details>
 <hr  />
 <details >
@@ -513,8 +521,12 @@ A.2. Conditional Actions</h1>
 <p></p>
 <p></p>
 <p>Normally <code>Actions</code> only apply to the time step their <code>Condition</code> is true in.</p>
-<p>If a longer response is needed, a <code>Duration</code> can be added to an <code>Action</code>.</p>
-<div class="fragment"><div class="line">A *Type* will *Atoms* *Condition* for *value* seconds.</div>
+<p>If a longer response is needed, a <code>Duration</code> can be added to the <code>Action</code>.</p>
+<div class="fragment"><div class="line">Action (*type*): </div>
+<div class="line">  Condition: *condition*</div>
+<div class="line">  Response: *atoms*</div>
+<div class="line">  Duration: *value*</div>
+<div class="line">.</div>
 </div><!-- fragment --><ul>
 <li>*Type* being the <code>Type</code> (§T.) the action applies to</li>
 <li>*Atoms* being the <code>Atoms</code> (§A.4.) for the <code>Action</code></li>
@@ -526,11 +538,14 @@ A.2. Conditional Actions</h1>
 </summary>
 <p><b> Example, Someone Tripping: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">a tripper will</div>
-<div class="line">  @stop                                   // Atom (§A.4.)</div>
-<div class="line">  after a random 1-10 seconds from !start // Condition (§C.)</div>
-<div class="line">  for 5 seconds.                          // Duration</div>
-</div><!-- fragment --><p></p>
+<div class="fragment"><div class="line">Action (tripper):</div>
+<div class="line">  Condition: 10 seconds after !Start // Condition (§C.)</div>
+<div class="line">  Response: set velocity {0}         // Set Atom (§A.5.1.)</div>
+<div class="line">  Duration: 15 seconds               // Duration</div>
+<div class="line">.</div>
+</div><!-- fragment --><p>Pedestrians of type <code>tripper</code> will trip after 10 seconds from the simulation starting, and remain still for 15 seconds.</p>
+<p>This is odd, as all <code>trippers</code> will trip at exactly the same time: Look at <code>Values</code> (§V.) for how to add randomness to Durations and Conditions</p>
+<p></p>
 </details>
 </details>
 <hr  />
@@ -540,36 +555,29 @@ A.2. Conditional Actions</h1>
 <h2>A.4. Atoms </h2>
 <p></p>
 <p></p>
-<p><code>Atoms</code> are the part of an <code>Action</code> that actually affects a pedestrian. A group of <code>Atoms</code> comprise an <code>Action</code>.</p>
-<p><code>Atoms</code> can be one or multiple words long and are always preceded by an <code>@</code></p>
+<p><code>Atoms</code> are the part of an <code>Action</code> that actually affects a pedestrian.</p>
+<p>The do this by changing pedestrian <code>Attributes</code> (§Att.).</p>
+<p>§A.5. has the list of available <code>Atoms</code>.</p>
 <details >
 <summary >
 </summary>
-<p><b> Examples: </b> </p>
+<h2>A.4.1 Atom Lists </h2>
 <p></p>
-<div class="fragment"><div class="line">@stop</div>
-<div class="line">@walk 10% slower</div>
-</div><!-- fragment --><p></p>
-</details>
 <p></p>
-</details>
-<h2><a class="anchor" id="autotoc_md289"></a>
-A.4.1 Atom List</h2>
-<p>An <code>Atom List</code> is the collection of <code>Atoms</code> that make up an <code>Action</code>. <code>Atom Lists</code> are comprised of one or more <code>Atoms</code>.</p>
-<p><code>Atom Lists</code> are written as follows: <code>*Atom* then *Atom*</code></p>
+<p>An <code>Atom List</code> is the collection of <code>Atoms</code> that make up an <code>Action</code>.</p>
+<p><code>Atom Lists</code> are written as follows: <code>*Atom* , *Atom*</code></p>
 <p><b>Important Note:</b> <code>Atom</code> effects are applied in the order they are listed</p>
 <details >
 <summary >
 </summary>
-<p><b> Examples: </b> </p>
+<p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">@stop</div>
-<div class="line">@stop then @listen</div>
-<div class="line">@stop then @listen then @run in circles</div>
-</div><!-- fragment --><ul>
-<li>e.g The <code>Atom List</code> <code>@run in circles then @stop</code> might result in the pedestrian simply stopping *(dependent on the definition of @run in circles and @stop)*</li>
-</ul>
+<div class="fragment"><div class="line">set velocity {0}, set state #listening</div>
+</div><!-- fragment --><p> This <code>Atom List</code> will result in the pedestrian stopping and their state being listening</p>
+<p>(Pedestrian state is useful in <code>Conditions</code> (§C.))</p>
 <p></p>
+</details>
+</details>
 </details>
 <hr  />
 <details >
@@ -581,50 +589,116 @@ A.4.1 Atom List</h2>
 <details >
 <summary >
 </summary>
-<h3>A.5.1. Stop </h3>
+<h3>A.5.1. Set </h3>
 <p></p>
 <p></p>
-<p>The <code>Stop</code> <code>Atom</code> keeps a pedestrian from moving.</p>
-<div class="fragment"><div class="line">@stop</div>
+<p>The <code>Set Atom</code> sets a pedestrian's attribute to a specific value.</p>
+<div class="fragment"><div class="line">set *attribute* *attribute value*</div>
+</div><!-- fragment --><ul>
+<li>Attributes are described in (§Att.).</li>
+<li>Attribute Values are described in (§Att. TODO ).</li>
+</ul>
+<p></p>
+</details>
+<hr  />
+<details >
+<summary >
+</summary>
+<h3>A.5.2. Scale </h3>
+<p></p>
+<p></p>
+<p>The <code>Scale Atom</code> multiplies a pedestrian attribute by a given value</p>
+<div class="fragment"><div class="line">scale *attribute* *attribute_value*</div>
+</div><!-- fragment --><p>Currently, only pedestrian <code>Velocity</code> can be scaled.</p>
+<ul>
+<li>Attributes are described in (§Att.).</li>
+<li>Attribute Values are described in (§Att. TODO ).</li>
+</ul>
+<p></p>
+</details>
+</details>
+<hr  />
+<details >
+<summary >
+</summary>
+<h2>A.6. Action Targets </h2>
+<p></p>
+<p></p>
+<p>Sometimes Pedestrians will want to affect other pedestrians around them.</p>
+<p>This is done through the use of <code>Targets</code>.</p>
+<div class="fragment"><div class="line">Action (*type*):</div>
+<div class="line">  Condition: *condition*  // Condition (§C.)</div>
+<div class="line">  Response: *atoms*       // Atoms (§A.4.)</div>
+<div class="line">  Target: *target*        // Action Target</div>
+</div><!-- fragment --><details >
+<summary >
+</summary>
+<p><b> Example: </b> </p>
+<p></p>
+<div class="fragment"><div class="line">Action (aggressive):</div>
+<div class="line">  Response: set target velocity {0}</div>
+<div class="line">  Target: nearest pedestrian</div>
+</div><!-- fragment --><p> This results in the pedestrian stopping the nearest pedestrian around them</p>
+<p></p>
+</details>
+<details >
+<summary >
+</summary>
+<h2>A.6.1 Available Targets </h2>
+<p></p>
+<p></p>
+<details >
+<summary >
+</summary>
+<h2>A.6.1.1 Nearest of Type </h2>
+<p></p>
+<p></p>
+<p>Selects the nearest of a given type to be the target</p>
+<div class="fragment"><div class="line">nearest *type list*   // selects the nearest pedestrian with any of the listed types</div>
+<div class="line"> </div>
+<div class="line">// or</div>
+<div class="line"> </div>
+<div class="line">nearest pedestrian    // selects any pedestrian</div>
 </div><!-- fragment --><p></p>
 </details>
-<hr  />
+<p><br  />
+</p>
+<p></p>
+</details>
 <details >
 <summary >
 </summary>
-<h3>A.5.2. Walk Speed </h3>
+<h2>A.6.2 Target Modifiers </h2>
 <p></p>
 <p></p>
-<p>The <code>Walk Speed Atom</code> scales the speed a pedestrian moves</p>
-<div class="fragment"><div class="line">@walk *value* x their normal speed.</div>
-</div><!-- fragment --><ul>
-<li>*value* being any <code>Value</code> type (§V.)</li>
-</ul>
-<p></p>
-</details>
-<hr  />
+<p><code>Target Modifiers</code> change how pedestrians are selected to be the Target of an action.</p>
+<p><code>Target Modifiers</code> are simply appended to the end of the <code>Action Target</code>.</p>
+<div class="fragment"><div class="line">Target: nearest pedestrain in front within 1.0</div>
+</div><!-- fragment --><p> This selects the nearest pedestrian in the direction of motion that is within 1 meter.</p>
 <details >
 <summary >
 </summary>
-<h3>A.5.3. Be / Set State </h3>
+<h2>A.6.2.1 Distance Target Modifier </h2>
 <p></p>
 <p></p>
-<p>The <code>Be Atom</code> sets a pedestrians <code>State</code> (§St.)</p>
-<div class="fragment"><div class="line">@be *state*</div>
-</div><!-- fragment --><ul>
-<li>*state* being the <code>State</code> to set the pedestrian to (§St.)</li>
-</ul>
-<p></p>
+<p>Targets can be filtered by their distance to the pedestrian.</p>
+<div class="fragment"><div class="line">within *numeric value*</div>
+</div><!-- fragment --><p></p>
 </details>
-</details>
-<hr  />
 <details >
 <summary >
 </summary>
-<h2>A.6. Actions - General Syntax Rules </h2>
+<h2>A.6.2.2 Direction Target Modifier </h2>
 <p></p>
 <p></p>
-<p></p>
+<p>Targets can be filtered by their direction from the pedestrian.</p>
+<p>Currently, there are only two directions. </p><div class="fragment"><div class="line">in front   // used to select pedestrians in the direction the pedestrian is headed</div>
+<div class="line"> </div>
+<div class="line">behind     // used to select pedestrians in the opposite direction the pedestrian is headed</div>
+</div><!-- fragment --><p></p>
+</details>
+</details>
+</details>
 </details>
 <hr  />
 <details >
@@ -635,17 +709,19 @@ A.4.1 Atom List</h2>
 <p></p>
 <p>A <code>Condition</code> is what decides if a <code>Conditional Action</code> or <code>Event</code> occurs.</p>
 <p><code>Conditions</code> are comprised of one or more <code>Sub Conditions</code> and the boolean operations between them (and/or).</p>
-<p><code>Conditions</code> do not stand on their own, and only appear as part of an <code>Action</code> or <code>Event</code> statement.</p>
+<p><code>Conditions</code> do not stand on their own, and only appear as part of an <code>Action</code> or <code>Event</code> declaration.</p>
 <details >
 <summary >
 </summary>
 <p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">A typeA will @stop </div>
-<div class="line">given the !example event has occurred</div>
-<div class="line">and</div>
-<div class="line">after 5 seconds from the !start.</div>
-</div><!-- fragment --><p></p>
+<div class="fragment"><div class="line">Action (typeA):</div>
+<div class="line">  Condition: !example occurred and 5 seconds after !Start</div>
+<div class="line">  Response: set velocity {0}</div>
+<div class="line">  Duration: 10 seconds</div>
+<div class="line">.</div>
+</div><!-- fragment --><p> This results in typeA pedestrians stopping for 10 seconds after the example event has occurred but not before 5 seconds have passed in the simulation.</p>
+<p></p>
 </details>
 <hr  />
 <details >
@@ -672,16 +748,17 @@ A.4.1 Atom List</h2>
 <p></p>
 <p>This <code>Condition</code> will be true when a provided amount of time has passed from the start of an <code>Event</code> (§E.)</p>
 <p><b>Note:</b> This is true only for one time step when the time has elapsed, until the <code>Event</code> starts again.</p>
-<div class="fragment"><div class="line">after *duration* from the *event* event.</div>
+<div class="fragment"><div class="line">*numeric value* seconds after *event*.</div>
 </div><!-- fragment --><details >
 <summary >
 </summary>
 <p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">A typeA will </div>
-<div class="line">  @stop                            // Atom (§A.4)</div>
-<div class="line">  after 10 seconds from the !start // Elapsed Time Condition</div>
-<div class="line">  for 5 seconds.                   // Duration (§A.3)</div>
+<div class="fragment"><div class="line">Action (typeA):</div>
+<div class="line">  Condition: 10 seconds after !Start // Elapsed Time Condition</div>
+<div class="line">  Response: set velocity {0}         // Atom (§A.4)</div>
+<div class="line">  Duration: 5 seconds                // Duration (§A.3)</div>
+<div class="line">.</div>
 </div><!-- fragment --><p> <b>Note:</b> without the <code>Duration</code> the pedestrian would stop moving for only one time step.</p>
 <p></p>
 </details>
@@ -690,41 +767,92 @@ A.4.1 Atom List</h2>
 <details >
 <summary >
 </summary>
-<h3>C.2.2. Event Occurred </h3>
+<h3>C.2.2. Spatial </h3>
 <p></p>
 <p></p>
-<p>This <code>Condition</code> is true for every time step after an <code>Event</code> has started, until the end of the simulation.</p>
-<div class="fragment"><div class="line">given the *event* event has occurred.</div>
+<p>This <code>Condition</code> will be true when the condition Target is within a certain distance</p>
+<div class="fragment"><div class="line">target within *numeric value*.</div>
 </div><!-- fragment --><details >
 <summary >
 </summary>
 <p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">A typeA will</div>
-<div class="line">  @walk 0.75x their normal speed // Atom (§A.4)</div>
-<div class="line">  given an !announcement event has occurred. // Event Occurred Condition</div>
-</div><!-- fragment --><p></p>
+<div class="fragment"><div class="line">Action (typeA):</div>
+<div class="line">  Condition: 10 seconds after !Start // Elapsed Time Condition</div>
+<div class="line">  Response: set velocity {0}         // Atom (§A.4)</div>
+<div class="line">  Duration: 5 seconds                // Duration (§A.3)</div>
+<div class="line">.</div>
+</div><!-- fragment --><p> <b>Note:</b> without the <code>Duration</code> the pedestrian would stop moving for only one time step.</p>
+<p></p>
 </details>
 </details>
 <hr  />
 <details >
 <summary >
 </summary>
-<h3>C.2.3. Event Occurring </h3>
+<h3>C.2.3. Event Status </h3>
 <p></p>
 <p></p>
-<p>This <code>Condition</code> is true while an <code>Event</code> is occurring.</p>
-<details >
+<p>This <code>Condition</code> checks for the status of an <code>Event</code> (§E.)</p>
+<div class="fragment"><div class="line">*event* is *status*</div>
+</div><!-- fragment --><p></p>
+</details>
+</details>
+</details>
+<h2><a class="anchor" id="autotoc_md193"></a>
+Available Statuses:</h2>
+<div class="fragment"><div class="line">Starting  // True for the timestep the event starts</div>
+<div class="line">Ending    // True for the timestep the event ends</div>
+<div class="line">Occurring // True for every timestep between event start and end</div>
+<div class="line">Occurred  // True if the event has occurred at all during the simulation</div>
+</div><!-- fragment --><details >
 <summary >
 </summary>
 <p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">A typeA will</div>
-<div class="line">  @stop // Atom (§A.4)</div>
-<div class="line">  while an !announcement event is occurring. // Event Occurred Condition</div>
+<div class="fragment"><div class="line">Action (listener):</div>
+<div class="line">  Condition: !announcement is occurring</div>
+<div class="line">  Response: set velocity to {0}</div>
+<div class="line">.</div>
 </div><!-- fragment --><p></p>
 </details>
+<hr  />
+<details >
+<summary >
+</summary>
+<h1>Att. Attributes </h1>
+<p></p>
+<p></p>
+<p>Each pedestrian has what are called <code>Attributes</code>.</p>
+<p>These attributes include: </p><div class="fragment"><div class="line">Position    // Coordiante pedestrian is currently at</div>
+<div class="line">Velocity    // Velocity vector of pedestrian</div>
+<div class="line">Goal        // The current coordinate the pedestrian is heading to</div>
+<div class="line">State       // Pedestrians internal state</div>
+</div><!-- fragment --><p>These <code>Attributes</code> are important for <code>Actions</code> and <code>Conditions</code>.</p>
+<p><code>Actions</code> change these attributes and <code>Conditions</code> can prompt <code>Actions</code> based on their values. </p><details >
+<summary >
+</summary>
+<h1>Ex. Example </h1>
+<p></p>
+<p></p>
+<div class="fragment"><div class="line">Action (typeA):</div>
+<div class="line">  Condition: state is #scared  // Condition for the pedestrian&#39;s &#39;State&#39; attribute</div>
+<div class="line">  Response: scale velocity 2.0 // Atom affecting the pedestrian&#39;s &#39;Velocity&#39; attribute</div>
+<div class="line">.</div>
+</div><!-- fragment --><p></p>
 </details>
+<details >
+<summary >
+</summary>
+<h1>Att.1 Attribute Values </h1>
+<p></p>
+<p></p>
+<p>Attributes each have a different value type.</p>
+<div class="fragment"><div class="line">Position: Coordinate (§V.2)</div>
+<div class="line">Velocity: Coordinate (§V.2)</div>
+<div class="line">Goal    : Coordinate (§V.2)</div>
+<div class="line">State   : State      (§V.3)</div>
+</div><!-- fragment --><p></p>
 </details>
 </details>
 <hr  />
@@ -734,7 +862,7 @@ A.4.1 Atom List</h2>
 <h1>E. Events </h1>
 <p></p>
 <p></p>
-<p>A <code>Event</code> is something that occurs during a simulation, for example an announcement or fire.</p>
+<p>An <code>Event</code> is something that occurs during a simulation, for example an announcement or fire.</p>
 <p><code>Events</code> have a start <code>Condition</code> and, optionally, an end <code>Condition</code> (§C)</p>
 <p>An <code>Event</code> can only be described once, if a <code>Behavior</code> file tries to redefine an <code>Event</code> of the same name a <code>Behavior Error</code> is thrown.</p>
 <p><code>Event</code> names are always preceded by a <code>!</code> ex. </p><div class="fragment"><div class="line">!announcement</div>
@@ -744,19 +872,21 @@ A.4.1 Atom List</h2>
 <h2>E.1. Creating Events </h2>
 <p></p>
 <p></p>
-<p><code>Events</code> a defined as follows: </p><div class="fragment"><div class="line">The !example event will occur *condition*. // This event will never end</div>
-<div class="line"> </div>
-<div class="line">// or</div>
-<div class="line"> </div>
-<div class="line">The !example event will occur *condition* and end *condition*.</div>
+<p><code>Events</code> a defined as follows: </p><div class="fragment"><div class="line">Event:</div>
+<div class="line">  Name: *name*</div>
+<div class="line">  Start: *Condition*</div>
+<div class="line">  End: *Condition*    // Optional</div>
+<div class="line">.</div>
 </div><!-- fragment --><details >
 <summary >
 </summary>
 <p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">The !example event will occur after 10 seconds from !start,</div>
-<div class="line">  and end</div>
-<div class="line">  after 10 seconds from !example.</div>
+<div class="fragment"><div class="line">Event:</div>
+<div class="line">  Name: example</div>
+<div class="line">  Start: 10 seconds after !Start</div>
+<div class="line">  End: 10 seconds after !example</div>
+<div class="line">.</div>
 </div><!-- fragment --><p></p>
 </details>
 </details>
@@ -768,8 +898,8 @@ A.4.1 Atom List</h2>
 <p></p>
 <p></p>
 <p>Currently, there is only one special event that is predefined for each <code>Behavior</code>:</p>
-<p>the <code>!start</code> event</p>
-<p>The <code>!start</code> event fires at the start of a simulation run.</p>
+<p>the <code>!Start</code> event</p>
+<p>The <code>!Start</code> event fires at the start of a simulation run.</p>
 <p></p>
 </details>
 <hr  />
@@ -778,19 +908,6 @@ A.4.1 Atom List</h2>
 </summary>
 <h2>E.3. Events - General Syntax Rules </h2>
 <p></p>
-<p></p>
-<ol type="1">
-<li>'The !example event will ...' can be written several ways, use whichever sounds most natural: <div class="fragment"><div class="line">The !example will ...</div>
-<div class="line">// or</div>
-<div class="line">An !example will ...</div>
-<div class="line">// or</div>
-<div class="line">An !example event will ...</div>
-</div><!-- fragment --></li>
-<li>When referencing <code>Events</code>, the word 'event' can be dropped: <div class="fragment"><div class="line">The !example event</div>
-<div class="line">// or</div>
-<div class="line">The !example</div>
-</div><!-- fragment --></li>
-</ol>
 <p></p>
 </details>
 </details>
@@ -846,16 +963,9 @@ A.4.1 Atom List</h2>
 <p><code>Exact Values</code> are used when the value should be a specific value</p>
 <p><code>Exact Values</code> can either be a <code>Float Value</code> or <code>Number Value</code>.</p>
 <p><code>Exact Values</code> are written as simple numerical values.</p>
-<details >
-<summary >
-</summary>
-<p><b> Example: </b> </p>
-<p></p>
-<div class="fragment"><div class="line">50% of pedestrians is a typeA.                      // Number Value</div>
-<div class="line"> </div>
-<div class="line">A typeA will always @walk 1.25x their normal speed. // Float Value</div>
+<div class="fragment"><div class="line">50    </div>
+<div class="line">50.15 </div>
 </div><!-- fragment --><p></p>
-</details>
 </details>
 <hr  />
 <details >
@@ -892,7 +1002,10 @@ A.4.1 Atom List</h2>
 </summary>
 <p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">10-20% of pedestrians is a typeA.</div>
+<div class="fragment"><div class="line">Selector:</div>
+<div class="line">  Type: typeA</div>
+<div class="line">  Select: 10-20%</div>
+<div class="line">.</div>
 </div><!-- fragment --><p>The exact percentage will be a random integer value between 10 and 20.</p>
 <p></p>
 </details>
@@ -917,41 +1030,76 @@ A.4.1 Atom List</h2>
 <p></p>
 </details>
 <p>Random Values are written as follows: </p><div class="fragment"><div class="line">// Number Random Value -&gt; 1, 2, or 3 (different for each pedestrian)</div>
-<div class="line">A random 1-3</div>
+<div class="line">random 1-3</div>
 <div class="line">// or</div>
-<div class="line">A random 1 to 3</div>
+<div class="line">random 1 to 3</div>
 <div class="line"> </div>
 <div class="line">// Float Random Value -&gt; 1.0, 1.003, 1.11, 2.3, 2.5, 3.0, etc. (different for each pedestrian)</div>
-<div class="line">A random 1.0-3.0</div>
+<div class="line">random 1.0-3.0</div>
 <div class="line">// or</div>
-<div class="line">A random 1.0 to 3.0</div>
+<div class="line">random 1.0 to 3.0</div>
 </div><!-- fragment --><details >
 <summary >
 </summary>
 <p><b> Example: </b> </p>
 <p></p>
-<div class="fragment"><div class="line">A typeA will </div>
-<div class="line">  @stop after a random 5-10 seconds from the !example event</div>
-<div class="line">  for a random 10-20 seconds.</div>
-</div><!-- fragment --><p>The exact percentage will be a random integer value between 10 and 20.</p>
+<div class="fragment"><div class="line">Action (typeA):</div>
+<div class="line">  Condition: random 5-10 seconds from !Start</div>
+<div class="line">  Response: set velocity {0}</div>
+<div class="line">  Duration: random 10-20</div>
+<div class="line">.</div>
+</div><!-- fragment --><p> Each typeA pedestrian will stop randomly between 5 and 10 seconds from the start, then stay still for a random amount of time between 10 and 20 seconds.</p>
 <p></p>
 </details>
-<p></p>
 </details>
 </details>
-</details>
-<hr  />
 <details >
 <summary >
 </summary>
-<h1>St. State </h1>
+<h2>V.2 Coordinates </h2>
+<p></p>
+<p></p>
+<p>Coordinate Values are X, Y, Z coordinates.</p>
+<p>They are written: </p><div class="fragment"><div class="line">{ *numeric value*, *numeric value*, *numeric value* }</div>
+</div><!-- fragment --><p>The Y and Z portions can be left out, they are defaulted to 0: </p><div class="fragment"><div class="line">{0}</div>
+<div class="line"> </div>
+<div class="line">// is the same as</div>
+<div class="line"> </div>
+<div class="line">{0, 0}</div>
+<div class="line"> </div>
+<div class="line">// is the same as</div>
+<div class="line"> </div>
+<div class="line">{0, 0, 0}</div>
+</div><!-- fragment --><p></p>
+</details>
+<details >
+<summary >
+</summary>
+<h2>V.3 State </h2>
 <p></p>
 <p></p>
 <p>Each pedestrian has a <code>State</code> associated with it.</p>
 <p><code>States</code> are user defined, and used for <code>Conditions</code></p>
 <p><code>States</code> are always preceded by a '#'.</p>
-<p><code>States</code> are defined as follows: </p><div class="fragment"><div class="line">Possible pedestrians states are #stateA, #stateB, and #stateC.</div>
+<p><code>States</code> are defined as follows: </p><div class="fragment"><div class="line">Pedestrian States:</div>
+<div class="line">  #stateA,</div>
+<div class="line">  #stateB,</div>
+<div class="line">  #stateC</div>
+<div class="line">.</div>
+</div><!-- fragment --><details >
+<summary >
+</summary>
+<h2>Ex. Example </h2>
+<p></p>
+<p></p>
+<div class="fragment"><div class="line">Pedestrian States:</div>
+<div class="line">  #happy,</div>
+<div class="line">  #scared,</div>
+<div class="line">  #waiting</div>
+<div class="line">.</div>
 </div><!-- fragment --><p></p>
+</details>
+</details>
 </details>
 <hr  />
 <details >
@@ -968,11 +1116,18 @@ A.4.1 Atom List</h2>
 <p></p>
 <p></p>
 <p>This example is a simple <code>Behavior</code> that causes every pedestrian to stand still for the duration of the simulation.</p>
-<div class="fragment"><div class="line">Consider a person.          // Consideration (§T.) says what types of pedestrians there are</div>
+<div class="fragment"><div class="line">Types:           // Types Declaration (§T.) says what types of pedestrians there are</div>
+<div class="line">  person</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">Everyone is a person.       // Selector (§S.) says who is of that type</div>
+<div class="line">Selector:        // Selector (§S.) says who is of that type</div>
+<div class="line">  Type: person</div>
+<div class="line">  Select: Everyone</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">A person will always @stop. // Action (§A.) says what people of that type do</div>
+<div class="line">Action (person): // Action (§A.) says what people of that type do</div>
+<div class="line">  Response: set velocity {0}</div>
+<div class="line">.</div>
 </div><!-- fragment --><p></p>
 </details>
 <hr  />
@@ -983,17 +1138,26 @@ A.4.1 Atom List</h2>
 <p></p>
 <p></p>
 <p>This <code>Behavior</code> shows <code>Events</code>, with an announcement. In this example, we will make a simple <code>Behavior</code> and add to it.</p>
-<div class="fragment"><div class="line">Consider a listener.                       // Consideration (§T.)</div>
+<div class="fragment"><div class="line">Types:                                // Types Declaration(§T.)</div>
+<div class="line">  Listener</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">Everyone is a listener.                    // Selector (§S.)</div>
+<div class="line">Selector:                             // Selector (§S.)</div>
+<div class="line">  Type: Listener</div>
+<div class="line">  Select: Everyone</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">An !announcement will occur                // Event (§E.)</div>
-<div class="line">  after 10 seconds from the !start         // Start Condition (§C.)</div>
-<div class="line">  and </div>
-<div class="line">  end after 10 seconds from !announcement. // End Condition (§C.)</div>
+<div class="line">Event:                                // Event (§E.)</div>
+<div class="line">  Name: Announcement</div>
+<div class="line">  Start: 10 seconds after !Start      // Start Condition (§C.)</div>
+<div class="line">  End: 10 seconds after !Announcement // End Condition (§C.)</div>
 <div class="line"> </div>
-<div class="line">A listener will @stop                      // Action (§A.)</div>
-<div class="line">  given an !announcement is occurring.     // Condition (§C.)</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Action (Listener):                    // Action (§A.)</div>
+<div class="line">  Condition: !Announcement occurring  // Condition (§C.)</div>
+<div class="line">  Response: set velocity {0}</div>
+<div class="line">. </div>
 </div><!-- fragment --><p>In this example, an announcement will start after 10 seconds and last for 10 seconds.</p>
 <p>While the announcement is occurring, every pedestrian will be stopped to listen.</p>
 <details >
@@ -1003,17 +1167,26 @@ A.4.1 Atom List</h2>
 <p></p>
 <p></p>
 <p>Everyone stopping to listen isn't very realistic, so we can change it slightly.</p>
-<div class="fragment"><div class="line">Consider a listener.                       // Consideration (§T.)</div>
+<div class="fragment"><div class="line">Types:                                // Types Declaration(§T.)</div>
+<div class="line">  Listener</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">10% of pedestrians is a listener.          // Selector (§S.)</div>
+<div class="line">Selector:                             // Selector (§S.)</div>
+<div class="line">  Type: Listener</div>
+<div class="line">  Select: 10%</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">An !announcement will occur                // Event (§E.)</div>
-<div class="line">  after 10 seconds from the !start         // Start Condition (§C.)</div>
-<div class="line">  and </div>
-<div class="line">  end after 10 seconds from !announcement. // End Condition (§C.)</div>
+<div class="line">Event:                                // Event (§E.)</div>
+<div class="line">  Name: Announcement</div>
+<div class="line">  Start: 10 seconds after !Start      // Start Condition (§C.)</div>
+<div class="line">  End: 10 seconds after !Announcement // End Condition (§C.)</div>
 <div class="line"> </div>
-<div class="line">A listener will @stop                     // Action (§A.)</div>
-<div class="line">  given an !announcement is occurring.     // Condition (§C.)</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Action (Listener):                    // Action (§A.)</div>
+<div class="line">  Condition: !Announcement occurring  // Condition (§C.)</div>
+<div class="line">  Response: set velocity {0}</div>
+<div class="line">. </div>
 </div><!-- fragment --><p>In this example, only 10% of pedestrians will actually stop to listen to the announcement. (probably still an over-estimation)</p>
 <p></p>
 </details>
@@ -1024,23 +1197,76 @@ A.4.1 Atom List</h2>
 <p></p>
 <p></p>
 <p>A black-and-white, either pedestrians stop to listen or don't, may not be as realistic as we would like.</p>
-<div class="fragment"><div class="line">Consider a listener, and partial_listener.             // Consideration (§T.)</div>
+<div class="fragment"><div class="line">Types:                                // Types Declaration(§T.)</div>
+<div class="line">  Listener</div>
+<div class="line">  Partial_Listener</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">10% of pedestrians is a listener.                      // Selector (§S.)</div>
-<div class="line">25% of pedestrians is a partial_listener.              // Selector (§S.)</div>
+<div class="line">Selector:                             // Selector (§S.)</div>
+<div class="line">  Type: Listener</div>
+<div class="line">  Select: 10%</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">An !announcement will occur                            // Event (§E.)</div>
-<div class="line">  after 10 seconds from the !start                     // Start Condition (§C.)</div>
-<div class="line">  and </div>
-<div class="line">  end after 10 seconds from !announcement.             // End Condition (§C.)</div>
+<div class="line">Selector:                             // Selector (§S.)</div>
+<div class="line">  Type: Parital_Listener</div>
+<div class="line">  Select: 25%</div>
+<div class="line">.</div>
 <div class="line"> </div>
-<div class="line">A listener will @stop                                  // Action (§A.)</div>
-<div class="line">  given an !announcement is occurring.                 // Condition (§C.)</div>
+<div class="line">Event:                                // Event (§E.)</div>
+<div class="line">  Name: Announcement</div>
+<div class="line">  Start: 10 seconds after !Start      // Start Condition (§C.)</div>
+<div class="line">  End: 10 seconds after !Announcement // End Condition (§C.)</div>
 <div class="line"> </div>
-<div class="line">A partial_listener will @walk 0.75x their normal speed // Action (§A.)</div>
-<div class="line">  given an !announement is occurring.                  // Condition (§C.)</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Action (Listener):                    // Action (§A.)</div>
+<div class="line">  Condition: !Announcement occurring  // Condition (§C.)</div>
+<div class="line">  Response: set velocity {0}</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Action (Parital_Listener):            // Action (§A.)</div>
+<div class="line">  Condition: !Announcement occurring  // Condition (§C.)</div>
+<div class="line">  Response: scale velocity 0.75</div>
+<div class="line">.</div>
 </div><!-- fragment --><p>In this 10% of pedestrians stop to listen, another 25% slow down to listen, and the rest behave normally.</p>
 <p></p>
+</details>
+<details >
+<summary >
+</summary>
+<h2>Ex.3. Pedestrians Interacting </h2>
+<p></p>
+<p></p>
+<p>This example <code>Behavior</code> has pedestrians "fighting", to show that pedestrians can interact.</p>
+<div class="fragment"><div class="line">Types:</div>
+<div class="line">  teamA_fan</div>
+<div class="line">  teamB_fan</div>
+<div class="line">  aggressive_fan</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Selector:</div>
+<div class="line">  Type: teamA_fan</div>
+<div class="line">  Select: 25%</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Selector:                   // Selector (§S.) 10% of teamA fans are &quot;aggressive&quot;</div>
+<div class="line">  Type: aggressive_fan</div>
+<div class="line">  Select: 10%</div>
+<div class="line">  From: teamA_fan</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Selector:</div>
+<div class="line">  Type: teamB_fan</div>
+<div class="line">  Select: 15%</div>
+<div class="line">.</div>
+<div class="line"> </div>
+<div class="line">Action (aggressive_fan):</div>
+<div class="line">  Stimulus: target within 1.0                                  // Condition (§C.)</div>
+<div class="line">  Response: set velocity to {0}, set target velocity to {0}    // Atoms (§A.4.) to set self and targets velocity to zero </div>
+<div class="line">  Duration: random 60-120 seconds                              // Duration (§A.3.) to have fights last a random amount of time </div>
+<div class="line">  Target: nearest teamB_fan                                    // Target (§A.6.) has aggressive_fans only interact with teamB_fans </div>
+<div class="line">.</div>
+</div><!-- fragment --><p></p>
 </details>
 </details>
 </details>
