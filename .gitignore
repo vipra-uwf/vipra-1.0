@@ -12,9 +12,11 @@ main.cpp
 generate_main
 build
 build_debug
+main.hpp
 
 # Output
 output.json
+output
 
 # Tests
 Test

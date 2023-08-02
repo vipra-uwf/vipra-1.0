@@ -312,9 +312,10 @@ std::string mainFunctionDefinition() {
          "\nVIPRA::CONFIG::Map moduleParams;"
          "\nvoid parallel_main(const VIPRA::CONFIG::Map& simconfig, const "
          "VIPRA::CONFIG::Map& "
-         "moduleparams) {"
+         "moduleparams, const std::string& outpath) {"
          "\n\tsimulationJsonConfig = simconfig;"
-         "\n\tmoduleParams = moduleparams;";
+         "\n\tmoduleParams = moduleparams;"
+         "\n\toutputFile = outpath;";
 }
 
 /**

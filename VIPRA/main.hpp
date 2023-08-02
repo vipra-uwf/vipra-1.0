@@ -57,9 +57,10 @@ void getInputFiles(int argc, char** argv){
 }
 VIPRA::CONFIG::Map simulationJsonConfig;
 VIPRA::CONFIG::Map moduleParams;
-void parallel_main(const VIPRA::CONFIG::Map& simconfig, const VIPRA::CONFIG::Map& moduleparams) {
+void parallel_main(const VIPRA::CONFIG::Map& simconfig, const VIPRA::CONFIG::Map& moduleparams, const std::string& outpath) {
 	simulationJsonConfig = simconfig;
 	moduleParams = moduleparams;
+	outputFile = outpath;
 #ifndef NDEBUG
 	spdlog::set_level(spdlog::level::debug);
 	spdlog::info("Set Logging Level To Debug");

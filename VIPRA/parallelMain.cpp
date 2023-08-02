@@ -138,6 +138,11 @@ void slave() {
   MPI::Status                       status;
   int                               result;
 
+  int rank = 0;
+  int workCnt = 0;
+
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
   Json::Value  root;
   Json::Reader reader;
 
@@ -159,9 +164,12 @@ void slave() {
     auto test = fastWriter.write(simConfig.getDoc());
     spdlog::error("{}", test);
 
-    parallel_main(simConfig, VIPRA::CONFIG::Map{std::move(root)});
+    parallel_main(
+        simConfig, VIPRA::CONFIG::Map{std::move(root)},
+        "./output/r" + std::to_string(rank) + "w" + std::to_string(workCnt) + ".json");
 
     result = 1;
+    ++workCnt;
     MPI_Send(&result, 1, MPI::INT, 0, 0, MPI_COMM_WORLD);
   }
 }
