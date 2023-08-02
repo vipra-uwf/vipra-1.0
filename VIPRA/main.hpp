@@ -43,23 +43,24 @@ std::string outputFile;
 VIPRA::Clock<VIPRA::milli> timer;
 void getInputFiles(int argc, char** argv);
 void getInputFiles(int argc, char** argv){
-	if(argc > 7 || argc < 7){
+	if(argc > 8 || argc < 8){
 		std::cerr << "Invalid inputs: Usage: *Config Path* *Params Path* *Pedestrians path* *Obstacle Path* *Output Path*\n";
 
 		exit(1);
 	}
-	configFile=argv[1];
-	minConfigFile=argv[2];
-	maxConfigFile=argv[3];
-	pedestrianFile=argv[4];
-	obstacleFile=argv[5];
-	outputFile=argv[6];
+	configFile=argv[2];
+	minConfigFile=argv[3];
+	maxConfigFile=argv[4];
+	pedestrianFile=argv[5];
+	obstacleFile=argv[6];
+	outputFile=argv[7];
 }
 VIPRA::CONFIG::Map simulationJsonConfig;
 VIPRA::CONFIG::Map moduleParams;
-void parallel_main(VIPRA::CONFIG::Map simconfig, VIPRA::CONFIG::Map moduleparams) {
+void parallel_main(const VIPRA::CONFIG::Map& simconfig, const VIPRA::CONFIG::Map& moduleparams, const std::string& outpath) {
 	simulationJsonConfig = simconfig;
 	moduleParams = moduleparams;
+	outputFile = outpath;
 #ifndef NDEBUG
 	spdlog::set_level(spdlog::level::debug);
 	spdlog::info("Set Logging Level To Debug");

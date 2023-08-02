@@ -1,0 +1,39 @@
+{
+    "input_data_loader": {},
+    "human_behavior_model": {
+        "seed": 4525,
+        "behaviors": [
+        ]
+    },
+    "output_data_writer": {},
+    "simulation_output_handler": {
+        "outputFrequency": 100
+    },
+    "pedestrian_set": {},
+    "obstacle_set": {
+        "obstacleCollisionDistance": 0.05
+    },
+    "goals": {
+        "pathFinding": "Disembark",
+        "endGoalType": "exit",
+        "gridSize": 0.05,
+        "closestObstacle": 0.3,
+        "goalRange": 0.05
+    },
+    "pedestrian_dynamics_model": {
+        "meanMass": 1.2,
+        "massStdDev": 0.1,
+        "meanReactionTime": 0.45,
+        "reactionTimeStdDev": 0.05,
+        "meanMaxSpeed": 1.2,
+        "maxSpeedStdDev": 0.1,
+        "meanShoulderLen": 0.25,
+        "shoulderLenStdDev": 0.05,
+        "seed": 452744
+    },
+    "configuration_reader": {},
+    "simulation": {
+        "time_step_size": 0.005,
+        "max_timestep": 50000
+    }
+}

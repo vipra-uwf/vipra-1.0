@@ -11,6 +11,7 @@ mpirun -n 100 ./movement_lb1 1331 file
 the tasks based on the time) This file is NOT  the output of BalanceLoad !!!
 **************************************************************************/
 
+#include <cstddef>
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
@@ -24,6 +25,7 @@ the tasks based on the time) This file is NOT  the output of BalanceLoad !!!
 #include "configuration/configuration_reader.hpp"
 #include "distributions/distributions.hpp"
 #include "json/value.h"
+#include "json/writer.h"
 #include "main.hpp"
 #include "randomization/random.hpp"
 
@@ -42,6 +44,7 @@ int                main(int argc, char **argv);
 
 VIPRA::CONFIG::Map minConfig;
 VIPRA::CONFIG::Map maxConfig;
+VIPRA::CONFIG::Map simConfig;
 
 //****************************************************************************80
 
@@ -51,15 +54,18 @@ int main(int argc, char *argv[])
 {
   double wtime;
 
-  // MPI_Init(&argc, &argv);
+  MPI_Init(&argc, &argv);
 
-  // MPI_Comm_size(MPI_COMM_WORLD, &np);
+  MPI_Comm_size(MPI_COMM_WORLD, &np);
 
-  // MPI_Comm_rank(MPI_COMM_WORLD, &id);
+  MPI_Comm_rank(MPI_COMM_WORLD, &id);
 
-  // NUM= atoi(argv[1]);
+  NUM = atoi(argv[1]);
 
   wtime = MPI_Wtime();
+
+  getInputFiles(argc, argv);
+  simConfig = ConfigurationReader::getConfiguration(configFile);
 
   if (id == 0) {
     master(argc, argv);
@@ -70,130 +76,102 @@ int main(int argc, char *argv[])
   wtime = MPI_Wtime() - wtime;
   spdlog::info("Process {} time = {}", id, wtime);
 
-  // MPI_Finalize();
+  MPI_Finalize();
   spdlog::info("Normal end of execution.");
 
   return 0;
 }
 
 void master(int argc, char **argv) {
-  getInputFiles(argc, argv);
   minConfig = ConfigurationReader::getConfiguration(minConfigFile);
   maxConfig = ConfigurationReader::getConfiguration(maxConfigFile);
 
-  makeRandomConfig(minConfig, maxConfig);
+  Json::FastWriter fastWriter;
 
-  // int rank;
-  // int        work;
-  // float      result[7];
-  // MPI_Status status;
+  int        rank;
+  int        p = 0;
+  MPI_Status status;
+  float      result[7];
 
-  /*
-   * Seed the slaves.
-   */
-  // int         nextp = 0;
-  // std::string line;
-  // int         p = 0;
-  // for (rank = 1; rank < np; ++rank) {
-  // TODO: create config map, randomize values, send to slave
-
-  // getline(aFile, line);
-  // std::vector<std::string> params;
-  // MPI_Request              req = nullptr;
-  // split(line, ' ', params);
-  // float parameters[7]; /*master will send the ID of next simulation along with
-  //                         six parameters in an array*/
-  // parameters[0] = p;
-  // // std::cout<<params.size()<<std::endl;
-  // for (int i = 1; i < 7; ++i) {
-  //   // std::cout<<"i is "<<i<<std::endl;
-  //   parameters[i] = atof(params[i - 1].c_str());
-  // }
-  // // work = nextp;      ; /* get_next_work_request */
-  // MPI_Send(parameters,         /* message buffer */
-  //          7,                  /* one data item */
-  //          MPI_FLOAT,          /* data item is an integer */
-  //          rank,               /* destination process rank */
-  //          1, MPI_COMM_WORLD); /* user chosen message tag */
-  // p++;
-  // }
+  for (rank = 1; rank < np; ++rank) {
+    auto jsonStr = fastWriter.write(makeRandomConfig(minConfig, maxConfig).getDoc());
+    MPI_Send(jsonStr.c_str(),    /* message buffer */
+             jsonStr.size(),     /* one data item */
+             MPI_CHAR,           /* data item is an integer */
+             rank,               /* destination process rank */
+             1, MPI_COMM_WORLD); /* user chosen message tag */
+    p++;
+  }
 
   /*
    * Receive a result from any slave and dispatch a new work
    * request work requests have been exhausted.
    */
-  // while ( nextp < NUM)/* valid new work request */
-  // while (p < NUM) {
-  // TODO: recieve results, create new configs, send to workers
-
-  // std::getline(aFile, line);
-  // std::vector<std::string> params;
-  // split(line, ' ', params);
-  // float parameters[7];
-  // parameters[0] = p;
-  // for (int i = 1; i < 7; ++i) {
-  //   parameters[i] = atof(params[i - 1].c_str());
-  // }
-  // MPI_Recv(&result,                  /* message buffer */
-  //          1,                        /* one data item */
-  //          MPI_INT,                  /* of type double real */
-  //          MPI_ANY_SOURCE,           /* receive from any sender */
-  //          MPI_ANY_TAG,              /* any type of message */
-  //          MPI_COMM_WORLD, &status); /* received message info */
-  // MPI_Request req;
-  // MPI_Send(parameters, 7, MPI_FLOAT, status.MPI_SOURCE, 1, MPI_COMM_WORLD);
-  // p++;
-  // }
+  while (p < NUM) {
+    auto jsonStr = fastWriter.write(makeRandomConfig(minConfig, maxConfig).getDoc());
+    MPI_Recv(&result,                  /* message buffer */
+             1,                        /* one data item */
+             MPI_INT,                  /* of type double real */
+             MPI_ANY_SOURCE,           /* receive from any sender */
+             MPI_ANY_TAG,              /* any type of message */
+             MPI_COMM_WORLD, &status); /* received message info */
+    MPI_Request req;
+    MPI_Send(jsonStr.c_str(),    /* message buffer */
+             jsonStr.size(),     /* one data item */
+             MPI_CHAR,           /* data item is an integer */
+             status.MPI_SOURCE,  /* destination process rank */
+             1, MPI_COMM_WORLD); /* user chosen message tag */
+    p++;
+  }
 
   /*
    * Receive results for outstanding work requests.
    */
-  // for (rank = 1; rank < np; ++rank) {
-  // TODO get results from all workers
-
-  // MPI_Recv(&result, 7, MPI_FLOAT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-  // float fakeParameters[7];
-
-  // for (float &fakeParameter : fakeParameters) {
-  //   fakeParameter = -1;
-  // }
-  // MPI_Send(fakeParameters, 7, MPI_FLOAT, status.MPI_SOURCE, 2, MPI_COMM_WORLD);
-  // }
-  /*
-   * Tell all the slaves to exit.  .. This is inefficient - the above recv
-   * statement is like a barrier -- need not wait for all recvs
-   */
-  /*
-          for (rank = 1; rank < np; ++rank) {
-                   MPI::COMM_WORLD.Send(0, 0, MPI::INT, rank, DIETAG);
-          }
-  */
+  for (rank = 1; rank < np; ++rank) {
+    MPI_Recv(&result, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    MPI_Send(nullptr, 0, MPI_CHAR, status.MPI_SOURCE, 2, MPI_COMM_WORLD);
+  }
 }
 
 void slave() {
-  // int        result;
-  // float      work[7];
-  // MPI_Status status;
-  // char       buffer[200];
-  // for (;;) {
-  // TODO recieve simconfig and module params from master, run simulation, return
+  std::array<VIPRA::CONFIG::Map, 2> work;
+  MPI::Status                       status;
+  int                               result;
 
-  // MPI_Recv(&work, 7, MPI_FLOAT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-  // /*    test.
-  //  * Check the tag of the received message.
-  //  */
-  // MPI_Request req;
-  // if (status.MPI_TAG == 2) {
-  //   return;
-  // }
-  // // sspdlog::info(buffer,"%d %d\n", work, np);
-  // // system(buffer);
-  // parallel_main(simconfig, moduleParams);
-  // result = 1; /* do the work */
-  // // result is redundant - serves no real purpose than to indicate job is done
+  int rank = 0;
+  int workCnt = 0;
 
-  // MPI_Send(&result, 1, MPI::INT, 0, 0, MPI_COMM_WORLD);
-  // }
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+  Json::Value  root;
+  Json::Reader reader;
+
+  for (;;) {
+    MPI::COMM_WORLD.Probe(0, MPI_ANY_TAG, status);
+    int   l = status.Get_count(MPI::CHAR);
+    char *buf = new char[l];
+    MPI::COMM_WORLD.Recv(buf, l, MPI::CHAR, 0, MPI_ANY_TAG, status);
+
+    if (status.Get_tag() == 2 || buf == nullptr) {
+      return;
+    }
+
+    std::string bla1(buf, l);
+    reader.parse(bla1, root);
+
+    Json::FastWriter fastWriter;
+
+    auto test = fastWriter.write(simConfig.getDoc());
+    spdlog::error("{}", test);
+
+    parallel_main(
+        simConfig, VIPRA::CONFIG::Map{std::move(root)},
+        "./output/r" + std::to_string(rank) + "w" + std::to_string(workCnt) + ".json");
+
+    result = 1;
+    ++workCnt;
+    MPI_Send(&result, 1, MPI::INT, 0, 0, MPI_COMM_WORLD);
+  }
 }
 
 VIPRA::CONFIG::Map makeRandomConfig(const VIPRA::CONFIG::Map &minModuleParams,
