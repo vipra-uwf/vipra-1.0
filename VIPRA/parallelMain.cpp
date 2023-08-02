@@ -18,10 +18,13 @@ the tasks based on the time) This file is NOT  the output of BalanceLoad !!!
 #include <vector>
 
 #include <mpi.h>
+#include <spdlog/spdlog.h>
+
+#include "configuration/configuration_reader.hpp"
+#include "main.hpp"
 
 void master(char *);
 void slave();
-void calm(float sm, float idt, float isc, float asc, float tasc, float rt, int ID);
 
 int  id;           // process rank
 int  np;           // number of MPI processes
@@ -30,10 +33,10 @@ char filename[32] = "sequences.txt";
 int  main(int argc, char **argv);
 void timestamp();
 
-void split(const string &s, char delim, vector<string> &elems) {
-  stringstream ss;
+void split(const std::string &s, char delim, std::vector<std::string> &elems) {
+  std::stringstream ss;
   ss.str(s);
-  string item;
+  std::string item;
   while (getline(ss, item, delim)) {
     elems.push_back(item);
   }
@@ -65,40 +68,40 @@ int main(int argc, char *argv[])
   }
 
   wtime = MPI_Wtime() - wtime;
-  printf("  Process %d time = %g\n", id, wtime);
+  spdlog::info("Process {} time = {}", id, wtime);
 
   MPI_Finalize();
-  cout << "\n";
-  cout << "  Normal end of execution.\n";
+  spdlog::info("Normal end of execution.");
 
   timestamp();
   return 0;
 }
 
 void master(char *filename) {
-  int        rank, work;
+  int        rank;
+  int        work;
   float      result[7];
   MPI_Status status;
 
-  ifstream aFile(filename);
+  std::ifstream aFile(filename);
 
   /*
    * Seed the slaves.
    */
-  int    nextp = 0;
-  string line;
-  int    p = 0;
+  int         nextp = 0;
+  std::string line;
+  int         p = 0;
   for (rank = 1; rank < np; ++rank) {
     getline(aFile, line);
-    vector<string> params;
-    MPI_Request    req;
+    std::vector<std::string> params;
+    MPI_Request              req = nullptr;
     split(line, ' ', params);
     float parameters[7]; /*master will send the ID of next simulation along with
                             six parameters in an array*/
     parameters[0] = p;
-    // cout<<params.size()<<endl;
+    // std::cout<<params.size()<<std::endl;
     for (int i = 1; i < 7; ++i) {
-      // cout<<"i is "<<i<<endl;
+      // std::cout<<"i is "<<i<<std::endl;
       parameters[i] = atof(params[i - 1].c_str());
     }
     // work = nextp;      ; /* get_next_work_request */
@@ -117,7 +120,7 @@ void master(char *filename) {
   // while ( nextp < NUM)/* valid new work request */
   while (p < NUM) {
     std::getline(aFile, line);
-    vector<string> params;
+    std::vector<std::string> params;
     split(line, ' ', params);
     float parameters[7]; /*master will send the ID of next simulation along wi\
                            th six parameters in an array*/
@@ -140,12 +143,12 @@ void master(char *filename) {
    */
   for (rank = 1; rank < np; ++rank) {
     MPI_Recv(&result, 7, MPI_FLOAT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    float fake_parameters[7];
+    float fakeParameters[7];
 
-    for (int i = 0; i < 7; ++i) {
-      fake_parameters[i] = -1;
+    for (float &fakeParameter : fakeParameters) {
+      fakeParameter = -1;
     }
-    MPI_Send(fake_parameters, 7, MPI_FLOAT, status.MPI_SOURCE, 2, MPI_COMM_WORLD);
+    MPI_Send(fakeParameters, 7, MPI_FLOAT, status.MPI_SOURCE, 2, MPI_COMM_WORLD);
   }
   /*
    * Tell all the slaves to exit.  .. This is inefficient - the above recv
@@ -172,56 +175,15 @@ void slave() {
     if (status.MPI_TAG == 2) {
       return;
     }
-    // sprintf(buffer,"%d %d\n", work, np);
+    // sspdlog::info(buffer,"%d %d\n", work, np);
     // system(buffer);
-    calm(work[1], work[2], work[3], work[4], work[5], work[6], work[0]);
+    parallel_main(simconfig, moduleParams);
     result = 1; /* do the work */
     // result is redundant - serves no real purpose than to indicate job is done
 
     MPI_Send(&result, 1, MPI::INT, 0, 0, MPI_COMM_WORLD);
   }
 }
-
-//*****************************************************************************
-
-void calm(float sm, float idt, float isc, float asc, float tasc, float rt, int ID) {
-  float min_SM = 1.15f;
-  float min_IDT = 0.2f;
-  float min_ISC = 0.2f;
-  float min_ASC = 0.2f;
-  float min_TASC = 0.1f;
-  float min_RT = 0.5f;
-
-  float max_SM = 1.3f;
-  float max_IDT = 1.5f;
-  float max_ISC = 0.9f;
-  float max_ASC = 0.9f;
-  float max_TASC = 0.7f;
-  float max_RT = 2.0f;
-
-  float this_SM = (max_SM - min_SM) * sm + min_SM;
-  float this_IDT = (max_IDT - min_IDT) * idt + min_IDT;
-  float this_ISC = (max_ISC - min_ISC) * isc + min_ISC;
-  float this_ASC = (max_ASC - min_ASC) * asc + min_ASC;
-  float this_TASC = (max_TASC - min_TASC) * tasc + min_TASC;
-  float this_RT = (max_RT - min_RT) * rt + min_RT;
-
-  ofstream output;
-  char     ofile[128];
-  sprintf(ofile, "output%d", ID);
-  output.open(ofile);
-
-  output << "Running simulation with SimID= " << ID << ", IDT= " << this_IDT
-         << ", ISC= " << this_ISC << ", ASC= " << this_ASC << ", TASC= " << this_TASC
-         << ", RT= " << this_RT << ", SM= " << this_SM << endl;
-  Simulation sim =
-      Simulation(this_SM, 0.2f, this_IDT, this_ISC, this_ASC, this_TASC, this_RT, ID);
-
-  int status = sim.Run(output, ID);
-  if (status != 0) cout << "Err in: " << ID << endl;
-}
-
-//****************************************************************************80
 
 void timestamp()
 
@@ -244,7 +206,7 @@ void timestamp()
 
   len = std::strftime(time_buffer, TIME_SIZE, "%d %B %Y %I:%M:%S %p", tm_ptr);
 
-  std::cout << time_buffer << "\n";
+  std::std::cout << time_buffer << "\n";
 
   return;
 #undef TIME_SIZE

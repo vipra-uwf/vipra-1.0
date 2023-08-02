@@ -310,10 +310,10 @@ std::string initializeModules() {
 std::string mainFunctionDefinition() {
   return "\nVIPRA::CONFIG::Map simulationJsonConfig;"
          "\nVIPRA::CONFIG::Map moduleParams;"
-         "\nint main(int argc, const char **argv) {"
-         "\n\tgetInputFiles(argc, argv);"
-         "\n\tsimulationJsonConfig = ConfigurationReader::getConfiguration(configFile);"
-         "\n\tmoduleParams = ConfigurationReader::getConfiguration(paramsFile);";
+         "\nvoid parallel_main(VIPRA::CONFIG::Map simconfig, VIPRA::CONFIG::Map "
+         "moduleparams) {"
+         "\n\tsimulationJsonConfig = simconfig;"
+         "\n\tmoduleParams = moduleparams;";
 }
 
 /**
@@ -417,7 +417,9 @@ std::string log(const std::string& message) {
  * @return std::string 
  */
 std::string turnOffLint() {
-  return "\n// NOLINTBEGIN (rolland) No point in linting generated code : ignoring (all) "
+  return "#ifndef PARALLEL_MAIN_HPP"
+         "\n#define PARALLEL_MAIN_HPP"
+         "\n// NOLINTBEGIN (rolland) No point in linting generated code : ignoring (all) "
          "\n";
 }
-std::string turnOnLint() { return "\n// NOLINTEND\n"; }
+std::string turnOnLint() { return "\n#endif\n// NOLINTEND\n"; }

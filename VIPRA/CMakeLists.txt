@@ -22,7 +22,7 @@ project(
 
 add_executable(
   ${PROJECT_NAME}
-  main.cpp
+  parallelMain.cpp
 )
 
 target_compile_options(
