@@ -55,6 +55,8 @@ class Map {
     return ret;
   }
 
+  [[nodiscard]] const Json::Value& getDoc() const { return document; }
+
  private:
   Json::Value document;
 };

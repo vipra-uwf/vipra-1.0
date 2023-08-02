@@ -34,7 +34,7 @@ std::unique_ptr<Goals> generateGoals(const std::string& id, const VIPRA::CONFIG:
 std::unique_ptr<SimulationOutputHandler> generateSimulationOutputHandler(const std::string& id, const VIPRA::CONFIG::Map& configMap);
 std::unique_ptr<PedestrianDynamicsModel> generatePedestrianDynamicsModel(const std::string& id, const VIPRA::CONFIG::Map& configMap);
 
-std::string paramsFile;
+std::string configFile;
 std::string minConfigFile;
 std::string maxConfigFile;
 std::string pedestrianFile;
@@ -48,9 +48,9 @@ void getInputFiles(int argc, char** argv){
 
 		exit(1);
 	}
-	minConfigFile=argv[1];
-	maxConfigFile=argv[2];
-	paramsFile=argv[3];
+	configFile=argv[1];
+	minConfigFile=argv[2];
+	maxConfigFile=argv[3];
 	pedestrianFile=argv[4];
 	obstacleFile=argv[5];
 	outputFile=argv[6];
