@@ -21,7 +21,7 @@ build_gen_main:
 	cmake --build ${CODE_GEN_DIR}/${DIR}
 
 run_gen_main:
-	${CODE_GEN_DIR}/generate_main main.cpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
+	${CODE_GEN_DIR}/generate_main main.hpp ../VIPRA_Launcher/server/dist/configuration/modules.json -noCompReq
 
 build_sim:
 	cmake -B ${DIR} . ${DEBUG} ${PROF}

@@ -22,7 +22,7 @@ project(
 
 add_executable(
   ${PROJECT_NAME}
-  main.cpp
+  parallelMain.cpp
 )
 
 target_compile_options(
@@ -50,6 +50,10 @@ else()
     set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
   endif()
 endif ()
+
+find_package(MPI)
+include_directories(SYSTEM ${MPI_INCLUDE_PATH})
+target_link_libraries(${PROJECT_NAME} ${MPI_C_LIBRARIES})
 
 include(FetchContent)
 message(STATUS "Getting spdlog")
