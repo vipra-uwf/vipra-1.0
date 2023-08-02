@@ -1,3 +1,4 @@
+// NOLINTBEGIN
 /*
 **************************************************************************
 In principle, this file is same as movement.cpp, however, it is based on dynamic
@@ -29,18 +30,8 @@ void slave();
 int  id;           // process rank
 int  np;           // number of MPI processes
 int  NUM = 15000;  // number of tasks to be processed  (given
-char filename[32] = "sequences.txt";
 int  main(int argc, char **argv);
 void timestamp();
-
-void split(const std::string &s, char delim, std::vector<std::string> &elems) {
-  std::stringstream ss;
-  ss.str(s);
-  std::string item;
-  while (getline(ss, item, delim)) {
-    elems.push_back(item);
-  }
-}
 
 //****************************************************************************80
 
@@ -206,8 +197,9 @@ void timestamp()
 
   len = std::strftime(time_buffer, TIME_SIZE, "%d %B %Y %I:%M:%S %p", tm_ptr);
 
-  std::std::cout << time_buffer << "\n";
+  std::cout << time_buffer << "\n";
 
   return;
 #undef TIME_SIZE
 }
+// NOLINTEND
