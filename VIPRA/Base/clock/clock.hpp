@@ -27,7 +27,7 @@ class Clock {
    * 
    * @return TimeT 
    */
-  inline TimeT now() { return ClockT::now(); }
+  inline std::chrono::time_point<ClockT> now() { return ClockT::now(); }
 
   /**
    * @brief Starts the timer
