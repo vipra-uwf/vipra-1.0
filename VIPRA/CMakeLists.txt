@@ -51,6 +51,10 @@ else()
   endif()
 endif ()
 
+find_package(MPI)
+include_directories(SYSTEM ${MPI_INCLUDE_PATH})
+target_link_libraries(${PROJECT_NAME} ${MPI_C_LIBRARIES})
+
 include(FetchContent)
 message(STATUS "Getting spdlog")
 FetchContent_Declare(spdlog URL https://github.com/gabime/spdlog/archive/v1.11.0.tar.gz)
