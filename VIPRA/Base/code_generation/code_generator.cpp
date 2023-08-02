@@ -354,24 +354,26 @@ std::string makeModuleConfigs() {
 std::string generateGetFiles() {
   return {
       "\nstd::string paramsFile;"
-      "\nstd::string configFile;"
+      "\nstd::string minConfigFile;"
+      "\nstd::string maxConfigFile;"
       "\nstd::string pedestrianFile;"
       "\nstd::string obstacleFile;"
       "\nstd::string outputFile;"
       "\nVIPRA::Clock<VIPRA::milli> timer;"
       "\nvoid getInputFiles(int argc, char** argv);"
       "\nvoid getInputFiles(int argc, char** argv){"
-      "\n\tif(argc > 6 || argc < 6){"
+      "\n\tif(argc > 7 || argc < 7){"
       "\n\t\tstd::cerr << \"Invalid inputs: Usage: *Config Path* *Params Path* "
       "*Pedestrians path* "
       "*Obstacle Path* *Output Path*\\n\";\n"
       "\n\t\texit(1);"
       "\n\t}"
-      "\n\tconfigFile=argv[1];"
-      "\n\tparamsFile=argv[2];"
-      "\n\tpedestrianFile=argv[3];"
-      "\n\tobstacleFile=argv[4];"
-      "\n\toutputFile=argv[5];"
+      "\n\tminConfigFile=argv[1];"
+      "\n\tmaxConfigFile=argv[2];"
+      "\n\tparamsFile=argv[3];"
+      "\n\tpedestrianFile=argv[4];"
+      "\n\tobstacleFile=argv[5];"
+      "\n\toutputFile=argv[6];"
       "\n}"};
 }
 

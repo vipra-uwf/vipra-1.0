@@ -51,9 +51,13 @@ else()
   endif()
 endif ()
 
-find_package(MPI)
-include_directories(SYSTEM ${MPI_INCLUDE_PATH})
-target_link_libraries(${PROJECT_NAME} ${MPI_C_LIBRARIES})
+set(GCC_COVERAGE_COMPILE_FLAGS "-fopenmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+
+# MPI
+find_package(MPI REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC MPI::MPI_CXX)
+
 
 include(FetchContent)
 message(STATUS "Getting spdlog")
