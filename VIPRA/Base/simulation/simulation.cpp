@@ -45,7 +45,7 @@ void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& ob
                      HumanBehaviorModel& humanBehaviorModel, PolicyModel& policyModel,
                      OutputDataWriter&        outputDataWriter,
                      SimulationOutputHandler& simulationOutputHandler) {
-  spdlog::info("Starting Simulation Loop");
+  spdlog::debug("Starting Simulation Loop");
 
   clock.start();
   while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
@@ -59,7 +59,7 @@ void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& ob
 
     if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals,
                                                      timestep)) {
-      spdlog::info("Writing To Document, Timestep: {}", timestep);
+      spdlog::debug("Writing To Document, Timestep: {}", timestep);
       simulationOutputHandler.writeOutput(outputDataWriter, pedestrianSet, timestep);
     }
 
@@ -67,7 +67,7 @@ void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& ob
     ++timestep;
   }
 
-  spdlog::info("Simulation Run Complete");
+  spdlog::debug("Simulation Run Complete");
   printSimTime();
 }
 
@@ -77,10 +77,10 @@ void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& ob
  */
 void Simulation::printSimTime() {
   auto stopTime = clock.stop();
-  spdlog::info("Simulation Real Run Time: {}", stopTime);
+  spdlog::debug("Simulation Real Run Time: {}", stopTime);
 
   const double simTime = timestep_size * static_cast<float>(timestep);
   const auto   stm = std::chrono::round<std::chrono::milliseconds>(
       std::chrono::duration<float>{simTime});
-  spdlog::info("Simulated Time: {}", stm);
+  spdlog::debug("Simulated Time: {}", stm);
 }

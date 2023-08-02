@@ -48,25 +48,28 @@ std::unique_ptr<PedestrianDynamicsModel> generatePedestrianDynamicsModel(
     const std::string& id, const VIPRA::CONFIG::Map& configMap);
 
 std::string                paramsFile;
-std::string                configFile;
+std::string                minConfigFile;
+std::string                maxConfigFile;
 std::string                pedestrianFile;
 std::string                obstacleFile;
 std::string                outputFile;
 VIPRA::Clock<VIPRA::milli> timer;
-void                       getInputFiles(int argc, const char** argv);
-void                       getInputFiles(int argc, const char** argv) {
-  if (argc > 6 || argc < 6) {
+void                       getInputFiles(int argc, char** argv);
+void                       getInputFiles(int argc, char** argv) {
+  if (argc > 7 || argc < 7) {
     std::cerr << "Invalid inputs: Usage: *Config Path* *Params Path* *Pedestrians path* "
                                        "*Obstacle Path* *Output Path*\n";
 
     exit(1);
   }
-  configFile = argv[1];
-  paramsFile = argv[2];
-  pedestrianFile = argv[3];
-  obstacleFile = argv[4];
-  outputFile = argv[5];
+  minConfigFile = argv[1];
+  maxConfigFile = argv[2];
+  paramsFile = argv[3];
+  pedestrianFile = argv[4];
+  obstacleFile = argv[5];
+  outputFile = argv[6];
 }
+
 VIPRA::CONFIG::Map simulationJsonConfig;
 VIPRA::CONFIG::Map moduleParams;
 void parallel_main(VIPRA::CONFIG::Map simconfig, VIPRA::CONFIG::Map moduleparams) {

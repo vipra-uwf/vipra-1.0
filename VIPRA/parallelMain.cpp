@@ -33,12 +33,19 @@ int  NUM = 15000;  // number of tasks to be processed  (given
 int  main(int argc, char **argv);
 void timestamp();
 
+VIPRA::CONFIG::Map minConfig;
+VIPRA::CONFIG::Map maxConfig;
+
 //****************************************************************************80
 
 int main(int argc, char *argv[])
 
 //****************************************************************************80
 {
+  getInputFiles(argc, argv);
+  minConfig = ConfigurationReader::getConfiguration(minConfigFile);
+  maxConfig = ConfigurationReader::getConfiguration(maxConfigFile);
+
   double wtime;
 
   MPI_Init(&argc, &argv);
