@@ -21,15 +21,15 @@
         "goalRange": 0.05
     },
     "pedestrian_dynamics_model": {
-        "meanMass": 0.8,
+        "meanMass": 1.2,
         "massStdDev": 0.1,
-        "meanReactionTime": 0.3,
+        "meanReactionTime": 0.45,
         "reactionTimeStdDev": 0.05,
-        "meanMaxSpeed": 0.8,
+        "meanMaxSpeed": 1.2,
         "maxSpeedStdDev": 0.1,
-        "meanShoulderLen": 0.20,
+        "meanShoulderLen": 0.25,
         "shoulderLenStdDev": 0.05,
-        "seed": 34536
+        "seed": 452744
     },
     "configuration_reader": {},
     "simulation": {
