@@ -353,7 +353,7 @@ std::string makeModuleConfigs() {
  */
 std::string generateGetFiles() {
   return {
-      "\nstd::string paramsFile;"
+      "\nstd::string configFile;"
       "\nstd::string minConfigFile;"
       "\nstd::string maxConfigFile;"
       "\nstd::string pedestrianFile;"
@@ -368,9 +368,9 @@ std::string generateGetFiles() {
       "*Obstacle Path* *Output Path*\\n\";\n"
       "\n\t\texit(1);"
       "\n\t}"
-      "\n\tminConfigFile=argv[1];"
-      "\n\tmaxConfigFile=argv[2];"
-      "\n\tparamsFile=argv[3];"
+      "\n\tconfigFile=argv[1];"
+      "\n\tminConfigFile=argv[2];"
+      "\n\tmaxConfigFile=argv[3];"
       "\n\tpedestrianFile=argv[4];"
       "\n\tobstacleFile=argv[5];"
       "\n\toutputFile=argv[6];"

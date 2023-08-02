@@ -27,6 +27,9 @@ the tasks based on the time) This file is NOT  the output of BalanceLoad !!!
 void master(int, char **);
 void slave();
 
+VIPRA::CONFIG::Map makeRandomConfig(const VIPRA::CONFIG::Map &,
+                                    const VIPRA::CONFIG::Map &);
+
 int id;           // process rank
 int np;           // number of MPI processes
 int NUM = 15000;  // number of tasks to be processed  (given
@@ -43,11 +46,11 @@ int main(int argc, char *argv[])
 {
   double wtime;
 
-  MPI_Init(&argc, &argv);
+  // MPI_Init(&argc, &argv);
 
-  MPI_Comm_size(MPI_COMM_WORLD, &np);
+  // MPI_Comm_size(MPI_COMM_WORLD, &np);
 
-  MPI_Comm_rank(MPI_COMM_WORLD, &id);
+  // MPI_Comm_rank(MPI_COMM_WORLD, &id);
 
   // NUM= atoi(argv[1]);
 
@@ -72,6 +75,8 @@ void master(int argc, char **argv) {
   getInputFiles(argc, argv);
   minConfig = ConfigurationReader::getConfiguration(minConfigFile);
   maxConfig = ConfigurationReader::getConfiguration(maxConfigFile);
+
+  makeRandomConfig(minConfig, maxConfig);
 
   int rank;
   // int        work;
@@ -185,4 +190,17 @@ void slave() {
     // MPI_Send(&result, 1, MPI::INT, 0, 0, MPI_COMM_WORLD);
   }
 }
+
+VIPRA::CONFIG::Map makeRandomConfig(const VIPRA::CONFIG::Map &minModuleParams,
+                                    const VIPRA::CONFIG::Map &) {
+  const auto &minDoc = minModuleParams.getDoc();
+  // const auto &maxDoc = maxModuleParams.getDoc();
+
+  for (const auto &test : minDoc) {
+    spdlog::info(test.asString());
+  }
+
+  return minModuleParams;
+}
+
 // NOLINTEND
