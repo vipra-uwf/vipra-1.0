@@ -310,7 +310,8 @@ std::string initializeModules() {
 std::string mainFunctionDefinition() {
   return "\nVIPRA::CONFIG::Map simulationJsonConfig;"
          "\nVIPRA::CONFIG::Map moduleParams;"
-         "\nvoid parallel_main(VIPRA::CONFIG::Map simconfig, VIPRA::CONFIG::Map "
+         "\nvoid parallel_main(const VIPRA::CONFIG::Map& simconfig, const "
+         "VIPRA::CONFIG::Map& "
          "moduleparams) {"
          "\n\tsimulationJsonConfig = simconfig;"
          "\n\tmoduleParams = moduleparams;";
@@ -362,18 +363,18 @@ std::string generateGetFiles() {
       "\nVIPRA::Clock<VIPRA::milli> timer;"
       "\nvoid getInputFiles(int argc, char** argv);"
       "\nvoid getInputFiles(int argc, char** argv){"
-      "\n\tif(argc > 7 || argc < 7){"
+      "\n\tif(argc > 8 || argc < 8){"
       "\n\t\tstd::cerr << \"Invalid inputs: Usage: *Config Path* *Params Path* "
       "*Pedestrians path* "
       "*Obstacle Path* *Output Path*\\n\";\n"
       "\n\t\texit(1);"
       "\n\t}"
-      "\n\tconfigFile=argv[1];"
-      "\n\tminConfigFile=argv[2];"
-      "\n\tmaxConfigFile=argv[3];"
-      "\n\tpedestrianFile=argv[4];"
-      "\n\tobstacleFile=argv[5];"
-      "\n\toutputFile=argv[6];"
+      "\n\tconfigFile=argv[2];"
+      "\n\tminConfigFile=argv[3];"
+      "\n\tmaxConfigFile=argv[4];"
+      "\n\tpedestrianFile=argv[5];"
+      "\n\tobstacleFile=argv[6];"
+      "\n\toutputFile=argv[7];"
       "\n}"};
 }
 
