@@ -87,11 +87,13 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
   bool flag = true;
   for (VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); i++) {
     if (i == index) continue;
-
     if (goals.isPedestianGoalMet(i)) continue;
 
     auto coords1 = pedestrianSet.getPedCoords(index);
     auto coords2 = pedestrianSet.getPedCoords(i);
+
+    constexpr float dist2 = 2 * rectangleRange;
+    if (coords1.distanceTo(coords2) >= dist2) continue;
 
     bool cr2in1 = collisionRectangles.at(index).isPointInRect(coords2);
     bool cr1in2 = collisionRectangles.at(i).isPointInRect(coords1);
