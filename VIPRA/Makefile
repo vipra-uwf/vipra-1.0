@@ -3,7 +3,7 @@ BASE_DIR = ./Base
 CODE_GEN_DIR = ${BASE_DIR}/code_generation
 
 release:
-	make build DEBUG=-DDEBUG_MODE=OFF PROF=-DPROF_MODE=ON DIR=build
+	make build DEBUG=-DDEBUG_MODE=OFF PROF=-DPROF_MODE=OFF DIR=build
 
 debug:
 	make build DEBUG=-DDEBUG_MODE=ON PROF=-DPROF_MODE=ON DIR=build_debug
