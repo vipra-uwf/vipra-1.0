@@ -12,7 +12,7 @@
 
 namespace BHVR {
 
-using Atom = std::function<void(Simpack, Target, Target, VIPRA::State&)>;
+using Atom = std::function<void(Simpack, Target, Target)>;
 
 }  // namespace BHVR
 

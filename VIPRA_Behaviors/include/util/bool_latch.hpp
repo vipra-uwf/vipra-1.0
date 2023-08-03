@@ -14,7 +14,6 @@ class Latch {
 
   inline void unlatch() { set = false; }
 
-
   [[nodiscard]] inline explicit operator bool() const { return set; }
 
  private:

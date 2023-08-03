@@ -1,5 +1,6 @@
 #include "behavior/human_behavior.hpp"
 
+#include <definitions/state.hpp>
 #include <numeric>
 #include <utility>
 #include "definitions/dsl_types.hpp"
@@ -56,7 +57,9 @@ void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& o
   context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
   context.types = std::vector<BHVR::typeUID>(pedSet.getNumPedestrians());
 
-  Simpack pack{pedSet, obsSet, goals, context, selector.getGroups(), 0};
+  VIPRA::State dummyState;
+
+  Simpack pack{pedSet, obsSet, goals, dummyState, context, selector.getGroups(), 0};
   spdlog::debug("Initializing {} Selectors, Seed: {}", selector.selectorCount(), seedNum);
   selector.initialize(name, rngEngine, pack);
 
@@ -100,7 +103,7 @@ VIPRA::idx HumanBehavior::addEvent(const Event& event) {
  * @param loc : location object to add
  * @return VIPRA::idx
 */
-VIPRA::idx HumanBehavior::addLocation(Location loc) {
+VIPRA::idx HumanBehavior::addLocation(const Location& loc) {
   context.locations.emplace_back(loc);
   return context.locations.size() - 1;
 }
@@ -153,8 +156,10 @@ void HumanBehavior::setSeed(BHVR::seed bSeed) {
  */
 void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
                                    Goals& goals, VIPRA::delta_t dT) {
+  VIPRA::State dummyState;
   for (auto& event : context.events) {
-    event.evaluate({pedSet, obsSet, goals, context, selector.getGroups(), dT});
+    event.evaluate(
+        {pedSet, obsSet, goals, dummyState, context, selector.getGroups(), dT});
   }
 }
 
@@ -177,8 +182,8 @@ void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goa
     std::for_each(pedestrians.begin(), pedestrians.end(), [&](VIPRA::idx ped) {
       if (!goals.isPedestianGoalMet(ped))
         for (auto& action : actions[i]) {
-          action.performAction({pedSet, obsSet, goals, context, selector.getGroups(), dT},
-                               ped, state);
+          action.performAction(
+              {pedSet, obsSet, goals, state, context, selector.getGroups(), dT}, ped);
         }
     });
   }

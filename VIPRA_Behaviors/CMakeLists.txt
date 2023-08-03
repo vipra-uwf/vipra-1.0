@@ -21,13 +21,6 @@ add_library(
   ${SRCS}
 )
 
-target_compile_options(
-  ${LIB_NAME}
-  PRIVATE
-  $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-  $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Werror -Wpedantic>
-)
-
 add_subdirectory(${SRC_DIR})
 add_subdirectory(${GRAMMAR_DIR})
 

@@ -6,25 +6,25 @@
 
 #include <spdlog/spdlog.h>
 
-#include <generated/BehaviorBaseVisitor.h>
-#include <generated/BehaviorParser.h>
+#include "generated/BehaviorBaseVisitor.h"
+#include "generated/BehaviorParser.h"
 
-#include <selectors/subselector.hpp>
+#include "selectors/subselector.hpp"
 
-#include <behavior/human_behavior.hpp>
-#include <builder/behavior_error_listener.hpp>
+#include "behavior/human_behavior.hpp"
+#include "builder/behavior_error_listener.hpp"
 
-#include <events/event.hpp>
-#include <locations/location.hpp>
+#include "events/event.hpp"
+#include "locations/location.hpp"
 
-#include <attributes/attributes.hpp>
-#include <conditions/condition.hpp>
-#include <definitions/dsl_types.hpp>
-#include <time/time.hpp>
-#include <values/values.hpp>
+#include "attributes/attributes.hpp"
+#include "conditions/condition.hpp"
+#include "definitions/dsl_types.hpp"
+#include "time/time.hpp"
+#include "values/values.hpp"
 
-#include <builder/builder_maps.hpp>
-#include <builder/declaration_components.hpp>
+#include "builder/builder_maps.hpp"
+#include "builder/declaration_components.hpp"
 #include "targets/target_modifier.hpp"
 #include "values/direction.hpp"
 
@@ -72,7 +72,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   [[nodiscard]] auto buildSubSelector(slType, slSelector, std::optional<slGroup>, bool)
       -> SubSelector;
 
-  [[nodiscard]] auto getLocation(const std::string&) const -> VIPRA::idx;
+  [[nodiscard]] auto getLocation(const std::string&) const -> std::optional<VIPRA::idx>;
   [[nodiscard]] auto getState(const std::string&) const -> BHVR::stateUID;
   [[nodiscard]] auto getEvent(const std::string&) const -> std::optional<VIPRA::idx>;
   [[nodiscard]] auto getRange(BehaviorParser::Value_numberContext*) const
@@ -83,6 +83,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   [[nodiscard]] auto getCompositeType(
       const std::vector<antlr4::tree::TerminalNode*>&) const -> BHVR::Ptype;
   [[nodiscard]] static auto getAttribute(std::string) -> BHVR::Attribute;
+  [[nodiscard]] static auto getShape(BehaviorParser::Loc_shapeContext*) -> BHVR::Shape;
 
   [[nodiscard]] auto makeAttributeValue(BehaviorParser::Attr_valueContext*)
       -> BHVR::CAttributeValue;
@@ -93,6 +94,8 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   [[nodiscard]] auto makeTargetModifier(std::vector<BehaviorParser::ModifierContext*>&)
       -> std::optional<TargetModifier>;
   [[nodiscard]] static auto makeDirection(BehaviorParser::DirectionContext*) -> Direction;
+  [[nodiscard]] auto        makeDimensions(BehaviorParser::Loc_dimensionsContext*) const
+      -> std::pair<InsideFunc, RandomPointFunc>;
 
   /**
    * @brief Logs an error to the console and throws an exception
@@ -112,10 +115,10 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   antlrcpp::Any visitEvent(BehaviorParser::EventContext*) override;
   antlrcpp::Any visitPed_Selector(BehaviorParser::Ped_SelectorContext*) override;
   antlrcpp::Any visitAction(BehaviorParser::ActionContext*) override;
-  antlrcpp::Any visitDecl_Loc(BehaviorParser::Decl_LocContext*) override;
   antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext*) override;
   antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext*) override;
   antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext*) override;
+  antlrcpp::Any visitLocation(BehaviorParser::LocationContext*) override;
 
   // --------------------------------- ATOMS ------------------------------------------------------------------------------------------------
 
@@ -136,6 +139,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   // --------------------------------- SUBCONDITIONS ------------------------------------------------------------------------------------------------
 
+  void addEnterSubCond(Condition&, BehaviorParser::Condition_Enter_LocationContext*);
   void addTimeElapsedSubCond(Condition&,
                              BehaviorParser::Condition_Time_Elapsed_From_EventContext*);
   void addEventOccurredSubCond(Condition&,
@@ -152,6 +156,8 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   auto buildEveryone(slType, bool) -> SubSelector;
   auto buildExactlyN(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
   auto buildPercent(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
+
+  // --------------------------------- LOCATION ------------------------------------------------------------------------------------------------
 
   // -------------------------------- FINDERS ------------------------------------------------------------------------------------------------
 
@@ -237,6 +243,36 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
       if constexpr (std::is_same_v<T, slRequired>)
         if (attr->selector_required()) return attr->selector_required();
+    }
+
+    return std::nullopt;
+  }
+
+  // using lcName = BehaviorParser::Loc_nameContext*;
+  // using lcShape = BehaviorParser::Loc_shapeContext*;
+  // using lcDimensions = BehaviorParser::Loc_dimensionsContext*;
+
+  /**
+   * @brief Gets components from an selector declaration context
+   * 
+   * @tparam T : type of component
+   * @param ctx : selector context
+   * @return std::optional<T> 
+   */
+  template <typename T>
+  [[nodiscard]] static auto findLocationComponent(BehaviorParser::LocationContext* ctx)
+      -> std::optional<T> {
+    for (const auto& attr : ctx->location_attribute()) {
+      // Type
+      if constexpr (std::is_same_v<T, lcName>)
+        if (attr->loc_name()) return attr->loc_name();
+
+      // Selector
+      if constexpr (std::is_same_v<T, lcShape>)
+        if (attr->loc_shape()) return attr->loc_shape();
+
+      if constexpr (std::is_same_v<T, lcDimensions>)
+        if (attr->loc_dimensions()) return attr->loc_dimensions();
     }
 
     return std::nullopt;

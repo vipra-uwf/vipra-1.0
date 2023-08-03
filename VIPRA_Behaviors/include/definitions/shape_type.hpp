@@ -2,15 +2,12 @@
 #define VIPRA_BHVR_SHAPE_TYPE_HPP
 
 namespace BHVR {
-
-
-
-enum class ShapeType {
-    CIRCLE,
-    RECTANGLE,
-    POINT,
+enum class Shape {
+  CIRCLE,
+  RECTANGLE,
+  POINT,
 };
 
-} //Namespace BHVR
+}  //Namespace BHVR
 
 #endif
