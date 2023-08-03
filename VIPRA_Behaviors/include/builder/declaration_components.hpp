@@ -18,6 +18,10 @@ using slType = BehaviorParser::Selector_typeContext*;
 using slSelector = BehaviorParser::Selector_selectorContext*;
 using slGroup = BehaviorParser::Selector_fromContext*;
 using slRequired = BehaviorParser::Selector_requiredContext*;
+
+using lcName = BehaviorParser::Loc_nameContext*;
+using lcShape = BehaviorParser::Loc_shapeContext*;
+using lcDimensions = BehaviorParser::Loc_dimensionsContext*;
 }  // namespace BHVR
 
 #endif

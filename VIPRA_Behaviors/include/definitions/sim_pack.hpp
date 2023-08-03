@@ -2,6 +2,7 @@
 #define VIPRA_BEHAVIORS_SIM_PACK_HPP
 
 #include <definitions/behavior_context.hpp>
+#include <definitions/state.hpp>
 #include <definitions/type_definitions.hpp>
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
@@ -18,6 +19,7 @@ struct Simpack {
   const PedestrianSet&   pedSet;
   const ObstacleSet&     obsSet;
   const Goals&           goals;
+  VIPRA::State&          state;
   BehaviorContext&       context;
   const GroupsContainer& groups;
   VIPRA::delta_t         dT;

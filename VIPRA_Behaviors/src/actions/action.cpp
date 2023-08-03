@@ -33,12 +33,12 @@ void Action::initialize(Simpack pack) {
  * @param dT : simulation timestep size
  * @param state : state object to apply changes to
  */
-void Action::performAction(Simpack pack, VIPRA::idx pedIdx, VIPRA::State& state) {
+void Action::performAction(Simpack pack, VIPRA::idx pedIdx) {
   Target self = {TargetType::PEDESTRIAN, pedIdx};
   Target target = targets.getTarget(pack, self);
   if (evaluate(pack, pedIdx, target)) {
     std::for_each(atoms.begin(), atoms.end(),
-                  [&](Atom& atom) { atom(pack, self, target, state); });
+                  [&](Atom& atom) { atom(pack, self, target); });
   }
 }
 

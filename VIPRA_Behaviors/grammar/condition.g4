@@ -22,7 +22,9 @@ sub_condition:
   condition_Event_Occurring |
   condition_Event_Starting |
   condition_Event_Ending |
-  condition_Spatial
+  condition_Spatial |
+  condition_Enter_Location |
+  condition_Exit_Location
   ;
 
 condition_Time_Elapsed_From_Event:
@@ -47,6 +49,14 @@ condition_Event_Ending:
 
 condition_Spatial:
   TARGET WITHIN value_numeric
+  ;
+
+condition_Enter_Location:
+  ENTER LOC_NAME
+  ;
+
+condition_Exit_Location:
+  EXIT LOC_NAME
   ;
 
 condition_Attribute:

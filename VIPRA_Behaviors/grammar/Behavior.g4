@@ -1,6 +1,6 @@
 grammar Behavior;
 
-import lexer_rules, event, selector, condition, action, declarations;
+import lexer_rules, location, event, selector, condition, action, declarations;
 
 program: 
   decl_Ped '.' 
@@ -8,6 +8,7 @@ program:
 
 statement:
   event '.' |
+  location '.' |
   declaration '.' |
   ped_Selector '.' |
   action '.'

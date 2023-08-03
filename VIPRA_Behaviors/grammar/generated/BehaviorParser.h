@@ -14,48 +14,51 @@ public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     COMMENT = 8, LINE_COMMENT = 9, WS = 10, COMMA = 11, COLON = 12, STATE_VAL = 13, 
-    EVNT = 14, AN = 15, AT = 16, ADD = 17, AND = 18, ARE = 19, AFTER = 20, 
-    ALWAYS = 21, AROUND = 22, ACTION = 23, BEHIND = 24, CONSIDER = 25, DECIMAL = 26, 
-    DIRECTION = 27, DURATION = 28, END = 29, ENDS = 30, ENVIRONMENT = 31, 
-    EVENT = 32, EXACTLY = 33, EVERY = 34, EVERYONE = 35, ENDING = 36, FOR = 37, 
-    FROM = 38, FRONT = 39, FASTER = 40, GIVEN = 41, GOAL = 42, GROUP = 43, 
-    HAS = 44, IN = 45, INTEGER = 46, IS = 47, IF = 48, LENGTH = 49, LOCATION = 50, 
-    MAX = 51, METERS = 52, NAME = 53, NEAREST = 54, NORMAL = 55, NONE = 56, 
-    OBSTACLE = 57, OCCUR = 58, OCCURRED = 59, OCCURRING = 60, OF = 61, ON = 62, 
-    OR = 63, PEDESTRIAN = 64, PEDESTRIANS = 65, POSSIBLE = 66, POSITION = 67, 
-    RADIUS = 68, RANDOM = 69, REQUIRED = 70, RESPONSE = 71, SCALE = 72, 
-    SELF = 73, SELECT = 74, SELECTOR = 75, SET = 76, SECOND = 77, SECONDS = 78, 
-    STATUS = 79, STARTING = 80, SLOWER = 81, STATES = 82, START = 83, STATE = 84, 
-    STARTS = 85, SPEED = 86, SUBTRACT = 87, STIMULUS = 88, TARGET = 89, 
-    TO = 90, THE = 91, THAT = 92, THEN = 93, THEIR = 94, THERES = 95, TYPES = 96, 
-    TYPE = 97, UNCONDITIONALLY = 98, VALUE = 99, VELOCITY = 100, WHEN = 101, 
-    WHILE = 102, WIDTH = 103, WILL = 104, WITH = 105, WITHIN = 106, ID = 107, 
-    NUMBER = 108, FLOAT = 109
+    EVNT = 14, LOC_NAME = 15, AN = 16, AT = 17, ADD = 18, AND = 19, ARE = 20, 
+    AFTER = 21, ALWAYS = 22, AROUND = 23, ACTION = 24, BEHIND = 25, BOTTOM = 26, 
+    CONSIDER = 27, CIRCLE = 28, CENTER = 29, CONDITION = 30, DECIMAL = 31, 
+    DIRECTION = 32, DURATION = 33, END = 34, ENDS = 35, ENVIRONMENT = 36, 
+    ENTER = 37, EXIT = 38, EVENT = 39, EXACTLY = 40, EVERY = 41, EVERYONE = 42, 
+    ENDING = 43, FOR = 44, FROM = 45, FRONT = 46, FASTER = 47, GIVEN = 48, 
+    GOAL = 49, GROUP = 50, HAS = 51, IN = 52, INTEGER = 53, IS = 54, IF = 55, 
+    LENGTH = 56, LEFT = 57, DIMENSIONS = 58, LOCATION = 59, MAX = 60, METERS = 61, 
+    NAME = 62, NEAREST = 63, NORMAL = 64, NONE = 65, OBSTACLE = 66, OCCUR = 67, 
+    OCCURRED = 68, OCCURRING = 69, OF = 70, ON = 71, OR = 72, PEDESTRIAN = 73, 
+    PEDESTRIANS = 74, POINTS = 75, POSSIBLE = 76, POSITION = 77, RADIUS = 78, 
+    RANDOM = 79, REQUIRED = 80, RECTANGLE = 81, RIGHT = 82, RESPONSE = 83, 
+    SCALE = 84, SELF = 85, SELECT = 86, SELECTOR = 87, SET = 88, SECOND = 89, 
+    SECONDS = 90, STATUS = 91, STARTING = 92, SLOWER = 93, SHAPE = 94, STATES = 95, 
+    START = 96, STATE = 97, STARTS = 98, SPEED = 99, SUBTRACT = 100, STIMULUS = 101, 
+    TARGET = 102, TO = 103, TOP = 104, THE = 105, THAT = 106, THEN = 107, 
+    THEIR = 108, THERES = 109, TYPES = 110, TYPE = 111, UNCONDITIONALLY = 112, 
+    VALUE = 113, VELOCITY = 114, WHEN = 115, WHILE = 116, WIDTH = 117, WILL = 118, 
+    WITH = 119, WITHIN = 120, ID = 121, NUMBER = 122, FLOAT = 123
   };
 
   enum {
-    RuleProgram = 0, RuleStatement = 1, RuleEvent = 2, RuleEvent_attribute = 3, 
-    RuleEvent_name = 4, RuleEvent_start = 5, RuleEvent_end = 6, RuleCondition = 7, 
-    RuleConnector = 8, RuleOr_Connector = 9, RuleAnd_Connector = 10, RuleSub_condition = 11, 
-    RuleCondition_Time_Elapsed_From_Event = 12, RuleCondition_Event_Occurred = 13, 
-    RuleCondition_Event_Occurring = 14, RuleCondition_Event_Starting = 15, 
-    RuleCondition_Event_Ending = 16, RuleCondition_Spatial = 17, RuleCondition_Attribute = 18, 
-    RuleValue_numeric = 19, RuleValue_number = 20, RuleValue_float = 21, 
-    RuleValue_range = 22, RuleValue_random = 23, RuleRandom_number = 24, 
-    RuleRandom_float = 25, RuleFloat_range = 26, RuleNumber_range = 27, 
-    RuleValue_coord = 28, RuleDuration = 29, RuleAttribute = 30, RuleAttr_value = 31, 
-    RulePed_Selector = 32, RuleSelector_attribute = 33, RuleSelector_type = 34, 
-    RuleSelector_selector = 35, RuleSelector_from = 36, RuleSelector_required = 37, 
-    RuleSelector = 38, RuleSelector_Percent = 39, RuleSelector_Exactly_N_Random = 40, 
-    RuleSelector_Everyone = 41, RuleGroup = 42, RuleId_list = 43, RuleAction = 44, 
-    RuleAction_attribute = 45, RuleAction_stimulus = 46, RuleNone = 47, 
-    RuleAction_response = 48, RuleAction_duration = 49, RuleAction_target = 50, 
-    RuleSub_action = 51, RuleAction_atom = 52, RuleSet_atom = 53, RuleScale_atom = 54, 
-    RuleTarget = 55, RuleSelf = 56, RuleOther = 57, RuleNearest_type = 58, 
-    RuleModifier = 59, RuleDistance = 60, RuleDirection = 61, RuleFront = 62, 
-    RuleBehind = 63, RuleDeclaration = 64, RuleDecl_Loc = 65, RuleDecl_Ped_State = 66, 
-    RuleDecl_Env_State = 67, RuleDecl_Loc_Area_Circle = 68, RuleDecl_Loc_Area_Rect = 69, 
-    RuleDecl_Loc_Point = 70, RuleDecl_Ped = 71
+    RuleProgram = 0, RuleStatement = 1, RuleLocation = 2, RuleLocation_attribute = 3, 
+    RuleLoc_name = 4, RuleLoc_shape = 5, RuleLoc_dimensions = 6, RuleRect_dims = 7, 
+    RuleCircle_dims = 8, RuleValue_numeric = 9, RuleValue_number = 10, RuleValue_float = 11, 
+    RuleValue_range = 12, RuleValue_random = 13, RuleRandom_number = 14, 
+    RuleRandom_float = 15, RuleFloat_range = 16, RuleNumber_range = 17, 
+    RuleValue_coord = 18, RuleEvent = 19, RuleEvent_attribute = 20, RuleEvent_name = 21, 
+    RuleEvent_start = 22, RuleEvent_end = 23, RuleCondition = 24, RuleConnector = 25, 
+    RuleOr_Connector = 26, RuleAnd_Connector = 27, RuleSub_condition = 28, 
+    RuleCondition_Time_Elapsed_From_Event = 29, RuleCondition_Event_Occurred = 30, 
+    RuleCondition_Event_Occurring = 31, RuleCondition_Event_Starting = 32, 
+    RuleCondition_Event_Ending = 33, RuleCondition_Spatial = 34, RuleCondition_Enter_Location = 35, 
+    RuleCondition_Exit_Location = 36, RuleCondition_Attribute = 37, RuleDuration = 38, 
+    RuleAttribute = 39, RuleAttr_value = 40, RulePed_Selector = 41, RuleSelector_attribute = 42, 
+    RuleSelector_type = 43, RuleSelector_selector = 44, RuleSelector_from = 45, 
+    RuleSelector_required = 46, RuleSelector = 47, RuleSelector_Percent = 48, 
+    RuleSelector_Exactly_N_Random = 49, RuleSelector_Everyone = 50, RuleGroup = 51, 
+    RuleId_list = 52, RuleAction = 53, RuleAction_attribute = 54, RuleAction_stimulus = 55, 
+    RuleAction_response = 56, RuleAction_duration = 57, RuleAction_target = 58, 
+    RuleSub_action = 59, RuleAction_atom = 60, RuleSet_atom = 61, RuleScale_atom = 62, 
+    RuleTarget = 63, RuleSelf = 64, RuleOther = 65, RuleNearest_type = 66, 
+    RuleModifier = 67, RuleDistance = 68, RuleDirection = 69, RuleFront = 70, 
+    RuleBehind = 71, RuleDeclaration = 72, RuleDecl_Ped_State = 73, RuleDecl_Env_State = 74, 
+    RuleDecl_Ped = 75
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -77,6 +80,23 @@ public:
 
   class ProgramContext;
   class StatementContext;
+  class LocationContext;
+  class Location_attributeContext;
+  class Loc_nameContext;
+  class Loc_shapeContext;
+  class Loc_dimensionsContext;
+  class Rect_dimsContext;
+  class Circle_dimsContext;
+  class Value_numericContext;
+  class Value_numberContext;
+  class Value_floatContext;
+  class Value_rangeContext;
+  class Value_randomContext;
+  class Random_numberContext;
+  class Random_floatContext;
+  class Float_rangeContext;
+  class Number_rangeContext;
+  class Value_coordContext;
   class EventContext;
   class Event_attributeContext;
   class Event_nameContext;
@@ -93,17 +113,9 @@ public:
   class Condition_Event_StartingContext;
   class Condition_Event_EndingContext;
   class Condition_SpatialContext;
+  class Condition_Enter_LocationContext;
+  class Condition_Exit_LocationContext;
   class Condition_AttributeContext;
-  class Value_numericContext;
-  class Value_numberContext;
-  class Value_floatContext;
-  class Value_rangeContext;
-  class Value_randomContext;
-  class Random_numberContext;
-  class Random_floatContext;
-  class Float_rangeContext;
-  class Number_rangeContext;
-  class Value_coordContext;
   class DurationContext;
   class AttributeContext;
   class Attr_valueContext;
@@ -122,7 +134,6 @@ public:
   class ActionContext;
   class Action_attributeContext;
   class Action_stimulusContext;
-  class NoneContext;
   class Action_responseContext;
   class Action_durationContext;
   class Action_targetContext;
@@ -140,12 +151,8 @@ public:
   class FrontContext;
   class BehindContext;
   class DeclarationContext;
-  class Decl_LocContext;
   class Decl_Ped_StateContext;
   class Decl_Env_StateContext;
-  class Decl_Loc_Area_CircleContext;
-  class Decl_Loc_Area_RectContext;
-  class Decl_Loc_PointContext;
   class Decl_PedContext; 
 
   class  ProgramContext : public antlr4::ParserRuleContext {
@@ -168,6 +175,7 @@ public:
     StatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     EventContext *event();
+    LocationContext *location();
     DeclarationContext *declaration();
     Ped_SelectorContext *ped_Selector();
     ActionContext *action();
@@ -179,40 +187,40 @@ public:
 
   StatementContext* statement();
 
-  class  EventContext : public antlr4::ParserRuleContext {
+  class  LocationContext : public antlr4::ParserRuleContext {
   public:
-    EventContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    LocationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *EVENT();
+    antlr4::tree::TerminalNode *LOCATION();
     antlr4::tree::TerminalNode *COLON();
-    std::vector<Event_attributeContext *> event_attribute();
-    Event_attributeContext* event_attribute(size_t i);
+    std::vector<Location_attributeContext *> location_attribute();
+    Location_attributeContext* location_attribute(size_t i);
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
-  EventContext* event();
+  LocationContext* location();
 
-  class  Event_attributeContext : public antlr4::ParserRuleContext {
+  class  Location_attributeContext : public antlr4::ParserRuleContext {
   public:
-    Event_attributeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Location_attributeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Event_nameContext *event_name();
-    Event_startContext *event_start();
-    Event_endContext *event_end();
+    Loc_nameContext *loc_name();
+    Loc_shapeContext *loc_shape();
+    Loc_dimensionsContext *loc_dimensions();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
-  Event_attributeContext* event_attribute();
+  Location_attributeContext* location_attribute();
 
-  class  Event_nameContext : public antlr4::ParserRuleContext {
+  class  Loc_nameContext : public antlr4::ParserRuleContext {
   public:
-    Event_nameContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Loc_nameContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *NAME();
     antlr4::tree::TerminalNode *COLON();
@@ -223,217 +231,71 @@ public:
    
   };
 
-  Event_nameContext* event_name();
+  Loc_nameContext* loc_name();
 
-  class  Event_startContext : public antlr4::ParserRuleContext {
+  class  Loc_shapeContext : public antlr4::ParserRuleContext {
   public:
-    Event_startContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Loc_shapeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *START();
+    antlr4::tree::TerminalNode *SHAPE();
     antlr4::tree::TerminalNode *COLON();
-    ConditionContext *condition();
+    antlr4::tree::TerminalNode *RECTANGLE();
+    antlr4::tree::TerminalNode *CIRCLE();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
-  Event_startContext* event_start();
+  Loc_shapeContext* loc_shape();
 
-  class  Event_endContext : public antlr4::ParserRuleContext {
+  class  Loc_dimensionsContext : public antlr4::ParserRuleContext {
   public:
-    Event_endContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Loc_dimensionsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *END();
+    Rect_dimsContext *rect_dims();
+    Circle_dimsContext *circle_dims();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Loc_dimensionsContext* loc_dimensions();
+
+  class  Rect_dimsContext : public antlr4::ParserRuleContext {
+  public:
+    Rect_dimsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *POINTS();
     antlr4::tree::TerminalNode *COLON();
-    ConditionContext *condition();
+    std::vector<Value_coordContext *> value_coord();
+    Value_coordContext* value_coord(size_t i);
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
-  Event_endContext* event_end();
+  Rect_dimsContext* rect_dims();
 
-  class  ConditionContext : public antlr4::ParserRuleContext {
+  class  Circle_dimsContext : public antlr4::ParserRuleContext {
   public:
-    ConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Circle_dimsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Sub_conditionContext *sub_condition();
-    std::vector<ConnectorContext *> connector();
-    ConnectorContext* connector(size_t i);
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ConditionContext* condition();
-
-  class  ConnectorContext : public antlr4::ParserRuleContext {
-  public:
-    ConnectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    Or_ConnectorContext *or_Connector();
-    And_ConnectorContext *and_Connector();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ConnectorContext* connector();
-
-  class  Or_ConnectorContext : public antlr4::ParserRuleContext {
-  public:
-    Or_ConnectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *OR();
-    Sub_conditionContext *sub_condition();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Or_ConnectorContext* or_Connector();
-
-  class  And_ConnectorContext : public antlr4::ParserRuleContext {
-  public:
-    And_ConnectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *AND();
-    Sub_conditionContext *sub_condition();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  And_ConnectorContext* and_Connector();
-
-  class  Sub_conditionContext : public antlr4::ParserRuleContext {
-  public:
-    Sub_conditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    Condition_Time_Elapsed_From_EventContext *condition_Time_Elapsed_From_Event();
-    Condition_Event_OccurredContext *condition_Event_Occurred();
-    Condition_Event_OccurringContext *condition_Event_Occurring();
-    Condition_Event_StartingContext *condition_Event_Starting();
-    Condition_Event_EndingContext *condition_Event_Ending();
-    Condition_SpatialContext *condition_Spatial();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Sub_conditionContext* sub_condition();
-
-  class  Condition_Time_Elapsed_From_EventContext : public antlr4::ParserRuleContext {
-  public:
-    Condition_Time_Elapsed_From_EventContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *CENTER();
+    std::vector<antlr4::tree::TerminalNode *> COLON();
+    antlr4::tree::TerminalNode* COLON(size_t i);
+    Value_coordContext *value_coord();
+    antlr4::tree::TerminalNode *RADIUS();
     Value_numericContext *value_numeric();
-    antlr4::tree::TerminalNode *SECONDS();
-    antlr4::tree::TerminalNode *AFTER();
-    antlr4::tree::TerminalNode *EVNT();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
-  Condition_Time_Elapsed_From_EventContext* condition_Time_Elapsed_From_Event();
-
-  class  Condition_Event_OccurredContext : public antlr4::ParserRuleContext {
-  public:
-    Condition_Event_OccurredContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *EVNT();
-    antlr4::tree::TerminalNode *HAS();
-    antlr4::tree::TerminalNode *OCCURRED();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Condition_Event_OccurredContext* condition_Event_Occurred();
-
-  class  Condition_Event_OccurringContext : public antlr4::ParserRuleContext {
-  public:
-    Condition_Event_OccurringContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *EVNT();
-    antlr4::tree::TerminalNode *OCCURRING();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Condition_Event_OccurringContext* condition_Event_Occurring();
-
-  class  Condition_Event_StartingContext : public antlr4::ParserRuleContext {
-  public:
-    Condition_Event_StartingContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *EVNT();
-    antlr4::tree::TerminalNode *STARTING();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Condition_Event_StartingContext* condition_Event_Starting();
-
-  class  Condition_Event_EndingContext : public antlr4::ParserRuleContext {
-  public:
-    Condition_Event_EndingContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *EVNT();
-    antlr4::tree::TerminalNode *ENDING();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Condition_Event_EndingContext* condition_Event_Ending();
-
-  class  Condition_SpatialContext : public antlr4::ParserRuleContext {
-  public:
-    Condition_SpatialContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *TARGET();
-    antlr4::tree::TerminalNode *WITHIN();
-    Value_numericContext *value_numeric();
-    antlr4::tree::TerminalNode *METERS();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Condition_SpatialContext* condition_Spatial();
-
-  class  Condition_AttributeContext : public antlr4::ParserRuleContext {
-  public:
-    Condition_AttributeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    AttributeContext *attribute();
-    antlr4::tree::TerminalNode *IS();
-    Attr_valueContext *attr_value();
-    antlr4::tree::TerminalNode *TARGET();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Condition_AttributeContext* condition_Attribute();
+  Circle_dimsContext* circle_dims();
 
   class  Value_numericContext : public antlr4::ParserRuleContext {
   public:
@@ -578,6 +440,291 @@ public:
   };
 
   Value_coordContext* value_coord();
+
+  class  EventContext : public antlr4::ParserRuleContext {
+  public:
+    EventContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *EVENT();
+    antlr4::tree::TerminalNode *COLON();
+    std::vector<Event_attributeContext *> event_attribute();
+    Event_attributeContext* event_attribute(size_t i);
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  EventContext* event();
+
+  class  Event_attributeContext : public antlr4::ParserRuleContext {
+  public:
+    Event_attributeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Event_nameContext *event_name();
+    Event_startContext *event_start();
+    Event_endContext *event_end();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Event_attributeContext* event_attribute();
+
+  class  Event_nameContext : public antlr4::ParserRuleContext {
+  public:
+    Event_nameContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NAME();
+    antlr4::tree::TerminalNode *COLON();
+    antlr4::tree::TerminalNode *ID();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Event_nameContext* event_name();
+
+  class  Event_startContext : public antlr4::ParserRuleContext {
+  public:
+    Event_startContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *START();
+    antlr4::tree::TerminalNode *COLON();
+    ConditionContext *condition();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Event_startContext* event_start();
+
+  class  Event_endContext : public antlr4::ParserRuleContext {
+  public:
+    Event_endContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *END();
+    antlr4::tree::TerminalNode *COLON();
+    ConditionContext *condition();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Event_endContext* event_end();
+
+  class  ConditionContext : public antlr4::ParserRuleContext {
+  public:
+    ConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Sub_conditionContext *sub_condition();
+    std::vector<ConnectorContext *> connector();
+    ConnectorContext* connector(size_t i);
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ConditionContext* condition();
+
+  class  ConnectorContext : public antlr4::ParserRuleContext {
+  public:
+    ConnectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Or_ConnectorContext *or_Connector();
+    And_ConnectorContext *and_Connector();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ConnectorContext* connector();
+
+  class  Or_ConnectorContext : public antlr4::ParserRuleContext {
+  public:
+    Or_ConnectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *OR();
+    Sub_conditionContext *sub_condition();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Or_ConnectorContext* or_Connector();
+
+  class  And_ConnectorContext : public antlr4::ParserRuleContext {
+  public:
+    And_ConnectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *AND();
+    Sub_conditionContext *sub_condition();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  And_ConnectorContext* and_Connector();
+
+  class  Sub_conditionContext : public antlr4::ParserRuleContext {
+  public:
+    Sub_conditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Condition_Time_Elapsed_From_EventContext *condition_Time_Elapsed_From_Event();
+    Condition_Event_OccurredContext *condition_Event_Occurred();
+    Condition_Event_OccurringContext *condition_Event_Occurring();
+    Condition_Event_StartingContext *condition_Event_Starting();
+    Condition_Event_EndingContext *condition_Event_Ending();
+    Condition_SpatialContext *condition_Spatial();
+    Condition_Enter_LocationContext *condition_Enter_Location();
+    Condition_Exit_LocationContext *condition_Exit_Location();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Sub_conditionContext* sub_condition();
+
+  class  Condition_Time_Elapsed_From_EventContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_Time_Elapsed_From_EventContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Value_numericContext *value_numeric();
+    antlr4::tree::TerminalNode *SECONDS();
+    antlr4::tree::TerminalNode *AFTER();
+    antlr4::tree::TerminalNode *EVNT();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_Time_Elapsed_From_EventContext* condition_Time_Elapsed_From_Event();
+
+  class  Condition_Event_OccurredContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_Event_OccurredContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *EVNT();
+    antlr4::tree::TerminalNode *HAS();
+    antlr4::tree::TerminalNode *OCCURRED();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_Event_OccurredContext* condition_Event_Occurred();
+
+  class  Condition_Event_OccurringContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_Event_OccurringContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *EVNT();
+    antlr4::tree::TerminalNode *OCCURRING();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_Event_OccurringContext* condition_Event_Occurring();
+
+  class  Condition_Event_StartingContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_Event_StartingContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *EVNT();
+    antlr4::tree::TerminalNode *STARTING();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_Event_StartingContext* condition_Event_Starting();
+
+  class  Condition_Event_EndingContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_Event_EndingContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *EVNT();
+    antlr4::tree::TerminalNode *ENDING();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_Event_EndingContext* condition_Event_Ending();
+
+  class  Condition_SpatialContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_SpatialContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *TARGET();
+    antlr4::tree::TerminalNode *WITHIN();
+    Value_numericContext *value_numeric();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_SpatialContext* condition_Spatial();
+
+  class  Condition_Enter_LocationContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_Enter_LocationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ENTER();
+    antlr4::tree::TerminalNode *LOC_NAME();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_Enter_LocationContext* condition_Enter_Location();
+
+  class  Condition_Exit_LocationContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_Exit_LocationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *EXIT();
+    antlr4::tree::TerminalNode *LOC_NAME();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_Exit_LocationContext* condition_Exit_Location();
+
+  class  Condition_AttributeContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_AttributeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    AttributeContext *attribute();
+    antlr4::tree::TerminalNode *IS();
+    Attr_valueContext *attr_value();
+    antlr4::tree::TerminalNode *TARGET();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_AttributeContext* condition_Attribute();
 
   class  DurationContext : public antlr4::ParserRuleContext {
   public:
@@ -841,8 +988,7 @@ public:
   public:
     Action_stimulusContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    NoneContext *none();
-    antlr4::tree::TerminalNode *STIMULUS();
+    antlr4::tree::TerminalNode *CONDITION();
     antlr4::tree::TerminalNode *COLON();
     ConditionContext *condition();
 
@@ -852,21 +998,6 @@ public:
   };
 
   Action_stimulusContext* action_stimulus();
-
-  class  NoneContext : public antlr4::ParserRuleContext {
-  public:
-    NoneContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *STIMULUS();
-    antlr4::tree::TerminalNode *COLON();
-    antlr4::tree::TerminalNode *NONE();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  NoneContext* none();
 
   class  Action_responseContext : public antlr4::ParserRuleContext {
   public:
@@ -1105,7 +1236,6 @@ public:
   public:
     DeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Decl_LocContext *decl_Loc();
     Decl_Ped_StateContext *decl_Ped_State();
     Decl_Env_StateContext *decl_Env_State();
     Decl_PedContext *decl_Ped();
@@ -1116,21 +1246,6 @@ public:
   };
 
   DeclarationContext* declaration();
-
-  class  Decl_LocContext : public antlr4::ParserRuleContext {
-  public:
-    Decl_LocContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    Decl_Loc_Area_CircleContext *decl_Loc_Area_Circle();
-    Decl_Loc_PointContext *decl_Loc_Point();
-    Decl_Loc_Area_RectContext *decl_Loc_Area_Rect();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Decl_LocContext* decl_Loc();
 
   class  Decl_Ped_StateContext : public antlr4::ParserRuleContext {
   public:
@@ -1169,74 +1284,6 @@ public:
   };
 
   Decl_Env_StateContext* decl_Env_State();
-
-  class  Decl_Loc_Area_CircleContext : public antlr4::ParserRuleContext {
-  public:
-    Decl_Loc_Area_CircleContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *CONSIDER();
-    std::vector<antlr4::tree::TerminalNode *> AN();
-    antlr4::tree::TerminalNode* AN(size_t i);
-    antlr4::tree::TerminalNode *LOCATION();
-    antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *AT();
-    Value_coordContext *value_coord();
-    antlr4::tree::TerminalNode *WITH();
-    antlr4::tree::TerminalNode *RADIUS();
-    antlr4::tree::TerminalNode *OF();
-    Value_numericContext *value_numeric();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Decl_Loc_Area_CircleContext* decl_Loc_Area_Circle();
-
-  class  Decl_Loc_Area_RectContext : public antlr4::ParserRuleContext {
-  public:
-    Decl_Loc_Area_RectContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *CONSIDER();
-    std::vector<antlr4::tree::TerminalNode *> AN();
-    antlr4::tree::TerminalNode* AN(size_t i);
-    antlr4::tree::TerminalNode *LOCATION();
-    antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *AT();
-    Value_coordContext *value_coord();
-    antlr4::tree::TerminalNode *WITH();
-    antlr4::tree::TerminalNode *LENGTH();
-    std::vector<antlr4::tree::TerminalNode *> OF();
-    antlr4::tree::TerminalNode* OF(size_t i);
-    std::vector<Value_numericContext *> value_numeric();
-    Value_numericContext* value_numeric(size_t i);
-    antlr4::tree::TerminalNode *AND();
-    antlr4::tree::TerminalNode *WIDTH();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Decl_Loc_Area_RectContext* decl_Loc_Area_Rect();
-
-  class  Decl_Loc_PointContext : public antlr4::ParserRuleContext {
-  public:
-    Decl_Loc_PointContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *CONSIDER();
-    antlr4::tree::TerminalNode *AN();
-    antlr4::tree::TerminalNode *LOCATION();
-    antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *AT();
-    Value_coordContext *value_coord();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Decl_Loc_PointContext* decl_Loc_Point();
 
   class  Decl_PedContext : public antlr4::ParserRuleContext {
   public:

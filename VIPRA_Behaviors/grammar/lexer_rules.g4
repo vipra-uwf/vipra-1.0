@@ -38,6 +38,7 @@ COLON: ':';
 
 STATE_VAL: '#'[a-zA-Z_\-]+;
 EVNT: '!'[a-zA-Z_\-]+;
+LOC_NAME: '@'[a-zA-Z_\-]+;
 
 // ---------------------------------------
 
@@ -52,8 +53,11 @@ AROUND: A R O U N D;
 ACTION: A C T I O N;
 
 BEHIND: B E H I N D;
+BOTTOM: B O T T O M;
 
 CONSIDER: C O N S I D E R;
+CIRCLE: C I R L E;
+CENTER: C E N T E R;
 CONDITION: C O N D I T I O N;
 
 DECIMAL: D E C I M A L;
@@ -63,6 +67,8 @@ DURATION: D U R A T I O N;
 END: E N D;
 ENDS: E N D S;
 ENVIRONMENT: E N V I R O N M E N T;
+ENTER: E N T E R;
+EXIT: E X I T;
 EVENT: E V E N T;
 EXACTLY: E X A C T L Y;
 EVERY: E V E R Y;
@@ -86,7 +92,8 @@ IS: I S;
 IF: I F;
 
 LENGTH: L E N G T H;
-
+LEFT: L E F T;
+DIMENSIONS: D I M E N S I O N S;
 LOCATION: L O C A T I O N;
 
 MAX: M A X;
@@ -107,12 +114,15 @@ OR: O R;
 
 PEDESTRIAN: P E D E S T R I A N;
 PEDESTRIANS: P E D E S T R I A N S;
+POINTS: P O I N T S;
 POSSIBLE: P O S S I B L E;
 POSITION: P O S I T I O N;
 
 RADIUS: R A D I U S;
 RANDOM: R A N D O M;
 REQUIRED: R E Q U I R E D;
+RECTANGLE: R E C T A N G L E;
+RIGHT: R I G H T;
 RESPONSE: R E S P O N S E;
 
 SCALE: S C A L E;
@@ -125,6 +135,7 @@ SECONDS: S E C O N D S;
 STATUS: S T A T U S;
 STARTING: S T A R T I N G;
 SLOWER: S L O W E R;
+SHAPE: S H A P E;
 STATES: S T A T E S;
 START: S T A R T;
 STATE: S T A T E;
@@ -135,6 +146,7 @@ STIMULUS: S T I M U L U S;
 
 TARGET: T A R G E T;
 TO: T O;
+TOP: T O P;
 THE: T H E;
 THAT: T H A T;
 THEN: T H E N;

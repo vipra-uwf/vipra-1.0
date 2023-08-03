@@ -234,11 +234,10 @@ std::string generateMain() {
 
   mainFunction += mainFunctionDefinition();
   mainFunction +=
-      // "\n#ifndef NDEBUG"
+      "\n#ifndef NDEBUG"
       "\n\tspdlog::set_level(spdlog::level::debug);"
       "\n\tspdlog::info(\"Set Logging Level To Debug\");"
-      // "\n#endif"
-      ;
+      "\n#endif";
   mainFunction += makeModuleConfigs();
   mainFunction += generateModules();
   mainFunction += log("Generating Modules");

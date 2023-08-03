@@ -13,42 +13,45 @@
 #include <generated/BehaviorLexer.h>
 #include <generated/BehaviorParser.h>
 
-#include <builder/behavior_builder.hpp>
+#include "builder/behavior_builder.hpp"
 
-#include <definitions/type_definitions.hpp>
-#include <selectors/selector_everyone.hpp>
-#include <selectors/selector_exactly_N.hpp>
-#include <selectors/selector_percent.hpp>
+#include "conditions/subconditions/subcondition_enter.hpp"
+#include "definitions/type_definitions.hpp"
+#include "locations/shapes/rectangle.hpp"
+#include "selectors/selector_everyone.hpp"
+#include "selectors/selector_exactly_N.hpp"
+#include "selectors/selector_percent.hpp"
 
-#include <actions/atoms/atom_set.hpp>
+#include "actions/atoms/atom_set.hpp"
 
-#include <conditions/subconditions/subcondition_elapsed_time.hpp>
-#include <conditions/subconditions/subcondition_event.hpp>
-#include <conditions/subconditions/subcondition_event_occurring.hpp>
-#include <conditions/subconditions/subcondition_start.hpp>
+#include "conditions/subconditions/subcondition_elapsed_time.hpp"
+#include "conditions/subconditions/subcondition_event.hpp"
+#include "conditions/subconditions/subcondition_event_occurring.hpp"
+#include "conditions/subconditions/subcondition_start.hpp"
 
-#include <behavior/human_behavior.hpp>
-#include <definitions/pedestrian_types.hpp>
+#include "behavior/human_behavior.hpp"
+#include "definitions/pedestrian_types.hpp"
 
-#include <actions/atoms/atom_scale.hpp>
-#include <attributes/attributes.hpp>
-#include <behavior/exceptions.hpp>
-#include <conditions/subconditions/subcondition_event_ending.hpp>
-#include <conditions/subconditions/subcondition_event_starting.hpp>
-#include <conditions/subconditions/subcondition_spatial.hpp>
-#include <definitions/dsl_types.hpp>
-#include <targets/target_selector.hpp>
-#include <targets/target_selectors/target_nearest.hpp>
-#include <targets/target_selectors/target_self.hpp>
-#include <time/time.hpp>
-#include <utility>
-#include <values/numeric_value.hpp>
-#include <values/values.hpp>
+#include "actions/atoms/atom_scale.hpp"
+#include "attributes/attributes.hpp"
+#include "behavior/exceptions.hpp"
+#include "builder/declaration_components.hpp"
+#include "conditions/subconditions/subcondition_event_ending.hpp"
+#include "conditions/subconditions/subcondition_event_starting.hpp"
+#include "conditions/subconditions/subcondition_spatial.hpp"
+#include "definitions/dsl_types.hpp"
 #include "targets/target.hpp"
 #include "targets/target_modifier.hpp"
 #include "targets/target_modifiers/modifier_direction.hpp"
 #include "targets/target_modifiers/modifier_distance.hpp"
+#include "targets/target_selector.hpp"
+#include "targets/target_selectors/target_nearest.hpp"
+#include "targets/target_selectors/target_self.hpp"
+#include "time/time.hpp"
+#include "utility"
 #include "values/direction.hpp"
+#include "values/numeric_value.hpp"
+#include "values/values.hpp"
 
 namespace BHVR {
 
@@ -242,6 +245,11 @@ void BehaviorBuilder::addSubCondToCondtion(
     return;
   }
 
+  if (subcond->condition_Enter_Location()) {
+    addEnterSubCond(condition, subcond->condition_Enter_Location());
+    return;
+  }
+
   if (subcond->condition_Event_Occurred()) {
     addEventOccurredSubCond(condition, subcond->condition_Event_Occurred());
     return;
@@ -354,6 +362,17 @@ auto BehaviorBuilder::makeTargetModifier(
 
 // --------------------------------------------------- GETTERS -------------------------------------------------------------------------------------------------
 
+auto BehaviorBuilder::getShape(BehaviorParser::Loc_shapeContext* ctx) -> BHVR::Shape {
+  if (ctx->RECTANGLE()) {
+    return BHVR::Shape::RECTANGLE;
+  }
+  if (ctx->CIRCLE()) {
+    return BHVR::Shape::CIRCLE;
+  }
+
+  return BHVR::Shape::POINT;
+}
+
 /**
  * @brief Gets the id for a type from its name
  * 
@@ -426,13 +445,9 @@ BHVR::Ptype BehaviorBuilder::getCompositeType(
  * @param locName : Name of location to find
  * @return Location*
 */
-VIPRA::idx BehaviorBuilder::getLocation(const std::string& locName) const {
+std::optional<VIPRA::idx> BehaviorBuilder::getLocation(const std::string& locName) const {
   auto loc = locations.find(locName);
-  if (loc == locations.end()) {
-    spdlog::error("Behavior Error: Attempt To Use Location Before It Was Defined: \"{}\"",
-                  locName);
-    BuilderException::error();
-  }
+  if (loc == locations.end()) return std::nullopt;
 
   return (*loc).second;
 }
@@ -476,6 +491,24 @@ Attribute BehaviorBuilder::getAttribute(std::string attr) {
 // --------------------------------------------------- END GETTERS ---------------------------------------------------------------------------------------------
 
 // --------------------------------------------------- MAKERS --------------------------------------------------------------------------------------------------
+
+auto BehaviorBuilder::makeDimensions(BehaviorParser::Loc_dimensionsContext* ctx) const
+    -> std::pair<InsideFunc, RandomPointFunc> {
+  if (ctx->rect_dims()) {
+    auto coords = ctx->rect_dims()->value_coord();
+    auto botLeft = getCoord(coords[0], currSeed);
+    auto topRight = getCoord(coords[1], currSeed);
+    auto rect = Rectangle{botLeft, topRight};
+    return {rect, rect};
+  }
+
+  if (ctx->circle_dims()) {
+    // TODO (rolland) add in circle
+    return {};
+  }
+
+  return {};
+}
 
 /**
  * @brief Creates a new CAttributeValue from an attribute value context
@@ -590,6 +623,38 @@ VIPRA::idx BehaviorBuilder::addEvent(BehaviorParser::Event_nameContext* ctx) {
 
 // --------------------------------------------- ANTLR VISITOR METHODS -----------------------------------------------------------------------------------------
 
+antlrcpp::Any BehaviorBuilder::visitLocation(BehaviorParser::LocationContext* ctx) {
+  // NOLINTBEGIN (rolland) access is checked, improper error : ignoring (bugprone-unchecked-optional-access)
+  auto name = findLocationComponent<lcName>(ctx);
+  if (!name) error(R"(Behavior "{}": Missing Location Name)", currentBehavior.getName());
+  std::string locName = "@" + name.value()->ID()->toString();
+
+  if (getLocation(locName))
+    error(R"(Behavior "{}": Attempt To Redefine Location: "{}")",
+          currentBehavior.getName(), locName);
+
+  Location loc;
+
+  auto shape = findLocationComponent<lcShape>(ctx);
+  if (shape) loc.setType(getShape(shape.value()));
+
+  auto dims = findLocationComponent<lcDimensions>(ctx);
+  if (!dims)
+    error(R"(Behavior "{}": Location Missing Dimensions: "{}")",
+          currentBehavior.getName(), locName);
+
+  auto [inside, randomPoint] = makeDimensions(dims.value());
+  loc.setInside(std::move(inside));
+  loc.setRandom(std::move(randomPoint));
+
+  locations[locName] = currentBehavior.addLocation(loc);
+  spdlog::debug(R"(Behavior "{}": Adding Location "{}")", currentBehavior.getName(),
+                locName);
+
+  return BehaviorBaseVisitor::visitLocation(ctx);
+  // NOLINTEND
+}
+
 /**
  * @brief Creates a lasting event and adds it to the eventsMap
  * 
@@ -691,75 +756,6 @@ antlrcpp::Any BehaviorBuilder::visitPed_Selector(
 
 // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
 
-antlrcpp::Any BehaviorBuilder::visitDecl_Loc(BehaviorParser::Decl_LocContext* ctx) {
-  if (ctx->decl_Loc_Area_Circle()) {
-    const std::string circleName = ctx->decl_Loc_Area_Circle()->ID()->toString();
-    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(),
-                  circleName);
-
-    const float circleCenterPointX =
-        getNumeric(ctx->decl_Loc_Area_Circle()->value_coord()->value_numeric().at(0),
-                   currSeed)
-            .value(0);
-    const float circleCenterPointY =
-        getNumeric(ctx->decl_Loc_Area_Circle()->value_coord()->value_numeric().at(1),
-                   currSeed)
-            .value(0);
-    const float circleRadius =
-        getNumeric(ctx->decl_Loc_Area_Circle()->value_numeric(), currSeed).value(0);
-
-    std::shared_ptr<BHVR::Shape> circle = std::make_shared<BHVR::Circle>(
-        VIPRA::f3d(circleCenterPointX, circleCenterPointY), circleRadius);
-
-    locations[circleName] = currentBehavior.addLocation(
-        BHVR::Location(circleName, BHVR::ShapeType::CIRCLE, circle));
-
-  } else if (ctx->decl_Loc_Area_Rect()) {
-    const auto rectName = ctx->decl_Loc_Area_Rect()->ID()->toString();
-    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(),
-                  rectName);
-
-    const float rectCenterPointX =
-        getNumeric(ctx->decl_Loc_Area_Rect()->value_coord()->value_numeric().at(0),
-                   currSeed)
-            .value(0);
-    const float rectCenterPointY =
-        getNumeric(ctx->decl_Loc_Area_Rect()->value_coord()->value_numeric().at(1),
-                   currSeed)
-            .value(0);
-    const float rectLen =
-        getNumeric(ctx->decl_Loc_Area_Rect()->value_numeric().at(0), currSeed).value(0);
-    const float rectWidth =
-        getNumeric(ctx->decl_Loc_Area_Rect()->value_numeric().at(1), currSeed).value(0);
-
-    std::shared_ptr<BHVR::Shape> rectangle = std::make_shared<BHVR::Rectangle>(
-        VIPRA::f3d(rectCenterPointX, rectCenterPointY), rectLen, rectWidth);
-
-    locations[rectName] = currentBehavior.addLocation(
-        BHVR::Location(rectName, BHVR::ShapeType::RECTANGLE, rectangle));
-
-  } else if (ctx->decl_Loc_Point()) {
-    const auto pointName = ctx->decl_Loc_Point()->ID()->toString();
-    spdlog::debug("Behavior \"{}\": Adding Location {}", currentBehavior.getName(),
-                  pointName);
-
-    const float pointX =
-        getNumeric(ctx->decl_Loc_Point()->value_coord()->value_numeric().at(0), currSeed)
-            .value(0);
-    const float pointY =
-        getNumeric(ctx->decl_Loc_Point()->value_coord()->value_numeric().at(1), currSeed)
-            .value(0);
-
-    std::shared_ptr<BHVR::Shape> point =
-        std::make_shared<BHVR::Point>(VIPRA::f3d(pointX, pointY));
-
-    locations[pointName] = currentBehavior.addLocation(
-        BHVR::Location(pointName, BHVR::ShapeType::POINT, point));
-  }
-
-  return BehaviorBaseVisitor::visitDecl_Loc(ctx);
-}
-
 antlrcpp::Any BehaviorBuilder::visitDecl_Ped_State(
     BehaviorParser::Decl_Ped_StateContext* ctx) {
   const auto stateNames = ctx->STATE_VAL();
@@ -845,6 +841,19 @@ void BehaviorBuilder::addScaleAtom(Action&                            action,
 // ------------------------------- END ATOMS -----------------------------------------------------------------------------------------
 
 // ------------------------------- SUBCONDITIONS -----------------------------------------------------------------------------------------
+
+void BehaviorBuilder::addEnterSubCond(
+    Condition& condition, BehaviorParser::Condition_Enter_LocationContext* ctx) {
+  auto location = getLocation(ctx->LOC_NAME()->toString());
+
+  if (!location) {
+    error("Attempt To Use Location Before It Was Declared {}",
+          ctx->LOC_NAME()->toString());
+    return;
+  }
+
+  condition.addSubCondition(SubConditionEnter{location.value()});
+}
 
 /**
  * @brief Adds a time elapsed subcondition to a condition

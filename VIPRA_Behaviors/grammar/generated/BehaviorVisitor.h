@@ -23,6 +23,40 @@ public:
 
     virtual std::any visitStatement(BehaviorParser::StatementContext *context) = 0;
 
+    virtual std::any visitLocation(BehaviorParser::LocationContext *context) = 0;
+
+    virtual std::any visitLocation_attribute(BehaviorParser::Location_attributeContext *context) = 0;
+
+    virtual std::any visitLoc_name(BehaviorParser::Loc_nameContext *context) = 0;
+
+    virtual std::any visitLoc_shape(BehaviorParser::Loc_shapeContext *context) = 0;
+
+    virtual std::any visitLoc_dimensions(BehaviorParser::Loc_dimensionsContext *context) = 0;
+
+    virtual std::any visitRect_dims(BehaviorParser::Rect_dimsContext *context) = 0;
+
+    virtual std::any visitCircle_dims(BehaviorParser::Circle_dimsContext *context) = 0;
+
+    virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *context) = 0;
+
+    virtual std::any visitValue_number(BehaviorParser::Value_numberContext *context) = 0;
+
+    virtual std::any visitValue_float(BehaviorParser::Value_floatContext *context) = 0;
+
+    virtual std::any visitValue_range(BehaviorParser::Value_rangeContext *context) = 0;
+
+    virtual std::any visitValue_random(BehaviorParser::Value_randomContext *context) = 0;
+
+    virtual std::any visitRandom_number(BehaviorParser::Random_numberContext *context) = 0;
+
+    virtual std::any visitRandom_float(BehaviorParser::Random_floatContext *context) = 0;
+
+    virtual std::any visitFloat_range(BehaviorParser::Float_rangeContext *context) = 0;
+
+    virtual std::any visitNumber_range(BehaviorParser::Number_rangeContext *context) = 0;
+
+    virtual std::any visitValue_coord(BehaviorParser::Value_coordContext *context) = 0;
+
     virtual std::any visitEvent(BehaviorParser::EventContext *context) = 0;
 
     virtual std::any visitEvent_attribute(BehaviorParser::Event_attributeContext *context) = 0;
@@ -55,27 +89,11 @@ public:
 
     virtual std::any visitCondition_Spatial(BehaviorParser::Condition_SpatialContext *context) = 0;
 
+    virtual std::any visitCondition_Enter_Location(BehaviorParser::Condition_Enter_LocationContext *context) = 0;
+
+    virtual std::any visitCondition_Exit_Location(BehaviorParser::Condition_Exit_LocationContext *context) = 0;
+
     virtual std::any visitCondition_Attribute(BehaviorParser::Condition_AttributeContext *context) = 0;
-
-    virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *context) = 0;
-
-    virtual std::any visitValue_number(BehaviorParser::Value_numberContext *context) = 0;
-
-    virtual std::any visitValue_float(BehaviorParser::Value_floatContext *context) = 0;
-
-    virtual std::any visitValue_range(BehaviorParser::Value_rangeContext *context) = 0;
-
-    virtual std::any visitValue_random(BehaviorParser::Value_randomContext *context) = 0;
-
-    virtual std::any visitRandom_number(BehaviorParser::Random_numberContext *context) = 0;
-
-    virtual std::any visitRandom_float(BehaviorParser::Random_floatContext *context) = 0;
-
-    virtual std::any visitFloat_range(BehaviorParser::Float_rangeContext *context) = 0;
-
-    virtual std::any visitNumber_range(BehaviorParser::Number_rangeContext *context) = 0;
-
-    virtual std::any visitValue_coord(BehaviorParser::Value_coordContext *context) = 0;
 
     virtual std::any visitDuration(BehaviorParser::DurationContext *context) = 0;
 
@@ -113,8 +131,6 @@ public:
 
     virtual std::any visitAction_stimulus(BehaviorParser::Action_stimulusContext *context) = 0;
 
-    virtual std::any visitNone(BehaviorParser::NoneContext *context) = 0;
-
     virtual std::any visitAction_response(BehaviorParser::Action_responseContext *context) = 0;
 
     virtual std::any visitAction_duration(BehaviorParser::Action_durationContext *context) = 0;
@@ -149,17 +165,9 @@ public:
 
     virtual std::any visitDeclaration(BehaviorParser::DeclarationContext *context) = 0;
 
-    virtual std::any visitDecl_Loc(BehaviorParser::Decl_LocContext *context) = 0;
-
     virtual std::any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext *context) = 0;
 
     virtual std::any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext *context) = 0;
-
-    virtual std::any visitDecl_Loc_Area_Circle(BehaviorParser::Decl_Loc_Area_CircleContext *context) = 0;
-
-    virtual std::any visitDecl_Loc_Area_Rect(BehaviorParser::Decl_Loc_Area_RectContext *context) = 0;
-
-    virtual std::any visitDecl_Loc_Point(BehaviorParser::Decl_Loc_PointContext *context) = 0;
 
     virtual std::any visitDecl_Ped(BehaviorParser::Decl_PedContext *context) = 0;
 

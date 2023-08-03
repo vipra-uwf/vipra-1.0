@@ -31,7 +31,7 @@ class Action {
 
   void initialize(Simpack pack);
 
-  void performAction(Simpack pack, VIPRA::idx, VIPRA::State&);
+  void performAction(Simpack pack, VIPRA::idx);
 
   void addCondition(const Condition&);
   void addAtom(const Atom&);
