@@ -42,8 +42,8 @@ RaceStatus Collision::status(VIPRA::idx index) const { return raceStatuses.at(in
  * @brief Calculates the collision rectangles for all pedestrians
  * 
  */
-void Collision::calcCollisionRectangles(const PedestrianSet& pedestrianSet, const Goals& goals,
-                                        const ModelData&     data) {
+void Collision::calcCollisionRectangles(const PedestrianSet& pedestrianSet,
+                                        const Goals& goals, const ModelData& data) {
   const auto&       coords = pedestrianSet.getCoordinates();
   const auto&       velocities = pedestrianSet.getVelocities();
   const auto&       shldrs = data.shoulders;
@@ -51,8 +51,7 @@ void Collision::calcCollisionRectangles(const PedestrianSet& pedestrianSet, cons
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     VIPRA::f3d pedVel = velocities.at(i);
-    if (pedVel.magnitudeSquared() == 0) 
-    {
+    if (pedVel.magnitudeSquared() == 0) {
       auto goalCoords = goals.getCurrentGoal(i);
       auto goalDirection = goalCoords - coords.at(i);
 
@@ -71,12 +70,10 @@ void Collision::calcCollisionRectangles(const PedestrianSet& pedestrianSet, cons
       continue;
     }
 
-    const Line shoulders = getShoulderPoints(coords.at(i), pedVel, shldrs.at(i));
+    const Line       shoulders = getShoulderPoints(coords.at(i), pedVel, shldrs.at(i));
     const VIPRA::f3d range = (pedVel.unit() * rectangleRange);
     collisionRectangles.at(i) = {shoulders.p1, shoulders.p1 + range, shoulders.p2 + range,
                                  shoulders.p2};
-
-    
   }
 }
 
@@ -86,7 +83,7 @@ void Collision::calcCollisionRectangles(const PedestrianSet& pedestrianSet, cons
  */
 bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
                                        const Goals& goals, VIPRA::idx index,
-                                       VIPRA::t_step ) {
+                                       VIPRA::t_step) {
   bool flag = true;
   for (VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); i++) {
     if (i == index) continue;
@@ -103,8 +100,7 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
     auto goal2 = goals.getCurrentGoal(i);
 
     //If goals don't match, check if coordinates of the pedestrians are in each others collision rectangles
-    if(goal1!=goal2)
-    {
+    if (goal1 != goal2) {
       if (!cr2in1) {
         continue;
       }
@@ -114,7 +110,7 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
         continue;
       }
     }
-    
+
     //Check if pedestrians collide, if not continue onto next passenger
     bool collisionCheck = checkIfCollide(index, i);
     if (!collisionCheck) {
@@ -143,16 +139,15 @@ bool Collision::checkIfHighestPriority(const PedestrianSet& pedestrianSet,
 
       inRace.at(i).at(index) = true;
       inRace.at(index).at(i) = true;
-    } 
-    else {
+    } else {
       collisionMidpoint = intersectionMidpoints.at(index).at(i);
     }
     if (coords1.distanceTo(collisionMidpoint) > coords2.distanceTo(collisionMidpoint))
       flag = false;
-    else if (coords1.distanceTo(collisionMidpoint) == coords2.distanceTo(collisionMidpoint)) {
+    else if (coords1.distanceTo(collisionMidpoint) ==
+             coords2.distanceTo(collisionMidpoint)) {
       if (index < i) flag = false;
     }
-
   }
   return flag;
 }
@@ -241,14 +236,15 @@ void Collision::initializeRectangles(const PedestrianSet& pedestrianSet,
                                      const Goals& goals, const ModelData& data) {
   collisionRectangles = std::vector<Rect>(pedestrianSet.getNumPedestrians());
   const auto& shldrs = data.shoulders;
-  for(size_t i = 0; i < collisionRectangles.size(); i++)
-  {
+  for (size_t i = 0; i < collisionRectangles.size(); i++) {
     auto coords = pedestrianSet.getPedCoords(i);
     auto goalCoords = goals.getCurrentGoal(i);
     auto goalDirection = goalCoords - coords;
 
-    auto shldr1 = (VIPRA::f3d{-goalDirection.y, goalDirection.x}.unit() * shldrs.at(i)) + coords;
-    auto shldr2 = (VIPRA::f3d{goalDirection.y, -goalDirection.x}.unit() * shldrs.at(i)) + coords;
+    auto shldr1 =
+        (VIPRA::f3d{-goalDirection.y, goalDirection.x}.unit() * shldrs.at(i)) + coords;
+    auto shldr2 =
+        (VIPRA::f3d{goalDirection.y, -goalDirection.x}.unit() * shldrs.at(i)) + coords;
 
     const VIPRA::f3d range = (goalDirection.unit() * rectangleRange);
     collisionRectangles[i].p1 = shldr1;
@@ -258,7 +254,8 @@ void Collision::initializeRectangles(const PedestrianSet& pedestrianSet,
   }
 }
 
-void Collision::initialize(const PedestrianSet& pedestrianSet, const Goals& goals, const ModelData& data) {
+void Collision::initialize(const PedestrianSet& pedestrianSet, const Goals& goals,
+                           const ModelData& data) {
   raceStatuses = std::vector<RaceStatus>(pedestrianSet.getNumPedestrians(), NO_RACE);
   inRace = std::vector<std::vector<bool>>(
       pedestrianSet.getNumPedestrians(),
