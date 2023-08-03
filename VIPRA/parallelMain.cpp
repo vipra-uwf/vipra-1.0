@@ -34,6 +34,7 @@ void slave();
 
 VIPRA::CONFIG::Map makeRandomConfig(const VIPRA::CONFIG::Map &,
                                     const VIPRA::CONFIG::Map &);
+void               writeParameters(const std::string &, const Json::Value &);
 
 int                id = 0;       // process rank
 int                np;           // number of MPI processes
@@ -159,14 +160,12 @@ void slave() {
     std::string bla1(buf, l);
     reader.parse(bla1, root);
 
-    Json::FastWriter fastWriter;
+    const std::string outputFile =
+        "./output/r" + std::to_string(rank) + "w" + std::to_string(workCnt);
 
-    auto test = fastWriter.write(simConfig.getDoc());
-    spdlog::error("{}", test);
+    parallel_main(simConfig, VIPRA::CONFIG::Map{root}, outputFile + ".json");
 
-    parallel_main(
-        simConfig, VIPRA::CONFIG::Map{std::move(root)},
-        "./output/r" + std::to_string(rank) + "w" + std::to_string(workCnt) + ".json");
+    writeParameters(outputFile + "_params.json", root);
 
     result = 1;
     ++workCnt;
@@ -196,6 +195,18 @@ VIPRA::CONFIG::Map makeRandomConfig(const VIPRA::CONFIG::Map &minModuleParams,
   }
 
   return ret;
+}
+
+/**
+ * @brief Writes the timestep values JSON to the output file, and closes the file
+ * 
+ */
+void writeParameters(const std::string &outputFilePath, const Json::Value &map) {
+  std::ofstream fileStream;
+  fileStream.open(outputFilePath, std::fstream::out | std::fstream::trunc);
+  Json::FastWriter fastWriter;
+  fileStream << fastWriter.write(map);
+  fileStream.close();
 }
 
 // NOLINTEND
