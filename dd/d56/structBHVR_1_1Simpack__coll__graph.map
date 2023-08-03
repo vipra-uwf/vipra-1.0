@@ -1,13 +1,15 @@
 <map id="BHVR::Simpack" name="BHVR::Simpack">
-<area shape="rect" id="Node000001" title="Holds references to commonly used parameters for simpler passing." alt="" coords="221,94,336,120"/>
-<area shape="rect" id="Node000002" href="$d5/d90/classPedestrianSet.html" title="Interface for managing pedestrian information in a simulation." alt="" coords="5,5,109,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,36,166,68,236,91,234,96,164,72,92,40"/>
-<area shape="rect" id="Node000003" href="$d5/dff/classObstacleSet.html" title="Interface for handling obstacles in a map." alt="" coords="133,5,226,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="202,40,231,68,262,91,258,96,227,72,198,44"/>
-<area shape="rect" id="Node000004" href="$d0/d1a/classGoals.html" title="Interface class for defining pedestrian goals in a simulation." alt="" coords="251,5,306,31"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="281,46,281,94,276,94,276,46"/>
-<area shape="rect" id="Node000005" href="$dc/d0a/structBHVR_1_1BehaviorContext.html" title=" " alt="" coords="331,5,490,31"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="381,42,298,96,296,91,379,37"/>
-<area shape="rect" id="Node000006" href="$d9/d1d/classBHVR_1_1GroupsContainer.html" title="Holds the indexes for pedestrians in each type group." alt="" coords="514,5,675,31"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="536,38,323,96,322,91,535,33"/>
+<area shape="rect" id="Node000001" title="Holds references to commonly used parameters for simpler passing." alt="" coords="260,129,375,155"/>
+<area shape="rect" id="Node000002" href="$d5/d90/classPedestrianSet.html" title="Interface for managing pedestrian information in a simulation." alt="" coords="34,5,138,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,33,168,40,203,54,237,73,274,101,304,127,300,131,271,105,234,78,201,59,166,45,149,38"/>
+<area shape="rect" id="Node000003" href="$d5/dff/classObstacleSet.html" title="Interface for handling obstacles in a map." alt="" coords="39,55,133,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,80,237,106,287,126,285,131,235,111,147,85"/>
+<area shape="rect" id="Node000004" href="$d0/d1a/classGoals.html" title="Interface class for defining pedestrian goals in a simulation." alt="" coords="58,104,114,130"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="129,119,260,133,259,139,128,124"/>
+<area shape="rect" id="Node000005" href="$d4/da2/structVIPRA_1_1State.html" title=" " alt="" coords="37,153,135,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="150,164,235,159,266,153,267,158,236,164,150,169"/>
+<area shape="rect" id="Node000006" href="$dc/d0a/structBHVR_1_1BehaviorContext.html" title=" " alt="" coords="6,203,166,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="180,199,235,184,267,169,295,153,298,158,270,174,237,189,181,204"/>
+<area shape="rect" id="Node000007" href="$d9/d1d/classBHVR_1_1GroupsContainer.html" title="Holds the indexes for pedestrians in each type group." alt="" coords="5,252,167,278"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="168,245,202,233,234,218,275,185,304,153,308,157,278,189,237,222,204,238,170,250"/>
 </map>
