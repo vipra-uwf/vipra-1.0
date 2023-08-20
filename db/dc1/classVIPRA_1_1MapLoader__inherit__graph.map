@@ -1,0 +1,5 @@
+<map id="VIPRA::MapLoader" name="VIPRA::MapLoader">
+<area shape="rect" id="Node000001" title="Interface for loading map data." alt="" coords="5,5,138,31"/>
+<area shape="rect" id="Node000002" href="$d8/d73/classPointMapLoader.html" title="A class responsible for loading PointMap data." alt="" coords="13,79,130,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,46,74,79,69,79,69,46"/>
+</map>

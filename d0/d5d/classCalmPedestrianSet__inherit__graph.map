@@ -1,5 +1,5 @@
 <map id="CalmPedestrianSet" name="CalmPedestrianSet">
-<area shape="rect" id="Node000001" title="A class representing a set of calm pedestrians." alt="" coords="5,79,139,105"/>
-<area shape="rect" id="Node000002" href="$d5/d90/classPedestrianSet.html" title="Interface for managing pedestrian information in a simulation." alt="" coords="20,5,124,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,46,75,79,69,79,69,46"/>
+<area shape="rect" id="Node000001" title="A class representing a set of calm pedestrians." alt="" coords="13,79,147,105"/>
+<area shape="rect" id="Node000002" href="$d0/df4/classVIPRA_1_1PedestrianSet.html" title="Interface for managing pedestrian information in a simulation." alt="" coords="5,5,155,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,46,83,79,77,79,77,46"/>
 </map>

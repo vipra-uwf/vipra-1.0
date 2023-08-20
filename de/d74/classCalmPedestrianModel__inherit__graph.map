@@ -1,5 +1,5 @@
 <map id="CalmPedestrianModel" name="CalmPedestrianModel">
-<area shape="rect" id="Node000001" title=" " alt="" coords="19,79,167,105"/>
-<area shape="rect" id="Node000002" href="$d0/d61/classPedestrianDynamicsModel.html" title="Interface for modeling pedestrian dynamics." alt="" coords="5,5,181,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,46,96,79,90,79,90,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="24,94,173,120"/>
+<area shape="rect" id="Node000002" href="$d5/dee/classVIPRA_1_1PedestrianDynamicsModel.html" title="Interface for modeling pedestrian dynamics." alt="" coords="5,5,192,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,61,101,93,96,93,96,61"/>
 </map>

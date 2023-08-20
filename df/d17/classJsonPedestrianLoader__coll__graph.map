@@ -1,5 +1,5 @@
 <map id="JsonPedestrianLoader" name="JsonPedestrianLoader">
-<area shape="rect" id="Node000001" title="A class for loading pedestrian positions from a JSON file." alt="" coords="5,79,157,105"/>
-<area shape="rect" id="Node000002" href="$dd/d90/classPedestrianLoader.html" title="Interface for loading pedestrian data from a file." alt="" coords="19,5,143,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,46,84,79,78,79,78,46"/>
+<area shape="rect" id="Node000001" title="A class for loading pedestrian positions from a JSON file." alt="" coords="14,79,166,105"/>
+<area shape="rect" id="Node000002" href="$d2/de0/classVIPRA_1_1PedestrianLoader.html" title="Interface for loading pedestrian data from a file." alt="" coords="5,5,175,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,46,93,79,87,79,87,46"/>
 </map>
