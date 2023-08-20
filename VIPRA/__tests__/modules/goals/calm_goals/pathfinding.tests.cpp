@@ -17,7 +17,7 @@ using ::testing::ReturnRef;
 TEST(Calm_Goals_Pathfinding, Pathfinding) {
   PointMapLoader              loader;
   PassengerVehicleObstacleSet map;
-  CalmPath::PathingGraph      test;
+  CALM_PATH::PathingGraph     test;
   map.initialize(
       loader.loadMap("/home/rolland/Documents/VIPRA/vipra/Maps/obstacle_maps/"
                      "757_200_182_obstacles/757_200_182_obstacles.omap"));
@@ -27,7 +27,7 @@ TEST(Calm_Goals_Pathfinding, Pathfinding) {
 
   std::cerr << "{ \"Paths\": [";
   for (const auto& coords : allPeds2) {
-    auto t = CalmPath::pathFind(coords, VIPRA::f3d{30.7, 1.75}, test);
+    auto t = CALM_PATH::pathFind(coords, VIPRA::f3d{30.7, 1.75}, test);
     std::cerr << "{ \"points\": [";
     while (!t.empty()) {
       auto coord = t.front();

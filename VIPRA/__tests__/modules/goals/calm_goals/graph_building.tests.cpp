@@ -18,7 +18,7 @@ using ::testing::ReturnRef;
 TEST(Calm_Goals_Graph, Graph_Building) {
   PointMapLoader              loader;
   PassengerVehicleObstacleSet map;
-  CalmPath::PathingGraph      test;
+  CALM_PATH::PathingGraph     test;
   map.initialize(
       loader.loadMap("/home/rolland/Documents/VIPRA/vipra/Maps/obstacle_maps/"
                      "757_200_182_obstacles/757_200_182_obstacles.omap"));

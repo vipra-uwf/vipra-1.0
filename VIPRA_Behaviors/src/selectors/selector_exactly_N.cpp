@@ -1,9 +1,9 @@
 
 #include <algorithm>
 #include <cmath>
-#include <definitions/type_definitions.hpp>
 #include <random>
 #include <randomization/random.hpp>
+#include "definitions/type_definitions.hpp"
 
 #include "selectors/selector_exactly_N.hpp"
 
@@ -15,11 +15,9 @@ namespace BHVR {
    * @param group : group to pull from
    * @return SelectorResult 
    */
-SelectorResult SelectorExactlyN::operator()(VIPRA::pRNG_Engine& rngEngine,
-                                            const VIPRA::idxVec&,
-                                            const VIPRA::idxVec& group,
-                                            const PedestrianSet&, const ObstacleSet&,
-                                            const Goals&) const {
+SelectorResult SelectorExactlyN::operator()(
+    VIPRA::pRNG_Engine& rngEngine, const VIPRA::idxVec&, const VIPRA::idxVec& group,
+    const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, const VIPRA::Goals&) const {
   auto groupPeds = group;
 
   auto pedCnt = static_cast<VIPRA::size>(std::round(selectCount.value(0)));

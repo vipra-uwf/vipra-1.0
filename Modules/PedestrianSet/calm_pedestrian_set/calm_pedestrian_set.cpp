@@ -65,7 +65,7 @@ void CalmPedestrianSet::updateState(VIPRA::State& state) {
  * @return A pair containing the coordinates and index of the nearest pedestrian.
  */
 std::pair<VIPRA::f3d, VIPRA::idx> CalmPedestrianSet::getNearestPedestrian(
-    VIPRA::idx pedIdx, const ObstacleSet& obsSet) const {
+    VIPRA::idx pedIdx, const VIPRA::ObstacleSet& obsSet) const {
   const VIPRA::f3d currCoords = coords.at(pedIdx);
 
   VIPRA::dist shortest = std::numeric_limits<VIPRA::dist>::max();
@@ -94,7 +94,7 @@ std::pair<VIPRA::f3d, VIPRA::idx> CalmPedestrianSet::getNearestPedestrian(
  *
  * @param configMap The configuration map.
  */
-void CalmPedestrianSet::configure(const VIPRA::CONFIG::Map&) {}
+void CalmPedestrianSet::configure(const VIPRA::Config&) {}
 
 /**
  * @brief Initializes the CalmPedestrianSet with the given pedestrian coordinates.

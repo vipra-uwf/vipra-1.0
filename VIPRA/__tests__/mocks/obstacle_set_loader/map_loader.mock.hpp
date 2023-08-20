@@ -7,7 +7,7 @@
 
 class MapLoaderMock : public MapLoader {
  public:
-  MOCK_METHOD(void, configure, (const VIPRA::CONFIG::Map& configMap), (override));
+  MOCK_METHOD(void, configure, (const VIPRA::Config& configMap), (override));
   MOCK_METHOD(void, initialize, (), (override));
   MOCK_METHOD(std::unique_ptr<VIPRA::MapData>, LoadMap, (const std::string& filePath),
               (const override));

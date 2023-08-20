@@ -10,6 +10,6 @@
             "multiple": false
         }
     ],
-    "className"   : "HumanBehaviorModel",
+    "className"   : "VIPRA::HumanBehaviorModel",
     "type"        : "human_behavior_model"
 }

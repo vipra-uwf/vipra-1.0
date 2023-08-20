@@ -10,8 +10,8 @@ namespace BHVR {
   */
 struct SelectorEveryone {
   SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                            const VIPRA::idxVec&, const PedestrianSet&,
-                            const ObstacleSet&, const Goals&);
+                            const VIPRA::idxVec&, const VIPRA::PedestrianSet&,
+                            const VIPRA::ObstacleSet&, const VIPRA::Goals&);
 };
 
 }  // namespace BHVR

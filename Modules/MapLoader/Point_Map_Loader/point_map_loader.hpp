@@ -4,11 +4,11 @@
 #include <fstream>
 #include <memory>
 
-#include <json/json.h>
 #include <spdlog/spdlog.h>
+#include <nlohmann/json.hpp>
 
-#include <definitions/entitySet.hpp>
-#include <map_loader/map_loader.hpp>
+#include "definitions/entitySet.hpp"
+#include "map_loader/map_loader.hpp"
 
 /**
  * @struct PointMap
@@ -27,14 +27,14 @@ struct PointMap : public VIPRA::MapData {
  * This class inherits from MapLoader and provides methods for configuration,
  * initialization, and loading PointMap data from a file.
  */
-class PointMapLoader : public MapLoader {
+class PointMapLoader : public VIPRA::MapLoader {
  public:
   /**
    * @brief Configures the PointMapLoader.
    *
    * @param config The configuration map.
    */
-  void configure(const VIPRA::CONFIG::Map&) override;
+  void configure(const VIPRA::Config&) override;
 
   /**
    * @brief Initializes the PointMapLoader.

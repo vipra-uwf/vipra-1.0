@@ -21,8 +21,7 @@ export class ModuleRepo extends BaseLocalRepo<Module> {
     this.modulesFile = {
       pedestrian_dynamics_model: [],
       goals: [],
-      output_data_writer: [],
-      simulation_output_handler: [],
+      output_sink: [],
       pedestrian_set: [],
       obstacle_set: [],
       human_behavior_model: [],

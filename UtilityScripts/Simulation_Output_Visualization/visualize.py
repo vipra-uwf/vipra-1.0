@@ -9,14 +9,15 @@ args = getArgs()
 pedCoords = getPeds(args['peds'])
 difCoords = getPeds(args['dif'])
 [obsX, obsY] = getObs(args['obs']);
-pedColors = makeColors(pedCoords, args)
-timestepCnt = len(pedCoords)
+pedColors = makeColors(len(pedCoords["timesteps"][0]), args)
+timestepCnt = len(pedCoords["timesteps"])
 
 fig,ax = plt.subplots()
 
+
 def animate(i):
-  printProgressBar(int(i), timestepCnt, 'Animating')
-  [pointsX, pointsY] = getPoints(pedCoords[i])
+  printProgressBar(i, timestepCnt, 'Animating')
+  [pointsX, pointsY] = getPoints(pedCoords["timesteps"][i])
   [compX, compY] = getPoints(difCoords[i]) if args['dif'] else [[], []]
 
   prepPlot(ax, args)
@@ -28,6 +29,6 @@ def animate(i):
   return points, obstacles
 
 
-ani = FuncAnimation(fig, animate, frames=pedCoords, blit=True)
+ani = FuncAnimation(fig, animate, frames=timestepCnt, blit=True)
 ani.save(args['outpath'], dpi=300, writer=FFMpegFileWriter(fps=args['fps']), progress_callback=printProgressBar)
 printProgressBar(timestepCnt, timestepCnt, 'Done')

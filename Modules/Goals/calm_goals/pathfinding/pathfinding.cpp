@@ -1,11 +1,13 @@
-#include <spdlog/spdlog.h>
 #include <cmath>
+#include <stack>
 #include <unordered_map>
 #include <unordered_set>
 
+#include <spdlog/spdlog.h>
+
 #include "pathfinding.hpp"
 
-namespace CalmPath {
+namespace CALM_PATH {
 
 /**
  * @struct AGridPoint
@@ -229,4 +231,4 @@ std::queue<VIPRA::f3d> pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& 
                start.x, start.y, start.z);
   return std::queue<VIPRA::f3d>{{start}};
 }
-}  // namespace CalmPath
+}  // namespace CALM_PATH

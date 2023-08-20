@@ -7,7 +7,7 @@
 #include <spdlog/spdlog.h>
 
 #include <conditions/sub_condition.hpp>
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
 
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>

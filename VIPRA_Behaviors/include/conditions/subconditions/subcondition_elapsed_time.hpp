@@ -3,12 +3,12 @@
 
 #include <conditions/sub_condition.hpp>
 #include <definitions/dsl_types.hpp>
-#include <definitions/type_definitions.hpp>
 #include <events/event.hpp>
 #include <time/time.hpp>
 #include <util/timed_latch.hpp>
 #include <values/numeric_value.hpp>
 #include "definitions/sim_pack.hpp"
+#include "definitions/type_definitions.hpp"
 
 namespace BHVR {
 class SubConditionElapsedTimeFromEvent {

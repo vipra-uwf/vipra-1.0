@@ -1,12 +1,13 @@
 #ifndef GOALS_HPP
 #define GOALS_HPP
 
-#include <definitions/config_map.hpp>
 #include <definitions/dimensions.hpp>
-#include <definitions/type_definitions.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
 
+namespace VIPRA {
 /**
  * @class GoalsException
  * @brief Custom exception class for handling errors related to Goals.
@@ -22,7 +23,7 @@ class GoalsException : public std::runtime_error {
    * @param message The error message to be associated with the exception.
    */
   explicit GoalsException(const std::string& message) : std::runtime_error(message) {}
-  
+
   /**
    * @brief Static function to throw a GoalsException with the given error message.
    *
@@ -41,30 +42,30 @@ class GoalsException : public std::runtime_error {
  */
 class Goals {
  public:
- /**
+  /**
    * @brief Configure the goals using configuration parameters.
    *
    * @param configMap A map containing the configuration parameters for the goals.
    */
-  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
-   /**
+  virtual void configure(const VIPRA::Config& configMap) = 0;
+  /**
    * @brief Initialize the goals using the obstacle and pedestrian information.
    *
    * @param obstacleSet The obstacle set in the simulation.
    * @param pedestrianSet The pedestrian set in the simulation.
    */
-  virtual void initialize(const ObstacleSet&, const PedestrianSet&) = 0;
-   /**
+  virtual void initialize(const VIPRA::ObstacleSet&, const VIPRA::PedestrianSet&) = 0;
+  /**
    * @brief Update pedestrian goals based on the obstacle and pedestrian information.
    *
    * @param obstacleSet The obstacle set in the simulation.
    * @param pedestrianSet The pedestrian set in the simulation.
    * @param delta_t The time delta since the last update.
    */
-  virtual void updatePedestrianGoals(const ObstacleSet&, const PedestrianSet&,
-                                     VIPRA::delta_t) = 0;
+  virtual void updatePedestrianGoals(const VIPRA::ObstacleSet&,
+                                     const VIPRA::PedestrianSet&, VIPRA::delta_t) = 0;
 
-   /**
+  /**
    * @brief Get the current goal position for a specific pedestrian.
    *
    * @param idx The index of the pedestrian.
@@ -85,7 +86,7 @@ class Goals {
    * @return A vector of 3D vectors (VIPRA::f3d) representing the current goal positions.
    */
   [[nodiscard]] virtual const VIPRA::f3dVec& getAllCurrentGoals() const = 0;
-   /**
+  /**
    * @brief Get all the end goal positions for all pedestrians.
    *
    * @return A vector of 3D vectors (VIPRA::f3d) representing the end goal positions.
@@ -114,12 +115,13 @@ class Goals {
    */
   [[nodiscard]] virtual bool isSimulationGoalMet() const = 0;
 
-  Goals(const Goals&) = default;
-  Goals(Goals&&) = delete;
-  Goals& operator=(const Goals&) = default;
-  Goals& operator=(Goals&&) = delete;
+  Goals(const VIPRA::Goals&) = default;
+  Goals(VIPRA::Goals&&) = delete;
+  VIPRA::Goals& operator=(const VIPRA::Goals&) = default;
+  VIPRA::Goals& operator=(VIPRA::Goals&&) = delete;
   Goals() = default;
   virtual ~Goals() = default;
 };
+}  // namespace VIPRA
 
 #endif

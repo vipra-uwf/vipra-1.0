@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <functional>
 
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
 
 namespace BHVR {
 

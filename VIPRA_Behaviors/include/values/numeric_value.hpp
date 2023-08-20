@@ -5,9 +5,9 @@
 #include <functional>
 
 #include <definitions/dsl_types.hpp>
-#include <definitions/type_definitions.hpp>
 #include <random/random.hpp>
 #include <utility>
+#include "definitions/type_definitions.hpp"
 
 namespace BHVR {
 /**

@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <obstacle_set/obstacle_set.hpp>
 
-namespace CalmPath {
+namespace CALM_PATH {
 
 /**
  * @struct GridPoint
@@ -86,7 +86,7 @@ struct GridPointHash {
 class PathingGraph {
  public:
   GridPoint* search(VIPRA::f3d);
-  void       build(const ObstacleSet& obsSet, float gridSz, float obsBufferDist);
+  void       build(const VIPRA::ObstacleSet& obsSet, float gridSz, float obsBufferDist);
   [[nodiscard]] std::string toString() const;
 
  private:
@@ -100,10 +100,10 @@ class PathingGraph {
 
   [[nodiscard]] static VIPRA::idx getIndex(VIPRA::size, VIPRA::size, VIPRA::size);
 
-  void        constructPoints(const ObstacleSet&, float obsBufferDist);
+  void        constructPoints(const VIPRA::ObstacleSet&, float obsBufferDist);
   void        buildAdjacencies();
   static void addAdjToString(const GridPoint& node, std::string& str);
 };
-}  // namespace CalmPath
+}  // namespace CALM_PATH
 
 #endif

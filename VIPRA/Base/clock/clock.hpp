@@ -5,8 +5,8 @@
 
 #include <spdlog/spdlog.h>
 
-#include <definitions/config_map.hpp>
-#include <definitions/type_definitions.hpp>
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
 
 namespace VIPRA {
 using nano = std::chrono::nanoseconds;

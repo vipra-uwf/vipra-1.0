@@ -1,17 +1,20 @@
 
 
 #include "simulation.hpp"
-#include <chrono>
 
+#include "output/output.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
+
+namespace VIPRA {
 /**
  * @brief Gets simulation module params
  * 
  * @param config : 
  */
-void Simulation::configure(const VIPRA::CONFIG::Map& config) {
+void Simulation::configure(const VIPRA::Config& config) {
   timestep = 0;
-  timestep_size = config["time_step_size"].asFloat();
-  maxTimeStep = config["max_timestep"].asUInt64();
+  timestep_size = config["time_step_size"].get<float>();
+  maxTimeStep = config["max_timestep"].get<VIPRA::size>();
 }
 
 /**
@@ -40,11 +43,10 @@ VIPRA::t_step Simulation::getTimestep() const { return timestep; }
  * @param simulationOutputHandler - SimulationOutputHandler implementation
  * @param clock - Clock implementation
  */
-void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
+void Simulation::run(VIPRA::Goals& goals, VIPRA::PedestrianSet& pedestrianSet,
+                     VIPRA::ObstacleSet&      obstacleSet,
                      PedestrianDynamicsModel& pedestrianDynamicsModel,
-                     HumanBehaviorModel& humanBehaviorModel, PolicyModel& policyModel,
-                     OutputDataWriter&        outputDataWriter,
-                     SimulationOutputHandler& simulationOutputHandler) {
+                     HumanBehaviorModel& humanBehaviorModel, PolicyModel& policyModel) {
   spdlog::info("Starting Simulation Loop");
 
   clock.start();
@@ -56,15 +58,12 @@ void Simulation::run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& ob
                                 timestep_size);
 
     pedestrianSet.updateState(pedState);
-
-    if (simulationOutputHandler.isOutputCriterionMet(pedestrianSet, obstacleSet, goals,
-                                                     timestep)) {
-      spdlog::info("Writing To Document, Timestep: {}", timestep);
-      simulationOutputHandler.writeOutput(outputDataWriter, pedestrianSet, timestep);
-    }
-
     goals.updatePedestrianGoals(obstacleSet, pedestrianSet, timestep_size);
+
+    outputPositions(pedestrianSet);
+
     ++timestep;
+    Output::nextTimestep();
   }
 
   spdlog::info("Simulation Run Complete");
@@ -84,3 +83,13 @@ void Simulation::printSimTime() {
       std::chrono::duration<float>{simTime});
   spdlog::info("Simulated Time: {}", stm);
 }
+
+void Simulation::outputPositions(const PedestrianSet& pedSet) {
+  const VIPRA::size pedCnt = pedSet.getNumPedestrians();
+  const auto&       coords = pedSet.getCoordinates();
+
+  for (VIPRA::idx i = 0; i < pedCnt; ++i) {
+    Output::pedTimestepValue(i, "position", coords.at(i));
+  }
+}
+}  // namespace VIPRA

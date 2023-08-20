@@ -121,7 +121,7 @@ def getObs(obs):
 
 def getPeds(peds):
   if peds:
-    return json.load(open(peds))["timesteps"]
+    return json.load(open(peds))
   else:
     return {}
 
@@ -129,17 +129,17 @@ def getPeds(peds):
 def getPoints(timestep):
   pointsX = []
   pointsY = []
-  for key in timestep:
-    pointsX.append(key["x"])
-    pointsY.append(key["y"])
+  for ped in timestep["pedestrians"]:
+    pointsX.append(ped["position"][0])
+    pointsY.append(ped["position"][1])
 
   return (pointsX, pointsY)
 
-def makeColors(pedCoords, args):
+def makeColors(count, args):
   if args['pedColor']:
-    return np.random.rand(len(pedCoords["0"]), 3)
+    return np.random.rand(count, 3)
   else:
-    return np.full((len(pedCoords["0"]),3),[1,0.5,0])
+    return np.full((count,3),[1,0,0])
 
 def plotShoulders(pointsX, pointsY, colors, ax, args):
   shldrLen = args['shldrLen']

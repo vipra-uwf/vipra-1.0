@@ -5,7 +5,7 @@
 #include <limits>
 
 #include <definitions/dsl_types.hpp>
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
 
 #include <distributions/distributions.hpp>
 #include <randomization/random.hpp>

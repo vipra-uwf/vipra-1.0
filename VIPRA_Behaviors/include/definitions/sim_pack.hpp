@@ -3,11 +3,11 @@
 
 #include <definitions/behavior_context.hpp>
 #include <definitions/state.hpp>
-#include <definitions/type_definitions.hpp>
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 #include <selectors/pedestrian_groups.hpp>
+#include "definitions/type_definitions.hpp"
 
 namespace BHVR {
 /**
@@ -16,13 +16,13 @@ namespace BHVR {
   */
 struct Simpack {
   // NOLINTBEGIN (rolland) this is only used to pass references around : ignores (cppcoreguidelines-avoid-const-or-ref-data-members)
-  const PedestrianSet&   pedSet;
-  const ObstacleSet&     obsSet;
-  const Goals&           goals;
-  VIPRA::State&          state;
-  BehaviorContext&       context;
-  const GroupsContainer& groups;
-  VIPRA::delta_t         dT;
+  const VIPRA::PedestrianSet& pedSet;
+  const VIPRA::ObstacleSet&   obsSet;
+  const VIPRA::Goals&         goals;
+  VIPRA::State&               state;
+  BehaviorContext&            context;
+  const GroupsContainer&      groups;
+  VIPRA::delta_t              dT;
   // NOLINTEND
 };
 }  // namespace BHVR

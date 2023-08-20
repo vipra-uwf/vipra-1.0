@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <limits>
 
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
 
 namespace VIPRA {
 

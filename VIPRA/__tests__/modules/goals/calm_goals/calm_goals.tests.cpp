@@ -17,11 +17,11 @@
 // class CalmGoalsTester : public CalmGoals {
 //  public:
 //   const VIPRA::f3d& testNearestObjective(const std::string& type, const VIPRA::f3d& point,
-//                                          const ObstacleSet& obsSet) {
+//                                          const VIPRA::ObstacleSet& obsSet) {
 //     return nearestObjective(type, point, obsSet);
 //   }
 
-//   void testFindNearesetEndGoal(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
+//   void testFindNearesetEndGoal(const VIPRA::ObstacleSet& obsSet, const VIPRA::PedestrianSet& pedSet) {
 //     return findNearestEndGoal(obsSet, pedSet);
 //   }
 
@@ -38,7 +38,7 @@
 //   const ObstacleSetMock   obsSet;
 //   const PedestrianSetMock pedSet;
 
-//   const VIPRA::CONFIG::Map config{
+//   const VIPRA::Config config{
 //       std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
 //                   "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
 //   test.configure(config);
@@ -71,7 +71,7 @@
 //   CalmGoalsTester          test;
 //   const ObstacleSetMock    obsSet;
 //   const PedestrianSetMock  pedSet;
-//   const VIPRA::CONFIG::Map config{
+//   const VIPRA::Config config{
 //       std::string("\" goalRange \": \" 0.35 \", \" endGoalType \": \" exit \", \" "
 //                   "pathFinding \": \" Disembark\", \" diagonalCost \": \" 2.0 \"")};
 //   test.configure(config);

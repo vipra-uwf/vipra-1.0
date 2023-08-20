@@ -369,8 +369,7 @@ export class SimulationBuilder {
     this.moduleTypes = {
       pedestrian_dynamics_model: 0,
       goals: 0,
-      output_data_writer: 0,
-      simulation_output_handler: 0, 
+      output_sink: 0,
       pedestrian_set: 0, 
       obstacle_set: 0, 
       human_behavior_model: 0,
