@@ -5,7 +5,7 @@
 #include <limits>
 #include <vector>
 
-#include <definitions/dimensions.hpp>
+#include "definitions/dimensions.hpp"
 
 namespace VIPRA {
 

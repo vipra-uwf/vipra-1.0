@@ -1,8 +1,10 @@
+
 #include "behavior/human_behavior.hpp"
 
 #include <definitions/state.hpp>
 #include <numeric>
 #include <utility>
+
 #include "definitions/dsl_types.hpp"
 #include "definitions/pedestrian_types.hpp"
 #include "definitions/sim_pack.hpp"
@@ -52,8 +54,9 @@ void HumanBehavior::setAllPedTypes(Ptype types) {
  * @param obsSet : obstacle set object
  * @param goals : goals object
  */
-void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet,
-                               const Goals& goals) {
+void HumanBehavior::initialize(const VIPRA::PedestrianSet& pedSet,
+                               const VIPRA::ObstacleSet&   obsSet,
+                               const VIPRA::Goals&         goals) {
   context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
   context.types = std::vector<BHVR::typeUID>(pedSet.getNumPedestrians());
 
@@ -79,8 +82,9 @@ void HumanBehavior::initialize(const PedestrianSet& pedSet, const ObstacleSet& o
  * @param state : state object to write results to
  * @param dT : simulation timestep size
  */
-void HumanBehavior::timestep(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
-                             VIPRA::State& state, VIPRA::delta_t dT) {
+void HumanBehavior::timestep(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSet& obsSet,
+                             VIPRA::Goals& goals, VIPRA::State& state,
+                             VIPRA::delta_t dT) {
   evaluateEvents(pedSet, obsSet, goals, dT);
   applyActions(pedSet, obsSet, goals, state, dT);
   context.elapsedTime += dT;
@@ -154,8 +158,9 @@ void HumanBehavior::setSeed(BHVR::seed bSeed) {
  * @param goals : goals module
  * @param dT : time between timesteps
  */
-void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
-                                   Goals& goals, VIPRA::delta_t dT) {
+void HumanBehavior::evaluateEvents(VIPRA::PedestrianSet& pedSet,
+                                   VIPRA::ObstacleSet& obsSet, VIPRA::Goals& goals,
+                                   VIPRA::delta_t dT) {
   VIPRA::State dummyState;
   for (auto& event : context.events) {
     event.evaluate(
@@ -172,8 +177,9 @@ void HumanBehavior::evaluateEvents(PedestrianSet& pedSet, ObstacleSet& obsSet,
  * @param state : next timestep state from pedestrian model 
  * @param dT : timestep size
  */
-void HumanBehavior::applyActions(PedestrianSet& pedSet, ObstacleSet& obsSet, Goals& goals,
-                                 VIPRA::State& state, VIPRA::delta_t dT) {
+void HumanBehavior::applyActions(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSet& obsSet,
+                                 VIPRA::Goals& goals, VIPRA::State& state,
+                                 VIPRA::delta_t dT) {
   const GroupsContainer& groups = selector.getGroups();
   const VIPRA::size      groupCnt = groups.size();
 

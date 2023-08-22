@@ -6,12 +6,13 @@
 #include <obstacle_set/obstacle_set.hpp>
 #include <stdexcept>
 
-#include <definitions/config_map.hpp>
 #include <definitions/entitySet.hpp>
 #include <definitions/state.hpp>
-#include <definitions/type_definitions.hpp>
 #include <pedestrian_loader/pedestrian_loader.hpp>
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
 
+namespace VIPRA {
 class ObstacleSet;
 
 /**
@@ -51,7 +52,7 @@ class PedestrianSet {
    *
    * @param configMap The configuration map containing settings for the PedestrianSet.
    */
-  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
+  virtual void configure(const VIPRA::Config& configMap) = 0;
   /**
    * @brief Initialize the PedestrianSet with the given pedestrian coordinates.
    *
@@ -70,7 +71,7 @@ class PedestrianSet {
    *
    * @return The number of pedestrians in the set.
    */
-  [[nodiscard]] virtual VIPRA::size          getNumPedestrians() const = 0;
+  [[nodiscard]] virtual VIPRA::size getNumPedestrians() const = 0;
   /**
    * @brief Get the vector of pedestrian coordinates.
    *
@@ -96,7 +97,7 @@ class PedestrianSet {
    * @param index The index of the pedestrian.
    * @return The velocity of the pedestrian at the specified index.
    */
-  [[nodiscard]] virtual const VIPRA::veloc&  getPedVelocity(VIPRA::idx) const = 0;
+  [[nodiscard]] virtual const VIPRA::veloc& getPedVelocity(VIPRA::idx) const = 0;
 
   /**
    * @brief Get the nearest pedestrian to the pedestrian at the specified index.
@@ -105,14 +106,15 @@ class PedestrianSet {
    * @return A pair containing the coordinates and index of the nearest pedestrian.
    */
   [[nodiscard]] virtual std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(
-      VIPRA::idx, const ObstacleSet&) const = 0;
+      VIPRA::idx, const VIPRA::ObstacleSet&) const = 0;
 
   virtual ~PedestrianSet() = default;
   PedestrianSet() = default;
-  PedestrianSet(const PedestrianSet&) = default;
-  PedestrianSet(PedestrianSet&&) = default;
-  PedestrianSet& operator=(const PedestrianSet&) = default;
-  PedestrianSet& operator=(PedestrianSet&&) = default;
+  PedestrianSet(const VIPRA::PedestrianSet&) = default;
+  PedestrianSet(VIPRA::PedestrianSet&&) = default;
+  VIPRA::PedestrianSet& operator=(const VIPRA::PedestrianSet&) = default;
+  VIPRA::PedestrianSet& operator=(VIPRA::PedestrianSet&&) = default;
 };
+}  // namespace VIPRA
 
 #endif

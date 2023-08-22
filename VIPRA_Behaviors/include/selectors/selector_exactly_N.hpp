@@ -13,8 +13,8 @@ namespace BHVR {
 struct SelectorExactlyN {
   NumericValue   selectCount;
   SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                            const VIPRA::idxVec&, const PedestrianSet&,
-                            const ObstacleSet&, const Goals&) const;
+                            const VIPRA::idxVec&, const VIPRA::PedestrianSet&,
+                            const VIPRA::ObstacleSet&, const VIPRA::Goals&) const;
 };
 }  // namespace BHVR
 

@@ -4,14 +4,15 @@
 #include <memory>
 #include <stdexcept>
 
-#include <definitions/config_map.hpp>
 #include <definitions/state.hpp>
-#include <definitions/type_definitions.hpp>
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
 
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 
+namespace VIPRA {
 /**
  * @class PedDynamicsException
  * @brief Custom exception class for handling errors related to PedestrianDynamicsModel.
@@ -49,7 +50,7 @@ class PedestrianDynamicsModel {
    *
    * @param configMap The configuration map containing settings for the PedestrianDynamicsModel.
    */
-  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
+  virtual void configure(const VIPRA::Config& configMap) = 0;
   /**
    * @brief Initialize the PedestrianDynamicsModel with the given sets and goals.
    *
@@ -57,7 +58,8 @@ class PedestrianDynamicsModel {
    * @param obsSet The ObstacleSet to be used for modeling.
    * @param goals The Goals to be used for modeling.
    */
-  virtual void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) = 0;
+  virtual void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                          const VIPRA::Goals&) = 0;
   /**
    * @brief Perform a timestep of the pedestrian dynamics model.
    *
@@ -68,8 +70,8 @@ class PedestrianDynamicsModel {
    * @param tStep The current simulation time step.
    * @return The updated State after the timestep.
    */
-  virtual VIPRA::State& timestep(const PedestrianSet&, const ObstacleSet&, const Goals&,
-                                 VIPRA::delta_t, VIPRA::t_step) = 0;
+  virtual VIPRA::State& timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                                 const VIPRA::Goals&, VIPRA::delta_t, VIPRA::t_step) = 0;
 
   PedestrianDynamicsModel(const PedestrianDynamicsModel&) = default;
   PedestrianDynamicsModel(PedestrianDynamicsModel&&) = delete;
@@ -78,5 +80,6 @@ class PedestrianDynamicsModel {
   PedestrianDynamicsModel() = default;
   virtual ~PedestrianDynamicsModel() = default;
 };
+}  // namespace VIPRA
 
 #endif

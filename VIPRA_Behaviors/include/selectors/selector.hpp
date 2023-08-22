@@ -42,8 +42,9 @@ class Selector {
   GroupsContainer          pedGroups;
 
   [[nodiscard]] VIPRA::idxVec selectPedsFromGroup(SubSelector&, VIPRA::pRNG_Engine&,
-                                                  const PedestrianSet&,
-                                                  const ObstacleSet&, const Goals&,
+                                                  const VIPRA::PedestrianSet&,
+                                                  const VIPRA::ObstacleSet&,
+                                                  const VIPRA::Goals&,
                                                   const std::string&);
 
   [[nodiscard]] VIPRA::idxVec        orderSelectors();

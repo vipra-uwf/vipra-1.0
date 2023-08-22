@@ -1,9 +1,9 @@
 #ifndef VIPRA_BEHAVIORS_TIME_HPP
 #define VIPRA_BEHAVIORS_TIME_HPP
 
-#include <definitions/type_definitions.hpp>
 #include <string>
 #include <utility>
+#include "definitions/type_definitions.hpp"
 namespace BHVR {
 using RandomVal = std::pair<float, float>;
 class Duration {

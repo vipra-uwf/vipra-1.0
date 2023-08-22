@@ -3,18 +3,19 @@
 
 #include <spdlog/spdlog.h>
 
-#include <definitions/behavior_context.hpp>
-#include <definitions/dsl_types.hpp>
-#include <definitions/type_definitions.hpp>
+#include "definitions/behavior_context.hpp"
+#include "definitions/dsl_types.hpp"
+#include "definitions/type_definitions.hpp"
 
-#include <actions/action.hpp>
-#include <events/event.hpp>
-#include <goals/goals.hpp>
-#include <locations/location.hpp>
-#include <obstacle_set/obstacle_set.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
-#include <selectors/selector.hpp>
+#include "actions/action.hpp"
+#include "events/event.hpp"
+#include "goals/goals.hpp"
+#include "locations/location.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 #include "randomization/random.hpp"
+#include "selectors/selector.hpp"
+
 
 namespace BHVR {
 /**
@@ -26,8 +27,10 @@ class HumanBehavior {
 
   [[nodiscard]] const std::string& getName() const noexcept;
 
-  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
-  void timestep(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::State&, VIPRA::delta_t);
+  void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                  const VIPRA::Goals&);
+  void timestep(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::State&,
+                VIPRA::delta_t);
 
   void       setAllPedTypes(Ptype);
   void       addSubSelector(const SubSelector&);
@@ -53,8 +56,10 @@ class HumanBehavior {
   std::vector<Location*>           locations;
   std::vector<std::vector<Action>> actions;
 
-  void evaluateEvents(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::delta_t);
-  void applyActions(PedestrianSet&, ObstacleSet&, Goals&, VIPRA::State&, VIPRA::delta_t);
+  void evaluateEvents(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&,
+                      VIPRA::delta_t);
+  void applyActions(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&,
+                    VIPRA::State&, VIPRA::delta_t);
 
  public:
   HumanBehavior() = default;

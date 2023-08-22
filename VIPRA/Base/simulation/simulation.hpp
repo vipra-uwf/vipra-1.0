@@ -3,27 +3,27 @@
 
 #include <spdlog/spdlog.h>
 
-#include <clock/clock.hpp>
-#include <definitions/config_map.hpp>
-#include <definitions/state.hpp>
-#include <human_behavior/human_behavior_model.hpp>
-#include <pedestrian_model/pedestrian_dynamics_model.hpp>
-#include <policy_model/policy_model.hpp>
-#include <simulation_output_handler/simulation_output_handler.hpp>
+#include "clock/clock.hpp"
+#include "configuration/config.hpp"
+#include "definitions/state.hpp"
+#include "human_behavior/human_behavior_model.hpp"
+#include "pedestrian_model/pedestrian_dynamics_model.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
+#include "policy_model/policy_model.hpp"
 
+namespace VIPRA {
 /**
  * @brief Main Simulation Class
  * 
  */
 class Simulation {
  public:
-  void configure(const VIPRA::CONFIG::Map& config);
+  void configure(const VIPRA::Config& config);
   void initialize();
-  void run(Goals& goals, PedestrianSet& pedestrianSet, ObstacleSet& obstacleSet,
+  void run(VIPRA::Goals& goals, VIPRA::PedestrianSet& pedestrianSet,
+           VIPRA::ObstacleSet&      obstacleSet,
            PedestrianDynamicsModel& pedestrianDynamicsModel,
-           HumanBehaviorModel& humanBehaviorModel, PolicyModel& policyModel,
-           OutputDataWriter&        outputDataWriter,
-           SimulationOutputHandler& simulationOutputHandler);
+           HumanBehaviorModel& humanBehaviorModel, PolicyModel& policyModel);
 
   [[nodiscard]] VIPRA::t_step getTimestep() const;
 
@@ -34,6 +34,9 @@ class Simulation {
   VIPRA::Clock<> clock;
 
   void printSimTime();
+
+  static void outputPositions(const PedestrianSet&);
 };
+}  // namespace VIPRA
 
 #endif

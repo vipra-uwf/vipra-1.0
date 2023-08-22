@@ -3,15 +3,15 @@
 
 #include <stdexcept>
 
-#include <definitions/dimensions.hpp>
-#include <definitions/dsl_types.hpp>
-#include <definitions/sim_pack.hpp>
-#include <definitions/state.hpp>
-#include <definitions/type_definitions.hpp>
-#include <events/event.hpp>
-#include <targets/target.hpp>
 #include "behavior/exceptions.hpp"
+#include "definitions/dimensions.hpp"
+#include "definitions/dsl_types.hpp"
+#include "definitions/sim_pack.hpp"
+#include "definitions/state.hpp"
+#include "definitions/type_definitions.hpp"
+#include "events/event.hpp"
 #include "events/event_status.hpp"
+#include "targets/target.hpp"
 #include "values/numeric_value.hpp"
 
 namespace BHVR {
@@ -197,6 +197,27 @@ class AttributeHandling {
   [[nodiscard]] inline static CAttributeValue storeValue(Type type, T&& value) {
     valueStore.emplace_back(type, new T(value));
     return valueStore.back();
+  }
+
+  inline static void cleanup() {
+    for (auto data : valueStore) {
+      switch (data.type) {
+        case Type::INVALID:
+          break;
+        case Type::NUMBER:
+          delete static_cast<const float*>(data.value);
+          break;
+        case Type::COORD:
+          delete static_cast<const VIPRA::f3d*>(data.value);
+          break;
+        case Type::STATE:
+          delete static_cast<const BHVR::stateUID*>(data.value);
+          break;
+        case Type::STATUS:
+          delete static_cast<const BHVR::EventStatus*>(data.value);
+          break;
+      }
+    }
   }
 
  private:

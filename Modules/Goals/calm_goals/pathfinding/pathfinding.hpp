@@ -6,7 +6,7 @@
 
 #include "pathing_graph.hpp"
 
-namespace CalmPath {
+namespace CALM_PATH {
 
 /**
 * @brief generates a path using an A Star algorithm
@@ -18,6 +18,6 @@ namespace CalmPath {
 */
 std::queue<VIPRA::f3d> pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph&);
 
-}  // namespace CalmPath
+}  // namespace CALM_PATH
 
 #endif

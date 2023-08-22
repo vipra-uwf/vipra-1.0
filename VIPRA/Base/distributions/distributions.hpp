@@ -9,7 +9,7 @@
 
 #include <spdlog/spdlog.h>
 
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
 #include "randomization/random.hpp"
 
 namespace VIPRA {

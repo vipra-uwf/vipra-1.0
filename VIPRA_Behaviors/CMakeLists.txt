@@ -47,18 +47,17 @@ include( ExternalAntlr4Cpp )
 link_directories( ${ANTLR4CPP_LIBS} )
 message(STATUS "Done Setting Up ANTLR")
 
-message(STATUS "Getting jsoncpp")
-set(JSONCPP_WITH_TESTS OFF)
-FetchContent_Declare(jsoncpp URL https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.3.tar.gz)
-FetchContent_MakeAvailable(jsoncpp)
-message(STATUS "Done Getting jsoncpp")
+message(STATUS "Getting nlohmann_json")
+FetchContent_Declare(nlohmann_json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
+FetchContent_MakeAvailable(nlohmann_json)
+message(STATUS "Done Getting nlohmann_json")
 
 target_link_libraries(
   ${LIB_NAME}
   PUBLIC
   antlr4_shared
   spdlog::spdlog
-  jsoncpp_lib
+  nlohmann_json::nlohmann_json
 )
 
 include_directories(

@@ -4,8 +4,8 @@
 #include <fstream>
 #include <vector>
 
-#include <json/json.h>
 #include <spdlog/spdlog.h>
+#include <nlohmann/json.hpp>
 
 #include <pedestrian_loader/pedestrian_loader.hpp>
 
@@ -19,19 +19,19 @@
  * This class inherits from PedestrianLoader and provides functionality for
  * configuring, initializing, and loading pedestrian positions from a JSON file.
  */
-class JsonPedestrianLoader : public PedestrianLoader {
+class JsonPedestrianLoader : public VIPRA::PedestrianLoader {
  public:
   /**
    * @brief Configures the JsonPedestrianLoader with the given configuration map.
    *
    * @param configMap The configuration map.
    */
-  void configure(const VIPRA::CONFIG::Map& configMap) override;
+  void configure(const VIPRA::Config& configMap) override;
   /**
    * @brief Initializes the JsonPedestrianLoader.
    */
   void initialize() override;
-  
+
   /**
    * @brief Loads pedestrians from the specified JSON file.
    *

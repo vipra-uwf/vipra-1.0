@@ -5,9 +5,11 @@
         "behaviors": [
         ]
     },
-    "output_data_writer": {},
-    "simulation_output_handler": {
+    "output": {
         "outputFrequency": 100
+    },
+    "output_sink": {
+        "filepath": "output.json"
     },
     "pedestrian_set": {},
     "obstacle_set": {
@@ -33,6 +35,6 @@
     "configuration_reader": {},
     "simulation": {
         "time_step_size": 0.005,
-        "max_timestep": 5000
+        "max_timestep": 500
     }
 }

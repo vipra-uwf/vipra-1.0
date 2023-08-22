@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-namespace CalmPath {
+namespace CALM_PATH {
 
 static constexpr float floatError = 0.0001;
 
@@ -72,7 +72,8 @@ VIPRA::idx PathingGraph::getIndex(VIPRA::size gridX, VIPRA::size gridY,
  * @param gridSz Size of the grid being built.
  * @param obsBufferDist
  */
-void PathingGraph::build(const ObstacleSet& obsSet, float gridSz, float obsBufferDist) {
+void PathingGraph::build(const VIPRA::ObstacleSet& obsSet, float gridSz,
+                         float obsBufferDist) {
   gridSize = gridSz;
   constructPoints(obsSet, obsBufferDist);
   buildAdjacencies();
@@ -84,7 +85,8 @@ void PathingGraph::build(const ObstacleSet& obsSet, float gridSz, float obsBuffe
  * @param obsSet Obstacle set for the simulation.
  * @param obsBufferDist 
  */
-void PathingGraph::constructPoints(const ObstacleSet& obsSet, float obsBufferDist) {
+void PathingGraph::constructPoints(const VIPRA::ObstacleSet& obsSet,
+                                   float                     obsBufferDist) {
   dimensions = obsSet.getMapDimensions();
   setGridCounts();
 
@@ -219,4 +221,4 @@ void PathingGraph::setGridCounts() {
   xCnt = static_cast<VIPRA::size>(std::ceil(dif.x / gridSize) + 1);
   yCnt = static_cast<VIPRA::size>(std::ceil(dif.y / gridSize) + 1);
 }
-}  // namespace CalmPath
+}  // namespace CALM_PATH

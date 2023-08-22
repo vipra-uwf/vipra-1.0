@@ -11,8 +11,8 @@ namespace BHVR {
 struct SelectorPercent {
   float          percentage;
   SelectorResult operator()(VIPRA::pRNG_Engine&, const std::vector<VIPRA::idx>&,
-                            const std::vector<VIPRA::idx>&, const PedestrianSet&,
-                            const ObstacleSet&, const Goals&) const;
+                            const std::vector<VIPRA::idx>&, const VIPRA::PedestrianSet&,
+                            const VIPRA::ObstacleSet&, const VIPRA::Goals&) const;
 };
 
 }  // namespace BHVR

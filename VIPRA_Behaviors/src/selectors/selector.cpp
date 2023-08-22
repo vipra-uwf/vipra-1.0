@@ -63,11 +63,12 @@ void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs,
  * @param behaviorName : 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector&         selector,
-                                            VIPRA::pRNG_Engine&  rngEngine,
-                                            const PedestrianSet& pedSet,
-                                            const ObstacleSet& obsSet, const Goals& goals,
-                                            const std::string& behaviorName) {
+VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector&                selector,
+                                            VIPRA::pRNG_Engine&         rngEngine,
+                                            const VIPRA::PedestrianSet& pedSet,
+                                            const VIPRA::ObstacleSet&   obsSet,
+                                            const VIPRA::Goals&         goals,
+                                            const std::string&          behaviorName) {
   const auto& fullGroup = pedGroups.getGroup(selector.group);
   auto        usablegroup = filterUsedPeds(fullGroup, pedGroups.getUsed(selector.group));
   auto        result =

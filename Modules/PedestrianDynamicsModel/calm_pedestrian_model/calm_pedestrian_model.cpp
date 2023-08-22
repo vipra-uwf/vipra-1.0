@@ -10,10 +10,10 @@
 
 #include <distributions/distributions.hpp>
 
-VIPRA::State& CalmPedestrianModel::timestep(const PedestrianSet& pedSet,
-                                            const ObstacleSet&   obstacleSet,
-                                            const Goals& goals, VIPRA::delta_t time,
-                                            VIPRA::t_step timestep) {
+VIPRA::State& CalmPedestrianModel::timestep(const VIPRA::PedestrianSet& pedSet,
+                                            const VIPRA::ObstacleSet&   obstacleSet,
+                                            const VIPRA::Goals&         goals,
+                                            VIPRA::delta_t time, VIPRA::t_step timestep) {
   calculateShoulders(pedSet, goals);
   calculateNeartestNeighbors(pedSet, obstacleSet, goals);
   calculateBetas(pedSet);
@@ -31,9 +31,9 @@ VIPRA::State& CalmPedestrianModel::timestep(const PedestrianSet& pedSet,
  *
  * @param pedSet
  */
-void CalmPedestrianModel::calculateNeartestNeighbors(const PedestrianSet& pedSet,
-                                                     const ObstacleSet&,
-                                                     const Goals& goals) {
+void CalmPedestrianModel::calculateNeartestNeighbors(const VIPRA::PedestrianSet& pedSet,
+                                                     const VIPRA::ObstacleSet&,
+                                                     const VIPRA::Goals& goals) {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       coords = pedSet.getCoordinates();
 
@@ -66,7 +66,7 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const PedestrianSet& pedSet
   }
 }
 
-void CalmPedestrianModel::calculateBetas(const PedestrianSet& pedSet) {
+void CalmPedestrianModel::calculateBetas(const VIPRA::PedestrianSet& pedSet) {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
@@ -80,8 +80,8 @@ void CalmPedestrianModel::calculateBetas(const PedestrianSet& pedSet) {
  * @param pedSet
  * @param goals
  */
-void CalmPedestrianModel::calculatePropulsion(const PedestrianSet& pedSet,
-                                              const Goals&         goals) {
+void CalmPedestrianModel::calculatePropulsion(const VIPRA::PedestrianSet& pedSet,
+                                              const VIPRA::Goals&         goals) {
   const auto& currentGoals = goals.getAllCurrentGoals();
   const auto& velocities = pedSet.getVelocities();
   const auto& coords = pedSet.getCoordinates();
@@ -107,8 +107,8 @@ void CalmPedestrianModel::calculatePropulsion(const PedestrianSet& pedSet,
   }
 }
 
-void CalmPedestrianModel::updateModelState(const PedestrianSet& pedSet,
-                                           const Goals& goals, VIPRA::delta_t time,
+void CalmPedestrianModel::updateModelState(const VIPRA::PedestrianSet& pedSet,
+                                           const VIPRA::Goals& goals, VIPRA::delta_t time,
                                            VIPRA::t_step) {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       coords = pedSet.getCoordinates();
@@ -206,8 +206,8 @@ bool CalmPedestrianModel::objectSpatialTest(const Rect& collisionRect, VIPRA::f3
  * @return float
  */
 float CalmPedestrianModel::checkBlockedPath(VIPRA::idx pedIdx, VIPRA::veloc velocity,
-                                            VIPRA::dist        maxDist,
-                                            const ObstacleSet& obsSet) {
+                                            VIPRA::dist               maxDist,
+                                            const VIPRA::ObstacleSet& obsSet) {
   Line& shoulders = pedShoulders.at(pedIdx);
   if (shoulders.p1 == shoulders.p2) {
     return -1;
@@ -247,8 +247,8 @@ Rect CalmPedestrianModel::makeRectFromShldrs(VIPRA::idx pedIdx, VIPRA::pcoord pe
   return Rect{pedShldr.p1, pedShldr.p1 + range, pedShldr.p2 + range, pedShldr.p2};
 }
 
-void CalmPedestrianModel::calculateShoulders(const PedestrianSet& pedSet,
-                                             const Goals&         goals) {
+void CalmPedestrianModel::calculateShoulders(const VIPRA::PedestrianSet& pedSet,
+                                             const VIPRA::Goals&         goals) {
   VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto& coords = pedSet.getCoordinates();
 
@@ -263,7 +263,8 @@ void CalmPedestrianModel::calculateShoulders(const PedestrianSet& pedSet,
 }
 
 // NOLINTBEGIN : (rolland) - Debug output, so formatting isn't as important    :  ignoring(all)
-VIPRA::f3d CalmPedestrianModel::calculateSpeedDensity(const PedestrianSet& pedSet) {
+VIPRA::f3d CalmPedestrianModel::calculateSpeedDensity(
+    const VIPRA::PedestrianSet& pedSet) {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   // x less than 24.51 and greater than 20.51
   // y greater than 1.6 and less than 2
@@ -303,26 +304,27 @@ VIPRA::f3d CalmPedestrianModel::calculateSpeedDensity(const PedestrianSet& pedSe
 }
 // NOLINTEND
 
-void CalmPedestrianModel::configure(const VIPRA::CONFIG::Map& confMap) {
-  rand.reseed(confMap["seed"].asUInt64());
-  config.meanMass = confMap["meanMass"].asFloat();
-  config.massStdDev = confMap["massStdDev"].asFloat();
-  config.meanReactionTime = confMap["meanReactionTime"].asFloat();
-  config.reactionTimeStdDev = confMap["reactionTimeStdDev"].asFloat();
-  config.meanMaxSpeed = confMap["meanMaxSpeed"].asFloat();
-  config.maxSpeedStdDev = confMap["maxSpeedStdDev"].asFloat();
-  config.meanShoulderLen = confMap["meanShoulderLen"].asFloat();
-  config.ShoulderLenStdDev = confMap["shoulderLenStdDev"].asFloat();
+void CalmPedestrianModel::configure(const VIPRA::Config& confMap) {
+  rand.reseed(confMap["seed"].get<VIPRA::size>());
+  config.meanMass = confMap["meanMass"].get<float>();
+  config.massStdDev = confMap["massStdDev"].get<float>();
+  config.meanReactionTime = confMap["meanReactionTime"].get<float>();
+  config.reactionTimeStdDev = confMap["reactionTimeStdDev"].get<float>();
+  config.meanMaxSpeed = confMap["meanMaxSpeed"].get<float>();
+  config.maxSpeedStdDev = confMap["maxSpeedStdDev"].get<float>();
+  config.meanShoulderLen = confMap["meanShoulderLen"].get<float>();
+  config.ShoulderLenStdDev = confMap["shoulderLenStdDev"].get<float>();
 }
 
-void CalmPedestrianModel::initialize(const PedestrianSet& pedSet, const ObstacleSet&,
-                                     const Goals&         goals) {
+void CalmPedestrianModel::initialize(const VIPRA::PedestrianSet& pedSet,
+                                     const VIPRA::ObstacleSet&,
+                                     const VIPRA::Goals& goals) {
   modelState = VIPRA::State(pedSet.getNumPedestrians());
   setModelData(pedSet);
   collision.initialize(pedSet, goals, dynamic_cast<const ModelData&>(peds));
 }
 
-void CalmPedestrianModel::setModelData(const PedestrianSet& pedSet) {
+void CalmPedestrianModel::setModelData(const VIPRA::PedestrianSet& pedSet) {
   const auto pedCnt = pedSet.getNumPedestrians();
   peds.desiredSpeeds = VIPRA::makeDistribution<VIPRA::normal_distribution<>>(
       pedCnt, config.meanMaxSpeed, config.maxSpeedStdDev, rand);

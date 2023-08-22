@@ -3,9 +3,10 @@
 
 #include <memory>
 
-#include <definitions/config_map.hpp>
-#include <definitions/type_definitions.hpp>
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
 
+namespace VIPRA {
 /**
  * @class PedestrianLoaderException
  * @brief Custom exception class for handling errors related to PedestrianLoader.
@@ -45,7 +46,7 @@ class PedestrianLoader {
    *
    * @param configMap The configuration map containing settings for the PedestrianLoader.
    */
-  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
+  virtual void configure(const VIPRA::Config& configMap) = 0;
   /**
    * @brief Initialize the PedestrianLoader.
    *
@@ -67,5 +68,6 @@ class PedestrianLoader {
   PedestrianLoader() = default;
   virtual ~PedestrianLoader() = default;
 };
+}  // namespace VIPRA
 
 #endif

@@ -7,21 +7,21 @@
 #include <memory>
 #include <vector>
 
-#include <Goals/calm_goals/calm_goals.hpp>
-#include <ObstacleSet/passenger_vehicle_obstacle_set/passenger_vehicle_obstacle_set.hpp>
-#include <PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp>
+#include "Goals/calm_goals/calm_goals.hpp"
+#include "ObstacleSet/passenger_vehicle_obstacle_set/passenger_vehicle_obstacle_set.hpp"
+#include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
 
-#include <definitions/config_map.hpp>
-#include <definitions/type_definitions.hpp>
-#include <pedestrian_model/pedestrian_dynamics_model.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
+#include "pedestrian_model/pedestrian_dynamics_model.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 #include "calm_collision.hpp"
 #include "calm_line.hpp"
 #include "calm_rect.hpp"
 #include "randomization/random.hpp"
 
-class CalmPedestrianModel : public PedestrianDynamicsModel {
+class CalmPedestrianModel : public VIPRA::PedestrianDynamicsModel {
  public:
   // struct ModelData {
   //   std::vector<float>          betas;
@@ -44,10 +44,11 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
     float ShoulderLenStdDev;
   };
 
-  void configure(const VIPRA::CONFIG::Map&) override;
-  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) override;
-  VIPRA::State& timestep(const PedestrianSet&, const ObstacleSet&, const Goals&,
-                         VIPRA::delta_t, VIPRA::t_step) override;
+  void          configure(const VIPRA::Config&) override;
+  void          initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                           const VIPRA::Goals&) override;
+  VIPRA::State& timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                         const VIPRA::Goals&, VIPRA::delta_t, VIPRA::t_step) override;
 
  private:
   ConfigData         config{};
@@ -60,14 +61,15 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
 
   static constexpr VIPRA::delta_t slidingGoalTime = 0.1F;
 
-  void calculatePropulsion(const PedestrianSet&, const Goals&);
-  void calculateRepulsion(const PedestrianSet&, const Goals&);
-  void calculateBetas(const PedestrianSet&);
+  void calculatePropulsion(const VIPRA::PedestrianSet&, const VIPRA::Goals&);
+  void calculateRepulsion(const VIPRA::PedestrianSet&, const VIPRA::Goals&);
+  void calculateBetas(const VIPRA::PedestrianSet&);
 
-  void calculateShoulders(const PedestrianSet&, const Goals&);
-  void calculateNeartestNeighbors(const PedestrianSet&, const ObstacleSet&, const Goals&);
-  void calculateDistanceMatrices(const PedestrianSet&);
-  void updateModelState(const PedestrianSet&, const Goals&, VIPRA::delta_t,
+  void calculateShoulders(const VIPRA::PedestrianSet&, const VIPRA::Goals&);
+  void calculateNeartestNeighbors(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                                  const VIPRA::Goals&);
+  void calculateDistanceMatrices(const VIPRA::PedestrianSet&);
+  void updateModelState(const VIPRA::PedestrianSet&, const VIPRA::Goals&, VIPRA::delta_t,
                         VIPRA::t_step);
 
   [[nodiscard]] static bool objectSpatialTest(const Rect&, VIPRA::f3d objLeft,
@@ -78,12 +80,12 @@ class CalmPedestrianModel : public PedestrianDynamicsModel {
   [[nodiscard]] static bool objectDirectionTest(VIPRA::pcoord, VIPRA::veloc,
                                                 VIPRA::f3d objCoords);
   [[nodiscard]] float checkBlockedPath(VIPRA::idx, VIPRA::veloc, VIPRA::dist maxDist,
-                                       const ObstacleSet&);
+                                       const VIPRA::ObstacleSet&);
   [[nodiscard]] Rect  makeRectFromShldrs(VIPRA::idx, VIPRA::pcoord, VIPRA::goal);
-  [[nodiscard]] static VIPRA::f3d calculateSpeedDensity(const PedestrianSet&);
+  [[nodiscard]] static VIPRA::f3d calculateSpeedDensity(const VIPRA::PedestrianSet&);
   [[nodiscard]] static float      calculateBeta(VIPRA::dist);
 
-  void setModelData(const PedestrianSet&);
+  void setModelData(const VIPRA::PedestrianSet&);
 
  public:
   CalmPedestrianModel(const CalmPedestrianModel&) = default;

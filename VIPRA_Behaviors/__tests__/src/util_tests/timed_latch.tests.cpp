@@ -4,8 +4,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <definitions/type_definitions.hpp>
 #include <util/timed_latch.hpp>
+#include "definitions/type_definitions.hpp"
 #include "values/numeric_value.hpp"
 
 using ::testing::AllOf;

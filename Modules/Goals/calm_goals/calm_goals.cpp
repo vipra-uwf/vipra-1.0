@@ -1,12 +1,12 @@
 
 #include "calm_goals.hpp"
 
-void CalmGoals::configure(const VIPRA::CONFIG::Map& configMap) {
+void CalmGoals::configure(const VIPRA::Config& configMap) {
   spdlog::info("CalmGoals: Configuring Calm Goals");
-  goalRange = configMap["goalRange"].asFloat();
-  endGoalType = configMap["endGoalType"].asString();
-  gridSize = configMap["gridSize"].asFloat();
-  closestObs = configMap["closestObstacle"].asFloat();
+  goalRange = configMap["goalRange"].get<float>();
+  endGoalType = configMap["endGoalType"].get<std::string>();
+  gridSize = configMap["gridSize"].get<float>();
+  closestObs = configMap["closestObstacle"].get<float>();
   spdlog::info("CalmGoals: Done Configuring Calm Goals");
 }
 
@@ -16,7 +16,8 @@ void CalmGoals::configure(const VIPRA::CONFIG::Map& configMap) {
  * @param obsSet
  * @param pedSet
  */
-void CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSet) {
+void CalmGoals::initialize(const VIPRA::ObstacleSet&   obsSet,
+                           const VIPRA::PedestrianSet& pedSet) {
   VIPRA::size pedCnt = pedSet.getNumPedestrians();
 
   currentGoals = VIPRA::f3dVec(pedCnt);
@@ -43,13 +44,14 @@ void CalmGoals::initialize(const ObstacleSet& obsSet, const PedestrianSet& pedSe
  * 
  * @param pedSet 
  */
-void CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet&) {
+void CalmGoals::initializePaths(const VIPRA::PedestrianSet& pedSet,
+                                const VIPRA::ObstacleSet&) {
   const VIPRA::size    pedCnt = pedSet.getNumPedestrians();
   const VIPRA::f3dVec& coords = pedSet.getCoordinates();
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     spdlog::debug("CalmGoals: Finding AStar Path for Ped: {}", i);
-    paths[i] = CalmPath::pathFind(coords.at(i), endGoals.at(i), graph);
+    paths[i] = CALM_PATH::pathFind(coords.at(i), endGoals.at(i), graph);
     currentGoals[i] = paths[i].front();
   }
   spdlog::debug("CalmGoals: Finished Initializing Paths");
@@ -63,13 +65,13 @@ void CalmGoals::initializePaths(const PedestrianSet& pedSet, const ObstacleSet&)
  * @param obsSet : obstacle set
  * @return const VIPRA::f3d& 
  */
-const VIPRA::f3d& CalmGoals::nearestObjective(const std::string& type,
-                                              const VIPRA::f3d&  point,
-                                              const ObstacleSet& obsSet) {
+const VIPRA::f3d& CalmGoals::nearestObjective(const std::string&        type,
+                                              const VIPRA::f3d&         point,
+                                              const VIPRA::ObstacleSet& obsSet) {
   const auto&       objectives = obsSet.getObjectsofType(type);
   const VIPRA::size objCnt = objectives.size();
   if (objectives.empty()) {
-    GoalsException::error("No Objectives of Type: " + type + " In Provided Map");
+    VIPRA::GoalsException::error("No Objectives of Type: " + type + " In Provided Map");
   }
   VIPRA::idx closest = 0;
   float      minDist = std::numeric_limits<float>::max();
@@ -89,13 +91,14 @@ const VIPRA::f3d& CalmGoals::nearestObjective(const std::string& type,
  * @param obsSet 
  * @param pedSet 
  */
-void CalmGoals::findNearestEndGoal(const ObstacleSet&   obsSet,
-                                   const PedestrianSet& pedSet) {
+void CalmGoals::findNearestEndGoal(const VIPRA::ObstacleSet&   obsSet,
+                                   const VIPRA::PedestrianSet& pedSet) {
   const auto& coords = pedSet.getCoordinates();
   const auto& objectives = obsSet.getObjectsofType(endGoalType);
 
   if (objectives.empty()) {
-    GoalsException::error("No Objectives of Type: " + endGoalType + " In Provided Map");
+    VIPRA::GoalsException::error("No Objectives of Type: " + endGoalType +
+                                 " In Provided Map");
   }
 
   if (objectives.size() == 1) {
@@ -127,8 +130,9 @@ void CalmGoals::findNearestEndGoal(const ObstacleSet&   obsSet,
  * @param obsSet 
  * @param pedSet 
  */
-void CalmGoals::updatePedestrianGoals(const ObstacleSet&, const PedestrianSet& pedSet,
-                                      VIPRA::delta_t d_time) {
+void CalmGoals::updatePedestrianGoals(const VIPRA::ObstacleSet&,
+                                      const VIPRA::PedestrianSet& pedSet,
+                                      VIPRA::delta_t              d_time) {
   const VIPRA::size    numPeds = pedSet.getNumPedestrians();
   const VIPRA::f3dVec& pedCoords = pedSet.getCoordinates();
 

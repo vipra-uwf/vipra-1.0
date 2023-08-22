@@ -4,10 +4,10 @@
 #include <fstream>
 #include <iostream>
 
-#include <json/json.h>
-#include <definitions/config_map.hpp>
-#include <definitions/type_definitions.hpp>
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
 
+namespace VIPRA {
 class ConfigurationReaderException : public std::runtime_error {
  public:
   explicit ConfigurationReaderException(const std::string& message)
@@ -23,10 +23,11 @@ class ConfigurationReaderException : public std::runtime_error {
  */
 class ConfigurationReader {
  public:
-  static VIPRA::CONFIG::Map getConfiguration(const std::string& filePath);
-  void                      configure(const VIPRA::CONFIG::Map& config);
+  static VIPRA::Config getConfiguration(const std::string& filePath);
+  void                 configure(const VIPRA::Config& config);
 
  private:
 };
+}  // namespace VIPRA
 
 #endif

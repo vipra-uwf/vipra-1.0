@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include <definitions/config_map.hpp>
-#include <definitions/type_definitions.hpp>
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
 
 namespace VIPRA {
 
@@ -30,7 +30,6 @@ struct MapData {
   MapData() = default;
   virtual ~MapData() = default;
 };
-}  // namespace VIPRA
 
 /**
  * @class MapLoaderException
@@ -47,7 +46,7 @@ class MapLoaderException : public std::runtime_error {
    * @param message The error message to be associated with the exception.
    */
   explicit MapLoaderException(const std::string& message) : std::runtime_error(message) {}
-  
+
   /**
    * @brief Static function to throw a MapLoaderException with the given error message.
    *
@@ -72,7 +71,7 @@ class MapLoader {
    *
    * @param configMap The configuration map containing settings for the MapLoader.
    */
-  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
+  virtual void configure(const VIPRA::Config& configMap) = 0;
   /**
    * @brief Initialize the MapLoader.
    */
@@ -93,5 +92,6 @@ class MapLoader {
   MapLoader() = default;
   virtual ~MapLoader() = default;
 };
+}  // namespace VIPRA
 
 #endif

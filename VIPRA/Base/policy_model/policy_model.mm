@@ -3,6 +3,6 @@
   "name"        : "policy_model",
   "description" : "TODO",
   "params"      : [],
-  "className"   : "PolicyModel",
+  "className"   : "VIPRA::PolicyModel",
   "type"        : "policy_model"
 }

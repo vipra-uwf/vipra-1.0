@@ -8,16 +8,17 @@
 #include <actions/atom.hpp>
 #include <conditions/condition.hpp>
 #include <definitions/behavior_context.hpp>
-#include <definitions/type_definitions.hpp>
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 #include <time/time.hpp>
 #include <util/timed_latch.hpp>
 #include "definitions/sim_pack.hpp"
+#include "definitions/type_definitions.hpp"
 #include "targets/target_selector.hpp"
 #include "targets/target_selectors/target_self.hpp"
 #include "values/numeric_value.hpp"
+
 
 namespace BHVR {
 class Action {

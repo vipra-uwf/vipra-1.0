@@ -3,10 +3,10 @@
 
 #include <set>
 
-#include <Goals/calm_goals/calm_goals.hpp>
-#include <PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp>
+#include "Goals/calm_goals/calm_goals.hpp"
+#include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
 
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
 
 #include "calm_rect.hpp"
 #include "pedestrian_set/pedestrian_set.hpp"
@@ -25,10 +25,12 @@ struct ModelData {
 
 class Collision {
  public:
-  void initialize(const PedestrianSet&, const Goals&, const ModelData&);
-  void raceDetection(const PedestrianSet&, const ModelData&, const Goals&, VIPRA::t_step);
+  void initialize(const VIPRA::PedestrianSet&, const VIPRA::Goals&, const ModelData&);
+  void raceDetection(const VIPRA::PedestrianSet&, const ModelData&, const VIPRA::Goals&,
+                     VIPRA::t_step);
 
-  void initializeRectangles(const PedestrianSet& pedestrianSet, const Goals& goals, const ModelData&);
+  void initializeRectangles(const VIPRA::PedestrianSet& pedestrianSet,
+                            const VIPRA::Goals&         goals, const ModelData&);
 
   [[nodiscard]] RaceStatus status(VIPRA::idx) const;
 
@@ -37,19 +39,21 @@ class Collision {
   std::vector<Rect>                    collisionRectangles;
   std::vector<std::vector<bool>>       inRace;
   std::vector<std::vector<VIPRA::f3d>> intersectionMidpoints;
-  std::vector<VIPRA::f3d> velocityDirections;
+  std::vector<VIPRA::f3d>              velocityDirections;
 
   static constexpr VIPRA::cnt maxCount = 500;
   static constexpr float      minspeed = 0.00000001F;
   static constexpr float      rectangleRange = 0.4;
 
-  void calcCollisionRectangles(const PedestrianSet&, const Goals&, const ModelData&);
-  static void        addIntersectionPoints(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d,
-                                           VIPRA::f3dVec&);
-  [[nodiscard]] bool checkIfCollide(VIPRA::size, VIPRA::size);
+  void        calcCollisionRectangles(const VIPRA::PedestrianSet&, const VIPRA::Goals&,
+                                      const ModelData&);
+  static void addIntersectionPoints(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d,
+                                    VIPRA::f3dVec&);
+  [[nodiscard]] bool       checkIfCollide(VIPRA::size, VIPRA::size);
   [[nodiscard]] VIPRA::f3d getCollisionAreaMidpoint(VIPRA::idx, VIPRA::idx);
-  [[nodiscard]] bool       checkIfHighestPriority(const PedestrianSet&, const Goals&,
-                                                  VIPRA::idx, VIPRA::t_step);
+  [[nodiscard]] bool       checkIfHighestPriority(const VIPRA::PedestrianSet&,
+                                                  const VIPRA::Goals&, VIPRA::idx,
+                                                  VIPRA::t_step);
 };
 
 #endif

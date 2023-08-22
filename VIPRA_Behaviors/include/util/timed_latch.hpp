@@ -2,8 +2,8 @@
 #define VIPRA_BEHAVIORS_TIME_LATCH_HPP
 
 #include <definitions/dsl_types.hpp>
-#include <definitions/type_definitions.hpp>
 #include <utility>
+#include "definitions/type_definitions.hpp"
 #include "spdlog/spdlog.h"
 #include "values/numeric_value.hpp"
 

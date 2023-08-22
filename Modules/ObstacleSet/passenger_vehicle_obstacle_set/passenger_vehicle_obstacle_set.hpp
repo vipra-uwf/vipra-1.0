@@ -16,10 +16,10 @@
  * This class inherits from ObstacleSet and provides functionality for initializing,
  * configuring, and querying obstacle data for passenger vehicles.
  */
-class PassengerVehicleObstacleSet : public ObstacleSet {
+class PassengerVehicleObstacleSet : public VIPRA::ObstacleSet {
  public:
   void initialize(std::unique_ptr<VIPRA::MapData>) override;
-  void configure(const VIPRA::CONFIG::Map& configMap) override;
+  void configure(const VIPRA::Config& configMap) override;
 
   [[nodiscard]] std::pair<VIPRA::f3d, VIPRA::f3d> getMapDimensions() const override;
 
@@ -27,9 +27,9 @@ class PassengerVehicleObstacleSet : public ObstacleSet {
   [[nodiscard]] const VIPRA::f3dVec&            getObjectsofType(
                  const std::string& type) const override;
 
-  [[nodiscard]] VIPRA::f3dVec nearestObstacle(const PedestrianSet&) const override;
+  [[nodiscard]] VIPRA::f3dVec nearestObstacle(const VIPRA::PedestrianSet&) const override;
   [[nodiscard]] VIPRA::f3dVec nearestObstacleInDirection(
-      const PedestrianSet&) const override;
+      const VIPRA::PedestrianSet&) const override;
 
   [[nodiscard]] VIPRA::f3d nearestObstacle(VIPRA::f3d) const override;
   [[nodiscard]] VIPRA::f3d nearestObstacleInDirection(VIPRA::f3d,

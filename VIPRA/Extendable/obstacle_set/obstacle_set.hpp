@@ -1,10 +1,11 @@
 #ifndef OBSTACLE_SET_HPP
 #define OBSTACLE_SET_HPP
 
-#include <definitions/config_map.hpp>
-#include <definitions/type_definitions.hpp>
 #include <map_loader/map_loader.hpp>
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
 
+namespace VIPRA {
 class PedestrianSet;
 
 /**
@@ -50,7 +51,7 @@ class ObstacleSet {
    *
    * @param configMap The configuration map containing settings for the ObstacleSet.
    */
-  virtual void configure(const VIPRA::CONFIG::Map& configMap) = 0;
+  virtual void configure(const VIPRA::Config& configMap) = 0;
 
   /**
    * @brief Get the dimensions of the map.
@@ -71,8 +72,8 @@ class ObstacleSet {
    * @param type The type of objects to retrieve.
    * @return A vector of 3D vectors for coordinates of the objects of the specified type in the obstacle set.
    */
-  [[nodiscard]] virtual const VIPRA::f3dVec&            getObjectsofType(
-                 const std::string& type) const = 0;
+  [[nodiscard]] virtual const VIPRA::f3dVec& getObjectsofType(
+      const std::string& type) const = 0;
 
   /**
    * @brief Get the nearest obstacles to each pedestrian.
@@ -80,7 +81,8 @@ class ObstacleSet {
    * @param pedSet The PedestrianSet containing pedestrian information.
    * @return A vector of 3D vectors for coordinates of the nearest obstacles to each pedestrian.
    */
-  [[nodiscard]] virtual VIPRA::f3dVec nearestObstacle(const PedestrianSet&) const = 0;
+  [[nodiscard]] virtual VIPRA::f3dVec nearestObstacle(
+      const VIPRA::PedestrianSet&) const = 0;
   /**
    * @brief Get the nearest obstacles in the specified direction to each pedestrian.
    *
@@ -88,7 +90,7 @@ class ObstacleSet {
    * @return A vector of 3D vectors for coordinates of the nearest obstacles in the specified direction to each pedestrian.
    */
   [[nodiscard]] virtual VIPRA::f3dVec nearestObstacleInDirection(
-      const PedestrianSet&) const = 0;
+      const VIPRA::PedestrianSet&) const = 0;
 
   /**
    * @brief Get the nearest obstacle to the specified point.
@@ -113,7 +115,7 @@ class ObstacleSet {
    * @param point The 3D vector representing the point to check for collision.
    * @return True if there is a collision at the specified point, false otherwise.
    */
-  [[nodiscard]] virtual bool  collision(VIPRA::f3d) const = 0;
+  [[nodiscard]] virtual bool collision(VIPRA::f3d) const = 0;
   /**
    * @brief Compute the distance to the nearest obstacle along the specified ray.
    *
@@ -123,12 +125,13 @@ class ObstacleSet {
    */
   [[nodiscard]] virtual float rayHit(VIPRA::f3d, VIPRA::f3d) const = 0;
 
-  ObstacleSet(const ObstacleSet&) = default;
-  ObstacleSet(ObstacleSet&&) = delete;
-  ObstacleSet& operator=(const ObstacleSet&) = default;
-  ObstacleSet& operator=(ObstacleSet&&) = delete;
+  ObstacleSet(const VIPRA::ObstacleSet&) = default;
+  ObstacleSet(VIPRA::ObstacleSet&&) = delete;
+  VIPRA::ObstacleSet& operator=(const VIPRA::ObstacleSet&) = default;
+  VIPRA::ObstacleSet& operator=(VIPRA::ObstacleSet&&) = delete;
   ObstacleSet() = default;
   virtual ~ObstacleSet() = default;
 };
+}  // namespace VIPRA
 
 #endif

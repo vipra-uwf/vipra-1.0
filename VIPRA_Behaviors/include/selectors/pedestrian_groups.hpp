@@ -6,7 +6,7 @@
 #include <pedestrian_set/pedestrian_set.hpp>
 
 #include <definitions/pedestrian_types.hpp>
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
 
 namespace BHVR {
 

@@ -5,8 +5,8 @@
 
 #include <definitions/pedestrian_types.hpp>
 #include <definitions/sim_pack.hpp>
-#include <definitions/type_definitions.hpp>
 #include <targets/target.hpp>
+#include "definitions/type_definitions.hpp"
 #include "targets/target_modifier.hpp"
 
 namespace BHVR {

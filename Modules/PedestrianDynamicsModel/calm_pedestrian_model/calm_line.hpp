@@ -1,7 +1,7 @@
 #ifndef CALM_LINE_HPP
 #define CALM_LINE_HPP
 
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
 
 struct Line {
   VIPRA::f3d p1{};

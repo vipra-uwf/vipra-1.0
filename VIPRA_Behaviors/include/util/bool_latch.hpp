@@ -1,7 +1,7 @@
 #ifndef VIPRA_BEHAVIORS_BOOL_LATCH_HPP
 #define VIPRA_BEHAVIORS_BOOL_LATCH_HPP
 
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
 
 namespace BHVR {
 /**

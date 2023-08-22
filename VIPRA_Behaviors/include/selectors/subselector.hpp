@@ -31,8 +31,8 @@ struct SelectorResult {
  * 
  */
 using SelectorFunc = std::function<SelectorResult(
-    VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, const PedestrianSet&,
-    const ObstacleSet&, const Goals&)>;
+    VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&,
+    const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, const VIPRA::Goals&)>;
 
 /**
  * @brief Selects pedestrians for one type, gets combined with other SubSelectors in Selector
@@ -43,8 +43,8 @@ class SubSelector {
   SubSelector(typeUID, Ptype, bool, SelectorFunc);
 
   SelectorResult selectPeds(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                            const VIPRA::idxVec&, const PedestrianSet&,
-                            const ObstacleSet&, const Goals&);
+                            const VIPRA::idxVec&, const VIPRA::PedestrianSet&,
+                            const VIPRA::ObstacleSet&, const VIPRA::Goals&);
 
   // NOLINTBEGIN - (rolland) Having these public increases readability   : ignoring (cppcoreguidelines-non-private-member-variables-in-classes)
   typeUID group;

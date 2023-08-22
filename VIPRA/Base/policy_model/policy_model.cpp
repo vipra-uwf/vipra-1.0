@@ -1,6 +1,8 @@
 #include "policy_model.hpp"
 
-void PolicyModel::configure(const VIPRA::CONFIG::Map&) {}
+namespace VIPRA {
+void PolicyModel::configure(const VIPRA::Config&) {}
 
-void PolicyModel::timestep(const PedestrianSet&, const ObstacleSet&, const Goals&,
-                           VIPRA::State&, VIPRA::delta_t) {}
+void PolicyModel::timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                           const VIPRA::Goals&, VIPRA::State&, VIPRA::delta_t) {}
+}  // namespace VIPRA

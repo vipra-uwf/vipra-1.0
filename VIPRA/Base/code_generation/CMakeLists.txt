@@ -28,9 +28,10 @@ include(FetchContent)
 FetchContent_Declare(spdlog URL https://github.com/gabime/spdlog/archive/v1.11.0.tar.gz)
 FetchContent_MakeAvailable(spdlog)
 
-set(JSONCPP_WITH_TESTS OFF)
-FetchContent_Declare(jsoncpp URL https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.3.tar.gz)
-FetchContent_MakeAvailable(jsoncpp)
+message(STATUS "Getting nlohmann_json")
+FetchContent_Declare(nlohmann_json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
+FetchContent_MakeAvailable(nlohmann_json)
+message(STATUS "Done Getting nlohmann_json")
 
 add_subdirectory(${BASE_DIR}/configuration configuration)
 
@@ -44,5 +45,5 @@ target_link_libraries(
   ${PROJECT_NAME}
   PUBLIC
   spdlog::spdlog
-  jsoncpp_lib
+  nlohmann_json::nlohmann_json
 )

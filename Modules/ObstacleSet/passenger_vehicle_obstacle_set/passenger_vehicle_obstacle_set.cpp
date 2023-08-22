@@ -46,7 +46,7 @@ std::pair<VIPRA::f3d, VIPRA::f3d> makeDimensions(const VIPRA::EntitySet& objects
  */
 void PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map) {
   if (map->type != "PointMap") {
-    ObstacleSetException::error("Improper Map Type, Expected \"PointMap\"");
+    VIPRA::ObstacleSetException::error("Improper Map Type, Expected \"PointMap\"");
   }
   objects = dynamic_cast<PointMap*>(map.get())->entities;
   mapDimensions = makeDimensions(objects);
@@ -57,19 +57,19 @@ void PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map
  *
  * @param configMap The configuration map.
  */
-void PassengerVehicleObstacleSet::configure(const VIPRA::CONFIG::Map& configMap) {
-  obstacleCollisionDistance = configMap["obstacleCollisionDistance"].asFloat();
+void PassengerVehicleObstacleSet::configure(const VIPRA::Config& configMap) {
+  obstacleCollisionDistance = configMap["obstacleCollisionDistance"].get<float>();
   obstacleCollisionDistanceSqrd = obstacleCollisionDistance * obstacleCollisionDistance;
 }
 
 /**
- * @brief Finds the nearest obstacles for each pedestrian in the PedestrianSet.
+ * @brief Finds the nearest obstacles for each pedestrian in the VIPRA::PedestrianSet.
  *
- * @param PedSet The PedestrianSet.
+ * @param PedSet The VIPRA::PedestrianSet.
  * @return A vector containing the nearest obstacles for each pedestrian.
  */
 VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacle(
-    const PedestrianSet& PedSet) const {
+    const VIPRA::PedestrianSet& PedSet) const {
   const VIPRA::f3dVec& coordinatesVector = PedSet.getCoordinates();
   VIPRA::f3dVec        nearestObstacleVector;
   for (auto coordinates : coordinatesVector) {
@@ -87,13 +87,13 @@ VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacle(
 }
 
 /**
- * @brief Finds the nearest obstacles in the direction of each pedestrian's velocity in the PedestrianSet.
+ * @brief Finds the nearest obstacles in the direction of each pedestrian's velocity in the VIPRA::PedestrianSet.
  *
- * @param pedSet The PedestrianSet.
+ * @param pedSet The VIPRA::PedestrianSet.
  * @return A vector containing the nearest obstacles in the direction of each pedestrian's velocity.
  */
 VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacleInDirection(
-    const PedestrianSet& pedSet) const {
+    const VIPRA::PedestrianSet& pedSet) const {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       pedCoords = pedSet.getCoordinates();
   const auto&       pedVels = pedSet.getVelocities();

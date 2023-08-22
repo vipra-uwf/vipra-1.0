@@ -5,11 +5,11 @@
 
 #include <definitions/behavior_context.hpp>
 #include <definitions/sim_pack.hpp>
-#include <definitions/type_definitions.hpp>
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
 #include <random/random.hpp>
+#include "definitions/type_definitions.hpp"
 
 namespace BHVR {
 enum class TargetType {
