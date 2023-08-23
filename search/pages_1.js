@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['m_2e_20modules_0',['M. Modules',['../d4/d00/md_Documentation_2DeveloperFiles_2ModulesOverview.html',1,'']]]
+  ['installation_20and_20setup_0',['Installation and Setup',['../db/ddb/md_Documentation_2InstallationSetup.html',1,'']]]
 ];

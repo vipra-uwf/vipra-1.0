@@ -97,35 +97,27 @@ Inheritance diagram for VIPRA::Goals:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a641087cac5f6b03db952c9c07f12eb51"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a641087cac5f6b03db952c9c07f12eb51">configure</a> (const VIPRA::Config &amp;configMap)=0</td></tr>
-<tr class="memdesc:a641087cac5f6b03db952c9c07f12eb51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the goals using configuration parameters.  <br /></td></tr>
+<tr class="memitem:a641087cac5f6b03db952c9c07f12eb51"><td class="memItemLeft" align="right" valign="top"><a id="a641087cac5f6b03db952c9c07f12eb51" name="a641087cac5f6b03db952c9c07f12eb51"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>configure</b> (const VIPRA::Config &amp;configMap)=0</td></tr>
 <tr class="separator:a641087cac5f6b03db952c9c07f12eb51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af84f8878337ba9cb657cec0b1e74977c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#af84f8878337ba9cb657cec0b1e74977c">initialize</a> (const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;, const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;)=0</td></tr>
-<tr class="memdesc:af84f8878337ba9cb657cec0b1e74977c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the goals using the obstacle and pedestrian information.  <br /></td></tr>
 <tr class="separator:af84f8878337ba9cb657cec0b1e74977c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeadc5234007f7ca3774bc00f1fb0740d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#aeadc5234007f7ca3774bc00f1fb0740d">updatePedestrianGoals</a> (const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;, const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;, VIPRA::delta_t)=0</td></tr>
-<tr class="memdesc:aeadc5234007f7ca3774bc00f1fb0740d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update pedestrian goals based on the obstacle and pedestrian information.  <br /></td></tr>
 <tr class="separator:aeadc5234007f7ca3774bc00f1fb0740d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a909b552165ff2e87fa02213642075c05"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a909b552165ff2e87fa02213642075c05">getCurrentGoal</a> (VIPRA::idx) const =0</td></tr>
-<tr class="memdesc:a909b552165ff2e87fa02213642075c05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current goal position for a specific pedestrian.  <br /></td></tr>
 <tr class="separator:a909b552165ff2e87fa02213642075c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a077c9dbef66d8907a54c3f46f18bae57"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a077c9dbef66d8907a54c3f46f18bae57">getEndGoal</a> (VIPRA::idx) const =0</td></tr>
-<tr class="memdesc:a077c9dbef66d8907a54c3f46f18bae57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the end goal position for a specific pedestrian.  <br /></td></tr>
 <tr class="separator:a077c9dbef66d8907a54c3f46f18bae57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57f973bbcd9b800e4899c2d8972d8ace"><td class="memItemLeft" align="right" valign="top">virtual const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a57f973bbcd9b800e4899c2d8972d8ace">getAllCurrentGoals</a> () const =0</td></tr>
-<tr class="memdesc:a57f973bbcd9b800e4899c2d8972d8ace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all the current goal positions for all pedestrians.  <br /></td></tr>
 <tr class="separator:a57f973bbcd9b800e4899c2d8972d8ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff7c9f2ea1150dc0d1d81daa8d0ef981"><td class="memItemLeft" align="right" valign="top">virtual const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#aff7c9f2ea1150dc0d1d81daa8d0ef981">getAllEndGoals</a> () const =0</td></tr>
-<tr class="memdesc:aff7c9f2ea1150dc0d1d81daa8d0ef981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all the end goal positions for all pedestrians.  <br /></td></tr>
 <tr class="separator:aff7c9f2ea1150dc0d1d81daa8d0ef981"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51048bcb747ef2c54116d0e0419ade72"><td class="memItemLeft" align="right" valign="top">virtual VIPRA::delta_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a51048bcb747ef2c54116d0e0419ade72">timeSinceLastGoal</a> (VIPRA::idx) const =0</td></tr>
-<tr class="memdesc:a51048bcb747ef2c54116d0e0419ade72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the time elapsed since the last goal update for a specific pedestrian.  <br /></td></tr>
+<tr class="memitem:a51048bcb747ef2c54116d0e0419ade72"><td class="memItemLeft" align="right" valign="top"><a id="a51048bcb747ef2c54116d0e0419ade72" name="a51048bcb747ef2c54116d0e0419ade72"></a>
+virtual VIPRA::delta_t&#160;</td><td class="memItemRight" valign="bottom"><b>timeSinceLastGoal</b> (VIPRA::idx) const =0</td></tr>
 <tr class="separator:a51048bcb747ef2c54116d0e0419ade72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a276c7c5be87fb7e2d6ad3b7ac13f58f2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a276c7c5be87fb7e2d6ad3b7ac13f58f2">isPedestianGoalMet</a> (VIPRA::idx) const =0</td></tr>
-<tr class="memdesc:a276c7c5be87fb7e2d6ad3b7ac13f58f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the goal for a specific pedestrian is met.  <br /></td></tr>
 <tr class="separator:a276c7c5be87fb7e2d6ad3b7ac13f58f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a190638701c41c66ba2ededa995546307"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a190638701c41c66ba2ededa995546307">isSimulationGoalMet</a> () const =0</td></tr>
-<tr class="memdesc:a190638701c41c66ba2ededa995546307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the simulation goal is met.  <br /></td></tr>
 <tr class="separator:a190638701c41c66ba2ededa995546307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdd178abdf7ed097cab7ca33052d4869"><td class="memItemLeft" align="right" valign="top"><a id="acdd178abdf7ed097cab7ca33052d4869" name="acdd178abdf7ed097cab7ca33052d4869"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Goals</b> (const <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a> &amp;)=default</td></tr>
@@ -144,42 +136,6 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Interface class for defining pedestrian goals in a simulation. </p>
 <p>This class provides an interface for defining pedestrian goals in a simulation. Specific implementations of this class can define different types of goals for pedestrians, such as reaching a certain destination, avoiding obstacles, etc. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a641087cac5f6b03db952c9c07f12eb51" name="a641087cac5f6b03db952c9c07f12eb51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a641087cac5f6b03db952c9c07f12eb51">&#9670;&#160;</a></span>configure()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void VIPRA::Goals::configure </td>
-          <td>(</td>
-          <td class="paramtype">const VIPRA::Config &amp;&#160;</td>
-          <td class="paramname"><em>configMap</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Configure the goals using configuration parameters. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">configMap</td><td>A map containing the configuration parameters for the goals. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#a1c3c3ed80295055c33582c9437ecf868">CalmGoals</a>.</p>
-
-</div>
-</div>
 <a id="a57f973bbcd9b800e4899c2d8972d8ace" name="a57f973bbcd9b800e4899c2d8972d8ace"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57f973bbcd9b800e4899c2d8972d8ace">&#9670;&#160;</a></span>getAllCurrentGoals()</h2>
 
@@ -202,9 +158,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get all the current goal positions for all pedestrians. </p>
-<dl class="section return"><dt>Returns</dt><dd>A vector of 3D vectors (VIPRA::f3d) representing the current goal positions. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#a790f0543280e52a09be84a56df392702">CalmGoals</a>.</p>
 
@@ -232,9 +185,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get all the end goal positions for all pedestrians. </p>
-<dl class="section return"><dt>Returns</dt><dd>A vector of 3D vectors (VIPRA::f3d) representing the end goal positions. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#a68ed953c066306587377fd80fd259484">CalmGoals</a>.</p>
 
@@ -264,15 +214,6 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Get the current goal position for a specific pedestrian. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">idx</td><td>The index of the pedestrian. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The current goal position as a 3D vector (VIPRA::f3d). </dd></dl>
-
 <p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#af02579f6eeda2f8f60e712e71766a5ff">CalmGoals</a>.</p>
 
 </div>
@@ -300,15 +241,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the end goal position for a specific pedestrian. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">idx</td><td>The index of the pedestrian. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The end goal position as a 3D vector (VIPRA::f3d). </dd></dl>
 
 <p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#a2c207b7e69df6332facab7ac53322542">CalmGoals</a>.</p>
 
@@ -348,15 +280,6 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Initialize the goals using the obstacle and pedestrian information. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">obstacleSet</td><td>The obstacle set in the simulation. </td></tr>
-    <tr><td class="paramname">pedestrianSet</td><td>The pedestrian set in the simulation. </td></tr>
-  </table>
-  </dd>
-</dl>
-
 <p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#a1558e4bff791ee377cd0d5bec0f1f971">CalmGoals</a>.</p>
 
 </div>
@@ -385,15 +308,6 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Check if the goal for a specific pedestrian is met. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">idx</td><td>The index of the pedestrian. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the goal is met, false otherwise. </dd></dl>
-
 <p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#ad1f806c73f02b105752c93c5b45e47b9">CalmGoals</a>.</p>
 
 </div>
@@ -421,47 +335,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Check if the simulation goal is met. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if the simulation goal is met, false otherwise. </dd></dl>
-
 <p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#a0a853397982b5d5dc279d2818765d272">CalmGoals</a>.</p>
-
-</div>
-</div>
-<a id="a51048bcb747ef2c54116d0e0419ade72" name="a51048bcb747ef2c54116d0e0419ade72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51048bcb747ef2c54116d0e0419ade72">&#9670;&#160;</a></span>timeSinceLastGoal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual VIPRA::delta_t VIPRA::Goals::timeSinceLastGoal </td>
-          <td>(</td>
-          <td class="paramtype">VIPRA::idx&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the time elapsed since the last goal update for a specific pedestrian. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">idx</td><td>The index of the pedestrian. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The time elapsed since the last goal update (VIPRA::delta_t). </dd></dl>
-
-<p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#ab429d9d6e3453c77bfb8e0044ab6d208">CalmGoals</a>.</p>
 
 </div>
 </div>
@@ -504,16 +378,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Update pedestrian goals based on the obstacle and pedestrian information. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">obstacleSet</td><td>The obstacle set in the simulation. </td></tr>
-    <tr><td class="paramname">pedestrianSet</td><td>The pedestrian set in the simulation. </td></tr>
-    <tr><td class="paramname">delta_t</td><td>The time delta since the last update. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 <p>Implemented in <a class="el" href="../../dc/d28/classCalmGoals.html#aee3cea5d16a9a1a515a1fe736404f61a">CalmGoals</a>.</p>
 

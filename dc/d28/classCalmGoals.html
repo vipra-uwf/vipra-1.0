@@ -99,7 +99,6 @@ Collaboration diagram for CalmGoals:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1c3c3ed80295055c33582c9437ecf868"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classCalmGoals.html#a1c3c3ed80295055c33582c9437ecf868">configure</a> (const VIPRA::Config &amp;configMap) override</td></tr>
-<tr class="memdesc:a1c3c3ed80295055c33582c9437ecf868"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the goals using configuration parameters.  <br /></td></tr>
 <tr class="separator:a1c3c3ed80295055c33582c9437ecf868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1558e4bff791ee377cd0d5bec0f1f971"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classCalmGoals.html#a1558e4bff791ee377cd0d5bec0f1f971">initialize</a> (const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;, const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;) override</td></tr>
 <tr class="memdesc:a1558e4bff791ee377cd0d5bec0f1f971"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the member variables and path finding.  <br /></td></tr>
@@ -126,38 +125,29 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0a853397982b5d5dc279d2818765d272"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns if all pedestrians are set as having met their end goal  <br /></td></tr>
 <tr class="separator:a0a853397982b5d5dc279d2818765d272"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab429d9d6e3453c77bfb8e0044ab6d208"><td class="memItemLeft" align="right" valign="top">VIPRA::delta_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classCalmGoals.html#ab429d9d6e3453c77bfb8e0044ab6d208">timeSinceLastGoal</a> (VIPRA::idx) const override</td></tr>
-<tr class="memdesc:ab429d9d6e3453c77bfb8e0044ab6d208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the time elapsed since the last goal update for a specific pedestrian.  <br /></td></tr>
 <tr class="separator:ab429d9d6e3453c77bfb8e0044ab6d208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classVIPRA_1_1Goals"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classVIPRA_1_1Goals')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a></td></tr>
-<tr class="memitem:a641087cac5f6b03db952c9c07f12eb51 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a641087cac5f6b03db952c9c07f12eb51">configure</a> (const VIPRA::Config &amp;configMap)=0</td></tr>
-<tr class="memdesc:a641087cac5f6b03db952c9c07f12eb51 inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the goals using configuration parameters.  <br /></td></tr>
+<tr class="memitem:a641087cac5f6b03db952c9c07f12eb51 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>configure</b> (const VIPRA::Config &amp;configMap)=0</td></tr>
 <tr class="separator:a641087cac5f6b03db952c9c07f12eb51 inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af84f8878337ba9cb657cec0b1e74977c inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#af84f8878337ba9cb657cec0b1e74977c">initialize</a> (const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;, const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;)=0</td></tr>
-<tr class="memdesc:af84f8878337ba9cb657cec0b1e74977c inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the goals using the obstacle and pedestrian information.  <br /></td></tr>
 <tr class="separator:af84f8878337ba9cb657cec0b1e74977c inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeadc5234007f7ca3774bc00f1fb0740d inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#aeadc5234007f7ca3774bc00f1fb0740d">updatePedestrianGoals</a> (const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;, const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;, VIPRA::delta_t)=0</td></tr>
-<tr class="memdesc:aeadc5234007f7ca3774bc00f1fb0740d inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update pedestrian goals based on the obstacle and pedestrian information.  <br /></td></tr>
 <tr class="separator:aeadc5234007f7ca3774bc00f1fb0740d inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a909b552165ff2e87fa02213642075c05 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a909b552165ff2e87fa02213642075c05">getCurrentGoal</a> (VIPRA::idx) const =0</td></tr>
-<tr class="memdesc:a909b552165ff2e87fa02213642075c05 inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current goal position for a specific pedestrian.  <br /></td></tr>
 <tr class="separator:a909b552165ff2e87fa02213642075c05 inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a077c9dbef66d8907a54c3f46f18bae57 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a077c9dbef66d8907a54c3f46f18bae57">getEndGoal</a> (VIPRA::idx) const =0</td></tr>
-<tr class="memdesc:a077c9dbef66d8907a54c3f46f18bae57 inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the end goal position for a specific pedestrian.  <br /></td></tr>
 <tr class="separator:a077c9dbef66d8907a54c3f46f18bae57 inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57f973bbcd9b800e4899c2d8972d8ace inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a57f973bbcd9b800e4899c2d8972d8ace">getAllCurrentGoals</a> () const =0</td></tr>
-<tr class="memdesc:a57f973bbcd9b800e4899c2d8972d8ace inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all the current goal positions for all pedestrians.  <br /></td></tr>
 <tr class="separator:a57f973bbcd9b800e4899c2d8972d8ace inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff7c9f2ea1150dc0d1d81daa8d0ef981 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual const VIPRA::f3dVec &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#aff7c9f2ea1150dc0d1d81daa8d0ef981">getAllEndGoals</a> () const =0</td></tr>
-<tr class="memdesc:aff7c9f2ea1150dc0d1d81daa8d0ef981 inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all the end goal positions for all pedestrians.  <br /></td></tr>
 <tr class="separator:aff7c9f2ea1150dc0d1d81daa8d0ef981 inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51048bcb747ef2c54116d0e0419ade72 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual VIPRA::delta_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a51048bcb747ef2c54116d0e0419ade72">timeSinceLastGoal</a> (VIPRA::idx) const =0</td></tr>
-<tr class="memdesc:a51048bcb747ef2c54116d0e0419ade72 inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the time elapsed since the last goal update for a specific pedestrian.  <br /></td></tr>
+<tr class="memitem:a51048bcb747ef2c54116d0e0419ade72 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">
+virtual VIPRA::delta_t&#160;</td><td class="memItemRight" valign="bottom"><b>timeSinceLastGoal</b> (VIPRA::idx) const =0</td></tr>
 <tr class="separator:a51048bcb747ef2c54116d0e0419ade72 inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a276c7c5be87fb7e2d6ad3b7ac13f58f2 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a276c7c5be87fb7e2d6ad3b7ac13f58f2">isPedestianGoalMet</a> (VIPRA::idx) const =0</td></tr>
-<tr class="memdesc:a276c7c5be87fb7e2d6ad3b7ac13f58f2 inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the goal for a specific pedestrian is met.  <br /></td></tr>
 <tr class="separator:a276c7c5be87fb7e2d6ad3b7ac13f58f2 inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a190638701c41c66ba2ededa995546307 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a190638701c41c66ba2ededa995546307">isSimulationGoalMet</a> () const =0</td></tr>
-<tr class="memdesc:a190638701c41c66ba2ededa995546307 inherit pub_methods_classVIPRA_1_1Goals"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the simulation goal is met.  <br /></td></tr>
 <tr class="separator:a190638701c41c66ba2ededa995546307 inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdd178abdf7ed097cab7ca33052d4869 inherit pub_methods_classVIPRA_1_1Goals"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Goals</b> (const <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a> &amp;)=default</td></tr>
@@ -197,15 +187,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Configure the goals using configuration parameters. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">configMap</td><td>A map containing the configuration parameters for the goals. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a641087cac5f6b03db952c9c07f12eb51">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
@@ -235,7 +217,7 @@ Public Member Functions</h2></td></tr>
 <p>returns a vector with all pedestrians current goals </p>
 <dl class="section return"><dt>Returns</dt><dd>const VIPRA::f3dVec&amp; </dd></dl>
 
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a57f973bbcd9b800e4899c2d8972d8ace">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
@@ -265,7 +247,7 @@ Public Member Functions</h2></td></tr>
 <p>returns the endgoals vector </p>
 <dl class="section return"><dt>Returns</dt><dd>const VIPRA::f3dVec&amp; </dd></dl>
 
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#aff7c9f2ea1150dc0d1d81daa8d0ef981">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
@@ -302,7 +284,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>const VIPRA::f3d </dd></dl>
 
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a909b552165ff2e87fa02213642075c05">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
@@ -339,7 +321,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>const VIPRA::f3d </dd></dl>
 
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a077c9dbef66d8907a54c3f46f18bae57">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
@@ -386,7 +368,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#af84f8878337ba9cb657cec0b1e74977c">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
@@ -425,7 +407,7 @@ Public Member Functions</h2></td></tr>
 <dd>
 false </dd></dl>
 
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a276c7c5be87fb7e2d6ad3b7ac13f58f2">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
@@ -457,7 +439,7 @@ false </dd></dl>
 <dd>
 false </dd></dl>
 
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a190638701c41c66ba2ededa995546307">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
@@ -474,7 +456,7 @@ false </dd></dl>
           <td class="memname">VIPRA::delta_t CalmGoals::timeSinceLastGoal </td>
           <td>(</td>
           <td class="paramtype">VIPRA::idx&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -485,16 +467,7 @@ false </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Get the time elapsed since the last goal update for a specific pedestrian. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">idx</td><td>The index of the pedestrian. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The time elapsed since the last goal update (VIPRA::delta_t). </dd></dl>
-
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#a51048bcb747ef2c54116d0e0419ade72">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
@@ -547,7 +520,7 @@ false </dd></dl>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html#aeadc5234007f7ca3774bc00f1fb0740d">VIPRA::Goals</a>.</p>
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
 
 </div>
 </div>
