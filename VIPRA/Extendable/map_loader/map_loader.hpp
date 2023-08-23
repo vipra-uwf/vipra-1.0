@@ -16,11 +16,6 @@ namespace VIPRA {
  */
 struct MapData {
   std::string type;
-  /**
-   * @brief Constructor for MapData.
-   *
-   * @param type The type of the map.
-   */
   explicit MapData(std::string type) : type(std::move(type)) {}
 
   MapData(const MapData&) = default;
@@ -40,11 +35,6 @@ struct MapData {
  */
 class MapLoaderException : public std::runtime_error {
  public:
-  /**
-   * @brief Constructor for MapLoaderException.
-   *
-   * @param message The error message to be associated with the exception.
-   */
   explicit MapLoaderException(const std::string& message) : std::runtime_error(message) {}
 
   /**
@@ -66,22 +56,8 @@ class MapLoaderException : public std::runtime_error {
  */
 class MapLoader {
  public:
-  /**
-   * @brief Configure the MapLoader with the given configuration map.
-   *
-   * @param configMap The configuration map containing settings for the MapLoader.
-   */
   virtual void configure(const VIPRA::Config& configMap) = 0;
-  /**
-   * @brief Initialize the MapLoader.
-   */
   virtual void initialize() = 0;
-  /**
-   * @brief Load map data from the specified file path.
-   *
-   * @param filePath The file path to the map data.
-   * @return A unique pointer to MapData containing the loaded map data.
-   */
   [[nodiscard]] virtual std::unique_ptr<VIPRA::MapData> loadMap(
       const std::string& filePath) const = 0;
 

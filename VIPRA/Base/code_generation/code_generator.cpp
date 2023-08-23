@@ -116,10 +116,9 @@ std::string generateIncludes() {
   std::string generatedIncludes;
   for (const auto& type : TYPES) {
     for (const auto& option : jsonObj[type.first]) {
-      const auto& module = option["object"];
-      if (!requireCompiled || module["compiled"]) {
+      if (!requireCompiled || option["compiled"]) {
         includes.emplace_back(option["dirPath"].template get<std::string>() + "/" +
-                              module["name"].template get<std::string>() + ".hpp");
+                              option["name"].template get<std::string>() + ".hpp");
       }
     }
   }
@@ -184,19 +183,18 @@ std::string generateObjectFunction(const std::string& className,
 std::string generateFunctionOptions(const std::string& type) {
   std::string generatedFunction;
   for (const auto& option : jsonObj[type]) {
-    const auto& module = option["object"];
-    if (!requireCompiled || module["compiled"]) {
+    if (!requireCompiled || option["compiled"]) {
       generatedFunction +=
           log("Creating " + type + " Implementation") + "\n\tif(id==\"" +
-          module["id"].template get<std::string>() + "\"){\n\t\tstd::unique_ptr<" +
-          module["className"].template get<std::string>() + "> " +
-          module["name"].template get<std::string>() + " = std::make_unique<" +
-          module["className"].template get<std::string>() + ">();\n\t\t" +
+          option["id"].template get<std::string>() + "\"){\n\t\tstd::unique_ptr<" +
+          option["className"].template get<std::string>() + "> " +
+          option["name"].template get<std::string>() + " = std::make_unique<" +
+          option["className"].template get<std::string>() + ">();\n\t\t" +
           log("Configuring " + type +
-              " Module: ID: " + module["id"].template get<std::string>()) +
-          "\n\t\t" + module["name"].template get<std::string>() +
+              " Module: ID: " + option["id"].template get<std::string>()) +
+          "\n\t\t" + option["name"].template get<std::string>() +
           "->configure(configMap);" + "\n\t\treturn " +
-          module["name"].template get<std::string>() + ";" + "\n\t}";
+          option["name"].template get<std::string>() + ";" + "\n\t}";
     }
   }
   generatedFunction += "\n\tspdlog::error(\"No Valid Module of Type: " + type +

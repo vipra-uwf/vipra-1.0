@@ -5,8 +5,6 @@
 
 `visualize.py` is used to view the output from a simulation run.
 
-### Note: only works with the Calm module implementations
-
 ## Setup
 
 ### Requirements

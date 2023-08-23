@@ -35,6 +35,6 @@
     "configuration_reader": {},
     "simulation": {
         "time_step_size": 0.005,
-        "max_timestep": 500
+        "max_timestep": 50000
     }
 }

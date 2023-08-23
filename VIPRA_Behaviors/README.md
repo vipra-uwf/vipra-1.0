@@ -1,1320 +1,818 @@
-# VIPRA Behaviors
+# VIPRA Behaviors Development
 
 # Sections
+
 ### B. Behaviors
-### L. Layout
-### Sy. General Syntax Rules
-### T. Types
 ### S. Selectors
 ### A. Actions
 ### C. Conditions
 ### E. Events
-### V. Values
-### St. State
-### Ex. Creating An Example Behavior
-
----
-<h1> B. Behaviors </h1>
-
-`Behaviors` are a way to describe `Actions` that pedestrians take under certain `Conditions` without the use of a traditional programming language.
-
-`Behaviors` are comprised of several major parts:
-1. `Selectors` (§S.)
-2. `Actions` (§A.)
-3. `Events` (§E.)
+### BB. Behavior Builder
+### N. Needs
 
 ---
 
-<details>
-  <summary>
-    <h1>
-      L. Behavior Layout
-    </h1>
-  </summary>
+# B. Behaviors
 
-The general layout of a `Behavior` is as follows:
+A `Behavior` describes `Actions` that pedestrians take given certain `Conditions`
+
+A `Behavior` is comprised of:
+- `Selectors`
+- `Events`
+- `Actions`
+- `Behavior Context`
+
+### Example Behavior:
+This behavior describes an important announcement, while the announcement is occurring all pedestrians will walk at 50% speed.
 ```
-Types Declaration.       // section (§T.)
+Consider an announcement_listener.
 
-States Declaration.  // section (§St.)
+// Selector Statement
+Everyone is an announcement_listener.
 
-Selector Declarations. // section (§S.)
+// Event Definition
+An !announcement event will occur after 5 seconds from !start and end after 10 seconds from !announcement.
 
-Event Declartions.   // section (§E.)
-
-Action Declarations.   // section (§A.)
+// Action Statement
+An announcement_listener will @walk 50% slower while an !announcement event is occurring.
 ```
 
-</details>
+### Important Notes on Behaviors
+
+1. Each Behavior is self-contained, Behaviors know nothing of and can not interact with each other.
 
 ---
 
-<details>
-  <summary>
-    <h1>
-      Sy. General Syntax Rules
-    </h1>
-  </summary>
 
-This section has some simple `Syntax` rules that must be followed for a `Behavior` to be considered correct.
+# S. Selectors
 
-The other sections will have the specific `Syntax` rules for their respective parts, in a `Section - General Syntax Rules` section
+`Selectors` Decide which pedestrians "possess" a `Behavior`.
 
-1. All Declarations must end in a '.'
+`Behaviors` only have one `Selector` but that `Selector` has multiple `SubSelectors`.
+
+## S.1. Sub Selectors
+
+`SubSelectors` are what actually select pedestrians.
+
+---
+## S.2. Creating A Sub Selector
+
+1. Add To Grammar
+2. Create Selector Definition
+3. Add To BehaviorBuilder
+4. Add Source To CMakeLists.txt
+5. Add Tests
+6. Add To Documentation
+
+### S.2.1. Add To Grammar
+
+`Selectors` are added to the grammar in `/VIPRA_Behaviors/grammar/selector.g4`
+
+After defining a new `SubSelector` grammar rule run `make` in `/VIPRA_Behaviors/grammar/` to update the generated files.
+
+example:
 ```
-correct:
-  Event:
-    Name: Example
-  .
-
-incorrect:
-  Event:
-    Name: Example
+selector_Example:
+	'An example Selector with a ' NUMBER '.'
+	;
 ```
 
-2. Each `Behavior` (§B) must start with a `Types Declaration` (§T.1)
-3. Each `Behavior` (§B) must only have 1 `Types Declaration` (§T.1)
-4. Each `Behavior` (§B) must have at least 1 `Selector` (§S)
-5. `Behaviors` are case in-sensitive so `Consider`, `consider`, and `ConSiDEr` are all valid.
-6. Comments can be added following '//' or between '/*' and '\*/'
-```
-// This is a comment and does not affect the behavior
+### S.2.2. Create Selector Function Definition
 
-/*
-This is a multi-line comment
-and does not affect the behavior
-*/
-```
-7. Whitespace does not affect `Behaviors`, the following are valid and equivalent.
-```
-Types: typeA typeB.
+Add a header file in `/VIPRA_Behaviors/include/selectors/` and a matching source file in `/VIPRA_Behaviors/src/selectors/`
 
-// and
 
-Types:
-  typeA
-  typeB
-.
+The only rule that `Selector Functions` need to conform to is that they implement
+```C++
+SelectorResult operator()(Behaviors::seed, const std::vector<VIPRA::idx>&, const std::vector<VIPRA::idx>&, const PedestrianSet&, const ObstacleSet&, const Goals&);
 ```
-</details>
+
+With the Parameters:
+1. Randomization Seed
+2. The Full Group of pedestrians
+3. The Group of pedestrians that can be selected from
+4. The Pedestrian Set
+5. The Obstacle Set
+6. The Goals
+
+
+example:
+```C++
+// selector_example.hpp
+struct Selector_Example {
+  float _f;
+  SelectorResult operator()(Behaviors::seed,
+                            const std::vector<VIPRA::idx>&,
+                            const std::vector<VIPRA::idx>&,
+                            const PedestrianSet&,
+                            const ObstacleSet&,
+                            const Goals&);
+};
+
+// selector_example.cpp
+SelectorResult operator()(Behaviors::seed,
+                            const std::vector<VIPRA::idx>&,
+                            const std::vector<VIPRA::idx>&,
+                            const PedestrianSet&,
+                            const ObstacleSet&,
+                            const Goals&) {
+	// ... return the selected pedestrians
+}
+
+```
+
+### S.2.3. Add To BehaviorBuilder
+
+```C++
+SubSelector
+BehaviorBuilder::buildSubSelector(BehaviorParser::Ped_SelectorContext* ctx) {
+
+  // ... Other Sub Selectors ...
+
+  // Add a block that creates the sub selector if the context matches
+  if (selector->selector_Example()) {
+    const VIPRA::size N = static_cast<VIPRA::size>(std::stoi(selector->selector_Example()->NUMBER()->toString()));
+    spdlog::debug("Behavior \"{}\": Adding Selector: \"Example\" {} Are Ped Type: {}",
+                  N,
+                  currentBehavior.getName(),
+                  groupStr,
+                  fmt::join(typeStrs, ", "));
+    return SubSelector{group, compType, required, selector_Example{N}};
+  }
+
+  // ... Other Sub Selectors ...
+
+```
+
+
+
+### S.2.4. Add Source To CMakeLists.txt
+
+Add the `Selector` source file to `/VIPRA_Behaviors/src/CMakeLists.txt`
+
+example:
+- for our Example `Selector`:
+`${SRC_DIR}/selectors/selector_example.cpp`
+
+### S.2.5. Add Tests
+
+Add any tests in `/VIPRA_Behaviors/__tests__/selector_tests/`
+
+### S.2.6. Add To Documentation
+
+Add any documentation
 
 ---
 
-<details>
-  <summary>
-    <h1>
-      T. Types
-    </h1>
-  </summary>
 
-`Types` are how pedestrians are organized in `Behaviors` (§B)
-
-Each pedestrian is assigned a user defined `Type`, and based on their `Type` they will follow different `Actions` (§A).
-
-<details>
-  <summary>
-    <h2>
-      T.1. Types Declaration
-    </h2>
-  </summary>
-
-A `Types Declaration` is what says which types are being used in the `Behavior`. 
-
-`Behaviors` can only have 1 `Types Declaration` with up to 64 types.
-
-Single `Type`:
-```
-Types:
-  injured_person
-.
-```
-
-Multiple `Types`:
-```
-Types:
- injured_person
- helper
-.
-```
-
-<details>
-  <summary>
-    <h3>
-      T.1.1. Types Declaration - General Syntax Rules
-    </h3>
-  </summary>
-
-1. `Types Declarations` can be any length up to 64 `Types`
-```
-Types:
-  typeA
-  typeB
-  typeC
-  typeD
-.
-```
-2. `Types Declarations` must be the first declaration in a `Behavior`
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      T.2. Composite Types
-    </h2>
-  </summary>
-
-A Pedestrians `Type` can be composed of several other types.
-
-A Pedestrian with a `Composite Type` will have the attributes of each individual `Type`.
-
-How to assign `Composite Types` is explained in the `Selectors` (§S) section.
-
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      T.3. Groups
-    </h2>
-  </summary>
-Effectively, `Groups` and `Types` refer to the same thing.
-
-The main difference between a `Type` and a `Group` is that there is a base `Group` for each `Behavior`, being 'Pedestrian' or 'Pedestrians'.
-
-Each pedestrian with a `Type` is considered in that `Types` `Group`.
-
-Pedestrians with `Composite Types` are in a `Group` for each `Type`.
-
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      T.4. Types - General Syntax Rules
-    </h2>
-  </summary>
-
-1. `Type` names can only contain Letters, Underscores, and Hyphens `(a-z), (A-Z), '_', '-'`
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h1>
-      S. Selectors
-    <h1>
-  </summary>
-
-`Selectors` are how pedestrians are selected for a certain `Type` (§T).
-
-
-<details>
-<summary><h2>S.1. Selecting Pedestrians</h2></summary>
-
-Selecting pedestrians is done through a `Selector` statement. The basic syntax is as follows:
-```
-Selector:
-  Type: *types*
-  Group: *type*     // optional, defaults to base pedestrians group
-  Select: *selection criteria*
-```
-
-- \*Select* - The exact `Select` criteria to use, available `Select` criteria are in (§S.5.)
-- \*Group* - The `Group` (§T.3) to select pedestrians from
-- \*Type* - The `Type` (§T.) to assign to selected pedestrians
-
-Selectors are applied with precedence equal to the order they appear in the `Behavior` file.
-
-<details>
-<summary><b>Example:</b></summary>
-
-```
-Types: // Types Declaration (§T.1.), saying what types the behavior uses
- typeA
- typeB
-.
-
-Selector:   // Selects exactly 10 pedestrians to be of typeA
-  Type: typeA
-  Select: 10
-.
-
-Selector:   // Selects 50% of pedestrians to be of typeB
-  Type: typeB
-  Select 50%
-.
-```
-
-</details>
-<br/>
-</details>
-
----
-
-<details>
-  <summary>
-  <h2>
-    S.2. Selecting From Groups
-  </h2>
-  </summary>
-
-`Selectors` can select from specific `Groups` (§T.3)
-
-This has the effect of selecting the pedestrians for a `Composite Type` (§T.2) but allows for more dynamic proportions.
-
-<details> 
-<summary><b>Example:</b></summary>
-
-```
-Types:
-  typeA
-  typeB
-  typeC
-.
-
-Select:        // Selects 50% of pedestrians for typeA
-  Type: typeA
-  Select: 50%
-.
-
-Select:        // Selects 15% of typeA pedestrians for typeA & typeB
-  Type: typeB
-  Group: typeA
-  Select: 15%
-.
-
-Select:       // Selects 5% of typeA pedestrians for typeA & typeC
-  Type: typeC
-  Group: type
-  Select: 5%
-.
-```
-
-With 100 pedestrians:
-39 pedestrians are typeA.
-8 pedestrians are typeA and typeB.
-3 pedestrians are typeA and typeC.
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      S.3. Selector Exclusivity
-    </h2>
-  </summary>
-
-When a pedestrian is selected from a `Group`, it is marked as used and can not be selected by another `Selector`.
-
-This has the affect of making `Selector` statements strictly interpreted.
-
-```
-Select:
-  Type: typeB
-  Group: typeA
-  Select: 15%
-.
-```
-Means:
-Those 15% of 'typeA' pedestrians can not be selected from again.
-However, they can be selected from 'typeB'.
-
-```
-Select:
-  Type: typeC
-  Group: typeB
-  Select: 15%
-.
-```
-
-This may result in some pedestrians being of types: typeA, typeB, and typeC.
-
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      S.4. Required Selectors
-    </h2>
-  </summary>
-
-`Selectors` can be marked as `Required` with a 'Required' `Sub-component`. 
-
-This means, given the `Selector` is unable to be filled an error will be thrown, and the simulation will stop.
-
-<details> 
-<summary><b>Example:</b></summary>
-
-```
-Types:
-  typeA
-  typeB
-.
-
-Selector:
-  Type: typeA
-  Select: Everyone
-.
-
-Selector:
-  Required
-  Type: typeB
-  Select: 50%
-.
-```
-Output:
-```
-Behavior: Example, Required Selector Starved For Type: 2 From Group: 0"
-```
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      S.5. Available Select Criteria
-    </h2>
-  </summary>
-
-1. Everyone
-2. Percent
-3. Exactly N
-
----
-
-<details>
-  <summary>
-    <h3>
-      S.5.1. Everyone
-    </h3>
-  </summary>
-
-```
-Select: Everyone
-```
-
-This select criteria chooses every pedestrian to have the selected `Type` (§T)
-
-</details>
-
----
-
-<details>
-  <summary>
-    <h3>
-      S.5.2 Percent
-    </h3>
-  </summary>
-
-
-Selects a percentage of a `Group` for the provided `Type`
-
-```
-*X*%
-```
-\*X* - Number `Value` (§V) (1 - 100)
-
-
-<details> 
-<summary><b>Example:</b></summary>
-
-```
-Select: 15%
-```
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h3>
-      S.5.3 Exactly N 
-    </h3>
-  </summary>
-
-Selects an exact number of pedestrians from a `Group`.
-
-```
-Exaclty *X*
-```
-\*X* - Number `Value` (§V)
-
-
-<details> 
-<summary><b>Example:</b></summary>
-
-```
-Select: 10
-```
-
-</details>
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      S.6 Selectors - General Syntax Rules
-    </h2>
-  </summary>
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h1>
-      A. Action
-    </h1>
-  </summary>
+# A. Actions
 
 `Actions` are what affect a Pedestrian's position, velocity, state, etc.
-
 `Actions` are comprised of `Atoms` and, optionally, a `Condition`.
 
-<details>
-  <summary>
-    <h2>
-      A.1. Unconditional Actions
-    </h2>
-  </summary>
+# A.1. Unconditional Actions
 
 An `Unconditional Action` will ALWAYS take effect.
 
-`Unconditional Actions` are written as follows:
-```
-A *Type* will always *Atoms*.
-```
-- Type being the pedestrian type that follows this `Action`
-- Atoms being the steps taken in an action, more in (§A.3.)
-
-<details>
-  <summary>
-    <b>
-      Example:
-    </b>
-  </summary>
-
-```
-A typeA will always @stop.
-```
-
-</details>
-</details>
+`Unconditional Actions` are described with the following rule:
+`A(n) {TYPE} will always {ATOM_LIST}.`
+- Type being the name given to pedestrians with the behavior
+- see **§A.3.1** for an explanation of Atom Lists
 
 ---
-
-<details>
-  <summary>
-    <h2>
-      A.2. Conditional Actions
-    </h2>
-  </summary>
-
 # A.2. Conditional Actions
 
 A `Conditional Action` will only take effect if its `Condition` is satisfied.
 
-`Conditional Actions` are written as follows:
-```
-A *Type* will *Atoms* *Condition*.
-```
-
-- \*Type* being the pedestrian type that follows this `Action`
-- \*Atoms* being the steps taken in an action, more in (§A.4.)
-- see (§C.) for an explanation of Conditions
-
-<details>
-  <summary>
-    <b>
-      Example:
-    </b>
-  </summary>
-
-```
-A typeA will 
-  @stop                                  // Atom (§A.4.)
-  given the !example event is occurring. // Condition (§C.)
-```
-
-</details>
-</details>
+`Conditional Actions` are described with the following rule:
+`A(n) {TYPE} will {ATOM_LIST} {CONDITION}.`
+- Type being the name given to pedestrians with the behavior
+- see **§A.3.1** for an explanation of Atom Lists
+- see **§C.** for an explanation of Conditions
 
 ---
+# A.3 Atoms
 
-<details>
-  <summary>
-    <h2>
-      A.3. Action Durations
-    </h2>
-  </summary>
-
-Normally `Actions` only apply to the time step their `Condition` is true in.
-
-If a longer response is needed, a `Duration` can be added to an `Action`.
-
-
-```
-A *Type* will *Atoms* *Condition* for *value* seconds.
-```
-- \*Type* being the `Type` (§T.) the action applies to
-- \*Atoms* being the `Atoms` (§A.4.) for the `Action`
-- \*Condition* being the `Condition` (§C.) for the action to start
-- \*value* being a numerical `Value` (§V.), for how long the action should continue
-
-<details>
-  <summary>
-    <b>
-      Example, Someone Tripping:
-    </b>
-  </summary>
-
-```
-a tripper will
-  @stop                                   // Atom (§A.4.)
-  after a random 1-10 seconds from !start // Condition (§C.)
-  for 5 seconds.                          // Duration
-```
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      A.4. Atoms
-    </h2>
-  </summary>
-
-`Atoms` are the part of an `Action` that actually affects a pedestrian. A group of `Atoms` comprise an `Action`.
+`Atoms` are the part of an `Action` that actually affects a pedestrian. A group of `Atoms` (`Atom List`) comprise an `Action`.
 
 `Atoms` can be one or multiple words long and are always preceded by an `@`
 
-<details>
-  <summary>
-    <b>
-    Examples:
-    </b>
-  </summary>
+Examples:
+- `@stop`
+- `@walk 10% slower`
+- `@run in circles`
 
-```
-@stop
-@walk 10% slower
-```
+`Atoms` derive from `/VIPRA_Behaviors/include/actions/action_atom.hpp :: Atom`
+- `Atoms` can have one constructor, that may take any number of parameters
+- `Atoms` must override `performAction`
 
-</details>
-
-## A.4.1 Atom List
+---
+## A.3.1 Atom List
 An `Atom List` is the collection of `Atoms` that make up an `Action`.
 `Atom Lists` are comprised of one or more `Atoms`.
 
-`Atom Lists` are written as follows:
-`*Atom* then *Atom*`
+`Atom Lists` are described with the following rule:
+`{ATOM} (then {ATOM_LIST})`
+
+Examples:
+- `@stop`
+- `@stop then @listen`
+- `@stop then @listen then @run in circles`
 
 **Important Note:** `Atom` effects are applied in the order they are listed
-
-<details>
-  <summary>
-    <b>
-    Examples:
-    </b>
-  </summary>
-
-```
-@stop
-@stop then @listen
-@stop then @listen then @run in circles
-```
 - e.g The `Atom List` `@run in circles then @stop` might result in the pedestrian simply stopping *(dependent on the definition of @run in circles and @stop)*
 
-</details>
+---
+## A.3.2. Making An Atom
+1. Add To Grammar
+2. Create Atom Definition
+3. Add To BehaviorBuilder
+4. Add Source To CMakeLists.txt
+5. Add Tests
+6. Add Documentation
 
-</details>
+### A.3.2.1. Add To Grammar
+
+`Atoms` are added to the grammar in `/VIPRA_Behaviors/grammar/action.g4`
+
+After creating the `Atom` grammar rule run `make` in `/VIPRA_Behaviors/grammar/` to update the generated files.
+
+example:
+```
+// Don't forget to add the new rule to the action_atom rule
+action_atom:
+	ACTION |
+	action_Example
+	;
+
+// Defining the example atom rule
+action_Example:
+	'@example do something with ' ID AND NUMBER;
+```
+
+### A.3.2.2. Create Atom Definition
+
+Create a header file in `/VIPRA_Behaviors/include/actions/atoms/` and a matching source file in `/VIPRA_Behaviors/src/actions/atoms/`
+
+The only rule that `Atoms` need to conform to is that they implement
+```c++
+void operator()(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t, std::shared_ptr<VIPRA::State>);
+```
+example:
+```C++
+// atom_example.hpp
+struct Atom_Example {
+  float _x;
+  std::string _str;
+  
+  void operator()(PedestrianSet&,
+                     ObstacleSet&,
+                     Goals&,
+                     BehaviorContext&,
+                     VIPRA::idx,
+                     VIPRA::delta_t,
+                     std::shared_ptr<VIPRA::State>);
+
+};
+
+//atom_example.cpp
+  Atom_Example::Atom_Example(float x, std::string str) : _x(x), _str(str) {}
+  void Atom_Example::operator()(PedestrianSet&,
+                     ObstacleSet&,
+                     Goals&,
+                     BehaviorContext&,
+                     VIPRA::idx,
+                     VIPRA::delta_t,
+                     std::shared_ptr<VIPRA::State>) {
+  // ... code that writes changes to state
+}
+
+```
+
+### A.3.2.3. Add To BehaviorBuilder
+
+Add the `Atom` to the `addAtomToAction` method in `/VIPRA_Behaviors/src/behavior/behavior_builder.cpp`
+
+example:
+- for our Example `Atom`:
+```C++
+void BehaviorBuilder::addAtomToAction(Action&  action, BehaviorParser::Action_atomContext*  atom) {
+	// ... other atoms ...
+
+	// Check if the current rule context matches our example atom
+	if (atom->action_Example()) {
+		spdlog::debug("Behavior \"{}\": Adding Action Atom: \"Example\"", currentBehavior.getName());
+		// getting parameters from grammar rule
+		float x = std::stof(atom->action_Example()->NUMBER()->toString());
+		std::string str = atom->action_Example()->ID()->toString();
+		
+		// add a newly constructed atom with the provided parameters
+		action.addAtom(Atom_Example{x, str});
+		return;
+	}
+
+	// ... other atoms ...
+}
+```
+- The function `ctx->action_Example()` comes from the name we gave the rule in the grammar
+
+### A.3.2.4. Add Source To CMakeLists.txt
+
+Add the `Atom` source file to `/VIPRA_Behaviors/src/CMakeLists.txt`
+
+example:
+- for our Example `Atom`:
+`${SRC_DIR}/actions/atoms/atom_example.cpp`
+
+### A.3.2.5. Add Tests
+
+Add any tests in `/VIPRA_Behaviors/__tests__/atom_tests/`
+
+### A.3.2.6. Add To Documentation
+
+Add any documentation
 
 ---
 
-<details>
-  <summary>
-    <h2>
-      A.5. Available Atoms
-    </h2>
-  </summary>
 
-<details>
-  <summary>
-    <h3>
-      A.5.1. Stop
-    </h3>
-  </summary>
-
-The `Stop` `Atom` keeps a pedestrian from moving.
-
-```
-@stop
-```
-
-</details>
-
----
-
-<details>
-  <summary>
-    <h3>
-      A.5.2. Walk Speed
-    </h3>
-  </summary>
-
-The `Walk Speed Atom` scales the speed a pedestrian moves
-
-```
-@walk *value* x their normal speed.
-```
-
-- \*value* being any `Value` type (§V.)
-
-</details>
-
----
-
-<details>
-  <summary>
-    <h3>
-      A.5.3. Be / Set State
-    </h3>
-  </summary>
-
-The `Be Atom` sets a pedestrians `State` (§St.)
-
-```
-@be *state*
-```
-
-- \*state* being the `State` to set the pedestrian to (§St.)
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      A.6. Actions - General Syntax Rules
-    </h2>
-  </summary>
-
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h1>
-      C. Conditions
-    </h1>
-  </summary>
+# Conditions
 
 A `Condition` is what decides if a `Conditional Action` or `Event` occurs. 
-
 `Conditions` are comprised of one or more `Sub Conditions` and the boolean operations between them (and/or).
 
-`Conditions` do not stand on their own, and only appear as part of an `Action` or `Event` statement.
-
-<details>
-  <summary>
-    <b>
-    Example:
-    </b>
-  </summary>
-
-```
-A typeA will @stop 
-given the !example event has occurred
-and
-after 5 seconds from the !start.
-```
-
-
-</details>
+Conditions are described by the rule:
+`{Sub Condition} (and|or {Sub Condition})*`
 
 ---
-
-<details>
-  <summary>
-    <h2>
-      C.1 Sub Conditions
-    </h2>
-  </summary>
+# C.1. Sub Conditions
 
 A `Sub Condition` defines a single condition of the state of the simulation in which it returns true.
 
-Available `Sub Conditions` are in section (§C.2.)
+Each `Sub Condition` is described with its own grammar rule, check `/VIPRA_Behaviors/grammar/condition.g4` for them
 
-</details>
+---
+## C.1.1. Combining Sub Conditions
 
-<details>
-  <summary>
-    <h2>
-      C.2 Available Sub Conditions
-    </h2>
-  </summary>
+! currently boolean logic is only applied in the order the sub conditions are added !
+! there is no grouping subconditions  e.g. (A & !B & C) vs (A & !(B & C)) !
 
-<details>
-  <summary>
-    <h3>
-      C.2.1. Elapsed Time
-    </h3>
-  </summary>
+When building `Conditions`, `Sub Conditions` are combined with either `and` or `or`
 
-This `Condition` will be true when a provided amount of time has passed from the start of an `Event` (§E.)
+---
+## C.1.2. Making A Sub Condition
 
-**Note:** This is true only for one time step when the time has elapsed, until the `Event` starts again.
+1. Add To Grammar
+2. Create Sub Condition Definition
+3. Add To BehaviorBuilder
+4. Add Source To CMakeLists.txt
+5. Add Tests
+6. Add Documentation
+
+### C.1.2.1 Add To Grammar
+
+`Sub Conditions` are added to the grammar in `/VIPRA_Behaviors/grammar/condition.g4`
+
+After creating the `SubCondition` grammar rule run `make` in `/VIPRA_Behaviors/grammar/` to update the generated files.
+
+example:
+```
+// don't forget to add to the sub condition rule
+sub_condition:
+	condition_Example |
+	*other conditions*
+	;
+
+// create new rule for the condition
+condition_Example:
+	'this is and example condition'
+	;
+```
+
+### C.1.2.2. Create Sub Condition Definition
+
+Create a header file in `/VIPRA_Behaviors/include/conditions/subconditions/` and a matching source file in `/VIPRA_Behaviors/src/conditions/`
+
+The only rule that `SubConditions` need to conform to is that they implement
+```C++
+bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx, VIPRA::delta_t);
+```
+
+
+```C++
+// subcondition_example.hpp
+struct SubCondition_Example {
+  Behaviors::stateUID _s;
+  bool _b;
+  bool operator()(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx, VIPRA::delta_t);
+};
+
+// subcondtion_example.cpp
+bool
+SubCondition_Example::operator()(const PedestrianSet&,
+                               const ObstacleSet&,
+                               const Goals&,
+                               const BehaviorContext&,
+                               VIPRA::idx,
+                               VIPRA::delta_t) {
+	// ... code to check if condition is met
+}
+```
+
+### C.1.2.3. Add To BehaviorBuilder
+
+Add the `SubCondition` to the `addSubCondToCondtion` method in `/VIPRA_Behaviors/src/behavior/behavior_builder.cpp`
+
+example:
+- for our Example `SubCondition`:
+
+```C++
+void
+BehaviorBuilder::addSubCondToCondtion(Condition& condition, BehaviorParser::Sub_conditionContext* subcond) {
+	// ... other subconditions ...
+
+	// Check if the current rule context matches our example subcondition
+  if (subcond->condition_Example()) {
+    spdlog::debug("Behavior \"{}\": Adding SubCondition: Example", currentBehavior.getName());
+	// ... get parameters
+    condition.addSubCondition(SubCondition{stateParam, boolParam});
+    return;
+  }
+  
+	// ... other subconditions ...
+}
+
 
 ```
-after *duration* from the *event* event.
-```
 
-<details>
-  <summary>
-    <b>
-      Example:
-    </b>
-  </summary>
+### C.1.2.4. Add Source To CMakeLists.txt
 
-```
-A typeA will 
-  @stop                            // Atom (§A.4)
-  after 10 seconds from the !start // Elapsed Time Condition
-  for 5 seconds.                   // Duration (§A.3)
-```
-**Note:** without the `Duration` the pedestrian would stop moving for only one time step.
+Add the `SubCondition` source file to `/VIPRA_Behaviors/src/CMakeLists.txt`
 
-</details>
-</details>
+example:
+- for our Example `SubCondition`:
+`${SRC_DIR}/conditions/subconditions/subcondition_example.cpp`
+
+### C.1.2.5. Add Tests
+
+Add any tests in `/VIPRA_Behaviors/__tests__/subcondition_tests/`
+
+### C.1.2.6. Add To Documentation
+
+Add any documentation
+
+---
+## C.1.3 Current Sub Conditions
+
+### C.1.3.1 Elapsed Time:
+
+**Parameters:**
+- VIPRA::delta_t : the desired elapsed time
+- Event* : pointer to event to listen to
+
+**Evaluates to True, Given:** An `Event` has started and The elapsed time between the start and the current time step is greater or equal to the desired elapsed time
+
+### C.1.3.2 Event Occurring:
+
+**Parameters:**
+- Event* : pointer to event to listen to
+
+**Evaluates to True, Given:** The event has started and The event has not ended
+
+
+### C.1.3.3. Event:
+
+**Parameters:**
+- Event* : pointer to the event to listen to
+
+**Evaluates to True, Given:** The event has started
+
+### C.1.3.4. Start:
+
+**Parameters:** none
+
+**Evaluates to True, Given:** Always
+
+
+### C.1.3.5 State:
+
+TODO : not implemented
+
+**Parameters:**
+- Behaviors::stateUID : the state to wait for
+- bool : true if the condition relies on a pedestrian's state, false if the condition relies on a the environment state
+
+**Evaluates to True, Given:** The pedestrian or environments state is the same as the conditions required state
 
 ---
 
-<details>
-  <summary>
-    <h3>
-      C.2.2. Event Occurred
-    </h3>
-  </summary>
 
-This `Condition` is true for every time step after an `Event` has started, until the end of the simulation.
+# E. Events
 
-```
-given the *event* event has occurred.
-```
+An `Event` is something that occurs during a simulation, for example an announcement or fire.
 
-<details>
-  <summary>
-    <b>
-    Example:
-    </b>
-  </summary>
+There are two kinds of events: `Single Fire` and `Lasting`
 
-```
-A typeA will
-  @walk 0.75x their normal speed // Atom (§A.4)
-  given an !announcement event has occurred. // Event Occurred Condition
-```
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h3>
-      C.2.3. Event Occurring
-    </h3>
-  </summary>
-
-This `Condition` is true while an `Event` is occurring.
-
-<details>
-  <summary>
-    <b>
-    Example:
-    </b>
-  </summary>
-
-```
-A typeA will
-  @stop // Atom (§A.4)
-  while an !announcement event is occurring. // Event Occurred Condition
-```
-
-</details>
-</details>
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h1>
-      E. Events
-    </h1>
-  </summary>
-
-A `Event` is something that occurs during a simulation, for example an announcement or fire.
-
-`Events` have a start `Condition` and, optionally, an end `Condition` (§C)
+`Events` have a start `Condition` and, optional, end `Condition`
+When either the start `Condition` or end `Condition` its respective `Event Handlers` are called.
 
 An `Event` can only be described once, if a `Behavior` file tries to redefine an `Event` of the same name a `Behavior Error` is thrown.
 
-`Event` names are always preceded by a `!`
-ex. 
+Events are always preceded by a `!` in the grammar
+ex. `!announcement`
+
+---
+# E.1 Single Fire Events
+
+`Single Fire Events` only have a start `Condition`
+
+When a `Single Fire Event` occurs, it calls its start `Event Handlers` and end `Event Handlers` in the same time step.
+
+Single Fire `Events` are described by the rule:
+`A(n) !{NAME} 'event will occur' {CONDITION}  '.';`
+- Name being the name of the `Event` and can be anything
+
+---
+# E.2 Lasting Events
+
+`Lasting Events` have a start `Condition` and end `Condition`
+
+When a `Lasting Event` occurs, it calls its start `Event Handlers`.
+A `Lasting Event` only calls its end `Event Handlers` when its end `Condition` returns true.
+
+`Lasting Events` are described by the rule:
+`A(n) !{NAME} 'event will occur' {CONDITION} 'and end' {CONDITION} '.';`
+- Name being the name of the `Event` and can be anything
+
+---
+# E.3 Event Handlers
+
+`Event Handlers` are the methods called when an `Event` either starts or ends.
+
+Currently `Event Handlers` are simply typedef'd 
+```c++
+typedef  std::function<void(float)>  EventHandler;
 ```
-!announcement
+
+## E.3.1 Subscribing Handlers
+
+To subscribe an `Event Handler` to an `Event` use:
+```C++
+Event event("example");
+
+// for an event start handler
+event.onStart(startHandler);
+
+// for an event end handler
+event.onEnd(endHandler);
 ```
 
-<details>
-  <summary>
-    <h2>
-      E.1. Creating Events
-    </h2>
-  </summary>
+---
+# E.4 Special Events
 
-`Events` a defined as follows:
-```
-The !example event will occur *condition*. // This event will never end
+Currently there is only one special event: the `!start` event
 
-// or
-
-The !example event will occur *condition* and end *condition*.
-```
-
-<details>
-  <summary>
-    <b>
-    Example:
-    </b>
-  </summary>
-
-```
-The !example event will occur after 10 seconds from !start,
-  and end
-  after 10 seconds from !example.
-```
-
-</details>
-</details>
+The `!start` event is in every `Behavior` and fires at the start of a simulation.
 
 ---
 
-<details>
-  <summary>
-    <h2>
-      E.2. Special Events
-    </h2>
-  </summary>
+# BB. Behavior Builder
 
-Currently, there is only one special event that is predefined for each `Behavior`:
-
-the `!start` event
-
-The `!start` event fires at the start of a simulation run.
-
-</details>
+The `Behavior Builder` is what constructs `Behavior` objects from .behavior files.
 
 ---
 
-<details>
-  <summary>
-    <h2>
-      E.3. Events - General Syntax Rules
-    </h2>
-  </summary>
+# V. Values
 
-1. 'The !example event will ...' can be written several ways, use whichever sounds most natural:
+## V.1. Numerical Values
+
+Some `Conditions`, `Actions`, and `Events` require a numerical value to be provided in the `Behavior` file.
+
+### V.1.1. Static Values
+
+Numerical values can be provided as a static value.
+
+For Example:
 ```
-The !example will ...
-// or
-An !example will ...
-// or
-An !example event will ...
-```
-2. When referencing `Events`, the word 'event' can be dropped:
-```
-The !example event
-// or
-The !example
+An !announcement event will 
+  occur after 10 seconds from !start.
 ```
 
-</details>
-</details>
+### V.1.2. Random Values
+
+Numerical values can also be defined as a range; either as Integers or Decimal values.
+
+For Example:
+```
+An !announcement event will 
+  occur after a random 5.0 to 10.0 seconds from !start.
+```
+In this, the value will be chosen randomly from the values between 5.0 and 10.0 (inclusive).
+
+Adding the decimal point to the number *(5.0)* means it will have a decimal value.
+
+Without the decimal point *(5)* the values will be whole numbers.
+
+---
+# N. Needs
+
+
+## N.1 Add Checks
+We may need to add checks that the what behaviors do is reasonable.
+
+For example: Collisions detection, currently the change speed atom can cause pedestrians to fly through walls / go past their goals (only really an issue if they set the speed up to an unreasonable value)
+
+## N.2 Pedestrian Attributes
+We need a way to access pedestrian attributes, such as: state, speed, goal, etc.
+
+example
+```
+// conditional action based on the pedestrians state
+a pedestrian will @stop given their *state is #waiting.
+```
+
+## N.3. Run Time Parameters
+We need a way to provide behaviors parameters at run time (taken from module params).
+
+This is needed to allow for parameter sweeps
+
+example
+```
+// Parameter declaration
+PARAMETERS: $event_start, $event_length
+
+// Parameter use
+The !announcement event will
+	start after $event_start seconds from !start
+	and end after $event_length seconds from !announcement.
+```
+
+## N.4 Allow Behaviors To Change Goals
+We need a way for behaviors to change pedestrian goals.
+
+This would require updating the Goals module to add a update pathfinding method
+
+example
+```
+a !fire will occur after 5 seconds from !start.
+
+// the @head atom would change their goal and require a re-calc of pathfinding
+a pedestrian will @head towards the +exit nearest to them.
+```
+
+## N.8. Conditional Selectors
+We need a way to select pedestrians based on conditions.
+
+For example: choosing a pedestrians type based on their end goal
+
+## N.9. Individual Seeds for Actions/Selectors/Etc.
+We need to think about allowing different seeds for actions selectors and others.
+
+For example: if a user wants to keep the same selected pedestrians but change other random aspects, they currently cannot as everything uses the one behavior seed.
+
+# W. Wants
+
+## W.1. Sub Condition grouping / Operation Order
+We may need a way to group sub conditions with the equivalent of parenthesis, to provide more expressive conditions. Currently sub conditions are evaluated in the order they were added
+
+example: 
+`A && (B || C)`
+vs
+`(A && B) || C`
+
+## W.2. Custom Action/Condition Definitions
+We may need a way for end users to specify `Atoms` and `Sub Conditions` in the `Behavior`
+
+example:
+```
+// Action definition
+The @wait action means:
+	@be #waiting
+
+// Atom in use
+A pedestrian will always @wait.
+```
+
+### W.3. Behaviors Affect The Environment Physically
+We may need to add the ability for behaviors to add to the environment.
+
+For example: a fire even can "place" fires around the map, then pedestrians can avoid these
+
+Currently behaviors can only change the state of the environment
+
+# I. Issues
 
 ---
 
-<details>
-  <summary>
-    <h1>
-      V. Values
-    </h1>
-  </summary>
-
-<details>
-  <summary>
-    <h2>
-      V.1. Numerical Values
-    </h2>
-  </summary>
-
-Anywhere there is a numerical value required the following can be used (with some exceptions):
-1. `Exact Values`
-2. `Range Values`
-3. `Random Values`
-
-<details>
-  <summary>
-    <h3>
-      V.1.1. Float vs. Number Values
-    </h3>
-  </summary>
-
-There are two kinds of `Numerical Values`:
-1. `Float Values`
-2. `Number Values`
-
-The difference between the two is simple:
-1. `Float Values` have a decimal value
-2. `Number Values` are whole numbers
-
-<details>
-  <summary>
-    <b>
-      Example:
-    </b>
-  </summary>
-
-```
-50    // Number Value, has no decimal places
-50.15 // Float Value, has a decimal value
-```
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h3>
-      V.1.1. Exact Values
-    </h3>
-  </summary>
-
-`Exact Values` are used when the value should be a specific value
-
-`Exact Values` can either be a `Float Value` or `Number Value`.
-
-`Exact Values` are written as simple numerical values.
-
-<details>
-  <summary>
-    <b>
-      Example:
-    </b>
-  </summary>
-
-```
-50% of pedestrians is a typeA.                      // Number Value
-
-A typeA will always @walk 1.25x their normal speed. // Float Value
-```
-
-</details>
-</details>
-
----
-
-<details>
-  <summary>
-    <h3>
-      V.1.2. Range Values
-    </h3>
-  </summary>
-
-`Range Values` are singular random values within a given range.
-
-When the `Behavior` is run, the value is the same for every individual.
-
-<details>
-  <summary>
-    <h3>
-      V.1.2.1 Float Value Ranges  vs. Number Value Ranges 
-    </h3>
-  </summary>
-
-`Range Values` are either `Float Value Ranges` or `Number Value Ranges`
 
-With the difference being that:
-`Float Value Ranges` are any real value between the range and `Number Value Ranges` are any integer value between the range.
+# Uc. Use Cases
 
-</details>
-<br/>
-
-`Range Values` are written as follows:
-```
-// Number Value Range -> 1, 2, or 3
-1-3
-or
-1 to 3
+-------------------------------------------------------------------------------------------------------------------------------------------
 
-// Float Value Range -> 1.0, 1.003, 1.11, 2.3, 2.5, 3.0, etc.
-1.0-3.0
-or
-1.0 to 3.0
-```
+Most Important:
+  Multiple Selectors - Finished
+  Interaction Between Pedestrians
+  Update Goals
+  Individual events
 
-<details>
-  <summary>
-    <b>
-      Example:
-    </b>
-  </summary>
+-------------------------------------------------------------------------------------------------------------------------------------------
 
-```
-10-20% of pedestrians is a typeA.
-```
+Multiple Selectors:
 
-The exact percentage will be a random integer value between 10 and 20.
+    Medical emergency (everyone waits for passenger to leave before moving)
+      - multiple selectors (injured v normal)
 
-</details>
-</details>
+    Injured people may have to wait to disembark
+      - multiple selectors
 
----
+    Disabled person - might need support
+      - multiple selectors
+      - interaction between pedestrians
+      - changing goals?
 
-<details>
-  <summary>
-    <h3>
-      V.1.3. Random Values
-    </h3>
-  </summary>
+    A group of stationary folks with people moving around them (can make stationary people, but not move around)
+      - multiple selectors
+      - updating goals? (path around peds)
+      - updating obstacle map? (add pedestrians as obstacle)
 
-`Random Values` are very similar to `Range Values`, with a random value in a given range.
+-------------------------------------------------------------------------------------------------------------------------------------------
 
-The big difference is that: `Range Values` only have one random value, `Random Values` have a random value that is different for each pedestrian.
+Update Goals:
 
-<details>
-  <summary>
-    <h3>
-      V.1.3.1 Float Random Values vs. Number Random Values
-    </h3>
-  </summary>
+    A group of stationary folks with people moving around them (can make stationary people, but not move around)
+      - multiple selectors
+      - updating goals? (path around peds)
+      - updating obstacle map? (add pedestrians as obstacle)
 
-`Random Values` are either `Float Random Values` or `Number Random Values`
+    Travel in a group
+      - group selector
+      - update goals?
 
-With the difference being that:
-`Float Random Value` are any real value between the range and `Number Random Values` are any integer value between the range.
+    Forget something (have to go back to get it)
+      - updating goals
 
-</details>
+    Disabled person - might need support
+      - multiple selectors
+      - interaction between pedestrians
+      - changing goals?
 
-Random Values are written as follows:
-```
-// Number Random Value -> 1, 2, or 3 (different for each pedestrian)
-A random 1-3
-// or
-A random 1 to 3
+-------------------------------------------------------------------------------------------------------------------------------------------
 
-// Float Random Value -> 1.0, 1.003, 1.11, 2.3, 2.5, 3.0, etc. (different for each pedestrian)
-A random 1.0-3.0
-// or
-A random 1.0 to 3.0
+Change Propulsive Forces:
 
-```
+    General fear of getting infection
+      - change the propulsive forces?
 
-<details>
-  <summary>
-    <b>
-      Example:
-    </b>
-  </summary>
+    Racial differences
+      - change the propulsive forces? (allow to get closer)
 
-```
-A typeA will 
-  @stop after a random 5-10 seconds from the !example event
-  for a random 10-20 seconds.
-```
 
-The exact percentage will be a random integer value between 10 and 20.
+-------------------------------------------------------------------------------------------------------------------------------------------
 
-</details>
+Interaction Between Pedestrians:
 
-</details>
-</details>
-</details>
+    Emergencies (Fire)
+      - interaction between pedestrians (pushing)
+      - allow climbing over obstacles?
+      - update obstacle map?
 
----
+    Pushing slow/stopped walkers out of the way
+      - interaction between pedestrians
 
-<details>
-  <summary>
-    <h1>
-      St. State
-    </h1>
-  </summary>
+    Disabled person - might need support
+      - multiple selectors
+      - interaction between pedestrians
+      - changing goals?
 
-Each pedestrian has a `State` associated with it.
+-------------------------------------------------------------------------------------------------------------------------------------------
 
-`States` are user defined, and used for `Conditions`
+Update Obstacle Set:
 
-`States` are always preceded by a '#'.
+    Emergencies (Fire)
+          - interaction between pedestrians (pushing)
+          - allow climbing over obstacles?
+          - update obstacle map?
 
-`States` are defined as follows:
-```
-Possible pedestrians states are #stateA, #stateB, and #stateC.
-```
+    A group of stationary folks with people moving around them (can make stationary people, but not move around)
+      - multiple selectors
+      - updating goals? (path around peds)
+      - updating obstacle map? (add pedestrians as obstacle)
 
-</details>
+-------------------------------------------------------------------------------------------------------------------------------------------
 
----
+Misc:
 
-<details>
-  <summary>
-    <h1>
-      Ex. Creating An Example Behavior
-    </h1>
-  </summary>
+    Letting passengers in rows in front go first
+      - condition for other passengers state
 
-Here we will make a couple of example `Behaviors`.
 
-<details>
-  <summary>
-    <h2>
-      Ex.1. The Simplest Behavior
-    </h2>
-  </summary>
+-------------------------------------------------------------------------------------------------------------------------------------------
 
-This example is a simple `Behavior` that causes every pedestrian to stand still for the duration of the simulation. 
+Not Sure About:
 
-```
-Consider a person.          // Consideration (§T.) says what types of pedestrians there are
-
-Everyone is a person.       // Selector (§S.) says who is of that type
-
-A person will always @stop. // Action (§A.) says what people of that type do
-```
-
-</details>
-
----
-
-<details>
-  <summary>
-    <h2>
-      Ex.2. An Announcment Event
-    </h2>
-  </summary>
-
-This `Behavior` shows `Events`, with an announcement. In this example, we will make a simple `Behavior` and add to it.
-
-```
-Consider a listener.                       // Consideration (§T.)
-
-Everyone is a listener.                    // Selector (§S.)
-
-An !announcement will occur                // Event (§E.)
-  after 10 seconds from the !start         // Start Condition (§C.)
-  and 
-  end after 10 seconds from !announcement. // End Condition (§C.)
-
-A listener will @stop                      // Action (§A.)
-  given an !announcement is occurring.     // Condition (§C.)
-```
-
-In this example, an announcement will start after 10 seconds and last for 10 seconds.
-
-While the announcement is occurring, every pedestrian will be stopped to listen.
-
-<details>
-  <summary>
-    <h3>
-      Ex.2.1. A bit more realistic
-    </h3>
-  </summary>
-
-Everyone stopping to listen isn't very realistic, so we can change it slightly.
-
-```
-Consider a listener.                       // Consideration (§T.)
-
-10% of pedestrians is a listener.          // Selector (§S.)
-
-An !announcement will occur                // Event (§E.)
-  after 10 seconds from the !start         // Start Condition (§C.)
-  and 
-  end after 10 seconds from !announcement. // End Condition (§C.)
-
-A listener will @stop                     // Action (§A.)
-  given an !announcement is occurring.     // Condition (§C.)
-```
-
-In this example, only 10% of pedestrians will actually stop to listen to the announcement. (probably still an over-estimation)
-
-</details>
-
-<details>
-  <summary>
-    <h3>
-      Ex.2.2. Adding more
-    </h3>
-  </summary>
-
-A black-and-white, either pedestrians stop to listen or don't, may not be as realistic as we would like.
-
-```
-Consider a listener, and partial_listener.             // Consideration (§T.)
-
-10% of pedestrians is a listener.                      // Selector (§S.)
-25% of pedestrians is a partial_listener.              // Selector (§S.)
-
-An !announcement will occur                            // Event (§E.)
-  after 10 seconds from the !start                     // Start Condition (§C.)
-  and 
-  end after 10 seconds from !announcement.             // End Condition (§C.)
-
-A listener will @stop                                  // Action (§A.)
-  given an !announcement is occurring.                 // Condition (§C.)
-
-A partial_listener will @walk 0.75x their normal speed // Action (§A.)
-  given an !announement is occurring.                  // Condition (§C.)
-```
-
-In this 10% of pedestrians stop to listen, another 25% slow down to listen, and the rest behave normally.
-
-</details>
-</details>
-</details>
+Responses influenced by religious or cultural beliefs and norms
+Unaccompanied minor
+Using precautionary or careful approach - self-protecting behavior 
+risk-averse versus risk-seeking tendencies
+Misuse of intervention such as mask
+Sleep behaviors during a flight
+Conflict resolution
