@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VIPRA Documentation: Modules</title>
+<title>VIPRA Documentation: Adding Behaviors</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -69,10 +69,20 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">Modules</div></div>
+  <div class="headertitle"><div class="title">Adding Behaviors</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"></div></div><!-- contents -->
+<div class="textblock"><p><a class="anchor" id="autotoc_md54"></a> Behavior files are held under <code>Behaviors/</code>.</p>
+<p>To use behaviors in simulations add them to <code>module_params.json</code> under <code>human_behavior_model</code>.</p>
+<p>Example: </p><div class="fragment"><div class="line">// Using the &quot;example.behavior&quot; Behavior file</div>
+<div class="line"> </div>
+<div class="line">&quot;human_behavior_model&quot;: {</div>
+<div class="line">    &quot;seed&quot;: 4525,</div>
+<div class="line">    &quot;behaviors&quot;: [</div>
+<div class="line">      &quot;example&quot;       // Add behavior name here without &quot;.behavior&quot;</div>
+<div class="line">    ]</div>
+<div class="line">},</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
