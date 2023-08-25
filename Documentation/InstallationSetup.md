@@ -31,26 +31,6 @@ or
 
 1. `make profiling` for compiling in release mode with profiling output
 
-## Adding New Modules
-
-Adding modules is covered in [Modules](ResearcherFiles/Modules.md)
-
----
-
-# Ru. Running
-
-In `/VIPRA/` run:
-`./VIPRA_SIM *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path* *Output File Path*`
-
-An example `sim.config` and `module_params.json` are found in `SimConfigs/ExampleConfig/`
-
-Example Command using the example config and the A320 obstacle map:
-```
-./VIPRA_SIM ../SimConfigs/ExampleConfig/sim.config ../SimConfigs/ExampleConfig/module_params.json ../Maps/pedestrian_maps/a320_144_pedestrians/a320_144_pedestrians.pmap ../Maps/obstacle_maps/a320_144_pedestrians/a320_144_pedestrians.omap output.json
-```
-
----
-
 # U. Utility
 
 ## U.1. Visualizer
@@ -63,4 +43,8 @@ Read more under the [Visualizer page](./ResearcherFiles/Visualizer.md)
 
 ---
 
-[Return to Main Page](MainPage.md)
+[Go to Main Page](MainPage.md)
+
+[Go to Researchers Page](./ResearcherFiles/Researchers.md)
+
+[Go to Developers Page](MainPage.md)

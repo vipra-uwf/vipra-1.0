@@ -37,18 +37,16 @@ to use.
 
 ---
 
-# Installation and Setup:
-
-[How to Setup](InstallationSetup.md)
-
----
-
 # Users:
 
 ## Researchers:
  
 [How to use VIPRA.](ResearcherFiles/Researchers.md)
 
-
 ## Developers:
 [How to add functionality.](DeveloperFiles/Developers.md)
+
+
+# Directory:
+
+[A list of common terms to search](./Directory.md)
