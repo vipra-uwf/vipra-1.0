@@ -1,9 +1,26 @@
 var searchData=
 [
-  ['nearestobstacle_0',['nearestObstacle',['../db/dec/classPassengerVehicleObstacleSet.html#abfcd14bf55b26e909d2a138206fc89c9',1,'PassengerVehicleObstacleSet::nearestObstacle(const VIPRA::PedestrianSet &amp;) const override'],['../db/dec/classPassengerVehicleObstacleSet.html#a6aebc557e44a9defbf02e93552507b6b',1,'PassengerVehicleObstacleSet::nearestObstacle(VIPRA::f3d) const override']]],
-  ['nearestobstacleindirection_1',['nearestObstacleInDirection',['../db/dec/classPassengerVehicleObstacleSet.html#a7f11dde2d4c3edd00a9e2f20a285da33',1,'PassengerVehicleObstacleSet::nearestObstacleInDirection(const VIPRA::PedestrianSet &amp;) const override'],['../db/dec/classPassengerVehicleObstacleSet.html#a8f48558b79e0a3ae0ecead68695f548b',1,'PassengerVehicleObstacleSet::nearestObstacleInDirection(VIPRA::f3d, VIPRA::f3d) const override']]],
-  ['nexttimestep_2',['nextTimestep',['../d7/dc9/classVIPRA_1_1Output.html#af49040435ead277f61a4e1f5fcff2da7',1,'VIPRA::Output']]],
-  ['normal_5fdistribution_3',['normal_distribution',['../d4/d74/classVIPRA_1_1normal__distribution.html',1,'VIPRA']]],
-  ['now_4',['now',['../d8/d95/classVIPRA_1_1Clock.html#aaf063fb7323da097cf98904d79ef12d2',1,'VIPRA::Clock']]],
-  ['numericvalue_5',['NumericValue',['../dc/d06/classBHVR_1_1NumericValue.html',1,'BHVR']]]
+  ['e_201_20single_20fire_20events_0',['E.1 Single Fire Events',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md261',1,'']]],
+  ['e_202_20lasting_20events_1',['E.2 Lasting Events',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md263',1,'']]],
+  ['e_203_201_20subscribing_20handlers_2',['E.3.1 Subscribing Handlers',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md266',1,'']]],
+  ['e_203_20event_20handlers_3',['E.3 Event Handlers',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md265',1,'']]],
+  ['e_204_20special_20events_4',['E.4 Special Events',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md268',1,'']]],
+  ['e_20events_5',['e events',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md259',1,'E. Events'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md202',1,'E. Events']]],
+  ['elapsed_20time_3a_6',['C.1.3.1 Elapsed Time:',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md253',1,'']]],
+  ['environment_20physically_7',['W.3. Behaviors Affect The Environment Physically',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md287',1,'']]],
+  ['equal_8',['equal',['../d5/dae/classBHVR_1_1AttributeHandling.html#adfa5fa947728027324c629a114d74e35',1,'BHVR::AttributeHandling']]],
+  ['error_9',['error',['../d7/dcc/classVIPRA_1_1PedestrianSetException.html#a400d444ed6410704e9f29a285e18ddce',1,'VIPRA::PedestrianSetException::error()'],['../d5/da0/classVIPRA_1_1PedDynamicsException.html#a51a5a477b9e3f9b0544cfe18f8888e58',1,'VIPRA::PedDynamicsException::error()'],['../d6/d26/classVIPRA_1_1PedestrianLoaderException.html#ad9e0c987c7888a7217b0b63a56dc7fa0',1,'VIPRA::PedestrianLoaderException::error()'],['../dd/d80/classVIPRA_1_1ObstacleSetException.html#aa5a0253a34ba8a55f6b0be8fc81fc401',1,'VIPRA::ObstacleSetException::error()'],['../d0/d9d/classVIPRA_1_1MapLoaderException.html#a61bf7d26b81c5e71a624c57b4f23c5b0',1,'VIPRA::MapLoaderException::error()'],['../d3/d89/classVIPRA_1_1GoalsException.html#a252c90ad54515d6e48994426396fdde5',1,'VIPRA::GoalsException::error()']]],
+  ['etc_10',['N.9. Individual Seeds for Actions/Selectors/Etc.',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md283',1,'']]],
+  ['evaluate_11',['evaluate',['../d9/d20/classBHVR_1_1Condition.html#a33741809982c40a6345986996ad9b368',1,'BHVR::Condition::evaluate()'],['../dd/d86/classBHVR_1_1Event.html#a575e35a0b338fc1f65f4195325042a42',1,'BHVR::Event::evaluate()']]],
+  ['event_12',['Event',['../dd/d86/classBHVR_1_1Event.html',1,'BHVR']]],
+  ['event_20handlers_13',['E.3 Event Handlers',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md265',1,'']]],
+  ['event_20occurring_3a_14',['C.1.3.2 Event Occurring:',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md254',1,'']]],
+  ['event_3a_15',['C.1.3.3. Event:',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md255',1,'']]],
+  ['eventcount_16',['eventCount',['../d7/d88/classBHVR_1_1HumanBehavior.html#abb1c306f7c56a3ccc1ed3ca83e42c469',1,'BHVR::HumanBehavior']]],
+  ['events_17',['events',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md202',1,'E. Events'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md259',1,'E. Events'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md261',1,'E.1 Single Fire Events'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md263',1,'E.2 Lasting Events'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md268',1,'E.4 Special Events']]],
+  ['exactvalue_18',['ExactValue',['../d1/d4f/structBHVR_1_1ExactValue.html',1,'BHVR']]],
+  ['example_20behavior_3a_19',['Example Behavior:',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md207',1,'']]],
+  ['examples_20',['Behavior Examples',['../db/d38/md_Documentation_2ResearcherFiles_2behaviors_2Behavior__Examples.html',1,'']]],
+  ['explore_20functionality_21',['User Guide to Test and Explore Functionality',['../dc/d9a/md_Documentation_2ResearcherFiles_2Researchers.html',1,'']]],
+  ['extendable_20modules_22',['extendable modules',['../d0/d30/md_README.html#autotoc_md174',1,'M.1. Extendable Modules'],['../d2/d72/md_Documentation_2DeveloperFiles_2Modules_2ModulesOverview.html#autotoc_md10',1,'M.1. Extendable Modules']]]
 ];

@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['racedetection_0',['raceDetection',['../d6/d57/classCollision.html#a313cb590ca730f984c6c61dc8d81f175',1,'Collision']]],
-  ['randomfloatvalue_1',['RandomFloatValue',['../d6/da5/structBHVR_1_1RandomFloatValue.html',1,'BHVR']]],
-  ['randomnumbervalue_2',['RandomNumberValue',['../d0/db4/structBHVR_1_1RandomNumberValue.html',1,'BHVR']]],
-  ['rayhit_3',['rayHit',['../db/dec/classPassengerVehicleObstacleSet.html#adb7cad8f7092744635b5a2fdc2888b67',1,'PassengerVehicleObstacleSet']]],
-  ['rect_4',['Rect',['../db/d14/structRect.html',1,'']]],
-  ['rectangle_5',['Rectangle',['../de/d83/structBHVR_1_1Rectangle.html',1,'BHVR']]],
-  ['removeped_6',['removePed',['../d9/d1d/classBHVR_1_1GroupsContainer.html#a7967b02aebb79ea3ace8b62e02381f59',1,'BHVR::GroupsContainer']]],
-  ['reseed_7',['reseed',['../d8/d8f/classVIPRA_1_1pRNG__Engine.html#a06ab81bf57fb7ae2143b932c8cd2da2d',1,'VIPRA::pRNG_Engine']]],
-  ['resize_8',['resize',['../da/d44/classBHVR_1_1TimedLatchCollection.html#a5c2792cfaa0b3bcd1ea71d3d0234bffc',1,'BHVR::TimedLatchCollection']]],
-  ['run_9',['run',['../d2/dd7/classVIPRA_1_1Simulation.html#a124725196e1b8c141b68d72e43ad409d',1,'VIPRA::Simulation']]],
-  ['running_20the_20simulation_10',['Running The Simulation',['../d8/d03/md_Documentation_2ResearcherFiles_2Running.html',1,'']]]
+  ['handler_0',['M.2.4. Output Handler',['../d0/d30/md_README.html#autotoc_md186',1,'']]],
+  ['handlers_1',['handlers',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md265',1,'E.3 Event Handlers'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md266',1,'E.3.1 Subscribing Handlers']]],
+  ['hard_20coded_20values_20these_20should_20be_20created_20with_20parameters_20instead_2',['1. The cost function currently uses parameters to help guide the A Star algorithm to prioritize horizontal movement over vertical movement by hard coded values. These should be created with parameters instead.',['../da/dda/md_Modules_2Goals_2calm__goals_2pathfinding_2README.html#autotoc_md159',1,'']]],
+  ['hash_3',['Hash',['../df/d50/structCaselessStrCompare_1_1Hash.html',1,'CaselessStrCompare']]],
+  ['hasoccurred_4',['hasOccurred',['../dd/d86/classBHVR_1_1Event.html#ae90c379ab1a7320a44a985cabc0dad5c',1,'BHVR::Event']]],
+  ['hastype_5',['hasType',['../d4/d2e/classBHVR_1_1Ptype.html#af2e0ebd0565df0b3cbdf9755fa0de75a',1,'BHVR::Ptype']]],
+  ['help_20guide_20the_20a_20star_20algorithm_20to_20prioritize_20horizontal_20movement_20over_20vertical_20movement_20by_20hard_20coded_20values_20these_20should_20be_20created_20with_20parameters_20instead_6',['1. The cost function currently uses parameters to help guide the A Star algorithm to prioritize horizontal movement over vertical movement by hard coded values. These should be created with parameters instead.',['../da/dda/md_Modules_2Goals_2calm__goals_2pathfinding_2README.html#autotoc_md159',1,'']]],
+  ['horizontal_20movement_20over_20vertical_20movement_20by_20hard_20coded_20values_20these_20should_20be_20created_20with_20parameters_20instead_7',['1. The cost function currently uses parameters to help guide the A Star algorithm to prioritize horizontal movement over vertical movement by hard coded values. These should be created with parameters instead.',['../da/dda/md_Modules_2Goals_2calm__goals_2pathfinding_2README.html#autotoc_md159',1,'']]],
+  ['human_20behavior_20model_8',['human behavior model',['../dd/d52/md_Documentation_2ResearcherFiles_2modules_2Modules.html#autotoc_md109',1,'Human Behavior Model'],['../d2/d72/md_Documentation_2DeveloperFiles_2Modules_2ModulesOverview.html#autotoc_md19',1,'M.2.1. Human Behavior Model'],['../d0/d30/md_README.html#autotoc_md183',1,'M.2.1. Human Behavior Model']]],
+  ['humanbehavior_9',['HumanBehavior',['../d7/d88/classBHVR_1_1HumanBehavior.html',1,'BHVR']]],
+  ['humanbehaviormodel_10',['HumanBehaviorModel',['../d3/d72/classVIPRA_1_1HumanBehaviorModel.html',1,'VIPRA']]]
 ];

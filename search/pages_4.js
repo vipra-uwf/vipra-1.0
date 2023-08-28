@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['installation_20and_20setup_0',['Installation and Setup',['../db/ddb/md_Documentation_2InstallationSetup.html',1,'']]]
+  ['functionality_0',['functionality',['../d1/dbb/md_Documentation_2DeveloperFiles_2Developers.html',1,'User Guide to Build and Add Functionality'],['../dc/d9a/md_Documentation_2ResearcherFiles_2Researchers.html',1,'User Guide to Test and Explore Functionality']]]
 ];
