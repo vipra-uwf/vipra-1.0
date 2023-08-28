@@ -9,20 +9,19 @@
 void        setFiles(int, char const*[]);
 std::string log(const std::string& message);
 
-std::string generateGetFiles();
 std::string generateIncludes();
 std::string generateFunctionDeclarations();
 std::string generateObjectFunction(const std::string& className, const std::string& type);
 std::string generateFunctionOptions(const std::string& type);
-// std::string generateExtractConfigMap();
 std::string generateMain();
 std::string initializeModules();
 std::string turnOffLint();
 std::string turnOnLint();
 
+std::string generateGlobals();
+
 std::string mainFunctionDefinition();
 std::string generateModules();
-// std::string makeModuleConfigs();
 
 std::string runSim();
 std::string outputSetup();
@@ -69,7 +68,7 @@ int main(int argc, char const* argv[]) {
   std::string lintOn = turnOnLint();
   std::string includesStr = generateIncludes();
   std::string mainFunctionStr = generateMain();
-  std::string getInputFilesStr = generateGetFiles();
+  std::string globalsStr = generateGlobals();
 
   std::ofstream mainFile;
   mainFile.open(outputFile);
@@ -78,8 +77,8 @@ int main(int argc, char const* argv[]) {
     return -1;
   }
 
-  mainFile << lintOff << includesStr << functionDeclsStr << getInputFilesStr
-           << mainFunctionStr << objectFunctionsStr << lintOn;
+  mainFile << lintOff << includesStr << functionDeclsStr << globalsStr << mainFunctionStr
+           << objectFunctionsStr << lintOn;
 
   mainFile.close();
 
@@ -130,6 +129,8 @@ std::string generateIncludes() {
   generatedIncludes += "#include <spdlog/spdlog.h>\n";
   generatedIncludes += "#include <memory>\n\n";
   generatedIncludes += "#include <clock/clock.hpp>\n";
+
+  generatedIncludes += "#include \"arguments/arguments.hpp\"\n";
   generatedIncludes += "#include \"configuration/config.hpp\"\n";
   generatedIncludes += "#include \"output/output.hpp\"\n";
 
@@ -144,8 +145,7 @@ std::string generateIncludes() {
  * @return std::string 
  */
 std::string generateFunctionDeclarations() {
-  std::string generatedDeclarations =
-      "\nVIPRA::Config extractConfigMap(std::string name);";
+  std::string generatedDeclarations{};
 
   for (const auto& [type, className] : TYPES) {
     generatedDeclarations += "std::unique_ptr<VIPRA::" + className + "> generate" +=
@@ -204,27 +204,6 @@ std::string generateFunctionOptions(const std::string& type) {
   return generatedFunction;
 }
 
-// /**
-//  * @brief Creates a string with the function for extracting config maps from the module params
-//  *
-//  * @return std::string
-//  */
-// std::string generateExtractConfigMap() {
-//   return {
-//       "\nVIPRA::Config extractConfigMap(std::string name)"
-//       "\n{"
-//       "\n\tVIPRA::Config configMap;"
-//       "\n\tfor(unsigned int i = 0; i < moduleParams[name].size(); i++)"
-//       "\n\t{"
-//       "\n\t\tauto attribute = moduleParams[name].getMemberNames()[i];"
-//       "\n\t\tauto value = moduleParams[name][attribute];"
-//       "\n\t\tconfigMap[attribute] = value;"
-//       "\n\t}"
-//       "\n"
-//       "\n\treturn configMap;"
-//       "\n}"};
-// }
-
 /**
  * @brief Creates a string with the generated main function
  * 
@@ -261,7 +240,8 @@ std::string generateMain() {
 std::string initializeModules() {
   return log("Initializing Map Loader") + "\n\tmap_loader->initialize();\n\t" +
 
-         log("Loading Map") + "\n\tauto map = map_loader->loadMap(obstacleFile);\n\t" +
+         log("Loading Map") +
+         "\n\tauto map = map_loader->loadMap(args.get<std::string>(\"obstacles\"));\n\t" +
 
          log("Initializing Obstacle Set") + "\n\ttimer.start();" +
          "\n\tobstacle_set->initialize(std::move(map));" +
@@ -271,7 +251,8 @@ std::string initializeModules() {
 
          log("Writing Pedestrian Config And Loading Pedestrians") + "\n\ttimer.start();" +
          "\n\tauto peds = "
-         "pedestrian_loader->loadPedestrians(pedestrianFile);\n\t" +
+         "pedestrian_loader->loadPedestrians(args.get<std::string>(\"pedestrians\"));"
+         "\n\t" +
          "\n\tstopTime = timer.stop(); spdlog::debug(\"Loading Pedestrians: {}\", "
          "stopTime);" +
          "\n\t" +
@@ -311,13 +292,14 @@ std::string initializeModules() {
  * @return std::string 
  */
 std::string mainFunctionDefinition() {
-  return "\nVIPRA::Config simulationJsonConfig;"
-         "\nVIPRA::Config moduleParams;"
-         "\nint main(int argc, const char **argv) {"
-         "\n\tgetInputFiles(argc, argv);"
-         "\n\tsimulationJsonConfig = "
-         "VIPRA::ConfigurationReader::getConfiguration(configFile);"
-         "\n\tmoduleParams = VIPRA::ConfigurationReader::getConfiguration(paramsFile);";
+  return "\nint main(int argc, char** argv) {"
+         "\n\targs.parse(argc, argv);"
+         "\n\tsimConfig = "
+         "VIPRA::ConfigurationReader::getConfiguration(args.get<std::string>(\"config\"))"
+         ";"
+         "\n\tmoduleParams = "
+         "VIPRA::ConfigurationReader::getConfiguration(args.get<std::string>("
+         "\"params\"));";
 }
 
 /**
@@ -329,39 +311,18 @@ std::string generateModules() {
   std::string str;
   for (const auto& [type, className] : TYPES) {
     str += "\n\tstd::unique_ptr<VIPRA::" + className + "> " += type + " = generate" +=
-        className + R"((simulationJsonConfig["modules"][")" +=
+        className + R"((simConfig["modules"][")" +=
         type + "\"].template get<std::string>(), moduleParams[\"" += type + "\"]);\n";
   }
   return str;
 }
 
-/**
- * @brief Creates string for function that gets input file paths from the command line
- * 
- * @return std::string 
- */
-std::string generateGetFiles() {
-  return {
-      "\nstd::string paramsFile;"
-      "\nstd::string configFile;"
-      "\nstd::string pedestrianFile;"
-      "\nstd::string obstacleFile;"
-      "\nstd::string outputFile;"
-      "\nVIPRA::Clock<VIPRA::milli> timer;"
-      "\nvoid getInputFiles(int argc, const char** argv);"
-      "\nvoid getInputFiles(int argc, const char** argv){"
-      "\n\tif(argc > 6 || argc < 6){"
-      "\n\t\tstd::cerr << \"Invalid inputs: Usage: *Config Path* *Params Path* "
-      "*Pedestrians path* "
-      "*Obstacle Path* *Output Path*\\n\";\n"
-      "\n\t\texit(1);"
-      "\n\t}"
-      "\n\tconfigFile=argv[1];"
-      "\n\tparamsFile=argv[2];"
-      "\n\tpedestrianFile=argv[3];"
-      "\n\tobstacleFile=argv[4];"
-      "\n\toutputFile=argv[5];"
-      "\n}"};
+/***/
+std::string generateGlobals() {
+  return "VIPRA::Args args;"
+         "VIPRA::Config moduleParams;"
+         "VIPRA::Config simConfig;"
+         "VIPRA::Clock timer;";
 }
 
 /**

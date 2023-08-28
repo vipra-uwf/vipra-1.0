@@ -22,48 +22,4 @@ using Config = nlohmann::json;
 
 }  // namespace VIPRA
 
-// namespace VIPRA::CONFIG {
-
-// /**
-//  * @brief Holds JSON data from module params
-//  *
-//  */
-// class Map {
-//  public:
-//   ~Map() = default;
-//   Map() = default;
-//   Map(const Map& other) = default;
-//   Map(Map&& other) noexcept = default;
-//   Map& operator=(const Map& other) = default;
-//   Map& operator=(Map&& other) noexcept = default;
-
-//   explicit Map(Json::Value doc) : document(std::move(doc)) {}
-
-//   const Json::Value& operator[](const std::string& key) const { return document[key]; }
-//   Json::Value&       operator[](const std::string& key) { return document[key]; }
-
-//   [[nodiscard]] std::vector<std::string> getStringVector(const std::string& key) const {
-//     const VIPRA::size        valCnt = document[key].size();
-//     std::vector<std::string> ret(valCnt);
-
-//     for (VIPRA::idx i = 0; i < valCnt; ++i) {
-//       if (document[key][static_cast<Json::ArrayIndex>(i)].type() !=
-//           Json::ValueType::stringValue) {
-//         ConfigurationException::error(
-//             "Attempt To Get String Vector From Config Value That Doesn't Match That "
-//             "Type, Key: " +
-//             key);
-//       }
-//       ret[i] = document[key][static_cast<Json::ArrayIndex>(i)].asString();
-//     }
-
-//     return ret;
-//   }
-
-//  private:
-//   Json::Value document;
-// };
-
-// }  // namespace VIPRA::CONFIG
-
 #endif
