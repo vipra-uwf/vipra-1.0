@@ -5,7 +5,7 @@
 # Introduction
 
 This project provides tools for interdisciplinary analysis of fine-scaled pedestrian
-movement, especially for science-based decision making. It is motivated by the fact
+movement, especially for science-based decision-making. It is motivated by the fact
 that local movement and interaction patterns of individuals congregated in public
 locations, such as entertainment venues and transportation hubs, impacts public
 health in myriad ways. For instance, infectious disease transmission in crowded
@@ -26,7 +26,7 @@ characteristics of humans, policy choices of decisions makers, and design decisi
 regarding the built environment. Furthermore, the impact of pedestrian dynamics is
 governed by application-domain models, such as infection spread models. Thus,
 input from a variety of science domains is required to produce comprehensive
-understanding for science-based decision making.
+understanding for science-based decision-making.
 
 This project includes a modular pedestrian dynamics code to which input from
 different domains could be easily included. In addition, it includes tools to
@@ -36,13 +36,17 @@ a recommender system, as a complementary project, to suggested suitable models
 to use.
 
 ---
-# Users
 
-[Researchers:](ResearcherFiles/Researchers.md)
+# Users:
+
+## Researchers:
  
- - Users who would test the current sumiluations.
+[How to use VIPRA.](ResearcherFiles/Researchers.md)
 
-[Developers:](DeveloperFiles/Developers.md)
- 
- - Users who would learn more about adding functionality.
+## Developers:
+[How to add functionality.](DeveloperFiles/Developers.md)
 
+
+# Directory:
+
+[A list of common terms to search](./Directory.md)

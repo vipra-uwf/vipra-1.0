@@ -9,7 +9,7 @@ args = getArgs()
 pedCoords = getPeds(args['peds'])
 difCoords = getPeds(args['dif'])
 [obsX, obsY] = getObs(args['obs']);
-pedColors = makeColors(len(pedCoords["timesteps"][0]), args)
+pedColors = makeColors(len(pedCoords["timesteps"][0]["pedestrians"]), args)
 timestepCnt = len(pedCoords["timesteps"])
 
 fig,ax = plt.subplots()

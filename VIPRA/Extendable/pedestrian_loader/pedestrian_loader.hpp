@@ -16,11 +16,6 @@ namespace VIPRA {
  */
 class PedestrianLoaderException : public std::runtime_error {
  public:
-  /**
-   * @brief Constructor for PedestrianLoaderException.
-   *
-   * @param message The error message to be associated with the exception.
-   */
   explicit PedestrianLoaderException(const std::string& message)
       : std::runtime_error(message) {}
   /**
@@ -41,23 +36,9 @@ class PedestrianLoaderException : public std::runtime_error {
  */
 class PedestrianLoader {
  public:
-  /**
-   * @brief Configure the PedestrianLoader with the given configuration map.
-   *
-   * @param configMap The configuration map containing settings for the PedestrianLoader.
-   */
   virtual void configure(const VIPRA::Config& configMap) = 0;
-  /**
-   * @brief Initialize the PedestrianLoader.
-   *
-   */
   virtual void initialize() = 0;
-  /**
-   * @brief Load pedestrian data from the specified file path.
-   *
-   * @param filePath The file path of the pedestrian data file.
-   * @return A vector of coordinates representing the loaded pedestrian data.
-   */
+
   [[nodiscard]] virtual std::vector<VIPRA::pcoord> loadPedestrians(
       const std::string& filePath) const = 0;
 

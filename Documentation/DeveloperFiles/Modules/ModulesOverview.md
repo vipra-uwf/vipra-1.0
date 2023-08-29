@@ -6,19 +6,19 @@
 
 Extendable Modules are the modules that are meant to be implemented by end users.
 
-1. Pedestrian Model
-2. Goals
-3. Obstacle Set
-4. Pedestrian Set
-5. Map Loader
-6. Pedestrian Loader
+1. [Pedestrian Model](Modules/Pedestrian_Model.md)
+2. [Goals](Modules/Goals.md)
+3. [Obstacle Set](Modules/Obstalce_Set.md)
+4. [Pedestrian Set](Modules/Pedestrian_Set.md)
+5. [Map Loader](Modules/Map_Loader.md)
+6. [Pedestrian Loader](Modules/Pedestrian_Loader.md)
 
 
 ### M.1.1. Pedestrian Model
 
 `/VIPRA/Extendable/pedestrian_model/pedestrian_dynamics_model.hpp`
 
-The `Pedestrian Model`module is the main pedestrian dynamics model that, in conjunction with the `Behavior Model`, models how the pedestrians move through the simulation.
+The `Pedestrian Model` module is the pedestrian dynamics model that dictates how the pedestrians move.
 
 ### M.1.2. Goals
 
@@ -57,8 +57,7 @@ Base Modules are the modules that the VIPRA team implements, end users can exten
 
 1. Human Behavior Model
 2. Policy Model
-3. Output Data Writer
-4. Output Handler
+3. Output Sinks
 
 ### M.2.1. Human Behavior Model
 
@@ -73,18 +72,13 @@ The `Human Behavior Model` orchestrates the `Behaviors` that are enabled for a s
 
 The `Policy Model` will, in the future, handle any policies (like airplane boarding order)
 
-### M.2.3. Output Data Writer
+### M.2.3. Output Sink
 
-`/VIPRA/Base/output_data_writer/output_data_writer.hpp`
+`/VIPRA/Base/output/sink.hpp`
 
-The `Output Data Writer` module handles writing output to files.
+The `Sink` module handles routing output.
 
-### M.2.4. Output Handler
-
-`/VIPRA/Base/simulation_output_handler/simulation_output_handler.hpp`
-
-The `Output Handler` module handles determining when to write output and what output to write.
-
+Currently, only a `FileSink` is implemented, that writes output to a JSON file.
 
 ---
 

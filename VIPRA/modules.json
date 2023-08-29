@@ -1,0 +1,90 @@
+{
+  "pedestrian_dynamics_model": [
+    {
+      "id": "VbGjNW5NCkOmKAxvFmz5KwUV2zz469",
+      "name": "calm_pedestrian_model",
+      "className": "CalmPedestrianModel",
+      "dirPath": "../Modules/PedestrianDynamicsModel/calm_pedestrian_model"
+    }
+  ],
+  "goals": [
+    {
+      "id": "Xz59g1o8HcsnMJlKaiYw00wZ19rB7P",
+      "name": "calm_goals",
+      "className": "CalmGoals",
+      "dirPath": "../Modules/Goals/calm_goals"
+    }
+  ],
+  "pedestrian_set": [
+    {
+      "id": "jLcPe7ZP8G15AFH5vPb6Wz2DrIVT94",
+      "name": "calm_pedestrian_set",
+      "className": "CalmPedestrianSet",
+      "dirPath": "../Modules/PedestrianSet/calm_pedestrian_set"
+    }
+  ],
+  "obstacle_set": [
+    {
+      "id": "MTpemEr4jv5XTvgwO7q54Qco97Pnt4",
+      "name": "passenger_vehicle_obstacle_set",
+      "className": "PassengerVehicleObstacleSet",
+      "dirPath": "../Modules/ObstacleSet/passenger_vehicle_obstacle_set"
+    }
+  ],
+  "map_loader": [
+    {
+      "id": "YKzTon61i8LuHr9l15mCY3",
+      "name": "point_map_loader",
+      "className": "PointMapLoader",
+      "dirPath": "../Modules/MapLoader/Point_Map_Loader"
+    }
+  ],
+  "pedestrian_loader": [
+    {
+      "id": "8oGawQjwJZutb4Us6lDU7R",
+      "name": "json_pedestrian_loader",
+      "className": "JsonPedestrianLoader",
+      "dirPath": "../Modules/PedestrianLoader/json_pedestrian_loader"
+    }
+  ],
+  "human_behavior_model": [
+    {
+      "id": "e3y1yG6PSjrWzsptf6jHdfBElwFugQ",
+      "name": "human_behavior_model",
+      "className": "VIPRA::HumanBehaviorModel",
+      "dirPath": "./Base/human_behavior"
+    }
+  ],
+  "policy_model": [
+    {
+      "id": "6xc3IZPOYEcdNhPd8x1kWP",
+      "name": "policy_model",
+      "className": "VIPRA::PolicyModel",
+      "dirPath": "./Base/policy_model"
+    }
+  ],
+  "simulation": [
+    {
+      "id": "QQgWGHtxsVWT1jIEXbxjKG1HA3iqI0",
+      "name": "simulation",
+      "className": "VIPRA::Simulation",
+      "dirPath": "./Base/simulation"
+    }
+  ],
+  "output_sink": [
+    {
+      "id": "dkSDMqF7Q55UWSxva6pm",
+      "name": "file_sink",
+      "className": "VIPRA::FileSink",
+      "dirPath": "./Base/output/sinks/file_sink"
+    }
+  ],
+  "configuration_reader": [
+    {
+      "id": "5E4V21CyOwU5iMBfH97qlFDn6DlAlf",
+      "name": "configuration_reader",
+      "className": "VIPRA::ConfigurationReader",
+      "dirPath": "./Base/configuration"
+    }
+  ]
+}
