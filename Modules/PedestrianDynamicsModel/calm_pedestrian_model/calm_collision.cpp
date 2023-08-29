@@ -23,7 +23,8 @@ inline Line getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& veloci
  */
 void Collision::raceDetection(const VIPRA::PedestrianSet& pedestrianSet,
                               const ModelData& data, const VIPRA::Goals& goals,
-                              VIPRA::t_step timestep) {
+                              VIPRA::t_step             timestep,
+                              const VIPRA::ObstacleSet& ) {
   calcCollisionRectangles(pedestrianSet, goals, data);
 
   const VIPRA::size pedCnt = pedestrianSet.getNumPedestrians();
@@ -37,6 +38,12 @@ void Collision::raceDetection(const VIPRA::PedestrianSet& pedestrianSet,
     } else {
       raceStatuses.at(i) = WAIT;
     }
+    // if (i == 112 || i == 69 || i == 3)
+    //   spdlog::info("Race Status of {} is {}, its x is {}, its y is {} and its goal is {}, {}. Its "
+    //       "velocity is {} x and {} y. Its nearest neighbour is {}",i, static_cast<int>(raceStatuses.at(i)), pedestrianSet.getPedCoords(i).x,
+    //       pedestrianSet.getPedCoords(i).y, goals.getCurrentGoal(i).x,
+    //       goals.getCurrentGoal(i).y, pedestrianSet.getPedVelocity(i).x,
+    //       pedestrianSet.getPedVelocity(i).y,pedestrianSet.getNearestPedestrian(i,obstacleSet).second);
   }
 }
 
@@ -109,10 +116,14 @@ bool Collision::checkIfHighestPriority(const VIPRA::PedestrianSet& pedestrianSet
     //If goals don't match, check if coordinates of the pedestrians are in each others collision rectangles
     if (goal1 != goal2) {
       if (!cr2in1) {
+        inRace.at(index).at(i) = false;
+        inRace.at(i).at(index) = false;
         continue;
       }
 
       if (!cr1in2) {
+        inRace.at(i).at(index) = true;
+        inRace.at(index).at(i) = true;
         flag = false;
         continue;
       }
@@ -130,7 +141,19 @@ bool Collision::checkIfHighestPriority(const VIPRA::PedestrianSet& pedestrianSet
 
     //If goals match, use distance comparision
     if (goal1 == goal2) {
-      if (coords1.distanceTo(goal1) > coords2.distanceTo(goal2)) flag = false;
+      if (coords1.distanceTo(goal1) > coords2.distanceTo(goal2))
+      {
+        inRace.at(i).at(index) = true;
+        inRace.at(index).at(i) = true;
+        flag = false;
+      }
+      else
+      {
+        if (inRace.at(index).at(i)) {
+          inRace.at(index).at(i) = false;
+          inRace.at(i).at(index) = false;
+        }
+      }
       continue;
     }
 
@@ -259,6 +282,12 @@ void Collision::initializeRectangles(const VIPRA::PedestrianSet& pedestrianSet,
     collisionRectangles[i].p3 = shldr2 + range;
     collisionRectangles[i].p4 = shldr2;
   }
+}
+
+void Collision::assignRaceStatuses(std::vector<RaceStatus>& cpmRaceStatuses, std::vector<std::vector<bool>>& cpmInRace)
+{
+  cpmRaceStatuses = raceStatuses;
+  cpmInRace = inRace;
 }
 
 void Collision::initialize(const VIPRA::PedestrianSet& pedestrianSet,

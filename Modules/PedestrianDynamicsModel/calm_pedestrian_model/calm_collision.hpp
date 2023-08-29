@@ -27,10 +27,12 @@ class Collision {
  public:
   void initialize(const VIPRA::PedestrianSet&, const VIPRA::Goals&, const ModelData&);
   void raceDetection(const VIPRA::PedestrianSet&, const ModelData&, const VIPRA::Goals&,
-                     VIPRA::t_step);
+                     VIPRA::t_step, const VIPRA::ObstacleSet&);
 
   void initializeRectangles(const VIPRA::PedestrianSet& pedestrianSet,
                             const VIPRA::Goals&         goals, const ModelData&);
+
+  void assignRaceStatuses(std::vector<RaceStatus>&, std::vector<std::vector<bool>>&);
 
   [[nodiscard]] RaceStatus status(VIPRA::idx) const;
 
@@ -54,6 +56,7 @@ class Collision {
   [[nodiscard]] bool       checkIfHighestPriority(const VIPRA::PedestrianSet&,
                                                   const VIPRA::Goals&, VIPRA::idx,
                                                   VIPRA::t_step);
+  
 };
 
 #endif
