@@ -36,6 +36,7 @@ class uniform_distribution {
 
   T operator()(pRNG_Engine& engine) {
     auto val = engine();
+    if ((range.second - range.first) == 0) return range.first;
     return static_cast<T>(range.first +
                           static_cast<double>(val) /
                               (static_cast<double>(std::numeric_limits<uint64_t>::max()) /

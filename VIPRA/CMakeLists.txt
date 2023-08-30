@@ -25,12 +25,12 @@ add_executable(
   main.cpp
 )
 
-target_compile_options(
-  ${PROJECT_NAME} 
-  PRIVATE
-  $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-  $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Werror -Wpedantic >
-)
+# target_compile_options(
+#   ${PROJECT_NAME} 
+#   PRIVATE
+#   $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+#   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Werror -Wpedantic >
+# )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../)
 
@@ -62,6 +62,11 @@ message(STATUS "Getting nlohmann_json")
 FetchContent_Declare(nlohmann_json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
 FetchContent_MakeAvailable(nlohmann_json)
 message(STATUS "Done Getting nlohmann_json")
+
+set(GCC_COVERAGE_COMPILE_FLAGS "-fopenmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+find_package(MPI REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC MPI::MPI_CXX)
 
 add_subdirectory(${BASE_DIR})
 add_subdirectory(${MODULES_DIR} modules)

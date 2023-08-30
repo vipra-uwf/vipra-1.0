@@ -19,6 +19,7 @@ class ConfigurationException : public std::runtime_error {
 };
 
 using Config = nlohmann::json;
+using Params = nlohmann::json;
 
 }  // namespace VIPRA
 
