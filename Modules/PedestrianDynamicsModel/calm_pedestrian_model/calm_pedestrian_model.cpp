@@ -50,7 +50,6 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const VIPRA::PedestrianSet&
     Rect          pedRect = makeRectFromShldrs(i, pedCoords, pedGoal);
 
     VIPRA::dist nearestDist = std::numeric_limits<VIPRA::dist>::max();
-    // VIPRA::idx nearestIndex = i;
     for (VIPRA::idx j = 0; j < pedCnt; ++j) {
       if (i == j || goals.isPedestianGoalMet(j)) continue;
 
@@ -68,12 +67,8 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const VIPRA::PedestrianSet&
         continue;
 
       nearestDist = distance;
-      // nearestIndex = j;
     }
     peds.nearestNeighborDists.at(i) = nearestDist;
-    
-    // if(i == 2000)
-    //   spdlog::info("For {}, Nearest Neighbour dist: {}, Nearest Index: {}",i,nearestDist, nearestIndex);
   }
 }
 
@@ -115,10 +110,6 @@ void CalmPedestrianModel::calculatePropulsion(const VIPRA::PedestrianSet& pedSet
     VIPRA::f3d       desiredVelocity;
     desiredVelocity = direction.unit() * desiredSpeed * beta;
     peds.propulsionForces.at(i) = ((desiredVelocity - velocity) * mass) / reactionTime;
-    //
-    // if (i == 112 || i == 69 || i == 3)
-    //   spdlog::info("For {}, Desired Velocity: {}x {}y, Propulsion force: {}x {}y", i, desiredVelocity.x,desiredVelocity.y, peds.propulsionForces.at(i).x,
-    //                peds.propulsionForces.at(i).y);
   }
 }
 

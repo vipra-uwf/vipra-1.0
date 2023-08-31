@@ -38,12 +38,6 @@ void Collision::raceDetection(const VIPRA::PedestrianSet& pedestrianSet,
     } else {
       raceStatuses.at(i) = WAIT;
     }
-    // if (i == 112 || i == 69 || i == 3)
-    //   spdlog::info("Race Status of {} is {}, its x is {}, its y is {} and its goal is {}, {}. Its "
-    //       "velocity is {} x and {} y. Its nearest neighbour is {}",i, static_cast<int>(raceStatuses.at(i)), pedestrianSet.getPedCoords(i).x,
-    //       pedestrianSet.getPedCoords(i).y, goals.getCurrentGoal(i).x,
-    //       goals.getCurrentGoal(i).y, pedestrianSet.getPedVelocity(i).x,
-    //       pedestrianSet.getPedVelocity(i).y,pedestrianSet.getNearestPedestrian(i,obstacleSet).second);
   }
 }
 
