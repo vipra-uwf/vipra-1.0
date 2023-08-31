@@ -20,14 +20,13 @@ class Args {
     args["params"] = argv[3];
     args["pedestrians"] = argv[4];
     args["obstacles"] = argv[5];
-    args["output"] = argv[6];
     // NOLINTEND
   }
 
   template <typename T>
   T get(const std::string& key);
 
-  static constexpr size_t argCnt = 7;
+  static constexpr size_t argCnt = 6;
 
  private:
   std::unordered_map<std::string, std::string> args;

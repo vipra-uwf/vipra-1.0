@@ -232,7 +232,7 @@ std::string generateMain() {
   mainFunction += outputSetup();
   mainFunction += runSim();
   mainFunction += "\nBHVR::AttributeHandling::cleanup();";
-  mainFunction += "\nVIPRA::Output::write();";
+  mainFunction += "\nVIPRA::Output::write(simID);";
   mainFunction += "\n}";
 
   return mainFunction;
@@ -322,9 +322,9 @@ std::string initializeModules() {
  * @return std::string 
  */
 std::string mainFunctionDefinition() {
-  return "\nvoid simulationMain(VIPRA::Args& args, VIPRA::Config& config, VIPRA::Config& "
-         "params, const "
-         "std::string& outputPath) {";
+  return "\nvoid simulationMain(const std::string& simID, VIPRA::Args& args, "
+         "VIPRA::Config& config, VIPRA::Config& "
+         "params) {";
 }
 
 /**
@@ -361,7 +361,6 @@ std::string runSim() {
          "*pedestrian_dynamics_model,"
          "*human_behavior_model,"
          "*policy_model);";
-  "\n\toutput->write();";
 }
 
 /**

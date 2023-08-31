@@ -8,13 +8,16 @@
 
 namespace VIPRA {
 
-void FileSink::configure(const VIPRA::Config& config) { filename = config["filepath"]; }
+void FileSink::configure(const VIPRA::Config& config) {
+  directory = config["outDirectory"];
+}
 
-void FileSink::write(const nlohmann::json& json) {
+void FileSink::write(const std::string& id, const nlohmann::json& json) {
   std::fstream output;
-  output.open(filename, std::fstream::out | std::fstream::trunc);
+  std::string  filepath = directory + '/' + id;
+  output.open(filepath, std::fstream::out | std::fstream::trunc);
   if (!output.is_open()) {
-    throw std::runtime_error("Unable To Open Output File: " + filename);
+    throw std::runtime_error("Unable To Open Output File: " + filepath);
   }
   output << json;
   output.close();

@@ -11,8 +11,9 @@
 #include "parameter_sweep/parameter_sweep.hpp"
 #include "randomization/random.hpp"
 
-void simulationMain(VIPRA::Args&, VIPRA::Config&, VIPRA::Config&, const std::string&);
+void simulationMain(const std::string&, VIPRA::Args&, VIPRA::Config&, VIPRA::Config&);
 void writeParameters(const std::string&, const std::vector<char>&);
+void writeParameters(const std::string&, const VIPRA::Config&);
 
 int threads = 0;
 int id = 0;
@@ -93,11 +94,11 @@ void worker(VIPRA::Args& args) {
     }
 
     params = nlohmann::json::parse(data.data());
-    outputFile = "./output/r" + std::to_string(rank) + "w" + std::to_string(workCnt);
+    std::string id = "r" + std::to_string(rank) + "w" + std::to_string(workCnt);
 
-    simulationMain(args, config, params, outputFile + ".json");
+    simulationMain(id, args, config, params);
 
-    writeParameters(outputFile + "_params.json", data);
+    writeParameters("./params" + id + "_params.json", data);
 
     result = 1;
     ++workCnt;
@@ -117,7 +118,8 @@ void single(VIPRA::Args& args) {
 
   for (int i = 0; i < totalSimRuns; ++i) {
     auto currParams = VIPRA::ParameterSweep::randomizeParams(params, engine);
-    simulationMain(args, config, currParams, args.get<std::string>("output"));
+    writeParameters("./params/r1w" + std::to_string(i), currParams);
+    simulationMain("r1w" + std::to_string(i), args, config, currParams);
   }
 }
 
@@ -125,6 +127,12 @@ void writeParameters(const std::string& outputFile, const std::vector<char>& dat
   std::ofstream fileStream;
   fileStream.open(outputFile, std::fstream::out | std::fstream::trunc);
   fileStream << data.data();
+  fileStream.close();
+}
+void writeParameters(const std::string& outputFile, const VIPRA::Config& config) {
+  std::ofstream fileStream;
+  fileStream.open(outputFile, std::fstream::out | std::fstream::trunc);
+  fileStream << config.dump();
   fileStream.close();
 }
 

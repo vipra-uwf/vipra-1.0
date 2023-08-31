@@ -114,7 +114,7 @@ class Output {
    * @brief Writes json data to output sink
    * 
    */
-  static inline void write() { sink->write(jsonData); }
+  static inline void write(const std::string& id) { sink->write(id, jsonData); }
 
  private:
   // NOLINTBEGIN Bug in clang-tidy (https://bugs.llvm.org/show_bug.cgi?id=48040) : ignores (cppcoreguidelines-avoid-non-const-global-variables)

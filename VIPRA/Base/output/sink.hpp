@@ -9,7 +9,7 @@ namespace VIPRA {
 class Sink {
  public:
   virtual void configure(const VIPRA::Config&) = 0;
-  virtual void write(const nlohmann::json&) = 0;
+  virtual void write(const std::string& id, const nlohmann::json&) = 0;
 
   virtual ~Sink() = default;
   Sink() = default;
