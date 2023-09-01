@@ -2,11 +2,25 @@
 #define VIPRA_OUTPUT_HPP
 
 #include <memory>
+#include <stdexcept>
 
 #include "definitions/type_definitions.hpp"
 #include "sink.hpp"
 
 namespace VIPRA {
+
+class OutputException : public std::runtime_error {
+ public:
+  explicit OutputException(const std::string& message) : std::runtime_error(message) {}
+
+  /**
+   * @brief Throws a OutputException with the given error message.
+   *
+   * @param message The error message for the exception.
+   */
+  static void error(const std::string& message) { throw OutputException(message); }
+};
+
 class Output {
  public:
   /**

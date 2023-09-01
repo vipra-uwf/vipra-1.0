@@ -11,6 +11,7 @@ The following are the requirements for running the VIPRA simulation.
 1. `CMake` - version 3.14^
 2. `Make`
 3. C++ compiler that supports C++17
+4. `openMPI`
 
 Following are additional requirements for development
 

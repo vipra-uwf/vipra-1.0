@@ -1,15 +1,13 @@
 {
-    "input_data_loader": {},
     "human_behavior_model": {
         "seed": 4525,
-        "behaviors": [
-        ]
+        "behaviors": []
     },
     "output": {
         "outputFrequency": 100
     },
     "output_sink": {
-        "filepath": "output.json"
+        "outDirectory": "output"
     },
     "pedestrian_set": {},
     "obstacle_set": {

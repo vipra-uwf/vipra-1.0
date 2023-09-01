@@ -1,7 +1,7 @@
 {
-    "id"          : "VbGjNW5NCkOmKAxvFmz5KwUV2zz469",
+  "id"          : "VbGjNW5NCkOmKAxvFmz5KwUV2zz469",
     "name"        : "calm_pedestrian_model",
-    "description" : "TODO",
+    "description" : "The CALM Pedestrian dynamics model",
     "params"      : [
         {
             "name": "meanMass",

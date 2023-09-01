@@ -3,13 +3,18 @@
 #include "file_sink.hpp"
 
 #include <spdlog/spdlog.h>
+#include <filesystem>
 #include <fstream>
 #include <stdexcept>
+#include "output/output.hpp"
 
 namespace VIPRA {
 
 void FileSink::configure(const VIPRA::Config& config) {
   directory = config["outDirectory"];
+  if (!std::filesystem::exists(directory)) {
+    OutputException::error("Output Directory Does Not Exist");
+  }
 }
 
 void FileSink::write(const std::string& id, const nlohmann::json& json) {

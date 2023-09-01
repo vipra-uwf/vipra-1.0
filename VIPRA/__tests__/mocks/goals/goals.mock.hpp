@@ -7,7 +7,7 @@
 #include <goals/goals.hpp>
 #include "configuration/config.hpp"
 
-class GoalsMock : public Goals {
+class GoalsMock : public VIPRA::Goals {
  public:
   MOCK_METHOD(void, configure, (const VIPRA::Config& configMap), (override));
   MOCK_METHOD(void, initialize, (const VIPRA::ObstacleSet&, const VIPRA::PedestrianSet&),

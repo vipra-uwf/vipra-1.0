@@ -1,8 +1,5 @@
 
-#include <math.h>
 #include <mpi.h>
-#include <mpi/mpi.h>
-#include <cstdint>
 
 #include "arguments/arguments.hpp"
 #include "configuration/config.hpp"
@@ -126,13 +123,17 @@ void single(VIPRA::Args& args) {
 void writeParameters(const std::string& outputFile, const std::vector<char>& data) {
   std::ofstream fileStream;
   fileStream.open(outputFile, std::fstream::out | std::fstream::trunc);
-  fileStream << data.data();
+  if (fileStream.is_open()) {
+    fileStream << data.data();
+  }
   fileStream.close();
 }
 void writeParameters(const std::string& outputFile, const VIPRA::Config& config) {
   std::ofstream fileStream;
   fileStream.open(outputFile, std::fstream::out | std::fstream::trunc);
-  fileStream << config.dump();
+  if (fileStream.is_open()) {
+    fileStream << config.dump();
+  }
   fileStream.close();
 }
 
@@ -146,15 +147,14 @@ int main(int argc, char** argv) {
 
   if (threads < 2) {
     single(args);
-    MPI_Finalize();
-    return 0;
-  }
-
-  if (id == 0) {
-    master(args);
   } else {
-    worker(args);
+    if (id == 0) {
+      master(args);
+    } else {
+      worker(args);
+    }
   }
 
   MPI_Finalize();
+  return 0;
 }

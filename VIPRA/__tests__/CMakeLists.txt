@@ -46,14 +46,13 @@ target_link_libraries(
   ${PROJECT_NAME}
   GTest::gtest_main
   GTest::gmock_main
-  jsoncpp_lib
+  nlohmann_json::nlohmann_json
   spdlog
   VIPRA_Behaviors
 )
 
 add_subdirectory(modules)
 add_subdirectory(base)
-add_subdirectory(human_behavior)
 
 target_include_directories(
   ${PROJECT_NAME}

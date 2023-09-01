@@ -12,7 +12,7 @@
 #include "obstacle_set/obstacle_set.hpp"
 #include "pedestrian_set/pedestrian_set.hpp"
 
-class ObstacleSetMock : public ObstacleSet {
+class ObstacleSetMock : public VIPRA::ObstacleSet {
  public:
   ~ObstacleSetMock() override {}
   MOCK_METHOD(void, initialize, (std::unique_ptr<VIPRA::MapData>), (override));

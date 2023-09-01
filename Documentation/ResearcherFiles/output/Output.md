@@ -22,6 +22,6 @@ More on `sim.config` files is in [Running The Simulation](../Running.md)
 
 ### File Sink
 
-The `File Sink` outputs to a JSON file at the provided file path from the command line.
+The `File Sink` outputs to a JSON file at the provided directory path from the module parameters file.
 
 ID: dkSDMqF7Q55UWSxva6pm

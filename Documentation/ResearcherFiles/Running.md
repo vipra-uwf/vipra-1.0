@@ -1,40 +1,90 @@
 # Running The Simulation
 
-The command for running a simulation is:
+This page only goes over running a simple simulation. VIPRA can also be used to run a [Parameter Sweep](ParameterSweep.md).
+
+The command for running a simple simulation is:
 ```
 // under `/VIPRA/`
 
-./VIPRA_SIM *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path* *Output File Path*
+./VIPRA_SIM 1 *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path*
 ```
 
-An example `sim.config` and `module_params.json` are found in `SimConfigs/ExampleConfig/`
+An example simulation config and module parameters are found in `SimConfigs/ExampleConfig/`
 
 Example Command using the example config and the A320 obstacle map:
 ```
-./VIPRA_SIM ../SimConfigs/ExampleConfig/sim.config ../SimConfigs/ExampleConfig/module_params.json ../Maps/pedestrian_maps/a320_144_pedestrians/a320_144_pedestrians.pmap ../Maps/obstacle_maps/a320_144_pedestrians/a320_144_pedestrians.omap output.json
+./VIPRA_SIM 1 ../SimConfigs/ExampleConfig/sim.config ../SimConfigs/ExampleConfig/module_params.json ../Maps/pedestrian_maps/a320_144_pedestrians/a320_144_pedestrians.pmap ../Maps/obstacle_maps/a320_144_pedestrians/a320_144_pedestrians.omap
 ```
 
 Simply replace the paths to change what map or config is being used.
 
+The second argument `1` is explained in [Parameter Sweep](ParameterSweep.md).
+
 ---
 
-# Sim.Config
+# Simulation Config
 
-The `sim.config` file tells the simulation which modules to use for a run.
+The simulation config file tells the simulation which modules to use for a run.
 
 Simulation configs should be placed under `SimConfigs/*config name*/`
 
-More on `sim.config` files is in **Changing Simulation Modules** below.
+More on simulation config files is in **Changing Simulation Modules** below.
 
 ---
 
 # Module Params
 
-The `module_params.json` file inputs parameters for each module.
+The module parameters file provides the parameters for each module.
 
 The exact parameters for each module can be found in that modules `.mm` file.
 
-Module parameters should be placed in the same directory as the `sim.config` they apply to.
+Example:
+```
+// Modules/Goals/calm_goals/calm_goals.mm
+{
+    "id": "Xz59g1o8HcsnMJlKaiYw00wZ19rB7P",
+    "name": "calm_goals",
+    "description": "TODO",
+    "params": [                                     // "params" lists the parameters the module accepts
+        {
+            "name": "endGoalType",
+            "type": "string",
+            "description": "Type of Object that All Pedestrians Attempt to move towards, available options depend on obstacle map used",
+            "multiple": false
+        },
+        {
+            "name": "goalRange",
+            "type": "float",
+            "description": "Range from a goal a pedestrian needs to reach before considered reaching a goal",
+            "multiple": false
+        }
+    ],
+    "className": "CalmGoals",
+    "type": "goals"
+}
+
+// module_params.json
+
+{
+  ... other modules
+
+  "goals": {
+    "endGoalType": "exit",
+    "gridSize": 0.1
+  },
+
+  ... other modules
+}
+
+```
+
+### Parameter Types
+
+Each parameter has a "type".
+
+The current types are:
+- "string" : any sequence of characters or numbers, surrounded by double quotations "
+- "float" : any numerical value
 
 ---
 
@@ -42,9 +92,9 @@ Module parameters should be placed in the same directory as the `sim.config` the
 
 Each simulation run is given a sim.config file. These are found under the `SimConfigs` directory. Look at the example config file under `SimConfigs/ExampleConfig/sim.config`.
 
-Each module has a unique ID, the `sim.config` file has a `modules` object that holds which modules to use for each module type. 
+Each module has a unique ID, the simulation config file has a `modules` object that holds which modules to use for each module type. 
 
-To use a different module simply switch the ID for the module type in the `sim.config`.
+To use a different module simply switch the ID for the module type in the simulation config.
 
 Example:
 ```
@@ -52,6 +102,7 @@ Example:
   "id": "ExampleConfig",
   "name": "exampleconfig",
   "description": "this is a test config",
+  "seed": 12345,
   "modules": {
     ... other moduels
 
@@ -65,6 +116,7 @@ Example:
   "id": "ExampleConfig",
   "name": "exampleconfig",
   "description": "this is a test config",
+  "seed": 12345
   "modules": {
     ... other moduels
 
