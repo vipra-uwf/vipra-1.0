@@ -4,19 +4,19 @@
 #include <algorithm>
 #include <limits>
 
-#include <MapLoader/Point_Map_Loader/point_map_loader.hpp>
-#include <definitions/dimensions.hpp>
-#include <obstacle_set/obstacle_set.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
+#include "MapLoader/Point_Map_Loader/point_map_loader.hpp"
+#include "definitions/dimensions.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 /**
- * @class PassengerVehicleObstacleSet
- * @brief A class representing the obstacle set for passenger vehicles.
+ * @class PointObstacleMap
+ * @brief Holds obstacles as points.
  *
  * This class inherits from ObstacleSet and provides functionality for initializing,
  * configuring, and querying obstacle data for passenger vehicles.
  */
-class PassengerVehicleObstacleSet : public VIPRA::ObstacleSet {
+class PointObstacleMap : public VIPRA::ObstacleSet {
  public:
   void initialize(std::unique_ptr<VIPRA::MapData>) override;
   void configure(const VIPRA::Config& configMap) override;

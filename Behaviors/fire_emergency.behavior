@@ -19,18 +19,7 @@ Event:
   Start: 0 seconds after !Start
 .
 
-/*
 Action (individual):
   Stimulus: !Fire occurring
   Response: scale velocity 2.0
-.
-*/
-
-Action (aggressive):
-  Stimulus:
-    !Fire occurring
-  Response:
-    scale target velocity -0.5
-  Target: 
-    nearest pedestrian in front within 0.5
 .

@@ -1,4 +1,5 @@
-#include "passenger_vehicle_obstacle_set.hpp"
+
+#include "ObstacleSet/point_obstacle_map/point_obstacle_map.hpp"
 
 inline bool objectDirectionTest(const VIPRA::f3d& pedCoords,
                                 const VIPRA::f3d& pedVelocity,
@@ -40,11 +41,11 @@ std::pair<VIPRA::f3d, VIPRA::f3d> makeDimensions(const VIPRA::EntitySet& objects
 }
 
 /**
- * @brief Initializes the PassengerVehicleObstacleSet with the given map data.
+ * @brief Initializes the PointObstacleMap with the given map data.
  *
  * @param map The map data.
  */
-void PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map) {
+void PointObstacleMap::initialize(std::unique_ptr<VIPRA::MapData> map) {
   if (map->type != "PointMap") {
     VIPRA::ObstacleSetException::error("Improper Map Type, Expected \"PointMap\"");
   }
@@ -53,11 +54,11 @@ void PassengerVehicleObstacleSet::initialize(std::unique_ptr<VIPRA::MapData> map
 }
 
 /**
- * @brief Configures the PassengerVehicleObstacleSet with the given configuration map.
+ * @brief Configures the PointObstacleMap with the given configuration map.
  *
  * @param configMap The configuration map.
  */
-void PassengerVehicleObstacleSet::configure(const VIPRA::Config& configMap) {
+void PointObstacleMap::configure(const VIPRA::Config& configMap) {
   obstacleCollisionDistance = configMap["obstacleCollisionDistance"].get<float>();
   obstacleCollisionDistanceSqrd = obstacleCollisionDistance * obstacleCollisionDistance;
 }
@@ -68,7 +69,7 @@ void PassengerVehicleObstacleSet::configure(const VIPRA::Config& configMap) {
  * @param PedSet The VIPRA::PedestrianSet.
  * @return A vector containing the nearest obstacles for each pedestrian.
  */
-VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacle(
+VIPRA::f3dVec PointObstacleMap::nearestObstacle(
     const VIPRA::PedestrianSet& PedSet) const {
   const VIPRA::f3dVec& coordinatesVector = PedSet.getCoordinates();
   VIPRA::f3dVec        nearestObstacleVector;
@@ -92,7 +93,7 @@ VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacle(
  * @param pedSet The VIPRA::PedestrianSet.
  * @return A vector containing the nearest obstacles in the direction of each pedestrian's velocity.
  */
-VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacleInDirection(
+VIPRA::f3dVec PointObstacleMap::nearestObstacleInDirection(
     const VIPRA::PedestrianSet& pedSet) const {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       pedCoords = pedSet.getCoordinates();
@@ -112,8 +113,7 @@ VIPRA::f3dVec PassengerVehicleObstacleSet::nearestObstacleInDirection(
  * @param coordinates The coordinates.
  * @return The nearest obstacle.
  */
-VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacle(
-    const VIPRA::f3d coordinates) const {
+VIPRA::f3d PointObstacleMap::nearestObstacle(const VIPRA::f3d coordinates) const {
   const auto&       obs = objects.at("obstacle");
   const VIPRA::size obCnt = obs.size();
   VIPRA::idx        closest = VIPRA::idx_INVALID;
@@ -136,8 +136,8 @@ VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacle(
  * @param velocity The velocity.
  * @return The nearest obstacle in the given direction.
  */
-VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacleInDirection(
-    VIPRA::f3d coordinates, VIPRA::f3d velocity) const {
+VIPRA::f3d PointObstacleMap::nearestObstacleInDirection(VIPRA::f3d coordinates,
+                                                        VIPRA::f3d velocity) const {
   const auto&       obstacles = objects.at("obstacle");
   const VIPRA::size obsCnt = obstacles.size();
   VIPRA::idx        nearest = VIPRA::idx_INVALID;
@@ -166,7 +166,7 @@ VIPRA::f3d PassengerVehicleObstacleSet::nearestObstacleInDirection(
  * @param type The type of objects.
  * @return A reference to the vector of objects.
  */
-const std::vector<VIPRA::f3d>& PassengerVehicleObstacleSet::getObjectsofType(
+const std::vector<VIPRA::f3d>& PointObstacleMap::getObjectsofType(
     const std::string& type) const {
   return objects.at(type);
 }
@@ -176,7 +176,7 @@ const std::vector<VIPRA::f3d>& PassengerVehicleObstacleSet::getObjectsofType(
  *
  * @return A reference to the vector of object types.
  */
-const std::vector<std::string>& PassengerVehicleObstacleSet::getObjectTypes() const {
+const std::vector<std::string>& PointObstacleMap::getObjectTypes() const {
   return objectTypes;
 }
 
@@ -185,7 +185,7 @@ const std::vector<std::string>& PassengerVehicleObstacleSet::getObjectTypes() co
  *
  * @return The map dimensions as a pair of VIPRA::f3d.
  */
-std::pair<VIPRA::f3d, VIPRA::f3d> PassengerVehicleObstacleSet::getMapDimensions() const {
+std::pair<VIPRA::f3d, VIPRA::f3d> PointObstacleMap::getMapDimensions() const {
   return mapDimensions;
 }
 
@@ -196,7 +196,7 @@ std::pair<VIPRA::f3d, VIPRA::f3d> PassengerVehicleObstacleSet::getMapDimensions(
  * @param point2 The second point.
  * @return The distance of the hit point from point1 if a hit occurs, or -1 if no hit occurs.
  */
-float PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const {
+float PointObstacleMap::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) const {
   const auto& obstacles = objects.at("obstacle");
   float       nearest = std::numeric_limits<float>::max();
 
@@ -235,7 +235,7 @@ float PassengerVehicleObstacleSet::rayHit(VIPRA::f3d point1, VIPRA::f3d point2) 
  * @param coords The coordinates.
  * @return True if a collision occurs, false otherwise.
  */
-bool PassengerVehicleObstacleSet::collision(VIPRA::f3d coords) const {
+bool PointObstacleMap::collision(VIPRA::f3d coords) const {
   return std::any_of(objects.at("obstacle").begin(), objects.at("obstacle").end(),
                      [&](const VIPRA::f3d& obs) {
                        return obs.distanceTo(coords) < obstacleCollisionDistance;

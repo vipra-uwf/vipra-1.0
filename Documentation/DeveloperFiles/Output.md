@@ -88,6 +88,6 @@ The value will be placed in:
 
 ### O.5.1. File Sink
 
-This sink writes output to a JSON file at the path in `filepath` in the `module_params.json` file
+This sink writes output to a JSON file at the path in `outDirectory` in the Module Parameters file
 
 ---
