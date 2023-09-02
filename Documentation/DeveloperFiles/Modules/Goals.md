@@ -86,4 +86,4 @@ Params:
 
 ### isSimulationGoalMet() const -> bool
 
-Returns true if the simulation should exit.
+Returns true if the simulation should exit. (ex. because all pedestrians reached the exit, etc.)

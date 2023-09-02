@@ -82,4 +82,4 @@ Currently, only a `FileSink` is implemented, that writes output to a JSON file.
 
 ---
 
-[Return to Getting Started - Developers](Developers.md)
+[Return to Getting Started - Developers](../Developers.md)

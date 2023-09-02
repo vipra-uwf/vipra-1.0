@@ -4,11 +4,14 @@
 
 The main path a simulation takes is as follows:
 
-## S.1. Module Selection / Configuration
+## S.1. Module Selection / Configuration / Initialization
 
-Each simulation run is provided a `sim.config` file that holds the IDs for each module the simulation should use. *(one for each type of module)*
+Each simulation run is provided a simulation configuration file that holds the IDs for each module the simulation should use. *(one for each type of module)*
 
-An instance of each of these modules is then created and configured, using the `module_params.json` file that is also provided to the simulation.
+For each module type:
+1. Construct implementation object
+2. Call object `configure` function with the module parameters
+3. Call object `initialize` function
 
 Each of the modules is then passed into the main simulation object. *Defined in `/VIPRA/Base/simulation/simulation.hpp`*
 
@@ -18,7 +21,7 @@ The simulation loops until the `Goals` module says that the simulation has met i
 
 Each time step the simulation:
 
-1. Calls the `Pedestrian Model` module, which provides a shared pointer to a `State` object that has the updated positions and velocities of each pedestrian
+1. Calls the `Pedestrian Model` module, which provides a reference to a `State` object that has the updated positions and velocities of each pedestrian
 2. Calls the `Policy Model` module, which modifies the `State` given by the `Pedestrian Model` *(Not currently Implemented)*
 3. Calls the `Behavior Model` module, which modifies the `State` given by the `Pedestrian Model` and `Policy Model`
 4. Checks if output should be written, writes if so
