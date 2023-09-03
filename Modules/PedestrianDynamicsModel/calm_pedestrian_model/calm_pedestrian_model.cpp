@@ -4,6 +4,7 @@
 #include <limits>
 #include <memory>
 
+#include "PedestrianDynamicsModel/calm_pedestrian_model/calm_collision.hpp"
 #include "calm_pedestrian_model.hpp"
 #include "definitions/dimensions.hpp"
 #include "pedestrian_set/pedestrian_set.hpp"
@@ -20,7 +21,13 @@ void CalmPedestrianModel::timestep(const VIPRA::PedestrianSet& pedSet,
   calculatePropulsion(pedSet, goals);
   updateModelState(pedSet, goals, state, time, timestep);
 
-  if (timestep > 0) collision.raceDetection(pedSet, peds, goals, timestep);
+  if (timestep > 0) 
+  {
+    collision.raceDetection(pedSet, peds, goals, timestep, obstacleSet);
+    collision.assignRaceStatuses(raceStatuses,inRace);
+  }
+
+  return modelState;
 }
 
 /**
@@ -43,14 +50,16 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const VIPRA::PedestrianSet&
     Rect          pedRect = makeRectFromShldrs(i, pedCoords, pedGoal);
 
     VIPRA::dist nearestDist = std::numeric_limits<VIPRA::dist>::max();
-
     for (VIPRA::idx j = 0; j < pedCnt; ++j) {
       if (i == j || goals.isPedestianGoalMet(j)) continue;
 
       auto        otherCoords = coords.at(j);
       VIPRA::dist distance = pedCoords.distanceTo(otherCoords);
-
+      
       if (distance >= nearestDist) continue;
+
+      if ((raceStatuses.at(i) == 0 && raceStatuses.at(j) == 1) || std::fabs(distance - equilibriumDistance) < equilibriumResolution)
+        continue;
 
       if (!isPedInDirectionOfGoal(pedCoords, pedGoal, otherCoords)) continue;
 
@@ -59,7 +68,6 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const VIPRA::PedestrianSet&
 
       nearestDist = distance;
     }
-
     peds.nearestNeighborDists.at(i) = nearestDist;
   }
 }
@@ -319,6 +327,7 @@ void CalmPedestrianModel::initialize(const VIPRA::PedestrianSet& pedSet,
                                      const VIPRA::Goals& goals) {
   setModelData(pedSet);
   collision.initialize(pedSet, goals, dynamic_cast<const ModelData&>(peds));
+  collision.assignRaceStatuses(raceStatuses, inRace);
 }
 
 void CalmPedestrianModel::setModelData(const VIPRA::PedestrianSet& pedSet) {

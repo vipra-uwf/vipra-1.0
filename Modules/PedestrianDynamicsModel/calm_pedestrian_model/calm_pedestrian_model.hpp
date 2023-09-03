@@ -56,8 +56,13 @@ class CalmPedestrianModel : public VIPRA::PedestrianDynamicsModel {
   VIPRA::pRNG_Engine rand{};
 
   std::vector<Line> pedShoulders;
+  
+  std::vector<RaceStatus> raceStatuses;
+  std::vector<std::vector<bool>>  inRace;
 
   static constexpr VIPRA::delta_t slidingGoalTime = 0.1F;
+  static constexpr float equilibriumDistance = 0.382;
+  static constexpr float equilibriumResolution = 0.01F;
 
   void calculatePropulsion(const VIPRA::PedestrianSet&, const VIPRA::Goals&);
   void calculateRepulsion(const VIPRA::PedestrianSet&, const VIPRA::Goals&);

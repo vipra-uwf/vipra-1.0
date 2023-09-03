@@ -23,7 +23,8 @@ inline Line getShoulderPoints(const VIPRA::f3d& coords, const VIPRA::f3d& veloci
  */
 void Collision::raceDetection(const VIPRA::PedestrianSet& pedestrianSet,
                               const ModelData& data, const VIPRA::Goals& goals,
-                              VIPRA::t_step timestep) {
+                              VIPRA::t_step             timestep,
+                              const VIPRA::ObstacleSet& ) {
   calcCollisionRectangles(pedestrianSet, goals, data);
 
   const VIPRA::size pedCnt = pedestrianSet.getNumPedestrians();
@@ -109,10 +110,14 @@ bool Collision::checkIfHighestPriority(const VIPRA::PedestrianSet& pedestrianSet
     //If goals don't match, check if coordinates of the pedestrians are in each others collision rectangles
     if (goal1 != goal2) {
       if (!cr2in1) {
+        inRace.at(index).at(i) = false;
+        inRace.at(i).at(index) = false;
         continue;
       }
 
       if (!cr1in2) {
+        inRace.at(i).at(index) = true;
+        inRace.at(index).at(i) = true;
         flag = false;
         continue;
       }
@@ -130,7 +135,19 @@ bool Collision::checkIfHighestPriority(const VIPRA::PedestrianSet& pedestrianSet
 
     //If goals match, use distance comparision
     if (goal1 == goal2) {
-      if (coords1.distanceTo(goal1) > coords2.distanceTo(goal2)) flag = false;
+      if (coords1.distanceTo(goal1) > coords2.distanceTo(goal2))
+      {
+        inRace.at(i).at(index) = true;
+        inRace.at(index).at(i) = true;
+        flag = false;
+      }
+      else
+      {
+        if (inRace.at(index).at(i)) {
+          inRace.at(index).at(i) = false;
+          inRace.at(i).at(index) = false;
+        }
+      }
       continue;
     }
 
@@ -259,6 +276,12 @@ void Collision::initializeRectangles(const VIPRA::PedestrianSet& pedestrianSet,
     collisionRectangles[i].p3 = shldr2 + range;
     collisionRectangles[i].p4 = shldr2;
   }
+}
+
+void Collision::assignRaceStatuses(std::vector<RaceStatus>& cpmRaceStatuses, std::vector<std::vector<bool>>& cpmInRace)
+{
+  cpmRaceStatuses = raceStatuses;
+  cpmInRace = inRace;
 }
 
 void Collision::initialize(const VIPRA::PedestrianSet& pedestrianSet,
