@@ -4,19 +4,19 @@ The `Pedestrian Dynamics Model` module handles calculating how pedestrians move 
 
 ## Modules To Overload
 
-### configure(const [VIPRA::Config](Parameters.md)& configMap) -> void
+### configure(const VIPRA::Config& configMap) -> void
 
 Takes in the module parameters for configuration.
 
 Called after construction
 
-### initialize(const [VIPRA::PedestrianSet](PedestrianSet.md)&, const [VIPRA::ObstacleSet](ObstacleSet.md)&, const [VIPRA::Goals](Goals.md)&) -> void
+### initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, const VIPRA::Goals&) -> void
 
 Initializes any model specific pedestrian data.
 
 Called after `configure`
 
-### timestep(const [VIPRA::PedestrianSet](PedestrianSet.md)&, const [VIPRA::ObstacleSet](ObstacleSet.md)&, const [VIPRA::Goals](Goals.md)&, [VIPRA::delta_t](../VIPRATypes.md), [VIPRA::t_step](../VIPRATypes.md)) -> [VIPRA::State](../VIPRATypes.md)&
+### timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, const VIPRA::Goals&, VIPRA::delta_t, VIPRA::t_step) -> VIPRA::State&
 
 Calculates change in pedestrian position/velocity for each timestep of the simulation. Returning it as a [VIPRA::State](../VIPRATypes.md)&.
 

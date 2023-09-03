@@ -10,7 +10,7 @@ VIPRA is broken up into 6 modules that are meant to be implemented and shared by
 
 1. [Pedestrian Model](Modules/PedestrianModel.md)
 2. [Goals](Modules/Goals.md)
-3. [Obstacle Set](Modules/ObstalceSet.md)
+3. [Obstacle Set](Modules/ObstacleSet.md)
 4. [Pedestrian Set](Modules/PedestrianSet.md)
 5. [Map Loader](Modules/Map_Loader.md)
 6. [Pedestrian Loader](Modules/PedestrianLoader.md)

@@ -4,7 +4,7 @@ The `Pedestrain Loader` class handles loading pedestrian starting locations from
 
 ## Methods To Override
 
-### configure(const [VIPRA::Config](Parameters.md)& configMap) -> void
+### configure(const VIPRA::Config& configMap) -> void
 
 Takes in the module parameters.
 
@@ -18,7 +18,7 @@ Used to setup any necessary components before loading the map file
 Called before `loadPedestrians()`
 
 
-### loadPedestrians(const std::string&) const -> std::vector<[VIPRA::pcoord](../VIPRATypes.md)>
+### loadPedestrians(const std::string&) const -> std::vector<VIPRA::pcoord>
 
 Loads the pedestrian start positions from the file at the provided path.
 

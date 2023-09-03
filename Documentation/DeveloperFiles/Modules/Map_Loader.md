@@ -18,7 +18,7 @@ MapData(std::string type);
 
 ## Methods To Override
 
-### configure(const [VIPRA::Config](Parameters.md)&) -> void
+### configure(const VIPRA::Config&) -> void
 
 Takes in [module parameters](Parameters.md) to configure the module.
 

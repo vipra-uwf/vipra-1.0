@@ -4,54 +4,54 @@ The pedestrian set holds pedestrian locations and velocities, as well as handles
 
 ## Methods To Override
 
-### configure(const [VIPRA::Config](Parameters.md)&) -> void
+### configure(const VIPRA::Config&) -> void
 
 Takes in the module parameters.
 
 Params:
 - const [VIPRA::Config](Parameters.md)& : module parameters
 
-### initialize(const std::vector<[VIPRA::pcoord](../VIPRATypes.md)>&) -> void
+### initialize(const std::vector<VIPRA::pcoord>&) -> void
 
 Used to initialize any data structures for holding the pedestrians
 
 Params:
 - const std::vector<[VIPRA::pcoord](../VIPRATypes.md)>& : pedestrian starting positions
 
-### updateState([VIPRA::State](../VIPRATypes.md)&) -> void
+### updateState(VIPRA::State&) -> void
 
 Takes in a [VIPRA::State](../VIPRATypes.md) and updates pedestrian positions/velocities.
 
 Params:
 - [VIPRA::State](../VIPRATypes.md)& : new pedestrian positions/velocities
 
-### getNumPedestrians() const -> [VIPRA::size](../VIPRATypes.md)
+### getNumPedestrians() const -> VIPRA::size
 
 Returns the number of pedestrians
 
-### getCoordinates() const -> const [VIPRA::f3dVec](../VIPRATypes.md)&
+### getCoordinates() const -> const VIPRA::f3dVec&
 
 Returns a vector holding each pedestrian's position.
 
-### getVelocities() const -> const [VIPRA::f3dVec](../VIPRATypes.md)&
+### getVelocities() const -> const VIPRA::f3dVec&
 
 Returns a vector holding each pedestrian's velocity
 
-### getPedCoords([VIPRA::idx](../VIPRATypes.md)) const -> const [VIPRA::pcoord](../VIPRATypes.md)&
+### getPedCoords(VIPRA::idx) const -> const VIPRA::pcoord&
 
 Returns the given pedestrian's position
 
 Params:
 - [VIPRA::idx](../VIPRATypes.md) : pedestrian's index to get position of
 
-### getPedVelocity([VIPRA::idx](../VIPRATypes.md)) const -> const [VIPRA::veloc](../VIPRATypes.md)&
+### getPedVelocity(VIPRA::idx) const -> const VIPRA::veloc&
 
 Returns the given pedestrian's velocity
 
 Params:
 - [VIPRA::idx](../VIPRATypes.md) : pedestrian's index
 
-### getNearestPedestrian([VIPRA::idx](../VIPRATypes.md), const [VIPRA::ObstacleSet](ObstalceSet.md)&) const -> std::pair<[VIPRA::f3d](../VIPRATypes.md), [VIPRA::idx](../VIPRATypes.md)>
+### getNearestPedestrian(VIPRA::idx, const VIPRA::ObstacleSet&) const -> std::pair<VIPRA::f3d, VIPRA::idx>
 
 Returns the position and index of the nearest pedestrian to the given pedestrian. (Ignoring pedestrians through walls)
 
