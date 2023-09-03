@@ -9,7 +9,7 @@ var searchData=
   ['loadmap_6',['loadMap',['../d8/d73/classPointMapLoader.html#a799f310dff5111aab8e80efd6aa3ba55',1,'PointMapLoader']]],
   ['loadmap_20const_20std_3a_3astring_20const_20std_3a_3aunique_5fptr_20vipra_3a_3amapdata_7',['loadMap(const std::string&amp;) const -&gt; std::unique_ptr&lt;VIPRA::MapData&gt;',['../d5/d46/md_Documentation_2DeveloperFiles_2Modules_2Map__Loader.html#autotoc_md24',1,'']]],
   ['loadpedestrians_8',['loadPedestrians',['../da/d59/classJsonPedestrianLoader.html#a411d2cbd03c7609fb6baa262ed7bb272',1,'JsonPedestrianLoader']]],
-  ['loadpedestrians_20const_20std_3a_3astring_20const_20std_3a_3avector_20ref_20github_20workspace_20documentation_20developerfiles_20vipratypes_20md_20vipra_3a_3apcoord_9',['loadPedestrians(const std::string&amp;) const -&gt; std::vector&lt;@ref &quot;/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md&quot; &quot;VIPRA::pcoord&quot;&gt;',['../dc/deb/md_Documentation_2DeveloperFiles_2Modules_2PedestrianLoader.html#autotoc_md57',1,'']]],
+  ['loadpedestrians_20const_20std_3a_3astring_20const_20std_3a_3avector_20vipra_3a_3apcoord_9',['loadPedestrians(const std::string&amp;) const -&gt; std::vector&lt;VIPRA::pcoord&gt;',['../dc/deb/md_Documentation_2DeveloperFiles_2Modules_2PedestrianLoader.html#autotoc_md57',1,'']]],
   ['location_10',['Location',['../dd/da1/classBHVR_1_1Location.html',1,'BHVR']]],
   ['loop_11',['loop',['../d3/d9f/md_Documentation_2DeveloperFiles_2Simulation.html#autotoc_md84',1,'S.2. Simulation Loop'],['../d0/d30/md_README.html#autotoc_md284',1,'S.2. Simulation Loop']]]
 ];

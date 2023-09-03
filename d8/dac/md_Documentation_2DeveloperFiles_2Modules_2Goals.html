@@ -90,14 +90,14 @@ Methods To Override</h1>
 <div class="ttc" id="aclassVIPRA_1_1PedestrianSet_html"><div class="ttname"><a href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a></div><div class="ttdoc">Interface for managing pedestrian information in a simulation.</div><div class="ttdef"><b>Definition</b> pedestrian_set.hpp:44</div></div>
 <div class="ttc" id="astructVIPRA_1_1f3d_html"><div class="ttname"><a href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a></div><div class="ttdef"><b>Definition</b> dimensions.hpp:135</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md9"></a>
-configure(const @ref "/github/workspace/Documentation/DeveloperFiles/Modules/Parameters.md" "VIPRA::Config"&amp;) -&gt; void</h2>
+configure(const VIPRA::Config&amp;) -&gt; void</h2>
 <p>Takes in the <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">module parameters</a> as a nlohmann::json object.</p>
 <p>Called right after construction.</p>
 <p>Params:</p><ul>
 <li>const <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">VIPRA::Config</a>&amp; : module parameters</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md10"></a>
-initialize(const @ref "/github/workspace/Documentation/DeveloperFiles/Modules/ObstacleSet.md" "VIPRA::ObstacleSet"&amp;, const @ref "/github/workspace/Documentation/DeveloperFiles/Modules/PedestrianSet.md" "VIPRA::PedestrianSet"&amp;) -&gt; void</h2>
+initialize(const VIPRA::ObstacleSet&amp;, const VIPRA::PedestrianSet&amp;) -&gt; void</h2>
 <p>Used to initialize paths for pedestrians.</p>
 <p>Called before first time step.</p>
 <p>Params:</p><ul>
@@ -105,7 +105,7 @@ initialize(const @ref "/github/workspace/Documentation/DeveloperFiles/Modules/Ob
 <li>const <a class="el" href="../../d3/d85/md_Documentation_2DeveloperFiles_2Modules_2PedestrianSet.html">VIPRA::PedestrianSet</a>&amp; : pedestrian set</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md11"></a>
-updatePedestrianGoals(const @ref "/github/workspace/Documentation/DeveloperFiles/Modules/ObstacleSet.md" "VIPRA::ObstacleSet"&amp;, const @ref "/github/workspace/Documentation/DeveloperFiles/Modules/PedestrianSet.md" "VIPRA::PedestrianSet"&amp;, @ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::delta_t") -&gt; void</h2>
+updatePedestrianGoals(const VIPRA::ObstacleSet&amp;, const VIPRA::PedestrianSet&amp;, VIPRA::delta_t) -&gt; void</h2>
 <p>Used to update each pedestrians current goal.</p>
 <p>Called at the end of each time step.</p>
 <p>Params:</p><ul>
@@ -114,31 +114,31 @@ updatePedestrianGoals(const @ref "/github/workspace/Documentation/DeveloperFiles
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::delta_t</a> : time since last time step</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md12"></a>
-getCurrentGoal(@ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::idx") const -&gt; const @ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::f3d"&amp;</h2>
+getCurrentGoal(VIPRA::idx) const -&gt; const VIPRA::f3d&amp;</h2>
 <p>Returns the coordinates of the current point a given pedestrian is heading towards (not necessarily the end goal).</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::idx</a> : pedestrian index</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md13"></a>
-getEndGoal(@ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::idx") const -&gt; const @ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::f3d"&amp;</h2>
+getEndGoal(VIPRA::idx) const -&gt; const VIPRA::f3d&amp;</h2>
 <p>Returns the coordinates of the given pedestrian's end goal.</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::idx</a> : pedestrian index</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md14"></a>
-getAllCurrentGoals() const -&gt; const @ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::f3dVec"&amp;</h2>
+getAllCurrentGoals() const -&gt; const VIPRA::f3dVec&amp;</h2>
 <p>Returns a vector with all of the current goals for pedestrians.</p>
 <h2><a class="anchor" id="autotoc_md15"></a>
-getAllEndGoals() const -&gt; const @ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::f3dVec"&amp;</h2>
+getAllEndGoals() const -&gt; const VIPRA::f3dVec&amp;</h2>
 <p>Returns a vector with all of the end goals for pedestrians.</p>
 <h2><a class="anchor" id="autotoc_md16"></a>
-timeSinceLastGoal(@ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::idx") const -&gt; @ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::delta_t"</h2>
+timeSinceLastGoal(VIPRA::idx) const -&gt; VIPRA::delta_t</h2>
 <p>Returns how long it has been since a pedestrian reached their last goal.</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::idx</a> : pedestrian idx</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md17"></a>
-isPedestianGoalMet(@ref "/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md" "VIPRA::idx") const -&gt; bool</h2>
+isPedestianGoalMet(VIPRA::idx) const -&gt; bool</h2>
 <p>Returns true if the given pedestrian has reached their end goal.</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::idx</a> : pedestrian idx</li>
