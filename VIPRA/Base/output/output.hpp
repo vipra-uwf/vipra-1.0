@@ -2,11 +2,25 @@
 #define VIPRA_OUTPUT_HPP
 
 #include <memory>
+#include <stdexcept>
 
 #include "definitions/type_definitions.hpp"
 #include "sink.hpp"
 
 namespace VIPRA {
+
+class OutputException : public std::runtime_error {
+ public:
+  explicit OutputException(const std::string& message) : std::runtime_error(message) {}
+
+  /**
+   * @brief Throws a OutputException with the given error message.
+   *
+   * @param message The error message for the exception.
+   */
+  static void error(const std::string& message) { throw OutputException(message); }
+};
+
 class Output {
  public:
   /**
@@ -114,7 +128,7 @@ class Output {
    * @brief Writes json data to output sink
    * 
    */
-  static inline void write() { sink->write(jsonData); }
+  static inline void write(const std::string& id) { sink->write(id, jsonData); }
 
  private:
   // NOLINTBEGIN Bug in clang-tidy (https://bugs.llvm.org/show_bug.cgi?id=48040) : ignores (cppcoreguidelines-avoid-non-const-global-variables)

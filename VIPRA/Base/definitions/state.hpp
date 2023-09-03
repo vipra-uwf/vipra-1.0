@@ -9,6 +9,7 @@ enum Affector {
   POLICY_MODEL,
   BEHAVIOR_MODEL,
 };
+
 struct State {
   std::vector<Affector> affector;
   f3dVec                velocities;

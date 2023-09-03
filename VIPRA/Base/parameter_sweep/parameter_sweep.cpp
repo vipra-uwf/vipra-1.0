@@ -7,6 +7,7 @@ namespace VIPRA {
 VIPRA::Config ParameterSweep::randomizeParams(VIPRA::Config       config,
                                               VIPRA::pRNG_Engine& engine) {
   for (const auto& [module, params] : config.items()) {
+    if (module == "human_behavior_model") continue;
     for (const auto& [param, value] : params.items()) {
       if (value.is_array()) {
         // TODO (rolland) choose random value in array
@@ -23,19 +24,24 @@ VIPRA::Config ParameterSweep::randomizeParams(VIPRA::Config       config,
 float ParameterSweep::randomizeValue(const nlohmann::json& value,
                                      VIPRA::pRNG_Engine&   engine) {
   if (!value.contains("min") || !value.contains("max")) {
-    // TODO (rolland) throw error
+    ParameterSweepException::error("Value Does Not Contain A Min and/or Max");
   }
 
   if (!value["min"].is_number() || !value["max"].is_number()) {
-    // TODO (rolland) throw error
+    ParameterSweepException::error("Min or Max Not A Number");
   }
 
-  return VIPRA::normal_distribution(value["min"].get<float>(),
-                                    value["max"].get<float>())(engine);
+  return VIPRA::uniform_distribution(value["min"].get<float>(),
+                                     value["max"].get<float>())(engine);
 }
 
 nlohmann::json ParameterSweep::randomPick(const nlohmann::json& value,
                                           VIPRA::pRNG_Engine&   engine) {
-  return value[VIPRA::normal_distribution<size_t>(0, value.size() - 1)(engine)];
+  auto cnt = value.size();
+  if (cnt < 1) {
+    ParameterSweepException::error("Empty Array Value");
+  }
+  auto idx = VIPRA::uniform_distribution<size_t>(0, cnt - 1)(engine);
+  return value[idx];
 }
 }  // namespace VIPRA

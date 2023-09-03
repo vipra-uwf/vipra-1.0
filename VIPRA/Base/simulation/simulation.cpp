@@ -48,11 +48,12 @@ void Simulation::run(VIPRA::Goals& goals, VIPRA::PedestrianSet& pedestrianSet,
                      PedestrianDynamicsModel& pedestrianDynamicsModel,
                      HumanBehaviorModel& humanBehaviorModel, PolicyModel& policyModel) {
   spdlog::info("Starting Simulation Loop");
-
   clock.start();
+
+  VIPRA::State pedState{pedestrianSet.getNumPedestrians()};
   while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
-    auto& pedState = pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals,
-                                                      timestep_size, timestep);
+    pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, pedState,
+                                     timestep_size, timestep);
     policyModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
     humanBehaviorModel.timestep(pedestrianSet, obstacleSet, goals, pedState,
                                 timestep_size);

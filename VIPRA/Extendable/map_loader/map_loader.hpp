@@ -6,6 +6,8 @@
 #include "configuration/config.hpp"
 #include "definitions/type_definitions.hpp"
 
+#include <unordered_map>
+
 namespace VIPRA {
 
 /**

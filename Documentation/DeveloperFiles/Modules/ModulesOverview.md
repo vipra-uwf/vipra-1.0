@@ -18,37 +18,37 @@ Extendable Modules are the modules that are meant to be implemented by end users
 
 `/VIPRA/Extendable/pedestrian_model/pedestrian_dynamics_model.hpp`
 
-The `Pedestrian Model` module is the pedestrian dynamics model that dictates how the pedestrians move.
+The [Pedestrian Model](PedestrianModel.md) module is the pedestrian dynamics model that dictates how the pedestrians move.
 
 ### M.1.2. Goals
 
 `/VIPRA/Extendable/goals/goals.hpp`
 
-The `Goals` module is what does all the path finding for pedestrians, it also determines the end goal for the overall simulation. *(for example: all pedestrians exit the plane)*
+The [Goals](Goals.md) module is what does all the path finding for pedestrians, it also determines the end goal for the overall simulation. *(for example: all pedestrians reach the exit)*
 
 ### M.1.3. Obstacle Set
 
 `/VIPRA/Extendable/obstacle_set/obstacle_set.hpp`
 
-The `Obstacle Set` module holds the map information; including obstacles and object. The `Obstacle Set` is also responsible for collision detection.
+The [Obstacle Set](Obstacle.md) module holds the map information; including obstacles and object. The `Obstacle Set` is also responsible for collision detection.
 
 ### M.1.4. Pedestrian Set
 
 `/VIPRA/Extendable/pedestrian_set/pedestrian_set.hpp`
 
-The `Pedestrian Set` module holds information about pedestrians, for example their position, velocity, etc.
+The [Pedestrian Set](PedestrianSet.md) module holds information about pedestrians, for example their position, velocity, etc.
 
 ### M.1.5. Map Loader
 
 `/VIPRA/Extendable/map_loader/map_loader.hpp`
 
-The `Map Loader` module is responsible for loading map files into `Obstacle Sets`.
+The [Map Loader](Map_Loader.md) module is responsible for loading map files into `Obstacle Sets`.
 
 ### M.1.6. Pedestrian Loader
 
 `/VIPRA/Extendable/pedestrian_loader/pedestrian_loader.hpp`
 
-The `Pedestrian Loader` module is responsible for loading pedestrian files into `Pedestrian Sets`.
+The [Pedestrian Loader](PedestrianLoader.md) module is responsible for loading pedestrian files into `Pedestrian Sets`.
 
 ---
 ## M.2. Base Modules
@@ -82,4 +82,4 @@ Currently, only a `FileSink` is implemented, that writes output to a JSON file.
 
 ---
 
-[Return to Getting Started - Developers](Developers.md)
+[Return to Getting Started - Developers](../Developers.md)

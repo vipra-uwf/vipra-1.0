@@ -6,25 +6,22 @@
         {
             "name": "endGoalType",
             "type": "string",
-            "description": "Type of Object that All Pedestrians Attempt to move towards",
-            "multiple": false
+            "description": "Type of Object that All Pedestrians Attempt to move towards, available options depend on obstacle map used"
         },
         {
             "name": "goalRange",
             "type": "float",
-            "description": "Range from a goal a pedestrian needs to reach before considered reaching a goal",
-            "multiple": false
+            "description": "Range from a goal a pedestrian needs to reach before considered reaching a goal"
         },
         {
             "name": "gridSize",
             "type": "float",
-            "description": "Size of grids for pathfinding",
-            "multiple": false
-        },{
+            "description": "Size of grids for pathfinding"
+        },
+        {
             "name": "closestObstacle",
             "type": "float",
-            "description": "Closest a grid can be to an obstacle without being considered not traversable",
-            "multiple": false
+            "description": "Closest a grid can be to an obstacle without being considered not traversable"
         }
     ],
     "className": "CalmGoals",

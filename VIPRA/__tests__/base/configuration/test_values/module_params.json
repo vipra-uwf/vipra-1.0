@@ -1,5 +1,4 @@
 {
-    "input_data_loader": {},
     "human_behavior_model": {
         "seed": "testseed",
         "behaviors": [
@@ -8,26 +7,43 @@
             "another_one"
         ]
     },
-    "output_data_writer": {},
-    "simulation_output_handler": {
+    "output": {
         "outputFrequency": 100
+    },
+    "output_sink": {
+        "outDirectory": "output"
     },
     "pedestrian_set": {},
     "obstacle_set": {
         "obstacleCollisionDistance": 0.05
     },
-    "entity_set_factory": {},
     "goals": {
-        "pathFinding": "Disembark",
-        "diagonalCost": 2.0,
         "endGoalType": "exit",
+        "gridSize": {
+            "min": 0.05,
+            "max": 0.1
+        },
+        "closestObstacle": [
+            0.25,
+            0.3,
+            0.35
+        ],
         "goalRange": 0.05
     },
-    "pedestrian_dynamics_model": {},
+    "pedestrian_dynamics_model": {
+        "meanMass": 1.0,
+        "massStdDev": 0.1,
+        "meanReactionTime": 0.4,
+        "reactionTimeStdDev": 0.05,
+        "meanMaxSpeed": 1.0,
+        "maxSpeedStdDev": 0.1,
+        "meanShoulderLen": 0.20,
+        "shoulderLenStdDev": 0.05,
+        "seed": 1234
+    },
     "configuration_reader": {},
-    "clock": {},
     "simulation": {
         "time_step_size": 0.005,
-        "max_timestep": 5000
+        "max_timestep": 10000
     }
 }

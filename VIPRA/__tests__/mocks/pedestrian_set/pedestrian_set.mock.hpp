@@ -5,7 +5,7 @@
 
 #include "pedestrian_set/pedestrian_set.hpp"
 
-class PedestrianSetMock : public PedestrianSet {
+class PedestrianSetMock : public VIPRA::PedestrianSet {
  public:
   PedestrianSetMock() = default;
   MOCK_METHOD(void, configure, (const VIPRA::Config&), (override));

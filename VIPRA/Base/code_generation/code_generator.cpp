@@ -17,8 +17,10 @@ std::string generateMain();
 std::string initializeModules();
 std::string turnOffLint();
 std::string turnOnLint();
-
+std::string setLogLevel();
 std::string generateGlobals();
+std::string setupMPI();
+std::string base();
 
 std::string mainFunctionDefinition();
 std::string generateModules();
@@ -65,6 +67,7 @@ int main(int argc, char const* argv[]) {
   }
 
   std::string lintOff = turnOffLint();
+  std::string baseStr = base();
   std::string lintOn = turnOnLint();
   std::string includesStr = generateIncludes();
   std::string mainFunctionStr = generateMain();
@@ -77,12 +80,19 @@ int main(int argc, char const* argv[]) {
     return -1;
   }
 
-  mainFile << lintOff << includesStr << functionDeclsStr << globalsStr << mainFunctionStr
-           << objectFunctionsStr << lintOn;
+  mainFile << lintOff << baseStr << includesStr << functionDeclsStr << globalsStr
+           << mainFunctionStr << objectFunctionsStr << lintOn;
 
   mainFile.close();
 
   return 0;
+}
+
+std::string base() {
+  std::ifstream     baseFile("./Base/code_generation/base.cpp");
+  std::stringstream buffer;
+  buffer << baseFile.rdbuf();
+  return buffer.str();
 }
 
 // NOLINTBEGIN : (rolland) getting around using plain ptr arithmetic for this isn't worth it    : ignoring (cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -128,8 +138,10 @@ std::string generateIncludes() {
 
   generatedIncludes += "#include <spdlog/spdlog.h>\n";
   generatedIncludes += "#include <memory>\n\n";
+  generatedIncludes += "#include <mpi.h>\n\n";
   generatedIncludes += "#include <clock/clock.hpp>\n";
 
+  generatedIncludes += "#include \"parameter_sweep/parameter_sweep.hpp\"\n";
   generatedIncludes += "#include \"arguments/arguments.hpp\"\n";
   generatedIncludes += "#include \"configuration/config.hpp\"\n";
   generatedIncludes += "#include \"output/output.hpp\"\n";
@@ -213,11 +225,6 @@ std::string generateMain() {
   std::string mainFunction;
 
   mainFunction += mainFunctionDefinition();
-  mainFunction +=
-      "\n#ifndef NDEBUG"
-      "\n\tspdlog::set_level(spdlog::level::debug);"
-      "\n\tspdlog::info(\"Set Logging Level To Debug\");"
-      "\n#endif";
   mainFunction += generateModules();
   mainFunction += log("Generating Modules");
   mainFunction += initializeModules();
@@ -225,11 +232,34 @@ std::string generateMain() {
   mainFunction += outputSetup();
   mainFunction += runSim();
   mainFunction += "\nBHVR::AttributeHandling::cleanup();";
-  mainFunction += "\nVIPRA::Output::write();";
-  mainFunction += "\nreturn 0;";
+  mainFunction += "\nVIPRA::Output::write(simID);";
   mainFunction += "\n}";
 
   return mainFunction;
+}
+
+/**
+ * @brief Creates a string that sets the spdlog log level
+ * 
+ * @return std::string 
+ */
+std::string setLogLevel() {
+  return "\n#ifndef NDEBUG"
+         "\n\tspdlog::set_level(spdlog::level::debug);"
+         "\n\tspdlog::info(\"Set Logging Level To Debug\");"
+         "\n#endif";
+}
+
+/**
+ * @brief Creates a string for setting up MPI
+ * 
+ * @return std::string 
+ */
+std::string setupMPI() {
+  return "\n\tMPI_Init(&argc, &argv);"
+         "\n\tMPI_Comm_size(MPI_COMM_WORLD, &np);"
+         "\n\tMPI_Comm_rank(MPI_COMM_WORLD, &id);"
+         "\n\tNUM = args.get<int>(\"simulations\");";
 }
 
 /**
@@ -292,14 +322,9 @@ std::string initializeModules() {
  * @return std::string 
  */
 std::string mainFunctionDefinition() {
-  return "\nint main(int argc, char** argv) {"
-         "\n\targs.parse(argc, argv);"
-         "\n\tsimConfig = "
-         "VIPRA::ConfigurationReader::getConfiguration(args.get<std::string>(\"config\"))"
-         ";"
-         "\n\tmoduleParams = "
-         "VIPRA::ConfigurationReader::getConfiguration(args.get<std::string>("
-         "\"params\"));";
+  return "\nvoid simulationMain(const std::string& simID, VIPRA::Args& args, "
+         "VIPRA::Config& config, VIPRA::Config& "
+         "params) {";
 }
 
 /**
@@ -311,19 +336,18 @@ std::string generateModules() {
   std::string str;
   for (const auto& [type, className] : TYPES) {
     str += "\n\tstd::unique_ptr<VIPRA::" + className + "> " += type + " = generate" +=
-        className + R"((simConfig["modules"][")" +=
-        type + "\"].template get<std::string>(), moduleParams[\"" += type + "\"]);\n";
+        className + R"((config["modules"][")" +=
+        type + "\"].template get<std::string>(), params[\"" += type + "\"]);\n";
   }
   return str;
 }
 
-/***/
-std::string generateGlobals() {
-  return "VIPRA::Args args;"
-         "VIPRA::Config moduleParams;"
-         "VIPRA::Config simConfig;"
-         "VIPRA::Clock timer;";
-}
+/**
+ * @brief Creates the string that declares global variables
+ * 
+ * @return std::string
+ */
+std::string generateGlobals() { return "\nVIPRA::Clock timer;"; }
 
 /**
  * @brief Creates a string that starts the simulation
@@ -337,7 +361,6 @@ std::string runSim() {
          "*pedestrian_dynamics_model,"
          "*human_behavior_model,"
          "*policy_model);";
-  "\n\toutput->write();";
 }
 
 /**
@@ -347,7 +370,7 @@ std::string runSim() {
  */
 std::string outputSetup() {
   return "\n\tVIPRA::Output::initialize(std::move(output_sink));"
-         "\n\tVIPRA::Output::configure(moduleParams[\"output\"]);";
+         "\n\tVIPRA::Output::configure(params[\"output\"]);";
 }
 
 /**

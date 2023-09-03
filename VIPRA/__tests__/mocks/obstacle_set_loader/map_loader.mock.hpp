@@ -5,7 +5,7 @@
 
 #include "map_loader/map_loader.hpp"
 
-class MapLoaderMock : public MapLoader {
+class MapLoaderMock : public VIPRA::MapLoader {
  public:
   MOCK_METHOD(void, configure, (const VIPRA::Config& configMap), (override));
   MOCK_METHOD(void, initialize, (), (override));

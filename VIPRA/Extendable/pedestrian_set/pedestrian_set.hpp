@@ -1,16 +1,12 @@
 #ifndef PEDESTRIAN_SET_HPP
 #define PEDESTRIAN_SET_HPP
 
-#include <functional>
-#include <memory>
-#include <obstacle_set/obstacle_set.hpp>
 #include <stdexcept>
 
-#include <definitions/entitySet.hpp>
-#include <definitions/state.hpp>
-#include <pedestrian_loader/pedestrian_loader.hpp>
 #include "configuration/config.hpp"
+#include "definitions/state.hpp"
 #include "definitions/type_definitions.hpp"
+#include "obstacle_set/obstacle_set.hpp"
 
 namespace VIPRA {
 class ObstacleSet;
@@ -47,64 +43,16 @@ class PedestrianSetException : public std::runtime_error {
  */
 class PedestrianSet {
  public:
-  /**
-   * @brief Configure the PedestrianSet with the given configuration map.
-   *
-   * @param configMap The configuration map containing settings for the PedestrianSet.
-   */
   virtual void configure(const VIPRA::Config& configMap) = 0;
-  /**
-   * @brief Initialize the PedestrianSet with the given pedestrian coordinates.
-   *
-   * @param pedCoords The vector of pedestrian coordinates.
-   */
   virtual void initialize(const std::vector<VIPRA::pcoord>&) = 0;
-  /**
-   * @brief Update the state of the pedestrian set.
-   *
-   * @param state The current simulation state.
-   */
+
   virtual void updateState(VIPRA::State&) = 0;
 
-  /**
-   * @brief Get the number of pedestrians in the set.
-   *
-   * @return The number of pedestrians in the set.
-   */
-  [[nodiscard]] virtual VIPRA::size getNumPedestrians() const = 0;
-  /**
-   * @brief Get the vector of pedestrian coordinates.
-   *
-   * @return The vector of pedestrian coordinates.
-   */
+  [[nodiscard]] virtual VIPRA::size          getNumPedestrians() const = 0;
   [[nodiscard]] virtual const VIPRA::f3dVec& getCoordinates() const = 0;
-  /**
-   * @brief Get the vector of pedestrian velocities.
-   *
-   * @return The vector of pedestrian velocities.
-   */
   [[nodiscard]] virtual const VIPRA::f3dVec& getVelocities() const = 0;
-  /**
-   * @brief Get the coordinates of a specific pedestrian.
-   *
-   * @param index The index of the pedestrian.
-   * @return The coordinates of the pedestrian at the specified index.
-   */
   [[nodiscard]] virtual const VIPRA::pcoord& getPedCoords(VIPRA::idx) const = 0;
-  /**
-   * @brief Get the velocity of a specific pedestrian.
-   *
-   * @param index The index of the pedestrian.
-   * @return The velocity of the pedestrian at the specified index.
-   */
-  [[nodiscard]] virtual const VIPRA::veloc& getPedVelocity(VIPRA::idx) const = 0;
-
-  /**
-   * @brief Get the nearest pedestrian to the pedestrian at the specified index.
-   *
-   * @param pedIdx The index of the pedestrian.
-   * @return A pair containing the coordinates and index of the nearest pedestrian.
-   */
+  [[nodiscard]] virtual const VIPRA::veloc&  getPedVelocity(VIPRA::idx) const = 0;
   [[nodiscard]] virtual std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(
       VIPRA::idx, const VIPRA::ObstacleSet&) const = 0;
 

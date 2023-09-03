@@ -15,19 +15,16 @@ VIPRA is broken up into 6 modules that are meant to be implemented and shared by
 5. [Map Loader](Modules/Map_Loader.md)
 6. [Pedestrian Loader](Modules/Pedestrian_Loader.md)
 
-For specific, detailed information, click the links above. For an overview on modules, see [Modules Overview](ModulesOverview.md).
+For specific, detailed information, click the links above. For an overview on modules, see [Modules Overview](./Modules/ModulesOverview.md).
 
 ## Simulation
 
-[Simulations](Simulation.md)
+An overview of a simulation run can be found in: [Simulations](Simulation.md)
 
----
-# API Documentation
+## Types
 
-The documentation was created through the use of Doxygen in tandem with GitHub actions. 
-Doxygen is automatically run to compile this webpage by pulling .md files for Related Pages and linking together properly formatted comments to create the API, which can be found under the Classes tab at the top. Instructions for this are found in the Doxyfile under the main vipra/ folder.
+The [Types](VIPRATypes.md) file gives information on types commonly used in VIPRA
 
----
 # Tutorials
 
 

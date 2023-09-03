@@ -10,10 +10,10 @@ namespace VIPRA {
 class FileSink : public Sink {
  public:
   void configure(const VIPRA::Config &) override;
-  void write(const nlohmann::json &) override;
+  void write(const std::string &id, const nlohmann::json &) override;
 
  private:
-  std::string filename;
+  std::string directory;
 
  public:
   FileSink() = default;

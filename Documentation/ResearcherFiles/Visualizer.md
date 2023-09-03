@@ -11,6 +11,8 @@
 
 - Python 3.7^
 
+- FFmpeg
+
 - `pip` Modules:
   - `json`
   - `sys`
