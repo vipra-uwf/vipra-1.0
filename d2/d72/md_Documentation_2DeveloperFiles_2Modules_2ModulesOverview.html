@@ -72,8 +72,8 @@ $(function() {
   <div class="headertitle"><div class="title">M. Modules</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md9"></a> <b>File Path:</b> Home / Developers / <a class="el" href="../../d2/d72/md_Documentation_2DeveloperFiles_2Modules_2ModulesOverview.html">Modules Overview</a></p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md25"></a> <b>File Path:</b> Home / Developers / <a class="el" href="../../d2/d72/md_Documentation_2DeveloperFiles_2Modules_2ModulesOverview.html">Modules Overview</a></p>
+<h1><a class="anchor" id="autotoc_md26"></a>
 M.1. Extendable Modules</h1>
 <p>Extendable Modules are the modules that are meant to be implemented by end users.</p>
 <ol type="1">
@@ -84,32 +84,32 @@ M.1. Extendable Modules</h1>
 <li>Map Loader</li>
 <li>Pedestrian Loader</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 M.1.1. Pedestrian Model</h2>
 <p><code>/VIPRA/Extendable/pedestrian_model/pedestrian_dynamics_model.hpp</code></p>
-<p>The <code>Pedestrian Model</code> module is the pedestrian dynamics model that dictates how the pedestrians move.</p>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<p>The <a class="el" href="../../d1/df4/md_Documentation_2DeveloperFiles_2Modules_2PedestrianModel.html">Pedestrian Model</a> module is the pedestrian dynamics model that dictates how the pedestrians move.</p>
+<h2><a class="anchor" id="autotoc_md28"></a>
 M.1.2. Goals</h2>
 <p><code>/VIPRA/Extendable/goals/goals.hpp</code></p>
-<p>The <code>Goals</code> module is what does all the path finding for pedestrians, it also determines the end goal for the overall simulation. *(for example: all pedestrians exit the plane)*</p>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<p>The <a class="el" href="../../d8/dac/md_Documentation_2DeveloperFiles_2Modules_2Goals.html">Goals</a> module is what does all the path finding for pedestrians, it also determines the end goal for the overall simulation. *(for example: all pedestrians reach the exit)*</p>
+<h2><a class="anchor" id="autotoc_md29"></a>
 M.1.3. Obstacle Set</h2>
 <p><code>/VIPRA/Extendable/obstacle_set/obstacle_set.hpp</code></p>
-<p>The <code>Obstacle Set</code> module holds the map information; including obstacles and object. The <code>Obstacle Set</code> is also responsible for collision detection.</p>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<p>The Obstacle Set module holds the map information; including obstacles and object. The <code>Obstacle Set</code> is also responsible for collision detection.</p>
+<h2><a class="anchor" id="autotoc_md30"></a>
 M.1.4. Pedestrian Set</h2>
 <p><code>/VIPRA/Extendable/pedestrian_set/pedestrian_set.hpp</code></p>
-<p>The <code>Pedestrian Set</code> module holds information about pedestrians, for example their position, velocity, etc.</p>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<p>The <a class="el" href="../../d3/d85/md_Documentation_2DeveloperFiles_2Modules_2PedestrianSet.html">Pedestrian Set</a> module holds information about pedestrians, for example their position, velocity, etc.</p>
+<h2><a class="anchor" id="autotoc_md31"></a>
 M.1.5. Map Loader</h2>
 <p><code>/VIPRA/Extendable/map_loader/map_loader.hpp</code></p>
-<p>The <code>Map Loader</code> module is responsible for loading map files into <code>Obstacle Sets</code>.</p>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<p>The <a class="el" href="../../d5/d46/md_Documentation_2DeveloperFiles_2Modules_2Map__Loader.html">Map Loader</a> module is responsible for loading map files into <code>Obstacle Sets</code>.</p>
+<h2><a class="anchor" id="autotoc_md32"></a>
 M.1.6. Pedestrian Loader</h2>
 <p><code>/VIPRA/Extendable/pedestrian_loader/pedestrian_loader.hpp</code></p>
-<p>The <code>Pedestrian Loader</code> module is responsible for loading pedestrian files into <code>Pedestrian Sets</code>.</p>
+<p>The <a class="el" href="../../dc/deb/md_Documentation_2DeveloperFiles_2Modules_2PedestrianLoader.html">Pedestrian Loader</a> module is responsible for loading pedestrian files into <code>Pedestrian Sets</code>.</p>
 <hr  />
- <h1><a class="anchor" id="autotoc_md18"></a>
+ <h1><a class="anchor" id="autotoc_md34"></a>
 M.2. Base Modules</h1>
 <p>Base Modules are the modules that the VIPRA team implements, end users can extend them, but the idea is that they do not have to.</p>
 <ol type="1">
@@ -117,22 +117,22 @@ M.2. Base Modules</h1>
 <li>Policy Model</li>
 <li>Output Sinks</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md35"></a>
 M.2.1. Human Behavior Model</h2>
 <p><code>/VIPRA/Base/human_behavior/human_behavior_model.hpp</code></p>
 <p>The <code>Human Behavior Model</code> orchestrates the <code>Behaviors</code> that are enabled for a simulation run</p>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md36"></a>
 M.2.2. Policy Model</h2>
 <p><em>Not Currently Implemented</em></p>
 <p><code>/VIPRA/Base/policy_model/policy_model.hpp</code></p>
 <p>The <code>Policy Model</code> will, in the future, handle any policies (like airplane boarding order)</p>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 M.2.3. Output Sink</h2>
 <p><code>/VIPRA/Base/output/sink.hpp</code></p>
 <p>The <code>Sink</code> module handles routing output.</p>
 <p>Currently, only a <code>FileSink</code> is implemented, that writes output to a JSON file.</p>
 <hr  />
-<p>Return to Getting Started - Developers </p>
+<p><a class="el" href="../../d1/dbb/md_Documentation_2DeveloperFiles_2Developers.html">Return to Getting Started - Developers</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

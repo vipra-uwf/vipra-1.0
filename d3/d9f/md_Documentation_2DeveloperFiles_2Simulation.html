@@ -72,26 +72,30 @@ $(function() {
   <div class="headertitle"><div class="title">S. Simulation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md31"></a> <b>File Path:</b> <a class="el" href="../../index.html#md_Documentation_2MainPage">Home</a> / <a class="el" href="../../d1/dbb/md_Documentation_2DeveloperFiles_2Developers.html">Developers</a> / <a class="el" href="../../d3/d9f/md_Documentation_2DeveloperFiles_2Simulation.html">Simulation</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md82"></a> <b>File Path:</b> <a class="el" href="../../index.html#md_Documentation_2MainPage">Home</a> / <a class="el" href="../../d1/dbb/md_Documentation_2DeveloperFiles_2Developers.html">Developers</a> / <a class="el" href="../../d3/d9f/md_Documentation_2DeveloperFiles_2Simulation.html">Simulation</a></p>
 <p>The main path a simulation takes is as follows:</p>
-<h1><a class="anchor" id="autotoc_md32"></a>
-S.1. Module Selection / Configuration</h1>
-<p>Each simulation run is provided a <code>sim.config</code> file that holds the IDs for each module the simulation should use. *(one for each type of module)*</p>
-<p>An instance of each of these modules is then created and configured, using the <code>module_params.json</code> file that is also provided to the simulation.</p>
+<h1><a class="anchor" id="autotoc_md83"></a>
+S.1. Module Selection / Configuration / Initialization</h1>
+<p>Each simulation run is provided a simulation configuration file that holds the IDs for each module the simulation should use. *(one for each type of module)*</p>
+<p>For each module type:</p><ol type="1">
+<li>Construct implementation object</li>
+<li>Call object <code>configure</code> function with the module parameters</li>
+<li>Call object <code>initialize</code> function</li>
+</ol>
 <p>Each of the modules is then passed into the main simulation object. <em>Defined in <code>/VIPRA/Base/simulation/simulation.hpp</code></em></p>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md84"></a>
 S.2. Simulation Loop</h1>
 <p>The simulation loops until the <code>Goals</code> module says that the simulation has met its end goal, or until the maximum number of time steps has been reached.</p>
 <p>Each time step the simulation:</p>
 <ol type="1">
-<li>Calls the <code>Pedestrian Model</code> module, which provides a shared pointer to a <code>State</code> object that has the updated positions and velocities of each pedestrian</li>
+<li>Calls the <code>Pedestrian Model</code> module, which provides a reference to a <code>State</code> object that has the updated positions and velocities of each pedestrian</li>
 <li>Calls the <code>Policy Model</code> module, which modifies the <code>State</code> given by the <code>Pedestrian Model</code> *(Not currently Implemented)*</li>
 <li>Calls the <code>Behavior Model</code> module, which modifies the <code>State</code> given by the <code>Pedestrian Model</code> and <code>Policy Model</code></li>
 <li>Checks if output should be written, writes if so</li>
 <li>Calls the <code>Goals</code> module to update any goals</li>
 <li>Loops</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md85"></a>
 S.3. Output</h1>
 <p>Once the simulation is finished the buffered output is written to an output file.</p>
 <p>More on output can be found in <a class="el" href="../../dc/d2d/md_Documentation_2DeveloperFiles_2Output.html">Output</a></p>

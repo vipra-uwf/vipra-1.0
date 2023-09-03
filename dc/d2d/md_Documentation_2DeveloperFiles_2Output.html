@@ -72,7 +72,7 @@ $(function() {
   <div class="headertitle"><div class="title">O. Output</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md23"></a> <b>File Path:</b> <a class="el" href="../../index.html#md_Documentation_2MainPage">Home</a> / <a class="el" href="../../d1/dbb/md_Documentation_2DeveloperFiles_2Developers.html">Developers</a> / <a class="el" href="../../dc/d2d/md_Documentation_2DeveloperFiles_2Output.html">Output</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md74"></a> <b>File Path:</b> <a class="el" href="../../index.html#md_Documentation_2MainPage">Home</a> / <a class="el" href="../../d1/dbb/md_Documentation_2DeveloperFiles_2Developers.html">Developers</a> / <a class="el" href="../../dc/d2d/md_Documentation_2DeveloperFiles_2Output.html">Output</a></p>
 <p>Output is produced in a JSON format.</p>
 <p>Output is buffered throughout the simulation and written to a <code>Sink</code> upon completion.</p>
 <p>Available <code>Sinks</code> are in section O.5.</p>
@@ -82,12 +82,12 @@ $(function() {
 <li>Pedestrian Values</li>
 <li>Pedestrian Time Step Values</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md75"></a>
 O.1 Simulation Values</h1>
 <p><code>Simulation Values</code> are values for the over all simulation run.</p>
 <p>To produce call: <code>VIPRA::Output::simValue(const char* key, T&amp;&amp; value)</code></p>
 <p>The value will be placed in: </p><div class="fragment"><div class="line">{ &quot;*key*&quot; : &quot;*value*&quot; }</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md25"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md76"></a>
 O.2. Time Step Values</h1>
 <p><code>Time Step Values</code> are values that hold true for a given time step.</p>
 <p><code>Time Step Values</code> will ONLY be written to output in time steps that match the <code>outputFrequency</code> value for <code>Output</code> in the <code>module_params.json</code> file.</p><ul>
@@ -101,7 +101,7 @@ O.2. Time Step Values</h1>
 <div class="line">    ... following timesteps</div>
 <div class="line">  ]</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md26"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md77"></a>
 O.3. Pedestrian Values</h1>
 <p><code>Pedestrian Values</code> are values for a specific pedestrian that hold true for the entire simulation.</p><ul>
 <li>Example: Mass, Speed, etc. (though these examples will generally be found in <code>module_params.json</code>, depending on the implementation)</li>
@@ -114,7 +114,7 @@ O.3. Pedestrian Values</h1>
 <div class="line">    }</div>
 <div class="line">  }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md27"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md78"></a>
 O.4. Pedestrian Time Step Values</h1>
 <p><code>Pedestrian Time Step Values</code> are values for a specific pedestrian in a specific time step.</p>
 <p>To produce call: <code>VIPRA::Output::pedTimestepValue(VIPRA::idx pedIdx, const char* key, T&amp;&amp; value)</code></p>
@@ -127,11 +127,11 @@ O.4. Pedestrian Time Step Values</h1>
 <div class="line">    ]</div>
 <div class="line">  ]</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md28"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md79"></a>
 O.5. Output Sinks</h1>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md80"></a>
 O.5.1. File Sink</h2>
-<p>This sink writes output to a JSON file at the path in <code>filepath</code> in the <code>module_params.json</code> file</p>
+<p>This sink writes output to a JSON file at the path in <code>outDirectory</code> in the Module Parameters file</p>
 <hr  />
  </div></div><!-- contents -->
 </div><!-- PageDoc -->

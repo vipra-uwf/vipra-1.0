@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VIPRA Documentation: Map_Loader</title>
+<title>VIPRA Documentation: Map Loader</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -69,10 +69,37 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">Map_Loader</div></div>
+  <div class="headertitle"><div class="title">Map Loader</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"></div></div><!-- contents -->
+<div class="textblock"><p><a class="anchor" id="autotoc_md19"></a> The map loader reads an obstacle map file putting it into a <code>VIPRA::MapData</code> derived class.</p>
+<p>This allows for loading any format for obstacle maps.</p>
+<p>A more standardized format for obstacle maps will be added in the future.</p>
+<h1><a class="anchor" id="autotoc_md20"></a>
+VIPRA::MapData</h1>
+<p>The <code>VIPRA::MapData</code> is the base class for obstacle map data loaded into the <code>ObstacleSet</code> class.</p>
+<p>Constructed with </p><div class="fragment"><div class="line">MapData(std::string type);</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md21"></a>
+Methods To Override</h1>
+<h2><a class="anchor" id="autotoc_md22"></a>
+configure(const @ref "/github/workspace/Documentation/DeveloperFiles/Modules/Parameters.md" "VIPRA::Config"&amp;) -&gt; void</h2>
+<p>Takes in <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">module parameters</a> to configure the module.</p>
+<p>Called right after construction.</p>
+<p>Params:</p><ul>
+<li>const <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">VIPRA::Config</a>&amp; : module parameters</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md23"></a>
+initialize() -&gt; void</h2>
+<p>Used to setup any necessary components before loading the map file</p>
+<p>Called before <code>loadMap()</code></p>
+<h2><a class="anchor" id="autotoc_md24"></a>
+loadMap(const std::string&amp;) const -&gt; std::unique_ptr&lt;VIPRA::MapData&gt;</h2>
+<p>Loads the map located at the provided file path.</p>
+<p>Called before initializing <code>ObstacleSet</code>.</p>
+<p>Params:</p><ul>
+<li>const std::string&amp; : file path to map </li>
+</ul>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

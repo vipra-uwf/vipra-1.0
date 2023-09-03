@@ -1,25 +1,5 @@
 var searchData=
 [
-  ['b_20behaviors_0',['b behaviors',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md198',1,'B. Behaviors'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md206',1,'B. Behaviors']]],
-  ['base_20modules_1',['base modules',['../d0/d30/md_README.html#autotoc_md182',1,'M.2. Base Modules'],['../d2/d72/md_Documentation_2DeveloperFiles_2Modules_2ModulesOverview.html#autotoc_md18',1,'M.2. Base Modules']]],
-  ['bb_20behavior_20builder_2',['bb behavior builder',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md270',1,'BB. Behavior Builder'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md203',1,'BB. Behavior Builder']]],
-  ['be_20created_20with_20parameters_20instead_3',['1. The cost function currently uses parameters to help guide the A Star algorithm to prioritize horizontal movement over vertical movement by hard coded values. These should be created with parameters instead.',['../da/dda/md_Modules_2Goals_2calm__goals_2pathfinding_2README.html#autotoc_md159',1,'']]],
-  ['behavior_20builder_4',['behavior builder',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md270',1,'BB. Behavior Builder'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md203',1,'BB. Behavior Builder']]],
-  ['behavior_20examples_5',['Behavior Examples',['../db/d38/md_Documentation_2ResearcherFiles_2behaviors_2Behavior__Examples.html',1,'']]],
-  ['behavior_20model_6',['behavior model',['../dd/d52/md_Documentation_2ResearcherFiles_2modules_2Modules.html#autotoc_md109',1,'Human Behavior Model'],['../d2/d72/md_Documentation_2DeveloperFiles_2Modules_2ModulesOverview.html#autotoc_md19',1,'M.2.1. Human Behavior Model'],['../d0/d30/md_README.html#autotoc_md183',1,'M.2.1. Human Behavior Model']]],
-  ['behavior_3a_7',['Example Behavior:',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md207',1,'']]],
-  ['behaviorbuilder_8',['behaviorbuilder',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md233',1,'A.3.2.3. Add To BehaviorBuilder'],['../d3/d90/classBHVR_1_1BehaviorBuilder.html',1,'BHVR::BehaviorBuilder'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md247',1,'C.1.2.3. Add To BehaviorBuilder'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md216',1,'S.2.3. Add To BehaviorBuilder']]],
-  ['behaviorcontext_9',['BehaviorContext',['../dc/d0a/structBHVR_1_1BehaviorContext.html',1,'BHVR']]],
-  ['behaviorerrorlistener_10',['BehaviorErrorListener',['../de/d7a/classBHVR_1_1BehaviorErrorListener.html',1,'BHVR']]],
-  ['behaviormodelexception_11',['BehaviorModelException',['../dd/d16/classVIPRA_1_1BehaviorModelException.html',1,'VIPRA']]],
-  ['behaviors_12',['behaviors',['../d7/db3/md_Documentation_2ResearcherFiles_2behaviors_2Adding__Behaviors.html',1,'Adding Behaviors'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md198',1,'B. Behaviors'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md206',1,'B. Behaviors'],['../d9/d3b/md_Documentation_2Directory.html#autotoc_md39',1,'Behaviors'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md208',1,'Important Notes on Behaviors'],['../d8/d03/md_Documentation_2ResearcherFiles_2Running.html#autotoc_md137',1,'Using Behaviors'],['../dc/d9a/md_Documentation_2ResearcherFiles_2Researchers.html#autotoc_md125',1,'VIPRA Behaviors'],['../d2/d49/md_Documentation_2ResearcherFiles_2behaviors_2VIPRA__Behaviors.html',1,'VIPRA Behaviors']]],
-  ['behaviors_20affect_20the_20environment_20physically_13',['W.3. Behaviors Affect The Environment Physically',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md287',1,'']]],
-  ['behaviors_20development_14',['VIPRA Behaviors Development',['../d7/dde/md_VIPRA__Behaviors_2README.html',1,'']]],
-  ['behaviors_20to_20change_20goals_15',['N.4 Allow Behaviors To Change Goals',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md281',1,'']]],
-  ['body_20of_20the_20algorithm_16',['Main Body of the Algorithm',['../da/dda/md_Modules_2Goals_2calm__goals_2pathfinding_2README.html#autotoc_md155',1,'']]],
-  ['build_17',['build',['../d3/d90/classBHVR_1_1BehaviorBuilder.html#ac57ac944f49b6b0e137b31896fc37a4e',1,'BHVR::BehaviorBuilder::build()'],['../d3/deb/classCALM__PATH_1_1PathingGraph.html#a5eb92efcd8520de6bd86c40fc4dc97b5',1,'CALM_PATH::PathingGraph::build()']]],
-  ['build_20and_20add_20functionality_18',['User Guide to Build and Add Functionality',['../d1/dbb/md_Documentation_2DeveloperFiles_2Developers.html',1,'']]],
-  ['builder_19',['builder',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md203',1,'BB. Behavior Builder'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md270',1,'BB. Behavior Builder']]],
-  ['builderexception_20',['BuilderException',['../d9/db6/classBuilderException.html',1,'']]],
-  ['by_20hard_20coded_20values_20these_20should_20be_20created_20with_20parameters_20instead_21',['1. The cost function currently uses parameters to help guide the A Star algorithm to prioritize horizontal movement over vertical movement by hard coded values. These should be created with parameters instead.',['../da/dda/md_Modules_2Goals_2calm__goals_2pathfinding_2README.html#autotoc_md159',1,'']]]
+  ['_3a_20vipra_3a_3aidx_20std_3a_3anumeric_5flimits_20vipra_3a_3aidx_20_3a_3amax_0',['VIPRA::idx_INVALID : VIPRA::idx = std::numeric_limits&lt;VIPRA::idx&gt;::max()',['../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html#autotoc_md115',1,'']]],
+  ['_3a_3amax_1',['VIPRA::idx_INVALID : VIPRA::idx = std::numeric_limits&lt;VIPRA::idx&gt;::max()',['../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html#autotoc_md115',1,'']]]
 ];

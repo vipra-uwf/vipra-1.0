@@ -105,14 +105,11 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a94711c4970c41ad60ee9af269f24f677" id="r_a94711c4970c41ad60ee9af269f24f677"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/classCalmPedestrianModel.html#a94711c4970c41ad60ee9af269f24f677">configure</a> (const VIPRA::Config &amp;) override</td></tr>
-<tr class="memdesc:a94711c4970c41ad60ee9af269f24f677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the PedestrianDynamicsModel with the given configuration map.  <br /></td></tr>
 <tr class="separator:a94711c4970c41ad60ee9af269f24f677"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46ed03a6cd190ab265c5347dee09a37b" id="r_a46ed03a6cd190ab265c5347dee09a37b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/classCalmPedestrianModel.html#a46ed03a6cd190ab265c5347dee09a37b">initialize</a> (const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;, const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;, const <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a> &amp;) override</td></tr>
-<tr class="memdesc:a46ed03a6cd190ab265c5347dee09a37b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the PedestrianDynamicsModel with the given sets and goals.  <br /></td></tr>
 <tr class="separator:a46ed03a6cd190ab265c5347dee09a37b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b45b5bd1b4752ada0f70ddfe20b0a21" id="r_a1b45b5bd1b4752ada0f70ddfe20b0a21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/classCalmPedestrianModel.html#a1b45b5bd1b4752ada0f70ddfe20b0a21">timestep</a> (const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;, const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;, const <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a> &amp;, VIPRA::delta_t, VIPRA::t_step) override</td></tr>
-<tr class="memdesc:a1b45b5bd1b4752ada0f70ddfe20b0a21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a timestep of the pedestrian dynamics model.  <br /></td></tr>
-<tr class="separator:a1b45b5bd1b4752ada0f70ddfe20b0a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9482f58677eba949f3863c1c172ffb57" id="r_a9482f58677eba949f3863c1c172ffb57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/classCalmPedestrianModel.html#a9482f58677eba949f3863c1c172ffb57">timestep</a> (const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;, const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;, const <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a> &amp;, <a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;, VIPRA::delta_t, VIPRA::t_step) override</td></tr>
+<tr class="separator:a9482f58677eba949f3863c1c172ffb57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af69a13fbd95724c8d420a8b4bd9906c7" id="r_af69a13fbd95724c8d420a8b4bd9906c7"><td class="memItemLeft" align="right" valign="top"><a id="af69a13fbd95724c8d420a8b4bd9906c7" name="af69a13fbd95724c8d420a8b4bd9906c7"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CalmPedestrianModel</b> (const <a class="el" href="../../d5/d12/classCalmPedestrianModel.html">CalmPedestrianModel</a> &amp;)=default</td></tr>
 <tr class="separator:af69a13fbd95724c8d420a8b4bd9906c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,7 +150,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void CalmPedestrianModel::configure </td>
           <td>(</td>
           <td class="paramtype">const VIPRA::Config &amp;&#160;</td>
-          <td class="paramname"><em>configMap</em></td><td>)</td>
+          <td class="paramname"><em>confMap</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -164,15 +161,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Configure the PedestrianDynamicsModel with the given configuration map. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">configMap</td><td>The configuration map containing settings for the PedestrianDynamicsModel. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="../../d5/dee/classVIPRA_1_1PedestrianDynamicsModel.html#a34abf83a0ecba49db0fd292520190abc">VIPRA::PedestrianDynamicsModel</a>.</p>
+<p>Implements <a class="el" href="../../d5/dee/classVIPRA_1_1PedestrianDynamicsModel.html">VIPRA::PedestrianDynamicsModel</a>.</p>
 
 </div>
 </div>
@@ -189,7 +178,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void CalmPedestrianModel::initialize </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramname"><em>pedSet</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -201,7 +190,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a> &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramname"><em>goals</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -216,22 +205,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Initialize the PedestrianDynamicsModel with the given sets and goals. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pedSet</td><td>The PedestrianSet to be used for modeling. </td></tr>
-    <tr><td class="paramname">obsSet</td><td>The ObstacleSet to be used for modeling. </td></tr>
-    <tr><td class="paramname">goals</td><td>The Goals to be used for modeling. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="../../d5/dee/classVIPRA_1_1PedestrianDynamicsModel.html#a36bb37eec55470193740549760de68d5">VIPRA::PedestrianDynamicsModel</a>.</p>
+<p>Implements <a class="el" href="../../d5/dee/classVIPRA_1_1PedestrianDynamicsModel.html">VIPRA::PedestrianDynamicsModel</a>.</p>
 
 </div>
 </div>
-<a id="a1b45b5bd1b4752ada0f70ddfe20b0a21" name="a1b45b5bd1b4752ada0f70ddfe20b0a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b45b5bd1b4752ada0f70ddfe20b0a21">&#9670;&#160;</a></span>timestep()</h2>
+<a id="a9482f58677eba949f3863c1c172ffb57" name="a9482f58677eba949f3863c1c172ffb57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9482f58677eba949f3863c1c172ffb57">&#9670;&#160;</a></span>timestep()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -240,34 +219,40 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp; CalmPedestrianModel::timestep </td>
+          <td class="memname">void CalmPedestrianModel::timestep </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramname"><em>pedSet</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramname"><em>obstacleSet</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramname"><em>goals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a> &amp;&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">VIPRA::delta_t&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramname"><em>time</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">VIPRA::t_step&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramname"><em>timestep</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -282,20 +267,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Perform a timestep of the pedestrian dynamics model. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pedSet</td><td>The PedestrianSet used for the current timestep. </td></tr>
-    <tr><td class="paramname">obsSet</td><td>The ObstacleSet used for the current timestep. </td></tr>
-    <tr><td class="paramname">goals</td><td>The Goals used for the current timestep. </td></tr>
-    <tr><td class="paramname">deltaT</td><td>The time step duration. </td></tr>
-    <tr><td class="paramname">tStep</td><td>The current simulation time step. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The updated State after the timestep. </dd></dl>
-
-<p>Implements <a class="el" href="../../d5/dee/classVIPRA_1_1PedestrianDynamicsModel.html#ab4517bb333eb7dc9a332ef59013c86d6">VIPRA::PedestrianDynamicsModel</a>.</p>
+<p>Implements <a class="el" href="../../d5/dee/classVIPRA_1_1PedestrianDynamicsModel.html">VIPRA::PedestrianDynamicsModel</a>.</p>
 
 </div>
 </div>

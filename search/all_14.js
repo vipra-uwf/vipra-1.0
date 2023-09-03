@@ -1,20 +1,15 @@
 var searchData=
 [
-  ['n_201_20add_20checks_0',['N.1 Add Checks',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md278',1,'']]],
-  ['n_202_20pedestrian_20attributes_1',['N.2 Pedestrian Attributes',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md279',1,'']]],
-  ['n_203_20run_20time_20parameters_2',['N.3. Run Time Parameters',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md280',1,'']]],
-  ['n_204_20allow_20behaviors_20to_20change_20goals_3',['N.4 Allow Behaviors To Change Goals',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md281',1,'']]],
-  ['n_208_20conditional_20selectors_4',['N.8. Conditional Selectors',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md282',1,'']]],
-  ['n_209_20individual_20seeds_20for_20actions_20selectors_20etc_5',['N.9. Individual Seeds for Actions/Selectors/Etc.',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md283',1,'']]],
-  ['n_20needs_6',['n needs',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md204',1,'N. Needs'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md277',1,'N. Needs'],['../da/dda/md_Modules_2Goals_2calm__goals_2pathfinding_2README.html#autotoc_md149',1,'N. Needs']]],
-  ['nearestobstacle_7',['nearestobstacle',['../db/dec/classPassengerVehicleObstacleSet.html#a6aebc557e44a9defbf02e93552507b6b',1,'PassengerVehicleObstacleSet::nearestObstacle(VIPRA::f3d) const override'],['../db/dec/classPassengerVehicleObstacleSet.html#abfcd14bf55b26e909d2a138206fc89c9',1,'PassengerVehicleObstacleSet::nearestObstacle(const VIPRA::PedestrianSet &amp;) const override']]],
-  ['nearestobstacleindirection_8',['nearestobstacleindirection',['../db/dec/classPassengerVehicleObstacleSet.html#a8f48558b79e0a3ae0ecead68695f548b',1,'PassengerVehicleObstacleSet::nearestObstacleInDirection(VIPRA::f3d, VIPRA::f3d) const override'],['../db/dec/classPassengerVehicleObstacleSet.html#a7f11dde2d4c3edd00a9e2f20a285da33',1,'PassengerVehicleObstacleSet::nearestObstacleInDirection(const VIPRA::PedestrianSet &amp;) const override']]],
-  ['needs_9',['needs',['../da/dda/md_Modules_2Goals_2calm__goals_2pathfinding_2README.html#autotoc_md149',1,'N. Needs'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md204',1,'N. Needs'],['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md277',1,'N. Needs']]],
-  ['new_20modules_10',['Adding New Modules',['../dd/d52/md_Documentation_2ResearcherFiles_2modules_2Modules.html#autotoc_md98',1,'']]],
-  ['nexttimestep_11',['nextTimestep',['../d7/dc9/classVIPRA_1_1Output.html#af49040435ead277f61a4e1f5fcff2da7',1,'VIPRA::Output']]],
-  ['normal_5fdistribution_12',['normal_distribution',['../d4/d74/classVIPRA_1_1normal__distribution.html',1,'VIPRA']]],
-  ['notes_20on_20behaviors_13',['Important Notes on Behaviors',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md208',1,'']]],
-  ['now_14',['now',['../d8/d95/classVIPRA_1_1Clock.html#aaf063fb7323da097cf98904d79ef12d2',1,'VIPRA::Clock']]],
-  ['numerical_20values_15',['V.1. Numerical Values',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md273',1,'']]],
-  ['numericvalue_16',['NumericValue',['../dc/d06/classBHVR_1_1NumericValue.html',1,'BHVR']]]
+  ['lasting_20events_0',['E.2 Lasting Events',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md358',1,'']]],
+  ['latch_1',['latch',['../d0/d3f/classBHVR_1_1Latch.html',1,'BHVR::Latch'],['../da/d44/classBHVR_1_1TimedLatchCollection.html#a014b01223c26e701985e26bf0d098299',1,'BHVR::TimedLatchCollection::latch()']]],
+  ['launcher_2',['Se.3. VIPRA Launcher',['../d0/d30/md_README.html#autotoc_md260',1,'']]],
+  ['line_3',['Line',['../da/d05/structLine.html',1,'']]],
+  ['list_4',['A.3.1 Atom List',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md323',1,'']]],
+  ['loader_5',['loader',['../d2/d72/md_Documentation_2DeveloperFiles_2Modules_2ModulesOverview.html#autotoc_md31',1,'M.1.5. Map Loader'],['../d0/d30/md_README.html#autotoc_md274',1,'M.1.5. Map Loader'],['../d2/d72/md_Documentation_2DeveloperFiles_2Modules_2ModulesOverview.html#autotoc_md32',1,'M.1.6. Pedestrian Loader'],['../d0/d30/md_README.html#autotoc_md275',1,'M.1.6. Pedestrian Loader'],['../d5/d46/md_Documentation_2DeveloperFiles_2Modules_2Map__Loader.html',1,'Map Loader'],['../dd/d52/md_Documentation_2ResearcherFiles_2modules_2Modules.html#autotoc_md187',1,'Map Loader'],['../dc/deb/md_Documentation_2DeveloperFiles_2Modules_2PedestrianLoader.html',1,'Pedestrain Loader'],['../dd/d52/md_Documentation_2ResearcherFiles_2modules_2Modules.html#autotoc_md188',1,'Pedestrian Loader']]],
+  ['loadmap_6',['loadMap',['../d8/d73/classPointMapLoader.html#a799f310dff5111aab8e80efd6aa3ba55',1,'PointMapLoader']]],
+  ['loadmap_20const_20std_3a_3astring_20const_20std_3a_3aunique_5fptr_20vipra_3a_3amapdata_7',['loadMap(const std::string&amp;) const -&gt; std::unique_ptr&lt;VIPRA::MapData&gt;',['../d5/d46/md_Documentation_2DeveloperFiles_2Modules_2Map__Loader.html#autotoc_md24',1,'']]],
+  ['loadpedestrians_8',['loadPedestrians',['../da/d59/classJsonPedestrianLoader.html#a411d2cbd03c7609fb6baa262ed7bb272',1,'JsonPedestrianLoader']]],
+  ['loadpedestrians_20const_20std_3a_3astring_20const_20std_3a_3avector_20ref_20github_20workspace_20documentation_20developerfiles_20vipratypes_20md_20vipra_3a_3apcoord_9',['loadPedestrians(const std::string&amp;) const -&gt; std::vector&lt;@ref &quot;/github/workspace/Documentation/DeveloperFiles/VIPRATypes.md&quot; &quot;VIPRA::pcoord&quot;&gt;',['../dc/deb/md_Documentation_2DeveloperFiles_2Modules_2PedestrianLoader.html#autotoc_md57',1,'']]],
+  ['location_10',['Location',['../dd/da1/classBHVR_1_1Location.html',1,'BHVR']]],
+  ['loop_11',['loop',['../d3/d9f/md_Documentation_2DeveloperFiles_2Simulation.html#autotoc_md84',1,'S.2. Simulation Loop'],['../d0/d30/md_README.html#autotoc_md284',1,'S.2. Simulation Loop']]]
 ];
