@@ -10,19 +10,17 @@
 
 #include <distributions/distributions.hpp>
 
-VIPRA::State& CalmPedestrianModel::timestep(const VIPRA::PedestrianSet& pedSet,
-                                            const VIPRA::ObstacleSet&   obstacleSet,
-                                            const VIPRA::Goals&         goals,
-                                            VIPRA::delta_t time, VIPRA::t_step timestep) {
+void CalmPedestrianModel::timestep(const VIPRA::PedestrianSet& pedSet,
+                                   const VIPRA::ObstacleSet&   obstacleSet,
+                                   const VIPRA::Goals& goals, VIPRA::State& state,
+                                   VIPRA::delta_t time, VIPRA::t_step timestep) {
   calculateShoulders(pedSet, goals);
   calculateNeartestNeighbors(pedSet, obstacleSet, goals);
   calculateBetas(pedSet);
   calculatePropulsion(pedSet, goals);
-  updateModelState(pedSet, goals, time, timestep);
+  updateModelState(pedSet, goals, state, time, timestep);
 
   if (timestep > 0) collision.raceDetection(pedSet, peds, goals, timestep);
-
-  return modelState;
 }
 
 /**
@@ -108,8 +106,8 @@ void CalmPedestrianModel::calculatePropulsion(const VIPRA::PedestrianSet& pedSet
 }
 
 void CalmPedestrianModel::updateModelState(const VIPRA::PedestrianSet& pedSet,
-                                           const VIPRA::Goals& goals, VIPRA::delta_t time,
-                                           VIPRA::t_step) {
+                                           const VIPRA::Goals& goals, VIPRA::State& state,
+                                           VIPRA::delta_t time, VIPRA::t_step) {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto&       coords = pedSet.getCoordinates();
   const auto&       velocities = pedSet.getVelocities();
@@ -118,7 +116,7 @@ void CalmPedestrianModel::updateModelState(const VIPRA::PedestrianSet& pedSet,
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     if (collision.status(i) == WAIT) {
-      this->modelState.velocities[i] = VIPRA::f3d{};
+      state.velocities[i] = VIPRA::f3d{};
       continue;
     }
 
@@ -128,15 +126,15 @@ void CalmPedestrianModel::updateModelState(const VIPRA::PedestrianSet& pedSet,
     const float mass = peds.masses.at(i);
 
     // Use Euler Method to update position and velocity
-    modelState.velocities[i] = ((propulsion / mass) * time) + velocity;
+    state.velocities[i] = ((propulsion / mass) * time) + velocity;
 
     // TODO(rolland) : I believe Dr.Srinivasan said we shouldn't have to do this? It sets velocity to zero when a pedestrian reaches a goal to prevent sliding
     if (goals.timeSinceLastGoal(i) > 0 && goals.timeSinceLastGoal(i) <= slidingGoalTime) {
-      this->modelState.velocities[i].x = 0;
-      this->modelState.velocities[i].y = 0;
+      state.velocities[i].x = 0;
+      state.velocities[i].y = 0;
     }
 
-    modelState.coords[i] = pedCoord + (modelState.velocities[i] * time);
+    state.coords[i] = pedCoord + (state.velocities[i] * time);
   }
 }
 
@@ -319,7 +317,6 @@ void CalmPedestrianModel::configure(const VIPRA::Config& confMap) {
 void CalmPedestrianModel::initialize(const VIPRA::PedestrianSet& pedSet,
                                      const VIPRA::ObstacleSet&,
                                      const VIPRA::Goals& goals) {
-  modelState = VIPRA::State(pedSet.getNumPedestrians());
   setModelData(pedSet);
   collision.initialize(pedSet, goals, dynamic_cast<const ModelData&>(peds));
 }

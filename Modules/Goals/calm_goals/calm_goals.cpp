@@ -1,6 +1,8 @@
 
 #include "calm_goals.hpp"
 
+#include <unordered_map>
+
 void CalmGoals::configure(const VIPRA::Config& configMap) {
   spdlog::info("CalmGoals: Configuring Calm Goals");
   goalRange = configMap["goalRange"].get<float>();

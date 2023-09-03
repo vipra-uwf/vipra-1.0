@@ -63,14 +63,12 @@ Here is a shortened version of the Calm Pedestrian Model's .mm file
     {
       "name": "meanMass",
       "type": "float",
-      "description": "Mean value for pedestrian mass",
-      "multiple": false
+      "description": "Mean value for pedestrian mass"
     },
     {
       "name": "massStdDev",
       "type": "float",
-      "description": "Standard Deviation for pedestrian mass",
-      "multiple": false
+      "description": "Standard Deviation for pedestrian mass"
     }
   ],
   "className"   : "CalmPedestrianModel",

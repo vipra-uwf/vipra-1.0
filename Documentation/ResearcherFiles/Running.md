@@ -49,14 +49,12 @@ Example:
         {
             "name": "endGoalType",
             "type": "string",
-            "description": "Type of Object that All Pedestrians Attempt to move towards, available options depend on obstacle map used",
-            "multiple": false
+            "description": "Type of Object that All Pedestrians Attempt to move towards, available options depend on obstacle map used"
         },
         {
             "name": "goalRange",
             "type": "float",
-            "description": "Range from a goal a pedestrian needs to reach before considered reaching a goal",
-            "multiple": false
+            "description": "Range from a goal a pedestrian needs to reach before considered reaching a goal"
         }
     ],
     "className": "CalmGoals",

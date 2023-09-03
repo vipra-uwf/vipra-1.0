@@ -8,8 +8,6 @@
 #include <vector>
 
 #include "Goals/calm_goals/calm_goals.hpp"
-#include "ObstacleSet/passenger_vehicle_obstacle_set/passenger_vehicle_obstacle_set.hpp"
-#include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
 
 #include "configuration/config.hpp"
 #include "definitions/type_definitions.hpp"
@@ -44,17 +42,17 @@ class CalmPedestrianModel : public VIPRA::PedestrianDynamicsModel {
     float ShoulderLenStdDev;
   };
 
-  void          configure(const VIPRA::Config&) override;
-  void          initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
-                           const VIPRA::Goals&) override;
-  VIPRA::State& timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
-                         const VIPRA::Goals&, VIPRA::delta_t, VIPRA::t_step) override;
+  void configure(const VIPRA::Config&) override;
+  void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                  const VIPRA::Goals&) override;
+  void timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                const VIPRA::Goals&, VIPRA::State&, VIPRA::delta_t,
+                VIPRA::t_step) override;
 
  private:
   ConfigData         config{};
   ModelData          peds;
   Collision          collision;
-  VIPRA::State       modelState;
   VIPRA::pRNG_Engine rand{};
 
   std::vector<Line> pedShoulders;
@@ -69,8 +67,8 @@ class CalmPedestrianModel : public VIPRA::PedestrianDynamicsModel {
   void calculateNeartestNeighbors(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
                                   const VIPRA::Goals&);
   void calculateDistanceMatrices(const VIPRA::PedestrianSet&);
-  void updateModelState(const VIPRA::PedestrianSet&, const VIPRA::Goals&, VIPRA::delta_t,
-                        VIPRA::t_step);
+  void updateModelState(const VIPRA::PedestrianSet&, const VIPRA::Goals&, VIPRA::State&,
+                        VIPRA::delta_t, VIPRA::t_step);
 
   [[nodiscard]] static bool objectSpatialTest(const Rect&, VIPRA::f3d objLeft,
                                               VIPRA::f3d objRight);

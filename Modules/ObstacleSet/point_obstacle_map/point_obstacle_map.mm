@@ -6,8 +6,7 @@
         {
             "name": "obstacleCollisionDistance",
             "type": "float",
-            "description": "Distance to an obstacle point that counts as colliding",
-            "multiple": false
+            "description": "Distance to an obstacle point that counts as colliding"
         }
     ],
     "className": "PointObstacleMap",
