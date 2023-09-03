@@ -25,7 +25,8 @@ run_gen_main:
 
 build_sim:
 	cmake -B ${DIR} . ${DEBUG} ${PROF}
-	cmake --build ${DIR} -j 5
+	cmake --build ${DIR} -j 5 
+	cd build && cmake -DCMAKE_CXX_INCLUDE_WHAT_YOU_USE="include-what-you-use;-w;-Xiwyu;--verbose=7"
 	
 clean:
 	rm -rf build

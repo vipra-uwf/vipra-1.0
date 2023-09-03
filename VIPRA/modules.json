@@ -26,9 +26,9 @@
   "obstacle_set": [
     {
       "id": "MTpemEr4jv5XTvgwO7q54Qco97Pnt4",
-      "name": "passenger_vehicle_obstacle_set",
-      "className": "PassengerVehicleObstacleSet",
-      "dirPath": "../Modules/ObstacleSet/passenger_vehicle_obstacle_set"
+      "name": "point_obstacle_map",
+      "className": "PointObstacleMap",
+      "dirPath": "../Modules/ObstacleSet/point_obstacle_map"
     }
   ],
   "map_loader": [

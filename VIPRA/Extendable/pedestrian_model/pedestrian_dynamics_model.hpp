@@ -4,13 +4,13 @@
 #include <memory>
 #include <stdexcept>
 
-#include <definitions/state.hpp>
 #include "configuration/config.hpp"
+#include "definitions/state.hpp"
 #include "definitions/type_definitions.hpp"
 
-#include <goals/goals.hpp>
-#include <obstacle_set/obstacle_set.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
+#include "goals/goals.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 namespace VIPRA {
 /**
@@ -45,33 +45,12 @@ class PedDynamicsException : public std::runtime_error {
  */
 class PedestrianDynamicsModel {
  public:
-  /**
-   * @brief Configure the PedestrianDynamicsModel with the given configuration map.
-   *
-   * @param configMap The configuration map containing settings for the PedestrianDynamicsModel.
-   */
   virtual void configure(const VIPRA::Config& configMap) = 0;
-  /**
-   * @brief Initialize the PedestrianDynamicsModel with the given sets and goals.
-   *
-   * @param pedSet The PedestrianSet to be used for modeling.
-   * @param obsSet The ObstacleSet to be used for modeling.
-   * @param goals The Goals to be used for modeling.
-   */
   virtual void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
                           const VIPRA::Goals&) = 0;
-  /**
-   * @brief Perform a timestep of the pedestrian dynamics model.
-   *
-   * @param pedSet The PedestrianSet used for the current timestep.
-   * @param obsSet The ObstacleSet used for the current timestep.
-   * @param goals The Goals used for the current timestep.
-   * @param deltaT The time step duration.
-   * @param tStep The current simulation time step.
-   * @return The updated State after the timestep.
-   */
-  virtual VIPRA::State& timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
-                                 const VIPRA::Goals&, VIPRA::delta_t, VIPRA::t_step) = 0;
+  virtual void timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                        const VIPRA::Goals&, VIPRA::State&, VIPRA::delta_t,
+                        VIPRA::t_step) = 0;
 
   PedestrianDynamicsModel(const PedestrianDynamicsModel&) = default;
   PedestrianDynamicsModel(PedestrianDynamicsModel&&) = delete;
