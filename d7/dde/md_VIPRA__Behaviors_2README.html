@@ -72,25 +72,25 @@ $(function() {
   <div class="headertitle"><div class="title">VIPRA Behaviors Development</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md291"></a> </p>
-<h1><a class="anchor" id="autotoc_md292"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md296"></a> </p>
+<h1><a class="anchor" id="autotoc_md297"></a>
 Sections</h1>
-<h3><a class="anchor" id="autotoc_md293"></a>
-B. Behaviors</h3>
-<h3><a class="anchor" id="autotoc_md294"></a>
-S. Selectors</h3>
-<h3><a class="anchor" id="autotoc_md295"></a>
-A. Actions</h3>
-<h3><a class="anchor" id="autotoc_md296"></a>
-C. Conditions</h3>
-<h3><a class="anchor" id="autotoc_md297"></a>
-E. Events</h3>
 <h3><a class="anchor" id="autotoc_md298"></a>
-BB. Behavior Builder</h3>
+B. Behaviors</h3>
 <h3><a class="anchor" id="autotoc_md299"></a>
+S. Selectors</h3>
+<h3><a class="anchor" id="autotoc_md300"></a>
+A. Actions</h3>
+<h3><a class="anchor" id="autotoc_md301"></a>
+C. Conditions</h3>
+<h3><a class="anchor" id="autotoc_md302"></a>
+E. Events</h3>
+<h3><a class="anchor" id="autotoc_md303"></a>
+BB. Behavior Builder</h3>
+<h3><a class="anchor" id="autotoc_md304"></a>
 N. Needs</h3>
 <hr  />
-<h1><a class="anchor" id="autotoc_md301"></a>
+<h1><a class="anchor" id="autotoc_md306"></a>
 B. Behaviors</h1>
 <p>A <code>Behavior</code> describes <code>Actions</code> that pedestrians take given certain <code>Conditions</code></p>
 <p>A <code>Behavior</code> is comprised of:</p><ul>
@@ -99,7 +99,7 @@ B. Behaviors</h1>
 <li><code>Actions</code></li>
 <li><code>Behavior Context</code></li>
 </ul>
-<h3><a class="anchor" id="autotoc_md302"></a>
+<h3><a class="anchor" id="autotoc_md307"></a>
 Example Behavior:</h3>
 <p>This behavior describes an important announcement, while the announcement is occurring all pedestrians will walk at 50% speed. </p><div class="fragment"><div class="line">Consider an announcement_listener.</div>
 <div class="line"> </div>
@@ -111,21 +111,21 @@ Example Behavior:</h3>
 <div class="line"> </div>
 <div class="line">// Action Statement</div>
 <div class="line">An announcement_listener will @walk 50% slower while an !announcement event is occurring.</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md303"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md308"></a>
 Important Notes on Behaviors</h3>
 <ol type="1">
 <li>Each Behavior is self-contained, Behaviors know nothing of and can not interact with each other.</li>
 </ol>
 <hr  />
-<h1><a class="anchor" id="autotoc_md305"></a>
+<h1><a class="anchor" id="autotoc_md310"></a>
 S. Selectors</h1>
 <p><code>Selectors</code> Decide which pedestrians "possess" a <code>Behavior</code>.</p>
 <p><code>Behaviors</code> only have one <code>Selector</code> but that <code>Selector</code> has multiple <code>SubSelectors</code>.</p>
-<h2><a class="anchor" id="autotoc_md306"></a>
+<h2><a class="anchor" id="autotoc_md311"></a>
 S.1. Sub Selectors</h2>
 <p><code>SubSelectors</code> are what actually select pedestrians.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md308"></a>
+ <h2><a class="anchor" id="autotoc_md313"></a>
 S.2. Creating A Sub Selector</h2>
 <ol type="1">
 <li>Add To Grammar</li>
@@ -135,14 +135,14 @@ S.2. Creating A Sub Selector</h2>
 <li>Add Tests</li>
 <li>Add To Documentation</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md309"></a>
+<h3><a class="anchor" id="autotoc_md314"></a>
 S.2.1. Add To Grammar</h3>
 <p><code>Selectors</code> are added to the grammar in <code>/VIPRA_Behaviors/grammar/selector.g4</code></p>
 <p>After defining a new <code>SubSelector</code> grammar rule run <code>make</code> in <code>/VIPRA_Behaviors/grammar/</code> to update the generated files.</p>
 <p>example: </p><div class="fragment"><div class="line">selector_Example:</div>
 <div class="line">    &#39;An example Selector with a &#39; NUMBER &#39;.&#39;</div>
 <div class="line">    ;</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md310"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md315"></a>
 S.2.2. Create Selector Function Definition</h3>
 <p>Add a header file in <code>/VIPRA_Behaviors/include/selectors/</code> and a matching source file in <code>/VIPRA_Behaviors/src/selectors/</code></p>
 <p>The only rule that <code>Selector Functions</code> need to conform to is that they implement </p><div class="fragment"><div class="line"> ++</div>
@@ -176,7 +176,7 @@ S.2.2. Create Selector Function Definition</h3>
 <div class="line">                            <span class="keyword">const</span> Goals&amp;) {</div>
 <div class="line">    <span class="comment">// ... return the selected pedestrians</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md311"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md316"></a>
 S.2.3. Add To BehaviorBuilder</h3>
 <div class="fragment"><div class="line"> ++</div>
 <div class="line">SubSelector</div>
@@ -196,23 +196,23 @@ S.2.3. Add To BehaviorBuilder</h3>
 <div class="line">  }</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// ... Other Sub Selectors ...</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md312"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md317"></a>
 S.2.4. Add Source To CMakeLists.txt</h3>
 <p>Add the <code>Selector</code> source file to <code>/VIPRA_Behaviors/src/CMakeLists.txt</code></p>
 <p>example:</p><ul>
 <li>for our Example <code>Selector</code>: <code>${SRC_DIR}/selectors/selector_example.cpp</code></li>
 </ul>
-<h3><a class="anchor" id="autotoc_md313"></a>
+<h3><a class="anchor" id="autotoc_md318"></a>
 S.2.5. Add Tests</h3>
 <p>Add any tests in <code>/VIPRA_Behaviors/__tests__/selector_tests/</code></p>
-<h3><a class="anchor" id="autotoc_md314"></a>
+<h3><a class="anchor" id="autotoc_md319"></a>
 S.2.6. Add To Documentation</h3>
 <p>Add any documentation</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md316"></a>
+<h1><a class="anchor" id="autotoc_md321"></a>
 A. Actions</h1>
 <p><code>Actions</code> are what affect a Pedestrian's position, velocity, state, etc. <code>Actions</code> are comprised of <code>Atoms</code> and, optionally, a <code>Condition</code>.</p>
-<h1><a class="anchor" id="autotoc_md317"></a>
+<h1><a class="anchor" id="autotoc_md322"></a>
 A.1. Unconditional Actions</h1>
 <p>An <code>Unconditional Action</code> will ALWAYS take effect.</p>
 <p><code>Unconditional Actions</code> are described with the following rule: <code>A(n) {TYPE} will always {ATOM_LIST}.</code></p><ul>
@@ -220,7 +220,7 @@ A.1. Unconditional Actions</h1>
 <li>see <b>§A.3.1</b> for an explanation of Atom Lists</li>
 </ul>
 <hr  />
- <h1><a class="anchor" id="autotoc_md319"></a>
+ <h1><a class="anchor" id="autotoc_md324"></a>
 A.2. Conditional Actions</h1>
 <p>A <code>Conditional Action</code> will only take effect if its <code>Condition</code> is satisfied.</p>
 <p><code>Conditional Actions</code> are described with the following rule: <code>A(n) {TYPE} will {ATOM_LIST} {CONDITION}.</code></p><ul>
@@ -229,7 +229,7 @@ A.2. Conditional Actions</h1>
 <li>see <b>§C.</b> for an explanation of Conditions</li>
 </ul>
 <hr  />
- <h1><a class="anchor" id="autotoc_md321"></a>
+ <h1><a class="anchor" id="autotoc_md326"></a>
 A.3 Atoms</h1>
 <p><code>Atoms</code> are the part of an <code>Action</code> that actually affects a pedestrian. A group of <code>Atoms</code> (<code>Atom List</code>) comprise an <code>Action</code>.</p>
 <p><code>Atoms</code> can be one or multiple words long and are always preceded by an <code>@</code></p>
@@ -243,7 +243,7 @@ A.3 Atoms</h1>
 <li><code>Atoms</code> must override <code>performAction</code></li>
 </ul>
 <hr  />
- <h2><a class="anchor" id="autotoc_md323"></a>
+ <h2><a class="anchor" id="autotoc_md328"></a>
 A.3.1 Atom List</h2>
 <p>An <code>Atom List</code> is the collection of <code>Atoms</code> that make up an <code>Action</code>. <code>Atom Lists</code> are comprised of one or more <code>Atoms</code>.</p>
 <p><code>Atom Lists</code> are described with the following rule: <code>{ATOM} (then {ATOM_LIST})</code></p>
@@ -256,7 +256,7 @@ A.3.1 Atom List</h2>
 <li>e.g The <code>Atom List</code> <code>@run in circles then @stop</code> might result in the pedestrian simply stopping *(dependent on the definition of @run in circles and @stop)*</li>
 </ul>
 <hr  />
- <h2><a class="anchor" id="autotoc_md325"></a>
+ <h2><a class="anchor" id="autotoc_md330"></a>
 A.3.2. Making An Atom</h2>
 <ol type="1">
 <li>Add To Grammar</li>
@@ -266,7 +266,7 @@ A.3.2. Making An Atom</h2>
 <li>Add Tests</li>
 <li>Add Documentation</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md326"></a>
+<h3><a class="anchor" id="autotoc_md331"></a>
 A.3.2.1. Add To Grammar</h3>
 <p><code>Atoms</code> are added to the grammar in <code>/VIPRA_Behaviors/grammar/action.g4</code></p>
 <p>After creating the <code>Atom</code> grammar rule run <code>make</code> in <code>/VIPRA_Behaviors/grammar/</code> to update the generated files.</p>
@@ -279,7 +279,7 @@ A.3.2.1. Add To Grammar</h3>
 <div class="line">// Defining the example atom rule</div>
 <div class="line">action_Example:</div>
 <div class="line">    &#39;@example do something with &#39; ID AND NUMBER;</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md327"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md332"></a>
 A.3.2.2. Create Atom Definition</h3>
 <p>Create a header file in <code>/VIPRA_Behaviors/include/actions/atoms/</code> and a matching source file in <code>/VIPRA_Behaviors/src/actions/atoms/</code></p>
 <p>The only rule that <code>Atoms</code> need to conform to is that they implement </p><div class="fragment"><div class="line"> ++</div>
@@ -311,7 +311,7 @@ A.3.2.2. Create Atom Definition</h3>
 <div class="line">                     std::shared_ptr&lt;VIPRA::State&gt;) {</div>
 <div class="line">  <span class="comment">// ... code that writes changes to state</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md328"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md333"></a>
 A.3.2.3. Add To BehaviorBuilder</h3>
 <p>Add the <code>Atom</code> to the <code>addAtomToAction</code> method in <code>/VIPRA_Behaviors/src/behavior/behavior_builder.cpp</code></p>
 <p>example:</p><ul>
@@ -336,35 +336,35 @@ A.3.2.3. Add To BehaviorBuilder</h3>
 </div><!-- fragment --></li>
 <li>The function <code>ctx-&gt;action_Example()</code> comes from the name we gave the rule in the grammar</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md329"></a>
+<h3><a class="anchor" id="autotoc_md334"></a>
 A.3.2.4. Add Source To CMakeLists.txt</h3>
 <p>Add the <code>Atom</code> source file to <code>/VIPRA_Behaviors/src/CMakeLists.txt</code></p>
 <p>example:</p><ul>
 <li>for our Example <code>Atom</code>: <code>${SRC_DIR}/actions/atoms/atom_example.cpp</code></li>
 </ul>
-<h3><a class="anchor" id="autotoc_md330"></a>
+<h3><a class="anchor" id="autotoc_md335"></a>
 A.3.2.5. Add Tests</h3>
 <p>Add any tests in <code>/VIPRA_Behaviors/__tests__/atom_tests/</code></p>
-<h3><a class="anchor" id="autotoc_md331"></a>
+<h3><a class="anchor" id="autotoc_md336"></a>
 A.3.2.6. Add To Documentation</h3>
 <p>Add any documentation</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md333"></a>
+<h1><a class="anchor" id="autotoc_md338"></a>
 Conditions</h1>
 <p>A <code>Condition</code> is what decides if a <code>Conditional Action</code> or <code>Event</code> occurs. <code>Conditions</code> are comprised of one or more <code>Sub Conditions</code> and the boolean operations between them (and/or).</p>
 <p>Conditions are described by the rule: <code>{Sub Condition} (and|or {Sub Condition})*</code></p>
 <hr  />
- <h1><a class="anchor" id="autotoc_md335"></a>
+ <h1><a class="anchor" id="autotoc_md340"></a>
 C.1. Sub Conditions</h1>
 <p>A <code>Sub Condition</code> defines a single condition of the state of the simulation in which it returns true.</p>
 <p>Each <code>Sub Condition</code> is described with its own grammar rule, check <code>/VIPRA_Behaviors/grammar/condition.g4</code> for them</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md337"></a>
+ <h2><a class="anchor" id="autotoc_md342"></a>
 C.1.1. Combining Sub Conditions</h2>
 <p>! currently boolean logic is only applied in the order the sub conditions are added ! ! there is no grouping subconditions e.g. (A &amp; !B &amp; C) vs (A &amp; !(B &amp; C)) !</p>
 <p>When building <code>Conditions</code>, <code>Sub Conditions</code> are combined with either <code>and</code> or <code>or</code></p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md339"></a>
+ <h2><a class="anchor" id="autotoc_md344"></a>
 C.1.2. Making A Sub Condition</h2>
 <ol type="1">
 <li>Add To Grammar</li>
@@ -374,7 +374,7 @@ C.1.2. Making A Sub Condition</h2>
 <li>Add Tests</li>
 <li>Add Documentation</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md340"></a>
+<h3><a class="anchor" id="autotoc_md345"></a>
 C.1.2.1 Add To Grammar</h3>
 <p><code>Sub Conditions</code> are added to the grammar in <code>/VIPRA_Behaviors/grammar/condition.g4</code></p>
 <p>After creating the <code>SubCondition</code> grammar rule run <code>make</code> in <code>/VIPRA_Behaviors/grammar/</code> to update the generated files.</p>
@@ -388,7 +388,7 @@ C.1.2.1 Add To Grammar</h3>
 <div class="line">condition_Example:</div>
 <div class="line">    &#39;this is and example condition&#39;</div>
 <div class="line">    ;</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md341"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md346"></a>
 C.1.2.2. Create Sub Condition Definition</h3>
 <p>Create a header file in <code>/VIPRA_Behaviors/include/conditions/subconditions/</code> and a matching source file in <code>/VIPRA_Behaviors/src/conditions/</code></p>
 <p>The only rule that <code>SubConditions</code> need to conform to is that they implement </p><div class="fragment"><div class="line"> ++</div>
@@ -411,7 +411,7 @@ C.1.2.2. Create Sub Condition Definition</h3>
 <div class="line">                               VIPRA::delta_t) {</div>
 <div class="line">    <span class="comment">// ... code to check if condition is met</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md342"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md347"></a>
 C.1.2.3. Add To BehaviorBuilder</h3>
 <p>Add the <code>SubCondition</code> to the <code>addSubCondToCondtion</code> method in <code>/VIPRA_Behaviors/src/behavior/behavior_builder.cpp</code></p>
 <p>example:</p><ul>
@@ -432,45 +432,45 @@ C.1.2.3. Add To BehaviorBuilder</h3>
 <div class="line">  </div>
 <div class="line">    <span class="comment">// ... other subconditions ...</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md343"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md348"></a>
 C.1.2.4. Add Source To CMakeLists.txt</h3>
 <p>Add the <code>SubCondition</code> source file to <code>/VIPRA_Behaviors/src/CMakeLists.txt</code></p>
 <p>example:</p><ul>
 <li>for our Example <code>SubCondition</code>: <code>${SRC_DIR}/conditions/subconditions/subcondition_example.cpp</code></li>
 </ul>
-<h3><a class="anchor" id="autotoc_md344"></a>
+<h3><a class="anchor" id="autotoc_md349"></a>
 C.1.2.5. Add Tests</h3>
 <p>Add any tests in <code>/VIPRA_Behaviors/__tests__/subcondition_tests/</code></p>
-<h3><a class="anchor" id="autotoc_md345"></a>
+<h3><a class="anchor" id="autotoc_md350"></a>
 C.1.2.6. Add To Documentation</h3>
 <p>Add any documentation</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md347"></a>
+ <h2><a class="anchor" id="autotoc_md352"></a>
 C.1.3 Current Sub Conditions</h2>
-<h3><a class="anchor" id="autotoc_md348"></a>
+<h3><a class="anchor" id="autotoc_md353"></a>
 C.1.3.1 Elapsed Time:</h3>
 <p><b>Parameters:</b></p><ul>
 <li>VIPRA::delta_t : the desired elapsed time</li>
 <li>Event* : pointer to event to listen to</li>
 </ul>
 <p><b>Evaluates to True, Given:</b> An <code>Event</code> has started and The elapsed time between the start and the current time step is greater or equal to the desired elapsed time</p>
-<h3><a class="anchor" id="autotoc_md349"></a>
+<h3><a class="anchor" id="autotoc_md354"></a>
 C.1.3.2 Event Occurring:</h3>
 <p><b>Parameters:</b></p><ul>
 <li>Event* : pointer to event to listen to</li>
 </ul>
 <p><b>Evaluates to True, Given:</b> The event has started and The event has not ended</p>
-<h3><a class="anchor" id="autotoc_md350"></a>
+<h3><a class="anchor" id="autotoc_md355"></a>
 C.1.3.3. Event:</h3>
 <p><b>Parameters:</b></p><ul>
 <li>Event* : pointer to the event to listen to</li>
 </ul>
 <p><b>Evaluates to True, Given:</b> The event has started</p>
-<h3><a class="anchor" id="autotoc_md351"></a>
+<h3><a class="anchor" id="autotoc_md356"></a>
 C.1.3.4. Start:</h3>
 <p><b>Parameters:</b> none</p>
 <p><b>Evaluates to True, Given:</b> Always</p>
-<h3><a class="anchor" id="autotoc_md352"></a>
+<h3><a class="anchor" id="autotoc_md357"></a>
 C.1.3.5 State:</h3>
 <p>TODO : not implemented</p>
 <p><b>Parameters:</b></p><ul>
@@ -479,7 +479,7 @@ C.1.3.5 State:</h3>
 </ul>
 <p><b>Evaluates to True, Given:</b> The pedestrian or environments state is the same as the conditions required state</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md354"></a>
+<h1><a class="anchor" id="autotoc_md359"></a>
 E. Events</h1>
 <p>An <code>Event</code> is something that occurs during a simulation, for example an announcement or fire.</p>
 <p>There are two kinds of events: <code>Single Fire</code> and <code>Lasting</code></p>
@@ -487,7 +487,7 @@ E. Events</h1>
 <p>An <code>Event</code> can only be described once, if a <code>Behavior</code> file tries to redefine an <code>Event</code> of the same name a <code>Behavior Error</code> is thrown.</p>
 <p>Events are always preceded by a <code>!</code> in the grammar ex. <code>!announcement</code></p>
 <hr  />
- <h1><a class="anchor" id="autotoc_md356"></a>
+ <h1><a class="anchor" id="autotoc_md361"></a>
 E.1 Single Fire Events</h1>
 <p><code>Single Fire Events</code> only have a start <code>Condition</code></p>
 <p>When a <code>Single Fire Event</code> occurs, it calls its start <code>Event Handlers</code> and end <code>Event Handlers</code> in the same time step.</p>
@@ -497,7 +497,7 @@ E.1 Single Fire Events</h1>
 <p></code></p>
 <p><code></p><hr  />
 <p> </code></p>
-<h1><a class="anchor" id="autotoc_md358"></a>
+<h1><a class="anchor" id="autotoc_md363"></a>
 E.2 Lasting Events</h1>
 <p><code></code></p>
 <p><code><code>Lasting Events</code> have a start <code>Condition</code> and end <code>Condition</code></code></p>
@@ -508,7 +508,7 @@ E.2 Lasting Events</h1>
 <p></code></code></p>
 <p><code><code></p><hr  />
 <p> </code></code></p>
-<h1><a class="anchor" id="autotoc_md360"></a>
+<h1><a class="anchor" id="autotoc_md365"></a>
 E.3 Event Handlers</h1>
 <p><code><code></code></code></p>
 <p><code><code><code>Event Handlers</code> are the methods called when an <code>Event</code> either starts or ends.</code></code></p>
@@ -516,7 +516,7 @@ E.3 Event Handlers</h1>
 <div class="line"><span class="keyword">typedef</span>  std::function&lt;void(<span class="keywordtype">float</span>)&gt;  EventHandler;</div>
 </div><!-- fragment --><p></code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md361"></a>
+<h2><a class="anchor" id="autotoc_md366"></a>
 E.3.1 Subscribing Handlers</h2>
 <p><code><code></code></code></p>
 <p><code><code>To subscribe an <code>Event Handler</code> to an <code>Event</code> use: </p><div class="fragment"><div class="line"> ++</div>
@@ -530,7 +530,7 @@ E.3.1 Subscribing Handlers</h2>
 </div><!-- fragment --><p></code></code></p>
 <p><code><code></p><hr  />
 <p> </code></code></p>
-<h1><a class="anchor" id="autotoc_md363"></a>
+<h1><a class="anchor" id="autotoc_md368"></a>
 E.4 Special Events</h1>
 <p><code><code></code></code></p>
 <p><code><code>Currently there is only one special event: the <code>!start</code> event</code></code></p>
@@ -538,23 +538,23 @@ E.4 Special Events</h1>
 <p><code><code></p><hr  />
 <p></code></code></p>
 <p><code><code></code></code></p>
-<h1><a class="anchor" id="autotoc_md365"></a>
+<h1><a class="anchor" id="autotoc_md370"></a>
 BB. Behavior Builder</h1>
 <p><code><code></code></code></p>
 <p><code><code>The <code>Behavior Builder</code> is what constructs <code>Behavior</code> objects from .behavior files.</code></code></p>
 <p><code><code></p><hr  />
 <p></code></code></p>
 <p><code><code></code></code></p>
-<h1><a class="anchor" id="autotoc_md367"></a>
+<h1><a class="anchor" id="autotoc_md372"></a>
 V. Values</h1>
 <p><code><code></code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md368"></a>
+<h2><a class="anchor" id="autotoc_md373"></a>
 V.1. Numerical Values</h2>
 <p><code><code></code></code></p>
 <p><code><code>Some <code>Conditions</code>, <code>Actions</code>, and <code>Events</code> require a numerical value to be provided in the <code>Behavior</code> file.</code></code></p>
 <p><code><code></code></code></p>
-<h3><a class="anchor" id="autotoc_md369"></a>
+<h3><a class="anchor" id="autotoc_md374"></a>
 V.1.1. Static Values</h3>
 <p><code><code></code></code></p>
 <p><code><code>Numerical values can be provided as a static value.</code></code></p>
@@ -562,7 +562,7 @@ V.1.1. Static Values</h3>
 <div class="line">  occur after 10 seconds from !start.</div>
 </div><!-- fragment --><p></code></code></p>
 <p><code><code></code></code></p>
-<h3><a class="anchor" id="autotoc_md370"></a>
+<h3><a class="anchor" id="autotoc_md375"></a>
 V.1.2. Random Values</h3>
 <p><code><code></code></code></p>
 <p><code><code>Numerical values can also be defined as a range; either as Integers or Decimal values.</code></code></p>
@@ -573,23 +573,23 @@ V.1.2. Random Values</h3>
 <p><code><code>Without the decimal point *(5)* the values will be whole numbers.</code></code></p>
 <p><code><code></p><hr  />
 <p> </code></code></p>
-<h1><a class="anchor" id="autotoc_md372"></a>
+<h1><a class="anchor" id="autotoc_md377"></a>
 N. Needs</h1>
 <p><code><code></code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md373"></a>
+<h2><a class="anchor" id="autotoc_md378"></a>
 N.1 Add Checks</h2>
 <p><code><code> We may need to add checks that the what behaviors do is reasonable.</code></code></p>
 <p><code><code>For example: Collisions detection, currently the change speed atom can cause pedestrians to fly through walls / go past their goals (only really an issue if they set the speed up to an unreasonable value)</code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md374"></a>
+<h2><a class="anchor" id="autotoc_md379"></a>
 N.2 Pedestrian Attributes</h2>
 <p><code><code> We need a way to access pedestrian attributes, such as: state, speed, goal, etc.</code></code></p>
 <p><code><code>example </p><div class="fragment"><div class="line">// conditional action based on the pedestrians state</div>
 <div class="line">a pedestrian will @stop given their *state is #waiting.</div>
 </div><!-- fragment --><p></code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md375"></a>
+<h2><a class="anchor" id="autotoc_md380"></a>
 N.3. Run Time Parameters</h2>
 <p><code><code> We need a way to provide behaviors parameters at run time (taken from module params).</code></code></p>
 <p><code><code>This is needed to allow for parameter sweeps</code></code></p>
@@ -602,7 +602,7 @@ N.3. Run Time Parameters</h2>
 <div class="line">    and end after $event_length seconds from !announcement.</div>
 </div><!-- fragment --><p></code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md376"></a>
+<h2><a class="anchor" id="autotoc_md381"></a>
 N.4 Allow Behaviors To Change Goals</h2>
 <p><code><code> We need a way for behaviors to change pedestrian goals.</code></code></p>
 <p><code><code>This would require updating the Goals module to add a update pathfinding method</code></code></p>
@@ -612,26 +612,26 @@ N.4 Allow Behaviors To Change Goals</h2>
 <div class="line">a pedestrian will @head towards the +exit nearest to them.</div>
 </div><!-- fragment --><p></code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md377"></a>
+<h2><a class="anchor" id="autotoc_md382"></a>
 N.8. Conditional Selectors</h2>
 <p><code><code> We need a way to select pedestrians based on conditions.</code></code></p>
 <p><code><code>For example: choosing a pedestrians type based on their end goal</code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md378"></a>
+<h2><a class="anchor" id="autotoc_md383"></a>
 N.9. Individual Seeds for Actions/Selectors/Etc.</h2>
 <p><code><code> We need to think about allowing different seeds for actions selectors and others.</code></code></p>
 <p><code><code>For example: if a user wants to keep the same selected pedestrians but change other random aspects, they currently cannot as everything uses the one behavior seed.</code></code></p>
 <p><code><code></code></code></p>
-<h1><a class="anchor" id="autotoc_md379"></a>
+<h1><a class="anchor" id="autotoc_md384"></a>
 W. Wants</h1>
 <p><code><code></code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md380"></a>
+<h2><a class="anchor" id="autotoc_md385"></a>
 W.1. Sub Condition grouping / Operation Order</h2>
 <p><code><code> We may need a way to group sub conditions with the equivalent of parenthesis, to provide more expressive conditions. Currently sub conditions are evaluated in the order they were added</code></code></p>
 <p><code><code>example: <code>A &amp;&amp; (B || C)</code> vs <code>(A &amp;&amp; B) || C</code></code></code></p>
 <p><code><code></code></code></p>
-<h2><a class="anchor" id="autotoc_md381"></a>
+<h2><a class="anchor" id="autotoc_md386"></a>
 W.2. Custom Action/Condition Definitions</h2>
 <p><code><code> We may need a way for end users to specify <code>Atoms</code> and <code>Sub Conditions</code> in the <code>Behavior</code></code></code></p>
 <p><code><code>example: </p><div class="fragment"><div class="line">// Action definition</div>
@@ -642,19 +642,19 @@ W.2. Custom Action/Condition Definitions</h2>
 <div class="line">A pedestrian will always @wait.</div>
 </div><!-- fragment --><p></code></code></p>
 <p><code><code></code></code></p>
-<h3><a class="anchor" id="autotoc_md382"></a>
+<h3><a class="anchor" id="autotoc_md387"></a>
 W.3. Behaviors Affect The Environment Physically</h3>
 <p><code><code> We may need to add the ability for behaviors to add to the environment.</code></code></p>
 <p><code><code>For example: a fire even can "place" fires around the map, then pedestrians can avoid these</code></code></p>
 <p><code><code>Currently behaviors can only change the state of the environment</code></code></p>
 <p><code><code></code></code></p>
-<h1><a class="anchor" id="autotoc_md383"></a>
+<h1><a class="anchor" id="autotoc_md388"></a>
 I. Issues</h1>
 <p><code><code></code></code></p>
 <p><code><code></p><hr  />
 <p></code></code></p>
 <p><code><code></code></code></p>
-<h1><a class="anchor" id="autotoc_md385"></a>
+<h1><a class="anchor" id="autotoc_md390"></a>
 Uc. Use Cases</h1>
 <p><code><code></code></code></p>
 <p><code><code></p><hr  />

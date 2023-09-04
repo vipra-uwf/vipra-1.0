@@ -72,22 +72,24 @@ $(function() {
   <div class="headertitle"><div class="title">Running The Simulation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md223"></a> This page only goes over running a simple simulation. VIPRA can also be used to run a <a class="el" href="../../d8/d1e/md_Documentation_2ResearcherFiles_2ParameterSweep.html">Parameter Sweep</a>.</p>
-<p>The command for running a simple simulation is: </p><div class="fragment"><div class="line">// under `/VIPRA/`</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md227"></a> This page only goes over running a simple simulation. VIPRA can also be used to run a <a class="el" href="../../d8/d1e/md_Documentation_2ResearcherFiles_2ParameterSweep.html">Parameter Sweep</a>.</p>
+<p>The command for running a simple simulation is: </p><div class="fragment"><div class="line">// under `VIPRA/`</div>
 <div class="line"> </div>
 <div class="line">./VIPRA_SIM 1 *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path*</div>
 </div><!-- fragment --><p>An example simulation config and module parameters are found in <code>SimConfigs/ExampleConfig/</code></p>
-<p>Example Command using the example config and the A320 obstacle map: </p><div class="fragment"><div class="line">./VIPRA_SIM 1 ../SimConfigs/ExampleConfig/sim.config ../SimConfigs/ExampleConfig/module_params.json ../Maps/pedestrian_maps/a320_144_pedestrians/a320_144_pedestrians.pmap ../Maps/obstacle_maps/a320_144_pedestrians/a320_144_pedestrians.omap</div>
+<p>Example Command using the example config and the A320 obstacle map: </p><div class="fragment"><div class="line">// under `VIPRA/`</div>
+<div class="line"> </div>
+<div class="line">./VIPRA_SIM 1 ../SimConfigs/ExampleConfig/sim.config ../SimConfigs/ExampleConfig/module_params.json ../Maps/pedestrian_maps/a320_144_pedestrians/a320_144_pedestrians.pmap ../Maps/obstacle_maps/a320_144_pedestrians/a320_144_pedestrians.omap</div>
 </div><!-- fragment --><p>Simply replace the paths to change what map or config is being used.</p>
 <p>The second argument <code>1</code> is explained in <a class="el" href="../../d8/d1e/md_Documentation_2ResearcherFiles_2ParameterSweep.html">Parameter Sweep</a>.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md225"></a>
+<h1><a class="anchor" id="autotoc_md229"></a>
 Simulation Config</h1>
 <p>The simulation config file tells the simulation which modules to use for a run.</p>
 <p>Simulation configs should be placed under <code>SimConfigs/*config name*/</code></p>
 <p>More on simulation config files is in <b>Changing Simulation Modules</b> below.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md227"></a>
+<h1><a class="anchor" id="autotoc_md231"></a>
 Module Params</h1>
 <p>The module parameters file provides the parameters for each module.</p>
 <p>The exact parameters for each module can be found in that modules <code>.mm</code> file.</p>
@@ -124,7 +126,8 @@ Module Params</h1>
 <div class="line"> </div>
 <div class="line">  ... other modules</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md228"></a>
+</div><!-- fragment --><hr  />
+<h3><a class="anchor" id="autotoc_md233"></a>
 Parameter Types</h3>
 <p>Each parameter has a "type".</p>
 <p>The current types are:</p><ul>
@@ -133,7 +136,7 @@ Parameter Types</h3>
 
 &lt;hr&gt;
 
-@section autotoc_md230 Changing Simulation Modules
+@section autotoc_md235 Changing Simulation Modules
 
 Each simulation run is given a sim.config file. These are found under the &lt;tt&gt;SimConfigs&lt;/tt&gt; directory. Look at the example config file under &lt;tt&gt;SimConfigs/ExampleConfig/sim.config&lt;/tt&gt;.
 
@@ -190,7 +193,7 @@ New modules can be added by following the steps in @ref "/github/workspace/Docum
 
 &lt;hr&gt;
 
-@section autotoc_md232 Using Behaviors
+@section autotoc_md237 Using Behaviors
 
 VIPRA Behaviors are explained in @ref "/github/workspace/Documentation/ResearcherFiles/behaviors/VIPRA_Behaviors.md" "VIPRA Behaviors"
 

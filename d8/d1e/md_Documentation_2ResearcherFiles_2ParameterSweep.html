@@ -72,17 +72,17 @@ $(function() {
   <div class="headertitle"><div class="title">Parameter Sweep</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md199"></a> A Parameter sweep is run with the same command as a simple simulation.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md203"></a> A Parameter sweep is run with the same command as a simple simulation.</p>
 <div class="fragment"><div class="line">// under `/VIPRA/`</div>
 <div class="line"> </div>
 <div class="line">./VIPRA_SIM *# Simulations* *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path*</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md200"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md204"></a>
 Module Parameters</h1>
 <p>The Module Parameters file needs to be editted to run a parameter sweep.</p>
 <p>Module parameters created for a parameter sweep can be used in a single simulation run. However, any parameters that have a Randomized value type will be randomized.</p>
-<h2><a class="anchor" id="autotoc_md201"></a>
+<h2><a class="anchor" id="autotoc_md205"></a>
 Randomized Value Types</h2>
-<h3><a class="anchor" id="autotoc_md202"></a>
+<h3><a class="anchor" id="autotoc_md206"></a>
 1. Range Values</h3>
 <p>Range values have a minimum and a maximum, with the exact value used being randomized between those values.</p>
 <p>Range values only work for <code>float</code> parameter values.</p>
@@ -92,7 +92,7 @@ Randomized Value Types</h2>
 <div class="line">     &quot;max&quot; : 4.2</div>
 <div class="line">   }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md203"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md207"></a>
 2. Select Values</h3>
 <p>Select values randomly choose a value from a list of values.</p>
 <p>Select values can apply for any type, but generally each choice should be of the same type as each other.</p>
@@ -105,7 +105,7 @@ Randomized Value Types</h2>
 <div class="line">  &quot;goals&quot;: {</div>
 <div class="line">    &quot;select_value_example&quot;: [ 1, 4, 26 ]</div>
 <div class="line">  }</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md204"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md208"></a>
 Example</h2>
 <p>Here is a shortened version of the Calm Pedestrian Model's .mm file </p><div class="fragment"><div class="line">{</div>
 <div class="line">  &quot;id&quot;          : &quot;VbGjNW5NCkOmKAxvFmz5KwUV2zz469&quot;,</div>
@@ -146,7 +146,7 @@ Example</h2>
 <div class="line"> </div>
 <div class="line">  ... other modules</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md205"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md209"></a>
 Randomization Seed</h1>
 <p>Parameters are randomized using a the <code>seed</code> value from the simulation configuration file.</p>
 <p>Using the same seed will produce the same set of simulations.</p>
@@ -160,13 +160,13 @@ Randomization Seed</h1>
 <div class="line">    ... modules</div>
 <div class="line">  }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md206"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md210"></a>
 Multi-Threaded Parameter Sweep</h1>
 <p>Using <code>MPI</code> VIPRA can run a parameter sweep in parallel over multiple cores.</p>
 <p>This example uses <code>openMPI</code>, though other <code>MPI</code> programs exist.</p>
 <div class="fragment"><div class="line">mpirun -np *# threads* ./VIPRA_SIM *# Simulations* *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path*</div>
 </div><!-- fragment --><p>This will spread *# Simulations* over *# threads* as evenly as possible.</p>
-<h1><a class="anchor" id="autotoc_md207"></a>
+<h1><a class="anchor" id="autotoc_md211"></a>
 Parameter Sweep Output</h1>
 <p>Simulation Results are produced through an <a class="el" href="../../d4/db8/md_Documentation_2ResearcherFiles_2output_2Output.html">output sink</a> just as a simple simulation run.</p>
 <p>The exact parameters used for a given simulation are written out to <code>/VIPRA/params/*id*</code>.</p><ul>

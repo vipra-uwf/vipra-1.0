@@ -72,68 +72,68 @@ $(function() {
   <div class="headertitle"><div class="title">Obstacle Set</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md39"></a> The <code>Obstacle Set</code> class handles collision detection with walls/obstacles. As well as the locations of points of interest (ex. exits/windows/etc.)</p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md43"></a> The <code>Obstacle Set</code> class handles collision detection with walls/obstacles. As well as the locations of points of interest (ex. exits/windows/etc.)</p>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Methods To Override</h1>
-<h2><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md45"></a>
 configure(const VIPRA::Config&amp; configMap) -&gt; void</h2>
 <p>Takes in the <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">module parameters</a>.</p>
 <p>Called right after construction.</p>
 <p>Params:</p><ul>
 <li>const <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">VIPRA::Config</a>&amp; : module parameters</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md42"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
 initialize(std::unique_ptr&lt;VIPRA::MapData&gt;) -&gt; void</h2>
 <p>Loads the obstacle data that was loaded from the <a class="el" href="../../d5/d46/md_Documentation_2DeveloperFiles_2Modules_2Map__Loader.html">MapLoader</a> class</p>
 <p>Params:</p><ul>
 <li>std::unique_ptr&lt;VIPRA::MapData&gt; : map data loaded from file</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 getMapDimensions() const -&gt; std::pair&lt;VIPRA::f3d, VIPRA::f3d&gt;</h2>
 <p>Returns a pair of coordinates, the bottom left corner and top right corner of the rectangle that bounds all obstacles.</p>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md48"></a>
 getObjectTypes() const -&gt; const std::vector&lt;std::string&gt;&amp;</h2>
 <p>Returns the vector of all objects types in the map. (exits, water fountains, etc.)</p>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 getObjectsofType(const std::string&amp; type) const -&gt; const VIPRA::f3dVec&amp;</h2>
 <p>Returns the vector containing locations of all objects of a given type.</p>
 <p>Params:</p><ul>
 <li>const std::string&amp; : object type to get positions of</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md46"></a>
+<h2><a class="anchor" id="autotoc_md50"></a>
 nearestObstacle(const VIPRA::PedestrianSet&amp;) const -&gt; VIPRA::f3dVec</h2>
 <p>Returns a vector containing the coordinates of the nearest obstacle to each pedestrian.</p>
 <p>With the index of the obstacle being equal to the index of the pedestrian it is nearest to.</p>
 <p>Params:</p><ul>
 <li>const <a class="el" href="../../d3/d85/md_Documentation_2DeveloperFiles_2Modules_2PedestrianSet.html">VIPRA::PedestrianSet</a>&amp; : pedestrian set</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md47"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 nearestObstacleInDirection(const VIPRA::PedestrianSet&amp;) const -&gt; VIPRA::f3dVec</h2>
 <p>Returns a vector containing the nearest obstacle for each pedestrian in their direction of motion.</p>
 <p>With the index of the obstacle being equal to the index of the pedestrian it is nearest to.</p>
 <p>Params:</p><ul>
 <li>const <a class="el" href="../../d3/d85/md_Documentation_2DeveloperFiles_2Modules_2PedestrianSet.html">VIPRA::PedestrianSet</a>&amp; : pedestrian set</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md52"></a>
 nearestObstacle(VIPRA::f3d) const -&gt; VIPRA::f3d</h2>
 <p>Returns the nearest obstacle to a coordinate</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::f3d</a> : coordinate to find nearest obstacle of</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md49"></a>
+<h2><a class="anchor" id="autotoc_md53"></a>
 nearestObstacleInDirection(VIPRA::f3d, VIPRA::f3d) const -&gt; VIPRA::f3d</h2>
 <p>Returns the nearest obstacle to a coordinate in the given direction</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::f3d</a> : coordinate to find nearest obstacle of</li>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::f3d</a> : direction vector (magnitude should have no affect)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 collision(VIPRA::f3d) const -&gt; bool</h2>
 <p>Returns if a coordinate collides with an obstacle</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::f3d</a> : coordinate to check</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md51"></a>
+<h2><a class="anchor" id="autotoc_md55"></a>
 rayHit(VIPRA::f3d, VIPRA::f3d) const -&gt; float</h2>
 <p>Returns the distance at which a line intersects an obstacle, -1 if no intersection</p>
 <p>Params:</p><ul>

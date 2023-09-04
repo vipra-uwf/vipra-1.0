@@ -72,9 +72,9 @@ $(function() {
   <div class="headertitle"><div class="title">S. Simulation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md82"></a> <b>File Path:</b> <a class="el" href="../../index.html#md_Documentation_2MainPage">Home</a> / <a class="el" href="../../d1/dbb/md_Documentation_2DeveloperFiles_2Developers.html">Developers</a> / <a class="el" href="../../d3/d9f/md_Documentation_2DeveloperFiles_2Simulation.html">Simulation</a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md86"></a> <b>File Path:</b> <a class="el" href="../../index.html#md_Documentation_2MainPage">Home</a> / <a class="el" href="../../d1/dbb/md_Documentation_2DeveloperFiles_2Developers.html">Developers</a> / <a class="el" href="../../d3/d9f/md_Documentation_2DeveloperFiles_2Simulation.html">Simulation</a></p>
 <p>The main path a simulation takes is as follows:</p>
-<h1><a class="anchor" id="autotoc_md83"></a>
+<h1><a class="anchor" id="autotoc_md87"></a>
 S.1. Module Selection / Configuration / Initialization</h1>
 <p>Each simulation run is provided a simulation configuration file that holds the IDs for each module the simulation should use. *(one for each type of module)*</p>
 <p>For each module type:</p><ol type="1">
@@ -83,7 +83,7 @@ S.1. Module Selection / Configuration / Initialization</h1>
 <li>Call object <code>initialize</code> function</li>
 </ol>
 <p>Each of the modules is then passed into the main simulation object. <em>Defined in <code>/VIPRA/Base/simulation/simulation.hpp</code></em></p>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md88"></a>
 S.2. Simulation Loop</h1>
 <p>The simulation loops until the <code>Goals</code> module says that the simulation has met its end goal, or until the maximum number of time steps has been reached.</p>
 <p>Each time step the simulation:</p>
@@ -95,7 +95,7 @@ S.2. Simulation Loop</h1>
 <li>Calls the <code>Goals</code> module to update any goals</li>
 <li>Loops</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md85"></a>
+<h1><a class="anchor" id="autotoc_md89"></a>
 S.3. Output</h1>
 <p>Once the simulation is finished the buffered output is written to an output file.</p>
 <p>More on output can be found in <a class="el" href="../../dc/d2d/md_Documentation_2DeveloperFiles_2Output.html">Output</a></p>

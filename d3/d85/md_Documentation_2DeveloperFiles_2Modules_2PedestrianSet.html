@@ -72,49 +72,49 @@ $(function() {
   <div class="headertitle"><div class="title">Pedestrian Set</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md63"></a> The pedestrian set holds pedestrian locations and velocities, as well as handles nearest neighbor calculations.</p>
-<h1><a class="anchor" id="autotoc_md64"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md67"></a> The pedestrian set holds pedestrian locations and velocities, as well as handles nearest neighbor calculations.</p>
+<h1><a class="anchor" id="autotoc_md68"></a>
 Methods To Override</h1>
-<h2><a class="anchor" id="autotoc_md65"></a>
+<h2><a class="anchor" id="autotoc_md69"></a>
 configure(const VIPRA::Config&amp;) -&gt; void</h2>
 <p>Takes in the module parameters.</p>
 <p>Params:</p><ul>
 <li>const <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">VIPRA::Config</a>&amp; : module parameters</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md66"></a>
+<h2><a class="anchor" id="autotoc_md70"></a>
 initialize(const std::vector&lt;VIPRA::pcoord&gt;&amp;) -&gt; void</h2>
 <p>Used to initialize any data structures for holding the pedestrians</p>
 <p>Params:</p><ul>
 <li>const std::vector&lt;<a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::pcoord</a>&gt;&amp; : pedestrian starting positions</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md67"></a>
+<h2><a class="anchor" id="autotoc_md71"></a>
 updateState(VIPRA::State&amp;) -&gt; void</h2>
 <p>Takes in a <a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::State</a> and updates pedestrian positions/velocities.</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::State</a>&amp; : new pedestrian positions/velocities</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md68"></a>
+<h2><a class="anchor" id="autotoc_md72"></a>
 getNumPedestrians() const -&gt; VIPRA::size</h2>
 <p>Returns the number of pedestrians</p>
-<h2><a class="anchor" id="autotoc_md69"></a>
+<h2><a class="anchor" id="autotoc_md73"></a>
 getCoordinates() const -&gt; const VIPRA::f3dVec&amp;</h2>
 <p>Returns a vector holding each pedestrian's position.</p>
-<h2><a class="anchor" id="autotoc_md70"></a>
+<h2><a class="anchor" id="autotoc_md74"></a>
 getVelocities() const -&gt; const VIPRA::f3dVec&amp;</h2>
 <p>Returns a vector holding each pedestrian's velocity</p>
-<h2><a class="anchor" id="autotoc_md71"></a>
+<h2><a class="anchor" id="autotoc_md75"></a>
 getPedCoords(VIPRA::idx) const -&gt; const VIPRA::pcoord&amp;</h2>
 <p>Returns the given pedestrian's position</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::idx</a> : pedestrian's index to get position of</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md72"></a>
+<h2><a class="anchor" id="autotoc_md76"></a>
 getPedVelocity(VIPRA::idx) const -&gt; const VIPRA::veloc&amp;</h2>
 <p>Returns the given pedestrian's velocity</p>
 <p>Params:</p><ul>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::idx</a> : pedestrian's index</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md73"></a>
+<h2><a class="anchor" id="autotoc_md77"></a>
 getNearestPedestrian(VIPRA::idx, const VIPRA::ObstacleSet&amp;) const -&gt; std::pair&lt;VIPRA::f3d, VIPRA::idx&gt;</h2>
 <p>Returns the position and index of the nearest pedestrian to the given pedestrian. (Ignoring pedestrians through walls)</p>
 <p>Params:</p><ul>
