@@ -30,7 +30,7 @@ The [Goals](Goals.md) module is what does all the path finding for pedestrians, 
 
 `/VIPRA/Extendable/obstacle_set/obstacle_set.hpp`
 
-The [Obstacle Set](Obstacle.md) module holds the map information; including obstacles and object. The `Obstacle Set` is also responsible for collision detection.
+The [Obstacle Set](Obstacle.md) module holds the map information; including obstacles and object. The [Obstacle Set](ObstacleSet.md) is also responsible for collision detection.
 
 ### M.1.4. Pedestrian Set
 
@@ -42,13 +42,13 @@ The [Pedestrian Set](PedestrianSet.md) module holds information about pedestrian
 
 `/VIPRA/Extendable/map_loader/map_loader.hpp`
 
-The [Map Loader](Map_Loader.md) module is responsible for loading map files into `Obstacle Sets`.
+The [Map Loader](Map_Loader.md) module is responsible for loading map files into [Obstacle Sets](ObstacleSet.md).
 
 ### M.1.6. Pedestrian Loader
 
 `/VIPRA/Extendable/pedestrian_loader/pedestrian_loader.hpp`
 
-The [Pedestrian Loader](PedestrianLoader.md) module is responsible for loading pedestrian files into `Pedestrian Sets`.
+The [Pedestrian Loader](PedestrianLoader.md) module is responsible for loading pedestrian files into [Pedestrian Sets](PedestrianSet.md).
 
 ---
 ## M.2. Base Modules

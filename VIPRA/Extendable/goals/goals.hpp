@@ -1,11 +1,11 @@
-#ifndef GOALS_HPP
-#define GOALS_HPP
+#ifndef VIPRA_GOALS_HPP
+#define VIPRA_GOALS_HPP
 
-#include <definitions/dimensions.hpp>
-#include <obstacle_set/obstacle_set.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
 #include "configuration/config.hpp"
+#include "definitions/dimensions.hpp"
 #include "definitions/type_definitions.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
 namespace VIPRA {
 /**

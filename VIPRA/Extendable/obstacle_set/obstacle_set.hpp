@@ -1,9 +1,9 @@
-#ifndef OBSTACLE_SET_HPP
-#define OBSTACLE_SET_HPP
+#ifndef VIPRA_OBSTACLE_SET_HPP
+#define VIPRA_OBSTACLE_SET_HPP
 
-#include <map_loader/map_loader.hpp>
 #include "configuration/config.hpp"
 #include "definitions/type_definitions.hpp"
+#include "map_loader/map_loader.hpp"
 
 namespace VIPRA {
 class PedestrianSet;

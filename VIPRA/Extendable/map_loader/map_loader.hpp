@@ -1,12 +1,10 @@
-#ifndef MAP_LOADER_HPP
-#define MAP_LOADER_HPP
+#ifndef VIPRA_MAP_LOADER_HPP
+#define VIPRA_MAP_LOADER_HPP
 
 #include <memory>
 
 #include "configuration/config.hpp"
 #include "definitions/type_definitions.hpp"
-
-#include <unordered_map>
 
 namespace VIPRA {
 

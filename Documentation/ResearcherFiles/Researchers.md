@@ -32,9 +32,9 @@ To add more see [Adding Modules](./modules/Adding_Modules.md).
 
 ## VIPRA Behaviors
 
-Human behaviors can be added to the simulation through the [VIPRA Behaviors DSL](./VIPRA_Behaviors.md)
+Human behaviors can be added to the simulation through the [VIPRA Behaviors DSL](./behaviors/VIPRA_Behaviors.md)
 
-Follow the steps in [Adding Behaviors](./behaviors/Adding_behaviors.md)
+Follow the steps in [Adding Behaviors](./behaviors/Adding_Behaviors.md)
 
 ---
 

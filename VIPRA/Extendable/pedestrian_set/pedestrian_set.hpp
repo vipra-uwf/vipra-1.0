@@ -1,5 +1,5 @@
-#ifndef PEDESTRIAN_SET_HPP
-#define PEDESTRIAN_SET_HPP
+#ifndef VIPRA_PEDESTRIAN_SET_HPP
+#define VIPRA_PEDESTRIAN_SET_HPP
 
 #include <stdexcept>
 

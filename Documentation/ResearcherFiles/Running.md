@@ -4,7 +4,7 @@ This page only goes over running a simple simulation. VIPRA can also be used to 
 
 The command for running a simple simulation is:
 ```
-// under `/VIPRA/`
+// under `VIPRA/`
 
 ./VIPRA_SIM 1 *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path*
 ```
@@ -13,6 +13,8 @@ An example simulation config and module parameters are found in `SimConfigs/Exam
 
 Example Command using the example config and the A320 obstacle map:
 ```
+// under `VIPRA/`
+
 ./VIPRA_SIM 1 ../SimConfigs/ExampleConfig/sim.config ../SimConfigs/ExampleConfig/module_params.json ../Maps/pedestrian_maps/a320_144_pedestrians/a320_144_pedestrians.pmap ../Maps/obstacle_maps/a320_144_pedestrians/a320_144_pedestrians.omap
 ```
 
@@ -75,6 +77,8 @@ Example:
 }
 
 ```
+
+---
 
 ### Parameter Types
 
