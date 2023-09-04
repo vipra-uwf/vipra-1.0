@@ -131,78 +131,59 @@ Module Params</h1>
 Parameter Types</h3>
 <p>Each parameter has a "type".</p>
 <p>The current types are:</p><ul>
-<li>"string" : any sequence of characters or numbers, surrounded by double quotations "
-- "float" : any numerical value
-
-&lt;hr&gt;
-
-@section autotoc_md235 Changing Simulation Modules
-
-Each simulation run is given a sim.config file. These are found under the &lt;tt&gt;SimConfigs&lt;/tt&gt; directory. Look at the example config file under &lt;tt&gt;SimConfigs/ExampleConfig/sim.config&lt;/tt&gt;.
-
-Each module has a unique ID, the simulation config file has a &lt;tt&gt;modules&lt;/tt&gt; object that holds which modules to use for each module type. 
-
-To use a different module simply switch the ID for the module type in the simulation config.
-
-Example:
-@icode 
-{
-  "id": "ExampleConfig",
-  "name": "exampleconfig",
-  "description": "this is a test config",
-  "seed": 12345,
-  "modules": {
-    ... other moduels
-
-    "goals": "Xz59g1o8HcsnMJlKaiYw00wZ19rB7P",
-
-    ... other modules
-  }
-}
-
-{
-  "id": "ExampleConfig",
-  "name": "exampleconfig",
-  "description": "this is a test config",
-  "seed": 12345
-  "modules": {
-    ... other moduels
-
-    "goals": "yUrpDegeM7eWiWd5hUarehn", // Changed module ID to use a different Goal module
-    
-    ... other modules
-  }
-}
-@endicode 
-
-Module IDs are found in their accompanying &lt;tt&gt;.mm&lt;/tt&gt; file.
-
-Example:
-@icode 
-// Modules/Goals/calm_goals/calm_goals.mm
-
-{
-    "id": "Xz59g1o8HcsnMJlKaiYw00wZ19rB7P",  // ID used in the sim.config file
-    "name": "calm_goals",
-
-    ... other information
-}
-@endicode 
-
-New modules can be added by following the steps in @ref "/github/workspace/Documentation/ResearcherFiles/modules/Adding_Modules.md" "Adding Modules"
-
-&lt;hr&gt;
-
-@section autotoc_md237 Using Behaviors
-
-VIPRA Behaviors are explained in @ref "/github/workspace/Documentation/ResearcherFiles/behaviors/VIPRA_Behaviors.md" "VIPRA Behaviors"
-
-Behaviors are added to a simulation run with the steps in @ref "/github/workspace/Documentation/ResearcherFiles/behaviors/Adding_Behaviors.md" "Adding Behaviors"
-
-&lt;hr&gt;
-
-@ref "/github/workspace/Documentation/ResearcherFiles/Researchers.md" "Back to Researchers Page" </li>
+<li>"string" : any sequence of characters or numbers, surrounded by double quotations</li>
+<li>"float" : any numerical value</li>
 </ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md235"></a>
+Changing Simulation Modules</h1>
+<p>Each simulation run is given a sim.config file. These are found under the <code>SimConfigs</code> directory. Look at the example config file under <code>SimConfigs/ExampleConfig/sim.config</code>.</p>
+<p>Each module has a unique ID, the simulation config file has a <code>modules</code> object that holds which modules to use for each module type.</p>
+<p>To use a different module simply switch the ID for the module type in the simulation config.</p>
+<p>Example: </p><div class="fragment"><div class="line">{</div>
+<div class="line">  &quot;id&quot;: &quot;ExampleConfig&quot;,</div>
+<div class="line">  &quot;name&quot;: &quot;exampleconfig&quot;,</div>
+<div class="line">  &quot;description&quot;: &quot;this is a test config&quot;,</div>
+<div class="line">  &quot;seed&quot;: 12345,</div>
+<div class="line">  &quot;modules&quot;: {</div>
+<div class="line">    ... other moduels</div>
+<div class="line"> </div>
+<div class="line">    &quot;goals&quot;: &quot;Xz59g1o8HcsnMJlKaiYw00wZ19rB7P&quot;,</div>
+<div class="line"> </div>
+<div class="line">    ... other modules</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">{</div>
+<div class="line">  &quot;id&quot;: &quot;ExampleConfig&quot;,</div>
+<div class="line">  &quot;name&quot;: &quot;exampleconfig&quot;,</div>
+<div class="line">  &quot;description&quot;: &quot;this is a test config&quot;,</div>
+<div class="line">  &quot;seed&quot;: 12345</div>
+<div class="line">  &quot;modules&quot;: {</div>
+<div class="line">    ... other moduels</div>
+<div class="line"> </div>
+<div class="line">    &quot;goals&quot;: &quot;yUrpDegeM7eWiWd5hUarehn&quot;, // Changed module ID to use a different Goal module</div>
+<div class="line">    </div>
+<div class="line">    ... other modules</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>Module IDs are found in their accompanying <code>.mm</code> file.</p>
+<p>Example: </p><div class="fragment"><div class="line">// Modules/Goals/calm_goals/calm_goals.mm</div>
+<div class="line"> </div>
+<div class="line">{</div>
+<div class="line">    &quot;id&quot;: &quot;Xz59g1o8HcsnMJlKaiYw00wZ19rB7P&quot;,  // ID used in the sim.config file</div>
+<div class="line">    &quot;name&quot;: &quot;calm_goals&quot;,</div>
+<div class="line"> </div>
+<div class="line">    ... other information</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>New modules can be added by following the steps in <a class="el" href="../../d2/d4e/md_Documentation_2ResearcherFiles_2modules_2Adding__Modules.html">Adding Modules</a></p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md237"></a>
+Using Behaviors</h1>
+<p>VIPRA Behaviors are explained in <a class="el" href="../../d2/d49/md_Documentation_2ResearcherFiles_2behaviors_2VIPRA__Behaviors.html">VIPRA Behaviors</a></p>
+<p>Behaviors are added to a simulation run with the steps in <a class="el" href="../../d7/db3/md_Documentation_2ResearcherFiles_2behaviors_2Adding__Behaviors.html">Adding Behaviors</a></p>
+<hr  />
+<p><a class="el" href="../../dc/d9a/md_Documentation_2ResearcherFiles_2Researchers.html">Back to Researchers Page</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
