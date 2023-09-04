@@ -51,8 +51,6 @@ Selector:
 
 ---
 
----
-
 # Sy. General Syntax Rules
 
 This section has some simple `Syntax` rules that must be followed for a `Behavior` to be considered correct.
@@ -112,8 +110,6 @@ Event:
 
 ---
 
----
-
 # T. Types
 
 `Types` are how pedestrians are organized in `Behaviors` (§B)
@@ -163,8 +159,6 @@ Types:
 
 ---
 
----
-
 ## T.2. Composite Types
 
 A Pedestrians `Type` can be composed of several other types.
@@ -173,8 +167,6 @@ A Pedestrian with a `Composite Type` will have the attributes of each individual
 
 How to assign `Composite Types` is explained in the `Selectors` (§S) section.
 
-
----
 
 ---
 
@@ -191,8 +183,6 @@ Pedestrians with `Composite Types` are in a `Group` for each `Type`.
 
 ---
 
----
-
 ## T.4. Types - General Syntax Rules
 
 1. `Type` names can only contain Letters, Underscores, and Hyphens `(a-z), (A-Z), '_', '-'`
@@ -204,9 +194,8 @@ Pedestrians with `Composite Types` are in a `Group` for each `Type`.
 ---
 
 # S. Selectors
-# Selectors` are how pedestrians are selected for a certain `Type` (§T).
 
-
+`Selectors` are how pedestrians are selected for a certain `Type` (§T).
 
 Selecting pedestrians is done through a `Selector` declaration. The basic syntax is as follows:
 ```
@@ -214,6 +203,7 @@ Selector:
   Type: *types*
   From: *type*     // optional, defaults to base pedestrians group
   Select: *selection criteria*
+.
 ```
 
 - \*Select* - The exact `Select` criteria to use, available `Select` criteria are in (§S.5.)
@@ -222,7 +212,7 @@ Selector:
 
 Selectors are applied with precedence equal to the order they appear in the `Behavior` file.
 
-
+Example:
 ```
 Selector:   // Selects exactly 10 pedestrians to be of typeA
   Type: typeA
@@ -234,9 +224,6 @@ Selector:   // Selects 50% of pedestrians to be of typeB
   Select 50%
 .
 ```
-
-
----
 
 ---
 
@@ -267,7 +254,7 @@ Select:        // Selects 15% of typeA pedestrians for typeA & typeB
 
 Select:       // Selects 5% of typeA pedestrians for typeA & typeC
   Type: typeC
-  From: type
+  From: typeA
   Select: 5%
 .
 ```
@@ -276,9 +263,6 @@ With 100 pedestrians:
 - 39 pedestrians are typeA.
 - 8 pedestrians are typeA and typeB.
 - 3 pedestrians are typeA and typeC.
-
-
----
 
 ---
 
@@ -295,6 +279,7 @@ Select:
 ```
 Means:
 Those 15% of 'typeA' pedestrians can not be selected from again.
+
 However, they can be selected from 'typeB'.
 
 ```
@@ -307,9 +292,6 @@ Select:
 
 This may result in some pedestrians being of types: typeA, typeB, and typeC.
 
-
----
-
 ---
 
 ## S.4. Required Selectors
@@ -317,7 +299,6 @@ This may result in some pedestrians being of types: typeA, typeB, and typeC.
 `Selectors` can be marked as `Required` with a 'Required' `Component`. 
 
 This means, if the `Selector` is unable to be filled an error will be thrown, and the simulation will stop.
- 
 
 ```
 Types:
@@ -343,15 +324,11 @@ Behavior: Example, Required Selector Starved For Type: 2 From Group: 0"
 
 ---
 
----
-
 ## S.5. Available Select Criteria
 
 1. Everyone
 2. Percent
 3. Exactly N
-
----
 
 ---
 
@@ -366,8 +343,6 @@ This select criteria will select every pedestrian to have the selected `Type` (�
 
 ---
 
----
-
 ### S.5.2 Percent
 
 
@@ -379,13 +354,11 @@ Selects a percentage of a `Group` for the provided `Type`
 \*X* - Number `Value` (§V) (1 - 100)
 
  
-
+Example:
 ```
 Select: 15%
 ```
 
-
----
 
 ---
 
@@ -399,7 +372,7 @@ Exaclty *X*
 \*X* - Number `Value` (§V)
 
  
-
+Example:
 ```
 Select: 10
 ```
@@ -407,14 +380,12 @@ Select: 10
 
 ---
 
----
 
 ## S.6 Selectors - General Syntax Rules
 
 
 ---
 
----
 
 # A. Action
 
@@ -437,12 +408,8 @@ Action (*type*):
 - Type being the pedestrian type that follows this `Action`
 - Atoms being the steps taken in an action, more in (§A.3.)
 
----
 
-    <b>
-      Example:
-    </b>
-
+Example:
 ```
 Action (injured_person):         // Action Declaration for "injured_person"s
   Response: scale velocity 0.75  // Scale Atom (§A.5.2.)
@@ -450,8 +417,6 @@ Action (injured_person):         // Action Declaration for "injured_person"s
 ```
 With this Behavior, an injured person will always walk at 75% speed.
 
-
----
 
 ---
 
@@ -473,10 +438,7 @@ Action (*type*):
 
 ---
 
-    <b>
-      Example:
-    </b>
-
+Example:
 ```
 Action (listener): 
   Condition: !announcement occurring. // Condition (§C.)
@@ -485,8 +447,6 @@ Action (listener):
 ```
 Pedestrians of listener will stop moving while the announcement event is occurring.
 
-
----
 
 ---
 
@@ -510,10 +470,7 @@ Action (*type*):
 
 ---
 
-    <b>
-      Example, Someone Tripping:
-    </b>
-
+Example, Someone Tripping:
 ```
 Action (tripper):
   Condition: 10 seconds after !Start // Condition (§C.)
@@ -527,8 +484,6 @@ Pedestrians of type `tripper` will trip after 10 seconds from the simulation sta
 This is odd, as all `trippers` will trip at exactly the same time:
 Look at `Values` (§V.) for how to add randomness to Durations and Conditions
 
-
----
 
 ---
 
@@ -553,9 +508,7 @@ An `Atom List` is the collection of `Atoms` that make up an `Action`.
 
 ---
 
-    <b>
-    Example:
-    </b>
+Example:
 
 ```
 set velocity {0}, set state #listening
@@ -564,8 +517,6 @@ This `Atom List` will result in the pedestrian stopping and their state being li
 
 (Pedestrian state is useful in `Conditions` (§C.))
 
-
----
 
 ---
 
@@ -582,10 +533,8 @@ set *attribute* *attribute value*
 ```
 
 - Attributes are described in (§Att.).
-- Attribute Values are described in (§Att. TODO ).
+- Attribute Values are described in (§Att.1).
 
-
----
 
 ---
 
@@ -600,10 +549,8 @@ scale *attribute* *attribute_value*
 Currently, only pedestrian `Velocity` can be scaled.
 
 - Attributes are described in (§Att.).
-- Attribute Values are described in (§Att. TODO ).
+- Attribute Values are described in (§Att.1 ).
 
-
----
 
 ---
 
@@ -622,9 +569,7 @@ Action (*type*):
 
 ---
 
-    <b>
-    Example:
-    </b>
+Example:
 
 ```
 Action (aggressive):
@@ -652,8 +597,6 @@ nearest *type list*   // selects the nearest pedestrian with any of the listed t
 nearest pedestrian    // selects any pedestrian
 ```
   
-
-
 ---
 
 ## A.6.2 Target Modifiers
@@ -662,6 +605,7 @@ nearest pedestrian    // selects any pedestrian
 
 `Target Modifiers` are simply appended to the end of the `Action Target`.
 
+Example:
 ```
 Target: nearest pedestrain in front within 1.0
 ```
@@ -677,8 +621,6 @@ Targets can be filtered by their distance to the pedestrian.
 within *numeric value*
 ```
 
-
-
 ---
 
 ## A.6.2.2 Direction Target Modifier
@@ -692,10 +634,6 @@ in front   // used to select pedestrians in the direction the pedestrian is head
 behind     // used to select pedestrians in the opposite direction the pedestrian is headed
 ```
 
-
-
----
-
 ---
 
 # C. Conditions
@@ -708,9 +646,7 @@ A `Condition` is what decides if a `Conditional Action` or `Event` occurs.
 
 ---
 
-    <b>
-    Example:
-    </b>
+Example:
 
 ```
 Action (typeA):
@@ -721,8 +657,6 @@ Action (typeA):
 ```
 This results in typeA pedestrians stopping for 10 seconds after the example event has occurred but not before 5 seconds have passed in the simulation.
 
-
----
 
 ---
 
@@ -751,10 +685,7 @@ This `Condition` will be true when a provided amount of time has passed from the
 
 ---
 
-    <b>
-      Example:
-    </b>
-
+Example:
 ```
 Action (typeA):
   Condition: 10 seconds after !Start // Elapsed Time Condition
@@ -764,8 +695,6 @@ Action (typeA):
 ```
 **Note:** without the `Duration` the pedestrian would stop moving for only one time step.
 
-
----
 
 ---
 
@@ -779,10 +708,7 @@ target within *numeric value*.
 
 ---
 
-    <b>
-      Example:
-    </b>
-
+Example:
 ```
 Action (typeA):
   Condition: 10 seconds after !Start // Elapsed Time Condition
@@ -792,8 +718,6 @@ Action (typeA):
 ```
 **Note:** without the `Duration` the pedestrian would stop moving for only one time step.
 
-
----
 
 ---
 
@@ -815,9 +739,7 @@ Occurred  // True if the event has occurred at all during the simulation
 
 ---
 
-    <b>
-    Example:
-    </b>
+Example:
 
 ```
 Action (listener):
@@ -826,8 +748,6 @@ Action (listener):
 .
 ```
 
-
----
 
 ---
 
@@ -844,8 +764,6 @@ State       // Pedestrians internal state
 ```
 
 These `Attributes` are important for `Actions` and `Conditions`.
-
-`Actions` change these attributes and `Conditions` can prompt `Actions` based on their values.
 ---
 
 # Ex. Example
@@ -856,7 +774,6 @@ Action (typeA):
   Response: scale velocity 2.0 // Atom affecting the pedestrian's 'Velocity' attribute
 .
 ```
-
 
 ---
 
@@ -874,8 +791,6 @@ State   : State      (§V.3)
 
 ---
 
----
-
 # E. Events
 
 An `Event` is something that occurs during a simulation, for example an announcement or fire.
@@ -885,7 +800,8 @@ An `Event` is something that occurs during a simulation, for example an announce
 An `Event` can only be described once, if a `Behavior` file tries to redefine an `Event` of the same name a `Behavior Error` is thrown.
 
 `Event` names are always preceded by a `!`
-ex. 
+
+Example: 
 ```
 !announcement
 ```
@@ -903,11 +819,7 @@ Event:
 .
 ```
 
----
-
-    <b>
-    Example:
-    </b>
+Example:
 
 ```
 Event:
@@ -920,24 +832,15 @@ Event:
 
 ---
 
----
-
 ## E.2. Special Events
 
-Currently, there is only one special event that is predefined for each `Behavior`:
+Currently, there is only one special event that is predefined for each `Behavior`: `!Start`.
 
-the `!Start` event
-
-The `!Start` event fires at the start of a simulation run.
-
-
----
+The `!Start` event fires at the start of a simulation run and is always `Occurring`.
 
 ---
 
 ## E.3. Events - General Syntax Rules
-
----
 
 ---
 
@@ -966,17 +869,12 @@ The difference between the two is simple:
 
 ---
 
-    <b>
-      Example:
-    </b>
-
+Example:
 ```
 50    // Number Value, has no decimal places
 50.15 // Float Value, has a decimal value
 ```
 
-
----
 
 ---
 
@@ -993,8 +891,6 @@ The difference between the two is simple:
 50.15 
 ```
 
-
----
 
 ---
 
@@ -1029,10 +925,7 @@ or
 
 ---
 
-    <b>
-      Example:
-    </b>
-
+Example:
 ```
 Selector:
   Type: typeA
@@ -1042,8 +935,6 @@ Selector:
 
 The exact percentage will be a random integer value between 10 and 20.
 
-
----
 
 ---
 
@@ -1079,10 +970,7 @@ random 1.0 to 3.0
 
 ---
 
-    <b>
-      Example:
-    </b>
-
+Example:
 ```
 Action (typeA):
   Condition: random 5-10 seconds from !Start
@@ -1137,9 +1025,7 @@ Pedestrian States:
 .
 ```
 
----
-
-## Ex. Example
+Ex. Example
 
 ```
 Pedestrian States:
