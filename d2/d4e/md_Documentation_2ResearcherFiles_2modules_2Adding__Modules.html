@@ -72,8 +72,8 @@ $(function() {
   <div class="headertitle"><div class="title">Adding Modules</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md303"></a> This is a temporary process for adding new modules, an automated solution will be added in the future.</p>
-<h2><a class="anchor" id="autotoc_md304"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md266"></a> This is a temporary process for adding new modules, an automated solution will be added in the future.</p>
+<h2><a class="anchor" id="autotoc_md267"></a>
 1. Adding The Files</h2>
 <p>The first step is to add the source files.</p>
 <p>Each module should have:</p><ol type="1">
@@ -84,7 +84,7 @@ $(function() {
 <p>Module files are added under the directory for their type in the <code>Modules</code> directory in a separate directory.</p>
 <p>Example: </p><div class="fragment"><div class="line">A Goals module named &#39;example_goals&#39; goes under:</div>
 <div class="line">Modules/Goals/example_goals/</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md305"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md268"></a>
 Missing .mm File</h3>
 <p>If a module is missing a .mm File, adding one is simple.</p>
 <p>In the directory with the <code>.hpp</code> and <code>.cpp</code> files create a new <code>.mm</code> file with the modules name.</p>
@@ -99,7 +99,7 @@ Missing .mm File</h3>
 <div class="line">    &quot;className&quot;: &quot;ExampleGoals&quot;,   // Name of class in the .hpp file</div>
 <div class="line">    &quot;type&quot;: &quot;goals&quot;             // module type</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md306"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md269"></a>
 2. Adding Module to modules.json</h2>
 <p>Each module needs to be added to <code>VIPRA/modules.json</code>.</p>
 <p>Under the module type add a JSON object with an <code>id</code>, <code>name</code>, <code>className</code>, and <code>dirPath</code>.</p>
@@ -113,7 +113,7 @@ Missing .mm File</h3>
 <div class="line">    &quot;dirPath&quot;: &quot;../Modules/Goals/example_goals&quot; // Add path to the modules directory</div>
 <div class="line">  }</div>
 <div class="line">]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md307"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md270"></a>
 3. Recompile</h2>
 <p>When adding new modules the simulation needs to be re-compiled.</p>
 <p>Follow the steps in <a class="el" href="../../db/ddb/md_Documentation_2InstallationSetup.html">Installation and Setup</a> </p>
