@@ -72,13 +72,13 @@ $(function() {
   <div class="headertitle"><div class="title">VIPRA Simulation Visualization</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md239"></a> </p>
-<h1><a class="anchor" id="autotoc_md240"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md363"></a> </p>
+<h1><a class="anchor" id="autotoc_md364"></a>
 visualize.py</h1>
 <p><code>visualize.py</code> is used to view the output from a simulation run.</p>
-<h2><a class="anchor" id="autotoc_md241"></a>
+<h2><a class="anchor" id="autotoc_md365"></a>
 Setup</h2>
-<h3><a class="anchor" id="autotoc_md242"></a>
+<h3><a class="anchor" id="autotoc_md366"></a>
 Requirements</h3>
 <ul>
 <li>Python 3.7^</li>
@@ -92,10 +92,10 @@ Requirements</h3>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md243"></a>
+<h2><a class="anchor" id="autotoc_md367"></a>
 Running</h2>
 <p><code>python3 visualize.py *flags*</code></p>
-<h3><a class="anchor" id="autotoc_md244"></a>
+<h3><a class="anchor" id="autotoc_md368"></a>
 Flags</h3>
 <ol type="1">
 <li><b>REQUIRED</b> <code>-peds *sim output path*</code> : sets the path to the simulation output *(no default)*</li>
@@ -103,12 +103,7 @@ Flags</h3>
 <li><code>-outpath *output gif path*</code> : sets the path for the output gif *(default ./output.gif)*</li>
 <li><code>-idx</code> : prints the pedestrians index next to their position *(default OFF)*</li>
 <li><code>-idxClr</code> : colors pedestrian indexes to their color *(default OFF)*</li>
-<li><code>-shldr *len*</code> : draws shoulders (axis aligned) on pedestrians *(default OFF)*</li>
-</ol>
-<ul>
-<li><code>*len*</code> being half the total shoulder length</li>
-</ul>
-<ol type="1">
+<li><code>-shldr *len*</code> : draws shoulders (axis aligned) on pedestrians, len being half the total shoulder width *(default OFF)*</li>
 <li><code>-xDim *minX, maxX*</code> : sets the min and max X for the plot *(default: -1, 25)*</li>
 <li><code>-yDim *minY, maxY*</code> : sets the min and max Y for the plot *(default: -1, 4)*</li>
 <li><code>-fps *fps*</code> : sets the fps of the output Gif *(default 10)*</li>
