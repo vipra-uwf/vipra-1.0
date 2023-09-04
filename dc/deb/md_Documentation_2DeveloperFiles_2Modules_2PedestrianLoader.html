@@ -75,7 +75,11 @@ $(function() {
 <div class="textblock"><p><a class="anchor" id="autotoc_md57"></a> The <code>Pedestrain Loader</code> class handles loading pedestrian starting locations from a file.</p>
 <h1><a class="anchor" id="autotoc_md58"></a>
 Methods To Override</h1>
-<h2><a class="anchor" id="autotoc_md59"></a>
+<div class="fragment"><div class="line"> ++</div>
+<div class="line"><span class="keywordtype">void</span> configure(<span class="keyword">const</span> VIPRA::Config&amp; configMap);</div>
+<div class="line"><span class="keywordtype">void</span> initialize();</div>
+<div class="line">std::vector&lt;VIPRA::pcoord&gt; loadPedestrians(<span class="keyword">const</span> std::string&amp; filePath) <span class="keyword">const</span>;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md59"></a>
 configure(const VIPRA::Config&amp; configMap) -&gt; void</h2>
 <p>Takes in the module parameters.</p>
 <p>Params:</p><ul>

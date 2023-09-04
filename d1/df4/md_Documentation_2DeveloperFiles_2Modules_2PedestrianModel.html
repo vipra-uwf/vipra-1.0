@@ -75,7 +75,15 @@ $(function() {
 <div class="textblock"><p><a class="anchor" id="autotoc_md62"></a> The <code>Pedestrian Dynamics Model</code> module handles calculating how pedestrians move over the course of a simulation.</p>
 <h1><a class="anchor" id="autotoc_md63"></a>
 Modules To Overload</h1>
-<h2><a class="anchor" id="autotoc_md64"></a>
+<div class="fragment"><div class="line"> ++</div>
+<div class="line"><span class="keywordtype">void</span> configure(<span class="keyword">const</span> VIPRA::Config&amp;);</div>
+<div class="line"><span class="keywordtype">void</span> initialize(<span class="keyword">const</span> <a class="code hl_class" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a>&amp;, <span class="keyword">const</span> <a class="code hl_class" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a>&amp;, <span class="keyword">const</span> <a class="code hl_class" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>&amp;);</div>
+<div class="line"><span class="keywordtype">void</span> timestep(<span class="keyword">const</span> <a class="code hl_class" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a>&amp;, <span class="keyword">const</span> <a class="code hl_class" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a>&amp;, <span class="keyword">const</span> <a class="code hl_class" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>&amp;, <a class="code hl_struct" href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a>&amp;, VIPRA::delta_t, VIPRA::t_step);</div>
+<div class="ttc" id="aclassVIPRA_1_1Goals_html"><div class="ttname"><a href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a></div><div class="ttdoc">Interface class for defining pedestrian goals in a simulation.</div><div class="ttdef"><b>Definition</b> goals.hpp:38</div></div>
+<div class="ttc" id="aclassVIPRA_1_1ObstacleSet_html"><div class="ttname"><a href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a></div><div class="ttdoc">Interface for handling obstacles in a map.</div><div class="ttdef"><b>Definition</b> obstacle_set.hpp:36</div></div>
+<div class="ttc" id="aclassVIPRA_1_1PedestrianSet_html"><div class="ttname"><a href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a></div><div class="ttdoc">Interface for managing pedestrian information in a simulation.</div><div class="ttdef"><b>Definition</b> pedestrian_set.hpp:44</div></div>
+<div class="ttc" id="astructVIPRA_1_1State_html"><div class="ttname"><a href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a></div><div class="ttdef"><b>Definition</b> state.hpp:13</div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md64"></a>
 configure(const VIPRA::Config&amp; configMap) -&gt; void</h2>
 <p>Takes in the module parameters for configuration.</p>
 <p>Called after construction</p>
@@ -84,13 +92,14 @@ initialize(const VIPRA::PedestrianSet&amp;, const VIPRA::ObstacleSet&amp;, const
 <p>Initializes any model specific pedestrian data.</p>
 <p>Called after <code>configure</code></p>
 <h2><a class="anchor" id="autotoc_md66"></a>
-timestep(const VIPRA::PedestrianSet&amp;, const VIPRA::ObstacleSet&amp;, const VIPRA::Goals&amp;, VIPRA::delta_t, VIPRA::t_step) -&gt; VIPRA::State&amp;</h2>
-<p>Calculates change in pedestrian position/velocity for each timestep of the simulation. Returning it as a <a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::State</a>&amp;.</p>
+timestep(const VIPRA::PedestrianSet&amp;, const VIPRA::ObstacleSet&amp;, const VIPRA::Goals&amp;, VIPRA::State&amp;, VIPRA::delta_t, VIPRA::t_step) -&gt; void</h2>
+<p>Calculates change in pedestrian position/velocity for each timestep of the simulation. Placing the updated values in the passed in <a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::State</a>&amp;.</p>
 <p>Called at the start of each simulation time step.</p>
 <p>Params:</p><ul>
 <li>const <a class="el" href="../../d3/d85/md_Documentation_2DeveloperFiles_2Modules_2PedestrianSet.html">VIPRA::PedestrianSet</a>&amp; : pedestrian set module</li>
 <li>const <a class="el" href="../../d7/dbb/md_Documentation_2DeveloperFiles_2Modules_2ObstacleSet.html">VIPRA::ObstacleSet</a>&amp; : obstacle set module</li>
 <li>const <a class="el" href="../../d8/dac/md_Documentation_2DeveloperFiles_2Modules_2Goals.html">VIPRA::Goals</a>&amp; : goals module</li>
+<li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::State</a>&amp; : out parameter for updated pedestrian positions</li>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::delta_t</a> : simulated time since last time step (time step size)</li>
 <li><a class="el" href="../../d5/dc4/md_Documentation_2DeveloperFiles_2VIPRATypes.html">VIPRA::t_step</a> : current time step number </li>
 </ul>

@@ -81,7 +81,11 @@ VIPRA::MapData</h1>
 <p>Constructed with </p><div class="fragment"><div class="line">MapData(std::string type);</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md25"></a>
 Methods To Override</h1>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<div class="fragment"><div class="line"> ++</div>
+<div class="line"><span class="keywordtype">void</span> configure(<span class="keyword">const</span> VIPRA::Config&amp;);</div>
+<div class="line"><span class="keywordtype">void</span> initialize();</div>
+<div class="line">std::unique_ptr&lt;VIPRA::MapData&gt; loadMap(<span class="keyword">const</span> std::string&amp;) <span class="keyword">const</span>;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md26"></a>
 configure(const VIPRA::Config&amp;) -&gt; void</h2>
 <p>Takes in <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">module parameters</a> to configure the module.</p>
 <p>Called right after construction.</p>
