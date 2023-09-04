@@ -32,16 +32,6 @@ or
 
 1. `make profiling` for compiling in release mode with profiling output
 
-# U. Utility
-
-## U.1. Visualizer
-
-We have a Python script for viewing the output of a simulation using the File output `Sink`.
-
-`/UtilityScripts/Simulation_Output_Visualization/visualize.py`
-
-Read more under the [Visualizer page](./ResearcherFiles/Visualizer.md)
-
 ---
 
 [Go to Main Page](MainPage.md)

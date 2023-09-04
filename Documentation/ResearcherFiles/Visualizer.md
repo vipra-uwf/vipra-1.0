@@ -32,8 +32,7 @@
 3. `-outpath *output gif path*` : sets the path for the output gif *(default ./output.gif)*
 4. `-idx` : prints the pedestrians index next to their position *(default OFF)*
 5. `-idxClr` : colors pedestrian indexes to their color *(default OFF)*
-6. `-shldr *len*` : draws shoulders (axis aligned) on pedestrians *(default OFF)*
-- `*len*` being half the total shoulder length
+6. `-shldr *len*` : draws shoulders (axis aligned) on pedestrians, len being half the total shoulder width *(default OFF)*
 7. `-xDim *minX, maxX*` : sets the min and max X for the plot *(default: -1, 25)*
 8. `-yDim *minY, maxY*` : sets the min and max Y for the plot *(default: -1, 4)*
 9. `-fps *fps*` : sets the fps of the output Gif *(default 10)*

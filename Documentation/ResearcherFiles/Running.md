@@ -28,7 +28,7 @@ The second argument `1` is explained in [Parameter Sweep](ParameterSweep.md).
 
 The simulation config file tells the simulation which modules to use for a run.
 
-Simulation configs should be placed under `SimConfigs/*config name*/`
+Simulation configs are generally placed under `SimConfigs/*config name*/`. Though, they can be placed anywhere.
 
 More on simulation config files is in **Changing Simulation Modules** below.
 
@@ -78,19 +78,7 @@ Example:
 
 ```
 
----
-
-### Parameter Types
-
-Each parameter has a "type".
-
-The current types are:
-- "string" : any sequence of characters or numbers, surrounded by double quotations
-- "float" : any numerical value
-
----
-
-# Changing Simulation Modules
+## Changing Simulation Modules
 
 Each simulation run is given a sim.config file. These are found under the `SimConfigs` directory. Look at the example config file under `SimConfigs/ExampleConfig/sim.config`.
 
@@ -144,6 +132,18 @@ Example:
 ```
 
 New modules can be added by following the steps in [Adding Modules](./modules/Adding_Modules.md)
+
+---
+
+---
+
+### Parameter Types
+
+Each parameter has a "type".
+
+The current types are:
+- "string" : any sequence of characters or numbers, surrounded by double quotations
+- "float" : any numerical value
 
 ---
 
