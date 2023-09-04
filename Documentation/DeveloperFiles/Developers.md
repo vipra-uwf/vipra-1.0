@@ -19,6 +19,8 @@ VIPRA is broken up into 6 modules that are meant to be implemented and shared by
 
 For specific, detailed information, click the links above. For an overview on modules, see [Modules Overview](./Modules/ModulesOverview.md).
 
+Doxygen files for each can be found under the `Classes` tab, above.
+
 ---
 
 ## Simulation

@@ -42,9 +42,13 @@ Follow the steps in [Adding Behaviors](./behaviors/Adding_Behaviors.md)
 
 Output is detailed in [Output](./output/Output.md)
 
+---
+
 ## Parameter Sweep
 
 VIPRA can be used to run a [Parameter Sweep](ParameterSweep.md).
+
+---
 
 ## Visualizer
 

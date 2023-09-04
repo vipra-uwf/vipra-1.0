@@ -16,7 +16,7 @@ Output is handled through `Output Sinks`.
 }
 ```
 
-More on `sim.config` files is in [Running The Simulation](../Running.md)
+More on simulation configuration files is in [Running The Simulation](../Running.md)
 
 ## Available Output Sinks
 

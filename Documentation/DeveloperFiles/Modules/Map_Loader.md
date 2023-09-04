@@ -18,6 +18,12 @@ MapData(std::string type);
 
 ## Methods To Override
 
+```C++
+void configure(const VIPRA::Config&);
+void initialize();
+std::unique_ptr<VIPRA::MapData> loadMap(const std::string&) const;
+```
+
 ### configure(const VIPRA::Config&) -> void
 
 Takes in [module parameters](Parameters.md) to configure the module.

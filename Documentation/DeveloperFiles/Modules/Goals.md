@@ -5,7 +5,7 @@ The `Goals` module handles pathfinding.
 
 ## Methods To Override
 
-```C++
+``` C++
 void configure(const VIPRA::Config&);
 void initialize(const VIPRA::ObstacleSet&, const VIPRA::PedestrianSet&);
 void updatePedestrianGoals(const VIPRA::ObstacleSet&, const VIPRA::PedestrianSet&, VIPRA::delta_t);

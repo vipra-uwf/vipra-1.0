@@ -4,6 +4,18 @@ The pedestrian set holds pedestrian locations and velocities, as well as handles
 
 ## Methods To Override
 
+```C++
+void configure(const VIPRA::Config&);
+void initialize(const std::vector<VIPRA::pcoord>&);
+void updateState(VIPRA::State&);
+VIPRA::size          getNumPedestrians() const;
+const VIPRA::f3dVec& getCoordinates() const;
+const VIPRA::f3dVec& getVelocities() const;
+const VIPRA::pcoord& getPedCoords(VIPRA::idx) const;
+const VIPRA::veloc&  getPedVelocity(VIPRA::idx) const;
+std::pair<VIPRA::f3d, VIPRA::idx> getNearestPedestrian(VIPRA::idx, const VIPRA::ObstacleSet&) const;
+```
+
 ### configure(const VIPRA::Config&) -> void
 
 Takes in the module parameters.

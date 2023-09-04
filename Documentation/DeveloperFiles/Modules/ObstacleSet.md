@@ -5,6 +5,20 @@ The `Obstacle Set` class handles collision detection with walls/obstacles. As we
 
 ## Methods To Override
 
+```C++
+void initialize(std::unique_ptr<VIPRA::MapData>);
+void configure(const VIPRA::Config&);
+std::pair<VIPRA::f3d, VIPRA::f3d> getMapDimensions() const;
+const std::vector<std::string>&   getObjectTypes() const;
+const VIPRA::f3dVec&              getObjectsofType(const std::string&) const;
+VIPRA::f3dVec nearestObstacle(const VIPRA::PedestrianSet&) const;
+VIPRA::f3dVec nearestObstacleInDirection(const VIPRA::PedestrianSet&) const;
+VIPRA::f3d nearestObstacle(VIPRA::f3d) const;
+VIPRA::f3d nearestObstacleInDirection(VIPRA::f3d, VIPRA::f3d) const;
+bool       collision(VIPRA::f3d) const;
+float      rayHit(VIPRA::f3d, VIPRA::f3d) const;
+```
+
 ### configure(const VIPRA::Config& configMap) -> void
 
 Takes in the [module parameters](Parameters.md).
