@@ -85,7 +85,7 @@ Example:
 Each parameter has a "type".
 
 The current types are:
-- "string" : any sequence of characters or numbers, surrounded by double quotations "
+- "string" : any sequence of characters or numbers, surrounded by double quotations
 - "float" : any numerical value
 
 ---
