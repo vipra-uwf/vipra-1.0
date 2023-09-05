@@ -46,6 +46,7 @@ to use.
 ## Developers:
 [How to add functionality.](DeveloperFiles/Developers.md)
 
+---
 
 # Directory:
 

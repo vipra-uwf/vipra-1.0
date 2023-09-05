@@ -8,18 +8,7 @@ VIPRA is broken up into several modules you will change regularly:
 5. Goals
 6. Output Sink
 
-For more details on each module scroll down to `Modules Overview`.
-
-# Adding New Modules
-
-See [Adding Modules](Adding_Modules.md)
-
-
-Pedestrian Dynamics Model
-Configuration Reader
-Simulation
-Policy Model
-Human Behavior Model
+---
 
 # Modules Overview
 
@@ -80,5 +69,17 @@ The `Human Behavior Model` orchestrates the `Behaviors` that are enabled for a s
 `/VIPRA/Base/policy_model/policy_model.hpp`
 
 The `Policy Model` will, in the future, handle any policies (like airplane boarding order)
+
+### Configuration Reader
+
+`/VIPRA/Base/configuration/configuration_reader.hpp`
+
+The `Configuration Reader` takes in the JSON files for simulation configuration and module parameters.
+
+### Simulation
+
+`/VIPRA/Base/simulation/simulation.hpp`
+
+The `Simulation` is what coordinates the various modules.
 
 ---

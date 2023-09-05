@@ -78,9 +78,11 @@ Example:
 
 ```
 
+---
+
 ## Changing Simulation Modules
 
-Each simulation run is given a sim.config file. These are found under the `SimConfigs` directory. Look at the example config file under `SimConfigs/ExampleConfig/sim.config`.
+Each simulation run is given a simulation configuration file. These are, generally, placed under the `SimConfigs` directory. Look at the example config file under `SimConfigs/ExampleConfig/sim.config`.
 
 Each module has a unique ID, the simulation config file has a `modules` object that holds which modules to use for each module type. 
 
@@ -135,8 +137,6 @@ New modules can be added by following the steps in [Adding Modules](./modules/Ad
 
 ---
 
----
-
 ### Parameter Types
 
 Each parameter has a "type".
@@ -151,7 +151,21 @@ The current types are:
 
 VIPRA Behaviors are explained in [VIPRA Behaviors](./behaviors/VIPRA_Behaviors.md)
 
-Behaviors are added to a simulation run with the steps in [Adding Behaviors](./behaviors/Adding_Behaviors.md)
+Behavior files are held under `Behaviors/`.
+
+To use behaviors in simulations add the behavior's file name (without the `.behavior`) to the module parameters file under `human_behavior_model`.
+
+Example:
+```
+// Using the "example.behavior" Behavior file
+
+"human_behavior_model": {
+    "seed": 4525,
+    "behaviors": [
+      "example"       // Add behavior name here without ".behavior"
+    ]
+},
+```
 
 ---
 
