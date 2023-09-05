@@ -15,7 +15,7 @@ Example Command using the example config and the A320 obstacle map:
 ```
 // under `VIPRA/`
 
-./VIPRA_SIM 1 ../SimConfigs/ExampleConfig/sim.config ../SimConfigs/ExampleConfig/module_params.json ../Maps/pedestrian_maps/a320_144_pedestrians/a320_144_pedestrians.pmap ../Maps/obstacle_maps/a320_144_pedestrians/a320_144_pedestrians.omap
+./VIPRA_SIM 1 ../SimConfigs/ExampleConfig/sim.config ../SimConfigs/ExampleConfig/module_params.json ../Maps/pedestrian_maps/a320_144_pedestrians/a320_144_pedestrians.pmap ../Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap
 ```
 
 Simply replace the paths to change what map or config is being used.
