@@ -1,6 +1,6 @@
 
-#include <filesystem>
 #include <gtest/gtest.h>
+#include <filesystem>
 
 #include "test_values/test_values.hpp"
 
@@ -8,13 +8,14 @@
 
 namespace fs = std::filesystem;
 
-const auto testValues = fs::current_path().string() + "/modules/maploader/point_map_loader/test_values/";
+const auto testValues =
+    fs::current_path().string() + "/modules/maploader/point_map_loader/test_values/";
 
 // test that LoadPedestrians returns the proper data
 TEST(Point_Map_Loader, Load_Map) {
   PointMapLoader test;
 
-  std::unique_ptr<VIPRA::MapData> result = test.LoadMap(testValues + "good_map.omap");
+  std::unique_ptr<VIPRA::MapData> result = test.loadMap(testValues + "good_map.omap");
   auto                            resultptr = reinterpret_cast<PointMap*>(result.get());
 
   for (VIPRA::idx i = 0; i < goodmap_obstacles.size(); ++i) {
@@ -42,5 +43,5 @@ TEST(Point_Map_Loader, Load_Map) {
 TEST(Calm_Pedestrian_Loader, Load_Map_Improper_Map) {
   PointMapLoader test;
 
-  EXPECT_THROW(test.LoadMap(testValues + "bad_map.omap"), MapLoaderException);
+  EXPECT_THROW(test.loadMap(testValues + "bad_map.omap"), VIPRA::MapLoaderException);
 }

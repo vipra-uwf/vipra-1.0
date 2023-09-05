@@ -1,29 +1,52 @@
 grammar selector;
 
-import lexer_rules, common;
+import lexer_rules, values, common;
 
 ped_Selector:
-    (REQUIRED COLON)? selector (ID | PEDESTRIAN | PEDESTRIANS ) selector_Cond? (ARE | IS) AN? id_list |
-    (REQUIRED COLON)? selector_Everyone selector_Cond? IS AN? id_list
-    ;
+    SELECTOR ':' selector_attribute*
+;
 
-selector_Cond:
-    THAT ARE 
-    ;
+selector_attribute:
+    selector_type |
+    selector_selector |
+    selector_from |
+    selector_required
+;
+
+selector_type:
+    TYPE ':' id_list
+;
+
+selector_selector:
+    SELECT ':' selector
+;
+
+selector_from:
+    FROM ':' group
+;
+
+selector_required:
+    REQUIRED
+;
 
 selector:
     selector_Percent |
-    selector_Exactly_N_Random
-    ;
+    selector_Exactly_N_Random |
+    selector_Everyone
+;
 
 selector_Percent:
-    NUMBER '%' OF
-    ;
+    value_number '%'
+;
 
 selector_Exactly_N_Random:
-    EXACTLY NUMBER OF
-    ;
+    value_number
+;
 
 selector_Everyone:
     EVERYONE
-    ;
+;
+
+group:
+    (ID | PEDESTRIAN | PEDESTRIANS )
+;

@@ -1,24 +1,19 @@
 #ifndef EVERYONE_SELECTOR_HPP
 #define EVERYONE_SELECTOR_HPP
 
-#include <definitions/type_definitions.hpp>
 #include <selectors/selector.hpp>
 
-namespace Behaviors {
-
+namespace BHVR {
 /**
- * Select every pedestrian for this behavior
- */
-
-struct selector_everyone {
-  SelectorResult operator()(Behaviors::seed,
-                            const VIPRA::idxVec&,
-                            const VIPRA::idxVec&,
-                            const PedestrianSet&,
-                            const ObstacleSet&,
-                            const Goals&);
+  * @brief Selects every pedestrian
+  * 
+  */
+struct SelectorEveryone {
+  SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
+                            const VIPRA::idxVec&, const VIPRA::PedestrianSet&,
+                            const VIPRA::ObstacleSet&, const VIPRA::Goals&);
 };
 
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

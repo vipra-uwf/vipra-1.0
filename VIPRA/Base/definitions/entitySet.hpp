@@ -7,7 +7,11 @@
 #include "definitions/dimensions.hpp"
 
 namespace VIPRA {
-typedef std::unordered_map<std::string, f3dVec> EntitySet;
-}
+/**
+  * @brief Holds types of objects and their positions
+  * 
+  */
+using EntitySet = std::unordered_map<std::string, f3dVec>;
+}  // namespace VIPRA
 
 #endif

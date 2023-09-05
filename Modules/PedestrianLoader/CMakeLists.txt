@@ -1,4 +1,14 @@
 
+file(GLOB
+  pedLoader_srcs
+  *.cpp
+  *.hpp
+  */*.cpp
+  */*.hpp
+)
 
-add_subdirectory(calm_pedestrian_loader)
-add_subdirectory(calm_config_writer)
+target_sources(
+  ${PROJECT_NAME}
+  PRIVATE
+  ${pedLoader_srcs}
+)

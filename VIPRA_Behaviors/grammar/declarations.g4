@@ -1,18 +1,18 @@
 grammar declarations;
 
-import lexer_rules;
+import lexer_rules, values;
 
 declaration:
-  decl_Ped |
   decl_Ped_State |
-  decl_Env_State
-  ;
-
-decl_Ped:
-  CONSIDER AN (ID (COMMA? AND? AN? ID)*);
+  decl_Env_State |
+  decl_Ped
+;
 
 decl_Ped_State:
-  POSSIBLE PEDESTRIAN STATES ARE (STATE (COMMA? AND? STATE)*);
-
+  PEDESTRIAN STATES ':' STATE_VAL (COMMA? STATE_VAL)*;
+  
 decl_Env_State:
-  POSSIBLE ENVIRONMENT STATES ARE (STATE (COMMA? AND? STATE)*);
+  ENVIRONMENT STATES ':' (STATE_VAL (COMMA? STATE_VAL)*);
+
+decl_Ped:
+  TYPES ':' ID (COMMA? ID)*;

@@ -4,22 +4,20 @@
 #include "definitions/dimensions.hpp"
 #include "definitions/entitySet.hpp"
 
-inline VIPRA::f3dVec goodmap_obstacles = {VIPRA::f3d{0, 3.46}, VIPRA::f3d{0, 0}, VIPRA::f3d{5, 7}};
-inline VIPRA::f3dVec goodmap_seats = {VIPRA::f3d{0.89, 3.1},
-                                      VIPRA::f3d{1.68, 3.1},
-                                      VIPRA::f3d{2.47, 3.1},
-                                      VIPRA::f3d{3.25, 3.1}};
+inline VIPRA::f3dVec goodmap_obstacles = {VIPRA::f3d{0, 3.46}, VIPRA::f3d{0, 0},
+                                          VIPRA::f3d{5, 7}};
+inline VIPRA::f3dVec goodmap_seats = {VIPRA::f3d{0.89, 3.1}, VIPRA::f3d{1.68, 3.1},
+                                      VIPRA::f3d{2.47, 3.1}, VIPRA::f3d{3.25, 3.1}};
 
 inline VIPRA::f3dVec goodmap_exits = {VIPRA::f3d{24.2, 3.5}};
 
 inline VIPRA::f3dVec goodmap_endOfAisle = {VIPRA::f3d{24.1, 1.7}};
 
-inline VIPRA::f3dVec goodmap_aisle = {VIPRA::f3d{0.89, 1.7},
-                                      VIPRA::f3d{1.68, 1.7},
-                                      VIPRA::f3d{2.47, 1.7},
-                                      VIPRA::f3d{3.25, 1.7}};
+inline VIPRA::f3dVec goodmap_aisle = {VIPRA::f3d{0.89, 1.7}, VIPRA::f3d{1.68, 1.7},
+                                      VIPRA::f3d{2.47, 1.7}, VIPRA::f3d{3.25, 1.7}};
 
-inline std::vector<std::string> goodmap_types = {"exit", "endOfAisle", "aisle", "seat", "obstacle"};
+inline std::vector<std::string> goodmap_types = {"exit", "endOfAisle", "aisle", "seat",
+                                                 "obstacle"};
 
 inline VIPRA::EntitySet map_value = {{"obstacle", goodmap_obstacles},
                                      {"seat", goodmap_seats},
@@ -27,10 +25,8 @@ inline VIPRA::EntitySet map_value = {{"obstacle", goodmap_obstacles},
                                      {"endOfAilse", goodmap_endOfAisle},
                                      {"aisle", goodmap_aisle}};
 
-inline VIPRA::f3dVec goodmap_pedestrians = {VIPRA::f3d{0.89, 3.1},
-                                            VIPRA::f3d{1.68, 3.1},
-                                            VIPRA::f3d{2.47, 3.1},
-                                            VIPRA::f3d{3.25, 3.1}};
+inline VIPRA::f3dVec goodmap_pedestrians = {VIPRA::f3d{0.89, 3.1}, VIPRA::f3d{1.68, 3.1},
+                                            VIPRA::f3d{2.47, 3.1}, VIPRA::f3d{3.25, 3.1}};
 
 inline VIPRA::f3dVec all_peds = {VIPRA::f3d{0.89, 3.1, 0},
                                  VIPRA::f3d{1.68, 3.1, 0},
@@ -180,5 +176,68 @@ inline VIPRA::f3dVec all_peds = {VIPRA::f3d{0.89, 3.1, 0},
                                      0.94,
                                      0,
                                  }};
+
+const VIPRA::f3dVec allPeds2 = {
+    VIPRA::f3d{0.38, 1.3},    VIPRA::f3d{1.17, 1.3},    VIPRA::f3d{1.96, 1.3},
+    VIPRA::f3d{2.74, 1.3},    VIPRA::f3d{3.53, 1.3},    VIPRA::f3d{4.32, 1.3},
+    VIPRA::f3d{5.11, 1.3},    VIPRA::f3d{5.89, 1.3},    VIPRA::f3d{6.68, 1.3},
+    VIPRA::f3d{7.47, 1.3},    VIPRA::f3d{8.25, 1.3},    VIPRA::f3d{9.04, 1.3},
+    VIPRA::f3d{9.83, 1.3},    VIPRA::f3d{10.62, 1.3},   VIPRA::f3d{11.4, 1.3},
+    VIPRA::f3d{12.19, 1.3},   VIPRA::f3d{12.98, 1.3},   VIPRA::f3d{13.77, 1.3},
+    VIPRA::f3d{14.55, 1.3},   VIPRA::f3d{15.75, 1.3},   VIPRA::f3d{16.94, 1.3},
+    VIPRA::f3d{17.86, 1.3},   VIPRA::f3d{18.77, 1.3},   VIPRA::f3d{19.68, 1.3},
+    VIPRA::f3d{20.6, 1.3},    VIPRA::f3d{21.51, 1.3},   VIPRA::f3d{0.38, 0.86},
+    VIPRA::f3d{1.17, 0.86},   VIPRA::f3d{1.96, 0.86},   VIPRA::f3d{2.74, 0.86},
+    VIPRA::f3d{3.53, 0.86},   VIPRA::f3d{4.32, 0.86},   VIPRA::f3d{5.11, 0.86},
+    VIPRA::f3d{5.89, 0.86},   VIPRA::f3d{6.68, 0.86},   VIPRA::f3d{7.47, 0.86},
+    VIPRA::f3d{8.25, 0.86},   VIPRA::f3d{9.04, 0.86},   VIPRA::f3d{9.83, 0.86},
+    VIPRA::f3d{10.62, 0.86},  VIPRA::f3d{11.4, 0.86},   VIPRA::f3d{12.19, 0.86},
+    VIPRA::f3d{12.98, 0.86},  VIPRA::f3d{13.77, 0.86},  VIPRA::f3d{14.55, 0.86},
+    VIPRA::f3d{15.75, 0.86},  VIPRA::f3d{16.94, 0.86},  VIPRA::f3d{17.86, 0.86},
+    VIPRA::f3d{18.77, 0.86},  VIPRA::f3d{19.68, 0.86},  VIPRA::f3d{20.6, 0.86},
+    VIPRA::f3d{21.51, 0.86},  VIPRA::f3d{0.38, 0.42},   VIPRA::f3d{1.17, 0.42},
+    VIPRA::f3d{1.96, 0.42},   VIPRA::f3d{2.74, 0.42},   VIPRA::f3d{3.53, 0.42},
+    VIPRA::f3d{4.32, 0.42},   VIPRA::f3d{5.11, 0.42},   VIPRA::f3d{5.89, 0.42},
+    VIPRA::f3d{6.68, 0.42},   VIPRA::f3d{7.47, 0.42},   VIPRA::f3d{8.25, 0.42},
+    VIPRA::f3d{9.04, 0.42},   VIPRA::f3d{9.83, 0.42},   VIPRA::f3d{10.62, 0.42},
+    VIPRA::f3d{11.4, 0.42},   VIPRA::f3d{12.19, 0.42},  VIPRA::f3d{12.98, 0.42},
+    VIPRA::f3d{13.77, 0.42},  VIPRA::f3d{14.55, 0.42},  VIPRA::f3d{15.75, 0.42},
+    VIPRA::f3d{16.94, 0.42},  VIPRA::f3d{17.86, 0.42},  VIPRA::f3d{18.77, 0.42},
+    VIPRA::f3d{19.68, 0.42},  VIPRA::f3d{20.6, 0.42},   VIPRA::f3d{21.51, 0.42},
+    VIPRA::f3d{0.38, -1.3},   VIPRA::f3d{1.17, -1.3},   VIPRA::f3d{1.96, -1.3},
+    VIPRA::f3d{2.74, -1.3},   VIPRA::f3d{3.53, -1.3},   VIPRA::f3d{4.32, -1.3},
+    VIPRA::f3d{5.11, -1.3},   VIPRA::f3d{5.89, -1.3},   VIPRA::f3d{6.68, -1.3},
+    VIPRA::f3d{7.47, -1.3},   VIPRA::f3d{8.25, -1.3},   VIPRA::f3d{9.04, -1.3},
+    VIPRA::f3d{9.83, -1.3},   VIPRA::f3d{10.62, -1.3},  VIPRA::f3d{11.4, -1.3},
+    VIPRA::f3d{12.19, -1.3},  VIPRA::f3d{12.98, -1.3},  VIPRA::f3d{13.77, -1.3},
+    VIPRA::f3d{14.55, -1.3},  VIPRA::f3d{15.75, -1.3},  VIPRA::f3d{16.94, -1.3},
+    VIPRA::f3d{17.86, -1.3},  VIPRA::f3d{18.77, -1.3},  VIPRA::f3d{19.68, -1.3},
+    VIPRA::f3d{20.6, -1.3},   VIPRA::f3d{21.51, -1.3},  VIPRA::f3d{0.38, -0.86},
+    VIPRA::f3d{1.17, -0.86},  VIPRA::f3d{1.96, -0.86},  VIPRA::f3d{2.74, -0.86},
+    VIPRA::f3d{3.53, -0.86},  VIPRA::f3d{4.32, -0.86},  VIPRA::f3d{5.11, -0.86},
+    VIPRA::f3d{5.89, -0.86},  VIPRA::f3d{6.68, -0.86},  VIPRA::f3d{7.47, -0.86},
+    VIPRA::f3d{8.25, -0.86},  VIPRA::f3d{9.04, -0.86},  VIPRA::f3d{9.83, -0.86},
+    VIPRA::f3d{10.62, -0.86}, VIPRA::f3d{11.4, -0.86},  VIPRA::f3d{12.19, -0.86},
+    VIPRA::f3d{12.98, -0.86}, VIPRA::f3d{13.77, -0.86}, VIPRA::f3d{14.55, -0.86},
+    VIPRA::f3d{15.75, -0.86}, VIPRA::f3d{16.94, -0.86}, VIPRA::f3d{17.86, -0.86},
+    VIPRA::f3d{18.77, -0.86}, VIPRA::f3d{19.68, -0.86}, VIPRA::f3d{20.6, -0.86},
+    VIPRA::f3d{21.51, -0.86}, VIPRA::f3d{0.38, -0.42},  VIPRA::f3d{1.17, -0.42},
+    VIPRA::f3d{1.96, -0.42},  VIPRA::f3d{2.74, -0.42},  VIPRA::f3d{3.53, -0.42},
+    VIPRA::f3d{4.32, -0.42},  VIPRA::f3d{5.11, -0.42},  VIPRA::f3d{5.89, -0.42},
+    VIPRA::f3d{6.68, -0.42},  VIPRA::f3d{7.47, -0.42},  VIPRA::f3d{8.25, -0.42},
+    VIPRA::f3d{9.04, -0.42},  VIPRA::f3d{9.83, -0.42},  VIPRA::f3d{10.62, -0.42},
+    VIPRA::f3d{11.4, -0.42},  VIPRA::f3d{12.19, -0.42}, VIPRA::f3d{12.98, -0.42},
+    VIPRA::f3d{13.77, -0.42}, VIPRA::f3d{14.55, -0.42}, VIPRA::f3d{15.75, -0.42},
+    VIPRA::f3d{16.94, -0.42}, VIPRA::f3d{17.86, -0.42}, VIPRA::f3d{18.77, -0.42},
+    VIPRA::f3d{19.68, -0.42}, VIPRA::f3d{20.6, -0.42},  VIPRA::f3d{21.51, -0.42},
+    VIPRA::f3d{22.43, -0.42}, VIPRA::f3d{22.43, -0.86}, VIPRA::f3d{25.15, 1.25},
+    VIPRA::f3d{26.11, 1.25},  VIPRA::f3d{27.08, 1.25},  VIPRA::f3d{28.04, 1.25},
+    VIPRA::f3d{29.01, 1.25},  VIPRA::f3d{29.97, 1.25},  VIPRA::f3d{25.15, -1.25},
+    VIPRA::f3d{26.11, -1.25}, VIPRA::f3d{27.08, -1.25}, VIPRA::f3d{28.04, -1.25},
+    VIPRA::f3d{29.01, -1.25}, VIPRA::f3d{29.97, -1.25}, VIPRA::f3d{25.15, 0.72},
+    VIPRA::f3d{26.11, 0.72},  VIPRA::f3d{27.08, 0.72},  VIPRA::f3d{28.04, 0.72},
+    VIPRA::f3d{29.01, 0.72},  VIPRA::f3d{29.97, 0.72},  VIPRA::f3d{25.15, -0.72},
+    VIPRA::f3d{26.11, -0.72}, VIPRA::f3d{27.08, -0.72}, VIPRA::f3d{28.04, -0.72},
+    VIPRA::f3d{29.01, -0.72}, VIPRA::f3d{29.97, -0.72}};
 
 #endif

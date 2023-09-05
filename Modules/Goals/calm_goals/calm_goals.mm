@@ -6,31 +6,22 @@
         {
             "name": "endGoalType",
             "type": "string",
-            "description": "Type of Object that All Pedestrians Attempt to move towards",
-            "multiple": false
+            "description": "Type of Object that All Pedestrians Attempt to move towards, available options depend on obstacle map used"
         },
         {
             "name": "goalRange",
             "type": "float",
-            "description": "Range from a goal a pedestrian needs to reach before considered reaching a goal",
-            "multiple": false
+            "description": "Range from a goal a pedestrian needs to reach before considered reaching a goal"
         },
         {
-            "name": "pathingType",
-            "type": "string",
-            "description": "Which Pathfinding Method to use, currently (Astar, Disembark)",
-            "multiple": false
-        },
-        {
-            "name": "quadSize",
+            "name": "gridSize",
             "type": "float",
-            "description": "Minimum Size for quad tree quads",
-            "multiple": false
-        },{
+            "description": "Size of grids for pathfinding"
+        },
+        {
             "name": "closestObstacle",
             "type": "float",
-            "description": "Closest a Quad can be to an obstacle without being considered not traversable",
-            "multiple": false
+            "description": "Closest a grid can be to an obstacle without being considered not traversable"
         }
     ],
     "className": "CalmGoals",

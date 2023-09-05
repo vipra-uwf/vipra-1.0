@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.7.2
+// Generated from Behavior.g4 by ANTLR 4.13.0
 
 #pragma once
 
@@ -15,167 +15,307 @@
 class  BehaviorBaseVisitor : public BehaviorVisitor {
 public:
 
-  virtual antlrcpp::Any visitProgram(BehaviorParser::ProgramContext *ctx) override {
+  virtual std::any visitProgram(BehaviorParser::ProgramContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStatement(BehaviorParser::StatementContext *ctx) override {
+  virtual std::any visitStatement(BehaviorParser::StatementContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitEvent(BehaviorParser::EventContext *ctx) override {
+  virtual std::any visitLocation(BehaviorParser::LocationContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitEvent_Single(BehaviorParser::Event_SingleContext *ctx) override {
+  virtual std::any visitLocation_attribute(BehaviorParser::Location_attributeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitEvent_Lasting(BehaviorParser::Event_LastingContext *ctx) override {
+  virtual std::any visitLoc_name(BehaviorParser::Loc_nameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondition(BehaviorParser::ConditionContext *ctx) override {
+  virtual std::any visitLoc_shape(BehaviorParser::Loc_shapeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitConnector(BehaviorParser::ConnectorContext *ctx) override {
+  virtual std::any visitLoc_dimensions(BehaviorParser::Loc_dimensionsContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitOr_Connector(BehaviorParser::Or_ConnectorContext *ctx) override {
+  virtual std::any visitRect_dims(BehaviorParser::Rect_dimsContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAnd_Connector(BehaviorParser::And_ConnectorContext *ctx) override {
+  virtual std::any visitCircle_dims(BehaviorParser::Circle_dimsContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSub_condition(BehaviorParser::Sub_conditionContext *ctx) override {
+  virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondition_Time_Elapsed_From_Event(BehaviorParser::Condition_Time_Elapsed_From_EventContext *ctx) override {
+  virtual std::any visitValue_number(BehaviorParser::Value_numberContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondition_Event_Occurred(BehaviorParser::Condition_Event_OccurredContext *ctx) override {
+  virtual std::any visitValue_float(BehaviorParser::Value_floatContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext *ctx) override {
+  virtual std::any visitValue_range(BehaviorParser::Value_rangeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondition_Event_One_Time(BehaviorParser::Condition_Event_One_TimeContext *ctx) override {
+  virtual std::any visitValue_random(BehaviorParser::Value_randomContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDirection(BehaviorParser::DirectionContext *ctx) override {
+  virtual std::any visitRandom_number(BehaviorParser::Random_numberContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDir(BehaviorParser::DirContext *ctx) override {
+  virtual std::any visitRandom_float(BehaviorParser::Random_floatContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDirection_of(BehaviorParser::Direction_ofContext *ctx) override {
+  virtual std::any visitFloat_range(BehaviorParser::Float_rangeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitInfront(BehaviorParser::InfrontContext *ctx) override {
+  virtual std::any visitNumber_range(BehaviorParser::Number_rangeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBehind(BehaviorParser::BehindContext *ctx) override {
+  virtual std::any visitValue_coord(BehaviorParser::Value_coordContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAround(BehaviorParser::AroundContext *ctx) override {
+  virtual std::any visitEvent(BehaviorParser::EventContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitObject(BehaviorParser::ObjectContext *ctx) override {
+  virtual std::any visitEvent_attribute(BehaviorParser::Event_attributeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPed_Selector(BehaviorParser::Ped_SelectorContext *ctx) override {
+  virtual std::any visitEvent_name(BehaviorParser::Event_nameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelector_Cond(BehaviorParser::Selector_CondContext *ctx) override {
+  virtual std::any visitEvent_start(BehaviorParser::Event_startContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelector(BehaviorParser::SelectorContext *ctx) override {
+  virtual std::any visitEvent_end(BehaviorParser::Event_endContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelector_Percent(BehaviorParser::Selector_PercentContext *ctx) override {
+  virtual std::any visitCondition(BehaviorParser::ConditionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly_N_RandomContext *ctx) override {
+  virtual std::any visitConnector(BehaviorParser::ConnectorContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext *ctx) override {
+  virtual std::any visitOr_Connector(BehaviorParser::Or_ConnectorContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitId_list(BehaviorParser::Id_listContext *ctx) override {
+  virtual std::any visitAnd_Connector(BehaviorParser::And_ConnectorContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAction(BehaviorParser::ActionContext *ctx) override {
+  virtual std::any visitSub_condition(BehaviorParser::Sub_conditionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitConditional_action(BehaviorParser::Conditional_actionContext *ctx) override {
+  virtual std::any visitCondition_Time_Elapsed_From_Event(BehaviorParser::Condition_Time_Elapsed_From_EventContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitUn_conditional_action(BehaviorParser::Un_conditional_actionContext *ctx) override {
+  virtual std::any visitCondition_Event_Occurred(BehaviorParser::Condition_Event_OccurredContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSub_action(BehaviorParser::Sub_actionContext *ctx) override {
+  virtual std::any visitCondition_Event_Occurring(BehaviorParser::Condition_Event_OccurringContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAction_atom(BehaviorParser::Action_atomContext *ctx) override {
+  virtual std::any visitCondition_Event_Starting(BehaviorParser::Condition_Event_StartingContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAction_Stop(BehaviorParser::Action_StopContext *ctx) override {
+  virtual std::any visitCondition_Event_Ending(BehaviorParser::Condition_Event_EndingContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAction_atom_Percent_Walk_Speed(BehaviorParser::Action_atom_Percent_Walk_SpeedContext *ctx) override {
+  virtual std::any visitCondition_Spatial(BehaviorParser::Condition_SpatialContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAction_Push(BehaviorParser::Action_PushContext *ctx) override {
+  virtual std::any visitCondition_Enter_Location(BehaviorParser::Condition_Enter_LocationContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAction_Be(BehaviorParser::Action_BeContext *ctx) override {
+  virtual std::any visitCondition_Exit_Location(BehaviorParser::Condition_Exit_LocationContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDeclaration(BehaviorParser::DeclarationContext *ctx) override {
+  virtual std::any visitCondition_Attribute(BehaviorParser::Condition_AttributeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext *ctx) override {
+  virtual std::any visitDuration(BehaviorParser::DurationContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext *ctx) override {
+  virtual std::any visitAttribute(BehaviorParser::AttributeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext *ctx) override {
+  virtual std::any visitAttr_value(BehaviorParser::Attr_valueContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitPed_Selector(BehaviorParser::Ped_SelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_attribute(BehaviorParser::Selector_attributeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_type(BehaviorParser::Selector_typeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_selector(BehaviorParser::Selector_selectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_from(BehaviorParser::Selector_fromContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_required(BehaviorParser::Selector_requiredContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector(BehaviorParser::SelectorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_Percent(BehaviorParser::Selector_PercentContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly_N_RandomContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitGroup(BehaviorParser::GroupContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitId_list(BehaviorParser::Id_listContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction(BehaviorParser::ActionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_attribute(BehaviorParser::Action_attributeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_stimulus(BehaviorParser::Action_stimulusContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_response(BehaviorParser::Action_responseContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_duration(BehaviorParser::Action_durationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_target(BehaviorParser::Action_targetContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSub_action(BehaviorParser::Sub_actionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_atom(BehaviorParser::Action_atomContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSet_atom(BehaviorParser::Set_atomContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitScale_atom(BehaviorParser::Scale_atomContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitTarget(BehaviorParser::TargetContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelf(BehaviorParser::SelfContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitOther(BehaviorParser::OtherContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitNearest_type(BehaviorParser::Nearest_typeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitModifier(BehaviorParser::ModifierContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDistance(BehaviorParser::DistanceContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDirection(BehaviorParser::DirectionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFront(BehaviorParser::FrontContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitBehind(BehaviorParser::BehindContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDeclaration(BehaviorParser::DeclarationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDecl_Ped(BehaviorParser::Decl_PedContext *ctx) override {
     return visitChildren(ctx);
   }
 

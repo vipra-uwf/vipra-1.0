@@ -4,22 +4,33 @@
 #include <conditions/sub_condition.hpp>
 #include <definitions/dsl_types.hpp>
 #include <events/event.hpp>
+#include <time/time.hpp>
+#include <util/timed_latch.hpp>
+#include <values/numeric_value.hpp>
+#include "definitions/sim_pack.hpp"
+#include "definitions/type_definitions.hpp"
 
-namespace Behaviors {
-struct SubCondition_Elapsed_Time_From_Event {
-  SubCondition_Elapsed_Time_From_Event(VIPRA::delta_t, Event*);
-  bool operator()(const PedestrianSet&,
-                  const ObstacleSet&,
-                  const Goals&,
-                  const BehaviorContext&,
-                  VIPRA::idx,
-                  VIPRA::delta_t);
+namespace BHVR {
+class SubConditionElapsedTimeFromEvent {
+ public:
+  SubConditionElapsedTimeFromEvent(BHVR::NumericValue, VIPRA::idx);
+
+  bool operator()(Simpack, VIPRA::idx, Target);
 
  private:
-  bool           started;
-  VIPRA::delta_t elapsedTime;
-  VIPRA::delta_t requiredTime;
+  VIPRA::idx         event;
+  BHVR::NumericValue requiredTime;
+  VIPRA::time_s      startTime;
+
+ public:
+  ~SubConditionElapsedTimeFromEvent() = default;
+  SubConditionElapsedTimeFromEvent(const SubConditionElapsedTimeFromEvent&) = default;
+  SubConditionElapsedTimeFromEvent& operator=(const SubConditionElapsedTimeFromEvent&) =
+      default;
+  SubConditionElapsedTimeFromEvent(SubConditionElapsedTimeFromEvent&&) noexcept = default;
+  SubConditionElapsedTimeFromEvent& operator=(
+      SubConditionElapsedTimeFromEvent&&) noexcept = default;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

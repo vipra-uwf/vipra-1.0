@@ -7,12 +7,13 @@
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
+#include <targets/target.hpp>
+#include "definitions/sim_pack.hpp"
 
-namespace Behaviors {
+namespace BHVR {
 
-using Atom = std::function<
-    void(PedestrianSet&, ObstacleSet&, Goals&, BehaviorContext&, VIPRA::idx, VIPRA::delta_t, std::shared_ptr<VIPRA::State>)>;
+using Atom = std::function<void(Simpack, Target, Target)>;
 
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

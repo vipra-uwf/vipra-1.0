@@ -1,75 +1,107 @@
 #include "calm_pedestrian_set.hpp"
+#include "definitions/dimensions.hpp"
+#include "definitions/type_definitions.hpp"
+#include "obstacle_set/obstacle_set.hpp"
 
-CalmPedestrianSet::CalmPedestrianSet() {
-  numPedestrians = 0;
+/**
+ * @brief Gets the coordinates of all pedestrians in the set.
+ *
+ * @return A constant reference to the vector of pedestrian coordinates.
+ */
+const VIPRA::f3dVec& CalmPedestrianSet::getCoordinates() const noexcept { return coords; }
+
+/**
+ * @brief Gets the coordinates of the pedestrian at the specified index.
+ *
+ * @param index The index of the pedestrian.
+ * @return The coordinates of the pedestrian.
+ */
+const VIPRA::f3d& CalmPedestrianSet::getPedCoords(VIPRA::idx index) const {
+  return coords.at(index);
 }
 
-void
-CalmPedestrianSet::configure([[maybe_unused]] const VIPRA::Config::Map& configMap) {}
-
-void
-CalmPedestrianSet::initialize(std::unique_ptr<VIPRA::PedData> pedData) {
-  const auto peds = reinterpret_cast<CalmPedData*>(pedData.get());
-  numPedestrians = peds->positions.size();
-
-  pedestrianCoordinates = std::move(peds->positions);
-  masses = std::move(peds->masses);
-  reactionTimes = std::move(peds->reactionTimes);
-  desiredSpeeds = std::move(peds->desiredSpeeds);
-  shoulderLengths = std::move(peds->shoulderLengths);
-
-  velocities = VIPRA::f3dVec{numPedestrians, VIPRA::f3d{0, 0, 0}};
-}
-
-VIPRA::f3d
-CalmPedestrianSet::getPedCoords(VIPRA::idx index) const {
-  return pedestrianCoordinates.at(index);
-}
-
-VIPRA::f3d
-CalmPedestrianSet::getPedVelocity(VIPRA::idx index) const {
+/**
+ * @brief Gets the velocity of the pedestrian at the specified index.
+ *
+ * @param index The index of the pedestrian.
+ * @return The velocity of the pedestrian.
+ */
+const VIPRA::f3d& CalmPedestrianSet::getPedVelocity(VIPRA::idx index) const {
   return velocities.at(index);
 }
 
-VIPRA::size
-CalmPedestrianSet::getNumPedestrians() const noexcept {
-  return pedestrianCoordinates.size();
+/**
+ * @brief Gets the number of pedestrians in the set.
+ *
+ * @return The number of pedestrians.
+ */
+VIPRA::size CalmPedestrianSet::getNumPedestrians() const noexcept {
+  return coords.size();
 }
 
-const VIPRA::f3dVec&
-CalmPedestrianSet::getPedestrianCoordinates() const noexcept {
-  return pedestrianCoordinates;
-}
-
-const VIPRA::f3dVec&
-CalmPedestrianSet::getVelocities() const noexcept {
+/**
+ * @brief Gets the velocities of all pedestrians in the set.
+ *
+ * @return A constant reference to the vector of pedestrian velocities.
+ */
+const VIPRA::f3dVec& CalmPedestrianSet::getVelocities() const noexcept {
   return velocities;
 }
 
-const std::vector<float>&
-CalmPedestrianSet::getMasses() const noexcept {
-  return masses;
+/**
+ * @brief Updates the state of the pedestrian set with the given state object.
+ *
+ * @param state The state object containing updated coordinates and velocities.
+ */
+void CalmPedestrianSet::updateState(VIPRA::State& state) {
+  std::copy(state.velocities.begin(), state.velocities.end(), velocities.begin());
+  std::copy(state.coords.begin(), state.coords.end(), coords.begin());
 }
 
-const std::vector<float>&
-CalmPedestrianSet::getReactionTimes() const noexcept {
-  return reactionTimes;
-}
+/**
+ * @brief Get the nearest pedestrian to the specified pedestrian.
+ *
+ * @param pedIdx The index of the pedestrian for which to find the nearest pedestrian.
+ * @return A pair containing the coordinates and index of the nearest pedestrian.
+ */
+std::pair<VIPRA::f3d, VIPRA::idx> CalmPedestrianSet::getNearestPedestrian(
+    VIPRA::idx pedIdx, const VIPRA::ObstacleSet& obsSet) const {
+  const VIPRA::f3d currCoords = coords.at(pedIdx);
 
-const std::vector<float>&
-CalmPedestrianSet::getDesiredSpeeds() const noexcept {
-  return desiredSpeeds;
-}
+  VIPRA::dist shortest = std::numeric_limits<VIPRA::dist>::max();
+  VIPRA::idx  nearest = VIPRA::idx_INVALID;
+  for (VIPRA::idx i = 0; i < coords.size(); ++i) {
+    if (pedIdx == i) continue;
 
-const std::vector<float>&
-CalmPedestrianSet::getShoulderLengths() const noexcept {
-  return shoulderLengths;
-}
+    VIPRA::dist curr = currCoords.distanceTo(coords.at(i));
+    if (curr >= shortest) continue;
 
-void
-CalmPedestrianSet::updateState(std::shared_ptr<VIPRA::State> state) {
-  for (VIPRA::idx i = 0; i < numPedestrians; ++i) {
-    velocities[i] = state->velocities[i];
-    pedestrianCoordinates[i] = state->pedestrianCoordinates[i];
+    if (obsSet.rayHit(currCoords, coords.at(i)) != -1) continue;
+
+    shortest = curr;
+    nearest = i;
   }
+
+  if (nearest == VIPRA::idx_INVALID) return {VIPRA::_emptyf3d_, VIPRA::idx_INVALID};
+
+  return {coords.at(nearest), nearest};
+}
+
+// ----------------------------- INITIALIZATION -----------------------------------------------
+
+/**
+ * @brief Configures the CalmPedestrianSet with the given configuration map.
+ *
+ * @param configMap The configuration map.
+ */
+void CalmPedestrianSet::configure(const VIPRA::Config&) {}
+
+/**
+ * @brief Initializes the CalmPedestrianSet with the given pedestrian coordinates.
+ *
+ * @param pedCoords The vector of pedestrian coordinates.
+ */
+void CalmPedestrianSet::initialize(const std::vector<VIPRA::pcoord>& pedCoords) {
+  coords = pedCoords;
+  velocities = VIPRA::f3dVec{coords.size(), VIPRA::f3d{}};
 }

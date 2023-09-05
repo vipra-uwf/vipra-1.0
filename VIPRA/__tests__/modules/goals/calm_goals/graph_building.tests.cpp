@@ -18,10 +18,11 @@ using ::testing::ReturnRef;
 TEST(Calm_Goals_Graph, Graph_Building) {
   PointMapLoader              loader;
   PassengerVehicleObstacleSet map;
-  CalmPath::PathingGraph      test;
-  map.initialize(
-      loader.LoadMap("/home/rolland/Documents/VIPRA/vipra/Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap"));
+  CALM_PATH::PathingGraph     sut;
 
-  test.build(map, 0.1, 0.2);
-  std::cerr << test.toString();
+  map.initialize(loader.loadMap(
+      "../../Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap"));
+
+  sut.build(map, 0.05, 0.25);
+  // std::cerr << sut.toString();
 }

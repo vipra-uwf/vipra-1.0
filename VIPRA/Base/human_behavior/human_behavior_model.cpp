@@ -1,46 +1,74 @@
-//
-// Created by joe on 8/3/21.
-//
 
 #include "human_behavior_model.hpp"
 
 #include <algorithm>
+#include <cstdint>
 #include <filesystem>
 
-void
-HumanBehaviorModel::configure(const VIPRA::Config::Map& configMap) {
-  seed = configMap["seed"].asUInt();
-  loadBehaviors(configMap.getStringVector("behaviors"));
+#include "definitions/type_definitions.hpp"
+#include "spdlog/spdlog.h"
+
+namespace VIPRA {
+/**
+ * @brief Gets module values from module params
+ * 
+ * @param configMap : 
+ */
+void HumanBehaviorModel::configure(const VIPRA::Config& configMap) {
+  seed = configMap["seed"].get<VIPRA::size>();
+  loadBehaviors(configMap["behaviors"]);
 }
 
-void
-HumanBehaviorModel::initialize(const PedestrianSet& pedSet, const ObstacleSet& obsSet, const Goals& goals) {
+/**
+ * @brief Initializes each behavior
+ * 
+ * @param pedSet : 
+ * @param obsSet : 
+ * @param goals : 
+ */
+void HumanBehaviorModel::initialize(const VIPRA::PedestrianSet& pedSet,
+                                    const VIPRA::ObstacleSet&   obsSet,
+                                    const VIPRA::Goals&         goals) {
   for (auto& behavior : humanBehaviors) {
     behavior.initialize(pedSet, obsSet, goals);
   }
 }
 
-void
-HumanBehaviorModel::timestep(PedestrianSet&                pedSet,
-                             ObstacleSet&                  obsSet,
-                             Goals&                        goals,
-                             std::shared_ptr<VIPRA::State> state,
-                             VIPRA::delta_t                dT) {
-  std::for_each(humanBehaviors.begin(), humanBehaviors.end(), [&](Behaviors::HumanBehavior& behavior) {
+/**
+ * @brief Calls each behavior's timestep method
+ * 
+ * @param pedSet : 
+ * @param obsSet : 
+ * @param goals : 
+ * @param state : 
+ * @param dT : 
+ */
+void HumanBehaviorModel::timestep(VIPRA::PedestrianSet& pedSet,
+                                  VIPRA::ObstacleSet& obsSet, VIPRA::Goals& goals,
+                                  VIPRA::State& state, VIPRA::delta_t dT) {
+  for (auto& behavior : humanBehaviors) {
     behavior.timestep(pedSet, obsSet, goals, state, dT);
-  });
+  }
 }
 
-void
-HumanBehaviorModel::loadBehaviors(std::vector<std::string> behaviors) {
+/**
+ * @brief Builds each behavior from the vector of file paths
+ * 
+ * @param behaviors : 
+ */
+void HumanBehaviorModel::loadBehaviors(const VIPRA::Config& behaviors) {
+  BHVR::BehaviorBuilder builder;
+  spdlog::info("Loading {} Behaviors", behaviors.size());
 
-  Behaviors::BehaviorBuilder builder;
-  spdlog::info("Loading Behaviors");
-  humanBehaviors.resize(behaviors.size());
-  std::transform(behaviors.begin(), behaviors.end(), humanBehaviors.begin(), [&](const std::string& behaviorName) {
-    const auto filePath = std::filesystem::current_path() / "../Behaviors" / (behaviorName + ".behavior");
-    return builder.build(behaviorName, filePath, seed);
-  });
+  if (!behaviors.is_array())
+    BehaviorModelException::error("Configuration File Behaviors not in proper format");
 
-  spdlog::info("Done Loading Behaviors");
+  for (const auto& value : behaviors.items()) {
+    const auto filePath = std::filesystem::current_path() / "../Behaviors" /
+                          (value.value().get<std::string>() + ".behavior");
+    humanBehaviors.push_back(builder.build(value.value(), filePath, seed));
+  }
+
+  spdlog::info("Done Loading Behavior");
 }
+}  // namespace VIPRA

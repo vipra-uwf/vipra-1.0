@@ -1,6 +1,4 @@
-
-
-# VIPRA Behaviors
+# VIPRA Behaviors Development
 
 # Sections
 
@@ -19,7 +17,7 @@
 A `Behavior` describes `Actions` that pedestrians take given certain `Conditions`
 
 A `Behavior` is comprised of:
-- a `Selector`
+- `Selectors`
 - `Events`
 - `Actions`
 - `Behavior Context`
@@ -481,29 +479,23 @@ Add any documentation
 **Evaluates to True, Given:** The event has started and The event has not ended
 
 
-### C.1.3.3. Event One Time:
-
-**Parameters:**
-- bool : true if fire on event start, false if fire on event end
-- Event* : pointer to event to listen to
-
-**Evaluates to True, Given:** The event has triggered the listener and the current simulation time is the same as when the listener was triggered
-
-### C.1.3.4. Event:
+### C.1.3.3. Event:
 
 **Parameters:**
 - Event* : pointer to the event to listen to
 
 **Evaluates to True, Given:** The event has started
 
-### C.1.3.5. Start:
+### C.1.3.4. Start:
 
 **Parameters:** none
 
 **Evaluates to True, Given:** Always
 
 
-### C.1.3.6 State:
+### C.1.3.5 State:
+
+TODO : not implemented
 
 **Parameters:**
 - Behaviors::stateUID : the state to wait for
@@ -589,8 +581,38 @@ The `Behavior Builder` is what constructs `Behavior` objects from .behavior file
 
 ---
 
+# V. Values
 
+## V.1. Numerical Values
 
+Some `Conditions`, `Actions`, and `Events` require a numerical value to be provided in the `Behavior` file.
+
+### V.1.1. Static Values
+
+Numerical values can be provided as a static value.
+
+For Example:
+```
+An !announcement event will 
+  occur after 10 seconds from !start.
+```
+
+### V.1.2. Random Values
+
+Numerical values can also be defined as a range; either as Integers or Decimal values.
+
+For Example:
+```
+An !announcement event will 
+  occur after a random 5.0 to 10.0 seconds from !start.
+```
+In this, the value will be chosen randomly from the values between 5.0 and 10.0 (inclusive).
+
+Adding the decimal point to the number *(5.0)* means it will have a decimal value.
+
+Without the decimal point *(5)* the values will be whole numbers.
+
+---
 # N. Needs
 
 
@@ -637,29 +659,6 @@ a !fire will occur after 5 seconds from !start.
 a pedestrian will @head towards the +exit nearest to them.
 ```
 
-## N.5 Personal Events
-We need a way for events to happen to individuals, as opposed to the overall environment.
-
-for example: a pedestrian hurts themselves and now walks slower
-
-## N.6 Exclusive Selectors
-
-Currently there is no way to make selectors exclusive.
-
-example
-```
-exactly one pedestrian is an example.
-exactly one pedestrian is another_example.
-
-// It is possible these choose the same pedestrian
-// There needs to be a way to choose if a selector is exclusive
-```
-
-## N.7. Behavior Priorities
-We need a way to say which behaviors take precedence over others.
-
-todo
-
 ## N.8. Conditional Selectors
 We need a way to select pedestrians based on conditions.
 
@@ -703,3 +702,117 @@ Currently behaviors can only change the state of the environment
 # I. Issues
 
 ---
+
+
+# Uc. Use Cases
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Most Important:
+  Multiple Selectors - Finished
+  Interaction Between Pedestrians
+  Update Goals
+  Individual events
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Multiple Selectors:
+
+    Medical emergency (everyone waits for passenger to leave before moving)
+      - multiple selectors (injured v normal)
+
+    Injured people may have to wait to disembark
+      - multiple selectors
+
+    Disabled person - might need support
+      - multiple selectors
+      - interaction between pedestrians
+      - changing goals?
+
+    A group of stationary folks with people moving around them (can make stationary people, but not move around)
+      - multiple selectors
+      - updating goals? (path around peds)
+      - updating obstacle map? (add pedestrians as obstacle)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Update Goals:
+
+    A group of stationary folks with people moving around them (can make stationary people, but not move around)
+      - multiple selectors
+      - updating goals? (path around peds)
+      - updating obstacle map? (add pedestrians as obstacle)
+
+    Travel in a group
+      - group selector
+      - update goals?
+
+    Forget something (have to go back to get it)
+      - updating goals
+
+    Disabled person - might need support
+      - multiple selectors
+      - interaction between pedestrians
+      - changing goals?
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Change Propulsive Forces:
+
+    General fear of getting infection
+      - change the propulsive forces?
+
+    Racial differences
+      - change the propulsive forces? (allow to get closer)
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Interaction Between Pedestrians:
+
+    Emergencies (Fire)
+      - interaction between pedestrians (pushing)
+      - allow climbing over obstacles?
+      - update obstacle map?
+
+    Pushing slow/stopped walkers out of the way
+      - interaction between pedestrians
+
+    Disabled person - might need support
+      - multiple selectors
+      - interaction between pedestrians
+      - changing goals?
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Update Obstacle Set:
+
+    Emergencies (Fire)
+          - interaction between pedestrians (pushing)
+          - allow climbing over obstacles?
+          - update obstacle map?
+
+    A group of stationary folks with people moving around them (can make stationary people, but not move around)
+      - multiple selectors
+      - updating goals? (path around peds)
+      - updating obstacle map? (add pedestrians as obstacle)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Misc:
+
+    Letting passengers in rows in front go first
+      - condition for other passengers state
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Not Sure About:
+
+Responses influenced by religious or cultural beliefs and norms
+Unaccompanied minor
+Using precautionary or careful approach - self-protecting behavior 
+risk-averse versus risk-seeking tendencies
+Misuse of intervention such as mask
+Sleep behaviors during a flight
+Conflict resolution

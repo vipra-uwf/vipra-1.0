@@ -14,29 +14,30 @@
 using ::testing::Return;
 using ::testing::ReturnRef;
 
-TEST(Calm_Goals_Pathfinding, Pathfinding) {
-  PointMapLoader              loader;
-  PassengerVehicleObstacleSet map;
-  CalmPath::PathingGraph      test;
-  map.initialize(
-      loader.LoadMap("/home/rolland/Documents/VIPRA/vipra/Maps/obstacle_maps/a320_144_obstacles/a320_144_obstacles.omap"));
+// TEST(Calm_Goals_Pathfinding, Pathfinding) {
+//   PointMapLoader              loader;
+//   PassengerVehicleObstacleSet map;
+//   CALM_PATH::PathingGraph     test;
+//   map.initialize(
+//       loader.loadMap("../../Maps/obstacle_maps/"
+//                      "757_200_182_obstacles/757_200_182_obstacles.omap"));
 
-  test.build(map, 0.1, 0.2);
-  spdlog::info("Done Building");
+//   test.build(map, 0.05, 0.20);
+//   spdlog::info("Done Building");
 
-  std::cerr << "{ \"Paths\": [";
-  for (const auto& coords : all_peds) {
-    auto t = CalmPath::pathFind(coords, goodmap_exits[0], test);
-    std::cerr << "{ \"points\": [";
-    while (!t.empty()) {
-      auto coord = t.front();
-      t.pop();
-      std::cerr << fmt::format("{{\"x\": {}, \"y\": {} }}", coord.x, coord.y);
-      if (!t.empty()) {
-        std::cerr << ",";
-      }
-    }
-    std::cerr << "]},";
-  }
-  std::cerr << "]}";
-}
+//   std::cerr << "{ \"Paths\": [";
+//   for (const auto& coords : allPeds2) {
+//     auto t = CALM_PATH::pathFind(coords, VIPRA::f3d{30.7, 1.75}, test);
+//     std::cerr << "{ \"points\": [";
+//     while (!t.empty()) {
+//       auto coord = t.front();
+//       t.pop();
+//       std::cerr << fmt::format("{{\"x\": {}, \"y\": {} }}", coord.x, coord.y);
+//       if (!t.empty()) {
+//         std::cerr << ",";
+//       }
+//     }
+//     std::cerr << "]},";
+//   }
+//   std::cerr << "]}";
+// }

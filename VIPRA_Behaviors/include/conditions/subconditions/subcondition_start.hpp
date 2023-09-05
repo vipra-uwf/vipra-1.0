@@ -2,17 +2,15 @@
 #define VIPRA_START_EVENT_HPP
 
 #include <definitions/behavior_context.hpp>
+#include <definitions/sim_pack.hpp>
 #include <events/event.hpp>
+#include <targets/target.hpp>
 
-namespace Behaviors {
-struct SubCondition_Start {
-  bool operator()(const PedestrianSet&,
-                  const ObstacleSet&,
-                  const Goals&,
-                  const BehaviorContext&,
-                  VIPRA::idx,
-                  VIPRA::delta_t);
+namespace BHVR {
+class SubConditionStart {
+ public:
+  bool operator()(Simpack, VIPRA::idx, Target) const;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

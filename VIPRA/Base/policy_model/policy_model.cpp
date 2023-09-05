@@ -1,11 +1,8 @@
 #include "policy_model.hpp"
 
-void
-PolicyModel::configure(const VIPRA::Config::Map& configMap) {}
+namespace VIPRA {
+void PolicyModel::configure(const VIPRA::Config&) {}
 
-void
-PolicyModel::timestep(const PedestrianSet&          pedSet,
-                      const ObstacleSet&            obSet,
-                      const Goals&                  goals,
-                      std::shared_ptr<VIPRA::State> state,
-                      VIPRA::delta_t                timestep_size) {}
+void PolicyModel::timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                           const VIPRA::Goals&, VIPRA::State&, VIPRA::delta_t) {}
+}  // namespace VIPRA

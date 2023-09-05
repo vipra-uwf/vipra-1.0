@@ -1,60 +1,34 @@
-import json
-import sys
-import os
-import matplotlib
 import matplotlib.pyplot as plt
-import imageio
+from matplotlib.animation import FuncAnimation, PillowWriter, FFMpegFileWriter
+import numpy as np
 
-if(len(sys.argv) != 3):
-    print("USAGE: python3 visualizer.pyz *pedestrian_trajectory.json* *obstacle_set.json*")
-    exit(-1)
+from visUtil import getArgs, plotDif, getPeds, getObs, makeColors, printProgressBar, getPoints, prepPlot, plotObs, plotShoulders, plotPeds, plotIndexes, printProgressBar, printProgressBar
 
+args = getArgs()
 
-peds = open(sys.argv[1])
-obs = open(sys.argv[2])
+pedCoords = getPeds(args['peds'])
+difCoords = getPeds(args['dif'])
+[obsX, obsY] = getObs(args['obs']);
+pedColors = makeColors(len(pedCoords["timesteps"][0]["pedestrians"]), args)
+timestepCnt = len(pedCoords["timesteps"])
 
-data = json.load(peds)
-obstacles = json.load(obs)
-
-obsX = []
-obsY = []
-
-for obj in obstacles["obstacle"]:
-    obsX.append(float(obj["x"]))
-    obsY.append(float(obj["y"]))
+fig,ax = plt.subplots()
 
 
+def animate(i):
+  printProgressBar(i, timestepCnt, 'Animating')
+  [pointsX, pointsY] = getPoints(pedCoords["timesteps"][i])
+  [compX, compY] = getPoints(difCoords[i]) if args['dif'] else [[], []]
+
+  prepPlot(ax, args)
+  obstacles = plotObs(obsX, obsY, ax, args)
+  plotShoulders(pointsX, pointsY, pedColors, ax, args)
+  points = plotPeds(pointsX, pointsY, pedColors, ax, args) if not args['dif'] else plotDif(pointsX, pointsY, compX, compY, pedColors, ax, args)
+  plotIndexes(pointsX, pointsY, pedColors, ax, args)
+  
+  return points, obstacles
 
 
-ax = plt.gca()
-
-maxStep = len(data["timesteps"])
-
-with imageio.get_writer('output.gif', mode='I') as writer:
-    for step in data["timesteps"]:
-        i = 0
-        plt.pause(0.05)
-        plt.cla()
-        ax.set_ylim(-5, 5)
-        ax.set_xlim(-5, 30)
-        ax.autoscale(False)
-        plt.title(step)
-        pointsX = []
-        pointsY = []
-        ids = []
-        for key in data["timesteps"][step]:
-            pointsX.append(key["x"])
-            pointsY.append(key["y"])
-            ids.append(i)
-            i = i + 1
-        
-        for index in range(0, len(pointsX)):
-            plt.text(pointsX[index], pointsY[index], ids[index], fontsize=5)
-        plt.scatter(obsX, obsY, 1)
-        plt.scatter(pointsX, pointsY, 2)
-        plt.savefig(f'{step}.png')
-        #plt.waitforbuttonpress()
-        image = imageio.v2.imread(f'{step}.png')
-        writer.append_data(image)
-        os.remove(f'{step}.png')
-        
+ani = FuncAnimation(fig, animate, frames=timestepCnt, blit=True)
+ani.save(args['outpath'], dpi=300, writer=FFMpegFileWriter(fps=args['fps']), progress_callback=printProgressBar)
+printProgressBar(timestepCnt, timestepCnt, 'Done')

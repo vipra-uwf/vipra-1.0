@@ -4,129 +4,99 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
-#include <math.h>
+#include <memory>
 #include <vector>
 
 #include "Goals/calm_goals/calm_goals.hpp"
-#include "ObstacleSet/passenger_vehicle_obstacle_set/passenger_vehicle_obstacle_set.hpp"
-#include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
+
+#include "configuration/config.hpp"
+#include "definitions/type_definitions.hpp"
 #include "pedestrian_model/pedestrian_dynamics_model.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
-#include "definitions/config_map.hpp"
+#include "calm_collision.hpp"
+#include "calm_line.hpp"
+#include "calm_rect.hpp"
+#include "randomization/random.hpp"
 
-struct Rect {
-  VIPRA::f3d p1;
-  VIPRA::f3d p2;
-  VIPRA::f3d p3;
-  VIPRA::f3d p4;
-};
-
-struct Line {
-  Line(const VIPRA::f3d& P1, const VIPRA::f3d& P2) : p1(P1), p2(P2) {}
-  bool operator==(const Line& other) const {
-    return ((p1 == other.p1) && (p2 == other.p2)) || ((p1 == other.p2) && (p2 == other.p1));
-  }
-  VIPRA::f3d p1;
-  VIPRA::f3d p2;
-};
-
-class CalmPedestrianModel : public PedestrianDynamicsModel {
+class CalmPedestrianModel : public VIPRA::PedestrianDynamicsModel {
  public:
-  ~CalmPedestrianModel();
-  CalmPedestrianModel();
+  // struct ModelData {
+  //   std::vector<float>          betas;
+  //   std::vector<float>          masses;
+  //   std::vector<float>          desiredSpeeds;
+  //   std::vector<float>          shoulders;
+  //   std::vector<VIPRA::delta_t> reactionTimes;
+  //   std::vector<VIPRA::dist>    nearestNeighborDists;
+  //   VIPRA::f3dVec               propulsionForces;
+  // };
 
-  void                          configure(const VIPRA::Config::Map& configMap) override;
-  void                          initialize(const PedestrianSet&, const ObstacleSet&, const Goals&) override;
-  std::shared_ptr<VIPRA::State> timestep(const PedestrianSet&,
-                                         const ObstacleSet&,
-                                         const Goals&,
-                                         VIPRA::delta_t,
-                                         VIPRA::t_step) override;
+  struct ConfigData {
+    float meanMass;
+    float massStdDev;
+    float meanReactionTime;
+    float reactionTimeStdDev;
+    float meanMaxSpeed;
+    float maxSpeedStdDev;
+    float meanShoulderLen;
+    float ShoulderLenStdDev;
+  };
 
- protected:
-  VIPRA::f3dVec      propulsionForces;
-  std::vector<float> betas;
+  void configure(const VIPRA::Config&) override;
+  void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                  const VIPRA::Goals&) override;
+  void timestep(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                const VIPRA::Goals&, VIPRA::State&, VIPRA::delta_t,
+                VIPRA::t_step) override;
 
-  float*                        pedestrianDistanceMatrix;
-  std::vector<float>            nearestNeighbors;
-  std::vector<VIPRA::idx>       nearestNeighborIndex;
-  std::shared_ptr<VIPRA::State> modelState;
+ private:
+  ConfigData         config{};
+  ModelData          peds;
+  Collision          collision;
+  VIPRA::pRNG_Engine rand{};
 
-  enum RaceStatus { NO_RACE, WAIT };
-  std::vector<RaceStatus>  raceStatuses;
-  std::vector<VIPRA::size> raceOpponents;
-  std::vector<std::vector<bool>> inRace;
-  std::vector<int> raceCounter;
-
-  std::vector<std::vector<VIPRA::f3d>> intersectionMidpoints;
-  std::vector<Rect> collisionRectangle;
-  VIPRA::f3dVec velDir;
-
-  void calculatePropulsion(const CalmPedestrianSet&, const CalmGoals&) noexcept;
-  void calculateRepulsion(const CalmPedestrianSet&, const CalmGoals&) noexcept;
-  void calculateBetas(const CalmPedestrianSet&) noexcept;
-  void calculateNeartestNeighbors(const CalmPedestrianSet&, const ObstacleSet&, const Goals&) noexcept;
-  void calculateDistanceMatrices(const CalmPedestrianSet&) noexcept;
-
-  bool checkIfCollide(const CalmPedestrianSet& pedestrianSet, const Goals&, const VIPRA::size, const VIPRA::size);
-  Rect getCollisionRectangle(const CalmPedestrianSet& pedestrianSet, const Goals&, const VIPRA::idx, const float& shldrlen);
-  bool doRectanglesIntersect(Rect& r1, Rect& r2);
+  std::vector<Line> pedShoulders;
   
-  float max(float a, float b);
-  float min(float a, float b);
+  std::vector<RaceStatus> raceStatuses;
+  std::vector<std::vector<bool>>  inRace;
 
-  bool checkIfOnLineSegment(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
-  int orientation(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
-  bool checkIfLineSegmentsIntersect(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
-  void addIntersectionPoints(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3d, VIPRA::f3dVec&);
-  VIPRA::f3d getCollisionAreaMidpoint(const CalmPedestrianSet&, const Goals&, const VIPRA::idx, const VIPRA::idx);
+  static constexpr VIPRA::delta_t slidingGoalTime = 0.1F;
+  static constexpr float equilibriumDistance = 0.382;
+  static constexpr float equilibriumResolution = 0.01F;
 
-  void raceDetection(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::t_step timestep);
-  bool checkIfHighestPriority(const CalmPedestrianSet& pedestrianSet, const Goals& goals, VIPRA::idx index, VIPRA::t_step timestep);
-  float shortestDistanceToLineSegment(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
+  void calculatePropulsion(const VIPRA::PedestrianSet&, const VIPRA::Goals&);
+  void calculateRepulsion(const VIPRA::PedestrianSet&, const VIPRA::Goals&);
+  void calculateBetas(const VIPRA::PedestrianSet&);
 
-  VIPRA::f3d calculateSpeedDensity(const PedestrianSet&);
-  void updateModelState(const CalmPedestrianSet&, const CalmGoals&, VIPRA::delta_t, VIPRA::t_step) noexcept;
+  void calculateShoulders(const VIPRA::PedestrianSet&, const VIPRA::Goals&);
+  void calculateNeartestNeighbors(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                                  const VIPRA::Goals&);
+  void calculateDistanceMatrices(const VIPRA::PedestrianSet&);
+  void updateModelState(const VIPRA::PedestrianSet&, const VIPRA::Goals&, VIPRA::State&,
+                        VIPRA::delta_t, VIPRA::t_step);
 
-  [[nodiscard]] inline float calculateBeta(float) const noexcept;
+  [[nodiscard]] static bool objectSpatialTest(const Rect&, VIPRA::f3d objLeft,
+                                              VIPRA::f3d objRight);
 
-  [[nodiscard]] inline bool isPedInFront(const VIPRA::f3d& pedCoords,
-                                         const VIPRA::f3d& pedVel,
-                                         const float       shoulderLen,
-                                         const VIPRA::f3d& secondCoords,
-                                         const VIPRA::f3d& secondVel,
-                                         const float       secondShoulderLen) const noexcept;
+  [[nodiscard]] static bool isPedInDirectionOfGoal(VIPRA::pcoord, VIPRA::goal,
+                                                   VIPRA::pcoord other);
+  [[nodiscard]] static bool objectDirectionTest(VIPRA::pcoord, VIPRA::veloc,
+                                                VIPRA::f3d objCoords);
+  [[nodiscard]] float checkBlockedPath(VIPRA::idx, VIPRA::veloc, VIPRA::dist maxDist,
+                                       const VIPRA::ObstacleSet&);
+  [[nodiscard]] Rect  makeRectFromShldrs(VIPRA::idx, VIPRA::pcoord, VIPRA::goal);
+  [[nodiscard]] static VIPRA::f3d calculateSpeedDensity(const VIPRA::PedestrianSet&);
+  [[nodiscard]] static float      calculateBeta(VIPRA::dist);
 
-  [[nodiscard]] inline bool isPedInDirectionOfGoal(const VIPRA::f3d& goalCoords,
-                                                   const VIPRA::f3d& pedCoords,
-                                                   const VIPRA::f3d& secondCoords) const noexcept;
+  void setModelData(const VIPRA::PedestrianSet&);
 
-  [[nodiscard]] inline bool objectDirectionTest(const VIPRA::f3d& pedCoords,
-                                                const VIPRA::f3d& pedVelocity,
-                                                const VIPRA::f3d& objCoords) const noexcept;
-
-  [[nodiscard]] inline bool objectSpatialTest(const VIPRA::f3d& pedCoords,
-                                              const VIPRA::f3d& pedVelocity,
-                                              const float       pedShoulderLength,
-                                              const VIPRA::f3d& objLeft,
-                                              const VIPRA::f3d& objRight) const noexcept;
-
-  [[nodiscard]] inline float checkBlockedPath(const VIPRA::f3d&  coords,
-                                              const VIPRA::f3d&  velocity,
-                                              const float        shoulderWidth,
-                                              const float        checkDistance,
-                                              const ObstacleSet& obsSet) const noexcept;
-
-  [[nodiscard]] inline bool lineIntersect(const VIPRA::f3d& start1,
-                                          const VIPRA::f3d& end1,
-                                          const VIPRA::f3d& linep1,
-                                          const VIPRA::f3d& linep2) const noexcept;
-  [[nodiscard]] inline Line getShoulderPoints(const VIPRA::f3d& coords,
-                                              const VIPRA::f3d& velocity,
-                                              const float       shoulderWidth) const noexcept;
-  [[nodiscard]] inline bool isPointInRect(const Rect& rect, const VIPRA::f3d& p1) const noexcept;
-
-  bool checkBehind(const PedestrianSet&, const VIPRA::f3d& pedCoords, const VIPRA::f3d& pedVelocity);
+ public:
+  CalmPedestrianModel(const CalmPedestrianModel&) = default;
+  CalmPedestrianModel(CalmPedestrianModel&&) = delete;
+  CalmPedestrianModel& operator=(const CalmPedestrianModel&) = default;
+  CalmPedestrianModel& operator=(CalmPedestrianModel&&) = delete;
+  CalmPedestrianModel() = default;
+  ~CalmPedestrianModel() override = default;
 };
 
 #endif

@@ -4,22 +4,30 @@
 #include <fstream>
 #include <iostream>
 
-#include "definitions/config_map.hpp"
+#include "configuration/config.hpp"
 #include "definitions/type_definitions.hpp"
-#include "jsoncpp/json/json.h"
 
+namespace VIPRA {
 class ConfigurationReaderException : public std::runtime_error {
  public:
-  ConfigurationReaderException(const std::string& message) : std::runtime_error(message) {}
-  static void Throw(const std::string& message) { throw ConfigurationReaderException(message); }
+  explicit ConfigurationReaderException(const std::string& message)
+      : std::runtime_error(message) {}
+  static void error(const std::string& message) {
+    throw ConfigurationReaderException(message);
+  }
 };
 
+/**
+ * @brief Reads module params for configuration values
+ * 
+ */
 class ConfigurationReader {
  public:
-  VIPRA::Config::Map getConfiguration(const std::string& filePath);
-  void               configure(const VIPRA::Config::Map& config);
+  static VIPRA::Config getConfiguration(const std::string& filePath);
+  void                 configure(const VIPRA::Config& config);
 
  private:
 };
+}  // namespace VIPRA
 
 #endif

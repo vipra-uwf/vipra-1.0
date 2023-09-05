@@ -1,21 +1,20 @@
 #ifndef ID_RATIO_SELECTOR_HPP
 #define ID_RATIO_SELECTOR_HPP
 
-#include <definitions/type_definitions.hpp>
 #include <selectors/selector.hpp>
 
-namespace Behaviors {
-
-struct selector_percent {
+namespace BHVR {
+/**
+ * @brief Selects a percentage of a group to be a type
+ * 
+ */
+struct SelectorPercent {
   float          percentage;
-  SelectorResult operator()(Behaviors::seed,
-                            const std::vector<VIPRA::idx>&,
-                            const std::vector<VIPRA::idx>&,
-                            const PedestrianSet&,
-                            const ObstacleSet&,
-                            const Goals&);
+  SelectorResult operator()(VIPRA::pRNG_Engine&, const std::vector<VIPRA::idx>&,
+                            const std::vector<VIPRA::idx>&, const VIPRA::PedestrianSet&,
+                            const VIPRA::ObstacleSet&, const VIPRA::Goals&) const;
 };
 
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

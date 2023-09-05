@@ -3,21 +3,19 @@
 #define VIPRA_EXACTLY_N_RANDOM_SELECTOR_H
 
 #include <selectors/selector.hpp>
+#include <values/numeric_value.hpp>
 
-namespace Behaviors {
-
-struct selector_exactly_N {
-  size_t         N;
-  SelectorResult operator()(Behaviors::seed,
-                            const VIPRA::idxVec&,
-                            const VIPRA::idxVec&,
-                            const PedestrianSet&,
-                            const ObstacleSet&,
-                            const Goals&);
+namespace BHVR {
+/**
+ * @brief Selects an exact number of pedestrians
+ * 
+ */
+struct SelectorExactlyN {
+  NumericValue   selectCount;
+  SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
+                            const VIPRA::idxVec&, const VIPRA::PedestrianSet&,
+                            const VIPRA::ObstacleSet&, const VIPRA::Goals&) const;
 };
-
-extern const SelectorFunc exactly_N_selector;
-
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif  //VIPRA_EXACTLY_N_RANDOM_SELECTOR_H

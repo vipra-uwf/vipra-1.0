@@ -3,27 +3,25 @@
 #include <cmath>
 #include <random>
 
+#include <randomization/random.hpp>
 #include <selectors/selector_percent.hpp>
 
-namespace Behaviors {
-
+namespace BHVR {
 /**
  * @brief Selects (numpeds * ratio) pedestrians for the simulation
  * 
  * @param pedSet : 
  */
-SelectorResult
-selector_percent::operator()(Behaviors::seed      seed,
-                             const VIPRA::idxVec& fullGroup,
-                             const VIPRA::idxVec& group,
-                             const PedestrianSet&,
-                             const ObstacleSet&,
-                             const Goals&) {
-  srand(seed);
-
+SelectorResult SelectorPercent::operator()(VIPRA::pRNG_Engine&  rngEngine,
+                                           const VIPRA::idxVec& fullGroup,
+                                           const VIPRA::idxVec& group,
+                                           const VIPRA::PedestrianSet& /*pedset*/,
+                                           const VIPRA::ObstacleSet& /*obsSet*/,
+                                           const VIPRA::Goals& /*goals*/) const {
   auto groupPeds = group;
 
-  VIPRA::size count = static_cast<VIPRA::size>(std::floor(fullGroup.size() * percentage));
+  auto count = static_cast<VIPRA::size>(
+      std::floor(percentage * static_cast<float>(fullGroup.size())));
 
   bool starved = false;
   if (count > group.size()) {
@@ -33,9 +31,9 @@ selector_percent::operator()(Behaviors::seed      seed,
 
   spdlog::debug("Selector Percent: Selecting {} Pedestrians", count);
 
-  std::random_shuffle(groupPeds.begin(), groupPeds.end());
+  std::shuffle(groupPeds.begin(), groupPeds.end(), rngEngine);
   groupPeds.resize(count);
 
   return {starved, groupPeds};
 }
-}  // namespace Behaviors
+}  // namespace BHVR

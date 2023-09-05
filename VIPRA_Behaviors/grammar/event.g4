@@ -3,12 +3,23 @@ grammar event;
 import lexer_rules, condition;
 
 event:
-  event_Single |
-  event_Lasting
+  EVENT ':' event_attribute*
 ;
 
-event_Single:
-  (AN|THE) EVNT (EVENT)? WILL OCCUR condition;
+event_attribute:
+  event_name |
+  event_start |
+  event_end
+;
 
-event_Lasting:
-  (AN|THE) EVNT (EVENT)? WILL OCCUR condition AND END condition;
+event_name:
+  NAME ':' ID
+;
+
+event_start:
+  START ':' condition
+;
+
+event_end:
+  END ':' condition
+;

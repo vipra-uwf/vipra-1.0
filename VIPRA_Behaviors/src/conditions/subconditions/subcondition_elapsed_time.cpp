@@ -1,7 +1,13 @@
 
-#include <conditions/subconditions/subcondition_elapsed_time.hpp>
+#include <spdlog/spdlog.h>
 
-namespace Behaviors {
+#include <conditions/subconditions/subcondition_elapsed_time.hpp>
+#include <utility>
+#include "definitions/sim_pack.hpp"
+#include "util/bool_latch.hpp"
+#include "values/numeric_value.hpp"
+
+namespace BHVR {
 
 /**
  * @brief Constructor, adds start event listener to provided event
@@ -9,9 +15,15 @@ namespace Behaviors {
  * @param time : 
  * @param event : 
  */
-SubCondition_Elapsed_Time_From_Event::SubCondition_Elapsed_Time_From_Event(VIPRA::delta_t time, Event* event)
-  : elapsedTime(0), requiredTime(time) {
-  event->onStart([&](float) { started = true; });
+SubConditionElapsedTimeFromEvent::SubConditionElapsedTimeFromEvent(
+    BHVR::NumericValue time, VIPRA::idx ev)
+    : event(ev), requiredTime(std::move(time)), startTime(0) {}
+
+inline constexpr bool inTimeStep(VIPRA::time_s currTime, VIPRA::time_s checkTime,
+                                 VIPRA::delta_t dT) {
+  const VIPRA::delta_t left = checkTime - dT;
+  const VIPRA::delta_t right = checkTime + dT;
+  return (currTime > left && currTime < right);
 }
 
 /**
@@ -19,23 +31,17 @@ SubCondition_Elapsed_Time_From_Event::SubCondition_Elapsed_Time_From_Event(VIPRA
  * 
  * @param dT : 
  * @return true 
- * @return false 
+ * @return false
  */
-bool
-SubCondition_Elapsed_Time_From_Event::operator()(const PedestrianSet&,
-                                                 const ObstacleSet&,
-                                                 const Goals&,
-                                                 const BehaviorContext&,
-                                                 VIPRA::idx,
-                                                 VIPRA::delta_t dT) {
-  if (started) {
-    elapsedTime += dT;
-    if (elapsedTime >= requiredTime) {
-      started = false;
-      elapsedTime = 0;
-      return true;
-    }
+bool SubConditionElapsedTimeFromEvent::operator()(Simpack pack, VIPRA::idx pedIdx,
+                                                  Target) {
+  const auto& ev = pack.context.events[event];
+  if (ev.isStarting()) {
+    startTime = pack.context.elapsedTime;
   }
-  return false;
+
+  float reqTime = requiredTime.value(pedIdx);
+  float checkTime = startTime + reqTime;
+  return inTimeStep(pack.context.elapsedTime, checkTime, pack.dT);
 }
-}  // namespace Behaviors
+}  // namespace BHVR

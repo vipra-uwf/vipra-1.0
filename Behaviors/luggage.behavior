@@ -1,0 +1,23 @@
+
+Types:
+  Luggage_Grabber
+.
+
+Location:
+  Name: Aisle
+  Shape: Rectangle
+  Points:
+    {0, 1.55}
+    {25, 1.93}
+.
+
+Selector:
+  Type: Luggage_Grabber
+  Select: 75%
+.
+
+Action (Luggage_Grabber):
+  Condition: enter @Aisle
+  Response: set velocity to {0}
+  Duration: random 10 - 30 seconds
+.

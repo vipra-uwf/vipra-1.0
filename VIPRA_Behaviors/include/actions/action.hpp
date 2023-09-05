@@ -1,6 +1,8 @@
 #ifndef ACTION_HPP
 #define ACTION_HPP
 
+#include <optional>
+
 #include <spdlog/spdlog.h>
 
 #include <actions/atom.hpp>
@@ -8,39 +10,44 @@
 #include <definitions/behavior_context.hpp>
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
-#include <optional>
 #include <pedestrian_set/pedestrian_set.hpp>
+#include <time/time.hpp>
+#include <util/timed_latch.hpp>
+#include "definitions/sim_pack.hpp"
+#include "definitions/type_definitions.hpp"
+#include "targets/target_selector.hpp"
+#include "targets/target_selectors/target_self.hpp"
+#include "values/numeric_value.hpp"
 
-namespace Behaviors {
-/**
- * An action is something the pedestrian does, such as stopping movement.
- */
+
+namespace BHVR {
 class Action {
  public:
-  Action(const Action&) = delete;
-  Action& operator=(const Action&) = delete;
-
   ~Action() = default;
   Action() = default;
+  Action(const Action&) = default;
+  Action& operator=(const Action&) = default;
+  Action(Action&&) noexcept = default;
+  Action& operator=(Action&&) noexcept = default;
 
-  Action(Action&&) noexcept;
-  Action& operator=(Action&&) noexcept;
+  void initialize(Simpack pack);
 
-  void performAction(PedestrianSet&,
-                     ObstacleSet&,
-                     Goals&,
-                     BehaviorContext&,
-                     VIPRA::idx,
-                     VIPRA::delta_t,
-                     std::shared_ptr<VIPRA::State>);
+  void performAction(Simpack pack, VIPRA::idx);
 
-  void addCondition(Condition&&);
-  void addAtom(Atom&&);
+  void addCondition(const Condition&);
+  void addAtom(const Atom&);
+  void addDuration(const BHVR::NumericValue&);
+  void addTarget(TargetSelector&&);
 
  private:
-  std::vector<Atom>        atoms;
-  std::optional<Condition> condition;
+  std::vector<Atom>                   atoms;
+  std::optional<Condition>            condition;
+  std::optional<TimedLatchCollection> duration;
+  TargetSelector                      targets{TargetSelf{}};
+
+  inline bool evaluate(Simpack pack, VIPRA::idx, Target);
 };
-}  // namespace Behaviors
+
+}  // namespace BHVR
 
 #endif

@@ -1,9 +1,14 @@
 
-#include <events/event.hpp>
+#include <utility>
 
 #include <spdlog/spdlog.h>
 
-namespace Behaviors {
+#include <events/event.hpp>
+#include "definitions/sim_pack.hpp"
+#include "events/event_status.hpp"
+#include "targets/target.hpp"
+
+namespace BHVR {
 
 /**
  * @brief Evaluates whether an event should start or end based on its conditions
@@ -14,83 +19,97 @@ namespace Behaviors {
  * @param context : behavior context
  * @param dT : simulation timestep size
  */
-void
-Event::evaluate(const PedestrianSet&   pedSet,
-                const ObstacleSet&     obsSet,
-                const Goals&           goals,
-                const BehaviorContext& context,
-                VIPRA::delta_t         dT) {
-  if (!occurring) {
-    if (startCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
-      spdlog::debug("Event \"{}\" has Started", name);
-      occurring = true;
-      std::for_each(startHandlers.begin(), startHandlers.end(), [&](EventHandler handler) { handler(context.elapsedTime); });
+void Event::evaluate(Simpack pack) {
+  if (status == EventStatus::ENDING) {
+    status = EventStatus::NOT_OCCURRING;
+  }
+  if (status == EventStatus::STARTING) {
+    status = EventStatus::OCCURRING;
+  }
+
+  // TODO (rolland) : These might need target selectors?
+  if (status == EventStatus::OCCURRING) {
+    if (endCondition.evaluate(pack, 0, {})) {
+      spdlog::info("Event {} is Ending", name);
+      status = EventStatus::ENDING;
     }
-  } else {
-    if (endCondition.evaluate(pedSet, obsSet, goals, context, 0, dT)) {
-      spdlog::debug("Event \"{}\" has Ended", name);
-      occurring = false;
-      std::for_each(endHandlers.begin(), endHandlers.end(), [&](EventHandler handler) { handler(context.elapsedTime); });
-    }
+
+    return;
+  }
+
+  if (startCondition.evaluate(pack, 0, {})) {
+    spdlog::info("Event {} is Starting", name);
+    occurred = true;
+    status = EventStatus::STARTING;
   }
 }
 
 /**
- * @brief Adds an event handler for when the event starts
+ * @brief Sets the events current status
  * 
- * @param handler : handler function to add
+ * @param stat : 
  */
-void
-Event::onStart(EventHandler handler) {
-  startHandlers.emplace_back(handler);
+void Event::setStatus(EventStatus stat) { status = stat; }
+
+/**
+ * @brief Checks if the event is occurring
+ * 
+ * @return true 
+ * @return false 
+ */
+bool Event::isOccurring() const {
+  return status == EventStatus::OCCURRING || status == EventStatus::STARTING;
 }
 
 /**
- * @brief Adds an event handler for when the event ends
+ * @brief Checks if the event has occurred at all during the simulation
  * 
- * @param handler : handler function to add
+ * @return true 
+ * @return false 
  */
-void
-Event::onEnd(EventHandler handler) {
-  endHandlers.emplace_back(handler);
-}
+bool Event::hasOccurred() const { return occurred; }
 
-void
-Event::setStartCondition(Condition&& condition) {
-  startCondition = std::move(condition);
-}
+/**
+ * @brief Checks if the event is starting
+ * 
+ * @return true 
+ * @return false 
+ */
+bool Event::isStarting() const { return status == EventStatus::STARTING; }
 
-void
-Event::setEndCondition(Condition&& condition) {
-  endCondition = std::move(condition);
-}
+/**
+ * @brief Checks if the event is ending
+ * 
+ * @return true 
+ * @return false 
+ */
+bool Event::isEnding() const { return status == EventStatus::ENDING; }
 
-const std::string&
-Event::getName() const {
-  return name;
-}
+/**
+ * @brief Sets the condition for the event to start
+ * 
+ * @param condition : condition for event to start
+ */
+void Event::setStartCondition(const Condition& condition) { startCondition = condition; }
+
+/**
+ * @brief Sets the condition for the event to end
+ * 
+ * @param condition : condition for event to end
+ */
+void Event::setEndCondition(const Condition& condition) { endCondition = condition; }
+
+/**
+ * @brief Returns the events name
+ * 
+ * @return const std::string& 
+ */
+const std::string& Event::getName() const { return name; }
 
 // ---------------------------------- CONSTRUCTORS -----------------------------------------------------------
 
-Event::Event(std::string evName)
-  : name(evName), occurring(false), startCondition(), endCondition(), startHandlers(), endHandlers() {}
-
-Event::Event(Event&& other) noexcept
-  : name(std::move(other.name)), occurring(other.occurring), startCondition(std::move(other.startCondition)),
-    endCondition(std::move(other.endCondition)), startHandlers(std::move(other.startHandlers)),
-    endHandlers(std::move(other.endHandlers)) {}
-
-Event&
-Event::operator=(Event&& other) noexcept {
-  occurring = other.occurring;
-  name = std::move(other.name);
-  startCondition = std::move(other.startCondition);
-  endCondition = std::move(other.endCondition);
-  startHandlers = std::move(other.startHandlers);
-  endHandlers = std::move(other.endHandlers);
-  return (*this);
-}
+Event::Event(std::string evName) : name(std::move(evName)) {}
 
 // ---------------------------------- END CONSTRUCTORS -----------------------------------------------------------
 
-}  // namespace Behaviors
+}  // namespace BHVR

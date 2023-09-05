@@ -2,44 +2,31 @@
 
 #include <selectors/subselector.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 
-SelectorResult
-SubSelector::selectPeds(seed                 s,
-                        const VIPRA::idxVec& totalGroup,
-                        const VIPRA::idxVec& usableGroup,
-                        const PedestrianSet& pedSet,
-                        const ObstacleSet&   obsSet,
-                        const Goals&         goals) {
-  return select(s, totalGroup, usableGroup, pedSet, obsSet, goals);
+/**
+ * @brief Runs the select function to select pedestrians
+ * 
+ * @param rngEngine : randomization engine
+ * @param totalGroup : the whole group the selector pulls from
+ * @param usableGroup : the actual selectable pedestrians from that group
+ * @param pedSet : pedestrian set
+ * @param obsSet : obstacle set
+ * @param goals : goals module
+ * @return SelectorResult 
+ */
+SelectorResult SubSelector::selectPeds(VIPRA::pRNG_Engine&         rngEngine,
+                                       const VIPRA::idxVec&        totalGroup,
+                                       const VIPRA::idxVec&        usableGroup,
+                                       const VIPRA::PedestrianSet& pedSet,
+                                       const VIPRA::ObstacleSet&   obsSet,
+                                       const VIPRA::Goals&         goals) {
+  return select(rngEngine, totalGroup, usableGroup, pedSet, obsSet, goals);
 }
 
 // ------------------- CONSTRUCTORS --------------------------------------------------------------------------
 
-SubSelector::SubSelector(typeUID g, pType t, bool r, SelectorFunc s) : group(g), type(t), required(r), select(s) {}
+SubSelector::SubSelector(typeUID grp, Ptype typ, bool req, SelectorFunc sel)
+    : group(grp), type(typ), required(req), select(std::move(sel)) {}
 
-SubSelector::SubSelector(SubSelector&& other) noexcept
-  : group(other.group), type(std::move(other.type)), required(other.required), select(std::move(other.select)) {}
-
-SubSelector::SubSelector(const SubSelector& other) noexcept
-  : group(other.group), type(other.type), required(other.required), select(other.select) {}
-
-SubSelector&
-SubSelector::operator=(SubSelector&& other) noexcept {
-  group = other.group;
-  type = other.type;
-  required = other.required;
-  select = std::move(other.select);
-  return *this;
-}
-
-SubSelector&
-SubSelector::operator=(const SubSelector& other) noexcept {
-  group = other.group;
-  type = other.type;
-  required = other.required;
-  select = other.select;
-  return *this;
-}
-
-}  // namespace Behaviors
+}  // namespace BHVR

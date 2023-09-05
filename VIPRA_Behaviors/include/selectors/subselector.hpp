@@ -1,7 +1,8 @@
-#ifndef VIPRA_BEHAVIORS_SUB_SELECTOR_HPP
-#define VIPRA_BEHAVIORS_SUB_SELECTOR_HPP
+#ifndef VIPRA_BHVR_SUB_SELECTOR_HPP
+#define VIPRA_BHVR_SUB_SELECTOR_HPP
 
 #include <functional>
+#include <optional>
 
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
@@ -11,50 +12,59 @@
 
 #include <definitions/behavior_context.hpp>
 #include <definitions/pedestrian_types.hpp>
+#include <randomization/random.hpp>
 #include <selectors/pedestrian_groups.hpp>
 
-namespace Behaviors {
+namespace BHVR {
 
+/**
+ * @brief Result of a selection
+ * 
+ */
 struct SelectorResult {
   bool          starved;
   VIPRA::idxVec group;
 };
 
-using SelectorFunc = std::function<SelectorResult(seed,
-                                                  const VIPRA::idxVec&,
-                                                  const VIPRA::idxVec&,
-                                                  const PedestrianSet&,
-                                                  const ObstacleSet&,
-                                                  const Goals&)>;
+/**
+ * @brief Function for choosing which pedestrians have a type
+ * 
+ */
+using SelectorFunc = std::function<SelectorResult(
+    VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&,
+    const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, const VIPRA::Goals&)>;
 
+/**
+ * @brief Selects pedestrians for one type, gets combined with other SubSelectors in Selector
+ * 
+ */
 class SubSelector {
  public:
-  SubSelector() = delete;
-  ~SubSelector() = default;
+  SubSelector(typeUID, Ptype, bool, SelectorFunc);
 
-  SubSelector(typeUID, pType, bool, SelectorFunc);
+  SelectorResult selectPeds(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
+                            const VIPRA::idxVec&, const VIPRA::PedestrianSet&,
+                            const VIPRA::ObstacleSet&, const VIPRA::Goals&);
 
-  SubSelector(SubSelector&&) noexcept;
-  SubSelector(const SubSelector&) noexcept;
-  SubSelector& operator=(SubSelector&&) noexcept;
-  SubSelector& operator=(const SubSelector&) noexcept;
-
-  SelectorResult selectPeds(seed,
-                            const VIPRA::idxVec&,
-                            const VIPRA::idxVec&,
-                            const PedestrianSet&,
-                            const ObstacleSet&,
-                            const Goals&);
-
+  // NOLINTBEGIN - (rolland) Having these public increases readability   : ignoring (cppcoreguidelines-non-private-member-variables-in-classes)
   typeUID group;
-  pType   type;
+  Ptype   type;
   bool    required;
+  // NOLINTEND
 
  private:
   SelectorFunc                select;
   std::optional<SubCondition> condition;
+
+ public:
+  SubSelector() = delete;
+  ~SubSelector() = default;
+  SubSelector(SubSelector&&) noexcept = default;
+  SubSelector(const SubSelector&) = default;
+  SubSelector& operator=(SubSelector&&) noexcept = default;
+  SubSelector& operator=(const SubSelector&) = default;
 };
 
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

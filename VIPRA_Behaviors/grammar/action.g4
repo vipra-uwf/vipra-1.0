@@ -1,40 +1,48 @@
 grammar action;
 
-import lexer_rules, condition;
+import lexer_rules, attributes, values, condition, time, targets;
 
 action:
-  conditional_action |
-  un_conditional_action
-  ;
+  ACTION '(' ID ')' ':' action_attribute*
+;
 
-conditional_action:
-  AN ID WILL sub_action condition;
+// Note (rolland): this allows multiple of each for a given action but listing the permutations is a pain, errors are caught in the visit function
+action_attribute:
+  action_response |
+  action_stimulus |
+  action_duration |
+  action_target
+;
 
-un_conditional_action:
-  AN ID WILL ALWAYS sub_action;
+action_stimulus:
+  CONDITION ':' condition
+;
+
+action_response:
+  RESPONSE ':' sub_action
+;
+
+action_duration:
+  DURATION ':' duration
+;
+
+action_target:
+  TARGET ':' target
+;
 
 sub_action:
-  action_atom (THEN action_atom)*
-  ;
+  action_atom (',' action_atom)*
+;
 
 action_atom:
-  ACTION |
-  action_Stop |
-  action_Be |
-  action_atom_Percent_Walk_Speed
-  ;
+  set_atom | 
+  scale_atom
+;
 
-action_Stop:
-  '@stop'
-  ;
+set_atom:
+  SET TARGET? attribute TO attr_value
+;
 
-action_atom_Percent_Walk_Speed:
-  '@walk' FLOAT 'x' THEIR NORMAL SPEED;
-
-action_Push:
-  '@push' ID
-  ;
-
-action_Be:
-  '@be set to' STATE
-  ;
+scale_atom:
+  SCALE TARGET? attribute attr_value
+;

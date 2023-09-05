@@ -7,35 +7,34 @@
 #include <spdlog/spdlog.h>
 
 #include <conditions/sub_condition.hpp>
-#include <definitions/behavior_context.hpp>
-#include <definitions/type_definitions.hpp>
+#include "definitions/type_definitions.hpp"
+
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
+#include "definitions/sim_pack.hpp"
+#include "targets/target.hpp"
 
-namespace Behaviors {
+namespace BHVR {
 class Condition {
  public:
-  Condition(const Condition&) = delete;
-  Condition& operator=(const Condition&) = delete;
-
   Condition() = default;
   ~Condition() = default;
-
-  Condition(Condition&&) noexcept;
-  Condition& operator=(Condition&&) noexcept;
+  Condition(const Condition&) = default;
+  Condition& operator=(const Condition&) = default;
+  Condition(Condition&&) noexcept = default;
+  Condition& operator=(Condition&&) noexcept = default;
 
   void addAndOr(bool);
 
   void addSubCondition(SubCondition&&);
 
-  bool evaluate(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx, VIPRA::delta_t)
-      const;
+  [[nodiscard]] bool evaluate(Simpack, VIPRA::idx, Target) const;
 
  private:
   std::vector<bool>         operations;
   std::vector<SubCondition> conditions;
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

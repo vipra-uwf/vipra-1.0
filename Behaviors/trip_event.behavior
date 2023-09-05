@@ -1,0 +1,14 @@
+Types:
+  Tripper
+.
+
+Selector:
+  Type: Tripper
+  Select: Everyone
+.
+
+Action (Tripper):
+  Stimulus: random 1-8 seconds after !Start
+  Response: set velocity to {0}
+  Duration: random 4-15 seconds
+.

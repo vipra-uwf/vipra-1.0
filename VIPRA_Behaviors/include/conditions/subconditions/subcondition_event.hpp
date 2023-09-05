@@ -3,22 +3,27 @@
 
 #include <conditions/sub_condition.hpp>
 #include <events/event.hpp>
+#include "definitions/sim_pack.hpp"
 
-namespace Behaviors {
-struct SubCondition_Event_Occurred {
-  SubCondition_Event_Occurred() = delete;
-  SubCondition_Event_Occurred(Event*);
+namespace BHVR {
+class SubConditionEventOccurred {
+ public:
+  explicit SubConditionEventOccurred(VIPRA::idx);
 
-  bool operator()(const PedestrianSet&,
-                  const ObstacleSet&,
-                  const Goals&,
-                  const BehaviorContext&,
-                  VIPRA::idx,
-                  VIPRA::delta_t);
+  bool operator()(Simpack, VIPRA::idx, Target) const;
 
  private:
-  bool occurred;
+  VIPRA::idx event;
+
+ public:
+  ~SubConditionEventOccurred() = default;
+  SubConditionEventOccurred() = delete;
+  SubConditionEventOccurred(const SubConditionEventOccurred&) = default;
+  SubConditionEventOccurred& operator=(const SubConditionEventOccurred&) = default;
+  SubConditionEventOccurred(SubConditionEventOccurred&&) noexcept = default;
+  SubConditionEventOccurred& operator=(SubConditionEventOccurred&&) noexcept = default;
 };
-}  // namespace Behaviors
+
+}  // namespace BHVR
 
 #endif

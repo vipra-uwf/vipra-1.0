@@ -7,12 +7,11 @@
 #include <goals/goals.hpp>
 #include <obstacle_set/obstacle_set.hpp>
 #include <pedestrian_set/pedestrian_set.hpp>
+#include <targets/target.hpp>
+#include "definitions/sim_pack.hpp"
 
-namespace Behaviors {
-
-using SubCondition = std::function<
-    bool(const PedestrianSet&, const ObstacleSet&, const Goals&, const BehaviorContext&, VIPRA::idx, VIPRA::delta_t)>;
-
-}  // namespace Behaviors
+namespace BHVR {
+using SubCondition = std::function<bool(Simpack, VIPRA::idx, Target)>;
+}  // namespace BHVR
 
 #endif

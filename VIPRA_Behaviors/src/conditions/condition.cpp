@@ -3,16 +3,7 @@
 
 #include "conditions/condition.hpp"
 
-namespace Behaviors {
-Condition::Condition(Condition&& other) noexcept
-  : operations(std::move(other.operations)), conditions(std::move(other.conditions)) {}
-
-Condition&
-Condition::operator=(Condition&& other) noexcept {
-  operations = std::move(other.operations);
-  conditions = std::move(other.conditions);
-  return *this;
-}
+namespace BHVR {
 
 /**
  * @brief Tests whether a condition is met, by running through each sub condition sequentially
@@ -26,19 +17,13 @@ Condition::operator=(Condition&& other) noexcept {
  * @return true 
  * @return false
  */
-bool
-Condition::evaluate(const PedestrianSet&   pedSet,
-                    const ObstacleSet&     obsSet,
-                    const Goals&           goals,
-                    const BehaviorContext& context,
-                    VIPRA::idx             pedIndex,
-                    VIPRA::delta_t         dT) const {
+bool Condition::evaluate(Simpack pack, VIPRA::idx pedIndex, Target target) const {
   const VIPRA::size condCnt = conditions.size();
   if (condCnt == 0) {
     return false;
   }
 
-  bool result = conditions[0](pedSet, obsSet, goals, context, pedIndex, dT);
+  bool result = conditions[0](pack, pedIndex, target);
 
   if (condCnt == 1) {
     return result;
@@ -46,22 +31,28 @@ Condition::evaluate(const PedestrianSet&   pedSet,
 
   for (VIPRA::idx i = 1; i < condCnt; ++i) {
     if (operations[i - 1]) {
-      result = result && conditions[i](pedSet, obsSet, goals, context, pedIndex, dT);
+      result = result && conditions[i](pack, pedIndex, target);
     } else {
-      result = result || conditions[i](pedSet, obsSet, goals, context, pedIndex, dT);
+      result = result || conditions[i](pack, pedIndex, target);
     }
   }
 
   return result;
 }
 
-void
-Condition::addSubCondition(SubCondition&& condition) {
-  conditions.emplace_back(std::move(condition));
+/**
+ * @brief Adds a new subcondition to the condition
+ * 
+ * @param condition : 
+ */
+void Condition::addSubCondition(SubCondition&& condition) {
+  conditions.emplace_back(condition);
 }
 
-void
-Condition::addAndOr(bool andor) {
-  operations.push_back(andor);
-}
-}  // namespace Behaviors
+/**
+ * @brief Adds a logical and/or operator to the condition
+ * 
+ * @param andor : 
+ */
+void Condition::addAndOr(bool andor) { operations.push_back(andor); }
+}  // namespace BHVR

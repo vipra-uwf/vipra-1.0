@@ -1,43 +1,51 @@
-//
-// Created by joe on 8/3/21.
-//
-
 #ifndef VIPRA_HUMAN_BEHAVIOR_MODEL_HPP
 #define VIPRA_HUMAN_BEHAVIOR_MODEL_HPP
 
-#include "behavior/behavior_builder.hpp"
 #include "behavior/human_behavior.hpp"
-
-#include "definitions/behavior_definitions.hpp"
-#include "definitions/config_map.hpp"
+#include "builder/behavior_builder.hpp"
+#include "configuration/config.hpp"
 #include "definitions/state.hpp"
-
 #include "goals/goals.hpp"
 #include "obstacle_set/obstacle_set.hpp"
 #include "pedestrian_set/pedestrian_set.hpp"
 
+namespace VIPRA {
 class BehaviorModelException : public std::runtime_error {
  public:
-  BehaviorModelException(const std::string& message) : std::runtime_error(message) {}
-  static void Throw(const std::string& message) { throw BehaviorModelException(message); }
+  explicit BehaviorModelException(const std::string& message)
+      : std::runtime_error(message) {}
+  static void error(const std::string& message) { throw BehaviorModelException(message); }
 };
 
+/**
+ * @brief Coordinator for Human Behaviors
+ * 
+ */
 class HumanBehaviorModel {
+ public:
+  explicit HumanBehaviorModel(std::vector<BHVR::HumanBehavior> humanBehaviors)
+      : humanBehaviors(std::move(humanBehaviors)) {}
+  void configure(const VIPRA::Config& configMap);
+  void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
+                  const VIPRA::Goals&);
+  void timestep(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::State&,
+                VIPRA::delta_t);
 
  private:
-  std::vector<Behaviors::HumanBehavior> humanBehaviors;
-  VIPRA::size                           seed;
+  std::vector<BHVR::HumanBehavior> humanBehaviors;
+  VIPRA::size                      seed{};
+
+  void loadBehaviors(const VIPRA::Config&);
+  void loadMockBehavior(const std::vector<std::string>&);
 
  public:
   HumanBehaviorModel() = default;
+  HumanBehaviorModel(const HumanBehaviorModel&) = default;
+  HumanBehaviorModel(HumanBehaviorModel&&) = default;
+  HumanBehaviorModel& operator=(const HumanBehaviorModel&) = default;
+  HumanBehaviorModel& operator=(HumanBehaviorModel&&) = default;
   ~HumanBehaviorModel() = default;
-  void configure(const VIPRA::Config::Map& configMap);
-  void initialize(const PedestrianSet&, const ObstacleSet&, const Goals&);
-  void timestep(PedestrianSet&, ObstacleSet&, Goals&, std::shared_ptr<VIPRA::State>, VIPRA::delta_t);
-
- private:
-  void loadBehaviors(std::vector<std::string>);
-  void loadMockBehaviors(const std::vector<std::string>& behaviors);
 };
+}  // namespace VIPRA
 
 #endif  //VIPRA_HUMAN_BEHAVIOR_MODEL_HPP

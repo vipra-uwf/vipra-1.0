@@ -16,6 +16,6 @@
             "multiple": false
         }
     ],
-    "className"   : "Simulation",
+    "className"   : "VIPRA::Simulation",
     "type"        : "simulation"
 }

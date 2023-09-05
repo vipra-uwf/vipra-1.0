@@ -3,6 +3,6 @@
     "name"        : "configuration_reader",
     "description" : "TODO",
     "params"      : [],
-    "className"   : "ConfigurationReader",
+    "className"   : "VIPRA::ConfigurationReader",
     "type"        : "configuration_reader"
 }

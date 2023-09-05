@@ -7,61 +7,57 @@
 #include <definitions/behavior_context.hpp>
 #include <definitions/pedestrian_types.hpp>
 
+#include <randomization/random.hpp>
 #include <selectors/pedestrian_groups.hpp>
 #include <selectors/subselector.hpp>
+#include "definitions/sim_pack.hpp"
 
-namespace Behaviors {
+namespace BHVR {
 
+/**
+ * @brief Combines/Organizes SubSelectors to select pedestrians for types
+ * 
+ */
 class Selector {
  public:
-  Selector();
+  Selector() = default;
   ~Selector() = default;
-  Selector(const Selector&) = delete;
-  Selector& operator=(const Selector&) = delete;
-  Selector(Selector&&) noexcept;
-  Selector& operator=(Selector&&) noexcept;
+  Selector(const Selector&) = default;
+  Selector& operator=(const Selector&) = default;
+  Selector(Selector&&) noexcept = default;
+  Selector& operator=(Selector&&) noexcept = default;
 
-  void initialize(const std::string&,
-                  Behaviors::seed,
-                  BehaviorContext&,
-                  const PedestrianSet&,
-                  const ObstacleSet&,
-                  const Goals&);
+  void initialize(const std::string&, VIPRA::pRNG_Engine&, Simpack);
 
-  void setAllTypes(pType);
-  void addSubSelector(SubSelector&&);
+  void setAllTypes(Ptype);
+  void addSubSelector(const SubSelector&);
 
-  const GroupsContainer& getGroups() const;
+  [[nodiscard]] const GroupsContainer& getGroups() const;
 
-  [[nodiscard]] VIPRA::size SelectorCount() const;
+  [[nodiscard]] VIPRA::size selectorCount() const;
 
  private:
-  pType                    allTypes;
+  Ptype                    allTypes;
   std::vector<SubSelector> subSelectors;
   GroupsContainer          pedGroups;
 
-  [[nodiscard]] VIPRA::idxVec selectPedsFromGroup(SubSelector&,
-                                                  Behaviors::seed,
-                                                  const PedestrianSet&,
-                                                  const ObstacleSet&,
-                                                  const Goals&,
+  [[nodiscard]] VIPRA::idxVec selectPedsFromGroup(SubSelector&, VIPRA::pRNG_Engine&,
+                                                  const VIPRA::PedestrianSet&,
+                                                  const VIPRA::ObstacleSet&,
+                                                  const VIPRA::Goals&,
                                                   const std::string&);
 
-  [[nodiscard]] VIPRA::idxVec orderSelectors();
-  [[nodiscard]] VIPRA::idxVec filterUsedPeds(const VIPRA::idxVec&, const std::vector<bool>&) const;
+  [[nodiscard]] VIPRA::idxVec        orderSelectors();
+  [[nodiscard]] static VIPRA::idxVec filterUsedPeds(const VIPRA::idxVec&,
+                                                    const std::vector<bool>&);
 
-  void runSelectors(const VIPRA::idxVec&,
-                    const std::string&,
-                    Behaviors::seed,
-                    BehaviorContext&,
-                    const PedestrianSet&,
-                    const ObstacleSet&,
-                    const Goals&);
+  void runSelectors(const VIPRA::idxVec&, const std::string&, VIPRA::pRNG_Engine&,
+                    Simpack);
   void updateUsedPeds(const VIPRA::idxVec&, std::vector<bool>&);
-  void updatePedGroups(const VIPRA::idxVec&, SubSelector&, BehaviorContext&, const std::string&);
-
+  void updatePedGroups(const VIPRA::idxVec&, SubSelector&, BehaviorContext&,
+                       const std::string&);
   void sortGroups();
 };
-}  // namespace Behaviors
+}  // namespace BHVR
 
 #endif

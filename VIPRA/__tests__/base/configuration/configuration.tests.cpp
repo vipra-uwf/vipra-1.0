@@ -10,9 +10,9 @@ namespace fs = std::filesystem;
 const auto testValues = fs::current_path().string() + "/base/configuration/test_values/";
 
 TEST(Configuration_Reader, Get_Configuration) {
-  ConfigurationReader test;
+  VIPRA::ConfigurationReader sut;
 
-  auto result = test.getConfiguration(testValues + "module_params.json");
+  auto result = sut.getConfiguration(testValues + "module_params.json");
 
-  EXPECT_EQ(result["human_behavior_model"], "test");
+  EXPECT_EQ(result["human_behavior_model"]["seed"], "testseed");
 }
