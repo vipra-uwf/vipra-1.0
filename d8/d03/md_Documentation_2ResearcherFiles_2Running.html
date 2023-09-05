@@ -72,7 +72,7 @@ $(function() {
   <div class="headertitle"><div class="title">Running The Simulation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md316"></a> This page only goes over running a simple simulation. VIPRA can also be used to run a <a class="el" href="../../d8/d1e/md_Documentation_2ResearcherFiles_2ParameterSweep.html">Parameter Sweep</a>.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md319"></a> This page only goes over running a simple simulation. VIPRA can also be used to run a <a class="el" href="../../d8/d1e/md_Documentation_2ResearcherFiles_2ParameterSweep.html">Parameter Sweep</a>.</p>
 <p>The command for running a simple simulation is: </p><div class="fragment"><div class="line">// under `VIPRA/`</div>
 <div class="line"> </div>
 <div class="line">./VIPRA_SIM 1 *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path*</div>
@@ -83,13 +83,13 @@ $(function() {
 </div><!-- fragment --><p>Simply replace the paths to change what map or config is being used.</p>
 <p>The second argument <code>1</code> is explained in <a class="el" href="../../d8/d1e/md_Documentation_2ResearcherFiles_2ParameterSweep.html">Parameter Sweep</a>.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md318"></a>
+<h1><a class="anchor" id="autotoc_md321"></a>
 Simulation Config</h1>
 <p>The simulation config file tells the simulation which modules to use for a run.</p>
 <p>Simulation configs are generally placed under <code>SimConfigs/*config name*/</code>. Though, they can be placed anywhere.</p>
 <p>More on simulation config files is in <b>Changing Simulation Modules</b> below.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md320"></a>
+<h1><a class="anchor" id="autotoc_md323"></a>
 Module Params</h1>
 <p>The module parameters file provides the parameters for each module.</p>
 <p>The exact parameters for each module can be found in that modules <code>.mm</code> file.</p>
@@ -126,9 +126,10 @@ Module Params</h1>
 <div class="line"> </div>
 <div class="line">  ... other modules</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md321"></a>
+</div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md325"></a>
 Changing Simulation Modules</h2>
-<p>Each simulation run is given a sim.config file. These are found under the <code>SimConfigs</code> directory. Look at the example config file under <code>SimConfigs/ExampleConfig/sim.config</code>.</p>
+<p>Each simulation run is given a simulation configuration file. These are, generally, placed under the <code>SimConfigs</code> directory. Look at the example config file under <code>SimConfigs/ExampleConfig/sim.config</code>.</p>
 <p>Each module has a unique ID, the simulation config file has a <code>modules</code> object that holds which modules to use for each module type.</p>
 <p>To use a different module simply switch the ID for the module type in the simulation config.</p>
 <p>Example: </p><div class="fragment"><div class="line">{</div>
@@ -169,8 +170,7 @@ Changing Simulation Modules</h2>
 <div class="line">}</div>
 </div><!-- fragment --><p>New modules can be added by following the steps in <a class="el" href="../../d2/d4e/md_Documentation_2ResearcherFiles_2modules_2Adding__Modules.html">Adding Modules</a></p>
 <hr  />
-<hr  />
-<h3><a class="anchor" id="autotoc_md324"></a>
+<h3><a class="anchor" id="autotoc_md327"></a>
 Parameter Types</h3>
 <p>Each parameter has a "type".</p>
 <p>The current types are:</p><ul>
@@ -178,11 +178,20 @@ Parameter Types</h3>
 <li>"float" : any numerical value</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md326"></a>
+<h1><a class="anchor" id="autotoc_md329"></a>
 Using Behaviors</h1>
 <p>VIPRA Behaviors are explained in <a class="el" href="../../d2/d49/md_Documentation_2ResearcherFiles_2behaviors_2VIPRA__Behaviors.html">VIPRA Behaviors</a></p>
-<p>Behaviors are added to a simulation run with the steps in <a class="el" href="../../d7/db3/md_Documentation_2ResearcherFiles_2behaviors_2Adding__Behaviors.html">Adding Behaviors</a></p>
-<hr  />
+<p>Behavior files are held under <code>Behaviors/</code>.</p>
+<p>To use behaviors in simulations add the behavior's file name (without the <code>.behavior</code>) to the module parameters file under <code>human_behavior_model</code>.</p>
+<p>Example: </p><div class="fragment"><div class="line">// Using the &quot;example.behavior&quot; Behavior file</div>
+<div class="line"> </div>
+<div class="line">&quot;human_behavior_model&quot;: {</div>
+<div class="line">    &quot;seed&quot;: 4525,</div>
+<div class="line">    &quot;behaviors&quot;: [</div>
+<div class="line">      &quot;example&quot;       // Add behavior name here without &quot;.behavior&quot;</div>
+<div class="line">    ]</div>
+<div class="line">},</div>
+</div><!-- fragment --><hr  />
 <p><a class="el" href="../../dc/d9a/md_Documentation_2ResearcherFiles_2Researchers.html">Back to Researchers Page</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
