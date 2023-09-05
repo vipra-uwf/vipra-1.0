@@ -15,8 +15,8 @@ set(BEHAVIORS_DIR ./../VIPRA_Behaviors)
 
 project(
   ${PROJECT_NAME}
-  VERSION 0.0.1
-  DESCRIPTION "VIPRA pedestrian dynamics simulation"
+  VERSION 0.1
+  DESCRIPTION "VIPRA Pedestrian Dynamics Simulation"
   LANGUAGES CXX
 )
 
@@ -25,12 +25,12 @@ add_executable(
   main.cpp
 )
 
-# target_compile_options(
-#   ${PROJECT_NAME} 
-#   PRIVATE
-#   $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-#   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Werror -Wpedantic >
-# )
+target_compile_options(
+  ${PROJECT_NAME} 
+  PRIVATE
+  $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+  $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Werror -Wpedantic >
+)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../)
 
@@ -40,6 +40,7 @@ if (DEBUG_MODE)
   set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment")
 else()
   set(CMAKE_BUILD_TYPE Release)
+
   if (PROF_MODE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
@@ -48,7 +49,13 @@ else()
   else()
     include(CheckIPOSupported)
     check_ipo_supported(RESULT supported OUTPUT error)
-    set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+
+    if( supported )
+      message(STATUS "IPO / LTO enabled")
+      set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+    else()
+      message(STATUS "IPO / LTO not supported: <${error}>")
+    endif()
   endif()
 endif ()
 
@@ -63,8 +70,6 @@ FetchContent_Declare(nlohmann_json URL https://github.com/nlohmann/json/releases
 FetchContent_MakeAvailable(nlohmann_json)
 message(STATUS "Done Getting nlohmann_json")
 
-set(GCC_COVERAGE_COMPILE_FLAGS "-fopenmp")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 find_package(MPI REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC MPI::MPI_CXX)
 

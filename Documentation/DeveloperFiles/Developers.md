@@ -35,6 +35,14 @@ The [Types](VIPRATypes.md) file gives information on types commonly used in VIPR
 
 ---
 
+## Output
+
+VIPRA automatically outputs the locations of pedestrians for each timestep.
+
+However, arbitrary values can be added. See [Output](./Output.md)
+
+---
+
 # Tutorials
 
 1. [Creating a New Module](Tutorials/Making_Model_Module.md)

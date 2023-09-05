@@ -10,13 +10,9 @@ set(VIPRA_DIR ./../VIPRA)
 set(GRAMMAR_DIR ./grammar)
 set(INCLUDE_DIR ./include)
 set(SRC_DIR ./src)
-set(HEADERS
-  ${INCLUDE_DIR}/behavior/human_behavior.hpp
-  ${INCLUDE_DIR}/behavior/behavior_builder.hpp
-)
+
 add_library(
   ${LIB_NAME}
-  STATIC
   ${SRCS}
 )
 
@@ -29,10 +25,6 @@ target_include_directories(
   ${INCLUDE_DIR}
   ${GRAMMAR_DIR}
 )
-
-if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
-  cmake_policy(SET CMP0135 NEW)
-endif()
 
 include(FetchContent)
 message(STATUS "Getting spdlog")

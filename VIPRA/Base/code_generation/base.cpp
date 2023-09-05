@@ -113,7 +113,7 @@ void single(VIPRA::Args& args) {
       VIPRA::ConfigurationReader::getConfiguration(args.get<std::string>("params"));
   engine.reseed(config["seed"].get<uint64_t>());
 
-  for (int i = 0; i < totalSimRuns; ++i) {
+  for (VIPRA::cnt i = 0; i < totalSimRuns; ++i) {
     auto currParams = VIPRA::ParameterSweep::randomizeParams(params, engine);
     writeParameters("./params/r1w" + std::to_string(i), currParams);
     simulationMain("r1w" + std::to_string(i), args, config, currParams);
