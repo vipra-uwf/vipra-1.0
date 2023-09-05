@@ -1,7 +1,3 @@
-# VIPRA Documentation
-
-**File Path:** [Home](MainPage.md) /
-
 # Introduction
 
 This project provides tools for interdisciplinary analysis of fine-scaled pedestrian
@@ -37,17 +33,6 @@ to use.
 
 ---
 
-# Users:
+# Documentation 
 
-## Researchers:
- 
-[How to use VIPRA.](./Documentation/ResearcherFiles/Researchers.md)
-
-## Developers:
-[How to add functionality.](./Documentation/DeveloperFiles/Developers.md)
-
----
-
-# Directory:
-
-[A list of common terms to search](./Documentation/Directory.md)
+[Please look at our github pages for setup/running instructions and detailed documentation](https://vipra-uwf.github.io/vipra/)
