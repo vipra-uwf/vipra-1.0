@@ -15,8 +15,8 @@
     },
     "goals": {
         "endGoalType": "exit",
-        "gridSize": 0.05,
-        "closestObstacle": 0.25,
+        "gridSize": 0.07,
+        "closestObstacle": 0.3,
         "goalRange": 0.05
     },
     "pedestrian_dynamics_model": {
@@ -33,6 +33,6 @@
     "configuration_reader": {},
     "simulation": {
         "time_step_size": 0.005,
-        "max_timestep": 50000
+        "max_timestep": 60000
     }
 }

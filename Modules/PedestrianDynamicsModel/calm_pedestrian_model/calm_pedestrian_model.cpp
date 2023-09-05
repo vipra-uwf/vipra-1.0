@@ -21,13 +21,10 @@ void CalmPedestrianModel::timestep(const VIPRA::PedestrianSet& pedSet,
   calculatePropulsion(pedSet, goals);
   updateModelState(pedSet, goals, state, time, timestep);
 
-  if (timestep > 0) 
-  {
+  if (timestep > 0) {
     collision.raceDetection(pedSet, peds, goals, timestep, obstacleSet);
-    collision.assignRaceStatuses(raceStatuses,inRace);
+    collision.assignRaceStatuses(raceStatuses, inRace);
   }
-
-  return modelState;
 }
 
 /**
@@ -55,10 +52,11 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const VIPRA::PedestrianSet&
 
       auto        otherCoords = coords.at(j);
       VIPRA::dist distance = pedCoords.distanceTo(otherCoords);
-      
+
       if (distance >= nearestDist) continue;
 
-      if ((raceStatuses.at(i) == 0 && raceStatuses.at(j) == 1) || std::fabs(distance - equilibriumDistance) < equilibriumResolution)
+      if ((raceStatuses.at(i) == 0 && raceStatuses.at(j) == 1) ||
+          std::fabs(distance - equilibriumDistance) < equilibriumResolution)
         continue;
 
       if (!isPedInDirectionOfGoal(pedCoords, pedGoal, otherCoords)) continue;

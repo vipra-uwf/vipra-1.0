@@ -14,7 +14,6 @@ set(HEADERS
   ${INCLUDE_DIR}/behavior/human_behavior.hpp
   ${INCLUDE_DIR}/behavior/behavior_builder.hpp
 )
-
 add_library(
   ${LIB_NAME}
   STATIC

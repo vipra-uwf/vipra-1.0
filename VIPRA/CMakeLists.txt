@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.14)
 set(PROJECT_NAME VIPRA_SIM)
 
 option(DEBUG_MODE "Compile In Debug Mode" OFF)
