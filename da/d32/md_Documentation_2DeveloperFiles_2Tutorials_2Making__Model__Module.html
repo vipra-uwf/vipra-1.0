@@ -72,14 +72,14 @@ $(function() {
   <div class="headertitle"><div class="title">Making a Pedestrian Dynamics Model</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md91"></a> This tutorial goes over creating a new pedestrian dynamics model and using it in a simulation.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md93"></a> This tutorial goes over creating a new pedestrian dynamics model and using it in a simulation.</p>
 <p>We will make a dynamics model where pedestrians simply spin in circles.</p>
 <p>The steps are the same for each module type with the only differences being:</p><ol type="1">
 <li>Methods to Override</li>
 <li>Module Type for .mm file</li>
 <li>Location in modules.json file</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md92"></a>
+<h1><a class="anchor" id="autotoc_md94"></a>
 1. Create Files</h1>
 <p>In <code>Modules/PedestrianDynamicsModel/</code>, we create a new directory <code>ExampleModel</code>.</p>
 <p>In this new directory create three files:</p><ol type="1">
@@ -88,7 +88,7 @@ $(function() {
 <li>exampleModel.mm</li>
 </ol>
 <p>They should all have the same name.</p>
-<h1><a class="anchor" id="autotoc_md93"></a>
+<h1><a class="anchor" id="autotoc_md95"></a>
 2. Creating The Model Class</h1>
 <p>In <code>Modules/PedestrianDynamicsModel/ExampleModel/ExampleModel.hpp</code>, we create a new class <code>ExampleModel</code> that inherits from <code>VIPRA::PedestrianDynamicsModel</code>.</p>
 <div class="fragment"><div class="line"> ++</div>
@@ -113,7 +113,7 @@ $(function() {
 <div class="ttc" id="aclassVIPRA_1_1PedestrianDynamicsModel_html"><div class="ttname"><a href="../../d5/dee/classVIPRA_1_1PedestrianDynamicsModel.html">VIPRA::PedestrianDynamicsModel</a></div><div class="ttdoc">Interface for modeling pedestrian dynamics.</div><div class="ttdef"><b>Definition</b> pedestrian_dynamics_model.hpp:46</div></div>
 <div class="ttc" id="aclassVIPRA_1_1PedestrianSet_html"><div class="ttname"><a href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a></div><div class="ttdoc">Interface for managing pedestrian information in a simulation.</div><div class="ttdef"><b>Definition</b> pedestrian_set.hpp:44</div></div>
 <div class="ttc" id="astructVIPRA_1_1State_html"><div class="ttname"><a href="../../d4/da2/structVIPRA_1_1State.html">VIPRA::State</a></div><div class="ttdef"><b>Definition</b> state.hpp:13</div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md94"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md96"></a>
 3. Creating Module Parameters</h1>
 <p>Most models will take in parameters for pedestrian mass, max speed, etc.</p>
 <p>Our example model will take in two parameters:</p><ol type="1">
@@ -140,7 +140,7 @@ $(function() {
 <div class="line">  &quot;className&quot;: &quot;ExampleModel&quot;,          // Name of class</div>
 <div class="line">  &quot;type&quot;: &quot;pedestrian_dynamics_model&quot;   // Module Type, lowercase with spaces replaced by underscores</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md95"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md97"></a>
 4. Implementation</h1>
 <p>Next is to code the implementation of the model.</p>
 <div class="fragment"><div class="line"> ++</div>
@@ -181,7 +181,7 @@ $(function() {
 <div class="ttc" id="astructVIPRA_1_1f3d_html"><div class="ttname"><a href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a></div><div class="ttdef"><b>Definition</b> dimensions.hpp:135</div></div>
 </div><!-- fragment --><p>An actual model will likely use the <a class="el" href="../../d3/d85/md_Documentation_2DeveloperFiles_2Modules_2PedestrianSet.html">PedestrianSet</a>, <a class="el" href="../../d7/dbb/md_Documentation_2DeveloperFiles_2Modules_2ObstacleSet.html">ObstacleSet</a>, and <a class="el" href="../../d8/dac/md_Documentation_2DeveloperFiles_2Modules_2Goals.html">Goals</a>. For collision detection, calculating repulsive forces, finding direction of travel, etc.</p>
 <p>Take a look at the other module pages to see what they can do, or see the <a class="el" href="../../d2/d72/md_Documentation_2DeveloperFiles_2Modules_2ModulesOverview.html">modules overview</a>.</p>
-<h1><a class="anchor" id="autotoc_md96"></a>
+<h1><a class="anchor" id="autotoc_md98"></a>
 5. Adding Model to modules.json</h1>
 <p>We need to add our new module in <code>VIPRA/modules.json</code>, this makes it available for use in the simulation.</p>
 <div class="fragment"><div class="line">{</div>
@@ -204,11 +204,11 @@ $(function() {
 <div class="line"> </div>
 <div class="line">  ... other module types</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md97"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md99"></a>
 6. Compilation</h1>
 <p>Since we added a new module the simulation needs to be recompiled.</p>
 <p>In <code>VIPRA/</code> run: </p><div class="fragment"><div class="line">make release</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md98"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md100"></a>
 7. Running The Simulation</h1>
 <p>First we need to set the simulation to use our new model, in a new simulation configuration file.</p>
 <div class="fragment"><div class="line">{</div>

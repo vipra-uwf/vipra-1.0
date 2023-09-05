@@ -72,9 +72,9 @@ $(function() {
   <div class="headertitle"><div class="title">VIPRA</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md352"></a> VIPRA is a modular framework for pedestrian dynamics simulations.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md354"></a> VIPRA is a modular framework for pedestrian dynamics simulations.</p>
 <p>The idea behind the project is for researchers to be able to test their pedestrian dynamics models without having to worry about programming an entire simulation.</p>
-<h1><a class="anchor" id="autotoc_md353"></a>
+<h1><a class="anchor" id="autotoc_md355"></a>
 R. Requirements</h1>
 <p>The following are the requirements for running the VIPRA simulation.</p>
 <ol type="1">
@@ -88,14 +88,14 @@ R. Requirements</h1>
 <li><code>ANTLR4</code> - version 4.11^</li>
 </ol>
 <hr  />
- <h1><a class="anchor" id="autotoc_md355"></a>
+ <h1><a class="anchor" id="autotoc_md357"></a>
 SE. Setup</h1>
 <p>There are three main steps for setting up the simulation. *(This is temporary, a more permanent setup will be created in the future)*</p><ol type="1">
 <li>ChainBuilder setup</li>
 <li>VIPRA Launcher setup</li>
 <li>Simulation Compilation</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md356"></a>
+<h2><a class="anchor" id="autotoc_md358"></a>
 SE.2. ChainBuilder</h2>
 <p>In <code>/ChainBuilder/</code> run:</p>
 <ol type="1">
@@ -103,7 +103,7 @@ SE.2. ChainBuilder</h2>
 <li><code>npm run build</code></li>
 <li><code>npm pack</code></li>
 </ol>
-<h2><a class="anchor" id="autotoc_md357"></a>
+<h2><a class="anchor" id="autotoc_md359"></a>
 Se.3. VIPRA Launcher</h2>
 <p>In <code>/VIPRA_Launcher/server/</code> run:</p>
 <ol type="1">
@@ -121,7 +121,7 @@ Se.3. VIPRA Launcher</h2>
 <li>Make sure you have Node 17 or later</li>
 <li>Check that the <code>ChainBuilder</code> tarball was created properly</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md358"></a>
+<h2><a class="anchor" id="autotoc_md360"></a>
 SE.4. Simulation Compilation</h2>
 <p>In <code>/VIPRA/</code> run:</p>
 <ol type="1">
@@ -132,16 +132,16 @@ SE.4. Simulation Compilation</h2>
 <li><code>make debug</code> for compiling in debug mode</li>
 </ol>
 <p>or</p>
-<h2><a class="anchor" id="autotoc_md359"></a>
+<h2><a class="anchor" id="autotoc_md361"></a>
 1. &lt;tt&gt;make profiling&lt;/tt&gt; for compiling in release mode with profiling output</h2>
-<h1><a class="anchor" id="autotoc_md360"></a>
+<h1><a class="anchor" id="autotoc_md362"></a>
 Ru. Running</h1>
 <p>In <code>/VIPRA/</code> run: <code>./VIPRA_SIM *Sim Config Path* *Module Params Path* *Pedestrians File Path* *Obstacle File Path* *Output File Path*</code></p>
 <p>An example <code>sim.config</code> and <code>module_params.json</code> are found in <code>SimConfigs/ExampleConfig/</code></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md362"></a>
+<h1><a class="anchor" id="autotoc_md364"></a>
 U. Utility</h1>
-<h2><a class="anchor" id="autotoc_md363"></a>
+<h2><a class="anchor" id="autotoc_md365"></a>
 U.1. Visualizer</h2>
 <p>We have a Python script for viewing the output of a simulation.</p>
 <p><code>/UtilityScripts/Simulation_Output_Visualization/visualize.py</code></p>
@@ -149,9 +149,9 @@ U.1. Visualizer</h2>
 <li><code>python3 visualize.py *Path to output.json* *Path to Obstacle File*</code></li>
 </ol>
 <hr  />
- <h1><a class="anchor" id="autotoc_md365"></a>
+ <h1><a class="anchor" id="autotoc_md367"></a>
 M. Modules</h1>
-<h2><a class="anchor" id="autotoc_md366"></a>
+<h2><a class="anchor" id="autotoc_md368"></a>
 M.1. Extendable Modules</h2>
 <p>Extendable Modules are the modules that are meant to be implemented by end users.</p>
 <ol type="1">
@@ -162,32 +162,32 @@ M.1. Extendable Modules</h2>
 <li>Map Loader</li>
 <li>Pedestrian Loader</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md367"></a>
+<h3><a class="anchor" id="autotoc_md369"></a>
 M.1.1. Pedestrian Model</h3>
 <p><code>/VIPRA/Extendable/pedestrian_model/pedestrian_dynamics_model.hpp</code></p>
 <p>The <code>Pedestrian Model</code>module is the main pedestrian dynamics model that, in conjunction with the <code>Behavior Model</code>, models how the pedestrians move through the simulation.</p>
-<h3><a class="anchor" id="autotoc_md368"></a>
+<h3><a class="anchor" id="autotoc_md370"></a>
 M.1.2. Goals</h3>
 <p><code>/VIPRA/Extendable/goals/goals.hpp</code></p>
 <p>The <code>Goals</code> module is what does all the path finding for pedestrians, it also determines the end goal for the overall simulation. *(for example: all pedestrians exit the plane)*</p>
-<h3><a class="anchor" id="autotoc_md369"></a>
+<h3><a class="anchor" id="autotoc_md371"></a>
 M.1.3. Obstacle Set</h3>
 <p><code>/VIPRA/Extendable/obstacle_set/obstacle_set.hpp</code></p>
 <p>The <code>Obstacle Set</code> module holds the map information; including obstacles and object. The <code>Obstacle Set</code> is also responsible for collision detection.</p>
-<h3><a class="anchor" id="autotoc_md370"></a>
+<h3><a class="anchor" id="autotoc_md372"></a>
 M.1.4. Pedestrian Set</h3>
 <p><code>/VIPRA/Extendable/pedestrian_set/pedestrian_set.hpp</code></p>
 <p>The <code>Pedestrian Set</code> module holds information about pedestrians, for example their position, velocity, etc.</p>
-<h3><a class="anchor" id="autotoc_md371"></a>
+<h3><a class="anchor" id="autotoc_md373"></a>
 M.1.5. Map Loader</h3>
 <p><code>/VIPRA/Extendable/map_loader/map_loader.hpp</code></p>
 <p>The <code>Map Loader</code> module is responsible for loading map files into <code>Obstacle Sets</code>.</p>
-<h3><a class="anchor" id="autotoc_md372"></a>
+<h3><a class="anchor" id="autotoc_md374"></a>
 M.1.6. Pedestrian Loader</h3>
 <p><code>/VIPRA/Extendable/pedestrian_loader/pedestrian_loader.hpp</code></p>
 <p>The <code>Pedestrian Loader</code> module is responsible for loading pedestrian files into <code>Pedestrian Sets</code>.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md374"></a>
+ <h2><a class="anchor" id="autotoc_md376"></a>
 M.2. Base Modules</h2>
 <p>Base Modules are the modules that the VIPRA team implements, end users can extend them, but the idea is that they do not have to.</p>
 <ol type="1">
@@ -196,32 +196,32 @@ M.2. Base Modules</h2>
 <li>Output Data Writer</li>
 <li>Output Handler</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md375"></a>
+<h3><a class="anchor" id="autotoc_md377"></a>
 M.2.1. Human Behavior Model</h3>
 <p><code>/VIPRA/Base/human_behavior/human_behavior_model.hpp</code></p>
 <p>The <code>Human Behavior Model</code> orchestrates the <code>Behaviors</code> that are enabled for a simulation run</p>
-<h3><a class="anchor" id="autotoc_md376"></a>
+<h3><a class="anchor" id="autotoc_md378"></a>
 M.2.2. Policy Model</h3>
 <p><em>Not Currently Implemented</em></p>
 <p><code>/VIPRA/Base/policy_model/policy_model.hpp</code></p>
 <p>The <code>Policy Model</code> will, in the future, handle any policies (like airplane boarding order)</p>
-<h3><a class="anchor" id="autotoc_md377"></a>
+<h3><a class="anchor" id="autotoc_md379"></a>
 M.2.3. Output Data Writer</h3>
 <p><code>/VIPRA/Base/output_data_writer/output_data_writer.hpp</code></p>
 <p>The <code>Output Data Writer</code> module handles writing output to files.</p>
-<h3><a class="anchor" id="autotoc_md378"></a>
+<h3><a class="anchor" id="autotoc_md380"></a>
 M.2.4. Output Handler</h3>
 <p><code>/VIPRA/Base/simulation_output_handler/simulation_output_handler.hpp</code></p>
 <p>The <code>Output Handler</code> module handles determining when to write output and what output to write.</p>
-<h2><a class="anchor" id="autotoc_md379"></a>
+<h2><a class="anchor" id="autotoc_md381"></a>
 S. Simulation</h2>
 <p>The main path a simulation takes is as follows:</p>
-<h3><a class="anchor" id="autotoc_md380"></a>
+<h3><a class="anchor" id="autotoc_md382"></a>
 S.1. Module Selection / Configuration</h3>
 <p>Each simulation run is provided a <code>sim.config</code> file that holds the IDs for each module the simulation should use. *(one for each type of module)*</p>
 <p>An instance of each of these modules is then created and configured, using the <code>module_params.json</code> file that is also provided to the simulation.</p>
 <p>Each of the modules is then passed into the main simulation object. <em>Defined in <code>/VIPRA/Base/simulation/simulation.hpp</code></em></p>
-<h3><a class="anchor" id="autotoc_md381"></a>
+<h3><a class="anchor" id="autotoc_md383"></a>
 S.2. Simulation Loop</h3>
 <p>The simulation loops until the <code>Goals</code> module says that the simulation has met its end goal, or until the maximum number of time steps has been reached.</p>
 <p>Each time step the simulation:</p>
@@ -233,17 +233,17 @@ S.2. Simulation Loop</h3>
 <li>Calls the <code>Goals</code> module to update any goals</li>
 <li>Loops</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md382"></a>
+<h3><a class="anchor" id="autotoc_md384"></a>
 S.3. Output</h3>
 <p>Once the simulation is finished the buffered output is written to an output file.</p>
-<h1><a class="anchor" id="autotoc_md383"></a>
+<h1><a class="anchor" id="autotoc_md385"></a>
 T. Types</h1>
-<h2><a class="anchor" id="autotoc_md384"></a>
+<h2><a class="anchor" id="autotoc_md386"></a>
 T.1. VIPRA::f3d</h2>
 <p><code>/VIPRA/Base/Definitions/dimensions.hpp</code></p>
 <p><code>VIPRA::f3d</code> is a three-dimensional float, used for positions/vectors/etc. <code>VIPRA::f3dVec</code> is a <code>std::vector&lt;VIPRA::f3d&gt;</code>, used for holding <code>VIPRA::f3ds</code></p>
 <p>There is also a <code>VIPRA::f2d</code>, though it is very rarely used.</p>
-<h3><a class="anchor" id="autotoc_md385"></a>
+<h3><a class="anchor" id="autotoc_md387"></a>
 T.1.1. VIPRA::f3d Utility Member Methods</h3>
 <ul>
 <li><code>unit() -&gt; VIPRA::f3d</code><ul>
@@ -263,7 +263,7 @@ T.1.1. VIPRA::f3d Utility Member Methods</h3>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md386"></a>
+<h2><a class="anchor" id="autotoc_md388"></a>
 T.2. Type Defs</h2>
 <p>There are several type definitions that are used for clarity:</p><ol type="1">
 <li><code>VIPRA::idx</code> : for indexes into a container <code>uint64_t</code></li>
@@ -280,7 +280,7 @@ T.2. Type Defs</h2>
 <li><code>VIPRA::veloc</code> : for velocities <code>VIPRA::f3d</code></li>
 <li><code>VIPRA::dist</code> : for distances <code>float</code></li>
 </ol>
-<h1><a class="anchor" id="autotoc_md387"></a>
+<h1><a class="anchor" id="autotoc_md389"></a>
 F. Formatting</h1>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

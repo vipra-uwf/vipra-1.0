@@ -72,31 +72,31 @@ $(function() {
   <div class="headertitle"><div class="title">Map Loader</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md23"></a> The map loader reads an obstacle map file putting it into a <code>VIPRA::MapData</code> derived class.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md25"></a> The map loader reads an obstacle map file putting it into a <code>VIPRA::MapData</code> derived class.</p>
 <p>This allows for loading any format for obstacle maps.</p>
 <p>A more standardized format for obstacle maps will be added in the future.</p>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 VIPRA::MapData</h1>
 <p>The <code>VIPRA::MapData</code> is the base class for obstacle map data loaded into the <code>ObstacleSet</code> class.</p>
 <p>Constructed with </p><div class="fragment"><div class="line">MapData(std::string type);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md25"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md27"></a>
 Methods To Override</h1>
 <div class="fragment"><div class="line"> ++</div>
 <div class="line"><span class="keywordtype">void</span> configure(<span class="keyword">const</span> VIPRA::Config&amp;);</div>
 <div class="line"><span class="keywordtype">void</span> initialize();</div>
 <div class="line">std::unique_ptr&lt;VIPRA::MapData&gt; loadMap(<span class="keyword">const</span> std::string&amp;) <span class="keyword">const</span>;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md26"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md28"></a>
 configure(const VIPRA::Config&amp;) -&gt; void</h2>
 <p>Takes in <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">module parameters</a> to configure the module.</p>
 <p>Called right after construction.</p>
 <p>Params:</p><ul>
 <li>const <a class="el" href="../../d0/d6b/md_Documentation_2DeveloperFiles_2Modules_2Parameters.html">VIPRA::Config</a>&amp; : module parameters</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 initialize() -&gt; void</h2>
 <p>Used to setup any necessary components before loading the map file</p>
 <p>Called before <code>loadMap()</code></p>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 loadMap(const std::string&amp;) const -&gt; std::unique_ptr&lt;VIPRA::MapData&gt;</h2>
 <p>Loads the map located at the provided file path.</p>
 <p>Called before initializing <code>ObstacleSet</code>.</p>
