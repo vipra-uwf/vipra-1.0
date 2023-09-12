@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.13.0
+// Generated from Behavior.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -65,7 +65,11 @@ public:
 
     virtual std::any visitEvent_start(BehaviorParser::Event_startContext *context) = 0;
 
-    virtual std::any visitEvent_end(BehaviorParser::Event_endContext *context) = 0;
+    virtual std::any visitEvent_duration(BehaviorParser::Event_durationContext *context) = 0;
+
+    virtual std::any visitEvent_produce(BehaviorParser::Event_produceContext *context) = 0;
+
+    virtual std::any visitEvent_where(BehaviorParser::Event_whereContext *context) = 0;
 
     virtual std::any visitCondition(BehaviorParser::ConditionContext *context) = 0;
 
@@ -100,6 +104,10 @@ public:
     virtual std::any visitAttribute(BehaviorParser::AttributeContext *context) = 0;
 
     virtual std::any visitAttr_value(BehaviorParser::Attr_valueContext *context) = 0;
+
+    virtual std::any visitStimulus_type(BehaviorParser::Stimulus_typeContext *context) = 0;
+
+    virtual std::any visitProduces(BehaviorParser::ProducesContext *context) = 0;
 
     virtual std::any visitPed_Selector(BehaviorParser::Ped_SelectorContext *context) = 0;
 
@@ -136,6 +144,8 @@ public:
     virtual std::any visitAction_duration(BehaviorParser::Action_durationContext *context) = 0;
 
     virtual std::any visitAction_target(BehaviorParser::Action_targetContext *context) = 0;
+
+    virtual std::any visitAction_produce(BehaviorParser::Action_produceContext *context) = 0;
 
     virtual std::any visitSub_action(BehaviorParser::Sub_actionContext *context) = 0;
 

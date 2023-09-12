@@ -1,115 +1,57 @@
 
-#include <utility>
 
-#include <spdlog/spdlog.h>
-
-#include <events/event.hpp>
-#include "definitions/sim_pack.hpp"
-#include "events/event_status.hpp"
-#include "targets/target.hpp"
+#include "events/event.hpp"
 
 namespace BHVR {
+auto Event::evaluate(VIPRA::time_s currTime, VIPRA::delta_t timestep) -> std::optional<StimulusSource> {
+  evaluate_start(currTime, timestep);
+  evaluate_stop(currTime, timestep);
 
-/**
- * @brief Evaluates whether an event should start or end based on its conditions
- * 
- * @param pedSet : pedestrian set object
- * @param obsSet : obstacle set object
- * @param goals : goals object
- * @param context : behavior context
- * @param dT : simulation timestep size
- */
-void Event::evaluate(Simpack pack) {
-  if (status == EventStatus::ENDING) {
-    status = EventStatus::NOT_OCCURRING;
-  }
-  if (status == EventStatus::STARTING) {
-    status = EventStatus::OCCURRING;
-  }
+  if (_occurring) return _stimuli;
+  return std::nullopt;
+}
 
-  // TODO (rolland) : These might need target selectors?
-  if (status == EventStatus::OCCURRING) {
-    if (endCondition.evaluate(pack, 0, {})) {
-      spdlog::info("Event {} is Ending", name);
-      status = EventStatus::ENDING;
+void Event::set_start_time(const NumericValue& value) { _startTime = value; }
+
+void Event::set_duration(const NumericValue& value) { _duration = value; }
+
+void Event::add_stimulus(StimulusType type, uid stimId) {
+  _stimuli.stimulus.type.set(static_cast<size_t>(type));
+  _stimuli.stimulus.id = stimId;
+}
+
+void Event::set_location(VIPRA::f3d location, bool everywhere) {
+  if (everywhere)
+    _stimuli.location.set_location(std::nullopt);
+  else
+    _stimuli.location.set_location(location);
+}
+
+auto Event::has_occurred() const -> bool { return _occurred; }
+
+auto Event::get_name() const -> const std::string& { return _name; }
+
+auto in_timestep(VIPRA::time_s checkTime, VIPRA::time_s currTime, VIPRA::delta_t timeStepSize) -> bool {
+  return currTime - timeStepSize < checkTime && currTime + timeStepSize > checkTime;
+}
+
+void Event::evaluate_start(VIPRA::time_s currTime, VIPRA::delta_t timestep) {
+  if (!_occurred) {
+    if (in_timestep(_startTime.value(0), currTime, timestep)) {
+      _occurred = true;
+      _occurring = true;
+      if (_duration) _endTime = currTime + _duration->value(0);
     }
-
-    return;
-  }
-
-  if (startCondition.evaluate(pack, 0, {})) {
-    spdlog::info("Event {} is Starting", name);
-    occurred = true;
-    status = EventStatus::STARTING;
   }
 }
 
-/**
- * @brief Sets the events current status
- * 
- * @param stat : 
- */
-void Event::setStatus(EventStatus stat) { status = stat; }
-
-/**
- * @brief Checks if the event is occurring
- * 
- * @return true 
- * @return false 
- */
-bool Event::isOccurring() const {
-  return status == EventStatus::OCCURRING || status == EventStatus::STARTING;
+void Event::evaluate_stop(VIPRA::time_s currTime, VIPRA::delta_t timestep) {
+  if (_occurring && _duration) {
+    if (in_timestep(_endTime, currTime, timestep)) {
+      _occurring = false;
+    }
+  }
 }
 
-/**
- * @brief Checks if the event has occurred at all during the simulation
- * 
- * @return true 
- * @return false 
- */
-bool Event::hasOccurred() const { return occurred; }
-
-/**
- * @brief Checks if the event is starting
- * 
- * @return true 
- * @return false 
- */
-bool Event::isStarting() const { return status == EventStatus::STARTING; }
-
-/**
- * @brief Checks if the event is ending
- * 
- * @return true 
- * @return false 
- */
-bool Event::isEnding() const { return status == EventStatus::ENDING; }
-
-/**
- * @brief Sets the condition for the event to start
- * 
- * @param condition : condition for event to start
- */
-void Event::setStartCondition(const Condition& condition) { startCondition = condition; }
-
-/**
- * @brief Sets the condition for the event to end
- * 
- * @param condition : condition for event to end
- */
-void Event::setEndCondition(const Condition& condition) { endCondition = condition; }
-
-/**
- * @brief Returns the events name
- * 
- * @return const std::string& 
- */
-const std::string& Event::getName() const { return name; }
-
-// ---------------------------------- CONSTRUCTORS -----------------------------------------------------------
-
-Event::Event(std::string evName) : name(std::move(evName)) {}
-
-// ---------------------------------- END CONSTRUCTORS -----------------------------------------------------------
-
+Event::Event(std::string name) : _name(std::move(name)) {}
 }  // namespace BHVR

@@ -1,6 +1,10 @@
+
 Types:
   individual
-  aggressive
+.
+
+Pedestrian States:
+  Scared
 .
 
 Selector:
@@ -8,18 +12,22 @@ Selector:
   Select: Everyone
 .
 
-Selector: 
-  Type: aggressive
-  From: individual
-  Select: 50%
-.
-
 Event:
   Name: Fire
   Start: 0 seconds after !Start
+  Produce: Fire (Visual)
+  Where: Random
+.
+
+Event:
+  Name: Fire_Alarm
+  Start: 15 seconds after !Fire
+  Produce: Auditory
+  Where: Everywhere
 .
 
 Action (individual):
-  Stimulus: !Fire occurring
-  Response: scale velocity 2.0
+  Stimulus: See !Fire, See #Scared, Hear !Fire_Alarm
+  Response: scale velocity 2.0, be #Scared, set goal nearest exit
+  Produce: 
 .

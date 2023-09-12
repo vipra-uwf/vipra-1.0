@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.13.0
+// Generated from Behavior.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -107,7 +107,15 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEvent_end(BehaviorParser::Event_endContext *ctx) override {
+  virtual std::any visitEvent_duration(BehaviorParser::Event_durationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitEvent_produce(BehaviorParser::Event_produceContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitEvent_where(BehaviorParser::Event_whereContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -176,6 +184,14 @@ public:
   }
 
   virtual std::any visitAttr_value(BehaviorParser::Attr_valueContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitStimulus_type(BehaviorParser::Stimulus_typeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitProduces(BehaviorParser::ProducesContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -248,6 +264,10 @@ public:
   }
 
   virtual std::any visitAction_target(BehaviorParser::Action_targetContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAction_produce(BehaviorParser::Action_produceContext *ctx) override {
     return visitChildren(ctx);
   }
 

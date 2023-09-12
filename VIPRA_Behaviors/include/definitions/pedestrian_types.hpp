@@ -22,14 +22,14 @@ class Ptype {
  public:
   typeUID fullType = 0;
 
-  explicit constexpr Ptype(typeUID id) noexcept : fullType(id) {}
+  explicit constexpr Ptype(typeUID tid) noexcept : fullType(tid) {}
 
   /**
    * @brief Returns the number of different types, excluding the base type (0)
    * 
-   * @return constexpr VIPRA::size 
+   * @return constexpr VIPRA::size
    */
-  [[nodiscard]] inline constexpr VIPRA::size typeCount() const {
+  [[nodiscard]] inline constexpr auto typeCount() const -> VIPRA::size {
     VIPRA::size count = 0;
     typeUID     check = 1;
     while ((check & fullType) != 0U) {
@@ -61,7 +61,7 @@ class Ptype {
    * 
    * @param type : type to check for
    */
-  [[nodiscard]] inline constexpr bool isType(typeUID type) const noexcept {
+  [[nodiscard]] inline constexpr auto isType(typeUID type) const noexcept -> bool {
     return ((type & fullType) != 0U) && ((~type & fullType) == 0);
   }
 
@@ -70,7 +70,7 @@ class Ptype {
    * 
    * @param type : type to check for
    */
-  [[nodiscard]] inline constexpr bool hasType(typeUID type) const noexcept {
+  [[nodiscard]] inline constexpr auto hasType(typeUID type) const noexcept -> bool {
     return (type & fullType) != 0U;
   }
 
@@ -80,9 +80,7 @@ class Ptype {
    * @param type : type to union with
    * @return constexpr Ptype 
    */
-  inline constexpr Ptype operator+(typeUID type) const noexcept {
-    return Ptype{fullType | type};
-  }
+  inline constexpr auto operator+(typeUID type) const noexcept -> Ptype { return Ptype{fullType | type}; }
 
   /**
    * @brief Adds a type to the ptype
@@ -90,7 +88,7 @@ class Ptype {
    * @param type : type to add
    * @return constexpr Ptype& 
    */
-  inline constexpr Ptype& operator+=(typeUID type) noexcept {
+  inline constexpr auto operator+=(typeUID type) noexcept -> Ptype& {
     fullType = (fullType | type);
     return *this;
   }
@@ -101,7 +99,7 @@ class Ptype {
    * @param type : ptype to union
    * @return constexpr Ptype 
    */
-  inline constexpr Ptype operator+(Ptype type) const noexcept {
+  inline constexpr auto operator+(Ptype type) const noexcept -> Ptype {
     return Ptype{fullType | type.fullType};
   }
 
@@ -111,7 +109,7 @@ class Ptype {
    * @param type : ptype to add
    * @return constexpr Ptype& 
    */
-  inline constexpr Ptype& operator+=(Ptype type) noexcept {
+  inline constexpr auto operator+=(Ptype type) noexcept -> Ptype& {
     fullType = (fullType | type.fullType);
     return *this;
   }
@@ -122,9 +120,7 @@ class Ptype {
    * @param type : type to remove
    * @return constexpr Ptype 
    */
-  inline constexpr Ptype operator-(typeUID type) const noexcept {
-    return Ptype{fullType & ~type};
-  }
+  inline constexpr auto operator-(typeUID type) const noexcept -> Ptype { return Ptype{fullType & ~type}; }
 
   /**
    * @brief Removes the type from the ptype
@@ -132,7 +128,7 @@ class Ptype {
    * @param type : type to remove
    * @return constexpr Ptype& 
    */
-  inline constexpr Ptype& operator-=(typeUID type) noexcept {
+  inline constexpr auto operator-=(typeUID type) noexcept -> Ptype& {
     fullType = (fullType & ~type);
     return *this;
   }
@@ -143,7 +139,7 @@ class Ptype {
    * @param type : ptype to compare
    * @return constexpr Ptype 
    */
-  inline constexpr Ptype operator-(Ptype type) const noexcept {
+  inline constexpr auto operator-(Ptype type) const noexcept -> Ptype {
     return Ptype{fullType & ~type.fullType};
   }
 
@@ -153,7 +149,7 @@ class Ptype {
    * @param type : type to compare
    * @return constexpr Ptype& 
    */
-  inline constexpr Ptype& operator-=(Ptype type) noexcept {
+  inline constexpr auto operator-=(Ptype type) noexcept -> Ptype& {
     fullType = (fullType & ~type.fullType);
     return *this;
   }
@@ -165,9 +161,7 @@ class Ptype {
    * @return true 
    * @return false 
    */
-  inline constexpr bool operator==(Ptype type) const noexcept {
-    return fullType == type.fullType;
-  }
+  inline constexpr auto operator==(Ptype type) const noexcept -> bool { return fullType == type.fullType; }
 
   /**
    * @brief Checks if two ptypes are different
@@ -176,16 +170,14 @@ class Ptype {
    * @return true 
    * @return false 
    */
-  inline constexpr bool operator!=(Ptype type) const noexcept {
-    return fullType != type.fullType;
-  }
+  inline constexpr auto operator!=(Ptype type) const noexcept -> bool { return fullType != type.fullType; }
 
   ~Ptype() = default;
   constexpr Ptype() noexcept = default;
   constexpr Ptype(const Ptype& other) = default;
-  constexpr Ptype& operator=(const Ptype& other) = default;
+  constexpr auto operator=(const Ptype& other) -> Ptype& = default;
   constexpr Ptype(Ptype&& other) noexcept = default;
-  constexpr Ptype& operator=(Ptype&& other) noexcept = default;
+  constexpr auto operator=(Ptype&& other) noexcept -> Ptype& = default;
 };
 }  // namespace BHVR
 

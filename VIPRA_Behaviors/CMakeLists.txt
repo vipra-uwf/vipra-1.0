@@ -10,6 +10,7 @@ set(VIPRA_DIR ./../VIPRA)
 set(GRAMMAR_DIR ./grammar)
 set(INCLUDE_DIR ./include)
 set(SRC_DIR ./src)
+set(DEPS_DIR ./deps)
 
 add_library(
   ${LIB_NAME}
@@ -53,8 +54,8 @@ target_link_libraries(
 
 include_directories(
   SYSTEM
-  .
   ${VIPRA_DIR}/Base
   ${VIPRA_DIR}/Extendable
   ${ANTLR4CPP_INCLUDE_DIRS}
+  ${DEPS_DIR}
 )

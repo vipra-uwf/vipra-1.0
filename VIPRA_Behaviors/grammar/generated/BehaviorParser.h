@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.13.0
+// Generated from Behavior.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -15,24 +15,26 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     COMMENT = 8, LINE_COMMENT = 9, WS = 10, COMMA = 11, COLON = 12, STATE_VAL = 13, 
     EVNT = 14, LOC_NAME = 15, AN = 16, AT = 17, ADD = 18, AND = 19, ARE = 20, 
-    AFTER = 21, ALWAYS = 22, AROUND = 23, ACTION = 24, BEHIND = 25, BOTTOM = 26, 
-    CONSIDER = 27, CIRCLE = 28, CENTER = 29, CONDITION = 30, DECIMAL = 31, 
-    DIRECTION = 32, DURATION = 33, END = 34, ENDS = 35, ENVIRONMENT = 36, 
-    ENTER = 37, EXIT = 38, EVENT = 39, EXACTLY = 40, EVERY = 41, EVERYONE = 42, 
-    ENDING = 43, FOR = 44, FROM = 45, FRONT = 46, FASTER = 47, GIVEN = 48, 
-    GOAL = 49, GROUP = 50, HAS = 51, IN = 52, INTEGER = 53, IS = 54, IF = 55, 
-    LENGTH = 56, LEFT = 57, DIMENSIONS = 58, LOCATION = 59, MAX = 60, METERS = 61, 
-    NAME = 62, NEAREST = 63, NORMAL = 64, NONE = 65, OBSTACLE = 66, OCCUR = 67, 
-    OCCURRED = 68, OCCURRING = 69, OF = 70, ON = 71, OR = 72, PEDESTRIAN = 73, 
-    PEDESTRIANS = 74, POINTS = 75, POSSIBLE = 76, POSITION = 77, RADIUS = 78, 
-    RANDOM = 79, REQUIRED = 80, RECTANGLE = 81, RIGHT = 82, RESPONSE = 83, 
-    SCALE = 84, SELF = 85, SELECT = 86, SELECTOR = 87, SET = 88, SECOND = 89, 
-    SECONDS = 90, STATUS = 91, STARTING = 92, SLOWER = 93, SHAPE = 94, STATES = 95, 
-    START = 96, STATE = 97, STARTS = 98, SPEED = 99, SUBTRACT = 100, STIMULUS = 101, 
-    TARGET = 102, TO = 103, TOP = 104, THE = 105, THAT = 106, THEN = 107, 
-    THEIR = 108, THERES = 109, TYPES = 110, TYPE = 111, UNCONDITIONALLY = 112, 
-    VALUE = 113, VELOCITY = 114, WHEN = 115, WHILE = 116, WIDTH = 117, WILL = 118, 
-    WITH = 119, WITHIN = 120, ID = 121, NUMBER = 122, FLOAT = 123
+    AFTER = 21, ALWAYS = 22, AROUND = 23, ACTION = 24, AUDITORY = 25, BEHIND = 26, 
+    BOTTOM = 27, CONSIDER = 28, CIRCLE = 29, CENTER = 30, CONDITION = 31, 
+    DECIMAL = 32, DIRECTION = 33, DURATION = 34, END = 35, ENDS = 36, ENVIRONMENT = 37, 
+    ENTER = 38, EXIT = 39, EVENT = 40, EXACTLY = 41, EVERY = 42, EVERYONE = 43, 
+    ENDING = 44, EVERYWHERE = 45, FOR = 46, FROM = 47, FRONT = 48, FASTER = 49, 
+    GIVEN = 50, GOAL = 51, GROUP = 52, HAS = 53, IN = 54, INTEGER = 55, 
+    IS = 56, IF = 57, LENGTH = 58, LEFT = 59, DIMENSIONS = 60, LOCATION = 61, 
+    MAX = 62, METERS = 63, NAME = 64, NEAREST = 65, NORMAL = 66, NONE = 67, 
+    OBSTACLE = 68, OCCUR = 69, OCCURRED = 70, OCCURRING = 71, OF = 72, ON = 73, 
+    OR = 74, PEDESTRIAN = 75, PEDESTRIANS = 76, POINTS = 77, POSSIBLE = 78, 
+    POSITION = 79, PRODUCE = 80, RADIUS = 81, RANDOM = 82, REQUIRED = 83, 
+    RECTANGLE = 84, RIGHT = 85, RESPONSE = 86, SCALE = 87, SELF = 88, SELECT = 89, 
+    SELECTOR = 90, SET = 91, SECOND = 92, SECONDS = 93, STATUS = 94, SOURCE = 95, 
+    STARTING = 96, SLOWER = 97, SHAPE = 98, STATES = 99, START = 100, STATE = 101, 
+    STARTS = 102, SPEED = 103, SUBTRACT = 104, STIMULUS = 105, TARGET = 106, 
+    TO = 107, TOP = 108, THE = 109, THAT = 110, THEN = 111, THEIR = 112, 
+    THERES = 113, TYPES = 114, TYPE = 115, UNCONDITIONALLY = 116, VALUE = 117, 
+    VELOCITY = 118, VISUAL = 119, WHEN = 120, WHILE = 121, WIDTH = 122, 
+    WHERE = 123, WILL = 124, WITH = 125, WITHIN = 126, ID = 127, NUMBER = 128, 
+    FLOAT = 129
   };
 
   enum {
@@ -42,23 +44,25 @@ public:
     RuleValue_range = 12, RuleValue_random = 13, RuleRandom_number = 14, 
     RuleRandom_float = 15, RuleFloat_range = 16, RuleNumber_range = 17, 
     RuleValue_coord = 18, RuleEvent = 19, RuleEvent_attribute = 20, RuleEvent_name = 21, 
-    RuleEvent_start = 22, RuleEvent_end = 23, RuleCondition = 24, RuleConnector = 25, 
-    RuleOr_Connector = 26, RuleAnd_Connector = 27, RuleSub_condition = 28, 
-    RuleCondition_Time_Elapsed_From_Event = 29, RuleCondition_Event_Occurred = 30, 
-    RuleCondition_Event_Occurring = 31, RuleCondition_Event_Starting = 32, 
-    RuleCondition_Event_Ending = 33, RuleCondition_Spatial = 34, RuleCondition_Enter_Location = 35, 
-    RuleCondition_Exit_Location = 36, RuleCondition_Attribute = 37, RuleDuration = 38, 
-    RuleAttribute = 39, RuleAttr_value = 40, RulePed_Selector = 41, RuleSelector_attribute = 42, 
-    RuleSelector_type = 43, RuleSelector_selector = 44, RuleSelector_from = 45, 
-    RuleSelector_required = 46, RuleSelector = 47, RuleSelector_Percent = 48, 
-    RuleSelector_Exactly_N_Random = 49, RuleSelector_Everyone = 50, RuleGroup = 51, 
-    RuleId_list = 52, RuleAction = 53, RuleAction_attribute = 54, RuleAction_stimulus = 55, 
-    RuleAction_response = 56, RuleAction_duration = 57, RuleAction_target = 58, 
-    RuleSub_action = 59, RuleAction_atom = 60, RuleSet_atom = 61, RuleScale_atom = 62, 
-    RuleTarget = 63, RuleSelf = 64, RuleOther = 65, RuleNearest_type = 66, 
-    RuleModifier = 67, RuleDistance = 68, RuleDirection = 69, RuleFront = 70, 
-    RuleBehind = 71, RuleDeclaration = 72, RuleDecl_Ped_State = 73, RuleDecl_Env_State = 74, 
-    RuleDecl_Ped = 75
+    RuleEvent_start = 22, RuleEvent_duration = 23, RuleEvent_produce = 24, 
+    RuleEvent_where = 25, RuleCondition = 26, RuleConnector = 27, RuleOr_Connector = 28, 
+    RuleAnd_Connector = 29, RuleSub_condition = 30, RuleCondition_Time_Elapsed_From_Event = 31, 
+    RuleCondition_Event_Occurred = 32, RuleCondition_Event_Occurring = 33, 
+    RuleCondition_Event_Starting = 34, RuleCondition_Event_Ending = 35, 
+    RuleCondition_Spatial = 36, RuleCondition_Enter_Location = 37, RuleCondition_Exit_Location = 38, 
+    RuleCondition_Attribute = 39, RuleDuration = 40, RuleAttribute = 41, 
+    RuleAttr_value = 42, RuleStimulus_type = 43, RuleProduces = 44, RulePed_Selector = 45, 
+    RuleSelector_attribute = 46, RuleSelector_type = 47, RuleSelector_selector = 48, 
+    RuleSelector_from = 49, RuleSelector_required = 50, RuleSelector = 51, 
+    RuleSelector_Percent = 52, RuleSelector_Exactly_N_Random = 53, RuleSelector_Everyone = 54, 
+    RuleGroup = 55, RuleId_list = 56, RuleAction = 57, RuleAction_attribute = 58, 
+    RuleAction_stimulus = 59, RuleAction_response = 60, RuleAction_duration = 61, 
+    RuleAction_target = 62, RuleAction_produce = 63, RuleSub_action = 64, 
+    RuleAction_atom = 65, RuleSet_atom = 66, RuleScale_atom = 67, RuleTarget = 68, 
+    RuleSelf = 69, RuleOther = 70, RuleNearest_type = 71, RuleModifier = 72, 
+    RuleDistance = 73, RuleDirection = 74, RuleFront = 75, RuleBehind = 76, 
+    RuleDeclaration = 77, RuleDecl_Ped_State = 78, RuleDecl_Env_State = 79, 
+    RuleDecl_Ped = 80
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -101,7 +105,9 @@ public:
   class Event_attributeContext;
   class Event_nameContext;
   class Event_startContext;
-  class Event_endContext;
+  class Event_durationContext;
+  class Event_produceContext;
+  class Event_whereContext;
   class ConditionContext;
   class ConnectorContext;
   class Or_ConnectorContext;
@@ -119,6 +125,8 @@ public:
   class DurationContext;
   class AttributeContext;
   class Attr_valueContext;
+  class Stimulus_typeContext;
+  class ProducesContext;
   class Ped_SelectorContext;
   class Selector_attributeContext;
   class Selector_typeContext;
@@ -137,6 +145,7 @@ public:
   class Action_responseContext;
   class Action_durationContext;
   class Action_targetContext;
+  class Action_produceContext;
   class Sub_actionContext;
   class Action_atomContext;
   class Set_atomContext;
@@ -463,7 +472,9 @@ public:
     virtual size_t getRuleIndex() const override;
     Event_nameContext *event_name();
     Event_startContext *event_start();
-    Event_endContext *event_end();
+    Event_durationContext *event_duration();
+    Event_produceContext *event_produce();
+    Event_whereContext *event_where();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -493,7 +504,7 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *START();
     antlr4::tree::TerminalNode *COLON();
-    ConditionContext *condition();
+    Value_numericContext *value_numeric();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -502,20 +513,52 @@ public:
 
   Event_startContext* event_start();
 
-  class  Event_endContext : public antlr4::ParserRuleContext {
+  class  Event_durationContext : public antlr4::ParserRuleContext {
   public:
-    Event_endContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Event_durationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *END();
+    antlr4::tree::TerminalNode *DURATION();
     antlr4::tree::TerminalNode *COLON();
-    ConditionContext *condition();
+    Value_numericContext *value_numeric();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
-  Event_endContext* event_end();
+  Event_durationContext* event_duration();
+
+  class  Event_produceContext : public antlr4::ParserRuleContext {
+  public:
+    Event_produceContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *PRODUCE();
+    antlr4::tree::TerminalNode *COLON();
+    ProducesContext *produces();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Event_produceContext* event_produce();
+
+  class  Event_whereContext : public antlr4::ParserRuleContext {
+  public:
+    Event_whereContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *WHERE();
+    antlr4::tree::TerminalNode *COLON();
+    antlr4::tree::TerminalNode *EVERYWHERE();
+    antlr4::tree::TerminalNode *RANDOM();
+    Value_coordContext *value_coord();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Event_whereContext* event_where();
 
   class  ConditionContext : public antlr4::ParserRuleContext {
   public:
@@ -774,6 +817,38 @@ public:
 
   Attr_valueContext* attr_value();
 
+  class  Stimulus_typeContext : public antlr4::ParserRuleContext {
+  public:
+    Stimulus_typeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *AUDITORY();
+    antlr4::tree::TerminalNode *VISUAL();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Stimulus_typeContext* stimulus_type();
+
+  class  ProducesContext : public antlr4::ParserRuleContext {
+  public:
+    ProducesContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> ID();
+    antlr4::tree::TerminalNode* ID(size_t i);
+    std::vector<Stimulus_typeContext *> stimulus_type();
+    Stimulus_typeContext* stimulus_type(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> COMMA();
+    antlr4::tree::TerminalNode* COMMA(size_t i);
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ProducesContext* produces();
+
   class  Ped_SelectorContext : public antlr4::ParserRuleContext {
   public:
     Ped_SelectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -976,6 +1051,7 @@ public:
     Action_stimulusContext *action_stimulus();
     Action_durationContext *action_duration();
     Action_targetContext *action_target();
+    Action_produceContext *action_produce();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -1043,6 +1119,21 @@ public:
   };
 
   Action_targetContext* action_target();
+
+  class  Action_produceContext : public antlr4::ParserRuleContext {
+  public:
+    Action_produceContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *PRODUCE();
+    antlr4::tree::TerminalNode *COLON();
+    ProducesContext *produces();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Action_produceContext* action_produce();
 
   class  Sub_actionContext : public antlr4::ParserRuleContext {
   public:

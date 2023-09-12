@@ -17,16 +17,16 @@ class DRNG {
   * @brief Gets the random float between min and max that is assigned to the pedestrian at pedIdx
   * 
   */
-  [[nodiscard]] static inline float pedRandomFloat(BHVR::seed seed, VIPRA::idx pedIdx,
-                                                   float min, float max) {
+  [[nodiscard]] static inline auto ped_random_float(BHVR::seed seed, VIPRA::idx pedIdx, float min, float max)
+      -> float {
     VIPRA::uniform_distribution<float> distr{min, max};
-    return distr(getEngine(seed + (pedIdx * pedMultVal)));
+    return distr(get_engine(seed + (pedIdx * PED_MULT_VAL)));
   }
 
  private:
-  static constexpr uint64_t pedMultVal{10037};
+  static constexpr uint64_t PED_MULT_VAL{10037};
 
-  static inline VIPRA::pRNG_Engine& getEngine(BHVR::seed seed) {
+  static inline auto get_engine(BHVR::seed seed) -> VIPRA::pRNG_Engine& {
     static VIPRA::pRNG_Engine gen{};
     gen.reseed(seed);
     return gen;

@@ -14,10 +14,11 @@ namespace BHVR {
 using seed = uint64_t;
 
 /**
- * @brief Unique identifier for a pedestrian/environment state
+ * @brief Generic Unique identifier for a pedestrian/environment state
  * 
  */
-using stateUID = uint64_t;
+using uid = uint64_t;
+
 }  // namespace BHVR
 
 #endif

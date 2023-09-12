@@ -2,6 +2,7 @@
 #define VIPRA_DIMENSIONS_HPP
 
 #include <cmath>
+#include <limits>
 #include <stdexcept>
 #include <type_traits>
 #include <vector>
@@ -24,7 +25,7 @@ struct f2d {
     return *this;
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  template <typename T>
   inline constexpr float& operator[](T index) {
     switch (index) {
       case 0:
@@ -40,7 +41,7 @@ struct f2d {
     }
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  template <typename T>
   inline constexpr float operator[](T index) const {
     switch (index) {
       case 0:
@@ -161,7 +162,7 @@ struct f3d {
     return *this;
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  template <typename T>
   inline constexpr float& operator[](T index) {
     switch (index) {
       case 0:
@@ -181,7 +182,7 @@ struct f3d {
     }
   }
 
-  template <typename T, class = typename std::enable_if<std::is_integral<T>::value>::type>
+  template <typename T>
   inline constexpr float operator[](T index) const {
     switch (index) {
       case 0:

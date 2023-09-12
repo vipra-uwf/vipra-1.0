@@ -1,6 +1,6 @@
 grammar action;
 
-import lexer_rules, attributes, values, condition, time, targets;
+import lexer_rules, attributes, values, condition, time, targets, stimuli;
 
 action:
   ACTION '(' ID ')' ':' action_attribute*
@@ -11,7 +11,8 @@ action_attribute:
   action_response |
   action_stimulus |
   action_duration |
-  action_target
+  action_target |
+  action_produce
 ;
 
 action_stimulus:
@@ -28,6 +29,10 @@ action_duration:
 
 action_target:
   TARGET ':' target
+;
+
+action_produce:
+  PRODUCE ':' produces
 ;
 
 sub_action:
