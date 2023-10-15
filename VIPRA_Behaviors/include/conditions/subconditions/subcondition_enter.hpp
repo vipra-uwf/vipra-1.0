@@ -18,7 +18,9 @@ class SubConditionEnter {
   bool operator()(Simpack, VIPRA::idx, Target);
 
  private:
-  VIPRA::idx        location;
+  VIPRA::idx location;
+
+  // TODO (rolland) temporary fix for not having pedestrian memory
   std::vector<bool> entered;
 
  public:

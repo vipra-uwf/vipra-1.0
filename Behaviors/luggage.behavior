@@ -5,10 +5,10 @@ Types:
 
 Location:
   Name: Aisle
-  Shape: Rectangle
-  Points:
-    {0, 1.55}
-    {25, 1.93}
+  Dimensions:
+    {12, 1.7},
+    {30, 0.1},
+    0
 .
 
 Selector:

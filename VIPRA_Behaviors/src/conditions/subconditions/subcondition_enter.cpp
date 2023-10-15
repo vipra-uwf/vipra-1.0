@@ -21,6 +21,7 @@ bool SubConditionEnter::operator()(Simpack pack, VIPRA::idx self, Target) {
                !loc.inside(pack.pedSet.getPedCoords(self));
 
   if (enter) {
+    spdlog::warn("{} Entered", self);
     entered.at(self) = true;
   }
 

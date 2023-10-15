@@ -2,10 +2,12 @@
 #define VIPRA_OUTPUT_HPP
 
 #include <memory>
+#include <pedestrian_set/pedestrian_set.hpp>
 #include <stdexcept>
 
 #include "definitions/type_definitions.hpp"
 #include "sink.hpp"
+#include "spdlog/spdlog.h"
 
 namespace VIPRA {
 
@@ -28,8 +30,11 @@ class Output {
    * 
    * @param outputSink : output sink
    */
-  static inline void initialize(std::unique_ptr<VIPRA::Sink>&& outputSink) {
+  static inline void initialize(std::unique_ptr<VIPRA::Sink>&& outputSink,
+                                size_t                         pedCnt) {
     sink = std::move(outputSink);
+    jsonData["pedestrians"] = nlohmann::json::array();
+    jsonData["pedestrians"].get_ptr<nlohmann::json::array_t*>()->resize(pedCnt);
   }
 
   /**
@@ -76,7 +81,7 @@ class Output {
    */
   template <typename T>
   static inline void pedValue(VIPRA::idx pedIdx, const char* key, T&& value) {
-    jsonData["pedestrians"][pedIdx][key] = std::forward<T>(value);
+    jsonData["pedestrians"].at(pedIdx)[key] = std::forward<T>(value);
   }
 
   /**

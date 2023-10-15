@@ -15,9 +15,9 @@ namespace BHVR {
    * @param group : group to pull from
    * @return SelectorResult 
    */
-SelectorResult SelectorExactlyN::operator()(
-    VIPRA::pRNG_Engine& rngEngine, const VIPRA::idxVec&, const VIPRA::idxVec& group,
-    const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, const VIPRA::Goals&) const {
+SelectorResult SelectorExactlyN::operator()(VIPRA::pRNG_Engine& rngEngine,
+                                            const VIPRA::idxVec&,
+                                            const VIPRA::idxVec& group, Simpack) const {
   auto groupPeds = group;
 
   auto pedCnt = static_cast<VIPRA::size>(std::round(selectCount.value(0)));

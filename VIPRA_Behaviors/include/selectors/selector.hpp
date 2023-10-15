@@ -42,10 +42,7 @@ class Selector {
   GroupsContainer          pedGroups;
 
   [[nodiscard]] VIPRA::idxVec selectPedsFromGroup(SubSelector&, VIPRA::pRNG_Engine&,
-                                                  const VIPRA::PedestrianSet&,
-                                                  const VIPRA::ObstacleSet&,
-                                                  const VIPRA::Goals&,
-                                                  const std::string&);
+                                                  Simpack, const std::string&);
 
   [[nodiscard]] VIPRA::idxVec        orderSelectors();
   [[nodiscard]] static VIPRA::idxVec filterUsedPeds(const VIPRA::idxVec&,

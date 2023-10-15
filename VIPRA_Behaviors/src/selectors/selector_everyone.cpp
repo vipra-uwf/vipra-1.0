@@ -11,10 +11,7 @@ namespace BHVR {
  * @return SelectorResult 
  */
 SelectorResult SelectorEveryone::operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                                            const VIPRA::idxVec& group,
-                                            const VIPRA::PedestrianSet&,
-                                            const VIPRA::ObstacleSet&,
-                                            const VIPRA::Goals&) {
+                                            const VIPRA::idxVec& group, Simpack) {
   auto vec = VIPRA::idxVec(group.size());
   std::iota(vec.begin(), vec.end(), 0);
   return {false, vec};

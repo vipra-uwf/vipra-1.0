@@ -1,3 +1,8 @@
+/*
+ TODO: 
+  MISSING: initial actions
+*/
+
 # VIPRA Behaviors
 
 VIPRA Behaviors is a DSL for creating human behaviors for use in pedestrian dynamics simulations.

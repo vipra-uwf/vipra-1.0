@@ -1,14 +1,15 @@
 
 #include "behavior/human_behavior.hpp"
 
-#include <definitions/state.hpp>
 #include <numeric>
 #include <utility>
 
 #include "definitions/dsl_types.hpp"
 #include "definitions/pedestrian_types.hpp"
 #include "definitions/sim_pack.hpp"
+#include "definitions/state.hpp"
 #include "selectors/selector.hpp"
+
 
 namespace BHVR {
 
@@ -55,8 +56,7 @@ void HumanBehavior::setAllPedTypes(Ptype types) {
  * @param goals : goals object
  */
 void HumanBehavior::initialize(const VIPRA::PedestrianSet& pedSet,
-                               const VIPRA::ObstacleSet&   obsSet,
-                               const VIPRA::Goals&         goals) {
+                               const VIPRA::ObstacleSet& obsSet, VIPRA::Goals& goals) {
   context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
   context.types = std::vector<BHVR::typeUID>(pedSet.getNumPedestrians());
 

@@ -47,3 +47,9 @@ package-lock.json
 
 # Python
 __pycache__
+
+# Behaviors
+test.behavior
+
+# Temporary
+temp*

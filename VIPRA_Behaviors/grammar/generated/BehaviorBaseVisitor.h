@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.13.0
+// Generated from Behavior.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -35,19 +35,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitLoc_shape(BehaviorParser::Loc_shapeContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitLoc_dimensions(BehaviorParser::Loc_dimensionsContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitRect_dims(BehaviorParser::Rect_dimsContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitCircle_dims(BehaviorParser::Circle_dimsContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -216,6 +204,10 @@ public:
   }
 
   virtual std::any visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelector_Location(BehaviorParser::Selector_LocationContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -56,7 +56,7 @@ condition_Enter_Location:
   ;
 
 condition_Exit_Location:
-  EXIT LOC_NAME
+  LEAVE LOC_NAME
   ;
 
 condition_Attribute:

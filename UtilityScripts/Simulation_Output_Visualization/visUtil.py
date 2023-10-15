@@ -24,6 +24,7 @@ def getArgs():
   difalpha = 0.25
   diflines = False
   diflineMax = None
+  funcOverrides = None
 
   i = 1
   while i < len(sys.argv):
@@ -76,6 +77,9 @@ def getArgs():
     elif sys.argv[i] == '-dlmax':
       i += 1
       diflineMax = float(sys.argv[i])
+    elif sys.argv[i] == '-overrides':
+      i += 1
+      funcOverrides = sys.argv[i]
     else:
       if (sys.argv[i][0] == '-'):
         print(f'Unknown Flag: {sys.argv[i]}')
@@ -106,6 +110,7 @@ def getArgs():
     difalpha = difalpha,
     diflines = diflines,
     diflineMax = diflineMax,
+    overrides = funcOverrides
   )
 
 
@@ -135,7 +140,8 @@ def getPoints(timestep):
 
   return (pointsX, pointsY)
 
-def makeColors(count, args):
+def makeColors(peds, args):
+  count = len(peds["timesteps"][0]["pedestrians"])
   if args['pedColor']:
     return np.random.rand(count, 3)
   else:

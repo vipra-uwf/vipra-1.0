@@ -4,9 +4,10 @@
 #include <memory>
 #include <vector>
 
-#include <definitions/dsl_types.hpp>
-#include <definitions/pedestrian_types.hpp>
+#include "definitions/dsl_types.hpp"
+#include "definitions/pedestrian_types.hpp"
 #include "definitions/type_definitions.hpp"
+#include "locations/location.hpp"
 
 namespace BHVR {
 class Event;

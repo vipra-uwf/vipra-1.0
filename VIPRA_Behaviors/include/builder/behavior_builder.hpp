@@ -83,7 +83,6 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   [[nodiscard]] auto getCompositeType(
       const std::vector<antlr4::tree::TerminalNode*>&) const -> BHVR::Ptype;
   [[nodiscard]] static auto getAttribute(std::string) -> BHVR::Attribute;
-  [[nodiscard]] static auto getShape(BehaviorParser::Loc_shapeContext*) -> BHVR::Shape;
 
   [[nodiscard]] auto makeAttributeValue(BehaviorParser::Attr_valueContext*)
       -> BHVR::CAttributeValue;
@@ -95,7 +94,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
       -> std::optional<TargetModifier>;
   [[nodiscard]] static auto makeDirection(BehaviorParser::DirectionContext*) -> Direction;
   [[nodiscard]] auto        makeDimensions(BehaviorParser::Loc_dimensionsContext*) const
-      -> std::pair<InsideFunc, RandomPointFunc>;
+      -> std::tuple<VIPRA::f3d, VIPRA::f3d, float>;
 
   /**
    * @brief Logs an error to the console and throws an exception
@@ -140,6 +139,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   // --------------------------------- SUBCONDITIONS ------------------------------------------------------------------------------------------------
 
   void addEnterSubCond(Condition&, BehaviorParser::Condition_Enter_LocationContext*);
+  void addExitSubCond(Condition&, BehaviorParser::Condition_Exit_LocationContext*);
   void addTimeElapsedSubCond(Condition&,
                              BehaviorParser::Condition_Time_Elapsed_From_EventContext*);
   void addEventOccurredSubCond(Condition&,
@@ -153,9 +153,13 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   // --------------------------------- SUBSELECTORS ------------------------------------------------------------------------------------------------
 
-  auto buildEveryone(slType, bool) -> SubSelector;
-  auto buildExactlyN(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
-  auto buildPercent(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
+  auto buildEveryoneSelector(slType, bool) -> SubSelector;
+  auto buildExactlyNSelector(slType, slSelector, std::optional<slGroup>, bool)
+      -> SubSelector;
+  auto buildPercentSelector(slType, slSelector, std::optional<slGroup>, bool)
+      -> SubSelector;
+  auto buildLocationSelector(slType, slSelector, std::optional<slGroup>, bool)
+      -> SubSelector;
 
   // --------------------------------- LOCATION ------------------------------------------------------------------------------------------------
 
@@ -266,10 +270,6 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
       // Type
       if constexpr (std::is_same_v<T, lcName>)
         if (attr->loc_name()) return attr->loc_name();
-
-      // Selector
-      if constexpr (std::is_same_v<T, lcShape>)
-        if (attr->loc_shape()) return attr->loc_shape();
 
       if constexpr (std::is_same_v<T, lcDimensions>)
         if (attr->loc_dimensions()) return attr->loc_dimensions();

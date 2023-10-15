@@ -16,7 +16,6 @@
 #include "randomization/random.hpp"
 #include "selectors/selector.hpp"
 
-
 namespace BHVR {
 /**
  * Describes a specific human behavior. Implementations can either define the behavior directly in C++ or use a DSL.
@@ -27,8 +26,7 @@ class HumanBehavior {
 
   [[nodiscard]] const std::string& getName() const noexcept;
 
-  void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
-                  const VIPRA::Goals&);
+  void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, VIPRA::Goals&);
   void timestep(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::State&,
                 VIPRA::delta_t);
 

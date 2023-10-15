@@ -43,5 +43,6 @@
 14. `-difalpha *0.0-1.0*` : sets the alpha for dif *(default 0.25)*
 15. `-diflines` : draws lines between pedestrians that have a dif *(default OFF)*
 16. `-dlmax *float*` : scales dif line alpha by max distance *(default OFF)*
+17. `-overrides *filename*` : overrides helper functions with the module provided
 
 **color options: https://matplotlib.org/stable/tutorials/colors/colors.html**

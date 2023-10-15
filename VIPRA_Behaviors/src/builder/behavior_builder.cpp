@@ -16,10 +16,11 @@
 #include "builder/behavior_builder.hpp"
 
 #include "conditions/subconditions/subcondition_enter.hpp"
+#include "conditions/subconditions/subcondition_leave.hpp"
 #include "definitions/type_definitions.hpp"
-#include "locations/shapes/rectangle.hpp"
 #include "selectors/selector_everyone.hpp"
 #include "selectors/selector_exactly_N.hpp"
+#include "selectors/selector_location.hpp"
 #include "selectors/selector_percent.hpp"
 
 #include "actions/atoms/atom_set.hpp"
@@ -170,9 +171,8 @@ void BehaviorBuilder::endBehaviorCheck() {
     BuilderException::error();
   }
   if (currentBehavior.actionCount() == 0) {
-    spdlog::error("Behavior Error: No Actions Defined For Behavior: \"{}\"",
-                  currentBehavior.getName());
-    BuilderException::error();
+    spdlog::warn("Behavior Error: No Actions Defined For Behavior: \"{}\"",
+                 currentBehavior.getName());
   }
 }
 
@@ -216,15 +216,19 @@ SubSelector BehaviorBuilder::buildSubSelector(slType type, slSelector selector,
                                               std::optional<slGroup> group,
                                               bool                   required) {
   if (selector->selector()->selector_Everyone()) {
-    return buildEveryone(type, required);
+    return buildEveryoneSelector(type, required);
   }
 
   if (selector->selector()->selector_Exactly_N_Random()) {
-    return buildExactlyN(type, selector, group, required);
+    return buildExactlyNSelector(type, selector, group, required);
   }
 
   if (selector->selector()->selector_Percent()) {
-    return buildPercent(type, selector, group, required);
+    return buildPercentSelector(type, selector, group, required);
+  }
+
+  if (selector->selector()->selector_Location()) {
+    return buildLocationSelector(type, selector, group, required);
   }
 
   spdlog::error("Behavior Error: Unable To Create Selector For Behavior \"{}\"",
@@ -272,6 +276,11 @@ void BehaviorBuilder::addSubCondToCondtion(
 
   if (subcond->condition_Spatial()) {
     addSpatialSubCond(condition, subcond->condition_Spatial());
+    return;
+  }
+
+  if (subcond->condition_Exit_Location()) {
+    addExitSubCond(condition, subcond->condition_Exit_Location());
     return;
   }
 
@@ -361,17 +370,6 @@ auto BehaviorBuilder::makeTargetModifier(
 // --------------------------------------------------- END HELPERS ---------------------------------------------------------------------------------------------
 
 // --------------------------------------------------- GETTERS -------------------------------------------------------------------------------------------------
-
-auto BehaviorBuilder::getShape(BehaviorParser::Loc_shapeContext* ctx) -> BHVR::Shape {
-  if (ctx->RECTANGLE()) {
-    return BHVR::Shape::RECTANGLE;
-  }
-  if (ctx->CIRCLE()) {
-    return BHVR::Shape::CIRCLE;
-  }
-
-  return BHVR::Shape::POINT;
-}
 
 /**
  * @brief Gets the id for a type from its name
@@ -493,21 +491,12 @@ Attribute BehaviorBuilder::getAttribute(std::string attr) {
 // --------------------------------------------------- MAKERS --------------------------------------------------------------------------------------------------
 
 auto BehaviorBuilder::makeDimensions(BehaviorParser::Loc_dimensionsContext* ctx) const
-    -> std::pair<InsideFunc, RandomPointFunc> {
-  if (ctx->rect_dims()) {
-    auto coords = ctx->rect_dims()->value_coord();
-    auto botLeft = getCoord(coords[0], currSeed);
-    auto topRight = getCoord(coords[1], currSeed);
-    auto rect = Rectangle{botLeft, topRight};
-    return {rect, rect};
-  }
-
-  if (ctx->circle_dims()) {
-    // TODO (rolland) add in circle
-    return {};
-  }
-
-  return {};
+    -> std::tuple<VIPRA::f3d, VIPRA::f3d, float> {
+  auto coords = ctx->value_coord();
+  auto rot = getNumeric(ctx->value_numeric(), currSeed).value(0);
+  auto center = getCoord(coords[0], currSeed);
+  auto dims = getCoord(coords[1], currSeed);
+  return {center, dims, rot};
 }
 
 /**
@@ -624,7 +613,7 @@ VIPRA::idx BehaviorBuilder::addEvent(BehaviorParser::Event_nameContext* ctx) {
 // --------------------------------------------- ANTLR VISITOR METHODS -----------------------------------------------------------------------------------------
 
 antlrcpp::Any BehaviorBuilder::visitLocation(BehaviorParser::LocationContext* ctx) {
-  // NOLINTBEGIN (rolland) access is checked, improper error : ignoring (bugprone-unchecked-optional-access)
+  // NOLINTBEGIN(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
   auto name = findLocationComponent<lcName>(ctx);
   if (!name) error(R"(Behavior "{}": Missing Location Name)", currentBehavior.getName());
   std::string locName = "@" + name.value()->ID()->toString();
@@ -633,26 +622,20 @@ antlrcpp::Any BehaviorBuilder::visitLocation(BehaviorParser::LocationContext* ct
     error(R"(Behavior "{}": Attempt To Redefine Location: "{}")",
           currentBehavior.getName(), locName);
 
-  Location loc;
-
-  auto shape = findLocationComponent<lcShape>(ctx);
-  if (shape) loc.setType(getShape(shape.value()));
-
   auto dims = findLocationComponent<lcDimensions>(ctx);
   if (!dims)
     error(R"(Behavior "{}": Location Missing Dimensions: "{}")",
           currentBehavior.getName(), locName);
 
-  auto [inside, randomPoint] = makeDimensions(dims.value());
-  loc.setInside(std::move(inside));
-  loc.setRandom(std::move(randomPoint));
+  auto [center, dimensions, rotation] = makeDimensions(dims.value());
 
-  locations[locName] = currentBehavior.addLocation(loc);
+  locations[locName] =
+      currentBehavior.addLocation(Location{center, dimensions, rotation});
   spdlog::debug(R"(Behavior "{}": Adding Location "{}")", currentBehavior.getName(),
                 locName);
 
   return BehaviorBaseVisitor::visitLocation(ctx);
-  // NOLINTEND
+  // NOLINTEND(bugprone-unchecked-optional-access)
 }
 
 /**
@@ -662,7 +645,7 @@ antlrcpp::Any BehaviorBuilder::visitLocation(BehaviorParser::LocationContext* ct
  * @return antlrcpp::Any 
  */
 antlrcpp::Any BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) {
-  // NOLINTBEGIN (rolland) access is checked, improper error : ignoring (bugprone-unchecked-optional-access)
+  // NOLINTBEGIN(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
   auto name = findEventComponent<evName>(ctx);
   if (!name) error(R"(Behavior "{}": Missing Event Name)", currentBehavior.getName());
   std::string eventName = "!" + name.value();
@@ -695,7 +678,7 @@ antlrcpp::Any BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) {
   eventsMap[eventName] = currentBehavior.addEvent(event);
 
   return BehaviorBaseVisitor::visitEvent(ctx);
-  // NOLINTEND
+  // NOLINTEND(bugprone-unchecked-optional-access)
 }
 
 antlrcpp::Any BehaviorBuilder::visitAction(BehaviorParser::ActionContext* ctx) {
@@ -715,7 +698,7 @@ antlrcpp::Any BehaviorBuilder::visitAction(BehaviorParser::ActionContext* ctx) {
   spdlog::debug("Behavior \"{}\": Adding Action For {}", currentBehavior.getName(),
                 typeStr);
 
-  // NOLINTNEXTLINE (rolland) access is checked, improper error : ignoring (bugprone-unchecked-optional-access)
+  // NOLINTNEXTLINE(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
   auto atoms = response.value()->sub_action()->action_atom();
   std::for_each(
       atoms.begin(), atoms.end(),
@@ -744,10 +727,10 @@ antlrcpp::Any BehaviorBuilder::visitPed_Selector(
   auto group = findSelectorComponent<slGroup>(ctx);
   auto required = findSelectorComponent<slRequired>(ctx);
 
-  // NOLINTBEGIN (rolland) access is checked, improper error : ignoring (bugprone-unchecked-optional-access)
+  // NOLINTBEGIN(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
   currentBehavior.addSubSelector(
       buildSubSelector(type.value(), selector.value(), group, required.has_value()));
-  // NOLINTEND
+  // NOLINTEND(bugprone-unchecked-optional-access)
 
   return BehaviorBaseVisitor::visitPed_Selector(ctx);
 }
@@ -853,6 +836,19 @@ void BehaviorBuilder::addEnterSubCond(
   }
 
   condition.addSubCondition(SubConditionEnter{location.value()});
+}
+
+void BehaviorBuilder::addExitSubCond(
+    Condition& condition, BehaviorParser::Condition_Exit_LocationContext* ctx) {
+  auto location = getLocation(ctx->LOC_NAME()->toString());
+
+  if (!location) {
+    error("Attempt To Use Location Before It Was Declared {}",
+          ctx->LOC_NAME()->toString());
+    return;
+  }
+
+  condition.addSubCondition(SubConditionLeave{location.value()});
 }
 
 /**
@@ -1027,7 +1023,7 @@ void BehaviorBuilder::addDirectionModifier(TargetModifier&                   mod
  * @param required : whether the selector needs to be satisfied
  * @return SubSelector 
  */
-SubSelector BehaviorBuilder::buildEveryone(slType type, bool required) {
+SubSelector BehaviorBuilder::buildEveryoneSelector(slType type, bool required) {
   auto  types = type->id_list()->ID();
   Ptype comPtype = getCompositeType(types);
 
@@ -1047,8 +1043,9 @@ SubSelector BehaviorBuilder::buildEveryone(slType type, bool required) {
  * @param required : whether the selector needs to be satisfied
  * @return SubSelector 
  */
-SubSelector BehaviorBuilder::buildExactlyN(slType type, slSelector selector,
-                                           std::optional<slGroup> group, bool required) {
+SubSelector BehaviorBuilder::buildExactlyNSelector(slType type, slSelector selector,
+                                                   std::optional<slGroup> group,
+                                                   bool                   required) {
   auto  types = type->id_list()->ID();
   Ptype comPtype = getCompositeType(types);
   auto  typeStrs = makeListStrs(types);
@@ -1071,8 +1068,9 @@ SubSelector BehaviorBuilder::buildExactlyN(slType type, slSelector selector,
  * @param required : whether the selector needs to be satisfied
  * @return SubSelector 
  */
-SubSelector BehaviorBuilder::buildPercent(slType type, slSelector selector,
-                                          std::optional<slGroup> group, bool required) {
+SubSelector BehaviorBuilder::buildPercentSelector(slType type, slSelector selector,
+                                                  std::optional<slGroup> group,
+                                                  bool                   required) {
   auto  types = type->id_list()->ID();
   Ptype comPtype = getCompositeType(types);
   auto  typeStrs = makeListStrs(types);
@@ -1085,6 +1083,25 @@ SubSelector BehaviorBuilder::buildPercent(slType type, slSelector selector,
                 fmt::join(typeStrs, ", "));
   return SubSelector{groupType, comPtype, required,
                      SelectorPercent{percentage.value(0) / 100.0F}};
+}
+
+auto BehaviorBuilder::buildLocationSelector(slType type, slSelector selector,
+                                            std::optional<slGroup> group, bool required)
+    -> SubSelector {
+  // NOLINTBEGIN(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
+  auto  types = type->id_list()->ID();
+  Ptype comPtype = getCompositeType(types);
+  auto  typeStrs = makeListStrs(types);
+  auto [groupType, groupName] = getGroup(group);
+  auto locName = selector->selector()->selector_Location()->LOC_NAME()->toString();
+  auto location = getLocation(locName);
+
+  if (!location) error("Attempt To Use Location Before It Was Declared {}", locName);
+
+  spdlog::debug(R"(Behavior "{}": Adding Selector: "In {}" Are Ped Type: {})",
+                currentBehavior.getName(), locName, groupName, fmt::join(typeStrs, ", "));
+  return SubSelector{groupType, comPtype, required, SelectorLocation{location.value()}};
+  // NOLINTEND(bugprone-unchecked-optional-access)
 }
 
 // ------------------------------- END SUBSELECTORS -----------------------------------------------------------------------------------------

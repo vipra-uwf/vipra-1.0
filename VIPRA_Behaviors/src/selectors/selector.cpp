@@ -43,8 +43,7 @@ void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs,
                             VIPRA::pRNG_Engine& rngEngine, Simpack pack) {
   std::for_each(selectorIdxs.begin(), selectorIdxs.end(), [&](VIPRA::idx index) {
     auto& selector = subSelectors[index];
-    auto selectedPeds = selectPedsFromGroup(selector, rngEngine, pack.pedSet, pack.obsSet,
-                                            pack.goals, behaviorName);
+    auto  selectedPeds = selectPedsFromGroup(selector, rngEngine, pack, behaviorName);
     updatePedGroups(selectedPeds, selector, pack.context, behaviorName);
   });
 
@@ -63,16 +62,12 @@ void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs,
  * @param behaviorName : 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector&                selector,
-                                            VIPRA::pRNG_Engine&         rngEngine,
-                                            const VIPRA::PedestrianSet& pedSet,
-                                            const VIPRA::ObstacleSet&   obsSet,
-                                            const VIPRA::Goals&         goals,
-                                            const std::string&          behaviorName) {
+VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector&        selector,
+                                            VIPRA::pRNG_Engine& rngEngine, Simpack pack,
+                                            const std::string& behaviorName) {
   const auto& fullGroup = pedGroups.getGroup(selector.group);
   auto        usablegroup = filterUsedPeds(fullGroup, pedGroups.getUsed(selector.group));
-  auto        result =
-      selector.selectPeds(rngEngine, fullGroup, usablegroup, pedSet, obsSet, goals);
+  auto        result = selector.selectPeds(rngEngine, fullGroup, usablegroup, pack);
 
   if (!result.starved) {
     return result.group;

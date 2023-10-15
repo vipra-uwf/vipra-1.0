@@ -26,8 +26,7 @@ class HumanBehaviorModel {
   explicit HumanBehaviorModel(std::vector<BHVR::HumanBehavior> humanBehaviors)
       : humanBehaviors(std::move(humanBehaviors)) {}
   void configure(const VIPRA::Config& configMap);
-  void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&,
-                  const VIPRA::Goals&);
+  void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, VIPRA::Goals&);
   void timestep(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::State&,
                 VIPRA::delta_t);
 

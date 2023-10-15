@@ -4,16 +4,17 @@
 #include <functional>
 #include <optional>
 
-#include <goals/goals.hpp>
-#include <obstacle_set/obstacle_set.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
+#include "goals/goals.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
 
-#include <conditions/sub_condition.hpp>
+#include "conditions/sub_condition.hpp"
 
-#include <definitions/behavior_context.hpp>
-#include <definitions/pedestrian_types.hpp>
-#include <randomization/random.hpp>
-#include <selectors/pedestrian_groups.hpp>
+#include "definitions/behavior_context.hpp"
+#include "definitions/pedestrian_types.hpp"
+#include "definitions/sim_pack.hpp"
+#include "randomization/random.hpp"
+#include "selectors/pedestrian_groups.hpp"
 
 namespace BHVR {
 
@@ -31,8 +32,7 @@ struct SelectorResult {
  * 
  */
 using SelectorFunc = std::function<SelectorResult(
-    VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&,
-    const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, const VIPRA::Goals&)>;
+    VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack)>;
 
 /**
  * @brief Selects pedestrians for one type, gets combined with other SubSelectors in Selector
@@ -43,8 +43,7 @@ class SubSelector {
   SubSelector(typeUID, Ptype, bool, SelectorFunc);
 
   SelectorResult selectPeds(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                            const VIPRA::idxVec&, const VIPRA::PedestrianSet&,
-                            const VIPRA::ObstacleSet&, const VIPRA::Goals&);
+                            const VIPRA::idxVec&, Simpack);
 
   // NOLINTBEGIN - (rolland) Having these public increases readability   : ignoring (cppcoreguidelines-non-private-member-variables-in-classes)
   typeUID group;

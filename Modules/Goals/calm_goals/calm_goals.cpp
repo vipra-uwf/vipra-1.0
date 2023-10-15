@@ -41,6 +41,12 @@ void CalmGoals::initialize(const VIPRA::ObstacleSet&   obsSet,
   spdlog::debug("CalmGoals: Finished Initializing");
 }
 
+void CalmGoals::changeEndGoal(VIPRA::idx pedIdx, VIPRA::f3d currPos, VIPRA::f3d endGoal) {
+  endGoals.at(pedIdx) = endGoal;
+  paths[pedIdx] = CALM_PATH::pathFind(currPos, endGoal, graph);
+  currentGoals[pedIdx] = paths[pedIdx].front();
+}
+
 /**
  * @brief Gets the path for each pedestrian placing it into the queue at paths[pedIndex]
  * 

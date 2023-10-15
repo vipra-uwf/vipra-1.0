@@ -229,7 +229,6 @@ std::string generateMain() {
   mainFunction += log("Generating Modules");
   mainFunction += initializeModules();
   mainFunction += log("Setting Up Output Handlers");
-  mainFunction += outputSetup();
   mainFunction += runSim();
   mainFunction += "\nBHVR::AttributeHandling::cleanup();";
   mainFunction += "\nVIPRA::Output::write(simID);";
@@ -285,10 +284,8 @@ std::string initializeModules() {
          "\n\t" +
          "\n\tstopTime = timer.stop(); spdlog::debug(\"Loading Pedestrians: {}\", "
          "stopTime);" +
-         "\n\t" +
-
-         log("Initializing Pedestrian Set") + "\n\ttimer.start();" +
-         "\n\tpedestrian_set->initialize(std::move(peds));\n\t" +
+         "\n\t" + outputSetup() + log("Initializing Pedestrian Set") +
+         "\n\ttimer.start();" + "\n\tpedestrian_set->initialize(std::move(peds));\n\t" +
          "\n\tstopTime = timer.stop(); spdlog::debug(\"Pedestrian Set Initialization: "
          "{}\", stopTime);" +
          "\n\t" +
@@ -369,7 +366,7 @@ std::string runSim() {
  * @return std::string 
  */
 std::string outputSetup() {
-  return "\n\tVIPRA::Output::initialize(std::move(output_sink));"
+  return "\n\tVIPRA::Output::initialize(std::move(output_sink), peds.size());"
          "\n\tVIPRA::Output::configure(params[\"output\"]);";
 }
 

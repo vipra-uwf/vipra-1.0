@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.13.0
+// Generated from Behavior.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -29,13 +29,7 @@ public:
 
     virtual std::any visitLoc_name(BehaviorParser::Loc_nameContext *context) = 0;
 
-    virtual std::any visitLoc_shape(BehaviorParser::Loc_shapeContext *context) = 0;
-
     virtual std::any visitLoc_dimensions(BehaviorParser::Loc_dimensionsContext *context) = 0;
-
-    virtual std::any visitRect_dims(BehaviorParser::Rect_dimsContext *context) = 0;
-
-    virtual std::any visitCircle_dims(BehaviorParser::Circle_dimsContext *context) = 0;
 
     virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *context) = 0;
 
@@ -120,6 +114,8 @@ public:
     virtual std::any visitSelector_Exactly_N_Random(BehaviorParser::Selector_Exactly_N_RandomContext *context) = 0;
 
     virtual std::any visitSelector_Everyone(BehaviorParser::Selector_EveryoneContext *context) = 0;
+
+    virtual std::any visitSelector_Location(BehaviorParser::Selector_LocationContext *context) = 0;
 
     virtual std::any visitGroup(BehaviorParser::GroupContext *context) = 0;
 

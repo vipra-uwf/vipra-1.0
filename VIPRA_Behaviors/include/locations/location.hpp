@@ -6,12 +6,9 @@
 #include <string>
 
 #include "definitions/dimensions.hpp"
-#include "definitions/shape_type.hpp"
+#include "randomization/random.hpp"
 
 namespace BHVR {
-
-using InsideFunc = std::function<bool(VIPRA::f3d)>;
-using RandomPointFunc = std::function<VIPRA::f3d()>;
 
 /**
    * @brief A Location is an area in the map that is either predefined, such as the bathroom, or defined by a behavior created by the user.
@@ -19,20 +16,26 @@ using RandomPointFunc = std::function<VIPRA::f3d()>;
    */
 class Location {
  public:
-  explicit Location(std::string, BHVR::Shape, std::shared_ptr<BHVR::Shape>);
+  explicit Location(VIPRA::f3d, VIPRA::f3d, float);
 
-  void setType(BHVR::Shape shape) { type = shape; }
+  [[nodiscard]] float      area() const;
+  [[nodiscard]] VIPRA::f3d center() const;
 
-  [[nodiscard]] VIPRA::f3d randomPoint() const { return _random(); }
-  [[nodiscard]] bool       inside(VIPRA::f3d point) const { return _inside(point); }
-
-  void setRandom(std::function<VIPRA::f3d()>&& randFunc) { _random = randFunc; }
-  void setInside(std::function<bool(VIPRA::f3d)>&& inside) { _inside = inside; }
+  [[nodiscard]] VIPRA::f3d randomPoint(VIPRA::pRNG_Engine&) const;
+  [[nodiscard]] bool       inside(VIPRA::f3d) const;
 
  private:
-  BHVR::Shape     type;
-  RandomPointFunc _random;
-  InsideFunc      _inside;
+  VIPRA::f3d _p1;
+  VIPRA::f3d _p2;
+  VIPRA::f3d _p3;
+  VIPRA::f3d _p4;
+  VIPRA::f3d _center;
+  VIPRA::f3d _dims;
+  float      _rot{};
+
+  static constexpr float areaError = 0.0001;
+
+  [[nodiscard]] static float triangleArea(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
 
  public:
   ~Location() = default;

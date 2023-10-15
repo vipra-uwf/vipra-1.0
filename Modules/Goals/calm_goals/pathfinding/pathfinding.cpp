@@ -29,9 +29,6 @@ struct AGridPoint {
   }
 };
 
-//breadcrumb approach with a key-value pair of grid space and next grid space.
-std::unordered_map<GridPoint*, GridPoint*, GridPointHash> breadCrumbMap;
-
 /**
  * @class GridPointCompare
  * @brief A class that compares the heuristic distance of two AGridPoint objects passed in.
@@ -112,8 +109,6 @@ inline std::queue<VIPRA::f3d> constructPath(AGridPoint* end) {
       dif = currDif;
     }
 
-    if (prev != end->parent) breadCrumbMap[iter->node] = prev->node;
-
     prev = iter;
     iter = iter->parent;
   }
@@ -191,35 +186,21 @@ std::queue<VIPRA::f3d> pathFind(VIPRA::f3d start, VIPRA::f3d end, PathingGraph& 
 
     openList.pop();
     closedList.insert(curr->node);
+    for (GridPoint* neighbor : curr->node->adj) {
+      if (closedList.find(neighbor) == closedList.end()) {
+        float distanceFromStart =
+            curr->distanceFromStart + neighbor->center.distanceTo(curr->node->center);
+        float       distanceWithHeuristic = distanceFromStart + cost(neighbor, last);
+        AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, distanceFromStart,
+                                                      distanceWithHeuristic, allocList);
 
-    if (breadCrumbMap.count(curr->node) > 0) {
-      float distanceFromStart =
-          curr->distanceFromStart +
-          breadCrumbMap[curr->node]->center.distanceTo(curr->node->center);
-      float distanceWithHeuristic =
-          distanceFromStart + cost(breadCrumbMap[curr->node], last);
-      AGridPoint* neighborGridPoint =
-          makeGridPoint(breadCrumbMap[curr->node], curr, distanceFromStart,
-                        distanceWithHeuristic, allocList);
-
-      openList.push(neighborGridPoint);
-    } else {
-      for (GridPoint* neighbor : curr->node->adj) {
-        if (closedList.find(neighbor) == closedList.end()) {
-          float distanceFromStart =
-              curr->distanceFromStart + neighbor->center.distanceTo(curr->node->center);
-          float       distanceWithHeuristic = distanceFromStart + cost(neighbor, last);
-          AGridPoint* neighborGridPoint = makeGridPoint(neighbor, curr, distanceFromStart,
-                                                        distanceWithHeuristic, allocList);
-
-          auto found = openList.search(neighborGridPoint);
-          if (!found.has_value()) {
-            openList.push(neighborGridPoint);
-          } else {
-            if (neighborGridPoint->distanceFromStart < found.value()->distanceFromStart) {
-              found.value()->distanceFromStart = neighborGridPoint->distanceFromStart;
-              found.value()->parent = neighborGridPoint->parent;
-            }
+        auto found = openList.search(neighborGridPoint);
+        if (!found.has_value()) {
+          openList.push(neighborGridPoint);
+        } else {
+          if (neighborGridPoint->distanceFromStart < found.value()->distanceFromStart) {
+            found.value()->distanceFromStart = neighborGridPoint->distanceFromStart;
+            found.value()->parent = neighborGridPoint->parent;
           }
         }
       }

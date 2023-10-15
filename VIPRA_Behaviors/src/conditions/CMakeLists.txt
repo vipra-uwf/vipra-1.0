@@ -12,4 +12,5 @@ target_sources(
   subconditions/subcondition_event_ending.cpp
   subconditions/subcondition_spatial.cpp
   subconditions/subcondition_enter.cpp
+  subconditions/subcondition_leave.cpp
 )

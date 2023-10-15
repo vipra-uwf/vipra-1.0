@@ -1,5 +1,5 @@
 
-// Generated from Behavior.g4 by ANTLR 4.13.0
+// Generated from Behavior.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -20,45 +20,45 @@ public:
     DIRECTION = 32, DURATION = 33, END = 34, ENDS = 35, ENVIRONMENT = 36, 
     ENTER = 37, EXIT = 38, EVENT = 39, EXACTLY = 40, EVERY = 41, EVERYONE = 42, 
     ENDING = 43, FOR = 44, FROM = 45, FRONT = 46, FASTER = 47, GIVEN = 48, 
-    GOAL = 49, GROUP = 50, HAS = 51, IN = 52, INTEGER = 53, IS = 54, IF = 55, 
-    LENGTH = 56, LEFT = 57, DIMENSIONS = 58, LOCATION = 59, MAX = 60, METERS = 61, 
-    NAME = 62, NEAREST = 63, NORMAL = 64, NONE = 65, OBSTACLE = 66, OCCUR = 67, 
-    OCCURRED = 68, OCCURRING = 69, OF = 70, ON = 71, OR = 72, PEDESTRIAN = 73, 
-    PEDESTRIANS = 74, POINTS = 75, POSSIBLE = 76, POSITION = 77, RADIUS = 78, 
-    RANDOM = 79, REQUIRED = 80, RECTANGLE = 81, RIGHT = 82, RESPONSE = 83, 
-    SCALE = 84, SELF = 85, SELECT = 86, SELECTOR = 87, SET = 88, SECOND = 89, 
-    SECONDS = 90, STATUS = 91, STARTING = 92, SLOWER = 93, SHAPE = 94, STATES = 95, 
-    START = 96, STATE = 97, STARTS = 98, SPEED = 99, SUBTRACT = 100, STIMULUS = 101, 
-    TARGET = 102, TO = 103, TOP = 104, THE = 105, THAT = 106, THEN = 107, 
-    THEIR = 108, THERES = 109, TYPES = 110, TYPE = 111, UNCONDITIONALLY = 112, 
-    VALUE = 113, VELOCITY = 114, WHEN = 115, WHILE = 116, WIDTH = 117, WILL = 118, 
-    WITH = 119, WITHIN = 120, ID = 121, NUMBER = 122, FLOAT = 123
+    GOAL = 49, GROUP = 50, HAS = 51, IN = 52, INTEGER = 53, INITIAL = 54, 
+    IS = 55, IF = 56, LENGTH = 57, LEFT = 58, LEAVE = 59, DIMENSIONS = 60, 
+    LOCATION = 61, MAX = 62, METERS = 63, NAME = 64, NEAREST = 65, NORMAL = 66, 
+    NONE = 67, OBSTACLE = 68, OCCUR = 69, OCCURRED = 70, OCCURRING = 71, 
+    OF = 72, ON = 73, OR = 74, PEDESTRIAN = 75, PEDESTRIANS = 76, POINTS = 77, 
+    POSSIBLE = 78, POSITION = 79, RADIUS = 80, RANDOM = 81, REQUIRED = 82, 
+    RECTANGLE = 83, RIGHT = 84, RESPONSE = 85, SCALE = 86, SELF = 87, SELECT = 88, 
+    SELECTOR = 89, SET = 90, SECOND = 91, SECONDS = 92, STATUS = 93, STARTING = 94, 
+    SLOWER = 95, SHAPE = 96, STATES = 97, START = 98, STATE = 99, STARTS = 100, 
+    SPEED = 101, SUBTRACT = 102, STIMULUS = 103, TARGET = 104, TO = 105, 
+    TOP = 106, THE = 107, THAT = 108, THEN = 109, THEIR = 110, THERES = 111, 
+    TYPES = 112, TYPE = 113, UNCONDITIONALLY = 114, VALUE = 115, VELOCITY = 116, 
+    WHEN = 117, WHILE = 118, WIDTH = 119, WILL = 120, WITH = 121, WITHIN = 122, 
+    ID = 123, NUMBER = 124, FLOAT = 125
   };
 
   enum {
     RuleProgram = 0, RuleStatement = 1, RuleLocation = 2, RuleLocation_attribute = 3, 
-    RuleLoc_name = 4, RuleLoc_shape = 5, RuleLoc_dimensions = 6, RuleRect_dims = 7, 
-    RuleCircle_dims = 8, RuleValue_numeric = 9, RuleValue_number = 10, RuleValue_float = 11, 
-    RuleValue_range = 12, RuleValue_random = 13, RuleRandom_number = 14, 
-    RuleRandom_float = 15, RuleFloat_range = 16, RuleNumber_range = 17, 
-    RuleValue_coord = 18, RuleEvent = 19, RuleEvent_attribute = 20, RuleEvent_name = 21, 
-    RuleEvent_start = 22, RuleEvent_end = 23, RuleCondition = 24, RuleConnector = 25, 
-    RuleOr_Connector = 26, RuleAnd_Connector = 27, RuleSub_condition = 28, 
-    RuleCondition_Time_Elapsed_From_Event = 29, RuleCondition_Event_Occurred = 30, 
-    RuleCondition_Event_Occurring = 31, RuleCondition_Event_Starting = 32, 
-    RuleCondition_Event_Ending = 33, RuleCondition_Spatial = 34, RuleCondition_Enter_Location = 35, 
-    RuleCondition_Exit_Location = 36, RuleCondition_Attribute = 37, RuleDuration = 38, 
-    RuleAttribute = 39, RuleAttr_value = 40, RulePed_Selector = 41, RuleSelector_attribute = 42, 
-    RuleSelector_type = 43, RuleSelector_selector = 44, RuleSelector_from = 45, 
-    RuleSelector_required = 46, RuleSelector = 47, RuleSelector_Percent = 48, 
-    RuleSelector_Exactly_N_Random = 49, RuleSelector_Everyone = 50, RuleGroup = 51, 
-    RuleId_list = 52, RuleAction = 53, RuleAction_attribute = 54, RuleAction_stimulus = 55, 
-    RuleAction_response = 56, RuleAction_duration = 57, RuleAction_target = 58, 
-    RuleSub_action = 59, RuleAction_atom = 60, RuleSet_atom = 61, RuleScale_atom = 62, 
-    RuleTarget = 63, RuleSelf = 64, RuleOther = 65, RuleNearest_type = 66, 
-    RuleModifier = 67, RuleDistance = 68, RuleDirection = 69, RuleFront = 70, 
-    RuleBehind = 71, RuleDeclaration = 72, RuleDecl_Ped_State = 73, RuleDecl_Env_State = 74, 
-    RuleDecl_Ped = 75
+    RuleLoc_name = 4, RuleLoc_dimensions = 5, RuleValue_numeric = 6, RuleValue_number = 7, 
+    RuleValue_float = 8, RuleValue_range = 9, RuleValue_random = 10, RuleRandom_number = 11, 
+    RuleRandom_float = 12, RuleFloat_range = 13, RuleNumber_range = 14, 
+    RuleValue_coord = 15, RuleEvent = 16, RuleEvent_attribute = 17, RuleEvent_name = 18, 
+    RuleEvent_start = 19, RuleEvent_end = 20, RuleCondition = 21, RuleConnector = 22, 
+    RuleOr_Connector = 23, RuleAnd_Connector = 24, RuleSub_condition = 25, 
+    RuleCondition_Time_Elapsed_From_Event = 26, RuleCondition_Event_Occurred = 27, 
+    RuleCondition_Event_Occurring = 28, RuleCondition_Event_Starting = 29, 
+    RuleCondition_Event_Ending = 30, RuleCondition_Spatial = 31, RuleCondition_Enter_Location = 32, 
+    RuleCondition_Exit_Location = 33, RuleCondition_Attribute = 34, RuleDuration = 35, 
+    RuleAttribute = 36, RuleAttr_value = 37, RulePed_Selector = 38, RuleSelector_attribute = 39, 
+    RuleSelector_type = 40, RuleSelector_selector = 41, RuleSelector_from = 42, 
+    RuleSelector_required = 43, RuleSelector = 44, RuleSelector_Percent = 45, 
+    RuleSelector_Exactly_N_Random = 46, RuleSelector_Everyone = 47, RuleSelector_Location = 48, 
+    RuleGroup = 49, RuleId_list = 50, RuleAction = 51, RuleAction_attribute = 52, 
+    RuleAction_stimulus = 53, RuleAction_response = 54, RuleAction_duration = 55, 
+    RuleAction_target = 56, RuleSub_action = 57, RuleAction_atom = 58, RuleSet_atom = 59, 
+    RuleScale_atom = 60, RuleTarget = 61, RuleSelf = 62, RuleOther = 63, 
+    RuleNearest_type = 64, RuleModifier = 65, RuleDistance = 66, RuleDirection = 67, 
+    RuleFront = 68, RuleBehind = 69, RuleDeclaration = 70, RuleDecl_Ped_State = 71, 
+    RuleDecl_Env_State = 72, RuleDecl_Ped = 73
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -83,10 +83,7 @@ public:
   class LocationContext;
   class Location_attributeContext;
   class Loc_nameContext;
-  class Loc_shapeContext;
   class Loc_dimensionsContext;
-  class Rect_dimsContext;
-  class Circle_dimsContext;
   class Value_numericContext;
   class Value_numberContext;
   class Value_floatContext;
@@ -129,6 +126,7 @@ public:
   class Selector_PercentContext;
   class Selector_Exactly_N_RandomContext;
   class Selector_EveryoneContext;
+  class Selector_LocationContext;
   class GroupContext;
   class Id_listContext;
   class ActionContext;
@@ -208,7 +206,6 @@ public:
     Location_attributeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     Loc_nameContext *loc_name();
-    Loc_shapeContext *loc_shape();
     Loc_dimensionsContext *loc_dimensions();
 
 
@@ -233,61 +230,16 @@ public:
 
   Loc_nameContext* loc_name();
 
-  class  Loc_shapeContext : public antlr4::ParserRuleContext {
-  public:
-    Loc_shapeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *SHAPE();
-    antlr4::tree::TerminalNode *COLON();
-    antlr4::tree::TerminalNode *RECTANGLE();
-    antlr4::tree::TerminalNode *CIRCLE();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Loc_shapeContext* loc_shape();
-
   class  Loc_dimensionsContext : public antlr4::ParserRuleContext {
   public:
     Loc_dimensionsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Rect_dimsContext *rect_dims();
-    Circle_dimsContext *circle_dims();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Loc_dimensionsContext* loc_dimensions();
-
-  class  Rect_dimsContext : public antlr4::ParserRuleContext {
-  public:
-    Rect_dimsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *POINTS();
+    antlr4::tree::TerminalNode *DIMENSIONS();
     antlr4::tree::TerminalNode *COLON();
     std::vector<Value_coordContext *> value_coord();
     Value_coordContext* value_coord(size_t i);
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Rect_dimsContext* rect_dims();
-
-  class  Circle_dimsContext : public antlr4::ParserRuleContext {
-  public:
-    Circle_dimsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *CENTER();
-    std::vector<antlr4::tree::TerminalNode *> COLON();
-    antlr4::tree::TerminalNode* COLON(size_t i);
-    Value_coordContext *value_coord();
-    antlr4::tree::TerminalNode *RADIUS();
+    std::vector<antlr4::tree::TerminalNode *> COMMA();
+    antlr4::tree::TerminalNode* COMMA(size_t i);
     Value_numericContext *value_numeric();
 
 
@@ -295,7 +247,7 @@ public:
    
   };
 
-  Circle_dimsContext* circle_dims();
+  Loc_dimensionsContext* loc_dimensions();
 
   class  Value_numericContext : public antlr4::ParserRuleContext {
   public:
@@ -700,7 +652,7 @@ public:
   public:
     Condition_Exit_LocationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *EXIT();
+    antlr4::tree::TerminalNode *LEAVE();
     antlr4::tree::TerminalNode *LOC_NAME();
 
 
@@ -871,6 +823,7 @@ public:
     Selector_PercentContext *selector_Percent();
     Selector_Exactly_N_RandomContext *selector_Exactly_N_Random();
     Selector_EveryoneContext *selector_Everyone();
+    Selector_LocationContext *selector_Location();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -917,6 +870,20 @@ public:
   };
 
   Selector_EveryoneContext* selector_Everyone();
+
+  class  Selector_LocationContext : public antlr4::ParserRuleContext {
+  public:
+    Selector_LocationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *IN();
+    antlr4::tree::TerminalNode *LOC_NAME();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Selector_LocationContext* selector_Location();
 
   class  GroupContext : public antlr4::ParserRuleContext {
   public:

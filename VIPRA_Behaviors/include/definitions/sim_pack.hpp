@@ -18,7 +18,7 @@ struct Simpack {
   // NOLINTBEGIN (rolland) this is only used to pass references around : ignores (cppcoreguidelines-avoid-const-or-ref-data-members)
   const VIPRA::PedestrianSet& pedSet;
   const VIPRA::ObstacleSet&   obsSet;
-  const VIPRA::Goals&         goals;
+  VIPRA::Goals&               goals;
   VIPRA::State&               state;
   BehaviorContext&            context;
   const GroupsContainer&      groups;

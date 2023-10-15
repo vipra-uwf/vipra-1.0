@@ -18,6 +18,8 @@ class CalmGoals : public VIPRA::Goals {
   void updatePedestrianGoals(const VIPRA::ObstacleSet&, const VIPRA::PedestrianSet&,
                              VIPRA::delta_t) override;
 
+  void changeEndGoal(VIPRA::idx, VIPRA::f3d, VIPRA::f3d) override;
+
   [[nodiscard]] const VIPRA::f3d& getCurrentGoal(VIPRA::idx) const override;
   [[nodiscard]] const VIPRA::f3d& getEndGoal(VIPRA::idx) const override;
 

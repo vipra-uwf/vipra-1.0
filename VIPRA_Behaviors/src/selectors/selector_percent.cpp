@@ -14,10 +14,7 @@ namespace BHVR {
  */
 SelectorResult SelectorPercent::operator()(VIPRA::pRNG_Engine&  rngEngine,
                                            const VIPRA::idxVec& fullGroup,
-                                           const VIPRA::idxVec& group,
-                                           const VIPRA::PedestrianSet& /*pedset*/,
-                                           const VIPRA::ObstacleSet& /*obsSet*/,
-                                           const VIPRA::Goals& /*goals*/) const {
+                                           const VIPRA::idxVec& group, Simpack) const {
   auto groupPeds = group;
 
   auto count = static_cast<VIPRA::size>(

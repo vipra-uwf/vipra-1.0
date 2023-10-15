@@ -32,7 +32,8 @@ selector_required:
 selector:
     selector_Percent |
     selector_Exactly_N_Random |
-    selector_Everyone
+    selector_Everyone |
+    selector_Location
 ;
 
 selector_Percent:
@@ -45,6 +46,10 @@ selector_Exactly_N_Random:
 
 selector_Everyone:
     EVERYONE
+;
+
+selector_Location:
+    IN LOC_NAME
 ;
 
 group:

@@ -200,6 +200,7 @@ class AttributeHandling {
   }
 
   inline static void cleanup() {
+    // NOLINTBEGIN
     for (auto data : valueStore) {
       switch (data.type) {
         case Type::INVALID:
@@ -218,6 +219,7 @@ class AttributeHandling {
           break;
       }
     }
+    // NOLINTEND
   }
 
  private:
@@ -287,8 +289,7 @@ class AttributeHandling {
         setVelocity(target, pack, state, value);
         return;
       case Attribute::GOAL:
-        // TODO (rolland) update this with goals
-        DSLException::error("Updating Pedestrian Goals Is Not Implemented");
+        setGoal(target, pack, value);
         return;
       case Attribute::STATE:
         setState(target, pack, value);
@@ -377,6 +378,19 @@ class AttributeHandling {
     value.typeCheck(Type::STATE);
     pack.context.pedStates.at(target.targetIdx) =
         *static_cast<const BHVR::stateUID*>(value.value);
+  }
+
+  /**
+   * @brief Sets a pedestrians goal, calling the Goals module to recalculate pathing
+   * 
+   * @param target : target to change velocity of
+   * @param pack : simulation pack
+   * @param value : value to set velocity to
+   */
+  static inline void setGoal(Target target, Simpack pack, CAttributeValue value) {
+    value.typeCheck(Type::COORD);
+    pack.goals.changeEndGoal(target.targetIdx, pack.pedSet.getPedCoords(target.targetIdx),
+                             *static_cast<const VIPRA::f3d*>(value.value));
   }
 
   /**

@@ -28,7 +28,7 @@ void HumanBehaviorModel::configure(const VIPRA::Config& configMap) {
  */
 void HumanBehaviorModel::initialize(const VIPRA::PedestrianSet& pedSet,
                                     const VIPRA::ObstacleSet&   obsSet,
-                                    const VIPRA::Goals&         goals) {
+                                    VIPRA::Goals&               goals) {
   for (auto& behavior : humanBehaviors) {
     behavior.initialize(pedSet, obsSet, goals);
   }
