@@ -106,6 +106,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aee3cea5d16a9a1a515a1fe736404f61a" id="r_aee3cea5d16a9a1a515a1fe736404f61a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classCalmGoals.html#aee3cea5d16a9a1a515a1fe736404f61a">updatePedestrianGoals</a> (const <a class="el" href="../../d1/d30/classVIPRA_1_1ObstacleSet.html">VIPRA::ObstacleSet</a> &amp;, const <a class="el" href="../../d0/df4/classVIPRA_1_1PedestrianSet.html">VIPRA::PedestrianSet</a> &amp;, VIPRA::delta_t) override</td></tr>
 <tr class="memdesc:aee3cea5d16a9a1a515a1fe736404f61a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if pedestrians have met their current goal, removing it from the queue if the have also checks if they have met their end goal, updating goalsMet if they have.  <br /></td></tr>
 <tr class="separator:aee3cea5d16a9a1a515a1fe736404f61a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d886191753fbd2dc4a565167dfe03f" id="r_a92d886191753fbd2dc4a565167dfe03f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classCalmGoals.html#a92d886191753fbd2dc4a565167dfe03f">changeEndGoal</a> (VIPRA::idx, <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>, <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>) override</td></tr>
+<tr class="separator:a92d886191753fbd2dc4a565167dfe03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af02579f6eeda2f8f60e712e71766a5ff" id="r_af02579f6eeda2f8f60e712e71766a5ff"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d28/classCalmGoals.html#af02579f6eeda2f8f60e712e71766a5ff">getCurrentGoal</a> (VIPRA::idx) const override</td></tr>
 <tr class="memdesc:af02579f6eeda2f8f60e712e71766a5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the current goal for the pedestrian at index, returns VIPRA::<em>emptyf3d</em> if no current goal  <br /></td></tr>
 <tr class="separator:af02579f6eeda2f8f60e712e71766a5ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,6 +143,50 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a27f737add9741cdd1a8b60772c6ff202 inherit pub_methods_classVIPRA_1_1Goals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a92d886191753fbd2dc4a565167dfe03f" name="a92d886191753fbd2dc4a565167dfe03f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92d886191753fbd2dc4a565167dfe03f">&#9670;&#160;</a></span>changeEndGoal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CalmGoals::changeEndGoal </td>
+          <td>(</td>
+          <td class="paramtype">VIPRA::idx&#160;</td>
+          <td class="paramname"><em>pedIdx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>&#160;</td>
+          <td class="paramname"><em>currPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a>&#160;</td>
+          <td class="paramname"><em>endGoal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="../../d1/d4b/classVIPRA_1_1Goals.html">VIPRA::Goals</a>.</p>
+
+</div>
+</div>
 <a id="a1c3c3ed80295055c33582c9437ecf868" name="a1c3c3ed80295055c33582c9437ecf868"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c3c3ed80295055c33582c9437ecf868">&#9670;&#160;</a></span>configure()</h2>
 

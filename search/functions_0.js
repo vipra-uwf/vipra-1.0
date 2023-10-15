@@ -13,6 +13,6 @@ var searchData=
   ['addsubcondition_10',['addSubCondition',['../d9/d20/classBHVR_1_1Condition.html#ab4f9945f6b82b1b6148838ed93e97015',1,'BHVR::Condition']]],
   ['addsubselector_11',['addSubSelector',['../d7/d88/classBHVR_1_1HumanBehavior.html#a51985a316e01f84298fc8161f1d7b5ba',1,'BHVR::HumanBehavior']]],
   ['addtarget_12',['addTarget',['../dc/d28/classBHVR_1_1Action.html#a765b0083fdd32e355fe5d8e554a37ee3',1,'BHVR::Action']]],
-  ['area_13',['area',['../db/d14/structRect.html#a78dab55e4a5f2cbe99bf92f479ae6652',1,'Rect']]],
+  ['area_13',['area',['../db/d14/structRect.html#a78dab55e4a5f2cbe99bf92f479ae6652',1,'Rect::area()'],['../dd/da1/classBHVR_1_1Location.html#afe0e6390396e79761c734fcd7e1fbffd',1,'BHVR::Location::area()']]],
   ['at_14',['at',['../d9/d1d/classBHVR_1_1GroupsContainer.html#a43ea83ae474d4b9691eac0540898f6fc',1,'BHVR::GroupsContainer']]]
 ];
