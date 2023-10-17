@@ -143,6 +143,20 @@ class Output {
   static VIPRA::cnt                   outputFreq;
   // NOLINTEND
 };
+
+template <>
+inline void Output::pedValue(VIPRA::idx pedIdx, const char* key, VIPRA::f3d&& value) {
+  jsonData["pedestrians"].at(pedIdx)[key] = nlohmann::json({value.x, value.y, value.z});
+}
+template <>
+inline void Output::pedValue(VIPRA::idx pedIdx, const char* key, VIPRA::f3d& value) {
+  jsonData["pedestrians"].at(pedIdx)[key] = nlohmann::json({value.x, value.y, value.z});
+}
+template <>
+inline void Output::pedValue(VIPRA::idx pedIdx, const char* key,
+                             const VIPRA::f3d& value) {
+  jsonData["pedestrians"].at(pedIdx)[key] = nlohmann::json({value.x, value.y, value.z});
+}
 }  // namespace VIPRA
 
 #endif

@@ -224,3 +224,9 @@ def plotDif(pointsX, pointsY, compX, compY, pedColors, ax, args):
       ax.plot([dX, x], [dY, y], color=pedColors[difYidx[index]] if args['pedColor'] else 'r', linestyle='-', linewidth=0.5, alpha=min(dist / args['diflineMax'], 1.0) if args['diflineMax'] else difalpha)
     
   return ax.scatter(difX, difY, 2, color=colors)
+
+def plotExtras(ax, timestep, output):
+  return
+
+def updateColors(output):
+  return

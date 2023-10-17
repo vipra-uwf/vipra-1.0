@@ -46,3 +46,29 @@
 17. `-overrides *filename*` : overrides helper functions with the module provided
 
 **color options: https://matplotlib.org/stable/tutorials/colors/colors.html**
+
+## Plotting Custom Information
+
+For plotting extra information added to the output use the `overrides` flag.
+
+Create a python file that includes the method:
+```python
+plotExtras(ax, timestep, output)
+``` 
+- `ax` is the matplotlib plot to draw to
+- `timestep` is the current timestep
+- `output` is the entire JSON output from the simulation
+
+Returns:
+- Nothing
+
+### Pedestrian Colors 
+
+Pedestrian colors can be updated throughout the GIF by overriding the method:
+```python
+updateColors(output)
+```
+- `output` is the entire JSON output from the simulation
+
+Returns:
+- Numpy array containing each pedestrian's color
