@@ -116,7 +116,28 @@ Flags</h3>
 <li><code>-dlmax *float*</code> : scales dif line alpha by max distance *(default OFF)*</li>
 <li><code>-overrides *filename*</code> : overrides helper functions with the module provided</li>
 </ol>
-<p><b>color options: <a href="https://matplotlib.org/stable/tutorials/colors/colors.html">https://matplotlib.org/stable/tutorials/colors/colors.html</a></b> </p>
+<p><b>color options: <a href="https://matplotlib.org/stable/tutorials/colors/colors.html">https://matplotlib.org/stable/tutorials/colors/colors.html</a></b></p>
+<h2><a class="anchor" id="autotoc_md339"></a>
+Plotting Custom Information</h2>
+<p>For plotting extra information added to the output use the <code>overrides</code> flag.</p>
+<p>Create a python file that includes the method: </p><div class="fragment"><div class="line">plotExtras(ax, timestep, output)</div>
+</div><!-- fragment --><ul>
+<li><code>ax</code> is the matplotlib plot to draw to</li>
+<li><code>timestep</code> is the current timestep</li>
+<li><code>output</code> is the entire JSON output from the simulation</li>
+</ul>
+<p>Returns:</p><ul>
+<li>Nothing</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md340"></a>
+Pedestrian Colors</h3>
+<p>Pedestrian colors can be updated throughout the GIF by overriding the method: </p><div class="fragment"><div class="line">updateColors(output)</div>
+</div><!-- fragment --><ul>
+<li><code>output</code> is the entire JSON output from the simulation</li>
+</ul>
+<p>Returns:</p><ul>
+<li>Numpy array containing each pedestrian's color </li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
