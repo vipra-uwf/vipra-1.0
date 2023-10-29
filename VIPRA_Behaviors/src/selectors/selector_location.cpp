@@ -1,10 +1,6 @@
 
-#include <algorithm>
-#include <cmath>
-#include <output/output.hpp>
-#include <random>
-#include <randomization/random.hpp>
 #include "definitions/type_definitions.hpp"
+#include "randomization/random.hpp"
 
 #include "selectors/selector_location.hpp"
 
@@ -16,16 +12,14 @@ namespace BHVR {
    * @param group : group to pull from
    * @return SelectorResult 
    */
-SelectorResult SelectorLocation::operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                                            const VIPRA::idxVec& group,
-                                            Simpack              pack) const {
-  const auto&   loc = pack.context.locations.at(location);
+auto SelectorLocation::operator()(VIPRA::pRNG_Engine& /*unused*/, const VIPRA::idxVec& /*unused*/,
+                                  const VIPRA::idxVec& group, Simpack pack) const -> SelectorResult {
+  const auto&   loc = pack.get_context().locations[location];
   size_t        pedCnt = 0;
   VIPRA::idxVec groupPeds;
 
   for (auto idx : group) {
-    if (loc.inside(pack.pedSet.getPedCoords(idx))) {
-      VIPRA::Output::pedValue(idx, "group", location);
+    if (loc.inside(pack.get_pedset().getPedCoords(idx))) {
       groupPeds.push_back(idx);
     }
   }

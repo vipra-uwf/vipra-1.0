@@ -21,11 +21,11 @@ Event:
 .
 
 Action (Listener):
-  Stimulus: !Announcement occurring
+  Condition: !Announcement occurring
   Response: set velocity to {0}
 .
 
 Action (Half_listener):
-  Stimulus: !Announcement occurring
+  Condition: !Announcement occurring
   Response: scale velocity 0.75
 .

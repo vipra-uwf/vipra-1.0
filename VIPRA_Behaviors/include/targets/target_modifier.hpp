@@ -17,6 +17,9 @@ using Modifier = std::function<bool(Simpack, VIPRA::idx, VIPRA::idx)>;
  * 
  */
 class TargetModifier {
+  DEFAULT_CONSTRUCTIBLE(TargetModifier)
+  COPYABLE(TargetModifier)
+  MOVEABLE(TargetModifier)
  public:
   /**
    * @brief Checks that a pedestrian passes all modifier checks
@@ -27,10 +30,9 @@ class TargetModifier {
    * @return true : if target passes check
    * @return false : if target does NOT pass check
    */
-  [[nodiscard]] bool check(Simpack pack, VIPRA::idx target, VIPRA::idx self) const {
-    return std::all_of(checks.begin(), checks.end(), [&](const Modifier& modifier) {
-      return modifier(pack, target, self);
-    });
+  [[nodiscard]] auto check(Simpack pack, VIPRA::idx target, VIPRA::idx self) const -> bool {
+    return std::all_of(_checks.begin(), _checks.end(),
+                       [&](const Modifier& modifier) { return modifier(pack, target, self); });
   }
 
   /**
@@ -38,10 +40,10 @@ class TargetModifier {
    * 
    * @param check : check to add
    */
-  void addCheck(Modifier check) { checks.emplace_back(check); }
+  void add_check(Modifier check) { _checks.emplace_back(check); }
 
  private:
-  std::vector<Modifier> checks;
+  std::vector<Modifier> _checks;
 };
 }  // namespace BHVR
 

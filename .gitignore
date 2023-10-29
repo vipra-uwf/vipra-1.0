@@ -49,7 +49,11 @@ package-lock.json
 __pycache__
 
 # Behaviors
-test.behavior
+test.bhvr
 
 # Temporary
 temp*
+
+# Output
+VIPRA/output
+VIPRA/params

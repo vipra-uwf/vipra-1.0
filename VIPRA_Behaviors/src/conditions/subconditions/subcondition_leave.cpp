@@ -6,22 +6,21 @@
 #include "locations/location.hpp"
 
 namespace BHVR {
-SubConditionLeave::SubConditionLeave(VIPRA::idx locIdx) : location(locIdx) {}
+SubConditionLeave::SubConditionLeave(VIPRA::idx locIdx) : _location(locIdx) {}
 
-bool SubConditionLeave::operator()(Simpack pack, VIPRA::idx self, Target) {
-  if (left.size() < pack.pedSet.getNumPedestrians())
-    left.resize(pack.pedSet.getNumPedestrians());
+auto SubConditionLeave::operator()(Simpack pack, VIPRA::idx self, Target /*unused*/) -> bool {
+  if (_left.size() < pack.get_pedset().getNumPedestrians())
+    _left.resize(pack.get_pedset().getNumPedestrians());
 
-  if (left.at(self)) {
+  if (_left[self]) {
     return false;
   }
 
-  Location& loc = pack.context.locations.at(location);
-  bool      leave = !loc.inside(pack.state.coords.at(self)) &&
-               loc.inside(pack.pedSet.getPedCoords(self));
+  Location& loc = pack.get_context().locations[_location];
+  bool leave = !loc.inside(pack.get_state().coords[self]) && loc.inside(pack.get_pedset().getPedCoords(self));
 
   if (leave) {
-    left.at(self) = true;
+    _left[self] = true;
   }
 
   return leave;

@@ -8,14 +8,14 @@ namespace BHVR {
 using RandomVal = std::pair<float, float>;
 class Duration {
  public:
-  explicit Duration(float dur) : range(dur, dur) {}
-  explicit Duration(RandomVal rnd) : range(std::move(rnd)) {}
-  Duration(float start, float end) : range(start, end) {}
+  explicit Duration(float dur) : _range(dur, dur) {}
+  explicit Duration(RandomVal rnd) : _range(std::move(rnd)) {}
+  Duration(float start, float end) : _range(start, end) {}
 
-  [[nodiscard]] std::string durationStr() const { return ""; }
+  [[nodiscard]] static auto duration_str() -> std::string { return ""; }
 
  private:
-  VIPRA::time_range_s range;
+  VIPRA::time_range_s _range;
 };
 }  // namespace BHVR
 

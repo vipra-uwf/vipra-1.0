@@ -12,13 +12,16 @@ namespace BHVR {
  * 
  */
 class TargetSelector {
+  DEFAULT_CONSTRUCTIBLE(TargetSelector)
+  COPYABLE(TargetSelector)
+  MOVEABLE(TargetSelector)
+
  public:
-  TargetSelector() : select(TargetSelf()) {}
-  explicit TargetSelector(TargetFunc&& func) : select(func) {}
-  Target getTarget(Simpack pack, Target self) { return select(pack, self); }
+  explicit TargetSelector(TargetFunc&& func) : _select(func) {}
+  auto get_target(Simpack pack, Self self) -> Target { return _select(pack, self); }
 
  private:
-  TargetFunc select;
+  TargetFunc _select{TargetSelf{}};
 };
 }  // namespace BHVR
 

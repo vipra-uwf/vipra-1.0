@@ -1,35 +1,30 @@
 #ifndef VIPRA_SUBCONDITION_ELAPSED_TIME
 #define VIPRA_SUBCONDITION_ELAPSED_TIME
 
-#include <conditions/sub_condition.hpp>
-#include <definitions/dsl_types.hpp>
-#include <events/event.hpp>
-#include <time/time.hpp>
-#include <util/timed_latch.hpp>
-#include <values/numeric_value.hpp>
+#include "conditions/sub_condition.hpp"
+#include "definitions/dsl_types.hpp"
 #include "definitions/sim_pack.hpp"
 #include "definitions/type_definitions.hpp"
+#include "events/event.hpp"
+#include "time/time.hpp"
+#include "util/class_types.hpp"
+#include "util/timed_latch.hpp"
+#include "values/numeric_value.hpp"
 
 namespace BHVR {
 class SubConditionElapsedTimeFromEvent {
+  NON_DEFAULT_CONSTRUCTIBLE(SubConditionElapsedTimeFromEvent)
+  COPYABLE(SubConditionElapsedTimeFromEvent)
+  MOVEABLE(SubConditionElapsedTimeFromEvent)
  public:
   SubConditionElapsedTimeFromEvent(BHVR::NumericValue, VIPRA::idx);
 
-  bool operator()(Simpack, VIPRA::idx, Target);
+  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) -> bool;
 
  private:
-  VIPRA::idx         event;
-  BHVR::NumericValue requiredTime;
-  VIPRA::time_s      startTime;
-
- public:
-  ~SubConditionElapsedTimeFromEvent() = default;
-  SubConditionElapsedTimeFromEvent(const SubConditionElapsedTimeFromEvent&) = default;
-  SubConditionElapsedTimeFromEvent& operator=(const SubConditionElapsedTimeFromEvent&) =
-      default;
-  SubConditionElapsedTimeFromEvent(SubConditionElapsedTimeFromEvent&&) noexcept = default;
-  SubConditionElapsedTimeFromEvent& operator=(
-      SubConditionElapsedTimeFromEvent&&) noexcept = default;
+  VIPRA::idx         _event{};
+  BHVR::NumericValue _requiredTime{};
+  VIPRA::time_s      _startTime{};
 };
 }  // namespace BHVR
 

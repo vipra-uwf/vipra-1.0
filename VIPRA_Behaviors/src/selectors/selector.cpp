@@ -17,14 +17,13 @@ namespace BHVR {
  * @param obsSet : 
  * @param goals : 
  */
-void Selector::initialize(const std::string& behaviorName, VIPRA::pRNG_Engine& rngEngine,
-                          Simpack pack) {
-  pedGroups.initialize(allTypes, pack.pedSet.getNumPedestrians());
+void Selector::initialize(const std::string& behaviorName, VIPRA::pRNG_Engine& rngEngine, Simpack pack) {
+  _pedGroups.initialize(_allTypes, pack.get_pedset().getNumPedestrians());
 
-  auto selectorIdxs = orderSelectors();
-  runSelectors(selectorIdxs, behaviorName, rngEngine, pack);
-  sortGroups();
-  pedGroups.cleanUsed();
+  auto selectorIdxs = order_selectors();
+  run_selectors(selectorIdxs, behaviorName, rngEngine, pack);
+  sort_groups();
+  _pedGroups.clean_used();
 }
 
 /**
@@ -38,17 +37,16 @@ void Selector::initialize(const std::string& behaviorName, VIPRA::pRNG_Engine& r
  * @param obsSet : 
  * @param goals : 
  */
-void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs,
-                            const std::string&   behaviorName,
-                            VIPRA::pRNG_Engine& rngEngine, Simpack pack) {
+void Selector::run_selectors(const VIPRA::idxVec& selectorIdxs, const std::string& behaviorName,
+                             VIPRA::pRNG_Engine& rngEngine, Simpack pack) {
   std::for_each(selectorIdxs.begin(), selectorIdxs.end(), [&](VIPRA::idx index) {
-    auto& selector = subSelectors[index];
-    auto  selectedPeds = selectPedsFromGroup(selector, rngEngine, pack, behaviorName);
-    updatePedGroups(selectedPeds, selector, pack.context, behaviorName);
+    auto& selector = _subSelectors[index];
+    auto  selectedPeds = select_peds_from_group(selector, rngEngine, pack, behaviorName);
+    update_ped_groups(selectedPeds, selector, pack.context, behaviorName);
   });
 
-  pedGroups[0].resize(pack.pedSet.getNumPedestrians());
-  std::iota(pedGroups[0].begin(), pedGroups[0].end(), 0);
+  _pedGroups[0].resize(pack.get_pedset().getNumPedestrians());
+  std::iota(_pedGroups[0].begin(), _pedGroups[0].end(), 0);
 }
 
 /**
@@ -62,20 +60,19 @@ void Selector::runSelectors(const VIPRA::idxVec& selectorIdxs,
  * @param behaviorName : 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector&        selector,
-                                            VIPRA::pRNG_Engine& rngEngine, Simpack pack,
-                                            const std::string& behaviorName) {
-  const auto& fullGroup = pedGroups.getGroup(selector.group);
-  auto        usablegroup = filterUsedPeds(fullGroup, pedGroups.getUsed(selector.group));
-  auto        result = selector.selectPeds(rngEngine, fullGroup, usablegroup, pack);
+auto Selector::select_peds_from_group(SubSelector& selector, VIPRA::pRNG_Engine& rngEngine, Simpack pack,
+                                      const std::string& behaviorName) -> VIPRA::idxVec {
+  const auto& fullGroup = _pedGroups.get_group(selector.group);
+  auto        usablegroup = filter_used_peds(fullGroup, _pedGroups.get_used(selector.group));
+  auto        result = selector.select_peds(rngEngine, fullGroup, usablegroup, pack);
 
   if (!result.starved) {
     return result.group;
   }
 
   if (selector.required) {
-    spdlog::error("Behavior: {}, Required Selector Starved For Type: {} From Group: {}",
-                  behaviorName, selector.type.fullType, selector.group);
+    spdlog::error("Behavior: {}, Required Selector Starved For Type: {} From Group: {}", behaviorName,
+                  selector.type.fullType, selector.group);
     DSLException::error("");
   }
 
@@ -92,18 +89,16 @@ VIPRA::idxVec Selector::selectPedsFromGroup(SubSelector&        selector,
  * @param context : 
  * @param behaviorName : 
  */
-void Selector::updatePedGroups(const VIPRA::idxVec& selectedPeds, SubSelector& selector,
-                               BehaviorContext&   context,
-                               const std::string& behaviorName) {
+void Selector::update_ped_groups(const VIPRA::idxVec& selectedPeds, SubSelector& selector,
+                                 BehaviorContext& context, const std::string& behaviorName) {
   std::for_each(selectedPeds.begin(), selectedPeds.end(), [&](auto& pedIdx) {
-    selector.type.forEachType([&](typeUID type) {
-      spdlog::debug("Behavior: {}, Selecting Ped {} for Type: {}", behaviorName, pedIdx,
-                    type);
+    selector.type.for_each_type([&](typeUID type) {
+      spdlog::debug("Behavior: {}, Selecting Ped {} for Type: {}", behaviorName, pedIdx, type);
       context.types[pedIdx] += type;
-      pedGroups.addPed(pedIdx, type);
+      _pedGroups.add_ped(pedIdx, type);
     });
 
-    pedGroups.setUsed(pedIdx, selector.group);
+    _pedGroups.set_used(pedIdx, selector.group);
   });
 }
 
@@ -114,8 +109,7 @@ void Selector::updatePedGroups(const VIPRA::idxVec& selectedPeds, SubSelector& s
  * @param used : 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec Selector::filterUsedPeds(const VIPRA::idxVec&     peds,
-                                       const std::vector<bool>& used) {
+auto Selector::filter_used_peds(const VIPRA::idxVec& peds, const std::vector<bool>& used) -> VIPRA::idxVec {
   VIPRA::idxVec ret;
 
   for (VIPRA::idx i = 0; i < peds.size(); ++i) {
@@ -131,10 +125,10 @@ VIPRA::idxVec Selector::filterUsedPeds(const VIPRA::idxVec&     peds,
  * @brief Sorts all of the groups in the selector's group container
  * 
  */
-void Selector::sortGroups() {
-  const VIPRA::size groupCnt = pedGroups.size();
+void Selector::sort_groups() {
+  const VIPRA::size groupCnt = _pedGroups.size();
   for (VIPRA::idx i = 1; i < groupCnt; ++i) {
-    std::sort(pedGroups[i].begin(), pedGroups[i].end());
+    std::sort(_pedGroups[i].begin(), _pedGroups[i].end());
   }
 }
 
@@ -144,7 +138,7 @@ void Selector::sortGroups() {
  * 
  * @param order : 
  */
-void checkforDuplicates(const VIPRA::idxVec& order) {
+void check_for_duplicates(const VIPRA::idxVec& order) {
   for (VIPRA::idx i = 0; i < order.size(); ++i) {
     for (VIPRA::idx j = i + 1; j < order.size(); ++j) {
       if (order[i] == order[j]) {
@@ -160,33 +154,32 @@ void checkforDuplicates(const VIPRA::idxVec& order) {
  * 
  * @return VIPRA::idxVec 
  */
-VIPRA::idxVec Selector::orderSelectors() {
+auto Selector::order_selectors() -> VIPRA::idxVec {
   VIPRA::idxVec order;
 
-  for (VIPRA::idx selIdx = 0; selIdx < subSelectors.size(); ++selIdx) {
-    if (subSelectors[selIdx].group == 0) {
+  for (VIPRA::idx selIdx = 0; selIdx < _subSelectors.size(); ++selIdx) {
+    if (_subSelectors[selIdx].group == 0) {
       order.push_back(selIdx);
     }
   }
 
-  allTypes.forEachType([&](typeUID type) {
-    for (VIPRA::idx selIdx = 0; selIdx < subSelectors.size(); ++selIdx) {
-      if (subSelectors[selIdx].group == type) {
+  _allTypes.for_each_type([&](typeUID type) {
+    for (VIPRA::idx selIdx = 0; selIdx < _subSelectors.size(); ++selIdx) {
+      if (_subSelectors[selIdx].group == type) {
         order.push_back(selIdx);
       }
     }
   });
 
-  for (VIPRA::idx selIdx = 0; selIdx < subSelectors.size(); ++selIdx) {
-    bool notInGraph = std::find_if(order.begin(), order.end(), [&](VIPRA::idx index) {
-                        return index == selIdx;
-                      }) == order.end();
+  for (VIPRA::idx selIdx = 0; selIdx < _subSelectors.size(); ++selIdx) {
+    bool notInGraph = std::find_if(order.begin(), order.end(),
+                                   [&](VIPRA::idx index) { return index == selIdx; }) == order.end();
     if (notInGraph) {
       order.push_back(selIdx);
     }
   }
 
-  checkforDuplicates(order);
+  check_for_duplicates(order);
   return order;
 }
 
@@ -197,25 +190,23 @@ VIPRA::idxVec Selector::orderSelectors() {
  * 
  * @param pedTypes : available types
  */
-void Selector::setAllTypes(Ptype pedTypes) { allTypes = pedTypes; }
+void Selector::set_all_types(Ptype pedTypes) { _allTypes = pedTypes; }
 
-void Selector::addSubSelector(const SubSelector& subSelector) {
-  subSelectors.emplace_back(subSelector);
-}
+void Selector::add_sub_selector(const SubSelector& subSelector) { _subSelectors.emplace_back(subSelector); }
 
 /**
  * @brief Returns how many subselectors the selector has
  * 
  * @return VIPRA::size 
  */
-VIPRA::size Selector::selectorCount() const { return subSelectors.size(); }
+auto Selector::selector_count() const -> VIPRA::size { return _subSelectors.size(); }
 
 /**
  * @brief Returns the groups container
  * 
  * @return const GroupsContainer& 
  */
-const GroupsContainer& Selector::getGroups() const { return pedGroups; }
+auto Selector::get_groups() const -> const GroupsContainer& { return _pedGroups; }
 
 // ----------------- END GETTERS/SETTERS --------------------------------------------------------------------
 

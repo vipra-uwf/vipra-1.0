@@ -17,23 +17,23 @@ namespace BHVR {
  * @return true 
  * @return false
  */
-bool Condition::evaluate(Simpack pack, VIPRA::idx pedIndex, Target target) const {
-  const VIPRA::size condCnt = conditions.size();
+auto Condition::evaluate(Simpack pack, VIPRA::idx pedIndex, Target target) const -> bool {
+  const VIPRA::size condCnt = _conditions.size();
   if (condCnt == 0) {
     return false;
   }
 
-  bool result = conditions[0](pack, pedIndex, target);
+  bool result = _conditions[0](pack, pedIndex, target);
 
   if (condCnt == 1) {
     return result;
   }
 
   for (VIPRA::idx i = 1; i < condCnt; ++i) {
-    if (operations[i - 1]) {
-      result = result && conditions[i](pack, pedIndex, target);
+    if (_operations[i - 1]) {
+      result = result && _conditions[i](pack, pedIndex, target);
     } else {
-      result = result || conditions[i](pack, pedIndex, target);
+      result = result || _conditions[i](pack, pedIndex, target);
     }
   }
 
@@ -45,14 +45,12 @@ bool Condition::evaluate(Simpack pack, VIPRA::idx pedIndex, Target target) const
  * 
  * @param condition : 
  */
-void Condition::addSubCondition(SubCondition&& condition) {
-  conditions.emplace_back(condition);
-}
+void Condition::add_sub_condition(SubCondition&& condition) { _conditions.emplace_back(condition); }
 
 /**
  * @brief Adds a logical and/or operator to the condition
  * 
  * @param andor : 
  */
-void Condition::addAndOr(bool andor) { operations.push_back(andor); }
+void Condition::add_and_or(bool andor) { _operations.push_back(andor); }
 }  // namespace BHVR

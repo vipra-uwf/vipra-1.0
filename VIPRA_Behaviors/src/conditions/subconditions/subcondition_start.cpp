@@ -8,5 +8,8 @@ namespace BHVR {
    * @return true 
    * @return false 
    */
-bool SubConditionStart::operator()(Simpack, VIPRA::idx, Target) const { return true; }
+auto SubConditionStart::operator()(Simpack /*unused*/, VIPRA::idx /*unused*/, Target /*unused*/) const
+    -> bool {
+  return true;
+}
 }  // namespace BHVR

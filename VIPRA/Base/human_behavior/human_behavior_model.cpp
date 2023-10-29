@@ -15,7 +15,7 @@ namespace VIPRA {
  * @param configMap : 
  */
 void HumanBehaviorModel::configure(const VIPRA::Config& configMap) {
-  seed = configMap["seed"].get<VIPRA::size>();
+  seed = BHVR::seed{configMap["seed"].get<VIPRA::size>()};
   loadBehaviors(configMap["behaviors"]);
 }
 
@@ -65,10 +65,10 @@ void HumanBehaviorModel::loadBehaviors(const VIPRA::Config& behaviors) {
 
   for (const auto& value : behaviors.items()) {
     const auto filePath = std::filesystem::current_path() / "../Behaviors" /
-                          (value.value().get<std::string>() + ".behavior");
+                          (value.value().get<std::string>() + ".bhvr");
     humanBehaviors.push_back(builder.build(value.value(), filePath, seed));
   }
 
-  spdlog::info("Done Loading Behavior");
+  spdlog::info("Done Loading Behaviors");
 }
 }  // namespace VIPRA

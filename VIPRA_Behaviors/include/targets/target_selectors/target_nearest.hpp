@@ -2,11 +2,12 @@
 #define VIPRA_BEHAVIORS_TARGET_NEAREST_SELECTOR_HPP
 
 #include <limits>
+#include <optional>
 
-#include <definitions/pedestrian_types.hpp>
-#include <definitions/sim_pack.hpp>
-#include <targets/target.hpp>
+#include "definitions/pedestrian_types.hpp"
+#include "definitions/sim_pack.hpp"
 #include "definitions/type_definitions.hpp"
+#include "targets/target.hpp"
 #include "targets/target_modifier.hpp"
 
 namespace BHVR {
@@ -26,9 +27,9 @@ struct TargetNearest {
    * @param self : pedestrain calling the function
    * @return Target 
    */
-  inline Target operator()(Simpack pack, Target self) const {
+  inline auto operator()(Simpack pack, Self self) const -> Target {
     if (allPeds) {
-      auto curr = nearestInGroup(pack, self.targetIdx, pack.groups.getGroup(0));
+      auto curr = nearest_in_group(pack, self.target.targetIdx, pack.get_groups().get_group(0));
       if (curr.second == VIPRA::idx_INVALID) return Target{TargetType::INVALID, 0};
       return {TargetType::PEDESTRIAN, curr.second};
     }
@@ -36,9 +37,9 @@ struct TargetNearest {
     VIPRA::dist shortest = std::numeric_limits<VIPRA::dist>::max();
     VIPRA::idx  nearest = VIPRA::idx_INVALID;
 
-    type.forEachType([&](typeUID type) {
+    type.for_each_type([&](typeUID type) {
       VIPRA::idx groupIdx = GroupsContainer::index(type);
-      auto curr = nearestInGroup(pack, self.targetIdx, pack.groups.getGroup(groupIdx));
+      auto       curr = nearest_in_group(pack, self.target.targetIdx, pack.get_groups().get_group(groupIdx));
       if (curr.first < shortest) {
         shortest = curr.first;
         nearest = curr.second;
@@ -61,25 +62,25 @@ struct TargetNearest {
    * @param idxs : vector of pedestrian indexes in group
    * @return std::pair<VIPRA::dist, VIPRA::idx> : nearest distance and nearest pedestrian index
    */
-  [[nodiscard]] inline std::pair<VIPRA::dist, VIPRA::idx> nearestInGroup(
-      Simpack pack, VIPRA::idx self, const VIPRA::idxVec& idxs) const {
+  [[nodiscard]] inline auto nearest_in_group(Simpack pack, VIPRA::idx self, const VIPRA::idxVec& idxs) const
+      -> std::pair<VIPRA::dist, VIPRA::idx> {
     VIPRA::dist shortest = std::numeric_limits<VIPRA::dist>::max();
     VIPRA::idx  nearest = VIPRA::idx_INVALID;
 
-    const auto&      coords = pack.pedSet.getCoordinates();
-    const VIPRA::f3d currCoords = coords.at(self);
+    const auto&      coords = pack.get_pedset().getCoordinates();
+    const VIPRA::f3d currCoords = coords[self];
 
     for (VIPRA::idx pedIdx : idxs) {
       if (pedIdx == self) continue;
-      if (pack.goals.isPedestianGoalMet(pedIdx)) continue;
+      if (pack.get_goals().isPedestianGoalMet(pedIdx)) continue;
 
       if (modifier) {
         if (!modifier->check(pack, pedIdx, self)) continue;
       }
 
-      if (pack.obsSet.rayHit(currCoords, coords.at(pedIdx)) != -1) continue;
+      if (pack.get_obsset().rayHit(currCoords, coords[pedIdx]) != -1) continue;
 
-      VIPRA::dist curr = currCoords.distanceTo(coords.at(pedIdx));
+      VIPRA::dist curr = currCoords.distanceTo(coords[pedIdx]);
       if (curr < shortest) {
         shortest = curr;
         nearest = pedIdx;

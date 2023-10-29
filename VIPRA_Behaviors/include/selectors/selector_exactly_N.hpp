@@ -11,9 +11,9 @@ namespace BHVR {
  * 
  */
 struct SelectorExactlyN {
-  NumericValue   selectCount;
-  SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                            const VIPRA::idxVec&, Simpack) const;
+  NumericValue selectCount;
+  auto         operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack) const
+      -> SelectorResult;
 };
 }  // namespace BHVR
 

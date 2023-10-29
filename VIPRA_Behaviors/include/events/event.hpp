@@ -16,40 +16,36 @@ namespace BHVR {
    *
    */
 class Event {
+  DEFAULT_CONSTRUCTIBLE(Event)
+  COPYABLE(Event)
+  MOVEABLE(Event)
+
  public:
   explicit Event(std::string);
 
   void evaluate(Simpack);
 
-  void setStartCondition(const Condition&);
-  void setEndCondition(const Condition&);
+  void set_start_condition(const Condition&);
+  void set_end_condition(const Condition&);
 
-  [[nodiscard]] bool isOccurring() const;
-  [[nodiscard]] bool hasOccurred() const;
-  [[nodiscard]] bool isStarting() const;
-  [[nodiscard]] bool isEnding() const;
+  [[nodiscard]] auto is_occurring() const -> bool;
+  [[nodiscard]] auto has_occurred() const -> bool;
+  [[nodiscard]] auto is_starting() const -> bool;
+  [[nodiscard]] auto is_ending() const -> bool;
 
-  void                             setStatus(EventStatus);
-  [[nodiscard]] const EventStatus& getStatus() const;
+  void               set_status(EventStatus);
+  [[nodiscard]] auto get_status() const -> const EventStatus&;
 
-  [[nodiscard]] const std::string& getName() const;
+  [[nodiscard]] auto get_name() const -> const std::string&;
 
  private:
-  std::string name;
-  EventStatus status{EventStatus::NOT_OCCURRING};
-  bool        occurred = false;
+  std::string _name;
+  EventStatus _status{EventStatus::NOT_OCCURRING};
+  bool        _occurred = false;
 
-  Latch     latch;
-  Condition startCondition;
-  Condition endCondition;
-
- public:
-  ~Event() = default;
-  Event(Event&&) noexcept = default;
-  Event& operator=(Event&&) noexcept = default;
-  Event() = default;
-  Event(const Event&) = default;
-  Event& operator=(const Event&) = default;
+  Latch     _latch;
+  Condition _startCondition;
+  Condition _endCondition;
 };
 }  // namespace BHVR
 

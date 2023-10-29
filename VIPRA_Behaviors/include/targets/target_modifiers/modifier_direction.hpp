@@ -11,8 +11,12 @@ namespace BHVR {
  * 
  */
 class ModifierDirection {
+  NON_DEFAULT_CONSTRUCTIBLE(ModifierDirection)
+  COPYABLE(ModifierDirection)
+  MOVEABLE(ModifierDirection)
+
  public:
-  explicit ModifierDirection(Direction direction) : dir(direction) {}
+  explicit ModifierDirection(Direction direction) : _direction(direction) {}
 
   /**
    * @brief Returns true if the target is in the desired direction
@@ -23,15 +27,15 @@ class ModifierDirection {
    * @return true : if in direction
    * @return false : if not in direction
    */
-  bool operator()(Simpack pack, VIPRA::idx targetIdx, VIPRA::idx selfIdx) const {
-    const auto& goalCoord = pack.goals.getCurrentGoal(selfIdx);
-    const auto& selfCoord = pack.pedSet.getPedCoords(selfIdx);
-    const auto& targetCoord = pack.pedSet.getPedCoords(targetIdx);
+  auto operator()(Simpack pack, VIPRA::idx targetIdx, VIPRA::idx selfIdx) const -> bool {
+    const auto& goalCoord = pack.get_goals().getCurrentGoal(selfIdx);
+    const auto& selfCoord = pack.get_pedset().getPedCoords(selfIdx);
+    const auto& targetCoord = pack.get_pedset().getPedCoords(targetIdx);
 
     auto forward = goalCoord - selfCoord;
     auto dif = targetCoord - selfCoord;
 
-    if (dir == Direction::FRONT) {
+    if (_direction == Direction::FRONT) {
       return forward.dot(dif) > 0;
     }
 
@@ -39,15 +43,7 @@ class ModifierDirection {
   }
 
  private:
-  Direction dir;
-
- public:
-  ~ModifierDirection() = default;
-  ModifierDirection() = delete;
-  ModifierDirection(const ModifierDirection&) = default;
-  ModifierDirection& operator=(const ModifierDirection&) = default;
-  ModifierDirection(ModifierDirection&&) noexcept = default;
-  ModifierDirection& operator=(ModifierDirection&&) noexcept = default;
+  Direction _direction;
 };
 }  // namespace BHVR
 

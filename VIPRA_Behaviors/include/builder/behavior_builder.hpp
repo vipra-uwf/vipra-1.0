@@ -35,65 +35,59 @@ namespace BHVR {
  */
 class BehaviorBuilder : public BehaviorBaseVisitor {
  public:
-  HumanBehavior build(std::string, const std::filesystem::path&, BHVR::seed);
+  [[nodiscard]] auto build(std::string, const std::filesystem::path&, BHVR::seed) -> HumanBehavior;
 
  private:
-  BehaviorErrorListener errorListener;
+  BehaviorErrorListener _errorListener;
 
-  StateMap    states;
-  TypeMap     types;
-  EventMap    eventsMap;
-  LocationMap locations;
+  StateMap    _states;
+  TypeMap     _types;
+  EventMap    _eventsMap;
+  LocationMap _locations;
 
-  Condition     startCond;
-  Event         startEvent;
-  HumanBehavior currentBehavior;
+  Condition     _startCond;
+  Event         _startEvent;
+  HumanBehavior _currentBehavior;
 
-  BHVR::stateUID currState;
-  BHVR::typeUID  currType;
-  BHVR::seed     currSeed;
+  BHVR::stateUID _currState;
+  BHVR::typeUID  _currType;
+  BHVR::seed     _currSeed;
 
-  void initialBehaviorSetup(const std::string&, BHVR::seed);
-  void initializeTypes();
-  void initializeEvents();
-  void initializeStates();
-  void initializeLocations();
-  void endBehaviorCheck();
+  void initial_behavior_setup(const std::string&, BHVR::seed);
+  void initialize_types();
+  void initialize_events();
+  void initialize_states();
+  void initialize_locations();
+  void end_behavior_check();
 
   // ------------------------------- UTIL -----------------------------------------------------------------------------------------
 
-  void addAtomToAction(Action&, BehaviorParser::Action_atomContext*);
-  void addTargetToAction(Action&, BehaviorParser::TargetContext*);
-  void addSubCondToCondtion(Condition&, BehaviorParser::Sub_conditionContext*);
+  void add_atom_to_action(Action&, BehaviorParser::Action_atomContext*);
+  void add_target_to_action(Action&, BehaviorParser::TargetContext*);
+  void add_sub_cond_to_condtion(Condition&, BehaviorParser::Sub_conditionContext*);
 
-  [[nodiscard]] auto addEvent(BehaviorParser::Event_nameContext*) -> VIPRA::idx;
+  [[nodiscard]] auto add_event(BehaviorParser::Event_nameContext*) -> VIPRA::idx;
 
-  [[nodiscard]] auto buildCondition(BehaviorParser::ConditionContext*) -> Condition;
-  [[nodiscard]] auto buildSubSelector(slType, slSelector, std::optional<slGroup>, bool)
-      -> SubSelector;
+  [[nodiscard]] auto build_condition(BehaviorParser::ConditionContext*) -> Condition;
+  [[nodiscard]] auto build_sub_selector(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
 
-  [[nodiscard]] auto getLocation(const std::string&) const -> std::optional<VIPRA::idx>;
-  [[nodiscard]] auto getState(const std::string&) const -> BHVR::stateUID;
-  [[nodiscard]] auto getEvent(const std::string&) const -> std::optional<VIPRA::idx>;
-  [[nodiscard]] auto getRange(BehaviorParser::Value_numberContext*) const
-      -> VIPRA::time_range_s;
-  [[nodiscard]] auto getType(const std::string&) const -> BHVR::typeUID;
-  [[nodiscard]] auto getGroup(std::optional<slGroup>) const
-      -> std::pair<BHVR::typeUID, std::string>;
-  [[nodiscard]] auto getCompositeType(
-      const std::vector<antlr4::tree::TerminalNode*>&) const -> BHVR::Ptype;
-  [[nodiscard]] static auto getAttribute(std::string) -> BHVR::Attribute;
+  [[nodiscard]] auto get_location(const std::string&) const -> std::optional<VIPRA::idx>;
+  [[nodiscard]] auto get_state(const std::string&) const -> BHVR::stateUID;
+  [[nodiscard]] auto get_event(const std::string&) const -> std::optional<VIPRA::idx>;
+  [[nodiscard]] auto get_range(BehaviorParser::Value_numberContext*) const -> VIPRA::time_range_s;
+  [[nodiscard]] auto get_type(const std::string&) const -> BHVR::typeUID;
+  [[nodiscard]] auto get_group(std::optional<slGroup>) const -> std::pair<BHVR::typeUID, std::string>;
+  [[nodiscard]] auto get_composite_type(const std::vector<antlr4::tree::TerminalNode*>&) const -> BHVR::Ptype;
+  [[nodiscard]] static auto get_attribute(std::string) -> BHVR::Attribute;
 
-  [[nodiscard]] auto makeAttributeValue(BehaviorParser::Attr_valueContext*)
-      -> BHVR::CAttributeValue;
-  [[nodiscard]] static auto makeAttributeStr(BehaviorParser::AttributeContext*)
-      -> std::string;
-  [[nodiscard]] static auto makeListStrs(const std::vector<antlr4::tree::TerminalNode*>&)
+  [[nodiscard]] auto        make_attribute_value(BehaviorParser::Attr_valueContext*) -> BHVR::CAttributeValue;
+  [[nodiscard]] static auto make_attribute_str(BehaviorParser::AttributeContext*) -> std::string;
+  [[nodiscard]] static auto make_list_strs(const std::vector<antlr4::tree::TerminalNode*>&)
       -> std::vector<std::string>;
-  [[nodiscard]] auto makeTargetModifier(std::vector<BehaviorParser::ModifierContext*>&)
+  [[nodiscard]] auto make_target_modifier(std::vector<BehaviorParser::ModifierContext*>&)
       -> std::optional<TargetModifier>;
-  [[nodiscard]] static auto makeDirection(BehaviorParser::DirectionContext*) -> Direction;
-  [[nodiscard]] auto        makeDimensions(BehaviorParser::Loc_dimensionsContext*) const
+  [[nodiscard]] static auto make_direction(BehaviorParser::DirectionContext*) -> Direction;
+  [[nodiscard]] auto        make_dimensions(BehaviorParser::Loc_dimensionsContext*) const
       -> std::tuple<VIPRA::f3d, VIPRA::f3d, float>;
 
   /**
@@ -103,63 +97,55 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
    * @param message : message to log to console
    * @param values : values to format message with
    */
-  template <typename... T>
-  static void error(const std::string& message, T&&... values) {
-    spdlog::error(message, std::forward<T>(values)...);
+  template <typename... args_t>
+  static void error(const std::string& message, args_t&&... values) {
+    spdlog::error(message, std::forward<args_t>(values)...);
     BuilderException::error();
   }
 
   // ------------------------------- ANTLR FUNCTIONS -----------------------------------------------------------------------------------------
 
-  antlrcpp::Any visitEvent(BehaviorParser::EventContext*) override;
-  antlrcpp::Any visitPed_Selector(BehaviorParser::Ped_SelectorContext*) override;
-  antlrcpp::Any visitAction(BehaviorParser::ActionContext*) override;
-  antlrcpp::Any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext*) override;
-  antlrcpp::Any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext*) override;
-  antlrcpp::Any visitDecl_Ped(BehaviorParser::Decl_PedContext*) override;
-  antlrcpp::Any visitLocation(BehaviorParser::LocationContext*) override;
+  auto visitEvent(BehaviorParser::EventContext* /*ctx*/) -> antlrcpp::Any override;
+  auto visitPed_Selector(BehaviorParser::Ped_SelectorContext* /*ctx*/) -> antlrcpp::Any override;
+  auto visitAction(BehaviorParser::ActionContext* /*ctx*/) -> antlrcpp::Any override;
+  auto visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* /*ctx*/) -> antlrcpp::Any override;
+  auto visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* /*ctx*/) -> antlrcpp::Any override;
+  auto visitDecl_Ped(BehaviorParser::Decl_PedContext* /*ctx*/) -> antlrcpp::Any override;
+  auto visitLocation(BehaviorParser::LocationContext* /*ctx*/) -> antlrcpp::Any override;
 
   // --------------------------------- ATOMS ------------------------------------------------------------------------------------------------
 
-  void addSetAtom(Action&, BehaviorParser::Set_atomContext*);
-  void addScaleAtom(Action&, BehaviorParser::Scale_atomContext*);
+  void add_set_atom(Action&, BehaviorParser::Set_atomContext*);
+  void add_scale_atom(Action&, BehaviorParser::Scale_atomContext*);
 
   // --------------------------------- TARGET SELECTORS ------------------------------------------------------------------------------------------------
 
-  void addNearestTypeTarget(Action&, BehaviorParser::Nearest_typeContext*,
-                            std::optional<TargetModifier>);
+  void add_nearest_type_target(Action&, BehaviorParser::Nearest_typeContext*, std::optional<TargetModifier>);
 
   // --------------------------------- TARGET MODIFIERS ------------------------------------------------------------------------------------------------
 
-  void addModifier(TargetModifier&, BehaviorParser::ModifierContext*) const;
+  void add_modifier(TargetModifier&, BehaviorParser::ModifierContext*) const;
 
-  void addDistanceModifier(TargetModifier&, BehaviorParser::DistanceContext*) const;
-  static void addDirectionModifier(TargetModifier&, BehaviorParser::DirectionContext*);
+  void        add_distance_modifier(TargetModifier&, BehaviorParser::DistanceContext*) const;
+  static void add_direction_modifier(TargetModifier&, BehaviorParser::DirectionContext*);
 
   // --------------------------------- SUBCONDITIONS ------------------------------------------------------------------------------------------------
 
-  void addEnterSubCond(Condition&, BehaviorParser::Condition_Enter_LocationContext*);
-  void addExitSubCond(Condition&, BehaviorParser::Condition_Exit_LocationContext*);
-  void addTimeElapsedSubCond(Condition&,
-                             BehaviorParser::Condition_Time_Elapsed_From_EventContext*);
-  void addEventOccurredSubCond(Condition&,
-                               BehaviorParser::Condition_Event_OccurredContext*);
-  void addEventOccurringSubCond(Condition&,
-                                BehaviorParser::Condition_Event_OccurringContext*);
-  void addEventStartingSubCond(Condition&,
-                               BehaviorParser::Condition_Event_StartingContext*);
-  void addEventEndingSubCond(Condition&, BehaviorParser::Condition_Event_EndingContext*);
-  void addSpatialSubCond(Condition&, BehaviorParser::Condition_SpatialContext*);
+  void add_enter_subcond(Condition&, BehaviorParser::Condition_Enter_LocationContext*);
+  void add_exit_subcond(Condition&, BehaviorParser::Condition_Exit_LocationContext*);
+  void add_time_elapsed_subcond(Condition&, BehaviorParser::Condition_Time_Elapsed_From_EventContext*);
+  void add_event_occurred_subcond(Condition&, BehaviorParser::Condition_Event_OccurredContext*);
+  void add_event_occurring_subcond(Condition&, BehaviorParser::Condition_Event_OccurringContext*);
+  void add_event_starting_subcond(Condition&, BehaviorParser::Condition_Event_StartingContext*);
+  void add_event_ending_subcond(Condition&, BehaviorParser::Condition_Event_EndingContext*);
+  void add_spatial_subcond(Condition&, BehaviorParser::Condition_SpatialContext*);
 
   // --------------------------------- SUBSELECTORS ------------------------------------------------------------------------------------------------
 
-  auto buildEveryoneSelector(slType, bool) -> SubSelector;
-  auto buildExactlyNSelector(slType, slSelector, std::optional<slGroup>, bool)
-      -> SubSelector;
-  auto buildPercentSelector(slType, slSelector, std::optional<slGroup>, bool)
-      -> SubSelector;
-  auto buildLocationSelector(slType, slSelector, std::optional<slGroup>, bool)
-      -> SubSelector;
+  auto build_everyone_selector(slType, bool) -> SubSelector;
+  auto build_exactly_n_selector(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
+  auto build_percent_selector(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
+  auto build_location_selector(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
 
   // --------------------------------- LOCATION ------------------------------------------------------------------------------------------------
 
@@ -172,20 +158,19 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
    * @param ctx : event context
    * @return std::optional<T> 
    */
-  template <typename T>
-  [[nodiscard]] static auto findEventComponent(BehaviorParser::EventContext* ctx)
-      -> std::optional<T> {
+  template <typename comp_t>
+  [[nodiscard]] static auto find_event_component(BehaviorParser::EventContext* ctx) -> std::optional<comp_t> {
     for (const auto& attr : ctx->event_attribute()) {
       // Name
-      if constexpr (std::is_same_v<T, std::string>)
+      if constexpr (std::is_same_v<comp_t, std::string>)
         if (attr->event_name()) return attr->event_name()->ID()->toString();
 
       // Start Condition
-      if constexpr (std::is_same_v<T, evStart>)
+      if constexpr (std::is_same_v<comp_t, evStart>)
         if (attr->event_start()) return attr->event_start();
 
       // End Condition
-      if constexpr (std::is_same_v<T, evEnd>)
+      if constexpr (std::is_same_v<comp_t, evEnd>)
         if (attr->event_end()) return attr->event_end();
     }
 
@@ -199,24 +184,24 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
    * @param ctx : action context
    * @return std::optional<T> 
    */
-  template <typename T>
-  [[nodiscard]] static auto findActionComponent(BehaviorParser::ActionContext* ctx)
-      -> std::optional<T> {
+  template <typename comp_t>
+  [[nodiscard]] static auto find_action_component(BehaviorParser::ActionContext* ctx)
+      -> std::optional<comp_t> {
     for (const auto& attr : ctx->action_attribute()) {
       // Stimulus
-      if constexpr (std::is_same_v<T, acStimulus>)
+      if constexpr (std::is_same_v<comp_t, acStimulus>)
         if (attr->action_stimulus()) return attr->action_stimulus();
 
       // Response
-      if constexpr (std::is_same_v<T, acResponse>)
+      if constexpr (std::is_same_v<comp_t, acResponse>)
         if (attr->action_response()) return attr->action_response();
 
       // Target
-      if constexpr (std::is_same_v<T, acTarget>)
+      if constexpr (std::is_same_v<comp_t, acTarget>)
         if (attr->action_target()) return attr->action_target();
 
       // Duration
-      if constexpr (std::is_same_v<T, acDuration>)
+      if constexpr (std::is_same_v<comp_t, acDuration>)
         if (attr->action_duration()) return attr->action_duration();
     }
 
@@ -230,31 +215,27 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
    * @param ctx : selector context
    * @return std::optional<T> 
    */
-  template <typename T>
-  [[nodiscard]] static auto findSelectorComponent(
-      BehaviorParser::Ped_SelectorContext* ctx) -> std::optional<T> {
+  template <typename comp_t>
+  [[nodiscard]] static auto find_selector_component(BehaviorParser::Ped_SelectorContext* ctx)
+      -> std::optional<comp_t> {
     for (const auto& attr : ctx->selector_attribute()) {
       // Type
-      if constexpr (std::is_same_v<T, slType>)
+      if constexpr (std::is_same_v<comp_t, slType>)
         if (attr->selector_type()) return attr->selector_type();
 
       // Selector
-      if constexpr (std::is_same_v<T, slSelector>)
+      if constexpr (std::is_same_v<comp_t, slSelector>)
         if (attr->selector_selector()) return attr->selector_selector();
 
-      if constexpr (std::is_same_v<T, slGroup>)
+      if constexpr (std::is_same_v<comp_t, slGroup>)
         if (attr->selector_from()) return attr->selector_from();
 
-      if constexpr (std::is_same_v<T, slRequired>)
+      if constexpr (std::is_same_v<comp_t, slRequired>)
         if (attr->selector_required()) return attr->selector_required();
     }
 
     return std::nullopt;
   }
-
-  // using lcName = BehaviorParser::Loc_nameContext*;
-  // using lcShape = BehaviorParser::Loc_shapeContext*;
-  // using lcDimensions = BehaviorParser::Loc_dimensionsContext*;
 
   /**
    * @brief Gets components from an selector declaration context
@@ -263,15 +244,15 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
    * @param ctx : selector context
    * @return std::optional<T> 
    */
-  template <typename T>
-  [[nodiscard]] static auto findLocationComponent(BehaviorParser::LocationContext* ctx)
-      -> std::optional<T> {
+  template <typename comp_t>
+  [[nodiscard]] static auto find_location_component(BehaviorParser::LocationContext* ctx)
+      -> std::optional<comp_t> {
     for (const auto& attr : ctx->location_attribute()) {
       // Type
-      if constexpr (std::is_same_v<T, lcName>)
+      if constexpr (std::is_same_v<comp_t, lcName>)
         if (attr->loc_name()) return attr->loc_name();
 
-      if constexpr (std::is_same_v<T, lcDimensions>)
+      if constexpr (std::is_same_v<comp_t, lcDimensions>)
         if (attr->loc_dimensions()) return attr->loc_dimensions();
     }
 

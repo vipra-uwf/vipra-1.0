@@ -28,11 +28,18 @@ struct Target {
 };
 
 /**
+ * @brief Struct for explicitly targeting the self
+ * 
+ */
+struct Self {
+  Target target;
+};
+
+/**
  * @brief Function for selecting targets
  * 
  */
-using TargetFunc = std::function<Target(Simpack, Target)>;
-
+using TargetFunc = std::function<Target(Simpack, Self)>;
 }  // namespace BHVR
 
 #endif

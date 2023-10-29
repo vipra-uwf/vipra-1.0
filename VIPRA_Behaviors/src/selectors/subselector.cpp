@@ -15,15 +15,14 @@ namespace BHVR {
  * @param goals : goals module
  * @return SelectorResult 
  */
-SelectorResult SubSelector::selectPeds(VIPRA::pRNG_Engine&  rngEngine,
-                                       const VIPRA::idxVec& totalGroup,
-                                       const VIPRA::idxVec& usableGroup, Simpack pack) {
-  return select(rngEngine, totalGroup, usableGroup, pack);
+auto SubSelector::select_peds(VIPRA::pRNG_Engine& rngEngine, const VIPRA::idxVec& totalGroup,
+                              const VIPRA::idxVec& usableGroup, Simpack pack) -> SelectorResult {
+  return _select(rngEngine, totalGroup, usableGroup, pack);
 }
 
 // ------------------- CONSTRUCTORS --------------------------------------------------------------------------
 
 SubSelector::SubSelector(typeUID grp, Ptype typ, bool req, SelectorFunc sel)
-    : group(grp), type(typ), required(req), select(std::move(sel)) {}
+    : group(grp), type(typ), required(req), _select(std::move(sel)) {}
 
 }  // namespace BHVR

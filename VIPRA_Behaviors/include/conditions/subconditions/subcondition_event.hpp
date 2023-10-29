@@ -1,27 +1,23 @@
 #ifndef VIPRA_SUBCONDITION_EVENT_HPP
 #define VIPRA_SUBCONDITION_EVENT_HPP
 
-#include <conditions/sub_condition.hpp>
-#include <events/event.hpp>
+#include "conditions/sub_condition.hpp"
 #include "definitions/sim_pack.hpp"
+#include "events/event.hpp"
+#include "util/class_types.hpp"
 
 namespace BHVR {
 class SubConditionEventOccurred {
+  NON_DEFAULT_CONSTRUCTIBLE(SubConditionEventOccurred)
+  COPYABLE(SubConditionEventOccurred)
+  MOVEABLE(SubConditionEventOccurred)
  public:
   explicit SubConditionEventOccurred(VIPRA::idx);
 
-  bool operator()(Simpack, VIPRA::idx, Target) const;
+  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
 
  private:
-  VIPRA::idx event;
-
- public:
-  ~SubConditionEventOccurred() = default;
-  SubConditionEventOccurred() = delete;
-  SubConditionEventOccurred(const SubConditionEventOccurred&) = default;
-  SubConditionEventOccurred& operator=(const SubConditionEventOccurred&) = default;
-  SubConditionEventOccurred(SubConditionEventOccurred&&) noexcept = default;
-  SubConditionEventOccurred& operator=(SubConditionEventOccurred&&) noexcept = default;
+  VIPRA::idx _event;
 };
 
 }  // namespace BHVR

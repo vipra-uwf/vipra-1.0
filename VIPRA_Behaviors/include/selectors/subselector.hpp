@@ -31,19 +31,23 @@ struct SelectorResult {
  * @brief Function for choosing which pedestrians have a type
  * 
  */
-using SelectorFunc = std::function<SelectorResult(
-    VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack)>;
+using SelectorFunc =
+    std::function<SelectorResult(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack)>;
 
 /**
  * @brief Selects pedestrians for one type, gets combined with other SubSelectors in Selector
  * 
  */
 class SubSelector {
+  NON_DEFAULT_CONSTRUCTIBLE(SubSelector)
+  COPYABLE(SubSelector)
+  MOVEABLE(SubSelector)
+
  public:
   SubSelector(typeUID, Ptype, bool, SelectorFunc);
 
-  SelectorResult selectPeds(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                            const VIPRA::idxVec&, Simpack);
+  auto select_peds(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack)
+      -> SelectorResult;
 
   // NOLINTBEGIN - (rolland) Having these public increases readability   : ignoring (cppcoreguidelines-non-private-member-variables-in-classes)
   typeUID group;
@@ -52,16 +56,8 @@ class SubSelector {
   // NOLINTEND
 
  private:
-  SelectorFunc                select;
-  std::optional<SubCondition> condition;
-
- public:
-  SubSelector() = delete;
-  ~SubSelector() = default;
-  SubSelector(SubSelector&&) noexcept = default;
-  SubSelector(const SubSelector&) = default;
-  SubSelector& operator=(SubSelector&&) noexcept = default;
-  SubSelector& operator=(const SubSelector&) = default;
+  SelectorFunc                _select;
+  std::optional<SubCondition> _condition;
 };
 
 }  // namespace BHVR

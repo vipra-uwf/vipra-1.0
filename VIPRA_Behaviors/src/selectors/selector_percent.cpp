@@ -1,7 +1,4 @@
 
-#include <algorithm>
-#include <cmath>
-#include <random>
 
 #include <randomization/random.hpp>
 #include <selectors/selector_percent.hpp>
@@ -12,13 +9,11 @@ namespace BHVR {
  * 
  * @param pedSet : 
  */
-SelectorResult SelectorPercent::operator()(VIPRA::pRNG_Engine&  rngEngine,
-                                           const VIPRA::idxVec& fullGroup,
-                                           const VIPRA::idxVec& group, Simpack) const {
+auto SelectorPercent::operator()(VIPRA::pRNG_Engine& rngEngine, const VIPRA::idxVec& fullGroup,
+                                 const VIPRA::idxVec& group, Simpack /*unused*/) const -> SelectorResult {
   auto groupPeds = group;
 
-  auto count = static_cast<VIPRA::size>(
-      std::floor(percentage * static_cast<float>(fullGroup.size())));
+  auto count = static_cast<VIPRA::size>(std::floor(percentage * static_cast<float>(fullGroup.size())));
 
   bool starved = false;
   if (count > group.size()) {

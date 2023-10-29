@@ -1,28 +1,25 @@
 
 #include <limits>
-#include <output/output.hpp>
 
 #include "conditions/subconditions/subcondition_enter.hpp"
 #include "locations/location.hpp"
 
 namespace BHVR {
-SubConditionEnter::SubConditionEnter(VIPRA::idx locIdx) : location(locIdx) {}
+SubConditionEnter::SubConditionEnter(VIPRA::idx locIdx) : _location(locIdx) {}
 
-bool SubConditionEnter::operator()(Simpack pack, VIPRA::idx self, Target) {
-  if (entered.size() < pack.pedSet.getNumPedestrians())
-    entered.resize(pack.pedSet.getNumPedestrians());
+auto SubConditionEnter::operator()(Simpack pack, VIPRA::idx self, Target /*unused*/) -> bool {
+  if (_entered.size() < pack.get_pedset().getNumPedestrians())
+    _entered.resize(pack.get_pedset().getNumPedestrians());
 
-  if (entered.at(self)) {
+  if (_entered[self]) {
     return false;
   }
 
-  Location& loc = pack.context.locations.at(location);
-  bool      enter = loc.inside(pack.state.coords.at(self)) &&
-               !loc.inside(pack.pedSet.getPedCoords(self));
+  Location& loc = pack.get_context().locations[_location];
+  bool enter = loc.inside(pack.get_state().coords[self]) && !loc.inside(pack.get_pedset().getPedCoords(self));
 
   if (enter) {
-    spdlog::warn("{} Entered", self);
-    entered.at(self) = true;
+    _entered[self] = true;
   }
 
   return enter;

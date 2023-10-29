@@ -3,11 +3,11 @@
 
 #include <cmath>
 #include <functional>
-
-#include <definitions/dsl_types.hpp>
-#include <random/random.hpp>
 #include <utility>
+
+#include "definitions/dsl_types.hpp"
 #include "definitions/type_definitions.hpp"
+#include "random/random.hpp"
 
 namespace BHVR {
 /**
@@ -22,14 +22,13 @@ using ValueFunc = std::function<float(BHVR::seed, VIPRA::idx)>;
  */
 class NumericValue {
  public:
-  explicit NumericValue(BHVR::seed seedNum, ValueFunc func)
-      : seed(seedNum), val(std::move(func)) {}
+  explicit NumericValue(BHVR::seed seedNum, ValueFunc func) : _seed(seedNum), _val(std::move(func)) {}
 
-  [[nodiscard]] inline float value(VIPRA::idx pedIdx) const { return val(seed, pedIdx); }
+  [[nodiscard]] inline auto value(VIPRA::idx pedIdx) const -> float { return _val(_seed, pedIdx); }
 
  private:
-  BHVR::seed seed{};
-  ValueFunc  val;
+  BHVR::seed _seed{};
+  ValueFunc  _val;
 
  public:
   NumericValue() = default;
@@ -40,8 +39,8 @@ class NumericValue {
  * 
  */
 struct ExactValue {
-  float        value;
-  inline float operator()(BHVR::seed, VIPRA::idx) const { return value; }
+  float       value;
+  inline auto operator()(BHVR::seed /*unused*/, VIPRA::idx /*unused*/) const -> float { return value; }
 };
 
 /**
@@ -52,8 +51,8 @@ struct RandomFloatValue {
   float min{};
   float max{};
 
-  inline float operator()(BHVR::seed seed, VIPRA::idx pedIdx) const {
-    return BHVR::DRNG::pedRandomFloat(seed, pedIdx, min, max);
+  inline auto operator()(BHVR::seed seed, VIPRA::idx pedIdx) const -> float {
+    return BHVR::DRNG::ped_random_float(seed, pedIdx, Min{min}, Max{max});
   }
 };
 
@@ -65,8 +64,8 @@ struct RandomNumberValue {
   float min{};
   float max{};
 
-  inline float operator()(BHVR::seed seed, VIPRA::idx pedIdx) const {
-    return std::round(BHVR::DRNG::pedRandomFloat(seed, pedIdx, min, max));
+  inline auto operator()(BHVR::seed seed, VIPRA::idx pedIdx) const -> float {
+    return std::round(BHVR::DRNG::ped_random_float(seed, pedIdx, Min{min}, Max{max}));
   }
 };
 

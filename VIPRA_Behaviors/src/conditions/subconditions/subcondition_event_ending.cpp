@@ -5,7 +5,7 @@
 
 namespace BHVR {
 
-SubConditionEventEnding::SubConditionEventEnding(VIPRA::idx ev) : event(ev) {}
+SubConditionEventEnding::SubConditionEventEnding(VIPRA::idx event) : _event(event) {}
 
 /**
  * @brief Returns true if the event is occurring
@@ -13,7 +13,8 @@ SubConditionEventEnding::SubConditionEventEnding(VIPRA::idx ev) : event(ev) {}
  * @return true
  * @return false
  */
-bool SubConditionEventEnding::operator()(Simpack pack, VIPRA::idx, Target) const {
-  return pack.context.events[event].isEnding();
+auto SubConditionEventEnding::operator()(Simpack pack, VIPRA::idx /*unused*/, Target /*unused*/) const
+    -> bool {
+  return pack.get_context().events[_event].is_ending();
 }
 }  // namespace BHVR

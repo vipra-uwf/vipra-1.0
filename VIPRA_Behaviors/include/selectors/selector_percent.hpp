@@ -9,9 +9,9 @@ namespace BHVR {
  * 
  */
 struct SelectorPercent {
-  float          percentage;
-  SelectorResult operator()(VIPRA::pRNG_Engine&, const std::vector<VIPRA::idx>&,
-                            const std::vector<VIPRA::idx>&, Simpack) const;
+  float percentage;
+  auto  operator()(VIPRA::pRNG_Engine&, const std::vector<VIPRA::idx>&, const std::vector<VIPRA::idx>&,
+                  Simpack) const -> SelectorResult;
 };
 
 }  // namespace BHVR

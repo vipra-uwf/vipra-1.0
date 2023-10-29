@@ -20,36 +20,36 @@ namespace BHVR {
  * @param dT : simulation timestep size
  */
 void Event::evaluate(Simpack pack) {
-  if (status == EventStatus::ENDING) {
-    status = EventStatus::NOT_OCCURRING;
+  if (_status == EventStatus::ENDING) {
+    _status = EventStatus::NOT_OCCURRING;
   }
-  if (status == EventStatus::STARTING) {
-    status = EventStatus::OCCURRING;
+  if (_status == EventStatus::STARTING) {
+    _status = EventStatus::OCCURRING;
   }
 
   // TODO (rolland) : These might need target selectors?
-  if (status == EventStatus::OCCURRING) {
-    if (endCondition.evaluate(pack, 0, {})) {
-      spdlog::info("Event {} is Ending", name);
-      status = EventStatus::ENDING;
+  if (_status == EventStatus::OCCURRING) {
+    if (_endCondition.evaluate(pack, 0, {})) {
+      spdlog::info("Event {} is Ending", _name);
+      _status = EventStatus::ENDING;
     }
 
     return;
   }
 
-  if (startCondition.evaluate(pack, 0, {})) {
-    spdlog::info("Event {} is Starting", name);
-    occurred = true;
-    status = EventStatus::STARTING;
+  if (_startCondition.evaluate(pack, 0, {})) {
+    spdlog::info("Event {} is Starting", _name);
+    _occurred = true;
+    _status = EventStatus::STARTING;
   }
 }
 
 /**
- * @brief Sets the events current status
+ * @brief Sets the events current _status
  * 
  * @param stat : 
  */
-void Event::setStatus(EventStatus stat) { status = stat; }
+void Event::set_status(EventStatus stat) { _status = stat; }
 
 /**
  * @brief Checks if the event is occurring
@@ -57,8 +57,8 @@ void Event::setStatus(EventStatus stat) { status = stat; }
  * @return true 
  * @return false 
  */
-bool Event::isOccurring() const {
-  return status == EventStatus::OCCURRING || status == EventStatus::STARTING;
+auto Event::is_occurring() const -> bool {
+  return _status == EventStatus::OCCURRING || _status == EventStatus::STARTING;
 }
 
 /**
@@ -67,7 +67,7 @@ bool Event::isOccurring() const {
  * @return true 
  * @return false 
  */
-bool Event::hasOccurred() const { return occurred; }
+auto Event::has_occurred() const -> bool { return _occurred; }
 
 /**
  * @brief Checks if the event is starting
@@ -75,7 +75,7 @@ bool Event::hasOccurred() const { return occurred; }
  * @return true 
  * @return false 
  */
-bool Event::isStarting() const { return status == EventStatus::STARTING; }
+auto Event::is_starting() const -> bool { return _status == EventStatus::STARTING; }
 
 /**
  * @brief Checks if the event is ending
@@ -83,32 +83,32 @@ bool Event::isStarting() const { return status == EventStatus::STARTING; }
  * @return true 
  * @return false 
  */
-bool Event::isEnding() const { return status == EventStatus::ENDING; }
+auto Event::is_ending() const -> bool { return _status == EventStatus::ENDING; }
 
 /**
  * @brief Sets the condition for the event to start
  * 
  * @param condition : condition for event to start
  */
-void Event::setStartCondition(const Condition& condition) { startCondition = condition; }
+void Event::set_start_condition(const Condition& condition) { _startCondition = condition; }
 
 /**
  * @brief Sets the condition for the event to end
  * 
  * @param condition : condition for event to end
  */
-void Event::setEndCondition(const Condition& condition) { endCondition = condition; }
+void Event::set_end_condition(const Condition& condition) { _endCondition = condition; }
 
 /**
- * @brief Returns the events name
+ * @brief Returns the events _name
  * 
  * @return const std::string& 
  */
-const std::string& Event::getName() const { return name; }
+auto Event::get_name() const -> const std::string& { return _name; }
 
 // ---------------------------------- CONSTRUCTORS -----------------------------------------------------------
 
-Event::Event(std::string evName) : name(std::move(evName)) {}
+Event::Event(std::string evName) : _name(std::move(evName)) {}
 
 // ---------------------------------- END CONSTRUCTORS -----------------------------------------------------------
 

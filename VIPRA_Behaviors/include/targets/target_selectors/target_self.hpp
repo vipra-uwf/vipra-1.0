@@ -11,7 +11,7 @@ namespace BHVR {
  * 
  */
 struct TargetSelf {
-  inline Target operator()(Simpack, Target self) { return self; }
+  inline auto operator()(Simpack /*unused*/, Self self) -> Target { return self.target; }
 };
 }  // namespace BHVR
 

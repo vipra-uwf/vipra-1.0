@@ -4,7 +4,7 @@
 #include "definitions/sim_pack.hpp"
 
 namespace BHVR {
-SubConditionEventStarting::SubConditionEventStarting(VIPRA::idx ev) : event(ev) {}
+SubConditionEventStarting::SubConditionEventStarting(VIPRA::idx event) : _event(event) {}
 
 /**
  * @brief Returns true if the event is occurring
@@ -12,7 +12,8 @@ SubConditionEventStarting::SubConditionEventStarting(VIPRA::idx ev) : event(ev) 
  * @return true
  * @return false
  */
-bool SubConditionEventStarting::operator()(Simpack pack, VIPRA::idx, Target) const {
-  return pack.context.events[event].isStarting();
+auto SubConditionEventStarting::operator()(Simpack pack, VIPRA::idx /*unused*/, Target /*unused*/) const
+    -> bool {
+  return pack.get_context().events[_event].is_starting();
 }
 }  // namespace BHVR

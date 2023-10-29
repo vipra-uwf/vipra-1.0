@@ -1,15 +1,16 @@
 #ifndef VIPRA_BEHAVIORS_VALUES_HPP
 #define VIPRA_BEHAVIORS_VALUES_HPP
 
-#include <generated/BehaviorParser.h>
+#include <stdexcept>
 
 #include <spdlog/spdlog.h>
 
-#include <behavior/exceptions.hpp>
-#include <definitions/dsl_types.hpp>
-#include <stdexcept>
-#include <time/time.hpp>
+#include <generated/BehaviorParser.h>
+
+#include "behavior/exceptions.hpp"
+#include "definitions/dsl_types.hpp"
 #include "randomization/random.hpp"
+#include "time/time.hpp"
 #include "values/numeric_value.hpp"
 
 namespace BHVR {
@@ -25,7 +26,7 @@ using RangeVal = std::pair<float, float>;
  * @param max : maximum value
  * @return float 
  */
-[[nodiscard]] inline float collapseRangeValue(BHVR::seed seed, float min, float max) {
+[[nodiscard]] inline auto collapse_range_value(BHVR::seed seed, float min, float max) -> float {
   VIPRA::pRNG_Engine                 eng{seed};
   VIPRA::uniform_distribution<float> distr{min, max};
   return distr(eng);
@@ -38,8 +39,8 @@ using RangeVal = std::pair<float, float>;
  * @param seed : randomization seed
  * @return NumericValue 
  */
-[[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_numberContext* ctx,
-                                             BHVR::seed                           seed) {
+[[nodiscard]] inline auto get_numeric(BehaviorParser::Value_numberContext* ctx, BHVR::seed seed)
+    -> NumericValue {
   float val = std::stof(ctx->NUMBER()->toString());
   return NumericValue(seed, ExactValue{val});
 }
@@ -51,8 +52,8 @@ using RangeVal = std::pair<float, float>;
  * @param seed : randomization seed
  * @return NumericValue 
  */
-[[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_randomContext* ctx,
-                                             BHVR::seed                           seed) {
+[[nodiscard]] inline auto get_numeric(BehaviorParser::Value_randomContext* ctx, BHVR::seed seed)
+    -> NumericValue {
   if (ctx->random_float()) {
     auto  numbers = ctx->random_float()->float_range()->FLOAT();
     float min = std::stof(numbers[0]->toString());
@@ -73,19 +74,19 @@ using RangeVal = std::pair<float, float>;
  * @param seed : randomization seed
  * @return NumericValue 
  */
-[[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_rangeContext* ctx,
-                                             BHVR::seed                          seed) {
+[[nodiscard]] inline auto get_numeric(BehaviorParser::Value_rangeContext* ctx, BHVR::seed seed)
+    -> NumericValue {
   if (ctx->float_range()) {
     auto  numbers = ctx->float_range()->FLOAT();
     float min = std::stof(numbers[0]->toString());
     float max = std::stof(numbers[1]->toString());
-    return NumericValue(seed, ExactValue{collapseRangeValue(seed, min, max)});
+    return NumericValue(seed, ExactValue{collapse_range_value(seed, min, max)});
   }
 
   auto  numbers = ctx->number_range()->NUMBER();
   float min = std::round(std::stof(numbers[0]->toString()));
   float max = std::round(std::stof(numbers[1]->toString()));
-  return NumericValue(seed, ExactValue{std::round(collapseRangeValue(seed, min, max))});
+  return NumericValue(seed, ExactValue{std::round(collapse_range_value(seed, min, max))});
 }
 
 /**
@@ -95,8 +96,8 @@ using RangeVal = std::pair<float, float>;
  * @param seed : not used
  * @return NumericValue 
  */
-[[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_floatContext* ctx,
-                                             BHVR::seed                          seed) {
+[[nodiscard]] inline auto get_numeric(BehaviorParser::Value_floatContext* ctx, BHVR::seed seed)
+    -> NumericValue {
   float val = std::stof(ctx->FLOAT()->toString());
   return NumericValue(seed, ExactValue{val});
 }
@@ -108,18 +109,17 @@ using RangeVal = std::pair<float, float>;
  * @param seed : randomization seed
  * @return NumericValue 
  */
-[[nodiscard]] inline NumericValue getNumeric(BehaviorParser::Value_numericContext* ctx,
-                                             BHVR::seed                            seed) {
-  if (ctx->value_float()) return getNumeric(ctx->value_float(), seed);
+[[nodiscard]] inline auto get_numeric(BehaviorParser::Value_numericContext* ctx, BHVR::seed seed)
+    -> NumericValue {
+  if (ctx->value_float()) return get_numeric(ctx->value_float(), seed);
 
-  if (ctx->value_number()) return getNumeric(ctx->value_number(), seed);
+  if (ctx->value_number()) return get_numeric(ctx->value_number(), seed);
 
-  if (ctx->value_random()) return getNumeric(ctx->value_random(), seed);
+  if (ctx->value_random()) return get_numeric(ctx->value_random(), seed);
 
-  if (ctx->value_range()) return getNumeric(ctx->value_range(), seed);
+  if (ctx->value_range()) return get_numeric(ctx->value_range(), seed);
 
-  spdlog::error(
-      "Numeric Value Context Missing Children (you should never see this error)");
+  spdlog::error("Numeric Value Context Missing Children (you should never see this error)");
   throw std::runtime_error("");
   return {};
 }
@@ -131,13 +131,12 @@ using RangeVal = std::pair<float, float>;
  * @param seed : randomization seed
  * @return VIPRA::f3d 
  */
-[[nodiscard]] inline VIPRA::f3d getCoord(BehaviorParser::Value_coordContext* ctx,
-                                         BHVR::seed                          seed) {
+[[nodiscard]] inline auto get_coord(BehaviorParser::Value_coordContext* ctx, BHVR::seed seed) -> VIPRA::f3d {
   auto       values = ctx->value_numeric();
   VIPRA::f3d val;
 
   for (VIPRA::idx i = 0; i < values.size(); ++i) {
-    auto num = getNumeric(values.at(i), seed);
+    auto num = get_numeric(values[i], seed);
     val[i] = num.value(0);
   }
 

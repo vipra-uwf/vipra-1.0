@@ -11,7 +11,7 @@ namespace {
  * @param allTypes : Ptype to get count of
  * @return VIPRA::size 
  */
-inline VIPRA::size getTypeCount(BHVR::Ptype allTypes) {
+inline auto get_type_count(BHVR::Ptype allTypes) -> VIPRA::size {
   VIPRA::size typeCnt = 1;
   while (allTypes.fullType != 0) {
     BHVR::typeUID currType = allTypes.fullType & (allTypes.fullType - 1);
@@ -25,19 +25,19 @@ inline VIPRA::size getTypeCount(BHVR::Ptype allTypes) {
 namespace BHVR {
 
 /**
- * @brief Initializes the groups, starting with all pedestrians in group 0
+ * @brief Initializes the _groups, starting with all pedestrians in group 0
  * 
  * @param allTypes : Ptype with all possible types
  * @param pedCnt : number of pedestrians
  */
 void GroupsContainer::initialize(Ptype allTypes, VIPRA::size pedCnt) {
-  VIPRA::size typeCnt = getTypeCount(allTypes);
-  groups.resize(typeCnt);
-  groups[0] = VIPRA::idxVec(pedCnt);
-  std::iota(groups[0].begin(), groups[0].end(), 0);
+  VIPRA::size typeCnt = get_type_count(allTypes);
+  _groups.resize(typeCnt);
+  _groups[0] = VIPRA::idxVec(pedCnt);
+  std::iota(_groups[0].begin(), _groups[0].end(), 0);
 
-  used.resize(typeCnt);
-  used[0] = std::vector<bool>(pedCnt, false);
+  _used.resize(typeCnt);
+  _used[0] = std::vector<bool>(pedCnt, false);
 }
 
 /**
@@ -46,9 +46,7 @@ void GroupsContainer::initialize(Ptype allTypes, VIPRA::size pedCnt) {
  * @param type : type group to get
  * @return const VIPRA::idxVec& 
  */
-const VIPRA::idxVec& GroupsContainer::getGroup(typeUID type) const {
-  return groups.at(index(type));
-}
+const VIPRA::idxVec& GroupsContainer::get_group(typeUID type) const { return _groups[index(type)]; }
 
 /**
  * @brief Adds a pedestrians index to the group with type
@@ -56,24 +54,24 @@ const VIPRA::idxVec& GroupsContainer::getGroup(typeUID type) const {
  * @param pedIdx : pedestrian index to add to group
  * @param type : group to add to
  */
-void GroupsContainer::addPed(VIPRA::idx pedIdx, typeUID type) {
+void GroupsContainer::add_ped(VIPRA::idx pedIdx, typeUID type) {
   const VIPRA::size ndx = index(type);
-  groups.at(ndx).push_back(pedIdx);
-  used.at(ndx).push_back(false);
+  _groups[ndx].push_back(pedIdx);
+  _used[ndx].push_back(false);
 }
 
 /**
- * @brief Sets a pedestrian as used in a particular group, this pedestrian can then no longer be selected from this group
+ * @brief Sets a pedestrian as _used in a particular group, this pedestrian can then no longer be selected from this group
  * 
  * @param pedIdx : pedestrian index
  * @param type : group pedestrian has been added to
  * @return true 
  * @return false 
  */
-bool GroupsContainer::setUsed(VIPRA::idx pedIdx, typeUID type) {
+auto GroupsContainer::set_used(VIPRA::idx pedIdx, typeUID type) -> bool {
   const VIPRA::size ndx = index(type);
-  auto&             group = groups.at(ndx);
-  auto&             usedGroup = used.at(ndx);
+  auto&             group = _groups[ndx];
+  auto&             usedGroup = _used[ndx];
 
   for (VIPRA::idx i = 0; i < group.size(); ++i) {
     if (group[i] == pedIdx) {
@@ -85,20 +83,18 @@ bool GroupsContainer::setUsed(VIPRA::idx pedIdx, typeUID type) {
 }
 
 /**
- * @brief Returns vector of used pedestrians from a group
+ * @brief Returns vector of _used pedestrians from a group
  * 
- * @param type : group to get used pedestrians from
+ * @param type : group to get _used pedestrians from
  * @return const std::vector<bool>& 
  */
-const std::vector<bool>& GroupsContainer::getUsed(typeUID type) const {
-  return used.at(index(type));
-}
+auto GroupsContainer::get_used(typeUID type) const -> const std::vector<bool>& { return _used[index(type)]; }
 
 /**
- * @brief Resets used status of all pedestrians
+ * @brief Resets _used status of all pedestrians
  * 
  */
-void GroupsContainer::cleanUsed() { used.clear(); }
+void GroupsContainer::clean_used() { _used.clear(); }
 
 /**
  * @brief Removes the pedestrian from the group with type
@@ -106,8 +102,8 @@ void GroupsContainer::cleanUsed() { used.clear(); }
  * @param pedIdx : pedestrian index to remove
  * @param type : group to remove the pedestrian from
  */
-bool GroupsContainer::removePed(VIPRA::idx pedIdx, typeUID type) {
-  auto& group = groups.at(index(type));
+auto GroupsContainer::remove_ped(VIPRA::idx pedIdx, typeUID type) -> bool {
+  auto& group = _groups[index(type)];
   for (auto iter = group.begin(); iter != group.end(); ++iter) {
     if (*iter == pedIdx) {
       group.erase(iter);
@@ -123,7 +119,7 @@ bool GroupsContainer::removePed(VIPRA::idx pedIdx, typeUID type) {
  * @param index : group index
  * @return VIPRA::idxVec& 
  */
-VIPRA::idxVec& GroupsContainer::operator[](VIPRA::idx index) { return groups[index]; }
+auto GroupsContainer::operator[](VIPRA::idx index) -> VIPRA::idxVec& { return _groups[index]; }
 
 /**
  * @brief Gets the group at index
@@ -131,14 +127,12 @@ VIPRA::idxVec& GroupsContainer::operator[](VIPRA::idx index) { return groups[ind
  * @param index : group index
  * @return VIPRA::idxVec& 
  */
-const VIPRA::idxVec& GroupsContainer::at(VIPRA::idx index) const {
-  return groups.at(index);
-}
+auto GroupsContainer::at(VIPRA::idx index) const -> const VIPRA::idxVec& { return _groups.at(index); }
 
 /**
- * @brief Returns the number of groups
+ * @brief Returns the number of _groups
  * 
  * @return VIPRA::size 
  */
-VIPRA::size GroupsContainer::size() const { return groups.size(); }
+auto GroupsContainer::size() const -> VIPRA::size { return _groups.size(); }
 }  // namespace BHVR

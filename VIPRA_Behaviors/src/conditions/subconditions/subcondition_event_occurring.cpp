@@ -5,7 +5,7 @@
 
 namespace BHVR {
 
-SubConditionEventOccurring::SubConditionEventOccurring(VIPRA::idx ev) : event(ev) {}
+SubConditionEventOccurring::SubConditionEventOccurring(VIPRA::idx event) : _event(event) {}
 
 /**
  * @brief Returns true if the event is occurring
@@ -13,7 +13,8 @@ SubConditionEventOccurring::SubConditionEventOccurring(VIPRA::idx ev) : event(ev
  * @return true
  * @return false
  */
-bool SubConditionEventOccurring::operator()(Simpack pack, VIPRA::idx, Target) const {
-  return pack.context.events[event].isOccurring();
+auto SubConditionEventOccurring::operator()(Simpack pack, VIPRA::idx /*unused*/, Target /*unused*/) const
+    -> bool {
+  return pack.get_context().events[_event].is_occurring();
 }
 }  // namespace BHVR

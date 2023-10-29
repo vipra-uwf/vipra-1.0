@@ -1,26 +1,22 @@
 #ifndef VIPRA_SUBCONDITION_SPATIAL_HPP
 #define VIPRA_SUBCONDITION_SPATIAL_HPP
 
-#include <conditions/sub_condition.hpp>
-#include <values/numeric_value.hpp>
+#include "conditions/sub_condition.hpp"
+#include "util/class_types.hpp"
+#include "values/numeric_value.hpp"
 
 namespace BHVR {
 class SubConditionSpatial {
+  NON_DEFAULT_CONSTRUCTIBLE(SubConditionSpatial)
+  COPYABLE(SubConditionSpatial)
+  MOVEABLE(SubConditionSpatial)
  public:
   explicit SubConditionSpatial(NumericValue);
 
-  bool operator()(Simpack, VIPRA::idx, Target) const;
+  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
 
  private:
-  NumericValue within;
-
- public:
-  ~SubConditionSpatial() = default;
-  SubConditionSpatial() = delete;
-  SubConditionSpatial(const SubConditionSpatial&) = default;
-  SubConditionSpatial& operator=(const SubConditionSpatial&) = default;
-  SubConditionSpatial(SubConditionSpatial&&) noexcept = default;
-  SubConditionSpatial& operator=(SubConditionSpatial&&) noexcept = default;
+  NumericValue _within;
 };
 }  // namespace BHVR
 

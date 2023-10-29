@@ -5,47 +5,50 @@
 
 #include <spdlog/spdlog.h>
 
-#include <actions/atom.hpp>
-#include <conditions/condition.hpp>
-#include <definitions/behavior_context.hpp>
-#include <goals/goals.hpp>
-#include <obstacle_set/obstacle_set.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
-#include <time/time.hpp>
-#include <util/timed_latch.hpp>
+#include "definitions/behavior_context.hpp"
 #include "definitions/sim_pack.hpp"
 #include "definitions/type_definitions.hpp"
+
+#include "goals/goals.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
+
+#include "actions/atom.hpp"
+#include "conditions/condition.hpp"
+
 #include "targets/target_selector.hpp"
 #include "targets/target_selectors/target_self.hpp"
-#include "values/numeric_value.hpp"
 
+#include "time/time.hpp"
+
+#include "util/class_types.hpp"
+#include "util/timed_latch.hpp"
+
+#include "values/numeric_value.hpp"
 
 namespace BHVR {
 class Action {
- public:
-  ~Action() = default;
-  Action() = default;
-  Action(const Action&) = default;
-  Action& operator=(const Action&) = default;
-  Action(Action&&) noexcept = default;
-  Action& operator=(Action&&) noexcept = default;
+  DEFAULT_CONSTRUCTIBLE(Action)
+  COPYABLE(Action)
+  MOVEABLE(Action)
 
+ public:
   void initialize(Simpack pack);
 
-  void performAction(Simpack pack, VIPRA::idx);
+  void perform_action(Simpack pack, VIPRA::idx);
 
-  void addCondition(const Condition&);
-  void addAtom(const Atom&);
-  void addDuration(const BHVR::NumericValue&);
-  void addTarget(TargetSelector&&);
+  void add_condition(const Condition&);
+  void add_atom(const Atom&);
+  void add_duration(const BHVR::NumericValue&);
+  void add_target(TargetSelector&&);
 
  private:
-  std::vector<Atom>                   atoms;
-  std::optional<Condition>            condition;
-  std::optional<TimedLatchCollection> duration;
-  TargetSelector                      targets{TargetSelf{}};
+  std::vector<Atom>                   _atoms;
+  std::optional<Condition>            _condition;
+  std::optional<TimedLatchCollection> _duration;
+  TargetSelector                      _targets{TargetSelf{}};
 
-  inline bool evaluate(Simpack pack, VIPRA::idx, Target);
+  [[nodiscard]] inline auto evaluate(Simpack pack, VIPRA::idx, Target) -> bool;
 };
 
 }  // namespace BHVR

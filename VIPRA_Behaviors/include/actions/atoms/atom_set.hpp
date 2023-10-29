@@ -10,13 +10,13 @@ struct AtomSet {
   CAttributeValue value;
   bool            targetSelf;
 
-  inline void operator()(Simpack pack, Target self, Target target) const {
+  inline void operator()(Simpack pack, Self self, Target target) const {
     if (targetSelf) {
-      AttributeHandling::setValue(self, attribute, pack, pack.state, value);
+      AttributeHandling::set_value(self.target, attribute, pack, pack.state, value);
       return;
     }
 
-    AttributeHandling::setValue(target, attribute, pack, pack.state, value);
+    AttributeHandling::set_value(target, attribute, pack, pack.state, value);
   }
 };
 }  // namespace BHVR

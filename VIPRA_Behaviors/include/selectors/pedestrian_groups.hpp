@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include <pedestrian_set/pedestrian_set.hpp>
+#include "pedestrian_set/pedestrian_set.hpp"
 
-#include <definitions/pedestrian_types.hpp>
+#include "definitions/pedestrian_types.hpp"
 #include "definitions/type_definitions.hpp"
 
 namespace BHVR {
@@ -15,6 +15,9 @@ namespace BHVR {
  * 
  */
 class GroupsContainer {
+  DEFAULT_CONSTRUCTIBLE(GroupsContainer)
+  COPYABLE(GroupsContainer)
+  MOVEABLE(GroupsContainer)
  public:
   /**
   * @brief Gets the index into the container for a given type
@@ -22,7 +25,7 @@ class GroupsContainer {
   * @param type : 
   * @return constexpr VIPRA::idx 
   */
-  static constexpr VIPRA::idx index(typeUID type) {
+  static constexpr auto index(typeUID type) -> VIPRA::idx {
     if (type == 0) {
       return 0;
     }
@@ -37,34 +40,27 @@ class GroupsContainer {
     return index;
   }
 
-  GroupsContainer() = default;
-  ~GroupsContainer() = default;
-  GroupsContainer(const GroupsContainer&) = default;
-  GroupsContainer& operator=(const GroupsContainer&) = default;
-  GroupsContainer(GroupsContainer&&) noexcept = default;
-  GroupsContainer& operator=(GroupsContainer&&) noexcept = default;
-
   void initialize(Ptype, VIPRA::size);
-  void cleanUsed();
+  void clean_used();
 
-  [[nodiscard]] VIPRA::size size() const;
+  [[nodiscard]] auto size() const -> VIPRA::size;
 
-  [[nodiscard]] const VIPRA::idxVec& at(VIPRA::idx) const;
-  [[nodiscard]] VIPRA::idxVec&       operator[](VIPRA::idx);
+  [[nodiscard]] auto at(VIPRA::idx) const -> const VIPRA::idxVec&;
+  [[nodiscard]] auto operator[](VIPRA::idx) -> VIPRA::idxVec&;
 
-  [[nodiscard]] const VIPRA::idxVec& getGroup(typeUID) const;
+  [[nodiscard]] auto get_group(typeUID) const -> const VIPRA::idxVec&;
 
-  void addPed(VIPRA::idx, typeUID);
-  void movePed(VIPRA::idx, typeUID, typeUID);
-  bool removePed(VIPRA::idx, typeUID);
+  void add_ped(VIPRA::idx, typeUID);
+  void move_ped(VIPRA::idx, typeUID, typeUID);
+  auto remove_ped(VIPRA::idx, typeUID) -> bool;
 
-  bool                                   setUsed(VIPRA::idx, typeUID);
-  [[nodiscard]] const std::vector<bool>& getUsed(typeUID) const;
-  [[nodiscard]] bool                     isUsed(VIPRA::idx, typeUID) const;
+  auto               set_used(VIPRA::idx, typeUID) -> bool;
+  [[nodiscard]] auto get_used(typeUID) const -> const std::vector<bool>&;
+  [[nodiscard]] auto is_used(VIPRA::idx, typeUID) const -> bool;
 
  private:
-  std::vector<VIPRA::idxVec>     groups;
-  std::vector<std::vector<bool>> used;
+  std::vector<VIPRA::idxVec>     _groups;
+  std::vector<std::vector<bool>> _used;
 };
 }  // namespace BHVR
 

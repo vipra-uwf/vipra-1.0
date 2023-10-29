@@ -10,13 +10,13 @@ struct AtomScale {
   CAttributeValue value;
   bool            targetSelf;
 
-  inline void operator()(Simpack pack, Target self, Target target) const {
+  inline void operator()(Simpack pack, Self self, Target target) const {
     if (targetSelf) {
-      AttributeHandling::scaleValue(self, attribute, pack, pack.state, value);
+      AttributeHandling::scale_value(self.target, attribute, pack, pack.state, value);
       return;
     }
 
-    AttributeHandling::scaleValue(target, attribute, pack, pack.state, value);
+    AttributeHandling::scale_value(target, attribute, pack, pack.state, value);
   }
 };
 }  // namespace BHVR

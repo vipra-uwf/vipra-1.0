@@ -20,6 +20,6 @@ Event:
 .
 
 Action (individual):
-  Stimulus: !Fire occurring
+  Condition: !Fire occurring
   Response: scale velocity 2.0
 .

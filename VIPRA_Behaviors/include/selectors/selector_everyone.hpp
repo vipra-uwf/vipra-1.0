@@ -9,8 +9,7 @@ namespace BHVR {
   * 
   */
 struct SelectorEveryone {
-  SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                            const VIPRA::idxVec&, Simpack);
+  auto operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack) -> SelectorResult;
 };
 
 }  // namespace BHVR

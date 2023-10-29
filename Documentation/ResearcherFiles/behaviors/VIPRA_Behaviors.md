@@ -1,8 +1,3 @@
-/*
- TODO: 
-  MISSING: initial actions
-*/
-
 # VIPRA Behaviors
 
 VIPRA Behaviors is a DSL for creating human behaviors for use in pedestrian dynamics simulations.
@@ -24,6 +19,8 @@ The general layout of a `Behavior` is as follows:
 Types Declaration.       // section (§T.)
 
 States Declaration.  // section (§St.)
+
+Location Declarations. // section (§L.)
 
 Selector Declarations. // section (§S.)
 
@@ -196,6 +193,46 @@ Pedestrians with `Composite Types` are in a `Group` for each `Type`.
 ---
 
 
+# L. Locations
+
+`Locations` are rectangular regions that can be used in `Selectors`, `Conditions`, and `Actions`.
+
+After being declared, `Location` names are always preceded by a `@`
+
+```
+Location:
+  Name: *name*
+  Dimensions:
+    *center*,        // Coord Value (§V.2)
+    *side lengths*,  // Coord Value (§V.2)
+    *rotation*       // Numeric Value (§V.1)
+.
+```
+- \*Name* - The name used to reference this `Location`
+- \*Dimensions* - The dimensions for the `Location`
+  - \*center* - X,Y,Z coordiantes for the center of the rectangle
+  - \*side lengths* - X,Y,Z lengths of the rectangle
+  - \*rotation* - degrees of clockwise rotation
+
+
+Example:
+```
+Location:
+  Name: Aisle
+  Dimensions:
+    {15, 1.7},  // Center of rectangle is at (15, 1.7)
+    {30, 0.3},  // Height of 30m, Width of 30cm
+    0           // Rotated 0 degrees (aligned with X axis)
+.
+```
+---
+
+## L.1. Locations - General Syntax Rules
+
+1. `Location` names are always preceded by a `@` after the declaration
+
+---
+
 ---
 
 # S. Selectors
@@ -206,7 +243,7 @@ Selecting pedestrians is done through a `Selector` declaration. The basic syntax
 ```
 Selector:
   Type: *types*
-  From: *type*     // optional, defaults to base pedestrians group
+  From: *type*     // Optional, defaults to base pedestrians group
   Select: *selection criteria*
 .
 ```
@@ -385,6 +422,16 @@ Select: 10
 
 ---
 
+### S.5.4 Location
+
+Selects all pedestrians inside a given location.
+
+```
+Select: In *Location*
+```
+\*Location\* - Name of `Location` (§L)
+
+---
 
 ## S.6 Selectors - General Syntax Rules
 
@@ -745,11 +792,36 @@ Occurred  // True if the event has occurred at all during the simulation
 ---
 
 Example:
-
 ```
 Action (listener):
   Condition: !announcement is occurring
   Response: set velocity to {0}
+.
+```
+
+---
+
+## C.2.4. Location Enter/Leave
+
+This `Condition` checks if a pedestrian has entered or left a `Location` (§L.)
+
+```
+Enter *location name*
+
+// or
+
+Exit *location name*
+```
+
+
+
+
+Example:
+```
+Action (Luggage_Grabber):
+  Condition: Enter @Aisle
+  Response: set velocity to {0}
+  Duration: 10-30 seconds
 .
 ```
 

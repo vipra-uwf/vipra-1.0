@@ -1,30 +1,26 @@
 #ifndef VIPRA_SUBCONDITION_LEAVE_HPP
 #define VIPRA_SUBCONDITION_LEAVE_HPP
 
-#include <conditions/sub_condition.hpp>
+#include "conditions/sub_condition.hpp"
 
 #include "definitions/sim_pack.hpp"
+#include "util/class_types.hpp"
 
 namespace BHVR {
 class SubConditionLeave {
+  NON_DEFAULT_CONSTRUCTIBLE(SubConditionLeave)
+  COPYABLE(SubConditionLeave)
+  MOVEABLE(SubConditionLeave)
  public:
   explicit SubConditionLeave(VIPRA::idx);
 
-  bool operator()(Simpack, VIPRA::idx, Target);
+  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) -> bool;
 
  private:
-  VIPRA::idx location;
+  VIPRA::idx _location;
 
   // TODO (rolland) temporary fix for not having pedestrian memory
-  std::vector<bool> left;
-
- public:
-  ~SubConditionLeave() = default;
-  SubConditionLeave() = delete;
-  SubConditionLeave(const SubConditionLeave&) = default;
-  SubConditionLeave& operator=(const SubConditionLeave&) = default;
-  SubConditionLeave(SubConditionLeave&&) noexcept = default;
-  SubConditionLeave& operator=(SubConditionLeave&&) noexcept = default;
+  std::vector<bool> _left;
 };
 }  // namespace BHVR
 

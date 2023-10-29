@@ -6,34 +6,32 @@
 
 #include <spdlog/spdlog.h>
 
-#include <conditions/sub_condition.hpp>
+#include "goals/goals.hpp"
+#include "obstacle_set/obstacle_set.hpp"
+#include "pedestrian_set/pedestrian_set.hpp"
+
+#include "conditions/sub_condition.hpp"
 #include "definitions/type_definitions.hpp"
 
-#include <goals/goals.hpp>
-#include <obstacle_set/obstacle_set.hpp>
-#include <pedestrian_set/pedestrian_set.hpp>
 #include "definitions/sim_pack.hpp"
 #include "targets/target.hpp"
+#include "util/class_types.hpp"
 
 namespace BHVR {
 class Condition {
+  DEFAULT_CONSTRUCTIBLE(Condition)
+  COPYABLE(Condition)
+  MOVEABLE(Condition)
  public:
-  Condition() = default;
-  ~Condition() = default;
-  Condition(const Condition&) = default;
-  Condition& operator=(const Condition&) = default;
-  Condition(Condition&&) noexcept = default;
-  Condition& operator=(Condition&&) noexcept = default;
+  void add_and_or(bool);
 
-  void addAndOr(bool);
+  void add_sub_condition(SubCondition&&);
 
-  void addSubCondition(SubCondition&&);
-
-  [[nodiscard]] bool evaluate(Simpack, VIPRA::idx, Target) const;
+  [[nodiscard]] auto evaluate(Simpack, VIPRA::idx, Target) const -> bool;
 
  private:
-  std::vector<bool>         operations;
-  std::vector<SubCondition> conditions;
+  std::vector<bool>         _operations;
+  std::vector<SubCondition> _conditions;
 };
 }  // namespace BHVR
 

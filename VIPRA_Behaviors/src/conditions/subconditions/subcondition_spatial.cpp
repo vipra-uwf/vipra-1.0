@@ -13,13 +13,11 @@ namespace BHVR {
   * @return true 
   * @return false 
   */
-bool SubConditionSpatial::operator()(Simpack pack, VIPRA::idx pedIdx,
-                                     Target target) const {
-  const auto& coords = pack.pedSet.getCoordinates();
+auto SubConditionSpatial::operator()(Simpack pack, VIPRA::idx pedIdx, Target target) const -> bool {
+  const auto& coords = pack.get_pedset().getCoordinates();
 
-  return coords.at(pedIdx).distanceTo(coords.at(target.targetIdx)) <=
-         within.value(pedIdx);
+  return coords[pedIdx].distanceTo(coords[target.targetIdx]) <= _within.value(pedIdx);
 }
 
-SubConditionSpatial::SubConditionSpatial(NumericValue value) : within(std::move(value)) {}
+SubConditionSpatial::SubConditionSpatial(NumericValue value) : _within(std::move(value)) {}
 }  // namespace BHVR

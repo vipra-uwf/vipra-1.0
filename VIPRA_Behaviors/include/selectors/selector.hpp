@@ -3,14 +3,14 @@
 
 #include <spdlog/spdlog.h>
 
-#include <actions/action.hpp>
-#include <definitions/behavior_context.hpp>
-#include <definitions/pedestrian_types.hpp>
+#include "actions/action.hpp"
+#include "definitions/behavior_context.hpp"
+#include "definitions/pedestrian_types.hpp"
 
-#include <randomization/random.hpp>
-#include <selectors/pedestrian_groups.hpp>
-#include <selectors/subselector.hpp>
 #include "definitions/sim_pack.hpp"
+#include "randomization/random.hpp"
+#include "selectors/pedestrian_groups.hpp"
+#include "selectors/subselector.hpp"
 
 namespace BHVR {
 
@@ -19,41 +19,35 @@ namespace BHVR {
  * 
  */
 class Selector {
- public:
-  Selector() = default;
-  ~Selector() = default;
-  Selector(const Selector&) = default;
-  Selector& operator=(const Selector&) = default;
-  Selector(Selector&&) noexcept = default;
-  Selector& operator=(Selector&&) noexcept = default;
+  DEFAULT_CONSTRUCTIBLE(Selector)
+  COPYABLE(Selector)
+  MOVEABLE(Selector)
 
+ public:
   void initialize(const std::string&, VIPRA::pRNG_Engine&, Simpack);
 
-  void setAllTypes(Ptype);
-  void addSubSelector(const SubSelector&);
+  void set_all_types(Ptype);
+  void add_sub_selector(const SubSelector&);
 
-  [[nodiscard]] const GroupsContainer& getGroups() const;
+  [[nodiscard]] auto get_groups() const -> const GroupsContainer&;
 
-  [[nodiscard]] VIPRA::size selectorCount() const;
+  [[nodiscard]] auto selector_count() const -> VIPRA::size;
 
  private:
-  Ptype                    allTypes;
-  std::vector<SubSelector> subSelectors;
-  GroupsContainer          pedGroups;
+  Ptype                    _allTypes;
+  std::vector<SubSelector> _subSelectors;
+  GroupsContainer          _pedGroups;
 
-  [[nodiscard]] VIPRA::idxVec selectPedsFromGroup(SubSelector&, VIPRA::pRNG_Engine&,
-                                                  Simpack, const std::string&);
+  [[nodiscard]] auto select_peds_from_group(SubSelector&, VIPRA::pRNG_Engine&, Simpack, const std::string&)
+      -> VIPRA::idxVec;
 
-  [[nodiscard]] VIPRA::idxVec        orderSelectors();
-  [[nodiscard]] static VIPRA::idxVec filterUsedPeds(const VIPRA::idxVec&,
-                                                    const std::vector<bool>&);
+  [[nodiscard]] auto        order_selectors() -> VIPRA::idxVec;
+  [[nodiscard]] static auto filter_used_peds(const VIPRA::idxVec&, const std::vector<bool>&) -> VIPRA::idxVec;
 
-  void runSelectors(const VIPRA::idxVec&, const std::string&, VIPRA::pRNG_Engine&,
-                    Simpack);
-  void updateUsedPeds(const VIPRA::idxVec&, std::vector<bool>&);
-  void updatePedGroups(const VIPRA::idxVec&, SubSelector&, BehaviorContext&,
-                       const std::string&);
-  void sortGroups();
+  void run_selectors(const VIPRA::idxVec&, const std::string&, VIPRA::pRNG_Engine&, Simpack);
+  void update_used_peds(const VIPRA::idxVec&, std::vector<bool>&);
+  void update_ped_groups(const VIPRA::idxVec&, SubSelector&, BehaviorContext&, const std::string&);
+  void sort_groups();
 };
 }  // namespace BHVR
 

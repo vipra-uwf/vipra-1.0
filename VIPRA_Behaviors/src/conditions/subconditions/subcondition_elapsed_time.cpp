@@ -15,33 +15,31 @@ namespace BHVR {
  * @param time : 
  * @param event : 
  */
-SubConditionElapsedTimeFromEvent::SubConditionElapsedTimeFromEvent(
-    BHVR::NumericValue time, VIPRA::idx ev)
-    : event(ev), requiredTime(std::move(time)), startTime(0) {}
+SubConditionElapsedTimeFromEvent::SubConditionElapsedTimeFromEvent(BHVR::NumericValue time, VIPRA::idx event)
+    : _event(event), _requiredTime(std::move(time)) {}
 
-inline constexpr bool inTimeStep(VIPRA::time_s currTime, VIPRA::time_s checkTime,
-                                 VIPRA::delta_t dT) {
-  const VIPRA::delta_t left = checkTime - dT;
-  const VIPRA::delta_t right = checkTime + dT;
+inline constexpr auto in_time_step(VIPRA::time_s currTime, VIPRA::time_s checkTime, VIPRA::delta_t deltaT)
+    -> bool {
+  const VIPRA::delta_t left = checkTime - deltaT;
+  const VIPRA::delta_t right = checkTime + deltaT;
   return (currTime > left && currTime < right);
 }
 
 /**
  * @brief Returns true if the required simulated time has elapsed from the event starting.
  * 
- * @param dT : 
+ * @param deltaT : 
  * @return true 
  * @return false
  */
-bool SubConditionElapsedTimeFromEvent::operator()(Simpack pack, VIPRA::idx pedIdx,
-                                                  Target) {
-  const auto& ev = pack.context.events[event];
-  if (ev.isStarting()) {
-    startTime = pack.context.elapsedTime;
+auto SubConditionElapsedTimeFromEvent::operator()(Simpack pack, VIPRA::idx pedIdx, Target) -> bool {
+  const auto& event = pack.get_context().events[_event];
+  if (event.is_starting()) {
+    _startTime = pack.get_context().elapsedTime;
   }
 
-  float reqTime = requiredTime.value(pedIdx);
-  float checkTime = startTime + reqTime;
-  return inTimeStep(pack.context.elapsedTime, checkTime, pack.dT);
+  float reqTime = _requiredTime.value(pedIdx);
+  float checkTime = _startTime + reqTime;
+  return in_time_step(pack.get_context().elapsedTime, checkTime, pack.dT);
 }
 }  // namespace BHVR

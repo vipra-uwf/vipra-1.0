@@ -10,7 +10,6 @@
 #include "definitions/state.hpp"
 #include "selectors/selector.hpp"
 
-
 namespace BHVR {
 
 /**
@@ -18,16 +17,16 @@ namespace BHVR {
  * 
  * @return const std::string& 
  */
-const std::string& HumanBehavior::getName() const noexcept { return name; }
+auto HumanBehavior::get_name() const noexcept -> const std::string& { return _name; }
 
 /**
  * @brief Adds an action to the selectors with type
  * 
  * @param action : action to add
  */
-void HumanBehavior::addAction(typeUID type, const Action& action) {
+void HumanBehavior::add_action(typeUID type, const Action& action) {
   const VIPRA::idx ndx = GroupsContainer::index(type);
-  actions[ndx].emplace_back(action);
+  _actions[ndx].emplace_back(action);
 }
 
 /**
@@ -35,17 +34,17 @@ void HumanBehavior::addAction(typeUID type, const Action& action) {
  * 
  * @param selector
  */
-void HumanBehavior::addSubSelector(const SubSelector& subSelector) {
-  selector.addSubSelector(subSelector);
+void HumanBehavior::add_sub_selector(const SubSelector& subSelector) {
+  _selector.add_sub_selector(subSelector);
 }
 
 /**
  * @brief Sets the BHVR selectors allTypes
  * 
  */
-void HumanBehavior::setAllPedTypes(Ptype types) {
-  selector.setAllTypes(types);
-  actions.resize(types.typeCount() + 1);
+void HumanBehavior::set_all_ped_types(Ptype types) {
+  _selector.set_all_types(types);
+  _actions.resize(types.type_count() + 1);
 }
 
 /**
@@ -55,18 +54,18 @@ void HumanBehavior::setAllPedTypes(Ptype types) {
  * @param obsSet : obstacle set object
  * @param goals : goals object
  */
-void HumanBehavior::initialize(const VIPRA::PedestrianSet& pedSet,
-                               const VIPRA::ObstacleSet& obsSet, VIPRA::Goals& goals) {
-  context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
-  context.types = std::vector<BHVR::typeUID>(pedSet.getNumPedestrians());
+void HumanBehavior::initialize(const VIPRA::PedestrianSet& pedSet, const VIPRA::ObstacleSet& obsSet,
+                               VIPRA::Goals& goals) {
+  _context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
+  _context.types = std::vector<BHVR::typeUID>(pedSet.getNumPedestrians());
 
   VIPRA::State dummyState;
 
-  Simpack pack{pedSet, obsSet, goals, dummyState, context, selector.getGroups(), 0};
-  spdlog::debug("Initializing {} Selectors, Seed: {}", selector.selectorCount(), seedNum);
-  selector.initialize(name, rngEngine, pack);
+  Simpack pack{pedSet, obsSet, goals, dummyState, _context, _selector.get_groups(), 0};
+  spdlog::debug("Initializing {} Selectors, Seed: {}", _selector.selector_count(), _seedNum);
+  _selector.initialize(_name, _rngEngine, pack);
 
-  for (auto& actionGroup : actions) {
+  for (auto& actionGroup : _actions) {
     for (auto& action : actionGroup) {
       action.initialize(pack);
     }
@@ -80,14 +79,13 @@ void HumanBehavior::initialize(const VIPRA::PedestrianSet& pedSet,
  * @param obsSet : obstacle set object
  * @param goals : goals object
  * @param state : state object to write results to
- * @param dT : simulation timestep size
+ * @param deltaT : simulation timestep size
  */
-void HumanBehavior::timestep(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSet& obsSet,
-                             VIPRA::Goals& goals, VIPRA::State& state,
-                             VIPRA::delta_t dT) {
-  evaluateEvents(pedSet, obsSet, goals, dT);
-  applyActions(pedSet, obsSet, goals, state, dT);
-  context.elapsedTime += dT;
+void HumanBehavior::timestep(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSet& obsSet, VIPRA::Goals& goals,
+                             VIPRA::State& state, VIPRA::delta_t deltaT) {
+  evaluate_events(pedSet, obsSet, goals, deltaT);
+  apply_actions(pedSet, obsSet, goals, state, deltaT);
+  _context.elapsedTime += deltaT;
 }
 
 /**
@@ -96,9 +94,9 @@ void HumanBehavior::timestep(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSet& o
  * @param event : event object to add
  * @return VIPRA::idx
  */
-VIPRA::idx HumanBehavior::addEvent(const Event& event) {
-  context.events.emplace_back(event);
-  return context.events.size() - 1;
+auto HumanBehavior::add_event(const Event& event) -> VIPRA::idx {
+  _context.events.emplace_back(event);
+  return _context.events.size() - 1;
 }
 
 /**
@@ -107,9 +105,9 @@ VIPRA::idx HumanBehavior::addEvent(const Event& event) {
  * @param loc : location object to add
  * @return VIPRA::idx
 */
-VIPRA::idx HumanBehavior::addLocation(const Location& loc) {
-  context.locations.emplace_back(loc);
-  return context.locations.size() - 1;
+auto HumanBehavior::add_location(const Location& loc) -> VIPRA::idx {
+  _context.locations.emplace_back(loc);
+  return _context.locations.size() - 1;
 }
 
 /**
@@ -117,23 +115,23 @@ VIPRA::idx HumanBehavior::addLocation(const Location& loc) {
  * 
  * @return VIPRA::size 
  */
-VIPRA::size HumanBehavior::eventCount() const { return context.events.size(); }
+auto HumanBehavior::event_count() const -> VIPRA::size { return _context.events.size(); }
 
 /**
  * @brief Returns the number of selectors the behavior has
  * 
  * @return VIPRA::size 
  */
-VIPRA::size HumanBehavior::selectorCount() const { return selector.selectorCount(); }
+auto HumanBehavior::selector_count() const -> VIPRA::size { return _selector.selector_count(); }
 
 /**
  * @brief Returns the number of actions the behavior has
  * 
  * @return VIPRA::size 
  */
-VIPRA::size HumanBehavior::actionCount() const {
+auto HumanBehavior::action_count() const -> VIPRA::size {
   VIPRA::size cnt = 0;
-  for (const auto& actionGroup : actions) {
+  for (const auto& actionGroup : _actions) {
     cnt += actionGroup.size();
   }
 
@@ -145,9 +143,9 @@ VIPRA::size HumanBehavior::actionCount() const {
  * 
  * @param s : randomization seed
  */
-void HumanBehavior::setSeed(BHVR::seed bSeed) {
-  rngEngine.reseed(bSeed);
-  seedNum = bSeed;
+void HumanBehavior::set_seed(BHVR::seed bSeed) {
+  _rngEngine.reseed(bSeed);
+  _seedNum = bSeed;
 }
 
 /**
@@ -156,15 +154,13 @@ void HumanBehavior::setSeed(BHVR::seed bSeed) {
  * @param pedSet : pedestrian set
  * @param obsSet : obstacle set
  * @param goals : goals module
- * @param dT : time between timesteps
+ * @param deltaT : time between timesteps
  */
-void HumanBehavior::evaluateEvents(VIPRA::PedestrianSet& pedSet,
-                                   VIPRA::ObstacleSet& obsSet, VIPRA::Goals& goals,
-                                   VIPRA::delta_t dT) {
+void HumanBehavior::evaluate_events(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSet& obsSet,
+                                    VIPRA::Goals& goals, VIPRA::delta_t deltaT) {
   VIPRA::State dummyState;
-  for (auto& event : context.events) {
-    event.evaluate(
-        {pedSet, obsSet, goals, dummyState, context, selector.getGroups(), dT});
+  for (auto& event : _context.events) {
+    event.evaluate({pedSet, obsSet, goals, dummyState, _context, _selector.get_groups(), deltaT});
   }
 }
 
@@ -175,21 +171,20 @@ void HumanBehavior::evaluateEvents(VIPRA::PedestrianSet& pedSet,
  * @param obsSet : obstacle set
  * @param goals : goals module
  * @param state : next timestep state from pedestrian model 
- * @param dT : timestep size
+ * @param deltaT : timestep size
  */
-void HumanBehavior::applyActions(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSet& obsSet,
-                                 VIPRA::Goals& goals, VIPRA::State& state,
-                                 VIPRA::delta_t dT) {
-  const GroupsContainer& groups = selector.getGroups();
+void HumanBehavior::apply_actions(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSet& obsSet,
+                                  VIPRA::Goals& goals, VIPRA::State& state, VIPRA::delta_t deltaT) {
+  const GroupsContainer& groups = _selector.get_groups();
   const VIPRA::size      groupCnt = groups.size();
 
   for (VIPRA::idx i = 0; i < groupCnt; ++i) {
     const auto& pedestrians = groups.at(i);
     std::for_each(pedestrians.begin(), pedestrians.end(), [&](VIPRA::idx ped) {
       if (!goals.isPedestianGoalMet(ped))
-        for (auto& action : actions[i]) {
-          action.performAction(
-              {pedSet, obsSet, goals, state, context, selector.getGroups(), dT}, ped);
+        for (auto& action : _actions[i]) {
+          action.perform_action({pedSet, obsSet, goals, state, _context, _selector.get_groups(), deltaT},
+                                ped);
         }
     });
   }
@@ -197,8 +192,7 @@ void HumanBehavior::applyActions(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSe
 
 // ------------------------------------------ CONSTRUCTORS ------------------------------------------------------------------------
 
-HumanBehavior::HumanBehavior(std::string behaviorName)
-    : name(std::move(behaviorName)), context() {}
+HumanBehavior::HumanBehavior(std::string behaviorName) : _name(std::move(behaviorName)), _context() {}
 
 // ------------------------------------------ END CONSTRUCTORS ------------------------------------------------------------------------
 }  // namespace BHVR

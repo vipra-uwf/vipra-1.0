@@ -21,51 +21,45 @@ namespace BHVR {
  * Describes a specific human behavior. Implementations can either define the behavior directly in C++ or use a DSL.
  */
 class HumanBehavior {
+  DEFAULT_CONSTRUCTIBLE(HumanBehavior)
+  COPYABLE(HumanBehavior)
+  MOVEABLE(HumanBehavior)
+
  public:
   explicit HumanBehavior(std::string);
 
-  [[nodiscard]] const std::string& getName() const noexcept;
+  [[nodiscard]] auto get_name() const noexcept -> const std::string&;
 
   void initialize(const VIPRA::PedestrianSet&, const VIPRA::ObstacleSet&, VIPRA::Goals&);
-  void timestep(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::State&,
-                VIPRA::delta_t);
+  void timestep(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::State&, VIPRA::delta_t);
 
-  void       setAllPedTypes(Ptype);
-  void       addSubSelector(const SubSelector&);
-  void       addAction(typeUID, const Action&);
-  VIPRA::idx addEvent(const Event&);
-  VIPRA::idx addLocation(const Location&);
+  void set_all_ped_types(Ptype);
+  void add_sub_selector(const SubSelector&);
+  void add_action(typeUID, const Action&);
+  auto add_event(const Event&) -> VIPRA::idx;
+  auto add_location(const Location&) -> VIPRA::idx;
 
-  [[nodiscard]] VIPRA::size eventCount() const;
-  [[nodiscard]] VIPRA::size selectorCount() const;
-  [[nodiscard]] VIPRA::size actionCount() const;
+  [[nodiscard]] auto event_count() const -> VIPRA::size;
+  [[nodiscard]] auto selector_count() const -> VIPRA::size;
+  [[nodiscard]] auto action_count() const -> VIPRA::size;
 
-  void setSeed(BHVR::seed);
+  void set_seed(BHVR::seed);
 
  private:
-  BHVR::seed         seedNum = 0;
-  VIPRA::pRNG_Engine rngEngine{};
+  BHVR::seed         _seedNum{};
+  VIPRA::pRNG_Engine _rngEngine{};
 
-  std::string     name;
-  BehaviorContext context;
+  std::string     _name;
+  BehaviorContext _context;
 
-  Selector                         selector;
-  std::vector<Event>               events;
-  std::vector<Location*>           locations;
-  std::vector<std::vector<Action>> actions;
+  Selector                         _selector;
+  std::vector<Event>               _events;
+  std::vector<Location*>           _locations;
+  std::vector<std::vector<Action>> _actions;
 
-  void evaluateEvents(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&,
-                      VIPRA::delta_t);
-  void applyActions(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&,
-                    VIPRA::State&, VIPRA::delta_t);
-
- public:
-  HumanBehavior() = default;
-  ~HumanBehavior() = default;
-  HumanBehavior& operator=(const HumanBehavior&) = default;
-  HumanBehavior(const HumanBehavior&) = default;
-  HumanBehavior(HumanBehavior&&) noexcept = default;
-  HumanBehavior& operator=(HumanBehavior&&) noexcept = default;
+  void evaluate_events(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::delta_t);
+  void apply_actions(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::State&,
+                     VIPRA::delta_t);
 };
 }  // namespace BHVR
 

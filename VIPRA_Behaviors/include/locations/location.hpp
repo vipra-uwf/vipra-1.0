@@ -18,11 +18,11 @@ class Location {
  public:
   explicit Location(VIPRA::f3d, VIPRA::f3d, float);
 
-  [[nodiscard]] float      area() const;
-  [[nodiscard]] VIPRA::f3d center() const;
+  [[nodiscard]] auto area() const -> float;
+  [[nodiscard]] auto center() const -> VIPRA::f3d;
 
-  [[nodiscard]] VIPRA::f3d randomPoint(VIPRA::pRNG_Engine&) const;
-  [[nodiscard]] bool       inside(VIPRA::f3d) const;
+  [[nodiscard]] auto random_point(VIPRA::pRNG_Engine&) const -> VIPRA::f3d;
+  [[nodiscard]] auto inside(VIPRA::f3d) const -> bool;
 
  private:
   VIPRA::f3d _p1;
@@ -33,17 +33,17 @@ class Location {
   VIPRA::f3d _dims;
   float      _rot{};
 
-  static constexpr float areaError = 0.0001;
+  static constexpr float AREA_ERROR = 0.0001;
 
-  [[nodiscard]] static float triangleArea(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d);
+  [[nodiscard]] static auto triangle_area(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d) -> float;
 
  public:
   ~Location() = default;
   Location(Location&&) noexcept = default;
-  Location& operator=(Location&&) noexcept = default;
+  auto operator=(Location&&) noexcept -> Location& = default;
   Location() = default;
   Location(const Location&) = default;
-  Location& operator=(const Location&) noexcept = default;
+  auto operator=(const Location&) noexcept -> Location& = default;
 };
 }  //namespace BHVR
 #endif

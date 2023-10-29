@@ -1,8 +1,9 @@
 #ifndef VIPRA_BEHAVIORS_DECLARATION_COMPONENTS_HPP
 #define VIPRA_BEHAVIORS_DECLARATION_COMPONENTS_HPP
 
-#include <generated/BehaviorParser.h>
 #include <string>
+
+#include <generated/BehaviorParser.h>
 
 namespace BHVR {
 using evEnd = BehaviorParser::Event_endContext*;

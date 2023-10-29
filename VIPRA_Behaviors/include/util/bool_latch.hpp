@@ -2,6 +2,7 @@
 #define VIPRA_BEHAVIORS_BOOL_LATCH_HPP
 
 #include "definitions/type_definitions.hpp"
+#include "util/class_types.hpp"
 
 namespace BHVR {
 /**
@@ -9,23 +10,18 @@ namespace BHVR {
    * 
    */
 class Latch {
+  DEFAULT_CONSTRUCTIBLE(Latch)
+  COPYABLE(Latch)
+  MOVEABLE(Latch)
  public:
-  inline void latch() { set = true; }
+  inline void latch() { _set = true; }
 
-  inline void unlatch() { set = false; }
+  inline void unlatch() { _set = false; }
 
-  [[nodiscard]] inline explicit operator bool() const { return set; }
+  [[nodiscard]] inline explicit operator bool() const { return _set; }
 
  private:
-  bool set = false;
-
- public:
-  Latch() = default;
-  ~Latch() = default;
-  Latch(const Latch&) = default;
-  Latch& operator=(const Latch&) = default;
-  Latch(Latch&&) noexcept = default;
-  Latch& operator=(Latch&&) noexcept = default;
+  bool _set = false;
 };
 }  // namespace BHVR
 

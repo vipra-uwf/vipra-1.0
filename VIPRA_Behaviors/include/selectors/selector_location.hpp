@@ -11,9 +11,9 @@ namespace BHVR {
  * 
  */
 struct SelectorLocation {
-  VIPRA::idx     location;
-  SelectorResult operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&,
-                            const VIPRA::idxVec&, Simpack) const;
+  VIPRA::idx location;
+  auto       operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack) const
+      -> SelectorResult;
 };
 }  // namespace BHVR
 

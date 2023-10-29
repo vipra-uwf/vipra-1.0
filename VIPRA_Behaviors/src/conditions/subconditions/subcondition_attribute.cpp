@@ -5,10 +5,10 @@
 
 namespace BHVR {
 SubConditionAttribute::SubConditionAttribute(Attribute type, CAttributeValue val)
-    : type(type), value(val) {}
+    : _type(type), _value(val) {}
 
-bool SubConditionAttribute::operator()(Simpack pack, VIPRA::idx, Target target) const {
-  auto attr = AttributeHandling::getValue(target, type, pack);
-  return AttributeHandling::equal(attr, value);
+auto SubConditionAttribute::operator()(Simpack pack, VIPRA::idx /*unused*/, Target target) const -> bool {
+  auto attr = AttributeHandling::get_value(target, _type, pack);
+  return AttributeHandling::equal(attr, _value);
 }
 }  // namespace BHVR

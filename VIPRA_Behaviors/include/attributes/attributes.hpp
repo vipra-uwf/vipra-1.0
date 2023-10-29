@@ -61,7 +61,7 @@ struct CAttributeValue {
 
   CAttributeValue(Type aType, const void* aVal) : type(aType), value(aVal) {}
 
-  inline void typeCheck(Type check) const {
+  inline void type_check(Type check) const {
     if (type != check) DSLException::error("Invalid Type");
   }
 };
@@ -79,7 +79,7 @@ struct AttributeValue {
    * 
    * @param check : type value should be
    */
-  inline void typeCheck(Type check) const {
+  inline void type_check(Type check) const {
     if (type != check) DSLException::error("Invalid Type");
   }
 };
@@ -98,13 +98,12 @@ class AttributeHandling {
    * @param pack : simulation pack
    * @return CAttributeValue 
    */
-  [[nodiscard]] inline static CAttributeValue getValue(Target target, Attribute attr,
-                                                       Simpack pack) {
+  [[nodiscard]] inline static auto get_value(Target target, Attribute attr, Simpack pack) -> CAttributeValue {
     switch (target.type) {
       case TargetType::PEDESTRIAN:
-        return getPedValue(target, attr, pack);
+        return get_ped_value(target, attr, pack);
       case TargetType::EVENT:
-        return getEventValue(target, attr, pack);
+        return get_event_value(target, attr, pack);
       case TargetType::INVALID:
         return {Type::INVALID, nullptr};
     }
@@ -119,14 +118,14 @@ class AttributeHandling {
    * @param state : timestep state
    * @param value : value to set attribute to
    */
-  inline static void setValue(Target target, Attribute attr, Simpack pack,
-                              VIPRA::State& state, CAttributeValue value) {
+  inline static void set_value(Target target, Attribute attr, Simpack pack, VIPRA::State& state,
+                               CAttributeValue value) {
     switch (target.type) {
       case TargetType::PEDESTRIAN:
-        setPedValue(target, attr, pack, state, value);
+        set_ped_value(target, attr, pack, state, value);
         return;
       case TargetType::EVENT:
-        setEventValue(target, attr, pack, value);
+        set_event_value(target, attr, pack, value);
         return;
       case TargetType::INVALID:
         return;
@@ -142,11 +141,11 @@ class AttributeHandling {
    * @param state : timestep state
    * @param value : value to scale attribute by
    */
-  inline static void scaleValue(Target target, Attribute attr, Simpack pack,
-                                VIPRA::State& state, CAttributeValue value) {
+  inline static void scale_value(Target target, Attribute attr, Simpack pack, VIPRA::State& state,
+                                 CAttributeValue value) {
     switch (target.type) {
       case TargetType::PEDESTRIAN:
-        scalePedValue(target, attr, pack, state, value);
+        scale_ped_value(target, attr, pack, state, value);
         return;
       case TargetType::EVENT:
         DSLException::error("Cannot Scale Event Value");
@@ -164,18 +163,16 @@ class AttributeHandling {
    * @return true : if equal
    * @return false : if not equal or not same type
    */
-  [[nodiscard]] inline static bool equal(CAttributeValue value1, CAttributeValue value2) {
+  [[nodiscard]] inline static auto equal(CAttributeValue value1, CAttributeValue value2) -> bool {
     if (value1.type != value2.type) return false;
 
     switch (value1.type) {
       case Type::INVALID:
         return false;
       case Type::NUMBER:
-        return *static_cast<const float*>(value1.value) ==
-               *static_cast<const float*>(value2.value);
+        return *static_cast<const float*>(value1.value) == *static_cast<const float*>(value2.value);
       case Type::COORD:
-        return *static_cast<const VIPRA::f3d*>(value1.value) ==
-               *static_cast<const VIPRA::f3d*>(value2.value);
+        return *static_cast<const VIPRA::f3d*>(value1.value) == *static_cast<const VIPRA::f3d*>(value2.value);
       case Type::STATE:
         return *static_cast<const BHVR::stateUID*>(value1.value) ==
                *static_cast<const BHVR::stateUID*>(value2.value);
@@ -193,9 +190,9 @@ class AttributeHandling {
    * @param value : attribute value
    * @return CAttributeValue
    */
-  template <typename T>
-  [[nodiscard]] inline static CAttributeValue storeValue(Type type, T&& value) {
-    valueStore.emplace_back(type, new T(value));
+  template <typename value_t>
+  [[nodiscard]] inline static auto store_value(Type type, value_t&& value) -> CAttributeValue {
+    valueStore.emplace_back(type, new value_t(value));
     return valueStore.back();
   }
 
@@ -234,16 +231,16 @@ class AttributeHandling {
    * @param pack : simulation pack
    * @return CAttributeValue 
    */
-  inline static CAttributeValue getPedValue(Target target, Attribute attr, Simpack pack) {
+  inline static auto get_ped_value(Target target, Attribute attr, Simpack pack) -> CAttributeValue {
     switch (attr) {
       case Attribute::POSITION:
-        return {Type::COORD, &pack.pedSet.getPedCoords(target.targetIdx)};
+        return {Type::COORD, &pack.get_pedset().getPedCoords(target.targetIdx)};
       case Attribute::VELOCITY:
-        return {Type::COORD, &pack.pedSet.getPedVelocity(target.targetIdx)};
+        return {Type::COORD, &pack.get_pedset().getPedVelocity(target.targetIdx)};
       case Attribute::GOAL:
-        return {Type::COORD, &pack.goals.getEndGoal(target.targetIdx)};
+        return {Type::COORD, &pack.get_goals().getEndGoal(target.targetIdx)};
       case Attribute::STATE:
-        return {Type::STATE, &pack.context.pedStates.at(target.targetIdx)};
+        return {Type::STATE, &pack.get_context().pedStates[target.targetIdx]};
       default:
         DSLException::error("Invalid Pedestrian Attribute");
     }
@@ -257,14 +254,13 @@ class AttributeHandling {
    * @param pack : simulation pack
    * @return CAttributeValue 
    */
-  inline static CAttributeValue getEventValue(Target target, Attribute attr,
-                                              Simpack pack) {
+  inline static auto get_event_value(Target target, Attribute attr, Simpack pack) -> CAttributeValue {
     switch (attr) {
       case Attribute::LOCATION:
         // TODO (rolland) : get this added in when locations are done
         DSLException::error("Event Locations Not Implmented");
       case Attribute::STATUS:
-        return {Type::STATUS, &pack.context.events.at(target.targetIdx).getStatus()};
+        return {Type::STATUS, &pack.get_context().events[target.targetIdx].get_status()};
       default:
         DSLException::error("Invalid Event Attribute");
     }
@@ -279,20 +275,20 @@ class AttributeHandling {
    * @param state : next timestep state
    * @param value : value to set attribute to
    */
-  inline static void setPedValue(Target target, Attribute attr, Simpack pack,
-                                 VIPRA::State& state, CAttributeValue value) {
+  inline static void set_ped_value(Target target, Attribute attr, Simpack pack, VIPRA::State& state,
+                                   CAttributeValue value) {
     switch (attr) {
       case Attribute::POSITION:
-        setPosition(target, state, value);
+        set_position(target, state, value);
         return;
       case Attribute::VELOCITY:
-        setVelocity(target, pack, state, value);
+        set_velocity(target, pack, state, value);
         return;
       case Attribute::GOAL:
-        setGoal(target, pack, value);
+        set_goal(target, pack, value);
         return;
       case Attribute::STATE:
-        setState(target, pack, value);
+        set_state(target, pack, value);
         return;
       default:
         DSLException::error("Invalid Pedestrian Attribute");
@@ -308,21 +304,21 @@ class AttributeHandling {
    * @param state : next timestep state
    * @param value : value to set attribute to
    */
-  inline static void scalePedValue(Target target, Attribute attr, Simpack pack,
-                                   VIPRA::State& state, CAttributeValue value) {
+  inline static void scale_ped_value(Target target, Attribute attr, Simpack pack, VIPRA::State& state,
+                                     CAttributeValue value) {
     switch (attr) {
       case Attribute::POSITION:
         DSLException::error("Cannot Scale Pedestrian Position");
         return;
       case Attribute::VELOCITY:
-        scaleVelocity(target, pack, state, value);
+        scale_velocity(target, pack, state, value);
         return;
       case Attribute::GOAL:
         // TODO (rolland) update this with goals
         DSLException::error("Updating Pedestrian Goals Is Not Implemented");
         return;
       case Attribute::STATE:
-        setState(target, pack, value);
+        set_state(target, pack, value);
         return;
       default:
         DSLException::error("Invalid Pedestrian Attribute");
@@ -337,15 +333,14 @@ class AttributeHandling {
    * @param pack : simulation pack
    * @param value : value to set attribute to
    */
-  inline static void setEventValue(Target target, Attribute attr, Simpack pack,
-                                   CAttributeValue value) {
+  inline static void set_event_value(Target target, Attribute attr, Simpack pack, CAttributeValue value) {
     switch (attr) {
       case Attribute::LOCATION:
         // TODO (rolland) : get this added in when locations are done
         DSLException::error("Event Locations Not Implmented");
       case Attribute::STATUS:
-        pack.context.events.at(target.targetIdx)
-            .setStatus(*static_cast<const BHVR::EventStatus*>(value.value));
+        pack.get_context().events[target.targetIdx].set_status(
+            *static_cast<const BHVR::EventStatus*>(value.value));
         return;
       default:
         DSLException::error("Invalid Event Attribute");
@@ -361,10 +356,9 @@ class AttributeHandling {
    * @param state : next time step state
    * @param value : value to set position to
    */
-  static inline void setPosition(Target target, VIPRA::State& state,
-                                 CAttributeValue value) {
-    value.typeCheck(Type::COORD);
-    state.coords.at(target.targetIdx) = *static_cast<const VIPRA::pcoord*>(value.value);
+  static inline void set_position(Target target, VIPRA::State& state, CAttributeValue value) {
+    value.type_check(Type::COORD);
+    state.coords[target.targetIdx] = *static_cast<const VIPRA::pcoord*>(value.value);
   }
 
   /**
@@ -374,10 +368,9 @@ class AttributeHandling {
    * @param pack : simulation pack
    * @param value : value to set attribute to
    */
-  static inline void setState(Target target, Simpack pack, CAttributeValue value) {
-    value.typeCheck(Type::STATE);
-    pack.context.pedStates.at(target.targetIdx) =
-        *static_cast<const BHVR::stateUID*>(value.value);
+  static inline void set_state(Target target, Simpack pack, CAttributeValue value) {
+    value.type_check(Type::STATE);
+    pack.get_context().pedStates[target.targetIdx] = *static_cast<const BHVR::stateUID*>(value.value);
   }
 
   /**
@@ -387,10 +380,10 @@ class AttributeHandling {
    * @param pack : simulation pack
    * @param value : value to set velocity to
    */
-  static inline void setGoal(Target target, Simpack pack, CAttributeValue value) {
-    value.typeCheck(Type::COORD);
-    pack.goals.changeEndGoal(target.targetIdx, pack.pedSet.getPedCoords(target.targetIdx),
-                             *static_cast<const VIPRA::f3d*>(value.value));
+  static inline void set_goal(Target target, Simpack pack, CAttributeValue value) {
+    value.type_check(Type::COORD);
+    pack.get_goals().changeEndGoal(target.targetIdx, pack.get_pedset().getPedCoords(target.targetIdx),
+                                   *static_cast<const VIPRA::f3d*>(value.value));
   }
 
   /**
@@ -401,16 +394,13 @@ class AttributeHandling {
    * @param state : next timestep state
    * @param value : value to set velocity to
    */
-  static inline void setVelocity(Target target, Simpack pack, VIPRA::State& state,
-                                 CAttributeValue value) {
-    value.typeCheck(Type::COORD);
+  static inline void set_velocity(Target target, Simpack pack, VIPRA::State& state, CAttributeValue value) {
+    value.type_check(Type::COORD);
 
-    state.velocities.at(target.targetIdx) =
-        *static_cast<const VIPRA::veloc*>(value.value);
+    state.velocities[target.targetIdx] = *static_cast<const VIPRA::veloc*>(value.value);
 
-    VIPRA::f3d originalPos = pack.pedSet.getPedCoords(target.targetIdx);
-    state.coords.at(target.targetIdx) =
-        originalPos + (state.velocities.at(target.targetIdx) * pack.dT);
+    VIPRA::f3d originalPos = pack.get_pedset().getPedCoords(target.targetIdx);
+    state.coords[target.targetIdx] = originalPos + (state.velocities[target.targetIdx] * pack.dT);
   }
 
   // ------------------------------------------- END SETTERS ------------------------------------------------------------------------
@@ -425,17 +415,15 @@ class AttributeHandling {
    * @param state : next timestep state
    * @param value : value to set velocity to
    */
-  static inline void scaleVelocity(Target target, Simpack pack, VIPRA::State& state,
-                                   CAttributeValue value) {
-    value.typeCheck(Type::NUMBER);
+  static inline void scale_velocity(Target target, Simpack pack, VIPRA::State& state, CAttributeValue value) {
+    value.type_check(Type::NUMBER);
 
     const NumericValue& scale = *static_cast<const NumericValue*>(value.value);
     // TODO (rolland): get magnitude, scale that then apply to the unit vector
     float scaleVal = scale.value(target.targetIdx);
-    auto  tempvel = state.velocities.at(target.targetIdx);
+    auto  tempvel = state.velocities[target.targetIdx];
     tempvel *= scaleVal;
-    state.coords.at(target.targetIdx) =
-        pack.pedSet.getPedCoords(target.targetIdx) + (tempvel * pack.dT);
+    state.coords[target.targetIdx] = pack.get_pedset().getPedCoords(target.targetIdx) + (tempvel * pack.dT);
   }
 
   // --------------------------------------------- END SCALING ------------------------------------------------------------------------

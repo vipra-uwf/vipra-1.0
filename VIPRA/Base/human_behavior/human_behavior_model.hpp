@@ -32,7 +32,7 @@ class HumanBehaviorModel {
 
  private:
   std::vector<BHVR::HumanBehavior> humanBehaviors;
-  VIPRA::size                      seed{};
+  BHVR::seed                       seed{};
 
   void loadBehaviors(const VIPRA::Config&);
   void loadMockBehavior(const std::vector<std::string>&);

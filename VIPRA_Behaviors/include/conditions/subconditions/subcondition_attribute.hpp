@@ -1,8 +1,9 @@
 #ifndef VIPRA_SUBCONDITION_ATTRIBUTE_HPP
 #define VIPRA_SUBCONDITION_ATTRIBUTE_HPP
 
-#include <attributes/attributes.hpp>
-#include <conditions/sub_condition.hpp>
+#include "attributes/attributes.hpp"
+#include "conditions/sub_condition.hpp"
+#include "util/class_types.hpp"
 
 namespace BHVR {
 /**
@@ -10,22 +11,18 @@ namespace BHVR {
  * 
  */
 class SubConditionAttribute {
+  NON_DEFAULT_CONSTRUCTIBLE(SubConditionAttribute)
+  COPYABLE(SubConditionAttribute)
+  MOVEABLE(SubConditionAttribute)
+
  public:
   explicit SubConditionAttribute(Attribute, CAttributeValue);
 
-  bool operator()(Simpack, VIPRA::idx, Target) const;
+  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
 
  private:
-  Attribute       type;
-  CAttributeValue value;
-
- public:
-  ~SubConditionAttribute() = default;
-  SubConditionAttribute() = delete;
-  SubConditionAttribute(const SubConditionAttribute&) = default;
-  SubConditionAttribute& operator=(const SubConditionAttribute&) = default;
-  SubConditionAttribute(SubConditionAttribute&&) noexcept = default;
-  SubConditionAttribute& operator=(SubConditionAttribute&&) noexcept = default;
+  Attribute       _type;
+  CAttributeValue _value;
 };
 }  // namespace BHVR
 
