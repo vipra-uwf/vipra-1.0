@@ -89,45 +89,43 @@ $(document).ready(function() { init_codefold(1); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;spdlog/spdlog.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;conditions/sub_condition.hpp&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;definitions/type_definitions.hpp&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;goals/goals.hpp&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;obstacle_set/obstacle_set.hpp&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;pedestrian_set/pedestrian_set.hpp&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;definitions/sim_pack.hpp&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;targets/target.hpp&quot;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">namespace </span>BHVR {</div>
-<div class="foldopen" id="foldopen00019" data-start="{" data-end="};">
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="../../d9/d20/classBHVR_1_1Condition.html">   19</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a> {</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">~Condition</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp;) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp; operator=(<span class="keyword">const</span> <a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp;) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp;&amp;) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp; operator=(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp;&amp;) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;goals/goals.hpp&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;obstacle_set/obstacle_set.hpp&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;pedestrian_set/pedestrian_set.hpp&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;conditions/sub_condition.hpp&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;definitions/type_definitions.hpp&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;definitions/sim_pack.hpp&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;targets/target.hpp&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;util/class_types.hpp&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span>BHVR {</div>
+<div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="../../d9/d20/classBHVR_1_1Condition.html">   21</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  DEFAULT_CONSTRUCTIBLE(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  COPYABLE(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  MOVEABLE(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#acf44352c8f8384f449c2ec96edb09af4">add_and_or</a>(<span class="keywordtype">bool</span>);</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#a062183bc68ed7c65c19d3d8c1651b140">addAndOr</a>(<span class="keywordtype">bool</span>);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#abee543b5ddff7633aed038a502419719">add_sub_condition</a>(SubCondition&amp;&amp;);</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#ab4f9945f6b82b1b6148838ed93e97015">addSubCondition</a>(SubCondition&amp;&amp;);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#a866855c9de378095e8bcadfee7e0a009">evaluate</a>(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) <span class="keyword">const</span> -&gt; bool;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#a33741809982c40a6345986996ad9b368">evaluate</a>(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  std::vector&lt;bool&gt;         operations;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  std::vector&lt;SubCondition&gt; conditions;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>};</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  std::vector&lt;bool&gt;         _operations;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  std::vector&lt;SubCondition&gt; _conditions;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
 </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}  <span class="comment">// namespace BHVR</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassBHVR_1_1Condition_html"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html">BHVR::Condition</a></div><div class="ttdef"><b>Definition</b> condition.hpp:19</div></div>
-<div class="ttc" id="aclassBHVR_1_1Condition_html_a062183bc68ed7c65c19d3d8c1651b140"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html#a062183bc68ed7c65c19d3d8c1651b140">BHVR::Condition::addAndOr</a></div><div class="ttdeci">void addAndOr(bool)</div><div class="ttdoc">Adds a logical and/or operator to the condition.</div><div class="ttdef"><b>Definition</b> condition.cpp:57</div></div>
-<div class="ttc" id="aclassBHVR_1_1Condition_html_a33741809982c40a6345986996ad9b368"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html#a33741809982c40a6345986996ad9b368">BHVR::Condition::evaluate</a></div><div class="ttdeci">bool evaluate(Simpack, VIPRA::idx, Target) const</div><div class="ttdoc">Tests whether a condition is met, by running through each sub condition sequentially.</div><div class="ttdef"><b>Definition</b> condition.cpp:20</div></div>
-<div class="ttc" id="aclassBHVR_1_1Condition_html_ab4f9945f6b82b1b6148838ed93e97015"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html#ab4f9945f6b82b1b6148838ed93e97015">BHVR::Condition::addSubCondition</a></div><div class="ttdeci">void addSubCondition(SubCondition &amp;&amp;)</div><div class="ttdoc">Adds a new subcondition to the condition.</div><div class="ttdef"><b>Definition</b> condition.cpp:48</div></div>
-<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:17</div></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}  <span class="comment">// namespace BHVR</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassBHVR_1_1Condition_html"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html">BHVR::Condition</a></div><div class="ttdef"><b>Definition</b> condition.hpp:21</div></div>
+<div class="ttc" id="aclassBHVR_1_1Condition_html_a866855c9de378095e8bcadfee7e0a009"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html#a866855c9de378095e8bcadfee7e0a009">BHVR::Condition::evaluate</a></div><div class="ttdeci">auto evaluate(Simpack, VIPRA::idx, Target) const -&gt; bool</div><div class="ttdoc">Tests whether a condition is met, by running through each sub condition sequentially.</div><div class="ttdef"><b>Definition</b> condition.cpp:20</div></div>
+<div class="ttc" id="aclassBHVR_1_1Condition_html_abee543b5ddff7633aed038a502419719"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html#abee543b5ddff7633aed038a502419719">BHVR::Condition::add_sub_condition</a></div><div class="ttdeci">void add_sub_condition(SubCondition &amp;&amp;)</div><div class="ttdoc">Adds a new subcondition to the condition.</div><div class="ttdef"><b>Definition</b> condition.cpp:48</div></div>
+<div class="ttc" id="aclassBHVR_1_1Condition_html_acf44352c8f8384f449c2ec96edb09af4"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html#acf44352c8f8384f449c2ec96edb09af4">BHVR::Condition::add_and_or</a></div><div class="ttdeci">void add_and_or(bool)</div><div class="ttdoc">Adds a logical and/or operator to the condition.</div><div class="ttdef"><b>Definition</b> condition.cpp:55</div></div>
+<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:18</div></div>
 <div class="ttc" id="astructBHVR_1_1Target_html"><div class="ttname"><a href="../../d1/d49/structBHVR_1_1Target.html">BHVR::Target</a></div><div class="ttdoc">Holds information about what to target.</div><div class="ttdef"><b>Definition</b> target.hpp:25</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -92,20 +92,24 @@ $(document).ready(function() { init_codefold(1); });
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="foldopen" id="foldopen00014" data-start="{" data-end="};">
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="../../d1/df3/classBHVR_1_1TargetSelector.html">   14</a></span><span class="keyword">class </span><a class="code hl_class" href="../../d1/df3/classBHVR_1_1TargetSelector.html">TargetSelector</a> {</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <a class="code hl_class" href="../../d1/df3/classBHVR_1_1TargetSelector.html">TargetSelector</a>() : select(<a class="code hl_struct" href="../../d5/d62/structBHVR_1_1TargetSelf.html">TargetSelf</a>()) {}</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="../../d1/df3/classBHVR_1_1TargetSelector.html">TargetSelector</a>(TargetFunc&amp;&amp; func) : select(func) {}</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> getTarget(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> self) { <span class="keywordflow">return</span> select(pack, self); }</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  TargetFunc select;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>};</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  DEFAULT_CONSTRUCTIBLE(<a class="code hl_class" href="../../d1/df3/classBHVR_1_1TargetSelector.html">TargetSelector</a>)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  COPYABLE(<a class="code hl_class" href="../../d1/df3/classBHVR_1_1TargetSelector.html">TargetSelector</a>)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  MOVEABLE(<a class="code hl_class" href="../../d1/df3/classBHVR_1_1TargetSelector.html">TargetSelector</a>)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="../../d1/df3/classBHVR_1_1TargetSelector.html">TargetSelector</a>(TargetFunc&amp;&amp; func) : _select(func) {}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keyword">auto</span> get_target(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, <a class="code hl_struct" href="../../d3/d93/structBHVR_1_1Self.html">Self</a> self) -&gt; <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a> { <span class="keywordflow">return</span> _select(pack, self); }</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  TargetFunc _select{<a class="code hl_struct" href="../../d5/d62/structBHVR_1_1TargetSelf.html">TargetSelf</a>{}};</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>};</div>
 </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>}  <span class="comment">// namespace BHVR</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}  <span class="comment">// namespace BHVR</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassBHVR_1_1TargetSelector_html"><div class="ttname"><a href="../../d1/df3/classBHVR_1_1TargetSelector.html">BHVR::TargetSelector</a></div><div class="ttdoc">Used to grab a target for either conditions or actions.</div><div class="ttdef"><b>Definition</b> target_selector.hpp:14</div></div>
-<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:17</div></div>
+<div class="ttc" id="astructBHVR_1_1Self_html"><div class="ttname"><a href="../../d3/d93/structBHVR_1_1Self.html">BHVR::Self</a></div><div class="ttdoc">Struct for explicitly targeting the self.</div><div class="ttdef"><b>Definition</b> target.hpp:34</div></div>
+<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:18</div></div>
 <div class="ttc" id="astructBHVR_1_1TargetSelf_html"><div class="ttname"><a href="../../d5/d62/structBHVR_1_1TargetSelf.html">BHVR::TargetSelf</a></div><div class="ttdoc">Returns the target that calls this.</div><div class="ttdef"><b>Definition</b> target_self.hpp:13</div></div>
 <div class="ttc" id="astructBHVR_1_1Target_html"><div class="ttname"><a href="../../d1/d49/structBHVR_1_1Target.html">BHVR::Target</a></div><div class="ttdoc">Holds information about what to target.</div><div class="ttdef"><b>Definition</b> target.hpp:25</div></div>
 </div><!-- fragment --></div><!-- contents -->

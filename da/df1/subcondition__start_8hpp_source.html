@@ -84,24 +84,24 @@ $(document).ready(function() { init_codefold(1); });
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef VIPRA_START_EVENT_HPP</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define VIPRA_START_EVENT_HPP</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;definitions/behavior_context.hpp&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;definitions/sim_pack.hpp&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;events/event.hpp&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;targets/target.hpp&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;definitions/behavior_context.hpp&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;definitions/sim_pack.hpp&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;events/event.hpp&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;targets/target.hpp&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span>BHVR {</div>
 <div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="../../db/d27/classBHVR_1_1SubConditionStart.html">   10</a></span><span class="keyword">class </span><a class="code hl_class" href="../../db/d27/classBHVR_1_1SubConditionStart.html">SubConditionStart</a> {</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../db/d27/classBHVR_1_1SubConditionStart.html#af2ee577b8447a1558c9f8afe84097d1c">operator()</a>(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="../../db/d27/classBHVR_1_1SubConditionStart.html#aec794d3ecdb83019715fd6a31ea3403a">operator()</a>(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) <span class="keyword">const</span> -&gt; bool;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>};</div>
 </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>}  <span class="comment">// namespace BHVR</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassBHVR_1_1SubConditionStart_html"><div class="ttname"><a href="../../db/d27/classBHVR_1_1SubConditionStart.html">BHVR::SubConditionStart</a></div><div class="ttdef"><b>Definition</b> subcondition_start.hpp:10</div></div>
-<div class="ttc" id="aclassBHVR_1_1SubConditionStart_html_af2ee577b8447a1558c9f8afe84097d1c"><div class="ttname"><a href="../../db/d27/classBHVR_1_1SubConditionStart.html#af2ee577b8447a1558c9f8afe84097d1c">BHVR::SubConditionStart::operator()</a></div><div class="ttdeci">bool operator()(Simpack, VIPRA::idx, Target) const</div><div class="ttdoc">Always returns true.</div><div class="ttdef"><b>Definition</b> subcondition_start.cpp:11</div></div>
-<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:17</div></div>
+<div class="ttc" id="aclassBHVR_1_1SubConditionStart_html_aec794d3ecdb83019715fd6a31ea3403a"><div class="ttname"><a href="../../db/d27/classBHVR_1_1SubConditionStart.html#aec794d3ecdb83019715fd6a31ea3403a">BHVR::SubConditionStart::operator()</a></div><div class="ttdeci">auto operator()(Simpack, VIPRA::idx, Target) const -&gt; bool</div><div class="ttdoc">Always returns true.</div><div class="ttdef"><b>Definition</b> subcondition_start.cpp:11</div></div>
+<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:18</div></div>
 <div class="ttc" id="astructBHVR_1_1Target_html"><div class="ttname"><a href="../../d1/d49/structBHVR_1_1Target.html">BHVR::Target</a></div><div class="ttdoc">Holds information about what to target.</div><div class="ttdef"><b>Definition</b> target.hpp:25</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
