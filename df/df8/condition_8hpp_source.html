@@ -106,21 +106,22 @@ $(document).ready(function() { init_codefold(1); });
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  DEFAULT_CONSTRUCTIBLE(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>)</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  COPYABLE(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>)</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  MOVEABLE(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#acf44352c8f8384f449c2ec96edb09af4">add_and_or</a>(<span class="keywordtype">bool</span>);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#abee543b5ddff7633aed038a502419719">add_sub_condition</a>(SubCondition&amp;&amp;);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#a866855c9de378095e8bcadfee7e0a009">evaluate</a>(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) <span class="keyword">const</span> -&gt; bool;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  std::vector&lt;bool&gt;         _operations;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  std::vector&lt;SubCondition&gt; _conditions;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#acf44352c8f8384f449c2ec96edb09af4">add_and_or</a>(<span class="keywordtype">bool</span>);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#abee543b5ddff7633aed038a502419719">add_sub_condition</a>(SubCondition&amp;&amp;);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="../../d9/d20/classBHVR_1_1Condition.html#a866855c9de378095e8bcadfee7e0a009">evaluate</a>(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a>, VIPRA::idx, <a class="code hl_struct" href="../../d1/d49/structBHVR_1_1Target.html">Target</a>) <span class="keyword">const</span> -&gt; bool;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  std::vector&lt;bool&gt;         _operations;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  std::vector&lt;SubCondition&gt; _conditions;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>};</div>
 </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}  <span class="comment">// namespace BHVR</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}  <span class="comment">// namespace BHVR</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassBHVR_1_1Condition_html"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html">BHVR::Condition</a></div><div class="ttdef"><b>Definition</b> condition.hpp:21</div></div>
 <div class="ttc" id="aclassBHVR_1_1Condition_html_a866855c9de378095e8bcadfee7e0a009"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html#a866855c9de378095e8bcadfee7e0a009">BHVR::Condition::evaluate</a></div><div class="ttdeci">auto evaluate(Simpack, VIPRA::idx, Target) const -&gt; bool</div><div class="ttdoc">Tests whether a condition is met, by running through each sub condition sequentially.</div><div class="ttdef"><b>Definition</b> condition.cpp:20</div></div>
 <div class="ttc" id="aclassBHVR_1_1Condition_html_abee543b5ddff7633aed038a502419719"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html#abee543b5ddff7633aed038a502419719">BHVR::Condition::add_sub_condition</a></div><div class="ttdeci">void add_sub_condition(SubCondition &amp;&amp;)</div><div class="ttdoc">Adds a new subcondition to the condition.</div><div class="ttdef"><b>Definition</b> condition.cpp:48</div></div>

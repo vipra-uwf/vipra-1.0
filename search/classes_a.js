@@ -7,5 +7,6 @@ var searchData=
   ['min_4',['Min',['../dd/d72/structBHVR_1_1Min.html',1,'BHVR']]],
   ['modeldata_5',['ModelData',['../de/dbf/structModelData.html',1,'']]],
   ['modifierdirection_6',['ModifierDirection',['../d6/d33/classBHVR_1_1ModifierDirection.html',1,'BHVR']]],
-  ['modifierdistance_7',['ModifierDistance',['../de/db1/classBHVR_1_1ModifierDistance.html',1,'BHVR']]]
+  ['modifierdistance_7',['ModifierDistance',['../de/db1/classBHVR_1_1ModifierDistance.html',1,'BHVR']]],
+  ['modifierlocation_8',['ModifierLocation',['../d3/d31/classBHVR_1_1ModifierLocation.html',1,'BHVR']]]
 ];
