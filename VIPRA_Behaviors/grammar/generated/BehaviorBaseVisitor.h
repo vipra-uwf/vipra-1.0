@@ -279,6 +279,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitLocation_modifier(BehaviorParser::Location_modifierContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitDistance(BehaviorParser::DistanceContext *ctx) override {
     return visitChildren(ctx);
   }

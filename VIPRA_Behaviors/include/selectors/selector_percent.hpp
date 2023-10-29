@@ -9,6 +9,10 @@ namespace BHVR {
  * 
  */
 struct SelectorPercent {
+  NON_DEFAULT_CONSTRUCTIBLE(SelectorPercent)
+  COPYABLE(SelectorPercent)
+  MOVEABLE(SelectorPercent)
+
   float percentage;
   auto  operator()(VIPRA::pRNG_Engine&, const std::vector<VIPRA::idx>&, const std::vector<VIPRA::idx>&,
                   Simpack) const -> SelectorResult;

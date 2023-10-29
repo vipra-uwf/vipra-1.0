@@ -18,6 +18,7 @@ class GroupsContainer {
   DEFAULT_CONSTRUCTIBLE(GroupsContainer)
   COPYABLE(GroupsContainer)
   MOVEABLE(GroupsContainer)
+
  public:
   /**
   * @brief Gets the index into the container for a given type

@@ -19,7 +19,7 @@ auto SelectorLocation::operator()(VIPRA::pRNG_Engine& /*unused*/, const VIPRA::i
   VIPRA::idxVec groupPeds;
 
   for (auto idx : group) {
-    if (loc.inside(pack.get_pedset().getPedCoords(idx))) {
+    if (loc.is_inside(pack.get_pedset().getPedCoords(idx))) {
       groupPeds.push_back(idx);
     }
   }

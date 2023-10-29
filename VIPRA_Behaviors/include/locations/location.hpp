@@ -7,6 +7,7 @@
 
 #include "definitions/dimensions.hpp"
 #include "randomization/random.hpp"
+#include "util/class_types.hpp"
 
 namespace BHVR {
 
@@ -15,6 +16,10 @@ namespace BHVR {
    *     
    */
 class Location {
+  NON_DEFAULT_CONSTRUCTIBLE(Location)
+  COPYABLE(Location)
+  MOVEABLE(Location)
+
  public:
   explicit Location(VIPRA::f3d, VIPRA::f3d, float);
 
@@ -22,7 +27,7 @@ class Location {
   [[nodiscard]] auto center() const -> VIPRA::f3d;
 
   [[nodiscard]] auto random_point(VIPRA::pRNG_Engine&) const -> VIPRA::f3d;
-  [[nodiscard]] auto inside(VIPRA::f3d) const -> bool;
+  [[nodiscard]] auto is_inside(VIPRA::f3d) const -> bool;
 
  private:
   VIPRA::f3d _p1;
@@ -36,14 +41,6 @@ class Location {
   static constexpr float AREA_ERROR = 0.0001;
 
   [[nodiscard]] static auto triangle_area(VIPRA::f3d, VIPRA::f3d, VIPRA::f3d) -> float;
-
- public:
-  ~Location() = default;
-  Location(Location&&) noexcept = default;
-  auto operator=(Location&&) noexcept -> Location& = default;
-  Location() = default;
-  Location(const Location&) = default;
-  auto operator=(const Location&) noexcept -> Location& = default;
 };
 }  //namespace BHVR
 #endif

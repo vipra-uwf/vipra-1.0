@@ -21,6 +21,10 @@ nearest_type:
 
 modifier:
   direction |
-  distance
+  distance |
+  location_modifier
 ;
 
+location_modifier:
+  IN LOC_NAME
+;

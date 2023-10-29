@@ -151,6 +151,8 @@ public:
 
     virtual std::any visitModifier(BehaviorParser::ModifierContext *context) = 0;
 
+    virtual std::any visitLocation_modifier(BehaviorParser::Location_modifierContext *context) = 0;
+
     virtual std::any visitDistance(BehaviorParser::DistanceContext *context) = 0;
 
     virtual std::any visitDirection(BehaviorParser::DirectionContext *context) = 0;

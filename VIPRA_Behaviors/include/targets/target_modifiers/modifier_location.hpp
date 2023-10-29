@@ -10,16 +10,16 @@
 
 namespace BHVR {
 /**
-  * @brief Target modifier for distance to target
+  * @brief Target modifier for location
   * 
   */
-class ModifierDistance {
-  NON_DEFAULT_CONSTRUCTIBLE(ModifierDistance)
-  COPYABLE(ModifierDistance)
-  MOVABLE(ModifierDistance)
+class ModifierLocation {
+  NON_DEFAULT_CONSTRUCTIBLE(ModifierLocation)
+  COPYABLE(ModifierLocation)
+  MOVEABLE(ModifierLocation)
 
  public:
-  explicit ModifierDistance(VIPRA::idx location) : _location(location) {}
+  explicit ModifierLocation(VIPRA::idx location) : _location(location) {}
 
   /**
    * @brief Returns if target is within the location
@@ -27,11 +27,12 @@ class ModifierDistance {
    * @param pack : simulation pack
    * @param targetIdx : target to check
    * @param selfIdx : pedsetrian looking for target
-   * @return true : if within distance
-   * @return false : if NOT within distance
+   * @return true : if inside the location
+   * @return false : if NOT inside the location
    */
   auto operator()(Simpack pack, VIPRA::idx targetIdx, VIPRA::idx selfIdx) const -> bool {
-    // TODO:
+    const auto targetPos = pack.get_pedset().getPedCoords(targetIdx);
+    return pack.get_context().locations[_location].is_inside(targetPos);
   }
 
  private:

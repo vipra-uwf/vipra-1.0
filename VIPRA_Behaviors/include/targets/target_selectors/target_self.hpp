@@ -11,6 +11,10 @@ namespace BHVR {
  * 
  */
 struct TargetSelf {
+  DEFAULT_CONSTRUCTIBLE(TargetSelf)
+  COPYABLE(TargetSelf)
+  MOVEABLE(TargetSelf)
+
   inline auto operator()(Simpack /*unused*/, Self self) -> Target { return self.target; }
 };
 }  // namespace BHVR

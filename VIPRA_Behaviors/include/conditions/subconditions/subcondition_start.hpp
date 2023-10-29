@@ -8,6 +8,10 @@
 
 namespace BHVR {
 class SubConditionStart {
+  DEFAULT_CONSTRUCTIBLE(SubConditionStart)
+  COPYABLE(SubConditionStart)
+  MOVEABLE(SubConditionStart)
+
  public:
   [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
 };

@@ -16,6 +16,10 @@ namespace BHVR {
   * 
   */
 struct TargetNearest {
+  NON_DEFAULT_CONSTRUCTIBLE(TargetNearest)
+  COPYABLE(TargetNearest)
+  MOVEABLE(TargetNearest)
+
   Ptype                         type;
   bool                          allPeds;
   std::optional<TargetModifier> modifier;

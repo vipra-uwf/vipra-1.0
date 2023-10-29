@@ -45,6 +45,7 @@
 #include "targets/target_modifier.hpp"
 #include "targets/target_modifiers/modifier_direction.hpp"
 #include "targets/target_modifiers/modifier_distance.hpp"
+#include "targets/target_modifiers/modifier_location.hpp"
 #include "targets/target_selector.hpp"
 #include "targets/target_selectors/target_nearest.hpp"
 #include "targets/target_selectors/target_self.hpp"
@@ -56,7 +57,7 @@
 
 namespace BHVR {
 
-// NOLINTNEXTLINE Bug in clang-tidy (https://bugs.llvm.org/show_bug.cgi?id=48040) : ignores (cppcoreguidelines-avoid-non-const-global-variables)
+// NOLINTNEXTLINE
 std::vector<CAttributeValue> AttributeHandling::valueStore{};
 
 /**
@@ -296,6 +297,10 @@ void BehaviorBuilder::add_modifier(TargetModifier&                  targetModifi
   }
   if (modifier->distance()) {
     add_distance_modifier(targetModifier, modifier->distance());
+    return;
+  }
+  if (modifier->location_modifier()) {
+    add_location_modifier(targetModifier, modifier->location_modifier());
     return;
   }
 
@@ -597,7 +602,6 @@ auto BehaviorBuilder::add_event(BehaviorParser::Event_nameContext* ctx) -> VIPRA
 // --------------------------------------------- ANTLR VISITOR METHODS -----------------------------------------------------------------------------------------
 
 auto BehaviorBuilder::visitLocation(BehaviorParser::LocationContext* ctx) -> antlrcpp::Any {
-  // NOLINTBEGIN(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
   auto name = find_location_component<lcName>(ctx);
   if (!name) error(R"(Behavior "{}": Missing Location Name)", _currentBehavior.get_name());
   std::string locName = "@" + name.value()->ID()->toString();
@@ -615,7 +619,6 @@ auto BehaviorBuilder::visitLocation(BehaviorParser::LocationContext* ctx) -> ant
   spdlog::debug(R"(Behavior "{}": Adding Location "{}")", _currentBehavior.get_name(), locName);
 
   return BehaviorBaseVisitor::visitLocation(ctx);
-  // NOLINTEND(bugprone-unchecked-optional-access)
 }
 
 /**
@@ -625,7 +628,6 @@ auto BehaviorBuilder::visitLocation(BehaviorParser::LocationContext* ctx) -> ant
  * @return antlrcpp::Any 
  */
 auto BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) -> antlrcpp::Any {
-  // NOLINTBEGIN(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
   auto name = find_event_component<evName>(ctx);
   if (!name) error(R"(Behavior "{}": Missing Event Name)", _currentBehavior.get_name());
   std::string eventName = "!" + name.value();
@@ -656,7 +658,6 @@ auto BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) -> antlrcpp:
   _eventsMap[eventName] = _currentBehavior.add_event(event);
 
   return BehaviorBaseVisitor::visitEvent(ctx);
-  // NOLINTEND(bugprone-unchecked-optional-access)
 }
 
 auto BehaviorBuilder::visitAction(BehaviorParser::ActionContext* ctx) -> antlrcpp::Any {
@@ -674,7 +675,6 @@ auto BehaviorBuilder::visitAction(BehaviorParser::ActionContext* ctx) -> antlrcp
 
   spdlog::debug("Behavior \"{}\": Adding Action For {}", _currentBehavior.get_name(), typeStr);
 
-  // NOLINTNEXTLINE(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
   auto atoms = response.value()->sub_action()->action_atom();
   std::for_each(atoms.begin(), atoms.end(),
                 [&](BehaviorParser::Action_atomContext* atom) { add_atom_to_action(action, atom); });
@@ -697,10 +697,8 @@ auto BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx
   auto group = find_selector_component<slGroup>(ctx);
   auto required = find_selector_component<slRequired>(ctx);
 
-  // NOLINTBEGIN(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
   _currentBehavior.add_sub_selector(
       build_sub_selector(type.value(), selector.value(), group, required.has_value()));
-  // NOLINTEND(bugprone-unchecked-optional-access)
 
   return BehaviorBaseVisitor::visitPed_Selector(ctx);
 }
@@ -795,10 +793,7 @@ void BehaviorBuilder::add_enter_subcond(Condition&                              
                                         BehaviorParser::Condition_Enter_LocationContext* ctx) {
   auto location = get_location(ctx->LOC_NAME()->toString());
 
-  if (!location) {
-    error("Attempt To Use Location Before It Was Declared {}", ctx->LOC_NAME()->toString());
-    return;
-  }
+  if (!location) error("Attempt To Use Location Before It Was Declared {}", ctx->LOC_NAME()->toString());
 
   condition.add_sub_condition(SubConditionEnter{location.value()});
 }
@@ -969,6 +964,23 @@ void BehaviorBuilder::add_direction_modifier(TargetModifier&                   m
   modifier.add_check(ModifierDirection{direction});
 }
 
+/**
+ * @brief Adds a location modifier to a target modifier
+ * 
+ * @param modifier : 
+ * @param ctx : 
+ */
+void BehaviorBuilder::add_location_modifier(TargetModifier&                           modifier,
+                                            BehaviorParser::Location_modifierContext* ctx) const {
+  auto location = get_location(ctx->LOC_NAME()->toString());
+  if (!location) {
+    error("Attempt To Use Location Before It Was Declared {}", ctx->LOC_NAME()->toString());
+    return;
+  }
+
+  modifier.add_check(ModifierLocation{location.value()});
+}
+
 // --------------------------------- END TARGET MODIFIERS ------------------------------------------------------------------------------------------------
 
 // ------------------------------- SUBSELECTORS -----------------------------------------------------------------------------------------
@@ -1038,7 +1050,6 @@ auto BehaviorBuilder::build_percent_selector(slType type, slSelector selector, s
 
 auto BehaviorBuilder::build_location_selector(slType type, slSelector selector, std::optional<slGroup> group,
                                               bool required) -> SubSelector {
-  // NOLINTBEGIN(bugprone-unchecked-optional-access) (rolland) access is checked, improper error
   auto  types = type->id_list()->ID();
   Ptype comPtype = get_composite_type(types);
   auto  typeStrs = make_list_strs(types);
@@ -1051,7 +1062,6 @@ auto BehaviorBuilder::build_location_selector(slType type, slSelector selector, 
   spdlog::debug(R"(Behavior "{}": Adding Selector: "In {}" Are Ped Type: {})", _currentBehavior.get_name(),
                 locName, groupName, fmt::join(typeStrs, ", "));
   return SubSelector{groupType, comPtype, required, SelectorLocation{location.value()}};
-  // NOLINTEND(bugprone-unchecked-optional-access)
 }
 
 // ------------------------------- END SUBSELECTORS -----------------------------------------------------------------------------------------

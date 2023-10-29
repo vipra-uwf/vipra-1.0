@@ -22,6 +22,7 @@ class Condition {
   DEFAULT_CONSTRUCTIBLE(Condition)
   COPYABLE(Condition)
   MOVEABLE(Condition)
+
  public:
   void add_and_or(bool);
 

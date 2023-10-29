@@ -56,9 +56,10 @@ public:
     RuleAction_stimulus = 53, RuleAction_response = 54, RuleAction_duration = 55, 
     RuleAction_target = 56, RuleSub_action = 57, RuleAction_atom = 58, RuleSet_atom = 59, 
     RuleScale_atom = 60, RuleTarget = 61, RuleSelf = 62, RuleOther = 63, 
-    RuleNearest_type = 64, RuleModifier = 65, RuleDistance = 66, RuleDirection = 67, 
-    RuleFront = 68, RuleBehind = 69, RuleDeclaration = 70, RuleDecl_Ped_State = 71, 
-    RuleDecl_Env_State = 72, RuleDecl_Ped = 73
+    RuleNearest_type = 64, RuleModifier = 65, RuleLocation_modifier = 66, 
+    RuleDistance = 67, RuleDirection = 68, RuleFront = 69, RuleBehind = 70, 
+    RuleDeclaration = 71, RuleDecl_Ped_State = 72, RuleDecl_Env_State = 73, 
+    RuleDecl_Ped = 74
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -144,6 +145,7 @@ public:
   class OtherContext;
   class Nearest_typeContext;
   class ModifierContext;
+  class Location_modifierContext;
   class DistanceContext;
   class DirectionContext;
   class FrontContext;
@@ -1136,6 +1138,7 @@ public:
     virtual size_t getRuleIndex() const override;
     DirectionContext *direction();
     DistanceContext *distance();
+    Location_modifierContext *location_modifier();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -1143,6 +1146,20 @@ public:
   };
 
   ModifierContext* modifier();
+
+  class  Location_modifierContext : public antlr4::ParserRuleContext {
+  public:
+    Location_modifierContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *IN();
+    antlr4::tree::TerminalNode *LOC_NAME();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Location_modifierContext* location_modifier();
 
   class  DistanceContext : public antlr4::ParserRuleContext {
   public:

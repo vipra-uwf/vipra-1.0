@@ -34,6 +34,10 @@ namespace BHVR {
  * 
  */
 class BehaviorBuilder : public BehaviorBaseVisitor {
+  DEFAULT_CONSTRUCTIBLE(BehaviorBuilder)
+  COPYABLE(BehaviorBuilder)
+  MOVEABLE(BehaviorBuilder)
+
  public:
   [[nodiscard]] auto build(std::string, const std::filesystem::path&, BHVR::seed) -> HumanBehavior;
 
@@ -49,9 +53,9 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   Event         _startEvent;
   HumanBehavior _currentBehavior;
 
-  BHVR::stateUID _currState;
-  BHVR::typeUID  _currType;
-  BHVR::seed     _currSeed;
+  BHVR::stateUID _currState{};
+  BHVR::typeUID  _currType{};
+  BHVR::seed     _currSeed{};
 
   void initial_behavior_setup(const std::string&, BHVR::seed);
   void initialize_types();
@@ -98,7 +102,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
    * @param values : values to format message with
    */
   template <typename... args_t>
-  static void error(const std::string& message, args_t&&... values) {
+  [[noreturn]] static void error(const std::string& message, args_t&&... values) {
     spdlog::error(message, std::forward<args_t>(values)...);
     BuilderException::error();
   }
@@ -128,6 +132,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   void        add_distance_modifier(TargetModifier&, BehaviorParser::DistanceContext*) const;
   static void add_direction_modifier(TargetModifier&, BehaviorParser::DirectionContext*);
+  void        add_location_modifier(TargetModifier&, BehaviorParser::Location_modifierContext*) const;
 
   // --------------------------------- SUBCONDITIONS ------------------------------------------------------------------------------------------------
 

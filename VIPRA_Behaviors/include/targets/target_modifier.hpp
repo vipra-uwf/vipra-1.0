@@ -20,6 +20,7 @@ class TargetModifier {
   DEFAULT_CONSTRUCTIBLE(TargetModifier)
   COPYABLE(TargetModifier)
   MOVEABLE(TargetModifier)
+
  public:
   /**
    * @brief Checks that a pedestrian passes all modifier checks

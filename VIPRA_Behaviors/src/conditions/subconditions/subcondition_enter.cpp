@@ -16,7 +16,8 @@ auto SubConditionEnter::operator()(Simpack pack, VIPRA::idx self, Target /*unuse
   }
 
   Location& loc = pack.get_context().locations[_location];
-  bool enter = loc.inside(pack.get_state().coords[self]) && !loc.inside(pack.get_pedset().getPedCoords(self));
+  bool      enter =
+      loc.is_inside(pack.get_state().coords[self]) && !loc.is_inside(pack.get_pedset().getPedCoords(self));
 
   if (enter) {
     _entered[self] = true;

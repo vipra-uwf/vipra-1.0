@@ -17,7 +17,8 @@ auto SubConditionLeave::operator()(Simpack pack, VIPRA::idx self, Target /*unuse
   }
 
   Location& loc = pack.get_context().locations[_location];
-  bool leave = !loc.inside(pack.get_state().coords[self]) && loc.inside(pack.get_pedset().getPedCoords(self));
+  bool      leave =
+      !loc.is_inside(pack.get_state().coords[self]) && loc.is_inside(pack.get_pedset().getPedCoords(self));
 
   if (leave) {
     _left[self] = true;

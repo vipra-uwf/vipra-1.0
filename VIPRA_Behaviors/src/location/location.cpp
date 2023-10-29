@@ -54,7 +54,7 @@ auto Location::random_point(VIPRA::pRNG_Engine& eng) const -> VIPRA::f3d {
    * @return true : if inside rectangle
    * @return false : if NOT inside rectangle
    */
-auto Location::inside(VIPRA::f3d point) const -> bool {
+auto Location::is_inside(VIPRA::f3d point) const -> bool {
   float areaTri1 = triangle_area(_p1, _p2, point);
   float areaTri2 = triangle_area(_p2, _p3, point);
   float areaTri3 = triangle_area(_p3, _p4, point);

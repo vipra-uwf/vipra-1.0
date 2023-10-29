@@ -11,6 +11,10 @@ namespace BHVR {
  * 
  */
 struct SelectorExactlyN {
+  NON_DEFAULT_CONSTRUCTIBLE(SelectorExactlyN)
+  COPYABLE(SelectorExactlyN)
+  MOVEABLE(SelectorExactlyN)
+
   NumericValue selectCount;
   auto         operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack) const
       -> SelectorResult;
