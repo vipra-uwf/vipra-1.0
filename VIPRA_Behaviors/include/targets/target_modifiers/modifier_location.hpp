@@ -32,7 +32,7 @@ class ModifierLocation {
    */
   auto operator()(Simpack pack, VIPRA::idx targetIdx, VIPRA::idx selfIdx) const -> bool {
     const auto targetPos = pack.get_pedset().getPedCoords(targetIdx);
-    return pack.get_context().locations[_location].is_inside(targetPos);
+    return pack.get_context().locations[_location].contains(targetPos);
   }
 
  private:

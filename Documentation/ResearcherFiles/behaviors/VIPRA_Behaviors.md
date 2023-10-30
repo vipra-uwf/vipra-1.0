@@ -688,6 +688,16 @@ behind     // used to select pedestrians in the opposite direction the pedestria
 
 ---
 
+## A.6.2.3. Location Target Modifier
+
+Targets can be filtered by whether they are inside a `Location` or not.
+
+```
+in *location name*
+```
+
+---
+
 # C. Conditions
 
 A `Condition` is what decides if a `Conditional Action` or `Event` occurs. 
@@ -814,8 +824,6 @@ Exit *location name*
 ```
 
 
-
-
 Example:
 ```
 Action (Luggage_Grabber):
@@ -825,6 +833,42 @@ Action (Luggage_Grabber):
 .
 ```
 
+---
+
+## C.2.5. Inside Location
+
+This `Condition` checks if a pedestrian is inside a `Location` (§L.)
+
+```
+In *location name*
+```
+
+Example:
+```
+Action (Patient):
+  Target: nearest pedestrian, within 5m, in front
+  Condition: Target in @Elevator
+  Response: set velocity to {0}
+.
+```
+
+---
+
+## C.2.6. Pedestrian Attributes
+
+This `Condition` checks if a pedestrian's `Attribute` (§Att.) is a given value (§Att.1)
+
+```
+*attribute* is *attribute value*
+```
+
+Example:
+```
+Action (typeA):
+  Condition: state is #scared  // Condition for the pedestrian's 'State' attribute
+  Response: scale velocity 2.0
+.
+```
 
 ---
 
@@ -865,6 +909,18 @@ Goal    : Coordinate (§V.2)
 State   : State      (§V.3)
 ```
 
+Generally, `Attribute Values` can only be compared to others of the same type, except `Coordinate` values.
+
+`Coordinate` values can be compared with `Locations`.
+
+Example
+```
+Condition: position is @aisle
+
+// or
+
+Condition: goal is @aisle
+```
 
 ---
 
@@ -1080,7 +1136,6 @@ The Y and Z portions can be left out, they are defaulted to 0:
 
 {0, 0, 0}
 ```
-
 
 
 ---

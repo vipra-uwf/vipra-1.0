@@ -9,6 +9,6 @@ SubConditionAttribute::SubConditionAttribute(Attribute type, CAttributeValue val
 
 auto SubConditionAttribute::operator()(Simpack pack, VIPRA::idx /*unused*/, Target target) const -> bool {
   auto attr = AttributeHandling::get_value(target, _type, pack);
-  return AttributeHandling::equal(attr, _value);
+  return AttributeHandling::is_equal(attr, _value, pack);
 }
 }  // namespace BHVR

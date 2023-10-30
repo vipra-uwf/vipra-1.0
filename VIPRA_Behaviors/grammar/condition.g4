@@ -24,7 +24,9 @@ sub_condition:
   condition_Event_Ending |
   condition_Spatial |
   condition_Enter_Location |
-  condition_Exit_Location
+  condition_Exit_Location |
+  condition_Inside_Location |
+  condition_Attribute
   ;
 
 condition_Time_Elapsed_From_Event:
@@ -57,6 +59,10 @@ condition_Enter_Location:
 
 condition_Exit_Location:
   LEAVE LOC_NAME
+  ;
+
+condition_Inside_Location:
+  IN LOC_NAME
   ;
 
 condition_Attribute:

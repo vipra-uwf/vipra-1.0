@@ -46,7 +46,7 @@ void GroupsContainer::initialize(Ptype allTypes, VIPRA::size pedCnt) {
  * @param type : type group to get
  * @return const VIPRA::idxVec& 
  */
-const VIPRA::idxVec& GroupsContainer::get_group(typeUID type) const { return _groups[index(type)]; }
+auto GroupsContainer::get_group(typeUID type) const -> const VIPRA::idxVec& { return _groups[index(type)]; }
 
 /**
  * @brief Adds a pedestrians index to the group with type

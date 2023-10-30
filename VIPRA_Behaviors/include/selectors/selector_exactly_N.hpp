@@ -16,8 +16,7 @@ struct SelectorExactlyN {
   MOVEABLE(SelectorExactlyN)
 
   NumericValue selectCount;
-  auto         operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack) const
-      -> SelectorResult;
+  auto         operator()(const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack) const -> SelectorResult;
 };
 }  // namespace BHVR
 

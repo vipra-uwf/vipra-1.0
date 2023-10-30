@@ -13,7 +13,7 @@ struct SelectorEveryone {
   COPYABLE(SelectorEveryone)
   MOVEABLE(SelectorEveryone)
 
-  auto operator()(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack) -> SelectorResult;
+  auto operator()(const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack) -> SelectorResult;
 };
 
 }  // namespace BHVR

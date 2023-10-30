@@ -49,6 +49,7 @@ enum class Type {
   COORD,
   STATE,
   STATUS,
+  LOCATION,
 };
 
 /**
@@ -63,6 +64,16 @@ struct CAttributeValue {
 
   inline void type_check(Type check) const {
     if (type != check) DSLException::error("Invalid Type");
+  }
+
+  template <typename value_t>
+  [[nodiscard]] inline auto as() -> const value_t& {
+    return *static_cast<const value_t*>(value);
+  }
+
+  template <typename value_t>
+  [[nodiscard]] inline auto as_ptr() const -> const value_t* {
+    return static_cast<const value_t*>(value);
   }
 };
 
@@ -81,6 +92,16 @@ struct AttributeValue {
    */
   inline void type_check(Type check) const {
     if (type != check) DSLException::error("Invalid Type");
+  }
+
+  template <typename value_t>
+  [[nodiscard]] inline auto as() -> value_t& {
+    return *static_cast<value_t*>(value);
+  }
+
+  template <typename value_t>
+  [[nodiscard]] inline auto as_ptr() const -> value_t* {
+    return static_cast<value_t*>(value);
   }
 };
 
@@ -107,6 +128,8 @@ class AttributeHandling {
       case TargetType::INVALID:
         return {Type::INVALID, nullptr};
     }
+
+    return {Type::INVALID, nullptr};
   }
 
   /**
@@ -156,6 +179,42 @@ class AttributeHandling {
   }
 
   /**
+   * @brief Checks if the values are a coordinate and a value, returns true if so
+   * 
+   * @param value1 : first value
+   * @param value2 : second value
+   * @return true : if one is a coordinate and the other is a location
+   * @return false : if not
+   */
+  [[nodiscard]] inline static auto is_coord_loc_compare(CAttributeValue value1, CAttributeValue value2)
+      -> bool {
+    return (value1.type == Type::COORD && value2.type == Type::LOCATION) ||
+           (value1.type == Type::LOCATION && value2.type == Type::COORD);
+  }
+
+  /**
+   * @brief Compares a coordinate and location, returns true if the coordinate is in the location
+   * 
+   * @param value1 : first value
+   * @param value2 : second value
+   * @param pack : simulation pack
+   * @return true : if coordinate is in location
+   * @return false : if not
+   */
+  [[nodiscard]] inline static auto coord_loc_compare(CAttributeValue value1, CAttributeValue value2,
+                                                     Simpack pack) -> bool {
+    if (value1.type == Type::COORD && value2.type == Type::LOCATION) {
+      return pack.get_context().locations[value2.as<VIPRA::idx>()].contains(value1.as<VIPRA::f3d>());
+    }
+
+    if (value2.type == Type::COORD && value1.type == Type::LOCATION) {
+      return pack.get_context().locations[value1.as<VIPRA::idx>()].contains(value2.as<VIPRA::f3d>());
+    }
+
+    return false;
+  }
+
+  /**
    * @brief Checks if two AttributeValues are equal
    * 
    * @param value1 : first value
@@ -163,23 +222,31 @@ class AttributeHandling {
    * @return true : if equal
    * @return false : if not equal or not same type
    */
-  [[nodiscard]] inline static auto equal(CAttributeValue value1, CAttributeValue value2) -> bool {
+  [[nodiscard]] inline static auto is_equal(CAttributeValue value1, CAttributeValue value2, Simpack pack)
+      -> bool {
+    if (is_coord_loc_compare(value1, value2)) {
+      return coord_loc_compare(value1, value2, pack);
+    }
+
     if (value1.type != value2.type) return false;
 
     switch (value1.type) {
       case Type::INVALID:
         return false;
       case Type::NUMBER:
-        return *static_cast<const float*>(value1.value) == *static_cast<const float*>(value2.value);
+        return value1.as<float>() == value2.as<float>();
       case Type::COORD:
-        return *static_cast<const VIPRA::f3d*>(value1.value) == *static_cast<const VIPRA::f3d*>(value2.value);
+        return value1.as<VIPRA::f3d>() == value2.as<VIPRA::f3d>();
       case Type::STATE:
-        return *static_cast<const BHVR::stateUID*>(value1.value) ==
-               *static_cast<const BHVR::stateUID*>(value2.value);
+        return value1.as<stateUID>() == value2.as<stateUID>();
       case Type::STATUS:
-        return *static_cast<const BHVR::EventStatus*>(value1.value) ==
-               *static_cast<const BHVR::EventStatus*>(value2.value);
+        return value1.as<EventStatus>() == value2.as<EventStatus>();
+      case Type::LOCATION:
+        return value1.as<VIPRA::idx>() == value2.as<VIPRA::idx>();
+        break;
     }
+
+    return false;
   }
 
   /**
@@ -192,35 +259,38 @@ class AttributeHandling {
    */
   template <typename value_t>
   [[nodiscard]] inline static auto store_value(Type type, value_t&& value) -> CAttributeValue {
-    valueStore.emplace_back(type, new value_t(value));
+    valueStore.emplace_back(type, new std::decay_t<value_t>(std::forward<value_t>(value)));
     return valueStore.back();
   }
 
   inline static void cleanup() {
-    // NOLINTBEGIN
     for (auto data : valueStore) {
+      // NOLINTBEGIN(cppcoreguidelines-owning-memory)
       switch (data.type) {
         case Type::INVALID:
           break;
         case Type::NUMBER:
-          delete static_cast<const float*>(data.value);
+          delete data.as_ptr<float>();
           break;
         case Type::COORD:
-          delete static_cast<const VIPRA::f3d*>(data.value);
+          delete data.as_ptr<VIPRA::f3d>();
           break;
         case Type::STATE:
-          delete static_cast<const BHVR::stateUID*>(data.value);
+          delete data.as_ptr<stateUID>();
           break;
         case Type::STATUS:
-          delete static_cast<const BHVR::EventStatus*>(data.value);
+          delete data.as_ptr<EventStatus>();
+          break;
+        case Type::LOCATION:
+          delete data.as_ptr<VIPRA::idx>();
           break;
       }
+      // NOLINTEND(cppcoreguidelines-owning-memory)
     }
-    // NOLINTEND
   }
 
  private:
-  // NOLINTNEXTLINE Bug in clang-tidy (https://bugs.llvm.org/show_bug.cgi?id=48040) : ignores (cppcoreguidelines-avoid-non-const-global-variables)
+  // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables) Bug in clang-tidy (https://bugs.llvm.org/show_bug.cgi?id=48040)
   static std::vector<CAttributeValue> valueStore;
 
   /**
@@ -231,7 +301,8 @@ class AttributeHandling {
    * @param pack : simulation pack
    * @return CAttributeValue 
    */
-  inline static auto get_ped_value(Target target, Attribute attr, Simpack pack) -> CAttributeValue {
+  [[nodiscard]] inline static auto get_ped_value(Target target, Attribute attr, Simpack pack)
+      -> CAttributeValue {
     switch (attr) {
       case Attribute::POSITION:
         return {Type::COORD, &pack.get_pedset().getPedCoords(target.targetIdx)};
@@ -254,7 +325,8 @@ class AttributeHandling {
    * @param pack : simulation pack
    * @return CAttributeValue 
    */
-  inline static auto get_event_value(Target target, Attribute attr, Simpack pack) -> CAttributeValue {
+  [[nodiscard]] inline static auto get_event_value(Target target, Attribute attr, Simpack pack)
+      -> CAttributeValue {
     switch (attr) {
       case Attribute::LOCATION:
         // TODO (rolland) : get this added in when locations are done
@@ -339,8 +411,7 @@ class AttributeHandling {
         // TODO (rolland) : get this added in when locations are done
         DSLException::error("Event Locations Not Implmented");
       case Attribute::STATUS:
-        pack.get_context().events[target.targetIdx].set_status(
-            *static_cast<const BHVR::EventStatus*>(value.value));
+        pack.get_context().events[target.targetIdx].set_status(value.as<BHVR::EventStatus>());
         return;
       default:
         DSLException::error("Invalid Event Attribute");
@@ -358,7 +429,7 @@ class AttributeHandling {
    */
   static inline void set_position(Target target, VIPRA::State& state, CAttributeValue value) {
     value.type_check(Type::COORD);
-    state.coords[target.targetIdx] = *static_cast<const VIPRA::pcoord*>(value.value);
+    state.coords[target.targetIdx] = value.as<VIPRA::f3d>();
   }
 
   /**
@@ -370,7 +441,7 @@ class AttributeHandling {
    */
   static inline void set_state(Target target, Simpack pack, CAttributeValue value) {
     value.type_check(Type::STATE);
-    pack.get_context().pedStates[target.targetIdx] = *static_cast<const BHVR::stateUID*>(value.value);
+    pack.get_context().pedStates[target.targetIdx] = value.as<stateUID>();
   }
 
   /**
@@ -381,9 +452,18 @@ class AttributeHandling {
    * @param value : value to set velocity to
    */
   static inline void set_goal(Target target, Simpack pack, CAttributeValue value) {
+    auto&       goals = pack.get_goals();
+    auto&       context = pack.get_context();
+    const auto& pedset = pack.get_pedset();
+
+    if (value.type == Type::COORD) {
+      goals.changeEndGoal(target.targetIdx, pedset.getPedCoords(target.targetIdx), value.as<VIPRA::f3d>());
+    } else if (value.type == Type::LOCATION) {
+      goals.changeEndGoal(target.targetIdx, pedset.getPedCoords(target.targetIdx),
+                          context.locations[value.as<VIPRA::idx>()].random_point(context.engine));
+    }
+
     value.type_check(Type::COORD);
-    pack.get_goals().changeEndGoal(target.targetIdx, pack.get_pedset().getPedCoords(target.targetIdx),
-                                   *static_cast<const VIPRA::f3d*>(value.value));
   }
 
   /**
@@ -397,7 +477,7 @@ class AttributeHandling {
   static inline void set_velocity(Target target, Simpack pack, VIPRA::State& state, CAttributeValue value) {
     value.type_check(Type::COORD);
 
-    state.velocities[target.targetIdx] = *static_cast<const VIPRA::veloc*>(value.value);
+    state.velocities[target.targetIdx] = value.as<VIPRA::f3d>();
 
     VIPRA::f3d originalPos = pack.get_pedset().getPedCoords(target.targetIdx);
     state.coords[target.targetIdx] = originalPos + (state.velocities[target.targetIdx] * pack.dT);

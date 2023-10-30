@@ -106,6 +106,8 @@ void Event::set_end_condition(const Condition& condition) { _endCondition = cond
  */
 auto Event::get_name() const -> const std::string& { return _name; }
 
+auto Event::get_status() const -> const EventStatus& { return _status; }
+
 // ---------------------------------- CONSTRUCTORS -----------------------------------------------------------
 
 Event::Event(std::string evName) : _name(std::move(evName)) {}

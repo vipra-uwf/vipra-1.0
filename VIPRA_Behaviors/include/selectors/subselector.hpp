@@ -31,8 +31,7 @@ struct SelectorResult {
  * @brief Function for choosing which pedestrians have a type
  * 
  */
-using SelectorFunc =
-    std::function<SelectorResult(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack)>;
+using SelectorFunc = std::function<SelectorResult(const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack)>;
 
 /**
  * @brief Selects pedestrians for one type, gets combined with other SubSelectors in Selector
@@ -46,8 +45,7 @@ class SubSelector {
  public:
   SubSelector(typeUID, Ptype, bool, SelectorFunc);
 
-  auto select_peds(VIPRA::pRNG_Engine&, const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack)
-      -> SelectorResult;
+  auto select_peds(const VIPRA::idxVec&, const VIPRA::idxVec&, Simpack) -> SelectorResult;
 
   // NOLINTBEGIN - (rolland) Having these public increases readability   : ignoring (cppcoreguidelines-non-private-member-variables-in-classes)
   typeUID group;

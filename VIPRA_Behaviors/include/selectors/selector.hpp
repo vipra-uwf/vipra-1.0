@@ -24,7 +24,7 @@ class Selector {
   MOVEABLE(Selector)
 
  public:
-  void initialize(const std::string&, VIPRA::pRNG_Engine&, Simpack);
+  void initialize(const std::string&, Simpack);
 
   void set_all_types(Ptype);
   void add_sub_selector(const SubSelector&);
@@ -38,13 +38,12 @@ class Selector {
   std::vector<SubSelector> _subSelectors;
   GroupsContainer          _pedGroups;
 
-  [[nodiscard]] auto select_peds_from_group(SubSelector&, VIPRA::pRNG_Engine&, Simpack, const std::string&)
-      -> VIPRA::idxVec;
+  [[nodiscard]] auto select_peds_from_group(SubSelector&, Simpack, const std::string&) -> VIPRA::idxVec;
 
   [[nodiscard]] auto        order_selectors() -> VIPRA::idxVec;
   [[nodiscard]] static auto filter_used_peds(const VIPRA::idxVec&, const std::vector<bool>&) -> VIPRA::idxVec;
 
-  void run_selectors(const VIPRA::idxVec&, const std::string&, VIPRA::pRNG_Engine&, Simpack);
+  void run_selectors(const VIPRA::idxVec&, const std::string&, Simpack);
   void update_used_peds(const VIPRA::idxVec&, std::vector<bool>&);
   void update_ped_groups(const VIPRA::idxVec&, SubSelector&, BehaviorContext&, const std::string&);
   void sort_groups();

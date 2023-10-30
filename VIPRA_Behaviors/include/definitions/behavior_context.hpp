@@ -2,6 +2,7 @@
 #define SIMULATION_CONTEXT_HPP
 
 #include <memory>
+#include <randomization/random.hpp>
 #include <vector>
 
 #include "definitions/dsl_types.hpp"
@@ -14,6 +15,7 @@ class Event;
 class Location;
 struct BehaviorContext {
   VIPRA::delta_t              elapsedTime = 0;
+  VIPRA::pRNG_Engine          engine;
   BHVR::stateUID              environmentState;
   std::vector<BHVR::stateUID> pedStates;
   std::vector<BHVR::typeUID>  types;

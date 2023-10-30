@@ -12,14 +12,14 @@ namespace BHVR {
    * @param group : group to pull from
    * @return SelectorResult 
    */
-auto SelectorLocation::operator()(VIPRA::pRNG_Engine& /*unused*/, const VIPRA::idxVec& /*unused*/,
-                                  const VIPRA::idxVec& group, Simpack pack) const -> SelectorResult {
+auto SelectorLocation::operator()(const VIPRA::idxVec& /*unused*/, const VIPRA::idxVec& group,
+                                  Simpack pack) const -> SelectorResult {
   const auto&   loc = pack.get_context().locations[location];
   size_t        pedCnt = 0;
   VIPRA::idxVec groupPeds;
 
   for (auto idx : group) {
-    if (loc.is_inside(pack.get_pedset().getPedCoords(idx))) {
+    if (loc.contains(pack.get_pedset().getPedCoords(idx))) {
       groupPeds.push_back(idx);
     }
   }

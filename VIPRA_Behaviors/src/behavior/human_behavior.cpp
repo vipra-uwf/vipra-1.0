@@ -2,6 +2,7 @@
 #include "behavior/human_behavior.hpp"
 
 #include <numeric>
+#include <randomization/random.hpp>
 #include <utility>
 
 #include "definitions/dsl_types.hpp"
@@ -56,14 +57,15 @@ void HumanBehavior::set_all_ped_types(Ptype types) {
  */
 void HumanBehavior::initialize(const VIPRA::PedestrianSet& pedSet, const VIPRA::ObstacleSet& obsSet,
                                VIPRA::Goals& goals) {
+  VIPRA::State dummyState;
+
+  _context.engine = VIPRA::pRNG_Engine{_seedNum};
   _context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
   _context.types = std::vector<BHVR::typeUID>(pedSet.getNumPedestrians());
 
-  VIPRA::State dummyState;
-
   Simpack pack{pedSet, obsSet, goals, dummyState, _context, _selector.get_groups(), 0};
   spdlog::debug("Initializing {} Selectors, Seed: {}", _selector.selector_count(), _seedNum);
-  _selector.initialize(_name, _rngEngine, pack);
+  _selector.initialize(_name, pack);
 
   for (auto& actionGroup : _actions) {
     for (auto& action : actionGroup) {
@@ -144,7 +146,7 @@ auto HumanBehavior::action_count() const -> VIPRA::size {
  * @param s : randomization seed
  */
 void HumanBehavior::set_seed(BHVR::seed bSeed) {
-  _rngEngine.reseed(bSeed);
+  _context.engine.reseed(bSeed);
   _seedNum = bSeed;
 }
 

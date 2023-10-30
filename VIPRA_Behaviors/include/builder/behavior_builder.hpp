@@ -76,13 +76,18 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   [[nodiscard]] auto build_sub_selector(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
 
   [[nodiscard]] auto get_location(const std::string&) const -> std::optional<VIPRA::idx>;
-  [[nodiscard]] auto get_state(const std::string&) const -> BHVR::stateUID;
+  [[nodiscard]] auto get_state(const std::string&) const -> std::optional<BHVR::stateUID>;
   [[nodiscard]] auto get_event(const std::string&) const -> std::optional<VIPRA::idx>;
   [[nodiscard]] auto get_range(BehaviorParser::Value_numberContext*) const -> VIPRA::time_range_s;
-  [[nodiscard]] auto get_type(const std::string&) const -> BHVR::typeUID;
+  [[nodiscard]] auto get_type(const std::string&) const -> std::optional<BHVR::typeUID>;
   [[nodiscard]] auto get_group(std::optional<slGroup>) const -> std::pair<BHVR::typeUID, std::string>;
   [[nodiscard]] auto get_composite_type(const std::vector<antlr4::tree::TerminalNode*>&) const -> BHVR::Ptype;
   [[nodiscard]] static auto get_attribute(std::string) -> BHVR::Attribute;
+
+  [[nodiscard]] auto get_check_location(const std::string&) const -> VIPRA::idx;
+  [[nodiscard]] auto get_check_state(const std::string&) const -> BHVR::stateUID;
+  [[nodiscard]] auto get_check_event(const std::string&) const -> VIPRA::idx;
+  [[nodiscard]] auto get_check_type(const std::string&) const -> BHVR::typeUID;
 
   [[nodiscard]] auto        make_attribute_value(BehaviorParser::Attr_valueContext*) -> BHVR::CAttributeValue;
   [[nodiscard]] static auto make_attribute_str(BehaviorParser::AttributeContext*) -> std::string;
@@ -144,6 +149,8 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   void add_event_starting_subcond(Condition&, BehaviorParser::Condition_Event_StartingContext*);
   void add_event_ending_subcond(Condition&, BehaviorParser::Condition_Event_EndingContext*);
   void add_spatial_subcond(Condition&, BehaviorParser::Condition_SpatialContext*);
+  void add_in_location_subcond(Condition&, BehaviorParser::Condition_Inside_LocationContext*);
+  void add_attribute_subcond(Condition&, BehaviorParser::Condition_AttributeContext*);
 
   // --------------------------------- SUBSELECTORS ------------------------------------------------------------------------------------------------
 

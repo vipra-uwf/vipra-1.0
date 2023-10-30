@@ -151,6 +151,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitCondition_Inside_Location(BehaviorParser::Condition_Inside_LocationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitCondition_Attribute(BehaviorParser::Condition_AttributeContext *ctx) override {
     return visitChildren(ctx);
   }

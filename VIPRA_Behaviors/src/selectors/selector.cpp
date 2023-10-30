@@ -17,11 +17,11 @@ namespace BHVR {
  * @param obsSet : 
  * @param goals : 
  */
-void Selector::initialize(const std::string& behaviorName, VIPRA::pRNG_Engine& rngEngine, Simpack pack) {
+void Selector::initialize(const std::string& behaviorName, Simpack pack) {
   _pedGroups.initialize(_allTypes, pack.get_pedset().getNumPedestrians());
 
   auto selectorIdxs = order_selectors();
-  run_selectors(selectorIdxs, behaviorName, rngEngine, pack);
+  run_selectors(selectorIdxs, behaviorName, pack);
   sort_groups();
   _pedGroups.clean_used();
 }
@@ -38,10 +38,10 @@ void Selector::initialize(const std::string& behaviorName, VIPRA::pRNG_Engine& r
  * @param goals : 
  */
 void Selector::run_selectors(const VIPRA::idxVec& selectorIdxs, const std::string& behaviorName,
-                             VIPRA::pRNG_Engine& rngEngine, Simpack pack) {
+                             Simpack pack) {
   std::for_each(selectorIdxs.begin(), selectorIdxs.end(), [&](VIPRA::idx index) {
     auto& selector = _subSelectors[index];
-    auto  selectedPeds = select_peds_from_group(selector, rngEngine, pack, behaviorName);
+    auto  selectedPeds = select_peds_from_group(selector, pack, behaviorName);
     update_ped_groups(selectedPeds, selector, pack.context, behaviorName);
   });
 
@@ -60,11 +60,11 @@ void Selector::run_selectors(const VIPRA::idxVec& selectorIdxs, const std::strin
  * @param behaviorName : 
  * @return VIPRA::idxVec 
  */
-auto Selector::select_peds_from_group(SubSelector& selector, VIPRA::pRNG_Engine& rngEngine, Simpack pack,
-                                      const std::string& behaviorName) -> VIPRA::idxVec {
+auto Selector::select_peds_from_group(SubSelector& selector, Simpack pack, const std::string& behaviorName)
+    -> VIPRA::idxVec {
   const auto& fullGroup = _pedGroups.get_group(selector.group);
   auto        usablegroup = filter_used_peds(fullGroup, _pedGroups.get_used(selector.group));
-  auto        result = selector.select_peds(rngEngine, fullGroup, usablegroup, pack);
+  auto        result = selector.select_peds(fullGroup, usablegroup, pack);
 
   if (!result.starved) {
     return result.group;

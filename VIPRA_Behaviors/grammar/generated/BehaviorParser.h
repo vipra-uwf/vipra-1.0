@@ -47,19 +47,20 @@ public:
     RuleCondition_Time_Elapsed_From_Event = 26, RuleCondition_Event_Occurred = 27, 
     RuleCondition_Event_Occurring = 28, RuleCondition_Event_Starting = 29, 
     RuleCondition_Event_Ending = 30, RuleCondition_Spatial = 31, RuleCondition_Enter_Location = 32, 
-    RuleCondition_Exit_Location = 33, RuleCondition_Attribute = 34, RuleDuration = 35, 
-    RuleAttribute = 36, RuleAttr_value = 37, RulePed_Selector = 38, RuleSelector_attribute = 39, 
-    RuleSelector_type = 40, RuleSelector_selector = 41, RuleSelector_from = 42, 
-    RuleSelector_required = 43, RuleSelector = 44, RuleSelector_Percent = 45, 
-    RuleSelector_Exactly_N_Random = 46, RuleSelector_Everyone = 47, RuleSelector_Location = 48, 
-    RuleGroup = 49, RuleId_list = 50, RuleAction = 51, RuleAction_attribute = 52, 
-    RuleAction_stimulus = 53, RuleAction_response = 54, RuleAction_duration = 55, 
-    RuleAction_target = 56, RuleSub_action = 57, RuleAction_atom = 58, RuleSet_atom = 59, 
-    RuleScale_atom = 60, RuleTarget = 61, RuleSelf = 62, RuleOther = 63, 
-    RuleNearest_type = 64, RuleModifier = 65, RuleLocation_modifier = 66, 
-    RuleDistance = 67, RuleDirection = 68, RuleFront = 69, RuleBehind = 70, 
-    RuleDeclaration = 71, RuleDecl_Ped_State = 72, RuleDecl_Env_State = 73, 
-    RuleDecl_Ped = 74
+    RuleCondition_Exit_Location = 33, RuleCondition_Inside_Location = 34, 
+    RuleCondition_Attribute = 35, RuleDuration = 36, RuleAttribute = 37, 
+    RuleAttr_value = 38, RulePed_Selector = 39, RuleSelector_attribute = 40, 
+    RuleSelector_type = 41, RuleSelector_selector = 42, RuleSelector_from = 43, 
+    RuleSelector_required = 44, RuleSelector = 45, RuleSelector_Percent = 46, 
+    RuleSelector_Exactly_N_Random = 47, RuleSelector_Everyone = 48, RuleSelector_Location = 49, 
+    RuleGroup = 50, RuleId_list = 51, RuleAction = 52, RuleAction_attribute = 53, 
+    RuleAction_stimulus = 54, RuleAction_response = 55, RuleAction_duration = 56, 
+    RuleAction_target = 57, RuleSub_action = 58, RuleAction_atom = 59, RuleSet_atom = 60, 
+    RuleScale_atom = 61, RuleTarget = 62, RuleSelf = 63, RuleOther = 64, 
+    RuleNearest_type = 65, RuleModifier = 66, RuleLocation_modifier = 67, 
+    RuleDistance = 68, RuleDirection = 69, RuleFront = 70, RuleBehind = 71, 
+    RuleDeclaration = 72, RuleDecl_Ped_State = 73, RuleDecl_Env_State = 74, 
+    RuleDecl_Ped = 75
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -113,6 +114,7 @@ public:
   class Condition_SpatialContext;
   class Condition_Enter_LocationContext;
   class Condition_Exit_LocationContext;
+  class Condition_Inside_LocationContext;
   class Condition_AttributeContext;
   class DurationContext;
   class AttributeContext;
@@ -540,6 +542,8 @@ public:
     Condition_SpatialContext *condition_Spatial();
     Condition_Enter_LocationContext *condition_Enter_Location();
     Condition_Exit_LocationContext *condition_Exit_Location();
+    Condition_Inside_LocationContext *condition_Inside_Location();
+    Condition_AttributeContext *condition_Attribute();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -664,6 +668,20 @@ public:
 
   Condition_Exit_LocationContext* condition_Exit_Location();
 
+  class  Condition_Inside_LocationContext : public antlr4::ParserRuleContext {
+  public:
+    Condition_Inside_LocationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *IN();
+    antlr4::tree::TerminalNode *LOC_NAME();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Condition_Inside_LocationContext* condition_Inside_Location();
+
   class  Condition_AttributeContext : public antlr4::ParserRuleContext {
   public:
     Condition_AttributeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -720,6 +738,7 @@ public:
     Value_numericContext *value_numeric();
     Value_coordContext *value_coord();
     antlr4::tree::TerminalNode *STATE_VAL();
+    antlr4::tree::TerminalNode *LOC_NAME();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

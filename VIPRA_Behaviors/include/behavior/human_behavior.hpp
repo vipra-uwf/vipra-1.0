@@ -46,8 +46,7 @@ class HumanBehavior {
   void set_seed(BHVR::seed);
 
  private:
-  BHVR::seed         _seedNum{};
-  VIPRA::pRNG_Engine _rngEngine{};
+  BHVR::seed _seedNum{};
 
   std::string     _name;
   BehaviorContext _context;

@@ -178,7 +178,7 @@ def prepPlot(ax, args):
   ax.set_facecolor(args['bckColor'])
 
 percent = 0
-def printProgressBar (iteration, total, prefix="Saving", animating=False):
+def printProgressBar (iteration, total, prefix="Outputing", animating=False):
     if not animating:
       percent = ("{0:." + str(1) + "f}").format(100 * (iteration / float(total)))
 

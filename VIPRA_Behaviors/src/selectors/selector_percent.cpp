@@ -9,8 +9,8 @@ namespace BHVR {
  * 
  * @param pedSet : 
  */
-auto SelectorPercent::operator()(VIPRA::pRNG_Engine& rngEngine, const VIPRA::idxVec& fullGroup,
-                                 const VIPRA::idxVec& group, Simpack /*unused*/) const -> SelectorResult {
+auto SelectorPercent::operator()(const VIPRA::idxVec& fullGroup, const VIPRA::idxVec& group,
+                                 Simpack pack) const -> SelectorResult {
   auto groupPeds = group;
 
   auto count = static_cast<VIPRA::size>(std::floor(percentage * static_cast<float>(fullGroup.size())));
@@ -23,7 +23,7 @@ auto SelectorPercent::operator()(VIPRA::pRNG_Engine& rngEngine, const VIPRA::idx
 
   spdlog::debug("Selector Percent: Selecting {} Pedestrians", count);
 
-  std::shuffle(groupPeds.begin(), groupPeds.end(), rngEngine);
+  std::shuffle(groupPeds.begin(), groupPeds.end(), pack.get_context().engine);
   groupPeds.resize(count);
 
   return {starved, groupPeds};

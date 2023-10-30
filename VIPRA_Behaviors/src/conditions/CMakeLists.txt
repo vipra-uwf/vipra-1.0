@@ -13,4 +13,6 @@ target_sources(
   subconditions/subcondition_spatial.cpp
   subconditions/subcondition_enter.cpp
   subconditions/subcondition_leave.cpp
+  subconditions/subcondition_in_location.cpp
+  subconditions/subcondition_attribute.cpp
 )

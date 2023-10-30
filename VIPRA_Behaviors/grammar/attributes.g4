@@ -15,5 +15,6 @@ attribute:
 attr_value:
   value_numeric |
   value_coord   |
-  STATE_VAL
+  STATE_VAL |
+  LOC_NAME
   ;

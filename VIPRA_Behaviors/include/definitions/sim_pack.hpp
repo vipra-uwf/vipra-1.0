@@ -2,6 +2,7 @@
 #define VIPRA_BEHAVIORS_SIM_PACK_HPP
 
 #include <functional>
+
 #include "definitions/behavior_context.hpp"
 #include "definitions/state.hpp"
 #include "definitions/type_definitions.hpp"

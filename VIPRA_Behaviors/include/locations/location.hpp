@@ -1,10 +1,6 @@
 #ifndef VIPRA_BEHAVIORS_LOCATION_HPP
 #define VIPRA_BEHAVIORS_LOCATION_HPP
 
-#include <functional>
-#include <memory>
-#include <string>
-
 #include "definitions/dimensions.hpp"
 #include "randomization/random.hpp"
 #include "util/class_types.hpp"
@@ -27,7 +23,7 @@ class Location {
   [[nodiscard]] auto center() const -> VIPRA::f3d;
 
   [[nodiscard]] auto random_point(VIPRA::pRNG_Engine&) const -> VIPRA::f3d;
-  [[nodiscard]] auto is_inside(VIPRA::f3d) const -> bool;
+  [[nodiscard]] auto contains(VIPRA::f3d) const -> bool;
 
  private:
   VIPRA::f3d _p1;

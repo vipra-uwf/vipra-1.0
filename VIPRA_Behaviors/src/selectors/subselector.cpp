@@ -15,9 +15,9 @@ namespace BHVR {
  * @param goals : goals module
  * @return SelectorResult 
  */
-auto SubSelector::select_peds(VIPRA::pRNG_Engine& rngEngine, const VIPRA::idxVec& totalGroup,
-                              const VIPRA::idxVec& usableGroup, Simpack pack) -> SelectorResult {
-  return _select(rngEngine, totalGroup, usableGroup, pack);
+auto SubSelector::select_peds(const VIPRA::idxVec& totalGroup, const VIPRA::idxVec& usableGroup, Simpack pack)
+    -> SelectorResult {
+  return _select(totalGroup, usableGroup, pack);
 }
 
 // ------------------- CONSTRUCTORS --------------------------------------------------------------------------

@@ -14,8 +14,8 @@ struct SelectorPercent {
   MOVEABLE(SelectorPercent)
 
   float percentage;
-  auto  operator()(VIPRA::pRNG_Engine&, const std::vector<VIPRA::idx>&, const std::vector<VIPRA::idx>&,
-                  Simpack) const -> SelectorResult;
+  auto  operator()(const std::vector<VIPRA::idx>&, const std::vector<VIPRA::idx>&, Simpack) const
+      -> SelectorResult;
 };
 
 }  // namespace BHVR

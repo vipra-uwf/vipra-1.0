@@ -14,8 +14,8 @@ namespace BHVR {
    * @param group : group to pull from
    * @return SelectorResult 
    */
-auto SelectorExactlyN::operator()(VIPRA::pRNG_Engine&  rngEngine, const VIPRA::idxVec& /*unused*/,
-                                  const VIPRA::idxVec& group, Simpack /*unused*/) const -> SelectorResult {
+auto SelectorExactlyN::operator()(const VIPRA::idxVec& /*unused*/, const VIPRA::idxVec& group,
+                                  Simpack pack) const -> SelectorResult {
   auto groupPeds = group;
 
   auto pedCnt = static_cast<VIPRA::size>(std::round(selectCount.value(0)));
@@ -28,7 +28,7 @@ auto SelectorExactlyN::operator()(VIPRA::pRNG_Engine&  rngEngine, const VIPRA::i
 
   spdlog::debug("Selector Exaclty N: Selecting {} Pedestrians", pedCnt);
 
-  std::shuffle(groupPeds.begin(), groupPeds.end(), rngEngine);
+  std::shuffle(groupPeds.begin(), groupPeds.end(), pack.get_context().engine);
   groupPeds.resize(pedCnt);
 
   return {starved, groupPeds};

@@ -87,6 +87,8 @@ public:
 
     virtual std::any visitCondition_Exit_Location(BehaviorParser::Condition_Exit_LocationContext *context) = 0;
 
+    virtual std::any visitCondition_Inside_Location(BehaviorParser::Condition_Inside_LocationContext *context) = 0;
+
     virtual std::any visitCondition_Attribute(BehaviorParser::Condition_AttributeContext *context) = 0;
 
     virtual std::any visitDuration(BehaviorParser::DurationContext *context) = 0;
