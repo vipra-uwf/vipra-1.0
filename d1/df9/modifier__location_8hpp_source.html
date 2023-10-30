@@ -104,7 +104,7 @@ $(document).ready(function() { init_codefold(1); });
 <div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="../../d3/d31/classBHVR_1_1ModifierLocation.html#aa07aaafc596aa5ad1c7f5bfebd54307b">   33</a></span>  <span class="keyword">auto</span> <a class="code hl_function" href="../../d3/d31/classBHVR_1_1ModifierLocation.html#aa07aaafc596aa5ad1c7f5bfebd54307b">operator()</a>(<a class="code hl_struct" href="../../da/d19/structBHVR_1_1Simpack.html">Simpack</a> pack, VIPRA::idx targetIdx, VIPRA::idx selfIdx) <span class="keyword">const</span> -&gt; <span class="keywordtype">bool</span> {</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">const</span> <span class="keyword">auto</span> targetPos = pack.get_pedset().getPedCoords(targetIdx);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span> pack.get_context().locations[_location].is_inside(targetPos);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span> pack.get_context().locations[_location].contains(targetPos);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  }</div>
 </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
@@ -117,7 +117,7 @@ $(document).ready(function() { init_codefold(1); });
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassBHVR_1_1ModifierLocation_html"><div class="ttname"><a href="../../d3/d31/classBHVR_1_1ModifierLocation.html">BHVR::ModifierLocation</a></div><div class="ttdoc">Target modifier for location.</div><div class="ttdef"><b>Definition</b> modifier_location.hpp:16</div></div>
 <div class="ttc" id="aclassBHVR_1_1ModifierLocation_html_aa07aaafc596aa5ad1c7f5bfebd54307b"><div class="ttname"><a href="../../d3/d31/classBHVR_1_1ModifierLocation.html#aa07aaafc596aa5ad1c7f5bfebd54307b">BHVR::ModifierLocation::operator()</a></div><div class="ttdeci">auto operator()(Simpack pack, VIPRA::idx targetIdx, VIPRA::idx selfIdx) const -&gt; bool</div><div class="ttdoc">Returns if target is within the location.</div><div class="ttdef"><b>Definition</b> modifier_location.hpp:33</div></div>
-<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:18</div></div>
+<div class="ttc" id="astructBHVR_1_1Simpack_html"><div class="ttname"><a href="../../da/d19/structBHVR_1_1Simpack.html">BHVR::Simpack</a></div><div class="ttdoc">Holds references to commonly used parameters for simpler passing.</div><div class="ttdef"><b>Definition</b> sim_pack.hpp:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -72,7 +72,7 @@ $(function() {
   <div class="headertitle"><div class="title">VIPRA Modules</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md282"></a> VIPRA is broken up into several modules you will change regularly:</p><ol type="1">
+<div class="textblock"><p><a class="anchor" id="autotoc_md288"></a> VIPRA is broken up into several modules you will change regularly:</p><ol type="1">
 <li>Pedestrian Loader</li>
 <li>Pedestrian Set</li>
 <li>Map Loader</li>
@@ -81,34 +81,34 @@ $(function() {
 <li>Output Sink</li>
 </ol>
 <hr  />
-<h1><a class="anchor" id="autotoc_md284"></a>
+<h1><a class="anchor" id="autotoc_md290"></a>
 Modules Overview</h1>
 <p>The following modules are the ones that will users will change regularly.</p>
-<h3><a class="anchor" id="autotoc_md285"></a>
+<h3><a class="anchor" id="autotoc_md291"></a>
 Pedestrian Model</h3>
 <p>The <code>Pedestrian Model</code> module is the pedestrian dynamics model that dictates how the pedestrians move.</p>
-<h3><a class="anchor" id="autotoc_md286"></a>
+<h3><a class="anchor" id="autotoc_md292"></a>
 Goals</h3>
 <p>The <code>Goals</code> module is what does all the path finding for pedestrians, it also determines the end goal for the overall simulation. *(for example: all pedestrians exit the plane)*</p>
-<h3><a class="anchor" id="autotoc_md287"></a>
+<h3><a class="anchor" id="autotoc_md293"></a>
 Obstacle Set</h3>
 <p>The <code>Obstacle Set</code> module holds the map information; including obstacles and object. The <code>Obstacle Set</code> is also responsible for collision detection.</p>
-<h3><a class="anchor" id="autotoc_md288"></a>
+<h3><a class="anchor" id="autotoc_md294"></a>
 Pedestrian Set</h3>
 <p>The <code>Pedestrian Set</code> module holds information about pedestrians, for example their position, velocity, etc.</p>
-<h3><a class="anchor" id="autotoc_md289"></a>
+<h3><a class="anchor" id="autotoc_md295"></a>
 Map Loader</h3>
 <p>The <code>Map Loader</code> module is responsible for loading map files into <code>Obstacle Sets</code>.</p>
-<h3><a class="anchor" id="autotoc_md290"></a>
+<h3><a class="anchor" id="autotoc_md296"></a>
 Pedestrian Loader</h3>
 <p>The <code>Pedestrian Loader</code> module is responsible for loading pedestrian files into <code>Pedestrian Sets</code>.</p>
-<h3><a class="anchor" id="autotoc_md291"></a>
+<h3><a class="anchor" id="autotoc_md297"></a>
 Output Sink</h3>
 <p><code>/VIPRA/Base/output/sink.hpp</code></p>
 <p>The <code>Sink</code> module handles routing output.</p>
 <p>Currently, only a <code>FileSink</code> is implemented, that writes output to a JSON file.</p>
 <hr  />
-<h2><a class="anchor" id="autotoc_md293"></a>
+<h2><a class="anchor" id="autotoc_md299"></a>
 Static Modules</h2>
 <p>These modules are generally the same for each simulation run</p>
 <ol type="1">
@@ -117,20 +117,20 @@ Static Modules</h2>
 <li>Configuration Reader</li>
 <li>Simulation</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md294"></a>
+<h3><a class="anchor" id="autotoc_md300"></a>
 Human Behavior Model</h3>
 <p><code>/VIPRA/Base/human_behavior/human_behavior_model.hpp</code></p>
 <p>The <code>Human Behavior Model</code> orchestrates the <code>Behaviors</code> that are enabled for a simulation run</p>
-<h3><a class="anchor" id="autotoc_md295"></a>
+<h3><a class="anchor" id="autotoc_md301"></a>
 Policy Model</h3>
 <p><em>Not Currently Implemented</em></p>
 <p><code>/VIPRA/Base/policy_model/policy_model.hpp</code></p>
 <p>The <code>Policy Model</code> will, in the future, handle any policies (like airplane boarding order)</p>
-<h3><a class="anchor" id="autotoc_md296"></a>
+<h3><a class="anchor" id="autotoc_md302"></a>
 Configuration Reader</h3>
 <p><code>/VIPRA/Base/configuration/configuration_reader.hpp</code></p>
 <p>The <code>Configuration Reader</code> takes in the JSON files for simulation configuration and module parameters.</p>
-<h3><a class="anchor" id="autotoc_md297"></a>
+<h3><a class="anchor" id="autotoc_md303"></a>
 Simulation</h3>
 <p><code>/VIPRA/Base/simulation/simulation.hpp</code></p>
 <p>The <code>Simulation</code> is what coordinates the various modules.</p>
