@@ -143,27 +143,26 @@ $(document).ready(function() { init_codefold(1); });
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">for</span> (VIPRA::idx pedIdx : idxs) {</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      <span class="keywordflow">if</span> (pedIdx == self) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>      <span class="keywordflow">if</span> (pack.get_goals().isPedestianGoalMet(pedIdx)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      <span class="keywordflow">if</span> (modifier) {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordflow">if</span> (!modifier-&gt;check(pack, pedIdx, self)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      }</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      <span class="keywordflow">if</span> (pack.get_obsset().rayHit(currCoords, coords[pedIdx]) != -1) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      VIPRA::dist curr = currCoords.distanceTo(coords[pedIdx]);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <span class="keywordflow">if</span> (curr &lt; shortest) {</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        shortest = curr;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        nearest = pedIdx;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      }</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">return</span> {shortest, nearest};</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  }</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>};</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      <span class="keywordflow">if</span> (modifier) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="keywordflow">if</span> (!modifier-&gt;check(pack, pedIdx, self)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      <span class="keywordflow">if</span> (pack.get_obsset().rayHit(currCoords, coords[pedIdx]) != -1) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      VIPRA::dist curr = currCoords.distanceTo(coords[pedIdx]);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      <span class="keywordflow">if</span> (curr &lt; shortest) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        shortest = curr;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        nearest = pedIdx;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">return</span> {shortest, nearest};</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>};</div>
 </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}  <span class="comment">// namespace BHVR</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>}  <span class="comment">// namespace BHVR</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassBHVR_1_1GroupsContainer_html_a9cd19eb1a61ba34c76e013e9537f7f7b"><div class="ttname"><a href="../../d9/d1d/classBHVR_1_1GroupsContainer.html#a9cd19eb1a61ba34c76e013e9537f7f7b">BHVR::GroupsContainer::index</a></div><div class="ttdeci">static constexpr auto index(typeUID type) -&gt; VIPRA::idx</div><div class="ttdoc">Gets the index into the container for a given type.</div><div class="ttdef"><b>Definition</b> pedestrian_groups.hpp:29</div></div>
 <div class="ttc" id="aclassBHVR_1_1Ptype_html"><div class="ttname"><a href="../../d4/d2e/classBHVR_1_1Ptype.html">BHVR::Ptype</a></div><div class="ttdoc">Pedestrian Type, used as a composite of typeUIDs.</div><div class="ttdef"><b>Definition</b> pedestrian_types.hpp:22</div></div>
 <div class="ttc" id="aclassBHVR_1_1Ptype_html_ae317adf1205d3bfde8657d6122655b0e"><div class="ttname"><a href="../../d4/d2e/classBHVR_1_1Ptype.html#ae317adf1205d3bfde8657d6122655b0e">BHVR::Ptype::for_each_type</a></div><div class="ttdeci">void for_each_type(const std::function&lt; void(typeUID)&gt; &amp;func) const</div><div class="ttdoc">Loops through each individual type, starting from 1, calling func with the type. example(1,...</div><div class="ttdef"><b>Definition</b> pedestrian_types.hpp:53</div></div>

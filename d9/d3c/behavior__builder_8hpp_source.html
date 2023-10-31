@@ -224,105 +224,106 @@ $(document).ready(function() { init_codefold(1); });
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="keywordtype">void</span> add_spatial_subcond(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp;, BehaviorParser::Condition_SpatialContext*);</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordtype">void</span> add_in_location_subcond(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp;, BehaviorParser::Condition_Inside_LocationContext*);</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="keywordtype">void</span> add_attribute_subcond(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp;, BehaviorParser::Condition_AttributeContext*);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="comment">// --------------------------------- SUBSELECTORS ------------------------------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keyword">auto</span> build_everyone_selector(slType, <span class="keywordtype">bool</span>) -&gt; <a class="code hl_class" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a>;</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="keyword">auto</span> build_exactly_n_selector(slType, slSelector, std::optional&lt;slGroup&gt;, <span class="keywordtype">bool</span>) -&gt; <a class="code hl_class" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a>;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="keyword">auto</span> build_percent_selector(slType, slSelector, std::optional&lt;slGroup&gt;, <span class="keywordtype">bool</span>) -&gt; <a class="code hl_class" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a>;</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="keyword">auto</span> build_location_selector(slType, slSelector, std::optional&lt;slGroup&gt;, <span class="keywordtype">bool</span>) -&gt; <a class="code hl_class" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a>;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="comment">// --------------------------------- LOCATION ------------------------------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="comment">// -------------------------------- FINDERS ------------------------------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> comp_t&gt;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> find_event_component(BehaviorParser::EventContext* ctx) -&gt; std::optional&lt;comp_t&gt; {</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; attr : ctx-&gt;event_attribute()) {</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      <span class="comment">// Name</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, std::string&gt;)</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <span class="keywordflow">if</span> (attr-&gt;event_name()) <span class="keywordflow">return</span> attr-&gt;event_name()-&gt;ID()-&gt;toString();</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>      <span class="comment">// Start Condition</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, evStart&gt;)</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        <span class="keywordflow">if</span> (attr-&gt;event_start()) <span class="keywordflow">return</span> attr-&gt;event_start();</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>      <span class="comment">// End Condition</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, evEnd&gt;)</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keywordflow">if</span> (attr-&gt;event_end()) <span class="keywordflow">return</span> attr-&gt;event_end();</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    }</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  }</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> comp_t&gt;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> find_action_component(BehaviorParser::ActionContext* ctx)</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>      -&gt; std::optional&lt;comp_t&gt; {</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; attr : ctx-&gt;action_attribute()) {</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>      <span class="comment">// Stimulus</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, acStimulus&gt;)</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        <span class="keywordflow">if</span> (attr-&gt;action_stimulus()) <span class="keywordflow">return</span> attr-&gt;action_stimulus();</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>      <span class="comment">// Response</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, acResponse&gt;)</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        <span class="keywordflow">if</span> (attr-&gt;action_response()) <span class="keywordflow">return</span> attr-&gt;action_response();</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>      <span class="comment">// Target</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, acTarget&gt;)</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordflow">if</span> (attr-&gt;action_target()) <span class="keywordflow">return</span> attr-&gt;action_target();</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>      <span class="comment">// Duration</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, acDuration&gt;)</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        <span class="keywordflow">if</span> (attr-&gt;action_duration()) <span class="keywordflow">return</span> attr-&gt;action_duration();</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    }</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  }</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> comp_t&gt;</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> find_selector_component(BehaviorParser::Ped_SelectorContext* ctx)</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>      -&gt; std::optional&lt;comp_t&gt; {</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; attr : ctx-&gt;selector_attribute()) {</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>      <span class="comment">// Type</span></div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, slType&gt;)</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        <span class="keywordflow">if</span> (attr-&gt;selector_type()) <span class="keywordflow">return</span> attr-&gt;selector_type();</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>      <span class="comment">// Selector</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, slSelector&gt;)</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keywordflow">if</span> (attr-&gt;selector_selector()) <span class="keywordflow">return</span> attr-&gt;selector_selector();</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, slGroup&gt;)</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        <span class="keywordflow">if</span> (attr-&gt;selector_from()) <span class="keywordflow">return</span> attr-&gt;selector_from();</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, slRequired&gt;)</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        <span class="keywordflow">if</span> (attr-&gt;selector_required()) <span class="keywordflow">return</span> attr-&gt;selector_required();</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    }</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  }</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> comp_t&gt;</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> find_location_component(BehaviorParser::LocationContext* ctx)</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>      -&gt; std::optional&lt;comp_t&gt; {</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; attr : ctx-&gt;location_attribute()) {</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>      <span class="comment">// Type</span></div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, lcName&gt;)</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        <span class="keywordflow">if</span> (attr-&gt;loc_name()) <span class="keywordflow">return</span> attr-&gt;loc_name();</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, lcDimensions&gt;)</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="keywordflow">if</span> (attr-&gt;loc_dimensions()) <span class="keywordflow">return</span> attr-&gt;loc_dimensions();</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    }</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  }</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>};</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordtype">void</span> add_exists_subcond(<a class="code hl_class" href="../../d9/d20/classBHVR_1_1Condition.html">Condition</a>&amp;, BehaviorParser::Condition_ExistsContext*);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="comment">// --------------------------------- SUBSELECTORS ------------------------------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="keyword">auto</span> build_everyone_selector(slType, <span class="keywordtype">bool</span>) -&gt; <a class="code hl_class" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a>;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="keyword">auto</span> build_exactly_n_selector(slType, slSelector, std::optional&lt;slGroup&gt;, <span class="keywordtype">bool</span>) -&gt; <a class="code hl_class" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a>;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="keyword">auto</span> build_percent_selector(slType, slSelector, std::optional&lt;slGroup&gt;, <span class="keywordtype">bool</span>) -&gt; <a class="code hl_class" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a>;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="keyword">auto</span> build_location_selector(slType, slSelector, std::optional&lt;slGroup&gt;, <span class="keywordtype">bool</span>) -&gt; <a class="code hl_class" href="../../d0/db5/classBHVR_1_1SubSelector.html">SubSelector</a>;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="comment">// --------------------------------- LOCATION ------------------------------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// -------------------------------- FINDERS ------------------------------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> comp_t&gt;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> find_event_component(BehaviorParser::EventContext* ctx) -&gt; std::optional&lt;comp_t&gt; {</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; attr : ctx-&gt;event_attribute()) {</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>      <span class="comment">// Name</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, std::string&gt;)</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="keywordflow">if</span> (attr-&gt;event_name()) <span class="keywordflow">return</span> attr-&gt;event_name()-&gt;ID()-&gt;toString();</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>      <span class="comment">// Start Condition</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, evStart&gt;)</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="keywordflow">if</span> (attr-&gt;event_start()) <span class="keywordflow">return</span> attr-&gt;event_start();</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>      <span class="comment">// End Condition</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, evEnd&gt;)</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        <span class="keywordflow">if</span> (attr-&gt;event_end()) <span class="keywordflow">return</span> attr-&gt;event_end();</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    }</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  }</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> comp_t&gt;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> find_action_component(BehaviorParser::ActionContext* ctx)</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>      -&gt; std::optional&lt;comp_t&gt; {</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; attr : ctx-&gt;action_attribute()) {</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>      <span class="comment">// Stimulus</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, acStimulus&gt;)</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <span class="keywordflow">if</span> (attr-&gt;action_stimulus()) <span class="keywordflow">return</span> attr-&gt;action_stimulus();</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>      <span class="comment">// Response</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, acResponse&gt;)</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="keywordflow">if</span> (attr-&gt;action_response()) <span class="keywordflow">return</span> attr-&gt;action_response();</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>      <span class="comment">// Target</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, acTarget&gt;)</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="keywordflow">if</span> (attr-&gt;action_target()) <span class="keywordflow">return</span> attr-&gt;action_target();</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>      <span class="comment">// Duration</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, acDuration&gt;)</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        <span class="keywordflow">if</span> (attr-&gt;action_duration()) <span class="keywordflow">return</span> attr-&gt;action_duration();</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    }</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  }</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> comp_t&gt;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> find_selector_component(BehaviorParser::Ped_SelectorContext* ctx)</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>      -&gt; std::optional&lt;comp_t&gt; {</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; attr : ctx-&gt;selector_attribute()) {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>      <span class="comment">// Type</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, slType&gt;)</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <span class="keywordflow">if</span> (attr-&gt;selector_type()) <span class="keywordflow">return</span> attr-&gt;selector_type();</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>      <span class="comment">// Selector</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, slSelector&gt;)</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        <span class="keywordflow">if</span> (attr-&gt;selector_selector()) <span class="keywordflow">return</span> attr-&gt;selector_selector();</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, slGroup&gt;)</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keywordflow">if</span> (attr-&gt;selector_from()) <span class="keywordflow">return</span> attr-&gt;selector_from();</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, slRequired&gt;)</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        <span class="keywordflow">if</span> (attr-&gt;selector_required()) <span class="keywordflow">return</span> attr-&gt;selector_required();</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    }</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  }</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> comp_t&gt;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> find_location_component(BehaviorParser::LocationContext* ctx)</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>      -&gt; std::optional&lt;comp_t&gt; {</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; attr : ctx-&gt;location_attribute()) {</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>      <span class="comment">// Type</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, lcName&gt;)</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="keywordflow">if</span> (attr-&gt;loc_name()) <span class="keywordflow">return</span> attr-&gt;loc_name();</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;comp_t, lcDimensions&gt;)</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        <span class="keywordflow">if</span> (attr-&gt;loc_dimensions()) <span class="keywordflow">return</span> attr-&gt;loc_dimensions();</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    }</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  }</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>};</div>
 </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>}  <span class="comment">// namespace BHVR</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>}  <span class="comment">// namespace BHVR</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassBHVR_1_1Action_html"><div class="ttname"><a href="../../dc/d28/classBHVR_1_1Action.html">BHVR::Action</a></div><div class="ttdef"><b>Definition</b> action.hpp:30</div></div>
 <div class="ttc" id="aclassBHVR_1_1BehaviorBuilder_html"><div class="ttname"><a href="../../d3/d90/classBHVR_1_1BehaviorBuilder.html">BHVR::BehaviorBuilder</a></div><div class="ttdoc">Parses Behavior Files and Creates the Runtime Functionality they describe.</div><div class="ttdef"><b>Definition</b> behavior_builder.hpp:36</div></div>
-<div class="ttc" id="aclassBHVR_1_1BehaviorBuilder_html_a8d2a048c7f80299072e8159ae7836744"><div class="ttname"><a href="../../d3/d90/classBHVR_1_1BehaviorBuilder.html#a8d2a048c7f80299072e8159ae7836744">BHVR::BehaviorBuilder::build</a></div><div class="ttdeci">auto build(std::string, const std::filesystem::path &amp;, BHVR::seed) -&gt; HumanBehavior</div><div class="ttdoc">Parses the behavior file at filepath, returns the behavior it describes.</div><div class="ttdef"><b>Definition</b> behavior_builder.cpp:77</div></div>
+<div class="ttc" id="aclassBHVR_1_1BehaviorBuilder_html_a8d2a048c7f80299072e8159ae7836744"><div class="ttname"><a href="../../d3/d90/classBHVR_1_1BehaviorBuilder.html#a8d2a048c7f80299072e8159ae7836744">BHVR::BehaviorBuilder::build</a></div><div class="ttdeci">auto build(std::string, const std::filesystem::path &amp;, BHVR::seed) -&gt; HumanBehavior</div><div class="ttdoc">Parses the behavior file at filepath, returns the behavior it describes.</div><div class="ttdef"><b>Definition</b> behavior_builder.cpp:78</div></div>
 <div class="ttc" id="aclassBHVR_1_1BehaviorErrorListener_html"><div class="ttname"><a href="../../de/d7a/classBHVR_1_1BehaviorErrorListener.html">BHVR::BehaviorErrorListener</a></div><div class="ttdef"><b>Definition</b> behavior_error_listener.hpp:7</div></div>
 <div class="ttc" id="aclassBHVR_1_1Condition_html"><div class="ttname"><a href="../../d9/d20/classBHVR_1_1Condition.html">BHVR::Condition</a></div><div class="ttdef"><b>Definition</b> condition.hpp:21</div></div>
 <div class="ttc" id="aclassBHVR_1_1Event_html"><div class="ttname"><a href="../../dd/d86/classBHVR_1_1Event.html">BHVR::Event</a></div><div class="ttdoc">An Event is something that occurs during a simulation, when an event starts it notifies it's subscrib...</div><div class="ttdef"><b>Definition</b> event.hpp:18</div></div>
@@ -330,7 +331,7 @@ $(document).ready(function() { init_codefold(1); });
 <div class="ttc" id="aclassBHVR_1_1Ptype_html"><div class="ttname"><a href="../../d4/d2e/classBHVR_1_1Ptype.html">BHVR::Ptype</a></div><div class="ttdoc">Pedestrian Type, used as a composite of typeUIDs.</div><div class="ttdef"><b>Definition</b> pedestrian_types.hpp:22</div></div>
 <div class="ttc" id="aclassBHVR_1_1SubSelector_html"><div class="ttname"><a href="../../d0/db5/classBHVR_1_1SubSelector.html">BHVR::SubSelector</a></div><div class="ttdoc">Selects pedestrians for one type, gets combined with other SubSelectors in Selector.</div><div class="ttdef"><b>Definition</b> subselector.hpp:40</div></div>
 <div class="ttc" id="aclassBHVR_1_1TargetModifier_html"><div class="ttname"><a href="../../de/dc5/classBHVR_1_1TargetModifier.html">BHVR::TargetModifier</a></div><div class="ttdoc">Modifies who can be a target for an action, by distance, direction, etc.</div><div class="ttdef"><b>Definition</b> target_modifier.hpp:19</div></div>
-<div class="ttc" id="astructBHVR_1_1CAttributeValue_html"><div class="ttname"><a href="../../dc/d65/structBHVR_1_1CAttributeValue.html">BHVR::CAttributeValue</a></div><div class="ttdoc">Holds an immutable attribute value and its type.</div><div class="ttdef"><b>Definition</b> attributes.hpp:59</div></div>
+<div class="ttc" id="astructBHVR_1_1CAttributeValue_html"><div class="ttname"><a href="../../dc/d65/structBHVR_1_1CAttributeValue.html">BHVR::CAttributeValue</a></div><div class="ttdoc">Holds an immutable attribute value and its type.</div><div class="ttdef"><b>Definition</b> attributes.hpp:60</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,31 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,343,127,368"/>
-<area shape="rect" id="Node000001" href="$d9/db6/classBuilderException.html" title=" " alt="" coords="229,5,346,31"/>
-<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="66,327,72,267,88,189,102,148,120,109,144,72,173,40,199,25,228,17,229,22,201,30,176,44,148,75,125,111,107,150,93,191,77,267,71,327"/>
-<area shape="rect" id="Node000002" href="$da/da2/classDSLException.html" title=" " alt="" coords="236,55,339,80"/>
-<area shape="poly" id="edge5_Node000000_Node000002" title=" " alt="" coords="68,327,77,275,95,211,126,145,147,115,173,89,203,73,235,66,236,71,205,78,176,94,151,119,131,148,100,213,82,276,73,327"/>
-<area shape="rect" id="Node000003" href="$dd/d16/classVIPRA_1_1BehaviorModelException.html" title=" " alt="" coords="183,104,392,130"/>
-<area shape="poly" id="edge6_Node000000_Node000003" title=" " alt="" coords="71,327,82,285,103,234,132,182,151,159,173,139,191,128,194,132,176,143,155,162,137,185,107,236,88,286,76,328"/>
-<area shape="rect" id="Node000004" href="$d0/d54/classVIPRA_1_1ConfigurationException.html" title=" " alt="" coords="188,153,387,179"/>
-<area shape="poly" id="edge7_Node000000_Node000004" title=" " alt="" coords="75,327,90,295,111,258,139,220,173,189,196,177,199,182,176,194,143,224,115,261,94,298,80,330"/>
-<area shape="rect" id="Node000005" href="$d4/dff/classVIPRA_1_1ConfigurationReaderException.html" title=" " alt="" coords="196,203,379,244"/>
-<area shape="poly" id="edge8_Node000000_Node000005" title=" " alt="" coords="86,329,124,290,173,253,197,242,199,247,176,258,127,294,90,333"/>
-<area shape="rect" id="Node000006" href="$d2/de4/classVIPRA_1_1DistributionException.html" title=" " alt="" coords="193,268,382,294"/>
-<area shape="poly" id="edge9_Node000000_Node000006" title=" " alt="" coords="103,333,174,302,212,292,213,297,176,307,106,338"/>
-<area shape="rect" id="Node000007" href="$d3/d89/classVIPRA_1_1GoalsException.html" title="Custom exception class for handling errors related to Goals." alt="" coords="209,317,366,343"/>
-<area shape="poly" id="edge10_Node000000_Node000007" title=" " alt="" coords="142,344,208,337,209,342,143,349"/>
-<area shape="rect" id="Node000008" href="$d0/d9d/classVIPRA_1_1MapLoaderException.html" title="Custom exception class for handling errors related to MapLoader." alt="" coords="193,367,382,392"/>
-<area shape="poly" id="edge11_Node000000_Node000008" title=" " alt="" coords="143,361,193,367,192,372,142,366"/>
-<area shape="rect" id="Node000009" href="$dd/d80/classVIPRA_1_1ObstacleSetException.html" title="Custom exception class for handling errors related to ObstacleSet." alt="" coords="190,416,385,442"/>
-<area shape="poly" id="edge12_Node000000_Node000009" title=" " alt="" coords="107,373,176,402,214,413,212,418,174,407,105,378"/>
-<area shape="rect" id="Node000010" href="$d0/d92/classVIPRA_1_1OutputException.html" title=" " alt="" coords="206,465,369,491"/>
-<area shape="poly" id="edge13_Node000000_Node000010" title=" " alt="" coords="89,378,127,417,150,436,176,452,207,464,205,469,173,457,147,440,123,421,85,382"/>
-<area shape="rect" id="Node000011" href="$d0/dbf/classVIPRA_1_1ParameterSweepException.html" title=" " alt="" coords="176,515,399,540"/>
-<area shape="poly" id="edge14_Node000000_Node000011" title=" " alt="" coords="82,381,118,443,145,475,176,501,197,512,194,516,173,506,141,479,114,446,77,384"/>
-<area shape="rect" id="Node000012" href="$d5/da0/classVIPRA_1_1PedDynamicsException.html" title="Custom exception class for handling errors related to PedestrianDynamicsModel." alt="" coords="186,564,389,590"/>
-<area shape="poly" id="edge15_Node000000_Node000012" title=" " alt="" coords="77,382,90,421,110,467,139,513,176,551,195,561,192,566,173,555,134,516,105,469,85,423,72,384"/>
-<area shape="rect" id="Node000013" href="$d6/d26/classVIPRA_1_1PedestrianLoaderException.html" title="Custom exception class for handling errors related to PedestrianLoader." alt="" coords="175,613,400,639"/>
-<area shape="poly" id="edge16_Node000000_Node000013" title=" " alt="" coords="74,383,84,431,103,490,133,550,153,577,176,600,193,610,190,615,173,604,149,580,128,553,98,492,79,432,69,384"/>
-<area shape="rect" id="Node000014" href="$d7/dcc/classVIPRA_1_1PedestrianSetException.html" title="Custom exception class for handling errors related to PedestrianSet." alt="" coords="185,663,390,688"/>
-<area shape="poly" id="edge17_Node000000_Node000014" title=" " alt="" coords="71,383,79,440,96,512,109,550,127,587,149,620,176,649,192,660,189,664,173,654,145,624,122,589,104,552,90,514,73,441,66,384"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,131,31"/>
+<area shape="rect" id="Node000001" href="$d8/d38/structCALM__PATH_1_1PQueue.html" title=" " alt="" coords="179,5,333,31"/>
+<area shape="poly" id="edge3_Node000000_Node000001" title=" " alt="" coords="146,16,178,16,178,21,146,21"/>
 </map>
