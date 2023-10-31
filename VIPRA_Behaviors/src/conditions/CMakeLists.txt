@@ -15,4 +15,5 @@ target_sources(
   subconditions/subcondition_leave.cpp
   subconditions/subcondition_in_location.cpp
   subconditions/subcondition_attribute.cpp
+  subconditions/subcondition_exists.cpp
 )

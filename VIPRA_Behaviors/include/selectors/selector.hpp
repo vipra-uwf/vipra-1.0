@@ -29,7 +29,7 @@ class Selector {
   void set_all_types(Ptype);
   void add_sub_selector(const SubSelector&);
 
-  [[nodiscard]] auto get_groups() const -> const GroupsContainer&;
+  [[nodiscard]] auto get_groups() -> GroupsContainer&;
 
   [[nodiscard]] auto selector_count() const -> VIPRA::size;
 

@@ -7,7 +7,7 @@ Location:
   Name: Aisle
   Dimensions:
     {12, 1.7},
-    {30, 0.1},
+    {30, 0.2},
     0
 .
 
@@ -19,5 +19,5 @@ Selector:
 Action (Luggage_Grabber):
   Condition: enter @Aisle
   Response: set velocity to {0}
-  Duration: random 10 - 30 seconds
+  Duration: random 5 - 15 seconds
 .

@@ -30,7 +30,7 @@ def animate(i):
   [pointsX, pointsY] = helpers.getPoints(peds["timesteps"][i])
   [compX, compY] = helpers.getPoints(difCoords[i]) if args['dif'] else [[], []]
 
-  helpers.prepPlot(ax, args)
+  helpers.prepPlot(ax, i, args)
   obstacles = helpers.plotObs(obsX, obsY, ax, args)
   helpers.plotShoulders(pointsX, pointsY, pedColors, ax, args)
   points = helpers.plotPeds(pointsX, pointsY, pedColors, ax, args) if not args['dif'] else helpers.plotDif(pointsX, pointsY, compX, compY, pedColors, ax, args)
@@ -42,9 +42,9 @@ def animate(i):
     print("updating colors")
     pedColors = temp
 
-  return points, obstacles
+  return ax
 
 
-ani = FuncAnimation(fig, animate, frames=timestepCnt, blit=True)
-ani.save(args['outpath'], dpi=300, writer=FFMpegFileWriter(fps=args['fps']), progress_callback=helpers.printProgressBar)
+ani = FuncAnimation(fig, animate, frames=timestepCnt, blit=False)
+ani.save(args['outpath'], writer=FFMpegFileWriter(fps=args['fps']), progress_callback=helpers.printProgressBar)
 helpers.printProgressBar(timestepCnt, timestepCnt, 'Done')

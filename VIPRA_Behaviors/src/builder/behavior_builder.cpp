@@ -22,6 +22,7 @@
 #include "builder/declaration_components.hpp"
 
 #include "conditions/subconditions/subcondition_attribute.hpp"
+#include "conditions/subconditions/subcondition_exists.hpp"
 #include "definitions/dsl_types.hpp"
 #include "definitions/pedestrian_types.hpp"
 #include "definitions/type_definitions.hpp"
@@ -295,6 +296,11 @@ void BehaviorBuilder::add_sub_cond_to_condtion(Condition&                       
     return;
   }
 
+  if (subcond->condition_Exists()) {
+    add_exists_subcond(condition, subcond->condition_Exists());
+    return;
+  }
+
   spdlog::error("Behavior Error: No Valid SubCondition For: \"{}\"", subcond->getText());
   BuilderException::error();
 }
@@ -477,8 +483,9 @@ auto BehaviorBuilder::get_event(const std::string& evName) const -> std::optiona
  */
 auto BehaviorBuilder::get_attribute(std::string attr) -> Attribute {
   static std::map<std::string, Attribute> attrMap{
-      {"position", Attribute::POSITION}, {"goal", Attribute::GOAL},         {"state", Attribute::STATE},
-      {"velocity", Attribute::VELOCITY}, {"location", Attribute::LOCATION}, {"status", Attribute::STATUS}};
+      {"position", Attribute::POSITION}, {"end goal", Attribute::END_GOAL}, {"goal", Attribute::CURR_GOAL},
+      {"state", Attribute::STATE},       {"velocity", Attribute::VELOCITY}, {"location", Attribute::LOCATION},
+      {"status", Attribute::STATUS}};
 
   std::transform(attr.begin(), attr.end(), attr.begin(), [](char chr) { return std::tolower(chr); });
 
@@ -609,6 +616,9 @@ auto BehaviorBuilder::make_attribute_str(BehaviorParser::AttributeContext* ctx) 
   }
   if (ctx->GOAL()) {
     return "goal";
+  }
+  if (ctx->end_goal()) {
+    return "end goal";
   }
   if (ctx->STATE()) {
     return "state";
@@ -970,10 +980,27 @@ void BehaviorBuilder::add_attribute_subcond(Condition&                          
   auto attrStr = make_attribute_str(ctx->attribute());
   auto attr = get_attribute(attrStr);
   auto attrValue = make_attribute_value(ctx->attr_value());
+  bool negative = ctx->NOT() != nullptr;
 
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Attribute "{}")", _currentBehavior.get_name(),
                 attrStr);
-  condition.add_sub_condition(SubConditionAttribute{attr, attrValue});
+  condition.add_sub_condition(SubConditionAttribute{attr, attrValue, negative});
+}
+
+void BehaviorBuilder::add_exists_subcond(Condition& condition, BehaviorParser::Condition_ExistsContext* ctx) {
+  auto modifiers = ctx->modifier();
+  auto targetModifier = make_target_modifier(modifiers);
+
+  auto attrStr = make_attribute_str(ctx->attribute());
+  auto attr = get_attribute(attrStr);
+  auto attrValue = make_attribute_value(ctx->attr_value());
+  bool negative = ctx->NOT() != nullptr;
+
+  spdlog::debug(R"(Behavior "{}": Adding SubCondition: Exists Attribute \"{}\")", _currentBehavior.get_name(),
+                attrStr);
+  condition.add_sub_condition(
+      SubConditionExists{targetModifier.has_value() ? targetModifier.value() : TargetModifier{},
+                         SubConditionAttribute{attr, attrValue, negative}});
 }
 
 // ------------------------------- END SUBCONDITIONS -----------------------------------------------------------------------------------------

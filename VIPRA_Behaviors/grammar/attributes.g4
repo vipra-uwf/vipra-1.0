@@ -7,6 +7,7 @@ attribute:
   POSITION  |
   VELOCITY  |
   GOAL      |
+  end_goal  |
   STATE     |
   LOCATION  |
   STATUS
@@ -17,4 +18,8 @@ attr_value:
   value_coord   |
   STATE_VAL |
   LOC_NAME
+  ;
+
+end_goal:
+  END GOAL
   ;

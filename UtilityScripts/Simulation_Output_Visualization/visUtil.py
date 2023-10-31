@@ -2,6 +2,7 @@ import sys
 import json
 import math
 import numpy as np
+import datetime
 
 def getArgs():
   indexes = False
@@ -167,7 +168,7 @@ def plotPeds(pedsX, pedsY, pedColors, ax, args):
 def plotObs(obsX, obsY, ax, args):
   return ax.scatter(obsX, obsY, 1, c=args['obsColor'])
 
-def prepPlot(ax, args):
+def prepPlot(ax, i, args):
   xDim = args['xDim']
   yDim = args['yDim']
 
@@ -176,6 +177,7 @@ def prepPlot(ax, args):
   ax.set_ylim(yDim[0], yDim[1])
   ax.autoscale(False)
   ax.set_facecolor(args['bckColor'])
+  ax.text(xDim[1] / 2 , yDim[1], f'{datetime.timedelta(seconds=(i * 100 * 0.005))}')
 
 percent = 0
 def printProgressBar (iteration, total, prefix="Outputing", animating=False):

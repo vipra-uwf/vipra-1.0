@@ -4,7 +4,7 @@ import common, directions, values, lexer_rules;
 
 target:
   self |
-  other (modifier)*
+  other (','? modifier)*
 ;
 
 self:

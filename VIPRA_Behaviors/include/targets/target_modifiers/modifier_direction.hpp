@@ -36,14 +36,16 @@ class ModifierDirection {
     auto dif = targetCoord - selfCoord;
 
     if (_direction == Direction::FRONT) {
-      return forward.dot(dif) > 0;
+      return dif.dot(forward) > RANGE;
     }
 
-    return forward.dot(dif) <= 0;
+    return dif.dot(forward) <= RANGE;
   }
 
  private:
   Direction _direction;
+
+  static constexpr float RANGE = 0.25F;
 };
 }  // namespace BHVR
 

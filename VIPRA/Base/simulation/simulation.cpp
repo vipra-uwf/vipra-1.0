@@ -67,6 +67,10 @@ void Simulation::run(VIPRA::Goals& goals, VIPRA::PedestrianSet& pedestrianSet,
     Output::nextTimestep();
   }
 
+  if (timestep >= maxTimeStep) {
+    spdlog::warn("Simulation Reached Max Timestep");
+  }
+
   spdlog::info("Simulation Run Complete");
   printSimTime();
 }

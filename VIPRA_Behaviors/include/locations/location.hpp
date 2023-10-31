@@ -33,6 +33,7 @@ class Location {
   VIPRA::f3d _center;
   VIPRA::f3d _dims;
   float      _rot{};
+  float      _area;
 
   static constexpr float AREA_ERROR = 0.0001;
 

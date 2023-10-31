@@ -177,17 +177,19 @@ void HumanBehavior::evaluate_events(VIPRA::PedestrianSet& pedSet, VIPRA::Obstacl
  */
 void HumanBehavior::apply_actions(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleSet& obsSet,
                                   VIPRA::Goals& goals, VIPRA::State& state, VIPRA::delta_t deltaT) {
-  const GroupsContainer& groups = _selector.get_groups();
-  const VIPRA::size      groupCnt = groups.size();
+  GroupsContainer&  groups = _selector.get_groups();
+  const VIPRA::size groupCnt = groups.size();
 
   for (VIPRA::idx i = 0; i < groupCnt; ++i) {
-    const auto& pedestrians = groups.at(i);
+    auto& pedestrians = groups[i];
+    pedestrians.erase(std::remove_if(pedestrians.begin(), pedestrians.end(),
+                                     [&](VIPRA::idx ped) { return goals.isPedestianGoalMet(ped); }),
+                      pedestrians.end());
+
     std::for_each(pedestrians.begin(), pedestrians.end(), [&](VIPRA::idx ped) {
-      if (!goals.isPedestianGoalMet(ped))
-        for (auto& action : _actions[i]) {
-          action.perform_action({pedSet, obsSet, goals, state, _context, _selector.get_groups(), deltaT},
-                                ped);
-        }
+      for (auto& action : _actions[i]) {
+        action.perform_action({pedSet, obsSet, goals, state, _context, _selector.get_groups(), deltaT}, ped);
+      }
     });
   }
 }

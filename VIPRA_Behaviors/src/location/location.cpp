@@ -9,7 +9,8 @@
 
 namespace BHVR {
 
-Location::Location(VIPRA::f3d center, VIPRA::f3d dims, float rot) : _center(center), _dims(dims), _rot(rot) {
+Location::Location(VIPRA::f3d center, VIPRA::f3d dims, float rot)
+    : _center(center), _dims(dims), _rot(rot), _area(0) {
   _p1.x = center.x + ((dims.x / 2) * std::cos(rot)) - ((dims.y / 2) * std::sin(rot));
   _p1.y = center.y + ((dims.x / 2) * std::sin(rot)) + ((dims.y / 2) * std::cos(rot));
   _p2.x = center.x - ((dims.x / 2) * std::cos(rot)) - ((dims.y / 2) * std::sin(rot));
@@ -18,6 +19,8 @@ Location::Location(VIPRA::f3d center, VIPRA::f3d dims, float rot) : _center(cent
   _p3.y = center.y - ((dims.x / 2) * std::sin(rot)) - ((dims.y / 2) * std::cos(rot));
   _p4.x = center.x + ((dims.x / 2) * std::cos(rot)) + ((dims.y / 2) * std::sin(rot));
   _p4.y = center.y + ((dims.x / 2) * std::sin(rot)) - ((dims.y / 2) * std::cos(rot));
+  // NOLINTNEXTLINE incorrect error
+  _area = area() + AREA_ERROR;
 }
 
 /**
@@ -35,8 +38,8 @@ auto Location::triangle_area(VIPRA::f3d point1, VIPRA::f3d point2, VIPRA::f3d po
 }
 
 auto Location::random_point(VIPRA::pRNG_Engine& eng) const -> VIPRA::f3d {
-  VIPRA::uniform_distribution<> hDistr{0, _dims.x};
-  VIPRA::uniform_distribution<> wDistr{0, _dims.y};
+  VIPRA::uniform_distribution<> wDistr{0, _dims.x};
+  VIPRA::uniform_distribution<> hDistr{0, _dims.y};
 
   float      rotSin = std::sin(_rot);
   float      rotCos = std::cos(_rot);
@@ -61,7 +64,7 @@ auto Location::contains(VIPRA::f3d point) const -> bool {
   float areaTri3 = triangle_area(_p3, _p4, point);
   float areaTri4 = triangle_area(_p4, _p1, point);
 
-  return (areaTri1 += areaTri2 += areaTri3 += areaTri4) <= area() + AREA_ERROR;
+  return (areaTri1 += areaTri2 += areaTri3 += areaTri4) <= _area;
 }
 
 /**

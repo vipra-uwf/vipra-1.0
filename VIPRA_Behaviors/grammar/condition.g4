@@ -1,6 +1,6 @@
 grammar condition;
 
-import lexer_rules, values, time, attributes;
+import lexer_rules, values, time, attributes, targets;
 
 condition:
   sub_condition connector*;
@@ -26,7 +26,8 @@ sub_condition:
   condition_Enter_Location |
   condition_Exit_Location |
   condition_Inside_Location |
-  condition_Attribute
+  condition_Attribute |
+  condition_Exists
   ;
 
 condition_Time_Elapsed_From_Event:
@@ -66,5 +67,9 @@ condition_Inside_Location:
   ;
 
 condition_Attribute:
-  TARGET? attribute IS attr_value
+  TARGET? attribute IS (NOT?) attr_value
+  ;
+
+condition_Exists:
+  EXISTS ':' ID (','? modifier)* WHOSE attribute IS (NOT?) attr_value
   ;

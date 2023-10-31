@@ -91,11 +91,37 @@ public:
 
     virtual std::any visitCondition_Attribute(BehaviorParser::Condition_AttributeContext *context) = 0;
 
+    virtual std::any visitCondition_Exists(BehaviorParser::Condition_ExistsContext *context) = 0;
+
     virtual std::any visitDuration(BehaviorParser::DurationContext *context) = 0;
 
     virtual std::any visitAttribute(BehaviorParser::AttributeContext *context) = 0;
 
     virtual std::any visitAttr_value(BehaviorParser::Attr_valueContext *context) = 0;
+
+    virtual std::any visitEnd_goal(BehaviorParser::End_goalContext *context) = 0;
+
+    virtual std::any visitTarget(BehaviorParser::TargetContext *context) = 0;
+
+    virtual std::any visitSelf(BehaviorParser::SelfContext *context) = 0;
+
+    virtual std::any visitOther(BehaviorParser::OtherContext *context) = 0;
+
+    virtual std::any visitNearest_type(BehaviorParser::Nearest_typeContext *context) = 0;
+
+    virtual std::any visitModifier(BehaviorParser::ModifierContext *context) = 0;
+
+    virtual std::any visitLocation_modifier(BehaviorParser::Location_modifierContext *context) = 0;
+
+    virtual std::any visitId_list(BehaviorParser::Id_listContext *context) = 0;
+
+    virtual std::any visitDistance(BehaviorParser::DistanceContext *context) = 0;
+
+    virtual std::any visitDirection(BehaviorParser::DirectionContext *context) = 0;
+
+    virtual std::any visitFront(BehaviorParser::FrontContext *context) = 0;
+
+    virtual std::any visitBehind(BehaviorParser::BehindContext *context) = 0;
 
     virtual std::any visitPed_Selector(BehaviorParser::Ped_SelectorContext *context) = 0;
 
@@ -121,8 +147,6 @@ public:
 
     virtual std::any visitGroup(BehaviorParser::GroupContext *context) = 0;
 
-    virtual std::any visitId_list(BehaviorParser::Id_listContext *context) = 0;
-
     virtual std::any visitAction(BehaviorParser::ActionContext *context) = 0;
 
     virtual std::any visitAction_attribute(BehaviorParser::Action_attributeContext *context) = 0;
@@ -142,26 +166,6 @@ public:
     virtual std::any visitSet_atom(BehaviorParser::Set_atomContext *context) = 0;
 
     virtual std::any visitScale_atom(BehaviorParser::Scale_atomContext *context) = 0;
-
-    virtual std::any visitTarget(BehaviorParser::TargetContext *context) = 0;
-
-    virtual std::any visitSelf(BehaviorParser::SelfContext *context) = 0;
-
-    virtual std::any visitOther(BehaviorParser::OtherContext *context) = 0;
-
-    virtual std::any visitNearest_type(BehaviorParser::Nearest_typeContext *context) = 0;
-
-    virtual std::any visitModifier(BehaviorParser::ModifierContext *context) = 0;
-
-    virtual std::any visitLocation_modifier(BehaviorParser::Location_modifierContext *context) = 0;
-
-    virtual std::any visitDistance(BehaviorParser::DistanceContext *context) = 0;
-
-    virtual std::any visitDirection(BehaviorParser::DirectionContext *context) = 0;
-
-    virtual std::any visitFront(BehaviorParser::FrontContext *context) = 0;
-
-    virtual std::any visitBehind(BehaviorParser::BehindContext *context) = 0;
 
     virtual std::any visitDeclaration(BehaviorParser::DeclarationContext *context) = 0;
 

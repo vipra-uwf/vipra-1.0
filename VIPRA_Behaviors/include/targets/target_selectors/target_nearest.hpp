@@ -76,7 +76,6 @@ struct TargetNearest {
 
     for (VIPRA::idx pedIdx : idxs) {
       if (pedIdx == self) continue;
-      if (pack.get_goals().isPedestianGoalMet(pedIdx)) continue;
 
       if (modifier) {
         if (!modifier->check(pack, pedIdx, self)) continue;

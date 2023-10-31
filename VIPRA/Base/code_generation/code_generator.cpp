@@ -225,6 +225,7 @@ std::string generateMain() {
   std::string mainFunction;
 
   mainFunction += mainFunctionDefinition();
+  mainFunction += setLogLevel();
   mainFunction += generateModules();
   mainFunction += log("Generating Modules");
   mainFunction += initializeModules();

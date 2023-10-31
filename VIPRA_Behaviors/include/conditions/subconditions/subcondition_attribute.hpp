@@ -16,13 +16,14 @@ class SubConditionAttribute {
   MOVEABLE(SubConditionAttribute)
 
  public:
-  explicit SubConditionAttribute(Attribute, CAttributeValue);
+  explicit SubConditionAttribute(Attribute, CAttributeValue, bool);
 
   [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
 
  private:
   Attribute       _type;
   CAttributeValue _value;
+  bool            _not;
 };
 }  // namespace BHVR
 

@@ -151,6 +151,7 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   void add_spatial_subcond(Condition&, BehaviorParser::Condition_SpatialContext*);
   void add_in_location_subcond(Condition&, BehaviorParser::Condition_Inside_LocationContext*);
   void add_attribute_subcond(Condition&, BehaviorParser::Condition_AttributeContext*);
+  void add_exists_subcond(Condition&, BehaviorParser::Condition_ExistsContext*);
 
   // --------------------------------- SUBSELECTORS ------------------------------------------------------------------------------------------------
 

@@ -159,6 +159,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitCondition_Exists(BehaviorParser::Condition_ExistsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitDuration(BehaviorParser::DurationContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -168,6 +172,54 @@ public:
   }
 
   virtual std::any visitAttr_value(BehaviorParser::Attr_valueContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitEnd_goal(BehaviorParser::End_goalContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitTarget(BehaviorParser::TargetContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSelf(BehaviorParser::SelfContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitOther(BehaviorParser::OtherContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitNearest_type(BehaviorParser::Nearest_typeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitModifier(BehaviorParser::ModifierContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitLocation_modifier(BehaviorParser::Location_modifierContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitId_list(BehaviorParser::Id_listContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDistance(BehaviorParser::DistanceContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDirection(BehaviorParser::DirectionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFront(BehaviorParser::FrontContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitBehind(BehaviorParser::BehindContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -219,10 +271,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitId_list(BehaviorParser::Id_listContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitAction(BehaviorParser::ActionContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -260,46 +308,6 @@ public:
   }
 
   virtual std::any visitScale_atom(BehaviorParser::Scale_atomContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitTarget(BehaviorParser::TargetContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitSelf(BehaviorParser::SelfContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitOther(BehaviorParser::OtherContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitNearest_type(BehaviorParser::Nearest_typeContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitModifier(BehaviorParser::ModifierContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitLocation_modifier(BehaviorParser::Location_modifierContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitDistance(BehaviorParser::DistanceContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitDirection(BehaviorParser::DirectionContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitFront(BehaviorParser::FrontContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitBehind(BehaviorParser::BehindContext *ctx) override {
     return visitChildren(ctx);
   }
 

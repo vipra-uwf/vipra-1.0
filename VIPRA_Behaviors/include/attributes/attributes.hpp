@@ -23,7 +23,8 @@ enum class Attribute {
   INVALID = 0,
   POSITION,
   VELOCITY,
-  GOAL,
+  END_GOAL,
+  CURR_GOAL,
   STATE,
   LOCATION,
   STATUS,
@@ -250,6 +251,19 @@ class AttributeHandling {
   }
 
   /**
+   * @brief Checks if two AttributeValues are not equal
+   * 
+   * @param value1 : first value
+   * @param value2 : second value
+   * @return true : if not equal
+   * @return false : if equal or not same type
+   */
+  [[nodiscard]] inline static auto is_not_equal(CAttributeValue value1, CAttributeValue value2, Simpack pack)
+      -> bool {
+    return !is_equal(value1, value2, pack);
+  }
+
+  /**
    * @brief Adds an attribute value to the value store, for later use in atoms
    * 
    * @tparam T : value type
@@ -308,8 +322,10 @@ class AttributeHandling {
         return {Type::COORD, &pack.get_pedset().getPedCoords(target.targetIdx)};
       case Attribute::VELOCITY:
         return {Type::COORD, &pack.get_pedset().getPedVelocity(target.targetIdx)};
-      case Attribute::GOAL:
+      case Attribute::END_GOAL:
         return {Type::COORD, &pack.get_goals().getEndGoal(target.targetIdx)};
+      case Attribute::CURR_GOAL:
+        return {Type::COORD, &pack.get_goals().getCurrentGoal(target.targetIdx)};
       case Attribute::STATE:
         return {Type::STATE, &pack.get_context().pedStates[target.targetIdx]};
       default:
@@ -356,8 +372,11 @@ class AttributeHandling {
       case Attribute::VELOCITY:
         set_velocity(target, pack, state, value);
         return;
-      case Attribute::GOAL:
+      case Attribute::END_GOAL:
         set_goal(target, pack, value);
+        return;
+      case Attribute::CURR_GOAL:
+        DSLException::error("Unable to set Pedestrian Current Goal");
         return;
       case Attribute::STATE:
         set_state(target, pack, value);
@@ -385,15 +404,18 @@ class AttributeHandling {
       case Attribute::VELOCITY:
         scale_velocity(target, pack, state, value);
         return;
-      case Attribute::GOAL:
-        // TODO (rolland) update this with goals
-        DSLException::error("Updating Pedestrian Goals Is Not Implemented");
+      case Attribute::CURR_GOAL:
+      case Attribute::END_GOAL:
+        DSLException::error("Cannot Scale Pedestrian Position");
         return;
       case Attribute::STATE:
         set_state(target, pack, value);
         return;
-      default:
+      case Attribute::INVALID:
+      case Attribute::LOCATION:
+      case Attribute::STATUS:
         DSLException::error("Invalid Pedestrian Attribute");
+        break;
     }
   }
 
@@ -459,6 +481,7 @@ class AttributeHandling {
     if (value.type == Type::COORD) {
       goals.changeEndGoal(target.targetIdx, pedset.getPedCoords(target.targetIdx), value.as<VIPRA::f3d>());
     } else if (value.type == Type::LOCATION) {
+      // TODO: this doesn't take into account two pedestrains going to the same location
       goals.changeEndGoal(target.targetIdx, pedset.getPedCoords(target.targetIdx),
                           context.locations[value.as<VIPRA::idx>()].random_point(context.engine));
     }

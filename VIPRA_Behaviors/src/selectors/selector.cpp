@@ -206,7 +206,7 @@ auto Selector::selector_count() const -> VIPRA::size { return _subSelectors.size
  * 
  * @return const GroupsContainer& 
  */
-auto Selector::get_groups() const -> const GroupsContainer& { return _pedGroups; }
+auto Selector::get_groups() -> GroupsContainer& { return _pedGroups; }
 
 // ----------------- END GETTERS/SETTERS --------------------------------------------------------------------
 
