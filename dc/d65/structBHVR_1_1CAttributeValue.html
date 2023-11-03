@@ -94,13 +94,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8fdc374e604b215d99124a9ccb110fa2" id="r_a8fdc374e604b215d99124a9ccb110fa2"><td class="memItemLeft" align="right" valign="top"><a id="a8fdc374e604b215d99124a9ccb110fa2" name="a8fdc374e604b215d99124a9ccb110fa2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>type_check</b> (Type check) const</td></tr>
 <tr class="separator:a8fdc374e604b215d99124a9ccb110fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a154f1afaad90f866dfbf998567750d13" id="r_a154f1afaad90f866dfbf998567750d13"><td class="memTemplParams" colspan="2"><a id="a154f1afaad90f866dfbf998567750d13" name="a154f1afaad90f866dfbf998567750d13"></a>
-template&lt;typename value_t &gt; </td></tr>
-<tr class="memitem:a154f1afaad90f866dfbf998567750d13"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>as</b> () -&gt; const value_t &amp;</td></tr>
+<tr class="memitem:a154f1afaad90f866dfbf998567750d13" id="r_a154f1afaad90f866dfbf998567750d13"><td class="memTemplParams" colspan="2">template&lt;typename value_t &gt; </td></tr>
+<tr class="memitem:a154f1afaad90f866dfbf998567750d13"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html#a154f1afaad90f866dfbf998567750d13">as</a> () -&gt; const value_t &amp;</td></tr>
+<tr class="memdesc:a154f1afaad90f866dfbf998567750d13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a refernce to the value as a given type.  <br /></td></tr>
 <tr class="separator:a154f1afaad90f866dfbf998567750d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2807f3eb7a02709b5ba9d76ecf58cbb" id="r_ac2807f3eb7a02709b5ba9d76ecf58cbb"><td class="memTemplParams" colspan="2"><a id="ac2807f3eb7a02709b5ba9d76ecf58cbb" name="ac2807f3eb7a02709b5ba9d76ecf58cbb"></a>
-template&lt;typename value_t &gt; </td></tr>
-<tr class="memitem:ac2807f3eb7a02709b5ba9d76ecf58cbb"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>as_ptr</b> () const -&gt; const value_t *</td></tr>
+<tr class="memitem:ac2807f3eb7a02709b5ba9d76ecf58cbb" id="r_ac2807f3eb7a02709b5ba9d76ecf58cbb"><td class="memTemplParams" colspan="2">template&lt;typename value_t &gt; </td></tr>
+<tr class="memitem:ac2807f3eb7a02709b5ba9d76ecf58cbb"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dc/d65/structBHVR_1_1CAttributeValue.html#ac2807f3eb7a02709b5ba9d76ecf58cbb">as_ptr</a> () const -&gt; const value_t *</td></tr>
+<tr class="memdesc:ac2807f3eb7a02709b5ba9d76ecf58cbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the value as a given type.  <br /></td></tr>
 <tr class="separator:ac2807f3eb7a02709b5ba9d76ecf58cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -114,7 +114,80 @@ const void *&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Holds an immutable attribute value and its type. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a154f1afaad90f866dfbf998567750d13" name="a154f1afaad90f866dfbf998567750d13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a154f1afaad90f866dfbf998567750d13">&#9670;&#160;</a></span>as()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename value_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto BHVR::CAttributeValue::as </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; const value_t&amp; </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a refernce to the value as a given type. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">value_t</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>const value_t&amp; </dd></dl>
+
+</div>
+</div>
+<a id="ac2807f3eb7a02709b5ba9d76ecf58cbb" name="ac2807f3eb7a02709b5ba9d76ecf58cbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2807f3eb7a02709b5ba9d76ecf58cbb">&#9670;&#160;</a></span>as_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename value_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto BHVR::CAttributeValue::as_ptr </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; const value_t* </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a pointer to the value as a given type. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">value_t</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>const value_t* </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>VIPRA_Behaviors/include/attributes/<a class="el" href="../../df/d6a/attributes_8hpp_source.html">attributes.hpp</a></li>
 </ul>
 </div><!-- contents -->

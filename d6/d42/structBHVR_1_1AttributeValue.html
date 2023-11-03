@@ -91,13 +91,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a90b322307f3cea1b6f0fa35398834db2" id="r_a90b322307f3cea1b6f0fa35398834db2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d42/structBHVR_1_1AttributeValue.html#a90b322307f3cea1b6f0fa35398834db2">type_check</a> (Type check) const</td></tr>
 <tr class="memdesc:a90b322307f3cea1b6f0fa35398834db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the value is a given type, throws exception if not correct type.  <br /></td></tr>
 <tr class="separator:a90b322307f3cea1b6f0fa35398834db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b7a46159377fee3a01e43bfe7f9667b" id="r_a9b7a46159377fee3a01e43bfe7f9667b"><td class="memTemplParams" colspan="2"><a id="a9b7a46159377fee3a01e43bfe7f9667b" name="a9b7a46159377fee3a01e43bfe7f9667b"></a>
-template&lt;typename value_t &gt; </td></tr>
-<tr class="memitem:a9b7a46159377fee3a01e43bfe7f9667b"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>as</b> () -&gt; value_t &amp;</td></tr>
+<tr class="memitem:a9b7a46159377fee3a01e43bfe7f9667b" id="r_a9b7a46159377fee3a01e43bfe7f9667b"><td class="memTemplParams" colspan="2">template&lt;typename value_t &gt; </td></tr>
+<tr class="memitem:a9b7a46159377fee3a01e43bfe7f9667b"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/d42/structBHVR_1_1AttributeValue.html#a9b7a46159377fee3a01e43bfe7f9667b">as</a> () -&gt; value_t &amp;</td></tr>
+<tr class="memdesc:a9b7a46159377fee3a01e43bfe7f9667b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a refernce to the value as a given type.  <br /></td></tr>
 <tr class="separator:a9b7a46159377fee3a01e43bfe7f9667b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e2a0aeda2127160b22ab62440eb88a1" id="r_a0e2a0aeda2127160b22ab62440eb88a1"><td class="memTemplParams" colspan="2"><a id="a0e2a0aeda2127160b22ab62440eb88a1" name="a0e2a0aeda2127160b22ab62440eb88a1"></a>
-template&lt;typename value_t &gt; </td></tr>
-<tr class="memitem:a0e2a0aeda2127160b22ab62440eb88a1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>as_ptr</b> () const -&gt; value_t *</td></tr>
+<tr class="memitem:a0e2a0aeda2127160b22ab62440eb88a1" id="r_a0e2a0aeda2127160b22ab62440eb88a1"><td class="memTemplParams" colspan="2">template&lt;typename value_t &gt; </td></tr>
+<tr class="memitem:a0e2a0aeda2127160b22ab62440eb88a1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/d42/structBHVR_1_1AttributeValue.html#a0e2a0aeda2127160b22ab62440eb88a1">as_ptr</a> () const -&gt; value_t *</td></tr>
+<tr class="memdesc:a0e2a0aeda2127160b22ab62440eb88a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the value as a given type.  <br /></td></tr>
 <tr class="separator:a0e2a0aeda2127160b22ab62440eb88a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -112,6 +112,78 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Holds a mutable attribute value and its type. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9b7a46159377fee3a01e43bfe7f9667b" name="a9b7a46159377fee3a01e43bfe7f9667b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b7a46159377fee3a01e43bfe7f9667b">&#9670;&#160;</a></span>as()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename value_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto BHVR::AttributeValue::as </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; value_t&amp; </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a refernce to the value as a given type. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">value_t</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value_t&amp; </dd></dl>
+
+</div>
+</div>
+<a id="a0e2a0aeda2127160b22ab62440eb88a1" name="a0e2a0aeda2127160b22ab62440eb88a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e2a0aeda2127160b22ab62440eb88a1">&#9670;&#160;</a></span>as_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename value_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto BHVR::AttributeValue::as_ptr </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; value_t* </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a pointer to the value as a given type. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">value_t</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value_t* </dd></dl>
+
+</div>
+</div>
 <a id="a90b322307f3cea1b6f0fa35398834db2" name="a90b322307f3cea1b6f0fa35398834db2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a90b322307f3cea1b6f0fa35398834db2">&#9670;&#160;</a></span>type_check()</h2>
 

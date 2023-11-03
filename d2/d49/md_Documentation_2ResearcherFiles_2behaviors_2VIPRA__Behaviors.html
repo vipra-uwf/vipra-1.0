@@ -210,9 +210,9 @@ L. Locations</h1>
 <div class="fragment"><div class="line">Location:</div>
 <div class="line">  Name: *name*</div>
 <div class="line">  Dimensions:</div>
-<div class="line">    *center*,        // Coord Value (§V.2)</div>
-<div class="line">    *side lengths*,  // Coord Value (§V.2)</div>
-<div class="line">    *rotation*       // Numeric Value (§V.1)</div>
+<div class="line">    Center: *center*         // Coord Value (§V.2)</div>
+<div class="line">    Lengths: *side lengths*  // Coord Value (§V.2)</div>
+<div class="line">    Rotation: *rotation*     // Numeric Value (§V.1)</div>
 <div class="line">.</div>
 </div><!-- fragment --><ul>
 <li>*Name* - The name used to reference this <code>Location</code></li>
@@ -226,9 +226,9 @@ L. Locations</h1>
 <p>Example: </p><div class="fragment"><div class="line">Location:</div>
 <div class="line">  Name: Aisle</div>
 <div class="line">  Dimensions:</div>
-<div class="line">    {15, 1.7},  // Center of rectangle is at (15, 1.7)</div>
-<div class="line">    {30, 0.3},  // Height of 30m, Width of 30cm</div>
-<div class="line">    0           // Rotated 0 degrees (aligned with X axis)</div>
+<div class="line">    Center: {15, 1.7}  // Center of rectangle is at (15, 1.7)</div>
+<div class="line">    Lenghts: {30, 0.3}  // Height of 30m, Width of 30cm</div>
+<div class="line">    Rotation: 0           // Rotated 0 degrees (aligned with X axis)</div>
 <div class="line">.</div>
 </div><!-- fragment --> <hr  />
 <h2><a class="anchor" id="autotoc_md165"></a>
@@ -243,7 +243,7 @@ S. Selectors</h1>
 <p><code>Selectors</code> are how pedestrians are selected for a certain <code>Type</code> (§T).</p>
 <p>Selecting pedestrians is done through a <code>Selector</code> declaration. The basic syntax is as follows: </p><div class="fragment"><div class="line">Selector:</div>
 <div class="line">  Type: *types*</div>
-<div class="line">  From: *type*     // Optional, defaults to base pedestrians group</div>
+<div class="line">  From: *type*                  // Optional, defaults to base pedestrians group</div>
 <div class="line">  Select: *selection criteria*</div>
 <div class="line">.</div>
 </div><!-- fragment --><ul>
@@ -364,12 +364,13 @@ S.5.4 Location</h3>
 <p>Selects all pedestrians inside a given location.</p>
 <div class="fragment"><div class="line">Select: In *Location*</div>
 </div><!-- fragment --><p> *Location* - Name of <code>Location</code> (§L)</p>
-<hr  />
+<p>Example: </p><div class="fragment"><div class="line">Select: In @Elevator</div>
+</div><!-- fragment --><hr  />
 <h2><a class="anchor" id="autotoc_md186"></a>
 S.6 Selectors - General Syntax Rules</h2>
 <hr  />
 <h1><a class="anchor" id="autotoc_md188"></a>
-A. Action</h1>
+A. Actions</h1>
 <p><code>Actions</code> are what affect a Pedestrian's position, velocity, state, etc.</p>
 <p><code>Actions</code> work by applying their <code>Atoms</code> each time step their <code>Condition</code> is satisfied.</p>
 <hr  />
@@ -429,7 +430,7 @@ A.3. Action Durations</h2>
 <div class="line">  Duration: 15 seconds               // Duration</div>
 <div class="line">.</div>
 </div><!-- fragment --><p>Pedestrians of type <code>tripper</code> will trip after 10 seconds from the simulation starting, and remain still for 15 seconds.</p>
-<p>This is odd, as all <code>trippers</code> will trip at exactly the same time: Look at <code>Values</code> (§V.) for how to add randomness to Durations and Conditions</p>
+<p>This is odd, as all <code>trippers</code> will trip at exactly the same time: Look at <code>Values</code> (§V.) for how to add randomness to <code>Durations</code> and <code>Conditions</code></p>
 <hr  />
 <h2><a class="anchor" id="autotoc_md198"></a>
 A.4. Atoms</h2>
@@ -454,7 +455,7 @@ A.5. Available Atoms</h2>
 <h3><a class="anchor" id="autotoc_md205"></a>
 A.5.1. Set</h3>
 <p>The <code>Set Atom</code> sets a pedestrian's attribute to a specific value.</p>
-<div class="fragment"><div class="line">set *attribute* *attribute value*</div>
+<div class="fragment"><div class="line">set *attribute* to *attribute value*</div>
 </div><!-- fragment --><ul>
 <li>Attributes are described in (§Att.).</li>
 <li>Attribute Values are described in (§Att.1).</li>
@@ -756,11 +757,11 @@ V.1.3.1 Float Random Values vs. Number Random Values</h3>
 <div class="line">random 1.0 to 3.0</div>
 </div><!-- fragment --><hr  />
 <p>Example: </p><div class="fragment"><div class="line">Action (typeA):</div>
-<div class="line">  Condition: random 5-10 seconds from !Start</div>
+<div class="line">  Condition: random 5-10 seconds after !Start</div>
 <div class="line">  Response: set velocity {0}</div>
 <div class="line">  Duration: random 10-20</div>
 <div class="line">.</div>
-</div><!-- fragment --><p> Each typeA pedestrian will stop randomly between 5 and 10 seconds from the start, then stay still for a random amount of time between 10 and 20 seconds.</p>
+</div><!-- fragment --><p> Each typeA pedestrian will stop randomly between 5 and 10 seconds after the start, then stay still for a random amount of time between 10 and 20 seconds.</p>
 <hr  />
 <h2><a class="anchor" id="autotoc_md280"></a>
 V.2 Coordinates</h2>
