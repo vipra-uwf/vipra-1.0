@@ -67,11 +67,23 @@ struct CAttributeValue {
     if (type != check) DSLException::error("Invalid Type");
   }
 
+  /**
+   * @brief Returns a refernce to the value as a given type
+   * 
+   * @tparam value_t 
+   * @return const value_t& 
+   */
   template <typename value_t>
   [[nodiscard]] inline auto as() -> const value_t& {
     return *static_cast<const value_t*>(value);
   }
 
+  /**
+   * @brief Returns a pointer to the value as a given type
+   * 
+   * @tparam value_t 
+   * @return const value_t* 
+   */
   template <typename value_t>
   [[nodiscard]] inline auto as_ptr() const -> const value_t* {
     return static_cast<const value_t*>(value);
@@ -95,11 +107,23 @@ struct AttributeValue {
     if (type != check) DSLException::error("Invalid Type");
   }
 
+  /**
+   * @brief Returns a refernce to the value as a given type
+   * 
+   * @tparam value_t 
+   * @return value_t& 
+   */
   template <typename value_t>
   [[nodiscard]] inline auto as() -> value_t& {
     return *static_cast<value_t*>(value);
   }
 
+  /**
+   * @brief Returns a pointer to the value as a given type
+   * 
+   * @tparam value_t 
+   * @return value_t* 
+   */
   template <typename value_t>
   [[nodiscard]] inline auto as_ptr() const -> value_t* {
     return static_cast<value_t*>(value);
@@ -345,7 +369,7 @@ class AttributeHandling {
       -> CAttributeValue {
     switch (attr) {
       case Attribute::LOCATION:
-        // TODO (rolland) : get this added in when locations are done
+        // TODO (rolland) : get this added in when event locations are done
         DSLException::error("Event Locations Not Implmented");
       case Attribute::STATUS:
         return {Type::STATUS, &pack.get_context().events[target.targetIdx].get_status()};
@@ -430,7 +454,7 @@ class AttributeHandling {
   inline static void set_event_value(Target target, Attribute attr, Simpack pack, CAttributeValue value) {
     switch (attr) {
       case Attribute::LOCATION:
-        // TODO (rolland) : get this added in when locations are done
+        // TODO (rolland) : get this added in when event locations are done
         DSLException::error("Event Locations Not Implmented");
       case Attribute::STATUS:
         pack.get_context().events[target.targetIdx].set_status(value.as<BHVR::EventStatus>());

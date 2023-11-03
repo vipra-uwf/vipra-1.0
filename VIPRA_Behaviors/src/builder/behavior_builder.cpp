@@ -549,12 +549,17 @@ auto BehaviorBuilder::get_check_type(const std::string& typeName) const -> BHVR:
 
 // --------------------------------------------------- MAKERS --------------------------------------------------------------------------------------------------
 
+/**
+ * @brief Returns the dimensions of a Location from a dimensions context
+ * 
+ * @param ctx 
+ * @return std::tuple<VIPRA::f3d, VIPRA::f3d, float> 
+ */
 auto BehaviorBuilder::make_dimensions(BehaviorParser::Loc_dimensionsContext* ctx) const
     -> std::tuple<VIPRA::f3d, VIPRA::f3d, float> {
-  auto coords = ctx->value_coord();
-  auto rot = get_numeric(ctx->value_numeric(), _currSeed).value(0);
-  auto center = get_coord(coords[0], _currSeed);
-  auto dims = get_coord(coords[1], _currSeed);
+  auto rot = get_numeric(ctx->loc_rotation()->value_numeric(), _currSeed).value(0);
+  auto center = get_coord(ctx->loc_center()->value_coord(), _currSeed);
+  auto dims = get_coord(ctx->loc_lengths()->value_coord(), _currSeed);
   return {center, dims, rot};
 }
 
@@ -693,12 +698,6 @@ auto BehaviorBuilder::visitLocation(BehaviorParser::LocationContext* ctx) -> ant
   return BehaviorBaseVisitor::visitLocation(ctx);
 }
 
-/**
- * @brief Creates a lasting event and adds it to the _eventsMap
- * 
- * @param ctx : antlr context
- * @return antlrcpp::Any 
- */
 auto BehaviorBuilder::visitEvent(BehaviorParser::EventContext* ctx) -> antlrcpp::Any {
   auto name = find_event_component<evName>(ctx);
   if (!name) error(R"(Behavior "{}": Missing Event Name)", _currentBehavior.get_name());
@@ -861,6 +860,12 @@ void BehaviorBuilder::add_scale_atom(Action& action, BehaviorParser::Scale_atomC
 
 // ------------------------------- SUBCONDITIONS -----------------------------------------------------------------------------------------
 
+/**
+ * @brief Adds an enter location subcondition to the condition
+ * 
+ * @param condition 
+ * @param ctx 
+ */
 void BehaviorBuilder::add_enter_subcond(Condition&                                       condition,
                                         BehaviorParser::Condition_Enter_LocationContext* ctx) {
   auto location = get_check_location(ctx->LOC_NAME()->toString());
@@ -868,6 +873,12 @@ void BehaviorBuilder::add_enter_subcond(Condition&                              
   condition.add_sub_condition(SubConditionEnter{location});
 }
 
+/**
+ * @brief Adds an exit location subcondition to the condition
+ * 
+ * @param condition 
+ * @param ctx 
+ */
 void BehaviorBuilder::add_exit_subcond(Condition&                                      condition,
                                        BehaviorParser::Condition_Exit_LocationContext* ctx) {
   auto location = get_check_location(ctx->LOC_NAME()->toString());
@@ -975,6 +986,12 @@ void BehaviorBuilder::add_in_location_subcond(Condition&                        
   condition.add_sub_condition(SubConditionInLocation{location});
 }
 
+/**
+ * @brief Adds an attribute subcondition to the condition
+ * 
+ * @param condition 
+ * @param ctx 
+ */
 void BehaviorBuilder::add_attribute_subcond(Condition&                                  condition,
                                             BehaviorParser::Condition_AttributeContext* ctx) {
   auto attrStr = make_attribute_str(ctx->attribute());
@@ -987,6 +1004,12 @@ void BehaviorBuilder::add_attribute_subcond(Condition&                          
   condition.add_sub_condition(SubConditionAttribute{attr, attrValue, negative});
 }
 
+/**
+ * @brief Adds an exists subcondition to the condition
+ * 
+ * @param condition 
+ * @param ctx 
+ */
 void BehaviorBuilder::add_exists_subcond(Condition& condition, BehaviorParser::Condition_ExistsContext* ctx) {
   auto modifiers = ctx->modifier();
   auto targetModifier = make_target_modifier(modifiers);
@@ -1133,6 +1156,15 @@ auto BehaviorBuilder::build_percent_selector(slType type, slSelector selector, s
   return SubSelector{groupType, comPtype, required, SelectorPercent{percentage.value(0) / 100.0F}};
 }
 
+/**
+ * @brief Creates a location selector
+ * 
+ * @param type 
+ * @param selector 
+ * @param group 
+ * @param required 
+ * @return SubSelector 
+ */
 auto BehaviorBuilder::build_location_selector(slType type, slSelector selector, std::optional<slGroup> group,
                                               bool required) -> SubSelector {
   auto  types = type->id_list()->ID();

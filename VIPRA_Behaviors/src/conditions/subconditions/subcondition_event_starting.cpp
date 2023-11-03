@@ -7,7 +7,7 @@ namespace BHVR {
 SubConditionEventStarting::SubConditionEventStarting(VIPRA::idx event) : _event(event) {}
 
 /**
- * @brief Returns true if the event is occurring
+ * @brief Returns true if the event is starting
  * 
  * @return true
  * @return false

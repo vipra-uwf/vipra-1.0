@@ -6,9 +6,9 @@ Types:
 Location:
   Name: Aisle
   Dimensions:
-    {12, 1.7},
-    {30, 0.2},
-    0
+    Center: {12, 1.7}
+    Lengths: {30, 0.2}
+    Rotation: 0
 .
 
 Selector:

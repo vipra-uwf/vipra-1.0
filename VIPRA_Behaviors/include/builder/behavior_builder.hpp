@@ -240,9 +240,11 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
       if constexpr (std::is_same_v<comp_t, slSelector>)
         if (attr->selector_selector()) return attr->selector_selector();
 
+      // Group
       if constexpr (std::is_same_v<comp_t, slGroup>)
         if (attr->selector_from()) return attr->selector_from();
 
+      // Required
       if constexpr (std::is_same_v<comp_t, slRequired>)
         if (attr->selector_required()) return attr->selector_required();
     }
@@ -261,10 +263,11 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   [[nodiscard]] static auto find_location_component(BehaviorParser::LocationContext* ctx)
       -> std::optional<comp_t> {
     for (const auto& attr : ctx->location_attribute()) {
-      // Type
+      // Name
       if constexpr (std::is_same_v<comp_t, lcName>)
         if (attr->loc_name()) return attr->loc_name();
 
+      // Dimensions
       if constexpr (std::is_same_v<comp_t, lcDimensions>)
         if (attr->loc_dimensions()) return attr->loc_dimensions();
     }

@@ -8,7 +8,7 @@ namespace BHVR {
 SubConditionEventEnding::SubConditionEventEnding(VIPRA::idx event) : _event(event) {}
 
 /**
- * @brief Returns true if the event is occurring
+ * @brief Returns true if the event is ending
  * 
  * @return true
  * @return false

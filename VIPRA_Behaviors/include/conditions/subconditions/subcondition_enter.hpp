@@ -16,6 +16,7 @@ class SubConditionEnter {
   NON_DEFAULT_CONSTRUCTIBLE(SubConditionEnter)
   COPYABLE(SubConditionEnter)
   MOVEABLE(SubConditionEnter)
+
  public:
   explicit SubConditionEnter(VIPRA::idx);
 
@@ -24,7 +25,7 @@ class SubConditionEnter {
  private:
   VIPRA::idx _location;
 
-  // TODO (rolland) temporary fix for not having pedestrian memory
+  // TODO: (rolland) temporary fix for not having pedestrian memory
   std::vector<bool> _entered;
 };
 }  // namespace BHVR

@@ -203,9 +203,9 @@ After being declared, `Location` names are always preceded by a `@`
 Location:
   Name: *name*
   Dimensions:
-    *center*,        // Coord Value (§V.2)
-    *side lengths*,  // Coord Value (§V.2)
-    *rotation*       // Numeric Value (§V.1)
+    Center: *center*         // Coord Value (§V.2)
+    Lengths: *side lengths*  // Coord Value (§V.2)
+    Rotation: *rotation*     // Numeric Value (§V.1)
 .
 ```
 - \*Name* - The name used to reference this `Location`
@@ -220,9 +220,9 @@ Example:
 Location:
   Name: Aisle
   Dimensions:
-    {15, 1.7},  // Center of rectangle is at (15, 1.7)
-    {30, 0.3},  // Height of 30m, Width of 30cm
-    0           // Rotated 0 degrees (aligned with X axis)
+    Center: {15, 1.7}  // Center of rectangle is at (15, 1.7)
+    Lenghts: {30, 0.3}  // Height of 30m, Width of 30cm
+    Rotation: 0           // Rotated 0 degrees (aligned with X axis)
 .
 ```
 ---
@@ -243,7 +243,7 @@ Selecting pedestrians is done through a `Selector` declaration. The basic syntax
 ```
 Selector:
   Type: *types*
-  From: *type*     // Optional, defaults to base pedestrians group
+  From: *type*                  // Optional, defaults to base pedestrians group
   Select: *selection criteria*
 .
 ```
@@ -431,6 +431,11 @@ Select: In *Location*
 ```
 \*Location\* - Name of `Location` (§L)
 
+Example:
+```
+Select: In @Elevator
+```
+
 ---
 
 ## S.6 Selectors - General Syntax Rules
@@ -439,7 +444,7 @@ Select: In *Location*
 ---
 
 
-# A. Action
+# A. Actions
 
 `Actions` are what affect a Pedestrian's position, velocity, state, etc.
 
@@ -534,7 +539,7 @@ Action (tripper):
 Pedestrians of type `tripper` will trip after 10 seconds from the simulation starting, and remain still for 15 seconds.
 
 This is odd, as all `trippers` will trip at exactly the same time:
-Look at `Values` (§V.) for how to add randomness to Durations and Conditions
+Look at `Values` (§V.) for how to add randomness to `Durations` and `Conditions`
 
 
 ---
@@ -581,7 +586,7 @@ This `Atom List` will result in the pedestrian stopping and their state being li
 The `Set Atom` sets a pedestrian's attribute to a specific value.
 
 ```
-set *attribute* *attribute value*
+set *attribute* to *attribute value*
 ```
 
 - Attributes are described in (§Att.).
@@ -1106,12 +1111,12 @@ random 1.0 to 3.0
 Example:
 ```
 Action (typeA):
-  Condition: random 5-10 seconds from !Start
+  Condition: random 5-10 seconds after !Start
   Response: set velocity {0}
   Duration: random 10-20
 .
 ```
-Each typeA pedestrian will stop randomly between 5 and 10 seconds from the start, then stay still for a random amount of time between 10 and 20 seconds.
+Each typeA pedestrian will stop randomly between 5 and 10 seconds after the start, then stay still for a random amount of time between 10 and 20 seconds.
 
 ---
 

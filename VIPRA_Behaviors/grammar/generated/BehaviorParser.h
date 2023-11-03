@@ -21,46 +21,48 @@ public:
     ENTER = 37, EXIT = 38, EXISTS = 39, EVENT = 40, EXACTLY = 41, EVERY = 42, 
     EVERYONE = 43, ENDING = 44, FOR = 45, FROM = 46, FRONT = 47, FASTER = 48, 
     GIVEN = 49, GOAL = 50, GROUP = 51, HAS = 52, IN = 53, INTEGER = 54, 
-    INITIAL = 55, IS = 56, IF = 57, LENGTH = 58, LEFT = 59, LEAVE = 60, 
-    DIMENSIONS = 61, LOCATION = 62, MAX = 63, METERS = 64, NAME = 65, NEAREST = 66, 
-    NORMAL = 67, NONE = 68, NOT = 69, OBSTACLE = 70, OCCUR = 71, OCCURRED = 72, 
-    OCCURRING = 73, OF = 74, ON = 75, OR = 76, PEDESTRIAN = 77, PEDESTRIANS = 78, 
-    POINTS = 79, POSSIBLE = 80, POSITION = 81, RADIUS = 82, RANDOM = 83, 
-    REQUIRED = 84, RECTANGLE = 85, RIGHT = 86, RESPONSE = 87, SCALE = 88, 
-    SELF = 89, SELECT = 90, SELECTOR = 91, SET = 92, SECOND = 93, SECONDS = 94, 
-    STATUS = 95, STARTING = 96, SLOWER = 97, SHAPE = 98, STATES = 99, START = 100, 
-    STATE = 101, STARTS = 102, SPEED = 103, SUBTRACT = 104, STIMULUS = 105, 
-    TARGET = 106, TO = 107, TOP = 108, THE = 109, THAT = 110, THEN = 111, 
-    THEIR = 112, THERES = 113, TYPES = 114, TYPE = 115, UNCONDITIONALLY = 116, 
-    VALUE = 117, VELOCITY = 118, WHEN = 119, WHILE = 120, WHOSE = 121, WIDTH = 122, 
-    WILL = 123, WITH = 124, WITHIN = 125, ID = 126, NUMBER = 127, FLOAT = 128
+    INITIAL = 55, IS = 56, IF = 57, LENGTH = 58, LENGTHS = 59, LEFT = 60, 
+    LEAVE = 61, DIMENSIONS = 62, LOCATION = 63, MAX = 64, METERS = 65, NAME = 66, 
+    NEAREST = 67, NORMAL = 68, NONE = 69, NOT = 70, OBSTACLE = 71, OCCUR = 72, 
+    OCCURRED = 73, OCCURRING = 74, OF = 75, ON = 76, OR = 77, PEDESTRIAN = 78, 
+    PEDESTRIANS = 79, POINTS = 80, POSSIBLE = 81, POSITION = 82, RADIUS = 83, 
+    RANDOM = 84, REQUIRED = 85, RECTANGLE = 86, RIGHT = 87, RESPONSE = 88, 
+    ROTATION = 89, SCALE = 90, SELF = 91, SELECT = 92, SELECTOR = 93, SET = 94, 
+    SECOND = 95, SECONDS = 96, STATUS = 97, STARTING = 98, SLOWER = 99, 
+    SHAPE = 100, STATES = 101, START = 102, STATE = 103, STARTS = 104, SPEED = 105, 
+    SUBTRACT = 106, STIMULUS = 107, TARGET = 108, TO = 109, TOP = 110, THE = 111, 
+    THAT = 112, THEN = 113, THEIR = 114, THERES = 115, TYPES = 116, TYPE = 117, 
+    UNCONDITIONALLY = 118, VALUE = 119, VELOCITY = 120, WHEN = 121, WHILE = 122, 
+    WHOSE = 123, WIDTH = 124, WILL = 125, WITH = 126, WITHIN = 127, ID = 128, 
+    NUMBER = 129, FLOAT = 130
   };
 
   enum {
     RuleProgram = 0, RuleStatement = 1, RuleLocation = 2, RuleLocation_attribute = 3, 
-    RuleLoc_name = 4, RuleLoc_dimensions = 5, RuleValue_numeric = 6, RuleValue_number = 7, 
-    RuleValue_float = 8, RuleValue_range = 9, RuleValue_random = 10, RuleRandom_number = 11, 
-    RuleRandom_float = 12, RuleFloat_range = 13, RuleNumber_range = 14, 
-    RuleValue_coord = 15, RuleEvent = 16, RuleEvent_attribute = 17, RuleEvent_name = 18, 
-    RuleEvent_start = 19, RuleEvent_end = 20, RuleCondition = 21, RuleConnector = 22, 
-    RuleOr_Connector = 23, RuleAnd_Connector = 24, RuleSub_condition = 25, 
-    RuleCondition_Time_Elapsed_From_Event = 26, RuleCondition_Event_Occurred = 27, 
-    RuleCondition_Event_Occurring = 28, RuleCondition_Event_Starting = 29, 
-    RuleCondition_Event_Ending = 30, RuleCondition_Spatial = 31, RuleCondition_Enter_Location = 32, 
-    RuleCondition_Exit_Location = 33, RuleCondition_Inside_Location = 34, 
-    RuleCondition_Attribute = 35, RuleCondition_Exists = 36, RuleDuration = 37, 
-    RuleAttribute = 38, RuleAttr_value = 39, RuleEnd_goal = 40, RuleTarget = 41, 
-    RuleSelf = 42, RuleOther = 43, RuleNearest_type = 44, RuleModifier = 45, 
-    RuleLocation_modifier = 46, RuleId_list = 47, RuleDistance = 48, RuleDirection = 49, 
-    RuleFront = 50, RuleBehind = 51, RulePed_Selector = 52, RuleSelector_attribute = 53, 
-    RuleSelector_type = 54, RuleSelector_selector = 55, RuleSelector_from = 56, 
-    RuleSelector_required = 57, RuleSelector = 58, RuleSelector_Percent = 59, 
-    RuleSelector_Exactly_N_Random = 60, RuleSelector_Everyone = 61, RuleSelector_Location = 62, 
-    RuleGroup = 63, RuleAction = 64, RuleAction_attribute = 65, RuleAction_stimulus = 66, 
-    RuleAction_response = 67, RuleAction_duration = 68, RuleAction_target = 69, 
-    RuleSub_action = 70, RuleAction_atom = 71, RuleSet_atom = 72, RuleScale_atom = 73, 
-    RuleDeclaration = 74, RuleDecl_Ped_State = 75, RuleDecl_Env_State = 76, 
-    RuleDecl_Ped = 77
+    RuleLoc_name = 4, RuleLoc_dimensions = 5, RuleLoc_center = 6, RuleLoc_lengths = 7, 
+    RuleLoc_rotation = 8, RuleValue_numeric = 9, RuleValue_number = 10, 
+    RuleValue_float = 11, RuleValue_range = 12, RuleValue_random = 13, RuleRandom_number = 14, 
+    RuleRandom_float = 15, RuleFloat_range = 16, RuleNumber_range = 17, 
+    RuleValue_coord = 18, RuleEvent = 19, RuleEvent_attribute = 20, RuleEvent_name = 21, 
+    RuleEvent_start = 22, RuleEvent_end = 23, RuleCondition = 24, RuleConnector = 25, 
+    RuleOr_Connector = 26, RuleAnd_Connector = 27, RuleSub_condition = 28, 
+    RuleCondition_Time_Elapsed_From_Event = 29, RuleCondition_Event_Occurred = 30, 
+    RuleCondition_Event_Occurring = 31, RuleCondition_Event_Starting = 32, 
+    RuleCondition_Event_Ending = 33, RuleCondition_Spatial = 34, RuleCondition_Enter_Location = 35, 
+    RuleCondition_Exit_Location = 36, RuleCondition_Inside_Location = 37, 
+    RuleCondition_Attribute = 38, RuleCondition_Exists = 39, RuleDuration = 40, 
+    RuleAttribute = 41, RuleAttr_value = 42, RuleEnd_goal = 43, RuleTarget = 44, 
+    RuleSelf = 45, RuleOther = 46, RuleNearest_type = 47, RuleModifier = 48, 
+    RuleLocation_modifier = 49, RuleId_list = 50, RuleDistance = 51, RuleDirection = 52, 
+    RuleFront = 53, RuleBehind = 54, RulePed_Selector = 55, RuleSelector_attribute = 56, 
+    RuleSelector_type = 57, RuleSelector_selector = 58, RuleSelector_from = 59, 
+    RuleSelector_required = 60, RuleSelector = 61, RuleSelector_Percent = 62, 
+    RuleSelector_Exactly_N_Random = 63, RuleSelector_Everyone = 64, RuleSelector_Location = 65, 
+    RuleGroup = 66, RuleAction = 67, RuleAction_attribute = 68, RuleAction_stimulus = 69, 
+    RuleAction_response = 70, RuleAction_duration = 71, RuleAction_target = 72, 
+    RuleSub_action = 73, RuleAction_atom = 74, RuleSet_atom = 75, RuleScale_atom = 76, 
+    RuleDeclaration = 77, RuleDecl_Ped_State = 78, RuleDecl_Env_State = 79, 
+    RuleDecl_Ped = 80
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -86,6 +88,9 @@ public:
   class Location_attributeContext;
   class Loc_nameContext;
   class Loc_dimensionsContext;
+  class Loc_centerContext;
+  class Loc_lengthsContext;
+  class Loc_rotationContext;
   class Value_numericContext;
   class Value_numberContext;
   class Value_floatContext;
@@ -242,11 +247,9 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *DIMENSIONS();
     antlr4::tree::TerminalNode *COLON();
-    std::vector<Value_coordContext *> value_coord();
-    Value_coordContext* value_coord(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> COMMA();
-    antlr4::tree::TerminalNode* COMMA(size_t i);
-    Value_numericContext *value_numeric();
+    Loc_centerContext *loc_center();
+    Loc_lengthsContext *loc_lengths();
+    Loc_rotationContext *loc_rotation();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -254,6 +257,51 @@ public:
   };
 
   Loc_dimensionsContext* loc_dimensions();
+
+  class  Loc_centerContext : public antlr4::ParserRuleContext {
+  public:
+    Loc_centerContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *CENTER();
+    antlr4::tree::TerminalNode *COLON();
+    Value_coordContext *value_coord();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Loc_centerContext* loc_center();
+
+  class  Loc_lengthsContext : public antlr4::ParserRuleContext {
+  public:
+    Loc_lengthsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *LENGTHS();
+    antlr4::tree::TerminalNode *COLON();
+    Value_coordContext *value_coord();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Loc_lengthsContext* loc_lengths();
+
+  class  Loc_rotationContext : public antlr4::ParserRuleContext {
+  public:
+    Loc_rotationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ROTATION();
+    antlr4::tree::TerminalNode *COLON();
+    Value_numericContext *value_numeric();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Loc_rotationContext* loc_rotation();
 
   class  Value_numericContext : public antlr4::ParserRuleContext {
   public:

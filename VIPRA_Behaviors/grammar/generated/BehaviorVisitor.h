@@ -31,6 +31,12 @@ public:
 
     virtual std::any visitLoc_dimensions(BehaviorParser::Loc_dimensionsContext *context) = 0;
 
+    virtual std::any visitLoc_center(BehaviorParser::Loc_centerContext *context) = 0;
+
+    virtual std::any visitLoc_lengths(BehaviorParser::Loc_lengthsContext *context) = 0;
+
+    virtual std::any visitLoc_rotation(BehaviorParser::Loc_rotationContext *context) = 0;
+
     virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *context) = 0;
 
     virtual std::any visitValue_number(BehaviorParser::Value_numberContext *context) = 0;

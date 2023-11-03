@@ -8,6 +8,10 @@
 namespace BHVR {
 SubConditionLeave::SubConditionLeave(VIPRA::idx locIdx) : _location(locIdx) {}
 
+/**
+ * @brief Returns true if the pedestrian has left the location
+ * 
+ */
 auto SubConditionLeave::operator()(Simpack pack, VIPRA::idx self, Target /*unused*/) -> bool {
   if (_left.size() < pack.get_pedset().getNumPedestrians())
     _left.resize(pack.get_pedset().getNumPedestrians());

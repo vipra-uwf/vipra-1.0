@@ -7,6 +7,10 @@
 namespace BHVR {
 SubConditionEnter::SubConditionEnter(VIPRA::idx locIdx) : _location(locIdx) {}
 
+/**
+ * @brief Returns true if the pedestrian has entered the location.
+ * 
+ */
 auto SubConditionEnter::operator()(Simpack pack, VIPRA::idx self, Target /*unused*/) -> bool {
   if (_entered.size() < pack.get_pedset().getNumPedestrians())
     _entered.resize(pack.get_pedset().getNumPedestrians());

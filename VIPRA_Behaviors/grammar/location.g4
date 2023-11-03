@@ -17,7 +17,22 @@ loc_name:
 
 loc_dimensions:
   DIMENSIONS ':'
-  value_coord ','
-  value_coord ','
-  value_numeric
+  ((loc_center loc_lengths loc_rotation) |
+  (loc_center loc_rotation loc_lengths) |
+  (loc_lengths loc_center loc_rotation) |
+  (loc_lengths loc_rotation loc_center) |
+  (loc_rotation loc_center loc_lengths) |
+  (loc_rotation loc_lengths loc_center))
+;
+
+loc_center:
+  CENTER ':' value_coord
+;
+
+loc_lengths:
+  LENGTHS ':' value_coord
+;
+
+loc_rotation:
+  ROTATION ':' value_numeric
 ;

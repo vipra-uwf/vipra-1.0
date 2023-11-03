@@ -39,6 +39,18 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitLoc_center(BehaviorParser::Loc_centerContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitLoc_lengths(BehaviorParser::Loc_lengthsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitLoc_rotation(BehaviorParser::Loc_rotationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitValue_numeric(BehaviorParser::Value_numericContext *ctx) override {
     return visitChildren(ctx);
   }

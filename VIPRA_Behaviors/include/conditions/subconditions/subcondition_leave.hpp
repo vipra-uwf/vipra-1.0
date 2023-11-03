@@ -11,6 +11,7 @@ class SubConditionLeave {
   NON_DEFAULT_CONSTRUCTIBLE(SubConditionLeave)
   COPYABLE(SubConditionLeave)
   MOVEABLE(SubConditionLeave)
+
  public:
   explicit SubConditionLeave(VIPRA::idx);
 
@@ -19,7 +20,7 @@ class SubConditionLeave {
  private:
   VIPRA::idx _location;
 
-  // TODO (rolland) temporary fix for not having pedestrian memory
+  // TODO: (rolland) temporary fix for not having pedestrian memory
   std::vector<bool> _left;
 };
 }  // namespace BHVR
