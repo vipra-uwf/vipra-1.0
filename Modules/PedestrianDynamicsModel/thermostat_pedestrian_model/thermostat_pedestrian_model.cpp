@@ -4,13 +4,13 @@
 #include <limits>
 #include <memory>
 
-#include "calm_pedestrian_model.hpp"
+#include "thermostat_pedestrian_model.hpp"
 #include "definitions/dimensions.hpp"
 #include "pedestrian_set/pedestrian_set.hpp"
 
 #include <distributions/distributions.hpp>
 
-void CalmPedestrianModel::timestep(const VIPRA::PedestrianSet& pedSet,
+void ThermostatPedestrianModel::timestep(const VIPRA::PedestrianSet& pedSet,
                                    const VIPRA::ObstacleSet&   obstacleSet,
                                    const VIPRA::Goals& goals, VIPRA::State& state,
                                    VIPRA::delta_t time, VIPRA::t_step timestep) {
@@ -18,7 +18,7 @@ void CalmPedestrianModel::timestep(const VIPRA::PedestrianSet& pedSet,
   calculateNeartestNeighbors(pedSet, obstacleSet, goals);
   calculateBetas(pedSet);
   calculatePropulsion(pedSet, goals);
-  updateModelState(pedSet, goals, state, time, timestep);
+  updateModelState(pedSet, obstacleSet, goals, state, time, timestep);
 
   if (timestep > 0) {
     collision.raceDetection(pedSet, peds, goals, timestep, obstacleSet);
@@ -32,7 +32,7 @@ void CalmPedestrianModel::timestep(const VIPRA::PedestrianSet& pedSet,
  *
  * @param pedSet
  */
-void CalmPedestrianModel::calculateNeartestNeighbors(const VIPRA::PedestrianSet& pedSet,
+void ThermostatPedestrianModel::calculateNeartestNeighbors(const VIPRA::PedestrianSet& pedSet,
                                                      const VIPRA::ObstacleSet&,
                                                      const VIPRA::Goals& goals) {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
@@ -69,7 +69,7 @@ void CalmPedestrianModel::calculateNeartestNeighbors(const VIPRA::PedestrianSet&
   }
 }
 
-void CalmPedestrianModel::calculateBetas(const VIPRA::PedestrianSet& pedSet) {
+void ThermostatPedestrianModel::calculateBetas(const VIPRA::PedestrianSet& pedSet) {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
@@ -83,7 +83,7 @@ void CalmPedestrianModel::calculateBetas(const VIPRA::PedestrianSet& pedSet) {
  * @param pedSet
  * @param goals
  */
-void CalmPedestrianModel::calculatePropulsion(const VIPRA::PedestrianSet& pedSet,
+void ThermostatPedestrianModel::calculatePropulsion(const VIPRA::PedestrianSet& pedSet,
                                               const VIPRA::Goals&         goals) {
   const auto& currentGoals = goals.getAllCurrentGoals();
   const auto& velocities = pedSet.getVelocities();
@@ -110,7 +110,8 @@ void CalmPedestrianModel::calculatePropulsion(const VIPRA::PedestrianSet& pedSet
   }
 }
 
-void CalmPedestrianModel::updateModelState(const VIPRA::PedestrianSet& pedSet,
+void ThermostatPedestrianModel::updateModelState(const VIPRA::PedestrianSet& pedSet,
+                                           const VIPRA::ObstacleSet& obsSet,
                                            const VIPRA::Goals& goals, VIPRA::State& state,
                                            VIPRA::delta_t time, VIPRA::t_step) {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
@@ -118,6 +119,8 @@ void CalmPedestrianModel::updateModelState(const VIPRA::PedestrianSet& pedSet,
   const auto&       velocities = pedSet.getVelocities();
   // const auto&       masses = pedSet.getMasses();
   // const auto&       currentGoals = goals.getAllCurrentGoals();
+
+  std::vector<float> rands = VIPRA::makeDistribution<VIPRA::normal_distribution<>>(pedCnt, 0, 10, rand);
 
   for (VIPRA::idx i = 0; i < pedCnt; ++i) {
     if (collision.status(i) == WAIT) {
@@ -130,8 +133,10 @@ void CalmPedestrianModel::updateModelState(const VIPRA::PedestrianSet& pedSet,
     const auto& velocity = velocities.at(i);
     const float mass = peds.masses.at(i);
 
+    const VIPRA::f3d newVelocity = thermostat(i, pedCoord, velocity, rands, obsSet, goals);
+
     // Use Euler Method to update position and velocity
-    state.velocities[i] = ((propulsion / mass) * time) + velocity;
+    state.velocities[i] = ((propulsion / mass) * time) + newVelocity;
 
     // TODO(rolland) : I believe Dr.Srinivasan said we shouldn't have to do this? It sets velocity to zero when a pedestrian reaches a goal to prevent sliding
     if (goals.timeSinceLastGoal(i) > 0 && goals.timeSinceLastGoal(i) <= slidingGoalTime) {
@@ -143,9 +148,33 @@ void CalmPedestrianModel::updateModelState(const VIPRA::PedestrianSet& pedSet,
   }
 }
 
+VIPRA::f3d ThermostatPedestrianModel::thermostat(VIPRA::idx pedID, 
+                                           VIPRA::f3d pedCoord,
+                                           VIPRA::f3d pedVel,
+                                           std::vector<float> rands,
+                                           const VIPRA::ObstacleSet& obsSet,
+                                           const VIPRA::Goals& goals) {
+
+    auto goal1 = goals.getCurrentGoal(pedID);
+
+    VIPRA::f3d newVel = pedVel * (rands[pedID] / 100);
+
+    VIPRA::f3d randVel = pedVel + newVel;
+
+    const auto newVelocity = randVel;
+
+    VIPRA::f3d directionToGoal = goal1 - pedCoord;
+    VIPRA::f3d nearestObs = obsSet.nearestObstacleInDirection(pedCoord, directionToGoal);
+    // spdlog::info("Distance to obj for id {}: {}", pedID, nearestObs.distanceTo(pedCoord));
+
+    VIPRA::f3d spedFormula4 = randVel*(1 - (0.02/nearestObs.distanceTo(pedCoord)));
+
+    return spedFormula4;
+}
+
 // --------------------------------------------- HELPER METHODS ----------------------------------------------------------------
 
-bool CalmPedestrianModel::isPedInDirectionOfGoal(VIPRA::pcoord pedCoords,
+bool ThermostatPedestrianModel::isPedInDirectionOfGoal(VIPRA::pcoord pedCoords,
                                                  VIPRA::goal goal, VIPRA::pcoord other) {
   VIPRA::f3d pedDirection = goal - pedCoords;
   VIPRA::f3d secondDirection = other - pedCoords;
@@ -165,7 +194,7 @@ bool CalmPedestrianModel::isPedInDirectionOfGoal(VIPRA::pcoord pedCoords,
  * @param firstIdx
  * @param secondIdx
  */
-bool CalmPedestrianModel::objectDirectionTest(VIPRA::pcoord pedCoords,
+bool ThermostatPedestrianModel::objectDirectionTest(VIPRA::pcoord pedCoords,
                                               VIPRA::veloc  pedVelocity,
                                               VIPRA::f3d    objCoords) {
   const VIPRA::f3d displacement = objCoords - pedCoords;
@@ -185,7 +214,7 @@ bool CalmPedestrianModel::objectDirectionTest(VIPRA::pcoord pedCoords,
  * @param secondPedIdx
  * @param firstShoulderLength
  */
-bool CalmPedestrianModel::objectSpatialTest(const Rect& collisionRect, VIPRA::f3d objLeft,
+bool ThermostatPedestrianModel::objectSpatialTest(const Rect& collisionRect, VIPRA::f3d objLeft,
                                             VIPRA::f3d objRight) {
   if (collisionRect.p1 == collisionRect.p2) {
     return false;
@@ -208,7 +237,7 @@ bool CalmPedestrianModel::objectSpatialTest(const Rect& collisionRect, VIPRA::f3
  * @param obsSet :
  * @return float
  */
-float CalmPedestrianModel::checkBlockedPath(VIPRA::idx pedIdx, VIPRA::veloc velocity,
+float ThermostatPedestrianModel::checkBlockedPath(VIPRA::idx pedIdx, VIPRA::veloc velocity,
                                             VIPRA::dist               maxDist,
                                             const VIPRA::ObstacleSet& obsSet) {
   Line& shoulders = pedShoulders.at(pedIdx);
@@ -235,14 +264,14 @@ float CalmPedestrianModel::checkBlockedPath(VIPRA::idx pedIdx, VIPRA::veloc velo
  * @param distance : 
  * @return float 
  */
-inline float CalmPedestrianModel::calculateBeta(VIPRA::dist distance) {
+inline float ThermostatPedestrianModel::calculateBeta(VIPRA::dist distance) {
   constexpr float valA = -2.11;
   constexpr float valB = 0.366;
   constexpr float valC = 0.966;
   return (valC - std::exp(valA * (distance - valB)));
 }
 
-Rect CalmPedestrianModel::makeRectFromShldrs(VIPRA::idx pedIdx, VIPRA::pcoord pedCoords,
+Rect ThermostatPedestrianModel::makeRectFromShldrs(VIPRA::idx pedIdx, VIPRA::pcoord pedCoords,
                                              VIPRA::goal goal) {
   const Line&      pedShldr = pedShoulders.at(pedIdx);
   const VIPRA::f3d range = (goal - pedCoords).unit();
@@ -250,7 +279,7 @@ Rect CalmPedestrianModel::makeRectFromShldrs(VIPRA::idx pedIdx, VIPRA::pcoord pe
   return Rect{pedShldr.p1, pedShldr.p1 + range, pedShldr.p2 + range, pedShldr.p2};
 }
 
-void CalmPedestrianModel::calculateShoulders(const VIPRA::PedestrianSet& pedSet,
+void ThermostatPedestrianModel::calculateShoulders(const VIPRA::PedestrianSet& pedSet,
                                              const VIPRA::Goals&         goals) {
   VIPRA::size pedCnt = pedSet.getNumPedestrians();
   const auto& coords = pedSet.getCoordinates();
@@ -266,7 +295,7 @@ void CalmPedestrianModel::calculateShoulders(const VIPRA::PedestrianSet& pedSet,
 }
 
 // NOLINTBEGIN : (rolland) - Debug output, so formatting isn't as important    :  ignoring(all)
-VIPRA::f3d CalmPedestrianModel::calculateSpeedDensity(
+VIPRA::f3d ThermostatPedestrianModel::calculateSpeedDensity(
     const VIPRA::PedestrianSet& pedSet) {
   const VIPRA::size pedCnt = pedSet.getNumPedestrians();
   // x less than 24.51 and greater than 20.51
@@ -307,7 +336,7 @@ VIPRA::f3d CalmPedestrianModel::calculateSpeedDensity(
 }
 // NOLINTEND
 
-void CalmPedestrianModel::configure(const VIPRA::Config& confMap) {
+void ThermostatPedestrianModel::configure(const VIPRA::Config& confMap) {
   rand.reseed(confMap["seed"].get<VIPRA::size>());
   config.meanMass = confMap["meanMass"].get<float>();
   config.massStdDev = confMap["massStdDev"].get<float>();
@@ -319,7 +348,7 @@ void CalmPedestrianModel::configure(const VIPRA::Config& confMap) {
   config.ShoulderLenStdDev = confMap["shoulderLenStdDev"].get<float>();
 }
 
-void CalmPedestrianModel::initialize(const VIPRA::PedestrianSet& pedSet,
+void ThermostatPedestrianModel::initialize(const VIPRA::PedestrianSet& pedSet,
                                      const VIPRA::ObstacleSet&,
                                      const VIPRA::Goals& goals) {
   setModelData(pedSet);
@@ -327,7 +356,7 @@ void CalmPedestrianModel::initialize(const VIPRA::PedestrianSet& pedSet,
   collision.assignRaceStatuses(raceStatuses, inRace);
 }
 
-void CalmPedestrianModel::setModelData(const VIPRA::PedestrianSet& pedSet) {
+void ThermostatPedestrianModel::setModelData(const VIPRA::PedestrianSet& pedSet) {
   const auto pedCnt = pedSet.getNumPedestrians();
   peds.desiredSpeeds = VIPRA::makeDistribution<VIPRA::normal_distribution<>>(
       pedCnt, config.meanMaxSpeed, config.maxSpeedStdDev, rand);

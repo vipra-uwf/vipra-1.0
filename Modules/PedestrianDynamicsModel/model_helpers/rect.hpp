@@ -1,11 +1,11 @@
-#ifndef CALM_RECT_HPP
-#define CALM_RECT_HPP
+#ifndef RECT_HPP
+#define RECT_HPP
 
 #include <array>
 #include <definitions/dimensions.hpp>
 #include "definitions/type_definitions.hpp"
 
-#include "calm_line.hpp"
+#include "line.hpp"
 
 struct Rect {
   VIPRA::f3d p1;

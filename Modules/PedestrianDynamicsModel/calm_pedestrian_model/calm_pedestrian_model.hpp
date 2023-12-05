@@ -15,8 +15,7 @@
 #include "pedestrian_set/pedestrian_set.hpp"
 
 #include "calm_collision.hpp"
-#include "calm_line.hpp"
-#include "calm_rect.hpp"
+#include "../model_helpers/rect.hpp"
 #include "randomization/random.hpp"
 
 class CalmPedestrianModel : public VIPRA::PedestrianDynamicsModel {

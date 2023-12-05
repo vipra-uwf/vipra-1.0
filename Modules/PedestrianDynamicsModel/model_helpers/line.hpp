@@ -1,5 +1,5 @@
-#ifndef CALM_LINE_HPP
-#define CALM_LINE_HPP
+#ifndef LINE_HPP
+#define LINE_HPP
 
 #include "definitions/type_definitions.hpp"
 

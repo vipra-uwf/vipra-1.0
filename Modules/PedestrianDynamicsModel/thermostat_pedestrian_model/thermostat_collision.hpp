@@ -2,6 +2,8 @@
 #define CALM_COLLISION_HPP
 
 #include <set>
+#include <stdlib.h>
+#include <time.h>
 
 #include "Goals/calm_goals/calm_goals.hpp"
 #include "PedestrianSet/calm_pedestrian_set/calm_pedestrian_set.hpp"
@@ -23,7 +25,7 @@ struct ModelData {
   VIPRA::f3dVec               propulsionForces;
 };
 
-class Collision {
+class ThermostatCollision {
  public:
   void initialize(const VIPRA::PedestrianSet&, const VIPRA::Goals&, const ModelData&);
   void raceDetection(const VIPRA::PedestrianSet&, const ModelData&, const VIPRA::Goals&,
@@ -36,12 +38,15 @@ class Collision {
 
   [[nodiscard]] RaceStatus status(VIPRA::idx) const;
 
+  [[nodiscard]] bool pedInRace(VIPRA::idx) const;
+
  private:
   std::vector<RaceStatus>              raceStatuses;
   std::vector<Rect>                    collisionRectangles;
   std::vector<std::vector<bool>>       inRace;
   std::vector<std::vector<VIPRA::f3d>> intersectionMidpoints;
   std::vector<VIPRA::f3d>              velocityDirections;
+  bool                                 hasPriority;
 
   static constexpr VIPRA::cnt maxCount = 500;
   static constexpr float      minspeed = 0.00000001F;
