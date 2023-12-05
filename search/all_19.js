@@ -1,7 +1,7 @@
 var searchData=
 [
   ['r_20requirements_0',['r requirements',['../d0/d30/md_README.html#autotoc_md371',1,'R. Requirements'],['../db/ddb/md_Documentation_2InstallationSetup.html#autotoc_md130',1,'R. Requirements']]],
-  ['racedetection_1',['raceDetection',['../d6/d57/classCollision.html#ac75b02c38f611832a11c76d43a77ae88',1,'Collision']]],
+  ['racedetection_1',['racedetection',['../d6/d57/classCollision.html#ac75b02c38f611832a11c76d43a77ae88',1,'Collision::raceDetection()'],['../d5/da2/classThermostatCollision.html#ad94d4ae4e58b571922bf6d31f1fa8fac',1,'ThermostatCollision::raceDetection()']]],
   ['random_20values_2',['random values',['../d7/dde/md_VIPRA__Behaviors_2README.html#autotoc_md486',1,'V.1.2. Random Values'],['../d2/d49/md_Documentation_2ResearcherFiles_2behaviors_2VIPRA__Behaviors.html#autotoc_md275',1,'V.1.3. Random Values']]],
   ['random_20values_20vs_20number_20random_20values_3',['V.1.3.1 Float Random Values vs. Number Random Values',['../d2/d49/md_Documentation_2ResearcherFiles_2behaviors_2VIPRA__Behaviors.html#autotoc_md277',1,'']]],
   ['randomfloatvalue_4',['RandomFloatValue',['../d6/da5/structBHVR_1_1RandomFloatValue.html',1,'BHVR']]],

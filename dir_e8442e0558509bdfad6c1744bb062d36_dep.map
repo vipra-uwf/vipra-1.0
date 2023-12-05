@@ -1,5 +1,7 @@
 <map id="Modules/PedestrianDynamicsModel" name="Modules/PedestrianDynamicsModel">
-<area shape="rect" id="node2" href="dir_5d736a956df3bd547744b532111beadc.html" title="calm_pedestrian_model" alt="" coords="37,63,195,89"/>
-<area shape="rect" id="clust2" href="dir_e8442e0558509bdfad6c1744bb062d36.html" alt="" coords="27,52,405,99"/>
-<area shape="rect" id="clust1" href="dir_f2541a3b18981391fa76fac5599e978a.html" title="Modules" alt="" coords="16,16,416,110"/>
+<area shape="rect" id="node2" href="dir_5d736a956df3bd547744b532111beadc.html" title="calm_pedestrian_model" alt="" coords="341,71,499,96"/>
+<area shape="rect" id="node3" href="dir_a014d05825a6040ba2d78691364c1d35.html" title="model_helpers" alt="" coords="211,71,317,96"/>
+<area shape="rect" id="node4" href="dir_d721812985a139f6a13e17e4898db094.html" title="thermostat_pedestrian\l_model" alt="" coords="37,63,187,104"/>
+<area shape="rect" id="clust2" href="dir_e8442e0558509bdfad6c1744bb062d36.html" alt="" coords="27,52,709,114"/>
+<area shape="rect" id="clust1" href="dir_f2541a3b18981391fa76fac5599e978a.html" title="Modules" alt="" coords="16,16,720,125"/>
 </map>

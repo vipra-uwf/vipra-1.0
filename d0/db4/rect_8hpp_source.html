@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VIPRA Documentation: Modules/PedestrianDynamicsModel/calm_pedestrian_model/calm_rect.hpp Source File</title>
+<title>VIPRA Documentation: Modules/PedestrianDynamicsModel/model_helpers/rect.hpp Source File</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -74,21 +74,21 @@ $(document).ready(function() { init_codefold(1); });
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../dir_f2541a3b18981391fa76fac5599e978a.html">Modules</a></li><li class="navelem"><a class="el" href="../../dir_e8442e0558509bdfad6c1744bb062d36.html">PedestrianDynamicsModel</a></li><li class="navelem"><a class="el" href="../../dir_5d736a956df3bd547744b532111beadc.html">calm_pedestrian_model</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../dir_f2541a3b18981391fa76fac5599e978a.html">Modules</a></li><li class="navelem"><a class="el" href="../../dir_e8442e0558509bdfad6c1744bb062d36.html">PedestrianDynamicsModel</a></li><li class="navelem"><a class="el" href="../../dir_a014d05825a6040ba2d78691364c1d35.html">model_helpers</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="headertitle"><div class="title">calm_rect.hpp</div></div>
+  <div class="headertitle"><div class="title">rect.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef CALM_RECT_HPP</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define CALM_RECT_HPP</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef RECT_HPP</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define RECT_HPP</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;array&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;definitions/dimensions.hpp&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;definitions/type_definitions.hpp&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;calm_line.hpp&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;line.hpp&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="../../db/d14/structRect.html">   10</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../db/d14/structRect.html">Rect</a> {</div>
@@ -312,12 +312,12 @@ $(document).ready(function() { init_codefold(1); });
 </div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="astructLine_html"><div class="ttname"><a href="../../da/d05/structLine.html">Line</a></div><div class="ttdef"><b>Definition</b> calm_line.hpp:6</div></div>
-<div class="ttc" id="astructRect_html"><div class="ttname"><a href="../../db/d14/structRect.html">Rect</a></div><div class="ttdef"><b>Definition</b> calm_rect.hpp:10</div></div>
-<div class="ttc" id="astructRect_html_a6634da722869b5fec4cc084143e7f319"><div class="ttname"><a href="../../db/d14/structRect.html#a6634da722869b5fec4cc084143e7f319">Rect::doesIntersect</a></div><div class="ttdeci">bool doesIntersect(Rect &amp;other)</div><div class="ttdoc">Returns if the rectangle intersects another.</div><div class="ttdef"><b>Definition</b> calm_rect.hpp:202</div></div>
-<div class="ttc" id="astructRect_html_a78dab55e4a5f2cbe99bf92f479ae6652"><div class="ttname"><a href="../../db/d14/structRect.html#a78dab55e4a5f2cbe99bf92f479ae6652">Rect::area</a></div><div class="ttdeci">constexpr float area() const</div><div class="ttdoc">Returns the area of the rectangle.</div><div class="ttdef"><b>Definition</b> calm_rect.hpp:55</div></div>
-<div class="ttc" id="astructRect_html_a7f19d2bf6e49d4f130719efbffe99a6c"><div class="ttname"><a href="../../db/d14/structRect.html#a7f19d2bf6e49d4f130719efbffe99a6c">Rect::isPointInRect</a></div><div class="ttdeci">constexpr bool isPointInRect(VIPRA::f3d point) const noexcept</div><div class="ttdoc">Returns if the point is inside the rectangle.</div><div class="ttdef"><b>Definition</b> calm_rect.hpp:70</div></div>
-<div class="ttc" id="astructRect_html_aa138708861c873b305f011b34da072b7"><div class="ttname"><a href="../../db/d14/structRect.html#aa138708861c873b305f011b34da072b7">Rect::doRectanglesIntersect</a></div><div class="ttdeci">static bool doRectanglesIntersect(Rect &amp;r1, Rect &amp;r2)</div><div class="ttdoc">Returns if the rectangles intersect one another.</div><div class="ttdef"><b>Definition</b> calm_rect.hpp:180</div></div>
+<div class="ttc" id="astructLine_html"><div class="ttname"><a href="../../da/d05/structLine.html">Line</a></div><div class="ttdef"><b>Definition</b> line.hpp:6</div></div>
+<div class="ttc" id="astructRect_html"><div class="ttname"><a href="../../db/d14/structRect.html">Rect</a></div><div class="ttdef"><b>Definition</b> rect.hpp:10</div></div>
+<div class="ttc" id="astructRect_html_a6634da722869b5fec4cc084143e7f319"><div class="ttname"><a href="../../db/d14/structRect.html#a6634da722869b5fec4cc084143e7f319">Rect::doesIntersect</a></div><div class="ttdeci">bool doesIntersect(Rect &amp;other)</div><div class="ttdoc">Returns if the rectangle intersects another.</div><div class="ttdef"><b>Definition</b> rect.hpp:202</div></div>
+<div class="ttc" id="astructRect_html_a78dab55e4a5f2cbe99bf92f479ae6652"><div class="ttname"><a href="../../db/d14/structRect.html#a78dab55e4a5f2cbe99bf92f479ae6652">Rect::area</a></div><div class="ttdeci">constexpr float area() const</div><div class="ttdoc">Returns the area of the rectangle.</div><div class="ttdef"><b>Definition</b> rect.hpp:55</div></div>
+<div class="ttc" id="astructRect_html_a7f19d2bf6e49d4f130719efbffe99a6c"><div class="ttname"><a href="../../db/d14/structRect.html#a7f19d2bf6e49d4f130719efbffe99a6c">Rect::isPointInRect</a></div><div class="ttdeci">constexpr bool isPointInRect(VIPRA::f3d point) const noexcept</div><div class="ttdoc">Returns if the point is inside the rectangle.</div><div class="ttdef"><b>Definition</b> rect.hpp:70</div></div>
+<div class="ttc" id="astructRect_html_aa138708861c873b305f011b34da072b7"><div class="ttname"><a href="../../db/d14/structRect.html#aa138708861c873b305f011b34da072b7">Rect::doRectanglesIntersect</a></div><div class="ttdeci">static bool doRectanglesIntersect(Rect &amp;r1, Rect &amp;r2)</div><div class="ttdoc">Returns if the rectangles intersect one another.</div><div class="ttdef"><b>Definition</b> rect.hpp:180</div></div>
 <div class="ttc" id="astructVIPRA_1_1f3d_html"><div class="ttname"><a href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a></div><div class="ttdef"><b>Definition</b> dimensions.hpp:135</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

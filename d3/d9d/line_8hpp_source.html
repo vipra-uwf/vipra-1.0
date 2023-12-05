@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VIPRA Documentation: Modules/PedestrianDynamicsModel/calm_pedestrian_model/calm_line.hpp Source File</title>
+<title>VIPRA Documentation: Modules/PedestrianDynamicsModel/model_helpers/line.hpp Source File</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -74,15 +74,15 @@ $(document).ready(function() { init_codefold(1); });
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../dir_f2541a3b18981391fa76fac5599e978a.html">Modules</a></li><li class="navelem"><a class="el" href="../../dir_e8442e0558509bdfad6c1744bb062d36.html">PedestrianDynamicsModel</a></li><li class="navelem"><a class="el" href="../../dir_5d736a956df3bd547744b532111beadc.html">calm_pedestrian_model</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../dir_f2541a3b18981391fa76fac5599e978a.html">Modules</a></li><li class="navelem"><a class="el" href="../../dir_e8442e0558509bdfad6c1744bb062d36.html">PedestrianDynamicsModel</a></li><li class="navelem"><a class="el" href="../../dir_a014d05825a6040ba2d78691364c1d35.html">model_helpers</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="headertitle"><div class="title">calm_line.hpp</div></div>
+  <div class="headertitle"><div class="title">line.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef CALM_LINE_HPP</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define CALM_LINE_HPP</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef LINE_HPP</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define LINE_HPP</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;definitions/type_definitions.hpp&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
@@ -173,11 +173,11 @@ $(document).ready(function() { init_codefold(1); });
 </div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="astructLine_html"><div class="ttname"><a href="../../da/d05/structLine.html">Line</a></div><div class="ttdef"><b>Definition</b> calm_line.hpp:6</div></div>
-<div class="ttc" id="astructLine_html_a4e9edc02c17af67385d135dfad9bfe38"><div class="ttname"><a href="../../da/d05/structLine.html#a4e9edc02c17af67385d135dfad9bfe38">Line::shortestDistanceTo</a></div><div class="ttdeci">float shortestDistanceTo(VIPRA::f3d point) const</div><div class="ttdoc">Calculate the shortest distance from the line to a point.</div><div class="ttdef"><b>Definition</b> calm_line.hpp:92</div></div>
-<div class="ttc" id="astructLine_html_ab1915d6d71e20e5b6f09b59eb86b1a7c"><div class="ttname"><a href="../../da/d05/structLine.html#ab1915d6d71e20e5b6f09b59eb86b1a7c">Line::doesIntersect</a></div><div class="ttdeci">constexpr bool doesIntersect(const Line &amp;other) const</div><div class="ttdoc">Check if the line segment intersects with another line segment.</div><div class="ttdef"><b>Definition</b> calm_line.hpp:25</div></div>
-<div class="ttc" id="astructLine_html_ab66ec6442d7d0f5c117028939be2ef15"><div class="ttname"><a href="../../da/d05/structLine.html#ab66ec6442d7d0f5c117028939be2ef15">Line::orientation</a></div><div class="ttdeci">static constexpr int orientation(VIPRA::f3d point1, VIPRA::f3d point2, VIPRA::f3d point3)</div><div class="ttdoc">Calculates the orientation of point1, point2, point 3.</div><div class="ttdef"><b>Definition</b> calm_line.hpp:74</div></div>
-<div class="ttc" id="astructLine_html_ac308de2df194f72ed77f04e4304d5625"><div class="ttname"><a href="../../da/d05/structLine.html#ac308de2df194f72ed77f04e4304d5625">Line::checkIfOnLineSegment</a></div><div class="ttdeci">static constexpr bool checkIfOnLineSegment(VIPRA::f3d lineStart, VIPRA::f3d lineEnd, VIPRA::f3d pt)</div><div class="ttdoc">Checks if pt is on the line segment, provided the orientation between the 3 points is known to be 0.</div><div class="ttdef"><b>Definition</b> calm_line.hpp:57</div></div>
+<div class="ttc" id="astructLine_html"><div class="ttname"><a href="../../da/d05/structLine.html">Line</a></div><div class="ttdef"><b>Definition</b> line.hpp:6</div></div>
+<div class="ttc" id="astructLine_html_a4e9edc02c17af67385d135dfad9bfe38"><div class="ttname"><a href="../../da/d05/structLine.html#a4e9edc02c17af67385d135dfad9bfe38">Line::shortestDistanceTo</a></div><div class="ttdeci">float shortestDistanceTo(VIPRA::f3d point) const</div><div class="ttdoc">Calculate the shortest distance from the line to a point.</div><div class="ttdef"><b>Definition</b> line.hpp:92</div></div>
+<div class="ttc" id="astructLine_html_ab1915d6d71e20e5b6f09b59eb86b1a7c"><div class="ttname"><a href="../../da/d05/structLine.html#ab1915d6d71e20e5b6f09b59eb86b1a7c">Line::doesIntersect</a></div><div class="ttdeci">constexpr bool doesIntersect(const Line &amp;other) const</div><div class="ttdoc">Check if the line segment intersects with another line segment.</div><div class="ttdef"><b>Definition</b> line.hpp:25</div></div>
+<div class="ttc" id="astructLine_html_ab66ec6442d7d0f5c117028939be2ef15"><div class="ttname"><a href="../../da/d05/structLine.html#ab66ec6442d7d0f5c117028939be2ef15">Line::orientation</a></div><div class="ttdeci">static constexpr int orientation(VIPRA::f3d point1, VIPRA::f3d point2, VIPRA::f3d point3)</div><div class="ttdoc">Calculates the orientation of point1, point2, point 3.</div><div class="ttdef"><b>Definition</b> line.hpp:74</div></div>
+<div class="ttc" id="astructLine_html_ac308de2df194f72ed77f04e4304d5625"><div class="ttname"><a href="../../da/d05/structLine.html#ac308de2df194f72ed77f04e4304d5625">Line::checkIfOnLineSegment</a></div><div class="ttdeci">static constexpr bool checkIfOnLineSegment(VIPRA::f3d lineStart, VIPRA::f3d lineEnd, VIPRA::f3d pt)</div><div class="ttdoc">Checks if pt is on the line segment, provided the orientation between the 3 points is known to be 0.</div><div class="ttdef"><b>Definition</b> line.hpp:57</div></div>
 <div class="ttc" id="astructVIPRA_1_1f3d_html"><div class="ttname"><a href="../../d8/d28/structVIPRA_1_1f3d.html">VIPRA::f3d</a></div><div class="ttdef"><b>Definition</b> dimensions.hpp:135</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
