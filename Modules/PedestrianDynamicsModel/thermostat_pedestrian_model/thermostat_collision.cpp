@@ -102,18 +102,6 @@ bool ThermostatCollision::checkIfHighestPriority(const VIPRA::PedestrianSet& ped
                                        VIPRA::t_step) {
 
 
-  if(index == 134){
-    for(VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); i++){
-      if(inRace.at(index).at(i) == true) {
-        spdlog::info("134's Race opponent: {}", i);
-        if(raceStatuses.at(index) == RaceStatus::WAIT) {
-          spdlog::info("134 is waiting on 137");
-        } else {
-          spdlog::info("134 is not waiitng 137");
-        }
-      }
-    }
-  }
   bool flag = true;
   for (VIPRA::idx i = 0; i < pedestrianSet.getNumPedestrians(); i++) {
     if (i == index) continue;

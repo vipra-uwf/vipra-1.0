@@ -133,10 +133,10 @@ void ThermostatPedestrianModel::updateModelState(const VIPRA::PedestrianSet& ped
     const auto& velocity = velocities.at(i);
     const float mass = peds.masses.at(i);
 
-    const VIPRA::f3d newVelocity = thermostat(i, pedCoord, velocity, rands, obsSet, goals);
+    const VIPRA::f3d randomVelocity = thermostat(i, pedCoord, velocity, rands, obsSet, goals);
 
     // Use Euler Method to update position and velocity
-    state.velocities[i] = ((propulsion / mass) * time) + newVelocity;
+    state.velocities[i] = ((propulsion / mass) * time) + randomVelocity;
 
     // TODO(rolland) : I believe Dr.Srinivasan said we shouldn't have to do this? It sets velocity to zero when a pedestrian reaches a goal to prevent sliding
     if (goals.timeSinceLastGoal(i) > 0 && goals.timeSinceLastGoal(i) <= slidingGoalTime) {
@@ -148,6 +148,16 @@ void ThermostatPedestrianModel::updateModelState(const VIPRA::PedestrianSet& ped
   }
 }
 
+/**
+ *  @brief Returns randomized velocity based on distance to obstacle
+ * 
+ * @param pedID
+ * @param pedCoord
+ * @param pedVel
+ * @param rands
+ * @param obsSet
+ * @param goals
+*/
 VIPRA::f3d ThermostatPedestrianModel::thermostat(VIPRA::idx pedID, 
                                            VIPRA::f3d pedCoord,
                                            VIPRA::f3d pedVel,
@@ -161,11 +171,8 @@ VIPRA::f3d ThermostatPedestrianModel::thermostat(VIPRA::idx pedID,
 
     VIPRA::f3d randVel = pedVel + newVel;
 
-    const auto newVelocity = randVel;
-
     VIPRA::f3d directionToGoal = goal1 - pedCoord;
     VIPRA::f3d nearestObs = obsSet.nearestObstacleInDirection(pedCoord, directionToGoal);
-    // spdlog::info("Distance to obj for id {}: {}", pedID, nearestObs.distanceTo(pedCoord));
 
     VIPRA::f3d spedFormula4 = randVel*(1 - (0.02/nearestObs.distanceTo(pedCoord)));
 
