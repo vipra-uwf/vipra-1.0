@@ -2,6 +2,7 @@
 #define VIPRA_ARGUMENTS_HPP
 
 #include <sys/types.h>
+#include <cstdint>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>

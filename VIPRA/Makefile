@@ -1,4 +1,3 @@
-
 BASE_DIR = ./Base
 CODE_GEN_DIR = ${BASE_DIR}/code_generation
 
@@ -17,6 +16,7 @@ build: build_gen_main run_gen_main build_sim
 # 	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild
 
 build_gen_main:
+	mkdir -p ${CODE_GEN_DIR}/${DIR}
 	cmake -B ${CODE_GEN_DIR}/${DIR} ${CODE_GEN_DIR} ${DEBUG}
 	cmake --build ${CODE_GEN_DIR}/${DIR}
 
@@ -24,16 +24,19 @@ run_gen_main:
 	${CODE_GEN_DIR}/generate_main main.cpp ./modules.json -noCompReq
 
 build_sim:
+	mkdir -p params
+	mkdir -p output
+	mkdir -p ${DIR}
 	cmake -B ${DIR} . ${DEBUG} ${PROF}
 	cmake --build ${DIR} -j 5
 	
 clean:
 	rm -rf build
 	rm -rf build_debug
+	rm -rf ${CODE_GEN_DIR}/build
+	rm -rf ${CODE_GEN_DIR}/build_debug
 	rm -f main.cpp
-	rm -f output.json
 	rm -f VIPRA_SIM
-	rm -f gmon.out
 
 .PHONY:
 	start_server

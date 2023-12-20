@@ -2,13 +2,13 @@
 #define SIMULATION_CONTEXT_HPP
 
 #include <memory>
-#include <randomization/random.hpp>
 #include <vector>
 
 #include "definitions/dsl_types.hpp"
 #include "definitions/pedestrian_types.hpp"
 #include "definitions/type_definitions.hpp"
 #include "locations/location.hpp"
+#include "randomization/random.hpp"
 
 namespace BHVR {
 class Event;

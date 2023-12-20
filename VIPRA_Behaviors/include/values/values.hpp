@@ -13,6 +13,8 @@
 #include "time/time.hpp"
 #include "values/numeric_value.hpp"
 
+// TODO: Check that range values make sense (min < max)
+
 namespace BHVR {
 
 using RandomVal = std::pair<float, float>;

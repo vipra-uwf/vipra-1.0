@@ -62,25 +62,35 @@ class normal_distribution {
     double resultY = 0;
     double result = 1.0;
 
+    if (hasSpare_) {
+      hasSpare_ = false;
+      return static_cast<T>(mean_ + stdDev_ * spare_);
+    }
+
     while (result >= 1.0 || result == 0.0) {
       resultX =
-          (static_cast<double>(engine()) / static_cast<double>(pRNG_Engine::max())) *
-              two -
+          ((static_cast<double>(engine()) / static_cast<double>(pRNG_Engine::max())) *
+           two) -
           1.0;
       resultY =
-          (static_cast<double>(engine()) / static_cast<double>(pRNG_Engine::max())) *
-              two -
+          ((static_cast<double>(engine()) / static_cast<double>(pRNG_Engine::max())) *
+           two) -
           1.0;
       result = resultX * resultX + resultY * resultY;
     };
 
     result = std::sqrt(-two * std::log(result) / result);
+    spare_ = resultY * result;
+    hasSpare_ = true;
     return static_cast<T>(mean_ + stdDev_ * resultX * result);
   }
 
  private:
   float mean_;
   float stdDev_;
+
+  double spare_{0.0F};
+  bool   hasSpare_ = false;
 
   static constexpr float two = 2.0;
 };
