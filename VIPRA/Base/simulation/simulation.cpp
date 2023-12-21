@@ -5,6 +5,10 @@
 #include "output/output.hpp"
 #include "pedestrian_set/pedestrian_set.hpp"
 
+#ifdef MAN_BHVRS
+#include "perf_testing.hpp"
+#endif
+
 namespace VIPRA {
 /**
  * @brief Gets simulation module params
@@ -43,6 +47,7 @@ VIPRA::t_step Simulation::getTimestep() const { return timestep; }
  * @param simulationOutputHandler - SimulationOutputHandler implementation
  * @param clock - Clock implementation
  */
+#ifndef MAN_BHVRS
 void Simulation::run(VIPRA::Goals& goals, VIPRA::PedestrianSet& pedestrianSet,
                      VIPRA::ObstacleSet&      obstacleSet,
                      PedestrianDynamicsModel& pedestrianDynamicsModel,
@@ -97,4 +102,61 @@ void Simulation::outputPositions(const PedestrianSet& pedSet) {
     Output::pedTimestepValue(i, "position", coords.at(i));
   }
 }
+#else
+void Simulation::run(VIPRA::Goals& goals, VIPRA::PedestrianSet& pedestrianSet,
+                     VIPRA::ObstacleSet&      obstacleSet,
+                     PedestrianDynamicsModel& pedestrianDynamicsModel,
+                     HumanBehaviorModel&, PolicyModel& policyModel) {
+  spdlog::info("Starting Simulation Loop");
+  clock.start();
+
+  VIPRA::State pedState{pedestrianSet.getNumPedestrians()};
+  while (!goals.isSimulationGoalMet() && timestep < maxTimeStep) {
+    pedestrianDynamicsModel.timestep(pedestrianSet, obstacleSet, goals, pedState,
+                                     timestep_size, timestep);
+    policyModel.timestep(pedestrianSet, obstacleSet, goals, pedState, timestep_size);
+    BHVR::TEST::manual_behaviors(pedestrianSet, obstacleSet, goals, pedState,
+                                 timestep_size);
+
+    pedestrianSet.updateState(pedState);
+    goals.updatePedestrianGoals(obstacleSet, pedestrianSet, timestep_size);
+
+    outputPositions(pedestrianSet);
+
+    ++timestep;
+    Output::nextTimestep();
+  }
+
+  if (timestep >= maxTimeStep) {
+    spdlog::warn("Simulation Reached Max Timestep");
+  }
+
+  spdlog::info("Simulation Run Complete");
+  printSimTime();
+}
+
+/**
+ * @brief Outputs the simulated and real times for the simulation run
+ * 
+ */
+void Simulation::printSimTime() {
+  auto stopTime = clock.stop();
+  spdlog::info("Simulation Real Run Time: {}", stopTime);
+
+  const double simTime = timestep_size * static_cast<float>(timestep);
+  const auto   stm = std::chrono::round<std::chrono::milliseconds>(
+      std::chrono::duration<float>{simTime});
+  spdlog::info("Simulated Time: {}", stm);
+}
+
+void Simulation::outputPositions(const PedestrianSet& pedSet) {
+  const VIPRA::size pedCnt = pedSet.getNumPedestrians();
+  const auto&       coords = pedSet.getCoordinates();
+
+  for (VIPRA::idx i = 0; i < pedCnt; ++i) {
+    Output::pedTimestepValue(i, "position", coords.at(i));
+  }
+}
+#endif
+
 }  // namespace VIPRA

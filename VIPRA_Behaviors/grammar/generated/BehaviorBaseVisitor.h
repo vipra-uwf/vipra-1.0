@@ -331,10 +331,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitDecl_Ped(BehaviorParser::Decl_PedContext *ctx) override {
     return visitChildren(ctx);
   }

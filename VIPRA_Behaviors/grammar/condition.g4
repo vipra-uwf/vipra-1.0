@@ -51,7 +51,7 @@ condition_Event_Ending:
   ;
 
 condition_Spatial:
-  TARGET WITHIN value_numeric
+  TARGET WITHIN value_numeric ('m'|'M')
   ;
 
 condition_Enter_Location:

@@ -30,11 +30,11 @@ template <typename T = float>
 // NOLINTNEXTLINE (rolland) sticking to familiar naming convention for std::uniform_real_distribution
 class uniform_distribution {
  public:
-  uniform_distribution(T min, T max) : range(min, max) {}
-  explicit uniform_distribution(std::pair<T, T> rangeVals)
+  constexpr uniform_distribution(T min, T max) : range(min, max) {}
+  constexpr explicit uniform_distribution(std::pair<T, T> rangeVals)
       : range(std::move(rangeVals)) {}
 
-  T operator()(pRNG_Engine& engine) {
+  constexpr T operator()(pRNG_Engine& engine) {
     auto val = engine();
     if ((range.second - range.first) == 0) return range.first;
     return static_cast<T>(range.first +
@@ -55,9 +55,9 @@ template <typename T = float>
 // NOLINTNEXTLINE (rolland) sticking to familiar naming convention for std::normal_distribution
 class normal_distribution {
  public:
-  normal_distribution(T mean, T stdDev) : mean_(mean), stdDev_(stdDev) {}
+  constexpr normal_distribution(T mean, T stdDev) : mean_(mean), stdDev_(stdDev) {}
 
-  T operator()(pRNG_Engine& engine) {
+  constexpr T operator()(pRNG_Engine& engine) {
     double resultX = 0;
     double resultY = 0;
     double result = 1.0;

@@ -3,6 +3,7 @@ set(PROJECT_NAME VIPRA_SIM)
 
 option(DEBUG_MODE "Compile In Debug Mode" OFF)
 option(PROF_MODE "Build With Profiling Output" OFF)
+option(MAN_BHVRS "Build With Manual Behaviors" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -33,6 +34,10 @@ target_compile_options(
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ./../)
+
+if (MAN_BHVRS)
+  add_definitions(-DMAN_BHVRS)
+endif()
 
 if (DEBUG_MODE)
   set(CMAKE_BUILD_TYPE Debug)

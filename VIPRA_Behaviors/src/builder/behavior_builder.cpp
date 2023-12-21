@@ -779,7 +779,7 @@ auto BehaviorBuilder::visitPed_Selector(BehaviorParser::Ped_SelectorContext* ctx
 // ------------------------------- DECLARATIONS -----------------------------------------------------------------------------------------
 
 auto BehaviorBuilder::visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* ctx) -> antlrcpp::Any {
-  const auto stateNames = ctx->STATE_VAL();
+  const auto stateNames = ctx->ID();
 
   for (auto* state : stateNames) {
     auto name = state->toString();
@@ -790,20 +790,6 @@ auto BehaviorBuilder::visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext*
   }
 
   return BehaviorBaseVisitor::visitDecl_Ped_State(ctx);
-}
-
-auto BehaviorBuilder::visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* ctx) -> antlrcpp::Any {
-  const auto stateNames = ctx->STATE_VAL();
-
-  for (auto* state : stateNames) {
-    auto name = state->toString();
-    spdlog::debug("Behavior \"{}\": Adding Environment State {}, id: {}", _currentBehavior.get_name(), name,
-                  _currState);
-    _states[name] = _currState;
-    ++_currState;
-  }
-
-  return BehaviorBaseVisitor::visitDecl_Env_State(ctx);
 }
 
 auto BehaviorBuilder::visitDecl_Ped(BehaviorParser::Decl_PedContext* ctx) -> antlrcpp::Any {

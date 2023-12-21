@@ -10,6 +10,7 @@ set(VIPRA_DIR ./../VIPRA)
 set(GRAMMAR_DIR ./grammar)
 set(INCLUDE_DIR ./include)
 set(SRC_DIR ./src)
+set(PERF_TEST_DIR ./performance)
 
 add_library(
   ${LIB_NAME}
@@ -18,12 +19,14 @@ add_library(
 
 add_subdirectory(${SRC_DIR})
 add_subdirectory(${GRAMMAR_DIR})
+add_subdirectory(${PERF_TEST_DIR})
 
 target_include_directories(
   ${LIB_NAME}
   PUBLIC
   ${INCLUDE_DIR}
   ${GRAMMAR_DIR}
+  ${PERF_TEST_DIR}
 )
 
 include(FetchContent)

@@ -45,7 +45,7 @@ class ModifierDirection {
  private:
   Direction _direction;
 
-  static constexpr float RANGE = 0.25F;
+  static constexpr float RANGE = 0.1F;
 };
 }  // namespace BHVR
 

@@ -118,7 +118,6 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
   auto visitPed_Selector(BehaviorParser::Ped_SelectorContext* /*ctx*/) -> antlrcpp::Any override;
   auto visitAction(BehaviorParser::ActionContext* /*ctx*/) -> antlrcpp::Any override;
   auto visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext* /*ctx*/) -> antlrcpp::Any override;
-  auto visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext* /*ctx*/) -> antlrcpp::Any override;
   auto visitDecl_Ped(BehaviorParser::Decl_PedContext* /*ctx*/) -> antlrcpp::Any override;
   auto visitLocation(BehaviorParser::LocationContext* /*ctx*/) -> antlrcpp::Any override;
 

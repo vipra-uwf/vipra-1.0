@@ -12,12 +12,15 @@ profiling:
 
 build: build_gen_main run_gen_main build_sim
 
+manual_bhvrs:
+	make build DEBUG=-DDEBUG_MODE=OFF PROF=-DPROF_MODE=OFF DIR=build_bhvr_perf_testing BHVR_PERF_TESTING=-DMAN_BHVRS=ON
+
 # start_server:
 # 	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild
 
 build_gen_main:
 	mkdir -p ${CODE_GEN_DIR}/${DIR}
-	cmake -B ${CODE_GEN_DIR}/${DIR} ${CODE_GEN_DIR} ${DEBUG}
+	cmake -B ${CODE_GEN_DIR}/${DIR} ${CODE_GEN_DIR} ${DEBUG} ${BHVR_PERF_TESTING}
 	cmake --build ${CODE_GEN_DIR}/${DIR}
 
 run_gen_main:
@@ -27,7 +30,7 @@ build_sim:
 	mkdir -p params
 	mkdir -p output
 	mkdir -p ${DIR}
-	cmake -B ${DIR} . ${DEBUG} ${PROF}
+	cmake -B ${DIR} . ${DEBUG} ${PROF} ${BHVR_PERF_TESTING}
 	cmake --build ${DIR} -j 5
 	
 clean:

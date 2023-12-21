@@ -13,28 +13,28 @@ class  BehaviorParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    COMMENT = 8, LINE_COMMENT = 9, WS = 10, COMMA = 11, COLON = 12, STATE_VAL = 13, 
-    EVNT = 14, LOC_NAME = 15, AN = 16, AT = 17, ADD = 18, AND = 19, ARE = 20, 
-    AFTER = 21, ALWAYS = 22, AROUND = 23, ACTION = 24, BEHIND = 25, BOTTOM = 26, 
-    CONSIDER = 27, CIRCLE = 28, CENTER = 29, CONDITION = 30, DECIMAL = 31, 
-    DIRECTION = 32, DURATION = 33, END = 34, ENDS = 35, ENVIRONMENT = 36, 
-    ENTER = 37, EXIT = 38, EXISTS = 39, EVENT = 40, EXACTLY = 41, EVERY = 42, 
-    EVERYONE = 43, ENDING = 44, FOR = 45, FROM = 46, FRONT = 47, FASTER = 48, 
-    GIVEN = 49, GOAL = 50, GROUP = 51, HAS = 52, IN = 53, INTEGER = 54, 
-    INITIAL = 55, IS = 56, IF = 57, LENGTH = 58, LENGTHS = 59, LEFT = 60, 
-    LEAVE = 61, DIMENSIONS = 62, LOCATION = 63, MAX = 64, METERS = 65, NAME = 66, 
-    NEAREST = 67, NORMAL = 68, NONE = 69, NOT = 70, OBSTACLE = 71, OCCUR = 72, 
-    OCCURRED = 73, OCCURRING = 74, OF = 75, ON = 76, OR = 77, PEDESTRIAN = 78, 
-    PEDESTRIANS = 79, POINTS = 80, POSSIBLE = 81, POSITION = 82, RADIUS = 83, 
-    RANDOM = 84, REQUIRED = 85, RECTANGLE = 86, RIGHT = 87, RESPONSE = 88, 
-    ROTATION = 89, SCALE = 90, SELF = 91, SELECT = 92, SELECTOR = 93, SET = 94, 
-    SECOND = 95, SECONDS = 96, STATUS = 97, STARTING = 98, SLOWER = 99, 
-    SHAPE = 100, STATES = 101, START = 102, STATE = 103, STARTS = 104, SPEED = 105, 
-    SUBTRACT = 106, STIMULUS = 107, TARGET = 108, TO = 109, TOP = 110, THE = 111, 
-    THAT = 112, THEN = 113, THEIR = 114, THERES = 115, TYPES = 116, TYPE = 117, 
-    UNCONDITIONALLY = 118, VALUE = 119, VELOCITY = 120, WHEN = 121, WHILE = 122, 
-    WHOSE = 123, WIDTH = 124, WILL = 125, WITH = 126, WITHIN = 127, ID = 128, 
-    NUMBER = 129, FLOAT = 130
+    T__7 = 8, T__8 = 9, COMMENT = 10, LINE_COMMENT = 11, WS = 12, COMMA = 13, 
+    COLON = 14, STATE_VAL = 15, EVNT = 16, LOC_NAME = 17, AN = 18, AT = 19, 
+    ADD = 20, AND = 21, ARE = 22, AFTER = 23, ALWAYS = 24, AROUND = 25, 
+    ACTION = 26, BEHIND = 27, BOTTOM = 28, CONSIDER = 29, CIRCLE = 30, CENTER = 31, 
+    CONDITION = 32, DECIMAL = 33, DIRECTION = 34, DURATION = 35, END = 36, 
+    ENDS = 37, ENVIRONMENT = 38, ENTER = 39, EXIT = 40, EXISTS = 41, EVENT = 42, 
+    EXACTLY = 43, EVERY = 44, EVERYONE = 45, ENDING = 46, FOR = 47, FROM = 48, 
+    FRONT = 49, FASTER = 50, GIVEN = 51, GOAL = 52, GROUP = 53, HAS = 54, 
+    IN = 55, INTEGER = 56, INITIAL = 57, IS = 58, IF = 59, LENGTH = 60, 
+    LENGTHS = 61, LEFT = 62, LEAVE = 63, DIMENSIONS = 64, LOCATION = 65, 
+    MAX = 66, METERS = 67, NAME = 68, NEAREST = 69, NORMAL = 70, NONE = 71, 
+    NOT = 72, OBSTACLE = 73, OCCUR = 74, OCCURRED = 75, OCCURRING = 76, 
+    OF = 77, ON = 78, OR = 79, PEDESTRIAN = 80, PEDESTRIANS = 81, POINTS = 82, 
+    POSSIBLE = 83, POSITION = 84, RADIUS = 85, RANDOM = 86, REQUIRED = 87, 
+    RECTANGLE = 88, RIGHT = 89, RESPONSE = 90, ROTATION = 91, SCALE = 92, 
+    SELF = 93, SELECT = 94, SELECTOR = 95, SET = 96, SECOND = 97, SECONDS = 98, 
+    STATUS = 99, STARTING = 100, SLOWER = 101, SHAPE = 102, STATES = 103, 
+    START = 104, STATE = 105, STARTS = 106, SPEED = 107, SUBTRACT = 108, 
+    STIMULUS = 109, TARGET = 110, TO = 111, TOP = 112, THE = 113, THAT = 114, 
+    THEN = 115, THEIR = 116, THERES = 117, TYPES = 118, TYPE = 119, UNCONDITIONALLY = 120, 
+    VALUE = 121, VELOCITY = 122, WHEN = 123, WHILE = 124, WHOSE = 125, WIDTH = 126, 
+    WILL = 127, WITH = 128, WITHIN = 129, ID = 130, NUMBER = 131, FLOAT = 132
   };
 
   enum {
@@ -61,8 +61,7 @@ public:
     RuleGroup = 66, RuleAction = 67, RuleAction_attribute = 68, RuleAction_stimulus = 69, 
     RuleAction_response = 70, RuleAction_duration = 71, RuleAction_target = 72, 
     RuleSub_action = 73, RuleAction_atom = 74, RuleSet_atom = 75, RuleScale_atom = 76, 
-    RuleDeclaration = 77, RuleDecl_Ped_State = 78, RuleDecl_Env_State = 79, 
-    RuleDecl_Ped = 80
+    RuleDeclaration = 77, RuleDecl_Ped_State = 78, RuleDecl_Ped = 79
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -161,7 +160,6 @@ public:
   class Scale_atomContext;
   class DeclarationContext;
   class Decl_Ped_StateContext;
-  class Decl_Env_StateContext;
   class Decl_PedContext; 
 
   class  ProgramContext : public antlr4::ParserRuleContext {
@@ -1333,7 +1331,6 @@ public:
     DeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     Decl_Ped_StateContext *decl_Ped_State();
-    Decl_Env_StateContext *decl_Env_State();
     Decl_PedContext *decl_Ped();
 
 
@@ -1347,11 +1344,10 @@ public:
   public:
     Decl_Ped_StateContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *PEDESTRIAN();
     antlr4::tree::TerminalNode *STATES();
     antlr4::tree::TerminalNode *COLON();
-    std::vector<antlr4::tree::TerminalNode *> STATE_VAL();
-    antlr4::tree::TerminalNode* STATE_VAL(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> ID();
+    antlr4::tree::TerminalNode* ID(size_t i);
     std::vector<antlr4::tree::TerminalNode *> COMMA();
     antlr4::tree::TerminalNode* COMMA(size_t i);
 
@@ -1361,25 +1357,6 @@ public:
   };
 
   Decl_Ped_StateContext* decl_Ped_State();
-
-  class  Decl_Env_StateContext : public antlr4::ParserRuleContext {
-  public:
-    Decl_Env_StateContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *ENVIRONMENT();
-    antlr4::tree::TerminalNode *STATES();
-    antlr4::tree::TerminalNode *COLON();
-    std::vector<antlr4::tree::TerminalNode *> STATE_VAL();
-    antlr4::tree::TerminalNode* STATE_VAL(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> COMMA();
-    antlr4::tree::TerminalNode* COMMA(size_t i);
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  Decl_Env_StateContext* decl_Env_State();
 
   class  Decl_PedContext : public antlr4::ParserRuleContext {
   public:

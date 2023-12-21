@@ -177,8 +177,6 @@ public:
 
     virtual std::any visitDecl_Ped_State(BehaviorParser::Decl_Ped_StateContext *context) = 0;
 
-    virtual std::any visitDecl_Env_State(BehaviorParser::Decl_Env_StateContext *context) = 0;
-
     virtual std::any visitDecl_Ped(BehaviorParser::Decl_PedContext *context) = 0;
 
 
