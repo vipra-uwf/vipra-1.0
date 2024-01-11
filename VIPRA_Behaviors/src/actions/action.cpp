@@ -2,6 +2,7 @@
 #include <spdlog/spdlog.h>
 #include <actions/action.hpp>
 #include <definitions/sim_pack.hpp>
+#include <definitions/type_definitions.hpp>
 #include <targets/target.hpp>
 #include <time/time.hpp>
 #include <util/timed_latch.hpp>
@@ -17,9 +18,8 @@ namespace BHVR {
  * @param pack : simulation pack
  */
 void Action::initialize(Simpack pack) {
-  if (_duration) {
-    _duration->resize(pack.get_pedset().getNumPedestrians());
-  }
+  if (_condition) _condition->initialize(pack);
+  if (_duration) _duration->resize(pack.get_pedset().getNumPedestrians());
 }
 
 /**
@@ -33,12 +33,21 @@ void Action::initialize(Simpack pack) {
  * @param dT : simulation timestep size
  * @param state : state object to apply changes to
  */
-void Action::perform_action(Simpack pack, VIPRA::idx pedIdx) {
-  Self   self = {TargetType::PEDESTRIAN, pedIdx};
-  Target target = _targets.get_target(pack, self);
-  if (evaluate(pack, pedIdx, target)) {
-    std::for_each(_atoms.begin(), _atoms.end(), [&](Atom& atom) { atom(pack, self, target); });
-  }
+void Action::perform_action(Simpack pack, const VIPRA::idxVec& peds, const std::vector<bool>& conditionMet,
+                            const std::vector<Target>& targets) {
+  std::for_each(_atoms.begin(), _atoms.end(), [&](Atom& atom) { atom(pack, peds, conditionMet, targets); });
+}
+
+/**
+ * @brief Performs the action on the each pedestrian unconditionally
+ * 
+ * @param pack 
+ * @param peds 
+ * @param targets 
+ */
+void Action::perform_action(Simpack pack, VIPRA::idxVec& peds, const std::vector<Target>& targets) {
+  std::vector<bool> conditionMet;
+  std::for_each(_atoms.begin(), _atoms.end(), [&](Atom& atom) { atom(pack, peds, conditionMet, targets); });
 }
 
 /**
@@ -61,27 +70,6 @@ void Action::add_atom(const Atom& atom) { _atoms.emplace_back(atom); }
  * @param range
  */
 void Action::add_duration(const BHVR::NumericValue& dur) { _duration = TimedLatchCollection(dur); }
-
-/**
- * @brief Checks whether the condition should run
- * 
- */
-inline auto Action::evaluate(Simpack pack, VIPRA::idx pedIdx, Target target) -> bool {
-  if (!_condition) {
-    return true;
-  }
-
-  bool run = _condition->evaluate(pack, pedIdx, target);
-  if (_duration) {
-    if (run) {
-      _duration->latch(pack.get_context().elapsedTime, pedIdx);
-    }
-
-    return _duration->check(pack.get_context().elapsedTime, pedIdx);
-  }
-
-  return run;
-}
 
 /**
  * @brief Sets the target selector for the action

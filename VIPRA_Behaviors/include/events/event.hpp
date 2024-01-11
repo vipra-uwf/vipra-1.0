@@ -43,9 +43,9 @@ class Event {
   EventStatus _status{EventStatus::NOT_OCCURRING};
   bool        _occurred = false;
 
-  Latch     _latch;
-  Condition _startCondition;
-  Condition _endCondition;
+  Latch                    _latch;
+  Condition                _startCondition;
+  std::optional<Condition> _endCondition;
 };
 }  // namespace BHVR
 

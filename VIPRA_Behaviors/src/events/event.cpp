@@ -27,17 +27,25 @@ void Event::evaluate(Simpack pack) {
     _status = EventStatus::OCCURRING;
   }
 
+  std::vector<VIPRA::idx>             peds{0};
+  std::vector<bool>                   met{false};
+  std::optional<TimedLatchCollection> temp;
+
   // TODO (rolland) : These might need target selectors?
   if (_status == EventStatus::OCCURRING) {
-    if (_endCondition.evaluate(pack, 0, {})) {
-      spdlog::info("Event {} is Ending", _name);
-      _status = EventStatus::ENDING;
+    if (_endCondition) {
+      _endCondition.value().evaluate(pack, peds, met, {}, temp);
+      if (met[0]) {
+        spdlog::info("Event {} is Ending", _name);
+        _status = EventStatus::ENDING;
+      }
     }
 
     return;
   }
 
-  if (_startCondition.evaluate(pack, 0, {})) {
+  _startCondition.evaluate(pack, peds, met, {}, temp);
+  if (met[0]) {
     spdlog::info("Event {} is Starting", _name);
     _occurred = true;
     _status = EventStatus::STARTING;

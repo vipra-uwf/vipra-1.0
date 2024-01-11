@@ -8,15 +8,12 @@ namespace BHVR {
 struct AtomScale {
   Attribute       attribute;
   CAttributeValue value;
-  bool            targetSelf;
 
-  inline void operator()(Simpack pack, Self self, Target target) const {
-    if (targetSelf) {
-      AttributeHandling::scale_value(self.target, attribute, pack, pack.state, value);
-      return;
+  inline void operator()(Simpack pack, const VIPRA::idxVec& peds, const std::vector<bool>& conditionMet,
+                         const std::vector<Target>& targets) const {
+    for (VIPRA::idx idx = 0; idx < peds.size(); ++idx) {
+      if (conditionMet[idx]) AttributeHandling::scale_value(targets[idx], attribute, pack, pack.state, value);
     }
-
-    AttributeHandling::scale_value(target, attribute, pack, pack.state, value);
   }
 };
 }  // namespace BHVR

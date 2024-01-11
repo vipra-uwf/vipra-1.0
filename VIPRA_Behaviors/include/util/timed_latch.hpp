@@ -44,7 +44,7 @@ class TimedLatchCollection {
    * @param currTime : current simulation time
    * @param pedIdx : pedestrian index latch to check
    * @return true : if the latch is set and the duration has not elapsed
-   * @return false : if the latch is NOT set or the latch is unlatched
+   * @return false : if the latch is NOT set or the time has elapsed
    */
   auto check(VIPRA::time_s currTime, VIPRA::idx pedIdx) -> bool {
     if (_startTimes[pedIdx] == -1) return false;

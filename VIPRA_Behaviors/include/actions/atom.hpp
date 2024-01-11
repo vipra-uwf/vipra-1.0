@@ -14,8 +14,8 @@
 
 namespace BHVR {
 
-using Atom = std::function<void(Simpack, Self, Target)>;
-
+using Atom =
+    std::function<void(Simpack, const VIPRA::idxVec&, const std::vector<bool>&, const std::vector<Target>&)>;
 }  // namespace BHVR
 
 #endif

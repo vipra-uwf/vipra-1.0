@@ -21,6 +21,7 @@
 #include "builder/behavior_builder.hpp"
 #include "builder/declaration_components.hpp"
 
+#include "conditions/condition_tree.hpp"
 #include "conditions/subconditions/subcondition_attribute.hpp"
 #include "conditions/subconditions/subcondition_exists.hpp"
 #include "definitions/dsl_types.hpp"
@@ -131,6 +132,7 @@ void BehaviorBuilder::initialize_events() {
 
   _startEvent = Event("Start");
   _startCond = Condition();
+  // TODO: this
   _startCond.add_sub_condition(SubConditionStart{});
   _startEvent.set_start_condition(_startCond);
 
@@ -188,26 +190,106 @@ void BehaviorBuilder::end_behavior_check() {
  */
 auto BehaviorBuilder::build_condition(BehaviorParser::ConditionContext* cond) -> Condition {
   Condition condition;
+  condition_tree_condition(cond, condition);
+  return condition;
+}
 
-  auto* subcond = cond->sub_condition();
-  add_sub_cond_to_condtion(condition, subcond);
+void BehaviorBuilder::add_sub_condition(Condition& condTree, BehaviorParser::Sub_conditionContext* subcond) {
+  if (subcond->condition_Time_Elapsed_From_Event()) {
+    condTree.add_subcondition(build_time_elapsed_subcond(subcond->condition_Time_Elapsed_From_Event()));
+    return;
+  }
 
-  const auto connectors = cond->connector();
-  std::for_each(connectors.begin(), connectors.end(), [&](auto connector) {
-    BehaviorParser::Sub_conditionContext* cond = nullptr;
+  if (subcond->condition_Enter_Location()) {
+    condTree.add_subcondition(build_enter_subcond(subcond->condition_Enter_Location()));
+    return;
+  }
 
-    if (connector->and_Connector()) {
-      cond = connector->and_Connector()->sub_condition();
-      condition.add_and_or(true);
+  if (subcond->condition_Event_Occurred()) {
+    condTree.add_subcondition(build_event_occurred_subcond(subcond->condition_Event_Occurred()));
+    return;
+  }
+
+  if (subcond->condition_Event_Occurring()) {
+    condTree.add_subcondition(build_event_occurring_subcond(subcond->condition_Event_Occurring()));
+    return;
+  }
+
+  if (subcond->condition_Event_Starting()) {
+    condTree.add_subcondition(build_event_starting_subcond(subcond->condition_Event_Starting()));
+    return;
+  }
+
+  if (subcond->condition_Event_Ending()) {
+    condTree.add_subcondition(build_event_ending_subcond(subcond->condition_Event_Ending()));
+    return;
+  }
+
+  if (subcond->condition_Spatial()) {
+    condTree.add_subcondition(build_spatial_subcond(subcond->condition_Spatial()));
+    return;
+  }
+
+  if (subcond->condition_Exit_Location()) {
+    condTree.add_subcondition(build_exit_subcond(subcond->condition_Exit_Location()));
+    return;
+  }
+
+  if (subcond->condition_Inside_Location()) {
+    condTree.add_subcondition(build_in_location_subcond(subcond->condition_Inside_Location()));
+    return;
+  }
+
+  if (subcond->condition_Attribute()) {
+    condTree.add_subcondition(build_attribute_subcond(subcond->condition_Attribute()));
+    return;
+  }
+
+  if (subcond->condition_Exists()) {
+    condTree.add_subcondition(build_exists_subcond(subcond->condition_Exists()));
+    return;
+  }
+
+  spdlog::error("Behavior Error: No Valid SubCondition For: \"{}\"", subcond->getText());
+  BuilderException::error();
+}
+
+void BehaviorBuilder::condition_tree_condition(BehaviorParser::ConditionContext* condition, Condition& tree) {
+  condition_tree_unary(condition->unary(), tree);
+
+  if (condition->condition()) {
+    if (condition->AND()) {
+      tree.add_operation(Condition::OP::AND);
     } else {
-      cond = connector->or_Connector()->sub_condition();
-      condition.add_and_or(false);
+      tree.add_operation(Condition::OP::OR);
     }
 
-    add_sub_cond_to_condtion(condition, cond);
-  });
+    condition_tree_condition(condition->condition(), tree);
+  }
+}
 
-  return condition;
+void BehaviorBuilder::condition_tree_unary(BehaviorParser::UnaryContext* unary, Condition& tree) {
+  if (unary->NOT()) {
+    tree.add_operation(Condition::OP::NOT);
+  }
+
+  if (unary->unary()) {
+    condition_tree_unary(unary->unary(), tree);
+  }
+
+  if (unary->primary()) {
+    condition_tree_primary(unary->primary(), tree);
+  }
+}
+
+void BehaviorBuilder::condition_tree_primary(BehaviorParser::PrimaryContext* primary, Condition& tree) {
+  if (primary->condition()) {
+    condition_tree_condition(primary->condition(), tree);
+  }
+
+  if (primary->sub_condition()) {
+    add_sub_condition(tree, primary->sub_condition());
+  }
 }
 
 /**
@@ -235,73 +317,6 @@ auto BehaviorBuilder::build_sub_selector(slType type, slSelector selector, std::
   }
 
   spdlog::error("Behavior Error: Unable To Create Selector For Behavior \"{}\"", _currentBehavior.get_name());
-  BuilderException::error();
-}
-
-/**
- * @brief Creates a subcondition from the context and adds it to the condition
- * 
- * @param condition : condition to add to
- * @param subcond : sub condition context
- */
-void BehaviorBuilder::add_sub_cond_to_condtion(Condition&                            condition,
-                                               BehaviorParser::Sub_conditionContext* subcond) {
-  if (subcond->condition_Time_Elapsed_From_Event()) {
-    add_time_elapsed_subcond(condition, subcond->condition_Time_Elapsed_From_Event());
-    return;
-  }
-
-  if (subcond->condition_Enter_Location()) {
-    add_enter_subcond(condition, subcond->condition_Enter_Location());
-    return;
-  }
-
-  if (subcond->condition_Event_Occurred()) {
-    add_event_occurred_subcond(condition, subcond->condition_Event_Occurred());
-    return;
-  }
-
-  if (subcond->condition_Event_Occurring()) {
-    add_event_occurring_subcond(condition, subcond->condition_Event_Occurring());
-    return;
-  }
-
-  if (subcond->condition_Event_Starting()) {
-    add_event_starting_subcond(condition, subcond->condition_Event_Starting());
-    return;
-  }
-
-  if (subcond->condition_Event_Ending()) {
-    add_event_ending_subcond(condition, subcond->condition_Event_Ending());
-    return;
-  }
-
-  if (subcond->condition_Spatial()) {
-    add_spatial_subcond(condition, subcond->condition_Spatial());
-    return;
-  }
-
-  if (subcond->condition_Exit_Location()) {
-    add_exit_subcond(condition, subcond->condition_Exit_Location());
-    return;
-  }
-
-  if (subcond->condition_Inside_Location()) {
-    add_in_location_subcond(condition, subcond->condition_Inside_Location());
-    return;
-  }
-
-  if (subcond->condition_Attribute()) {
-    add_attribute_subcond(condition, subcond->condition_Attribute());
-    return;
-  }
-
-  if (subcond->condition_Exists()) {
-    add_exists_subcond(condition, subcond->condition_Exists());
-    return;
-  }
-
-  spdlog::error("Behavior Error: No Valid SubCondition For: \"{}\"", subcond->getText());
   BuilderException::error();
 }
 
@@ -589,6 +604,20 @@ auto BehaviorBuilder::make_attribute_value(BehaviorParser::Attr_valueContext* ct
     return AttributeHandling::store_value(Type::LOCATION, location);
   }
 
+  if (ctx->towards()) {
+    if (ctx->towards()->LOC_NAME()) {
+      auto location = get_check_location(ctx->towards()->LOC_NAME()->toString());
+      return AttributeHandling::store_value(Type::TOWARDS_LOC, location);
+    }
+    if (ctx->towards()->attribute()) {
+      auto attrStr = make_attribute_str(ctx->towards()->attribute());
+      auto attr = get_attribute(attrStr);
+      if (attr != Attribute::INVALID) {
+        return AttributeHandling::store_value(Type::TOWARDS_ATTR, attr);
+      }
+    }
+  }
+
   error("Unable To Create Attribute Value");
 }
 
@@ -824,8 +853,7 @@ void BehaviorBuilder::add_set_atom(Action& action, BehaviorParser::Set_atomConte
   auto attrStr = make_attribute_str(ctx->attribute());
   auto attr = get_attribute(attrStr);
   auto attrValue = make_attribute_value(ctx->attr_value());
-  bool targetSelf = ctx->TARGET() == nullptr;
-  action.add_atom(AtomSet{attr, attrValue, targetSelf});
+  action.add_atom(AtomSet{attr, attrValue});
 }
 
 /**
@@ -838,8 +866,7 @@ void BehaviorBuilder::add_scale_atom(Action& action, BehaviorParser::Scale_atomC
   auto attrStr = make_attribute_str(ctx->attribute());
   auto attr = get_attribute(attrStr);
   auto attrValue = make_attribute_value(ctx->attr_value());
-  bool targetSelf = ctx->TARGET() == nullptr;
-  action.add_atom(AtomScale{attr, attrValue, targetSelf});
+  action.add_atom(AtomScale{attr, attrValue});
 }
 
 // ------------------------------- END ATOMS -----------------------------------------------------------------------------------------
@@ -852,11 +879,11 @@ void BehaviorBuilder::add_scale_atom(Action& action, BehaviorParser::Scale_atomC
  * @param condition 
  * @param ctx 
  */
-void BehaviorBuilder::add_enter_subcond(Condition&                                       condition,
-                                        BehaviorParser::Condition_Enter_LocationContext* ctx) {
+auto BehaviorBuilder::build_enter_subcond(BehaviorParser::Condition_Enter_LocationContext* ctx)
+    -> SubConditionEnter {
   auto location = get_check_location(ctx->LOC_NAME()->toString());
 
-  condition.add_sub_condition(SubConditionEnter{location});
+  return SubConditionEnter{location};
 }
 
 /**
@@ -865,28 +892,27 @@ void BehaviorBuilder::add_enter_subcond(Condition&                              
  * @param condition 
  * @param ctx 
  */
-void BehaviorBuilder::add_exit_subcond(Condition&                                      condition,
-                                       BehaviorParser::Condition_Exit_LocationContext* ctx) {
+auto BehaviorBuilder::build_exit_subcond(BehaviorParser::Condition_Exit_LocationContext* ctx)
+    -> SubConditionLeave {
   auto location = get_check_location(ctx->LOC_NAME()->toString());
 
-  condition.add_sub_condition(SubConditionLeave{location});
+  return SubConditionLeave{location};
 }
-
 /**
  * @brief Adds a time elapsed subcondition to a condition
  * 
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::add_time_elapsed_subcond(
-    Condition& condition, BehaviorParser::Condition_Time_Elapsed_From_EventContext* ctx) {
+auto BehaviorBuilder::build_time_elapsed_subcond(
+    BehaviorParser::Condition_Time_Elapsed_From_EventContext* ctx) -> SubConditionElapsedTimeFromEvent {
   BHVR::NumericValue dur = get_numeric(ctx->value_numeric(), _currSeed);
   std::string        evName = ctx->EVNT()->toString();
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Elapsed Time From "{}" Event)",
                 _currentBehavior.get_name(), evName);
   auto event = get_check_event(evName);
 
-  condition.add_sub_condition(SubConditionElapsedTimeFromEvent(dur, event));
+  return {dur, event};
 }
 
 /**
@@ -895,13 +921,13 @@ void BehaviorBuilder::add_time_elapsed_subcond(
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::add_event_occurred_subcond(Condition&                                       condition,
-                                                 BehaviorParser::Condition_Event_OccurredContext* ctx) {
+auto BehaviorBuilder::build_event_occurred_subcond(BehaviorParser::Condition_Event_OccurredContext* ctx)
+    -> SubConditionEventOccurred {
   std::string evName = ctx->EVNT()->toString();
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurred)", _currentBehavior.get_name(),
                 evName);
   auto event = get_check_event(evName);
-  condition.add_sub_condition(SubConditionEventOccurred(event));
+  return SubConditionEventOccurred(event);
 }
 
 /**
@@ -910,13 +936,13 @@ void BehaviorBuilder::add_event_occurred_subcond(Condition&                     
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::add_event_occurring_subcond(Condition&                                        condition,
-                                                  BehaviorParser::Condition_Event_OccurringContext* ctx) {
+auto BehaviorBuilder::build_event_occurring_subcond(BehaviorParser::Condition_Event_OccurringContext* ctx)
+    -> SubConditionEventOccurring {
   std::string evName = ctx->EVNT()->toString();
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurring)", _currentBehavior.get_name(),
                 evName);
   auto event = get_check_event(evName);
-  condition.add_sub_condition(SubConditionEventOccurring(event));
+  return SubConditionEventOccurring(event);
 }
 
 /**
@@ -925,14 +951,14 @@ void BehaviorBuilder::add_event_occurring_subcond(Condition&                    
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::add_event_starting_subcond(Condition&                                       condition,
-                                                 BehaviorParser::Condition_Event_StartingContext* ctx) {
+auto BehaviorBuilder::build_event_starting_subcond(BehaviorParser::Condition_Event_StartingContext* ctx)
+    -> SubConditionEventStarting {
   std::string evName = ctx->EVNT()->toString();
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurring)", _currentBehavior.get_name(),
                 evName);
   auto event = get_check_event(evName);
 
-  condition.add_sub_condition(SubConditionEventStarting(event));
+  return SubConditionEventStarting(event);
 }
 
 /**
@@ -941,13 +967,13 @@ void BehaviorBuilder::add_event_starting_subcond(Condition&                     
  * @param condition : condition to add to
  * @param ctx : subcondition context
  */
-void BehaviorBuilder::add_event_ending_subcond(Condition&                                     condition,
-                                               BehaviorParser::Condition_Event_EndingContext* ctx) {
+auto BehaviorBuilder::build_event_ending_subcond(BehaviorParser::Condition_Event_EndingContext* ctx)
+    -> SubConditionEventEnding {
   std::string evName = ctx->EVNT()->toString();
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Event "{}" Occurring)", _currentBehavior.get_name(),
                 evName);
   auto event = get_check_event(evName);
-  condition.add_sub_condition(SubConditionEventEnding(event));
+  return SubConditionEventEnding(event);
 }
 
 /**
@@ -956,20 +982,20 @@ void BehaviorBuilder::add_event_ending_subcond(Condition&                       
  * @param condition : condition to add to
  * @param ctx : spatial condition context
  */
-void BehaviorBuilder::add_spatial_subcond(Condition&                                condition,
-                                          BehaviorParser::Condition_SpatialContext* ctx) {
+auto BehaviorBuilder::build_spatial_subcond(BehaviorParser::Condition_SpatialContext* ctx)
+    -> SubConditionSpatial {
   auto distance = get_numeric(ctx->value_numeric(), _currSeed);
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Spatial)", _currentBehavior.get_name());
-  condition.add_sub_condition(SubConditionSpatial(distance));
+  return SubConditionSpatial(distance);
 }
 
-void BehaviorBuilder::add_in_location_subcond(Condition&                                        condition,
-                                              BehaviorParser::Condition_Inside_LocationContext* ctx) {
+auto BehaviorBuilder::build_in_location_subcond(BehaviorParser::Condition_Inside_LocationContext* ctx)
+    -> SubConditionInLocation {
   auto location = get_check_location(ctx->LOC_NAME()->toString());
 
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Inside Location "{}")", _currentBehavior.get_name(),
                 ctx->LOC_NAME()->toString());
-  condition.add_sub_condition(SubConditionInLocation{location});
+  return SubConditionInLocation{location};
 }
 
 /**
@@ -978,8 +1004,8 @@ void BehaviorBuilder::add_in_location_subcond(Condition&                        
  * @param condition 
  * @param ctx 
  */
-void BehaviorBuilder::add_attribute_subcond(Condition&                                  condition,
-                                            BehaviorParser::Condition_AttributeContext* ctx) {
+auto BehaviorBuilder::build_attribute_subcond(BehaviorParser::Condition_AttributeContext* ctx)
+    -> SubConditionAttribute {
   auto attrStr = make_attribute_str(ctx->attribute());
   auto attr = get_attribute(attrStr);
   auto attrValue = make_attribute_value(ctx->attr_value());
@@ -987,7 +1013,7 @@ void BehaviorBuilder::add_attribute_subcond(Condition&                          
 
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Attribute "{}")", _currentBehavior.get_name(),
                 attrStr);
-  condition.add_sub_condition(SubConditionAttribute{attr, attrValue, negative});
+  return SubConditionAttribute{attr, attrValue, negative};
 }
 
 /**
@@ -996,7 +1022,8 @@ void BehaviorBuilder::add_attribute_subcond(Condition&                          
  * @param condition 
  * @param ctx 
  */
-void BehaviorBuilder::add_exists_subcond(Condition& condition, BehaviorParser::Condition_ExistsContext* ctx) {
+auto BehaviorBuilder::build_exists_subcond(BehaviorParser::Condition_ExistsContext* ctx)
+    -> SubConditionExists {
   auto modifiers = ctx->modifier();
   auto targetModifier = make_target_modifier(modifiers);
 
@@ -1007,9 +1034,8 @@ void BehaviorBuilder::add_exists_subcond(Condition& condition, BehaviorParser::C
 
   spdlog::debug(R"(Behavior "{}": Adding SubCondition: Exists Attribute \"{}\")", _currentBehavior.get_name(),
                 attrStr);
-  condition.add_sub_condition(
-      SubConditionExists{targetModifier.has_value() ? targetModifier.value() : TargetModifier{},
-                         SubConditionAttribute{attr, attrValue, negative}});
+  return SubConditionExists{targetModifier.has_value() ? targetModifier.value() : TargetModifier{},
+                            SubConditionAttribute{attr, attrValue, negative}};
 }
 
 // ------------------------------- END SUBCONDITIONS -----------------------------------------------------------------------------------------

@@ -18,12 +18,20 @@ class SubConditionAttribute {
  public:
   explicit SubConditionAttribute(Attribute, CAttributeValue, bool);
 
-  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
+  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&) const;
+
+  [[nodiscard]] auto individual(Simpack, VIPRA::idx, Target) const -> bool;
 
  private:
   Attribute       _type;
   CAttributeValue _value;
   bool            _not;
+
+  static constexpr float TOWARDS_THRESHOLD = 0.5F;
+
+  [[nodiscard]] inline auto towards_compare(CAttributeValue&, Simpack, VIPRA::idx) const -> bool;
+  [[nodiscard]] inline auto towards_location_compare(CAttributeValue&, Simpack, VIPRA::idx) const -> bool;
+  [[nodiscard]] inline auto towards_attribute_compare(CAttributeValue&, Simpack, VIPRA::idx) const -> bool;
 };
 }  // namespace BHVR
 

@@ -35,20 +35,29 @@ class Action {
  public:
   void initialize(Simpack pack);
 
-  void perform_action(Simpack pack, VIPRA::idx);
+  void perform_action(Simpack pack, VIPRA::idxVec&, const std::vector<Target>&);
+  void perform_action(Simpack pack, const VIPRA::idxVec&, const std::vector<bool>&,
+                      const std::vector<Target>&);
 
   void add_condition(const Condition&);
   void add_atom(const Atom&);
   void add_duration(const BHVR::NumericValue&);
   void add_target(TargetSelector&&);
 
+  [[nodiscard]] auto has_condition() -> bool { return _condition.has_value(); }
+  [[nodiscard]] auto condition() -> std::optional<Condition>& { return _condition; }
+
+  [[nodiscard]] auto has_duration() -> bool { return _duration.has_value(); }
+  [[nodiscard]] auto duration() -> std::optional<TimedLatchCollection>& { return _duration; }
+
+  [[nodiscard]] auto has_target() -> bool { return _targets.has_value(); }
+  [[nodiscard]] auto targets() -> std::optional<TargetSelector>& { return _targets; }
+
  private:
   std::vector<Atom>                   _atoms;
   std::optional<Condition>            _condition;
   std::optional<TimedLatchCollection> _duration;
-  TargetSelector                      _targets{TargetSelf{}};
-
-  [[nodiscard]] inline auto evaluate(Simpack pack, VIPRA::idx, Target) -> bool;
+  std::optional<TargetSelector>       _targets;
 };
 
 }  // namespace BHVR

@@ -96,6 +96,32 @@ class Location {
     return (areaTri1 += areaTri2 += areaTri3 += areaTri4) <= _area;
   }
 
+  void set_center(VIPRA::f3d center) {
+    _center = center;
+    _p1.x = center.x + (_dims.x / 2);
+    _p1.y = center.y + (_dims.y / 2);
+    _p2.x = center.x - (_dims.x / 2);
+    _p2.y = center.y + (_dims.y / 2);
+    _p3.x = center.x - (_dims.x / 2);
+    _p3.y = center.y - (_dims.y / 2);
+    _p4.x = center.x + (_dims.x / 2);
+    _p4.y = center.y - (_dims.y / 2);
+  }
+
+  void set_dims(VIPRA::f3d dims) {
+    _dims = dims;
+    _p1.x = _center.x + (_dims.x / 2);
+    _p1.y = _center.y + (_dims.y / 2);
+    _p2.x = _center.x - (_dims.x / 2);
+    _p2.y = _center.y + (_dims.y / 2);
+    _p3.x = _center.x - (_dims.x / 2);
+    _p3.y = _center.y - (_dims.y / 2);
+    _p4.x = _center.x + (_dims.x / 2);
+    _p4.y = _center.y - (_dims.y / 2);
+    // NOLINTNEXTLINE incorrect error
+    _area = area() + AREA_ERROR;
+  }
+
  private:
   VIPRA::f3d _p1;
   VIPRA::f3d _p2;

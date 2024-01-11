@@ -1,6 +1,7 @@
 
 #include "behavior/human_behavior.hpp"
 
+#include <algorithm>
 #include <numeric>
 #include <randomization/random.hpp>
 #include <utility>
@@ -10,6 +11,7 @@
 #include "definitions/sim_pack.hpp"
 #include "definitions/state.hpp"
 #include "selectors/selector.hpp"
+#include "targets/target.hpp"
 
 namespace BHVR {
 
@@ -62,6 +64,12 @@ void HumanBehavior::initialize(const VIPRA::PedestrianSet& pedSet, const VIPRA::
   _context.engine = VIPRA::pRNG_Engine{_seedNum};
   _context.pedStates = std::vector<BHVR::stateUID>(pedSet.getNumPedestrians());
   _context.types = std::vector<BHVR::typeUID>(pedSet.getNumPedestrians());
+
+  _conditionMet.resize(pedSet.getNumPedestrians(), false);
+  _targets.resize(pedSet.getNumPedestrians());
+  for (VIPRA::idx i = 0; i < pedSet.getNumPedestrians(); ++i) {
+    _targets[i] = Target{TargetType::PEDESTRIAN, i};
+  }
 
   Simpack pack{pedSet, obsSet, goals, dummyState, _context, _selector.get_groups(), 0};
   spdlog::debug("Initializing {} Selectors, Seed: {}", _selector.selector_count(), _seedNum);
@@ -179,6 +187,7 @@ void HumanBehavior::apply_actions(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleS
                                   VIPRA::Goals& goals, VIPRA::State& state, VIPRA::delta_t deltaT) {
   GroupsContainer&  groups = _selector.get_groups();
   const VIPRA::size groupCnt = groups.size();
+  Simpack           pack{pedSet, obsSet, goals, state, _context, _selector.get_groups(), deltaT};
 
   for (VIPRA::idx i = 0; i < groupCnt; ++i) {
     auto& pedestrians = groups[i];
@@ -186,9 +195,17 @@ void HumanBehavior::apply_actions(VIPRA::PedestrianSet& pedSet, VIPRA::ObstacleS
                                      [&](VIPRA::idx ped) { return goals.isPedestianGoalMet(ped); }),
                       pedestrians.end());
 
-    std::for_each(pedestrians.begin(), pedestrians.end(), [&](VIPRA::idx ped) {
-      for (auto& action : _actions[i]) {
-        action.perform_action({pedSet, obsSet, goals, state, _context, _selector.get_groups(), deltaT}, ped);
+    std::for_each(_actions[i].begin(), _actions[i].end(), [&](auto& action) {
+      if (action.has_target()) {
+        action.targets()->get_targets(pack, pedestrians, _targets);
+        // TODO: this needs to go back to self, if there is an action that changes it
+      }
+
+      if (action.has_condition()) {
+        action.condition()->evaluate(pack, pedestrians, _conditionMet, _targets, action.duration());
+        action.perform_action(pack, pedestrians, _conditionMet, _targets);
+      } else {
+        action.perform_action(pack, pedestrians, _targets);
       }
     });
   }

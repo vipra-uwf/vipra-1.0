@@ -13,7 +13,10 @@ class SubConditionStart {
   MOVEABLE(SubConditionStart)
 
  public:
-  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
+  void operator()(Simpack /*unused*/, const VIPRA::idxVec& /*unused*/, std::vector<bool>& conditionMet,
+                  const std::vector<Target>& /*unused*/) const {
+    std::fill(conditionMet.begin(), conditionMet.end(), true);
+  }
 };
 }  // namespace BHVR
 

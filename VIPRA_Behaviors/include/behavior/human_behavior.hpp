@@ -55,6 +55,8 @@ class HumanBehavior {
   std::vector<Event>               _events;
   std::vector<Location*>           _locations;
   std::vector<std::vector<Action>> _actions;
+  std::vector<bool>                _conditionMet;
+  std::vector<Target>              _targets;
 
   void evaluate_events(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::delta_t);
   void apply_actions(VIPRA::PedestrianSet&, VIPRA::ObstacleSet&, VIPRA::Goals&, VIPRA::State&,

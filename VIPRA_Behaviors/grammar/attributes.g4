@@ -17,9 +17,14 @@ attr_value:
   value_numeric |
   value_coord   |
   STATE_VAL |
-  LOC_NAME
+  LOC_NAME |
+  towards
   ;
 
 end_goal:
   END GOAL
   ;
+
+towards:
+  TOWARDS (LOC_NAME | attribute)
+;

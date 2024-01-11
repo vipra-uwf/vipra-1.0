@@ -6,6 +6,17 @@
 
 #include <spdlog/spdlog.h>
 
+#include "conditions/subconditions/subcondition_attribute.hpp"
+#include "conditions/subconditions/subcondition_elapsed_time.hpp"
+#include "conditions/subconditions/subcondition_enter.hpp"
+#include "conditions/subconditions/subcondition_event.hpp"
+#include "conditions/subconditions/subcondition_event_ending.hpp"
+#include "conditions/subconditions/subcondition_event_occurring.hpp"
+#include "conditions/subconditions/subcondition_event_starting.hpp"
+#include "conditions/subconditions/subcondition_exists.hpp"
+#include "conditions/subconditions/subcondition_in_location.hpp"
+#include "conditions/subconditions/subcondition_leave.hpp"
+#include "conditions/subconditions/subcondition_spatial.hpp"
 #include "generated/BehaviorBaseVisitor.h"
 #include "generated/BehaviorParser.h"
 
@@ -68,11 +79,15 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   void add_atom_to_action(Action&, BehaviorParser::Action_atomContext*);
   void add_target_to_action(Action&, BehaviorParser::TargetContext*);
-  void add_sub_cond_to_condtion(Condition&, BehaviorParser::Sub_conditionContext*);
 
   [[nodiscard]] auto add_event(BehaviorParser::Event_nameContext*) -> VIPRA::idx;
 
   [[nodiscard]] auto build_condition(BehaviorParser::ConditionContext*) -> Condition;
+  void               condition_tree_condition(BehaviorParser::ConditionContext*, Condition&);
+  void               condition_tree_unary(BehaviorParser::UnaryContext*, Condition&);
+  void               condition_tree_primary(BehaviorParser::PrimaryContext*, Condition&);
+  void               add_sub_condition(Condition&, BehaviorParser::Sub_conditionContext*);
+
   [[nodiscard]] auto build_sub_selector(slType, slSelector, std::optional<slGroup>, bool) -> SubSelector;
 
   [[nodiscard]] auto get_location(const std::string&) const -> std::optional<VIPRA::idx>;
@@ -140,17 +155,25 @@ class BehaviorBuilder : public BehaviorBaseVisitor {
 
   // --------------------------------- SUBCONDITIONS ------------------------------------------------------------------------------------------------
 
-  void add_enter_subcond(Condition&, BehaviorParser::Condition_Enter_LocationContext*);
-  void add_exit_subcond(Condition&, BehaviorParser::Condition_Exit_LocationContext*);
-  void add_time_elapsed_subcond(Condition&, BehaviorParser::Condition_Time_Elapsed_From_EventContext*);
-  void add_event_occurred_subcond(Condition&, BehaviorParser::Condition_Event_OccurredContext*);
-  void add_event_occurring_subcond(Condition&, BehaviorParser::Condition_Event_OccurringContext*);
-  void add_event_starting_subcond(Condition&, BehaviorParser::Condition_Event_StartingContext*);
-  void add_event_ending_subcond(Condition&, BehaviorParser::Condition_Event_EndingContext*);
-  void add_spatial_subcond(Condition&, BehaviorParser::Condition_SpatialContext*);
-  void add_in_location_subcond(Condition&, BehaviorParser::Condition_Inside_LocationContext*);
-  void add_attribute_subcond(Condition&, BehaviorParser::Condition_AttributeContext*);
-  void add_exists_subcond(Condition&, BehaviorParser::Condition_ExistsContext*);
+  [[nodiscard]] auto build_enter_subcond(BehaviorParser::Condition_Enter_LocationContext*)
+      -> SubConditionEnter;
+  [[nodiscard]] auto build_exit_subcond(BehaviorParser::Condition_Exit_LocationContext*) -> SubConditionLeave;
+  [[nodiscard]] auto build_time_elapsed_subcond(BehaviorParser::Condition_Time_Elapsed_From_EventContext*)
+      -> SubConditionElapsedTimeFromEvent;
+  [[nodiscard]] auto build_event_occurred_subcond(BehaviorParser::Condition_Event_OccurredContext*)
+      -> SubConditionEventOccurred;
+  [[nodiscard]] auto build_event_occurring_subcond(BehaviorParser::Condition_Event_OccurringContext*)
+      -> SubConditionEventOccurring;
+  [[nodiscard]] auto build_event_starting_subcond(BehaviorParser::Condition_Event_StartingContext*)
+      -> SubConditionEventStarting;
+  [[nodiscard]] auto build_event_ending_subcond(BehaviorParser::Condition_Event_EndingContext*)
+      -> SubConditionEventEnding;
+  [[nodiscard]] auto build_spatial_subcond(BehaviorParser::Condition_SpatialContext*) -> SubConditionSpatial;
+  [[nodiscard]] auto build_in_location_subcond(BehaviorParser::Condition_Inside_LocationContext*)
+      -> SubConditionInLocation;
+  [[nodiscard]] auto build_attribute_subcond(BehaviorParser::Condition_AttributeContext*)
+      -> SubConditionAttribute;
+  [[nodiscard]] auto build_exists_subcond(BehaviorParser::Condition_ExistsContext*) -> SubConditionExists;
 
   // --------------------------------- SUBSELECTORS ------------------------------------------------------------------------------------------------
 

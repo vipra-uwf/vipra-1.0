@@ -3,18 +3,20 @@ grammar condition;
 import lexer_rules, values, time, attributes, targets;
 
 condition:
-  sub_condition connector*;
-
-connector:
-  or_Connector |
-  and_Connector
+  unary |
+  unary AND condition |
+  unary OR condition
   ;
 
-or_Connector:
-  OR sub_condition;
+unary:
+  NOT unary |
+  primary
+  ;
 
-and_Connector:
-  AND sub_condition;
+primary:
+  '(' condition ')' |
+  sub_condition
+  ;
 
 sub_condition:
   condition_Time_Elapsed_From_Event |

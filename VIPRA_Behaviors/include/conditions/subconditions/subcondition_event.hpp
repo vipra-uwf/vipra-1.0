@@ -12,9 +12,9 @@ class SubConditionEventOccurred {
   COPYABLE(SubConditionEventOccurred)
   MOVEABLE(SubConditionEventOccurred)
  public:
-  explicit SubConditionEventOccurred(VIPRA::idx);
+  explicit SubConditionEventOccurred(VIPRA::idx event) : _event(event) {}
 
-  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
+  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&) const;
 
  private:
   VIPRA::idx _event;

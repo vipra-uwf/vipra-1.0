@@ -13,9 +13,9 @@ class SubConditionLeave {
   MOVEABLE(SubConditionLeave)
 
  public:
-  explicit SubConditionLeave(VIPRA::idx);
+  explicit SubConditionLeave(VIPRA::idx location) : _location{location} {}
 
-  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) -> bool;
+  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&);
 
  private:
   VIPRA::idx _location;

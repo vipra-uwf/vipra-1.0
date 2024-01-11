@@ -115,15 +115,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitConnector(BehaviorParser::ConnectorContext *ctx) override {
+  virtual std::any visitUnary(BehaviorParser::UnaryContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitOr_Connector(BehaviorParser::Or_ConnectorContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitAnd_Connector(BehaviorParser::And_ConnectorContext *ctx) override {
+  virtual std::any visitPrimary(BehaviorParser::PrimaryContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -188,6 +184,10 @@ public:
   }
 
   virtual std::any visitEnd_goal(BehaviorParser::End_goalContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitTowards(BehaviorParser::TowardsContext *ctx) override {
     return visitChildren(ctx);
   }
 

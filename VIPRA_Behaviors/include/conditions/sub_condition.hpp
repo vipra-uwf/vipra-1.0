@@ -9,7 +9,8 @@
 #include "targets/target.hpp"
 
 namespace BHVR {
-using SubCondition = std::function<bool(Simpack, VIPRA::idx, Target)>;
+using SubCondition =
+    std::function<void(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&)>;
 }  // namespace BHVR
 
 #endif

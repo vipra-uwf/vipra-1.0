@@ -18,9 +18,9 @@ class SubConditionEnter {
   MOVEABLE(SubConditionEnter)
 
  public:
-  explicit SubConditionEnter(VIPRA::idx);
+  explicit SubConditionEnter(VIPRA::idx location) : _location{location} {}
 
-  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) -> bool;
+  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&);
 
  private:
   VIPRA::idx _location;

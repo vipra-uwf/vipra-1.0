@@ -13,7 +13,7 @@ profiling:
 build: build_gen_main run_gen_main build_sim
 
 manual_bhvrs:
-	make build DEBUG=-DDEBUG_MODE=OFF PROF=-DPROF_MODE=OFF DIR=build_bhvr_perf_testing BHVR_PERF_TESTING=-DMAN_BHVRS=ON
+	make build DEBUG=-DDEBUG_MODE=OFF PROF=-DPROF_MODE=ON DIR=build_bhvr_perf_testing BHVR_PERF_TESTING=-DMAN_BHVRS=ON
 
 # start_server:
 # 	node ../VIPRA_Launcher/server/dist/index.js -noserver -nobuild

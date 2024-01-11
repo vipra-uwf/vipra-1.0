@@ -2,8 +2,16 @@
 #include <algorithm>
 
 #include "conditions/condition.hpp"
+#include "util/timed_latch.hpp"
 
 namespace BHVR {
+
+void Condition::initialize(const Simpack& pack) {
+  if (_conditions.size() > 1) {
+    _temp.resize(pack.get_pedset().getNumPedestrians());
+    std::fill(_temp.begin(), _temp.end(), false);
+  }
+}
 
 /**
  * @brief Tests whether a condition is met, by running through each sub condition sequentially
@@ -17,40 +25,6 @@ namespace BHVR {
  * @return true 
  * @return false
  */
-auto Condition::evaluate(Simpack pack, VIPRA::idx pedIndex, Target target) const -> bool {
-  const VIPRA::size condCnt = _conditions.size();
-  if (condCnt == 0) {
-    return false;
-  }
-
-  bool result = _conditions[0](pack, pedIndex, target);
-
-  if (condCnt == 1) {
-    return result;
-  }
-
-  for (VIPRA::idx i = 1; i < condCnt; ++i) {
-    if (_operations[i - 1]) {
-      result = result && _conditions[i](pack, pedIndex, target);
-    } else {
-      result = result || _conditions[i](pack, pedIndex, target);
-    }
-  }
-
-  return result;
-}
-
-/**
- * @brief Adds a new subcondition to the condition
- * 
- * @param condition : 
- */
-void Condition::add_sub_condition(SubCondition&& condition) { _conditions.emplace_back(condition); }
-
-/**
- * @brief Adds a logical and/or operator to the condition
- * 
- * @param andor : 
- */
-void Condition::add_and_or(bool andor) { _operations.push_back(andor); }
+void Condition::evaluate(Simpack pack, const VIPRA::idxVec& peds, std::vector<bool>& met,
+                         const std::vector<Target>& targets, std::optional<TimedLatchCollection>& latches) {}
 }  // namespace BHVR

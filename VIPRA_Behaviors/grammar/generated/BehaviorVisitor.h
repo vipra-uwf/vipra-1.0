@@ -69,11 +69,9 @@ public:
 
     virtual std::any visitCondition(BehaviorParser::ConditionContext *context) = 0;
 
-    virtual std::any visitConnector(BehaviorParser::ConnectorContext *context) = 0;
+    virtual std::any visitUnary(BehaviorParser::UnaryContext *context) = 0;
 
-    virtual std::any visitOr_Connector(BehaviorParser::Or_ConnectorContext *context) = 0;
-
-    virtual std::any visitAnd_Connector(BehaviorParser::And_ConnectorContext *context) = 0;
+    virtual std::any visitPrimary(BehaviorParser::PrimaryContext *context) = 0;
 
     virtual std::any visitSub_condition(BehaviorParser::Sub_conditionContext *context) = 0;
 
@@ -106,6 +104,8 @@ public:
     virtual std::any visitAttr_value(BehaviorParser::Attr_valueContext *context) = 0;
 
     virtual std::any visitEnd_goal(BehaviorParser::End_goalContext *context) = 0;
+
+    virtual std::any visitTowards(BehaviorParser::TowardsContext *context) = 0;
 
     virtual std::any visitTarget(BehaviorParser::TargetContext *context) = 0;
 

@@ -227,7 +227,7 @@ def plotDif(pointsX, pointsY, compX, compY, pedColors, ax, args):
     
   return ax.scatter(difX, difY, 2, color=colors)
 
-def plotExtras(ax, timestep, output):
+def plotExtras(ax, timestep, output, pedcolors):
   return
 
 def updateColors(output):

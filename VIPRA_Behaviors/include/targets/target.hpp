@@ -15,6 +15,7 @@ namespace BHVR {
 enum class TargetType {
   INVALID,
   PEDESTRIAN,
+  LOCATION,
   EVENT,
 };
 

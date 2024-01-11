@@ -22,22 +22,13 @@ namespace BHVR {
 enum class Attribute {
   INVALID = 0,
   POSITION,
+  DIMENSIONS,
   VELOCITY,
   END_GOAL,
   CURR_GOAL,
   STATE,
   LOCATION,
   STATUS,
-};
-
-/**
- * @brief Property Type
- * 
- */
-enum class Property {
-  TYPE,
-  POSITION,
-  DIMENSIONS,
 };
 
 /**
@@ -51,6 +42,8 @@ enum class Type {
   STATE,
   STATUS,
   LOCATION,
+  TOWARDS_LOC,
+  TOWARDS_ATTR,
 };
 
 /**
@@ -74,7 +67,7 @@ struct CAttributeValue {
    * @return const value_t& 
    */
   template <typename value_t>
-  [[nodiscard]] inline auto as() -> const value_t& {
+  [[nodiscard]] inline auto as() const -> const value_t& {
     return *static_cast<const value_t*>(value);
   }
 
@@ -150,6 +143,8 @@ class AttributeHandling {
         return get_ped_value(target, attr, pack);
       case TargetType::EVENT:
         return get_event_value(target, attr, pack);
+      case TargetType::LOCATION:
+        return get_location_value(target, attr, pack);
       case TargetType::INVALID:
         return {Type::INVALID, nullptr};
     }
@@ -175,6 +170,9 @@ class AttributeHandling {
       case TargetType::EVENT:
         set_event_value(target, attr, pack, value);
         return;
+      case TargetType::LOCATION:
+        set_location_value(target, attr, pack, value);
+        return;
       case TargetType::INVALID:
         return;
     }
@@ -197,6 +195,9 @@ class AttributeHandling {
         return;
       case TargetType::EVENT:
         DSLException::error("Cannot Scale Event Value");
+        return;
+      case TargetType::LOCATION:
+        DSLException::error("Cannot Scale Location Value");
         return;
       case TargetType::INVALID:
         return;
@@ -257,6 +258,7 @@ class AttributeHandling {
 
     switch (value1.type) {
       case Type::INVALID:
+        throw std::runtime_error("Invalid Type");
         return false;
       case Type::NUMBER:
         return value1.as<float>() == value2.as<float>();
@@ -268,6 +270,8 @@ class AttributeHandling {
         return value1.as<EventStatus>() == value2.as<EventStatus>();
       case Type::LOCATION:
         return value1.as<VIPRA::idx>() == value2.as<VIPRA::idx>();
+        break;
+      default:
         break;
     }
 
@@ -306,6 +310,7 @@ class AttributeHandling {
       // NOLINTBEGIN(cppcoreguidelines-owning-memory)
       switch (data.type) {
         case Type::INVALID:
+          throw std::runtime_error("Invalid Type");
           break;
         case Type::NUMBER:
           delete data.as_ptr<float>();
@@ -320,7 +325,12 @@ class AttributeHandling {
           delete data.as_ptr<EventStatus>();
           break;
         case Type::LOCATION:
+          [[fallthrough]];
+        case Type::TOWARDS_LOC:
           delete data.as_ptr<VIPRA::idx>();
+          break;
+        case Type::TOWARDS_ATTR:
+          delete data.as_ptr<Attribute>();
           break;
       }
       // NOLINTEND(cppcoreguidelines-owning-memory)
@@ -345,7 +355,7 @@ class AttributeHandling {
       case Attribute::POSITION:
         return {Type::COORD, &pack.get_pedset().getPedCoords(target.targetIdx)};
       case Attribute::VELOCITY:
-        return {Type::COORD, &pack.get_pedset().getPedVelocity(target.targetIdx)};
+        return {Type::COORD, &pack.get_state().velocities[target.targetIdx]};
       case Attribute::END_GOAL:
         return {Type::COORD, &pack.get_goals().getEndGoal(target.targetIdx)};
       case Attribute::CURR_GOAL:
@@ -375,6 +385,26 @@ class AttributeHandling {
         return {Type::STATUS, &pack.get_context().events[target.targetIdx].get_status()};
       default:
         DSLException::error("Invalid Event Attribute");
+    }
+  }
+
+  /**
+   * @brief Gets a locations attribute value
+   * 
+   * @param target : location to get attribute of
+   * @param attr : attribute type
+   * @param pack : simulation pack
+   * @return CAttributeValue 
+   */
+  [[nodiscard]] inline static auto get_location_value(Target target, Attribute attr, Simpack pack)
+      -> CAttributeValue {
+    switch (attr) {
+      case Attribute::POSITION:
+        return {Type::COORD, &pack.get_context().locations[target.targetIdx].center()};
+      case Attribute::DIMENSIONS:
+        return {Type::COORD, &pack.get_context().locations[target.targetIdx].dims()};
+      default:
+        DSLException::error("Invalid Location Attribute");
     }
   }
 
@@ -411,6 +441,25 @@ class AttributeHandling {
   }
 
   /**
+   * @brief Sets a locations attribute
+   * 
+   * @param target : location to set the attribute of
+   * @param attr : attribute type
+   * @param pack : simulation pack
+   * @param value : value to set attribute to
+   */
+  inline static void set_location_value(Target target, Attribute attr, Simpack pack, CAttributeValue value) {
+    switch (attr) {
+      case Attribute::POSITION:
+        set_location_position(target, pack, value);
+      case Attribute::DIMENSIONS:
+        set_location_dims(target, pack, value);
+      default:
+        DSLException::error("Invalid Location Attribute");
+    }
+  }
+
+  /**
    * @brief Scales a pedestrians attribute by a given value
    * 
    * @param target : pedestrian to scale the attribute of
@@ -439,6 +488,9 @@ class AttributeHandling {
       case Attribute::LOCATION:
       case Attribute::STATUS:
         DSLException::error("Invalid Pedestrian Attribute");
+        break;
+      case Attribute::DIMENSIONS:
+        DSLException::error("Pedestrians Do Not Have Dimensions");
         break;
     }
   }
@@ -528,6 +580,30 @@ class AttributeHandling {
 
     VIPRA::f3d originalPos = pack.get_pedset().getPedCoords(target.targetIdx);
     state.coords[target.targetIdx] = originalPos + (state.velocities[target.targetIdx] * pack.dT);
+  }
+
+  /**
+     * @brief Set the location position object
+     * 
+     * @param target 
+     * @param pack 
+     * @param value 
+     */
+  static inline void set_location_position(Target target, Simpack pack, CAttributeValue value) {
+    value.type_check(Type::COORD);
+    pack.get_context().locations[target.targetIdx].set_center(value.as<VIPRA::f3d>());
+  }
+
+  /**
+     * @brief Set the location dims object
+     * 
+     * @param target 
+     * @param pack 
+     * @param value 
+     */
+  static inline void set_location_dims(Target target, Simpack pack, CAttributeValue value) {
+    value.type_check(Type::COORD);
+    pack.get_context().locations[target.targetIdx].set_dims(value.as<VIPRA::f3d>());
   }
 
   // ------------------------------------------- END SETTERS ------------------------------------------------------------------------

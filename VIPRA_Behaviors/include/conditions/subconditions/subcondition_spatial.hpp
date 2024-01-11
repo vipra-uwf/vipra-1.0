@@ -1,6 +1,8 @@
 #ifndef VIPRA_SUBCONDITION_SPATIAL_HPP
 #define VIPRA_SUBCONDITION_SPATIAL_HPP
 
+#include <utility>
+
 #include "conditions/sub_condition.hpp"
 #include "util/class_types.hpp"
 #include "values/numeric_value.hpp"
@@ -11,9 +13,9 @@ class SubConditionSpatial {
   COPYABLE(SubConditionSpatial)
   MOVEABLE(SubConditionSpatial)
  public:
-  explicit SubConditionSpatial(NumericValue);
+  explicit SubConditionSpatial(NumericValue value) : _within(std::move(value)) {}
 
-  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
+  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&) const;
 
  private:
   NumericValue _within;

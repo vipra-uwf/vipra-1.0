@@ -35,7 +35,7 @@ def animate(i):
   helpers.plotShoulders(pointsX, pointsY, pedColors, ax, args)
   points = helpers.plotPeds(pointsX, pointsY, pedColors, ax, args) if not args['dif'] else helpers.plotDif(pointsX, pointsY, compX, compY, pedColors, ax, args)
   helpers.plotIndexes(pointsX, pointsY, pedColors, ax, args)
-  helpers.plotExtras(ax, i, peds)
+  helpers.plotExtras(ax, i, peds, pedColors)
   
   temp = helpers.updateColors(peds)
   if temp:

@@ -20,13 +20,17 @@ class SubConditionExists {
   MOVEABLE(SubConditionExists)
 
  public:
-  explicit SubConditionExists(TargetModifier, SubConditionAttribute);
+  explicit SubConditionExists(TargetModifier modifier, SubConditionAttribute condition)
+      : _modifier(std::move(modifier)), _attributeCond(condition) {}
 
-  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) const -> bool;
+  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&) const;
 
  private:
+  // TODO: add in group type, currently just checks pedestrians
   TargetModifier        _modifier;
   SubConditionAttribute _attributeCond;
+
+  size_t _count = 0;
 };
 }  // namespace BHVR
 

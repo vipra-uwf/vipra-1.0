@@ -360,6 +360,16 @@ struct f3d {
   }
 };
 
+template <typename T>
+inline constexpr f3d operator*(T&& multiplier, const f3d& other) noexcept {
+  return f3d{other.x * multiplier, other.y * multiplier, other.z * multiplier};
+}
+
+template <typename T>
+inline constexpr f2d operator*(T&& multiplier, const f2d& other) noexcept {
+  return f2d{other.x * multiplier, other.y * multiplier};
+}
+
 using f2dVec = std::vector<f2d>;
 using f3dVec = std::vector<f3d>;
 

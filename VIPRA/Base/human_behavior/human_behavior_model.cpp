@@ -51,6 +51,9 @@ void HumanBehaviorModel::timestep(VIPRA::PedestrianSet& pedSet,
   }
 }
 
+const std::filesystem::path BEHAVIORS_DIR =
+    std::filesystem::path(__FILE__).parent_path() / "../../../Behaviors";
+
 /**
  * @brief Builds each behavior from the vector of file paths
  * 
@@ -64,8 +67,7 @@ void HumanBehaviorModel::loadBehaviors(const VIPRA::Config& behaviors) {
     BehaviorModelException::error("Configuration File Behaviors not in proper format");
 
   for (const auto& value : behaviors.items()) {
-    const auto filePath = std::filesystem::current_path() / "../Behaviors" /
-                          (value.value().get<std::string>() + ".bhvr");
+    const auto filePath = BEHAVIORS_DIR / (value.value().get<std::string>() + ".bhvr");
     humanBehaviors.push_back(builder.build(value.value(), filePath, seed));
   }
 

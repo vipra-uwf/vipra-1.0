@@ -116,6 +116,14 @@ class Output {
   }
 
   static inline void pedTimestepValue(VIPRA::idx pedIdx, const char* key,
+                                      VIPRA::f3d& value) {
+    if (timestep % outputFreq == 0) {
+      jsonData["timesteps"][timestep / outputFreq]["pedestrians"][pedIdx][key] = {
+          value.x, value.y, value.z};
+    }
+  }
+
+  static inline void pedTimestepValue(VIPRA::idx pedIdx, const char* key,
                                       const VIPRA::f3d& value) {
     if (timestep % outputFreq == 0) {
       jsonData["timesteps"][timestep / outputFreq]["pedestrians"][pedIdx][key] = {

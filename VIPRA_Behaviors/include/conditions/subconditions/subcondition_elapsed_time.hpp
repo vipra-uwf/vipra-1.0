@@ -17,9 +17,10 @@ class SubConditionElapsedTimeFromEvent {
   COPYABLE(SubConditionElapsedTimeFromEvent)
   MOVEABLE(SubConditionElapsedTimeFromEvent)
  public:
-  SubConditionElapsedTimeFromEvent(BHVR::NumericValue, VIPRA::idx);
+  SubConditionElapsedTimeFromEvent(BHVR::NumericValue time, VIPRA::idx event)
+      : _event(event), _requiredTime(std::move(time)) {}
 
-  [[nodiscard]] auto operator()(Simpack, VIPRA::idx, Target) -> bool;
+  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&);
 
  private:
   VIPRA::idx         _event{};

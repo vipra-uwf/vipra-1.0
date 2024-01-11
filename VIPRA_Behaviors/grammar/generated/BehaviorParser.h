@@ -31,10 +31,11 @@ public:
     SELF = 93, SELECT = 94, SELECTOR = 95, SET = 96, SECOND = 97, SECONDS = 98, 
     STATUS = 99, STARTING = 100, SLOWER = 101, SHAPE = 102, STATES = 103, 
     START = 104, STATE = 105, STARTS = 106, SPEED = 107, SUBTRACT = 108, 
-    STIMULUS = 109, TARGET = 110, TO = 111, TOP = 112, THE = 113, THAT = 114, 
-    THEN = 115, THEIR = 116, THERES = 117, TYPES = 118, TYPE = 119, UNCONDITIONALLY = 120, 
-    VALUE = 121, VELOCITY = 122, WHEN = 123, WHILE = 124, WHOSE = 125, WIDTH = 126, 
-    WILL = 127, WITH = 128, WITHIN = 129, ID = 130, NUMBER = 131, FLOAT = 132
+    STIMULUS = 109, TARGET = 110, TO = 111, TOWARDS = 112, TOP = 113, THE = 114, 
+    THAT = 115, THEN = 116, THEIR = 117, THERES = 118, TYPES = 119, TYPE = 120, 
+    UNCONDITIONALLY = 121, VALUE = 122, VELOCITY = 123, WHEN = 124, WHILE = 125, 
+    WHOSE = 126, WIDTH = 127, WILL = 128, WITH = 129, WITHIN = 130, ID = 131, 
+    NUMBER = 132, FLOAT = 133
   };
 
   enum {
@@ -44,24 +45,24 @@ public:
     RuleValue_float = 11, RuleValue_range = 12, RuleValue_random = 13, RuleRandom_number = 14, 
     RuleRandom_float = 15, RuleFloat_range = 16, RuleNumber_range = 17, 
     RuleValue_coord = 18, RuleEvent = 19, RuleEvent_attribute = 20, RuleEvent_name = 21, 
-    RuleEvent_start = 22, RuleEvent_end = 23, RuleCondition = 24, RuleConnector = 25, 
-    RuleOr_Connector = 26, RuleAnd_Connector = 27, RuleSub_condition = 28, 
-    RuleCondition_Time_Elapsed_From_Event = 29, RuleCondition_Event_Occurred = 30, 
-    RuleCondition_Event_Occurring = 31, RuleCondition_Event_Starting = 32, 
-    RuleCondition_Event_Ending = 33, RuleCondition_Spatial = 34, RuleCondition_Enter_Location = 35, 
-    RuleCondition_Exit_Location = 36, RuleCondition_Inside_Location = 37, 
-    RuleCondition_Attribute = 38, RuleCondition_Exists = 39, RuleDuration = 40, 
-    RuleAttribute = 41, RuleAttr_value = 42, RuleEnd_goal = 43, RuleTarget = 44, 
-    RuleSelf = 45, RuleOther = 46, RuleNearest_type = 47, RuleModifier = 48, 
-    RuleLocation_modifier = 49, RuleId_list = 50, RuleDistance = 51, RuleDirection = 52, 
-    RuleFront = 53, RuleBehind = 54, RulePed_Selector = 55, RuleSelector_attribute = 56, 
-    RuleSelector_type = 57, RuleSelector_selector = 58, RuleSelector_from = 59, 
-    RuleSelector_required = 60, RuleSelector = 61, RuleSelector_Percent = 62, 
-    RuleSelector_Exactly_N_Random = 63, RuleSelector_Everyone = 64, RuleSelector_Location = 65, 
-    RuleGroup = 66, RuleAction = 67, RuleAction_attribute = 68, RuleAction_stimulus = 69, 
-    RuleAction_response = 70, RuleAction_duration = 71, RuleAction_target = 72, 
-    RuleSub_action = 73, RuleAction_atom = 74, RuleSet_atom = 75, RuleScale_atom = 76, 
-    RuleDeclaration = 77, RuleDecl_Ped_State = 78, RuleDecl_Ped = 79
+    RuleEvent_start = 22, RuleEvent_end = 23, RuleCondition = 24, RuleUnary = 25, 
+    RulePrimary = 26, RuleSub_condition = 27, RuleCondition_Time_Elapsed_From_Event = 28, 
+    RuleCondition_Event_Occurred = 29, RuleCondition_Event_Occurring = 30, 
+    RuleCondition_Event_Starting = 31, RuleCondition_Event_Ending = 32, 
+    RuleCondition_Spatial = 33, RuleCondition_Enter_Location = 34, RuleCondition_Exit_Location = 35, 
+    RuleCondition_Inside_Location = 36, RuleCondition_Attribute = 37, RuleCondition_Exists = 38, 
+    RuleDuration = 39, RuleAttribute = 40, RuleAttr_value = 41, RuleEnd_goal = 42, 
+    RuleTowards = 43, RuleTarget = 44, RuleSelf = 45, RuleOther = 46, RuleNearest_type = 47, 
+    RuleModifier = 48, RuleLocation_modifier = 49, RuleId_list = 50, RuleDistance = 51, 
+    RuleDirection = 52, RuleFront = 53, RuleBehind = 54, RulePed_Selector = 55, 
+    RuleSelector_attribute = 56, RuleSelector_type = 57, RuleSelector_selector = 58, 
+    RuleSelector_from = 59, RuleSelector_required = 60, RuleSelector = 61, 
+    RuleSelector_Percent = 62, RuleSelector_Exactly_N_Random = 63, RuleSelector_Everyone = 64, 
+    RuleSelector_Location = 65, RuleGroup = 66, RuleAction = 67, RuleAction_attribute = 68, 
+    RuleAction_stimulus = 69, RuleAction_response = 70, RuleAction_duration = 71, 
+    RuleAction_target = 72, RuleSub_action = 73, RuleAction_atom = 74, RuleSet_atom = 75, 
+    RuleScale_atom = 76, RuleDeclaration = 77, RuleDecl_Ped_State = 78, 
+    RuleDecl_Ped = 79
   };
 
   explicit BehaviorParser(antlr4::TokenStream *input);
@@ -106,9 +107,8 @@ public:
   class Event_startContext;
   class Event_endContext;
   class ConditionContext;
-  class ConnectorContext;
-  class Or_ConnectorContext;
-  class And_ConnectorContext;
+  class UnaryContext;
+  class PrimaryContext;
   class Sub_conditionContext;
   class Condition_Time_Elapsed_From_EventContext;
   class Condition_Event_OccurredContext;
@@ -125,6 +125,7 @@ public:
   class AttributeContext;
   class Attr_valueContext;
   class End_goalContext;
+  class TowardsContext;
   class TargetContext;
   class SelfContext;
   class OtherContext;
@@ -525,9 +526,10 @@ public:
   public:
     ConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Sub_conditionContext *sub_condition();
-    std::vector<ConnectorContext *> connector();
-    ConnectorContext* connector(size_t i);
+    UnaryContext *unary();
+    antlr4::tree::TerminalNode *AND();
+    ConditionContext *condition();
+    antlr4::tree::TerminalNode *OR();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -536,25 +538,26 @@ public:
 
   ConditionContext* condition();
 
-  class  ConnectorContext : public antlr4::ParserRuleContext {
+  class  UnaryContext : public antlr4::ParserRuleContext {
   public:
-    ConnectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    UnaryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Or_ConnectorContext *or_Connector();
-    And_ConnectorContext *and_Connector();
+    antlr4::tree::TerminalNode *NOT();
+    UnaryContext *unary();
+    PrimaryContext *primary();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
-  ConnectorContext* connector();
+  UnaryContext* unary();
 
-  class  Or_ConnectorContext : public antlr4::ParserRuleContext {
+  class  PrimaryContext : public antlr4::ParserRuleContext {
   public:
-    Or_ConnectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    PrimaryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *OR();
+    ConditionContext *condition();
     Sub_conditionContext *sub_condition();
 
 
@@ -562,21 +565,7 @@ public:
    
   };
 
-  Or_ConnectorContext* or_Connector();
-
-  class  And_ConnectorContext : public antlr4::ParserRuleContext {
-  public:
-    And_ConnectorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *AND();
-    Sub_conditionContext *sub_condition();
-
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  And_ConnectorContext* and_Connector();
+  PrimaryContext* primary();
 
   class  Sub_conditionContext : public antlr4::ParserRuleContext {
   public:
@@ -814,6 +803,7 @@ public:
     Value_coordContext *value_coord();
     antlr4::tree::TerminalNode *STATE_VAL();
     antlr4::tree::TerminalNode *LOC_NAME();
+    TowardsContext *towards();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -835,6 +825,21 @@ public:
   };
 
   End_goalContext* end_goal();
+
+  class  TowardsContext : public antlr4::ParserRuleContext {
+  public:
+    TowardsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *TOWARDS();
+    antlr4::tree::TerminalNode *LOC_NAME();
+    AttributeContext *attribute();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TowardsContext* towards();
 
   class  TargetContext : public antlr4::ParserRuleContext {
   public:

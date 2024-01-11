@@ -152,6 +152,7 @@ STIMULUS: S T I M U L U S;
 
 TARGET: T A R G E T;
 TO: T O;
+TOWARDS: T O W A R D S;
 TOP: T O P;
 THE: T H E;
 THAT: T H A T;
