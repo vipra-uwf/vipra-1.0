@@ -9,7 +9,6 @@ condition:
   ;
 
 unary:
-  NOT unary |
   primary
   ;
 

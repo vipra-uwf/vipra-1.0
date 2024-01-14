@@ -21,7 +21,6 @@
 #include "builder/behavior_builder.hpp"
 #include "builder/declaration_components.hpp"
 
-#include "conditions/condition_tree.hpp"
 #include "conditions/subconditions/subcondition_attribute.hpp"
 #include "conditions/subconditions/subcondition_exists.hpp"
 #include "definitions/dsl_types.hpp"
@@ -133,7 +132,8 @@ void BehaviorBuilder::initialize_events() {
   _startEvent = Event("Start");
   _startCond = Condition();
   // TODO: this
-  _startCond.add_sub_condition(SubConditionStart{});
+
+  _startCond.add_subcondition(SubConditionStart{});
   _startEvent.set_start_condition(_startCond);
 
   _eventsMap["!Start"] = _currentBehavior.add_event(_startEvent);
@@ -259,9 +259,9 @@ void BehaviorBuilder::condition_tree_condition(BehaviorParser::ConditionContext*
 
   if (condition->condition()) {
     if (condition->AND()) {
-      tree.add_operation(Condition::OP::AND);
+      tree.add_operation(BoolOp::AND);
     } else {
-      tree.add_operation(Condition::OP::OR);
+      tree.add_operation(BoolOp::OR);
     }
 
     condition_tree_condition(condition->condition(), tree);
@@ -269,13 +269,9 @@ void BehaviorBuilder::condition_tree_condition(BehaviorParser::ConditionContext*
 }
 
 void BehaviorBuilder::condition_tree_unary(BehaviorParser::UnaryContext* unary, Condition& tree) {
-  if (unary->NOT()) {
-    tree.add_operation(Condition::OP::NOT);
-  }
-
-  if (unary->unary()) {
-    condition_tree_unary(unary->unary(), tree);
-  }
+  // if (unary->unary()) {
+  //   condition_tree_unary(unary->unary(), tree);
+  // }
 
   if (unary->primary()) {
     condition_tree_primary(unary->primary(), tree);

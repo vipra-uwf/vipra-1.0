@@ -3,6 +3,7 @@
 #include <attributes/attributes.hpp>
 #include <conditions/subconditions/subcondition_attribute.hpp>
 #include <definitions/dimensions.hpp>
+#include "conditions/sub_condition.hpp"
 
 namespace BHVR {
 SubConditionAttribute::SubConditionAttribute(Attribute type, CAttributeValue val, bool negative)
@@ -13,20 +14,20 @@ SubConditionAttribute::SubConditionAttribute(Attribute type, CAttributeValue val
  * 
  */
 void SubConditionAttribute::operator()(Simpack pack, const VIPRA::idxVec& peds,
-                                       std::vector<bool>&         conditionMet,
-                                       const std::vector<Target>& targets) const {
+                                       const std::vector<Target>& targets, std::vector<bool>& met,
+                                       const std::vector<bool>& /*unused*/, BoolOp /*unused*/) const {
   for (auto ped : peds) {
     auto attr = AttributeHandling::get_value(targets[ped], _type, pack);
 
     if (_value.type == Type::TOWARDS_LOC || _value.type == Type::TOWARDS_ATTR) {
-      conditionMet[ped] = towards_compare(attr, pack, targets[ped].targetIdx);
+      met[ped] = towards_compare(attr, pack, targets[ped].targetIdx);
     }
 
     if (_not) {
-      conditionMet[ped] = AttributeHandling::is_not_equal(attr, _value, pack);
+      met[ped] = AttributeHandling::is_not_equal(attr, _value, pack);
     }
 
-    conditionMet[ped] = AttributeHandling::is_equal(attr, _value, pack);
+    met[ped] = AttributeHandling::is_equal(attr, _value, pack);
   }
 }
 
@@ -70,7 +71,9 @@ inline auto SubConditionAttribute::towards_location_compare(CAttributeValue& att
     case Attribute::POSITION:
     case Attribute::INVALID:
       // TODO: build time check for this
-      throw std::runtime_error("Towards Location Compare not implemented for this attribute");
+      throw std::runtime_error(
+          "Towards Location Compare not implemented for this "
+          "attribute");
     case Attribute::END_GOAL:
       [[fallthrough]];
     case Attribute::CURR_GOAL:

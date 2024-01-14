@@ -23,7 +23,8 @@ class SubConditionExists {
   explicit SubConditionExists(TargetModifier modifier, SubConditionAttribute condition)
       : _modifier(std::move(modifier)), _attributeCond(condition) {}
 
-  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&) const;
+  void operator()(Simpack, const VIPRA::idxVec&, const std::vector<Target>&, std::vector<bool>&,
+                  const std::vector<bool>&, BoolOp) const;
 
  private:
   // TODO: add in group type, currently just checks pedestrians

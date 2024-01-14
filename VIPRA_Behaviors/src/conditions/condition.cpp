@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #include "conditions/condition.hpp"
+#include "conditions/sub_condition.hpp"
 #include "util/timed_latch.hpp"
 
 namespace BHVR {
@@ -26,5 +27,20 @@ void Condition::initialize(const Simpack& pack) {
  * @return false
  */
 void Condition::evaluate(Simpack pack, const VIPRA::idxVec& peds, std::vector<bool>& met,
-                         const std::vector<Target>& targets, std::optional<TimedLatchCollection>& latches) {}
+                         const std::vector<Target>& targets, std::optional<TimedLatchCollection>&) {
+  std::fill(_temp.begin(), _temp.end(), false);
+  _conditions[0](pack, peds, targets, met, _temp, BoolOp::OR);
+
+  for (VIPRA::idx i = 1; i < _conditions.size(); ++i) {
+    _conditions[i](pack, peds, targets, _temp, met, _steps[i - 1]);
+    switch (_steps[i - 1]) {
+      case BoolOp::AND:
+        std::transform(met.begin(), met.end(), _temp.begin(), met.begin(), std::logical_and<>());
+        break;
+      case BoolOp::OR:
+        std::transform(met.begin(), met.end(), _temp.begin(), met.begin(), std::logical_or<>());
+        break;
+    }
+  }
+}
 }  // namespace BHVR

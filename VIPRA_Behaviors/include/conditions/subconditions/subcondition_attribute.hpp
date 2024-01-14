@@ -18,7 +18,8 @@ class SubConditionAttribute {
  public:
   explicit SubConditionAttribute(Attribute, CAttributeValue, bool);
 
-  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&) const;
+  void operator()(Simpack, const VIPRA::idxVec&, const std::vector<Target>&, std::vector<bool>&,
+                  const std::vector<bool>&, BoolOp) const;
 
   [[nodiscard]] auto individual(Simpack, VIPRA::idx, Target) const -> bool;
 

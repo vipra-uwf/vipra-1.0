@@ -3,14 +3,15 @@
 
 namespace BHVR {
 
-void SubConditionLeave::operator()(Simpack pack, const VIPRA::idxVec& peds, std::vector<bool>& conditionMet,
-                                   const std::vector<Target>& targets) {
+void SubConditionLeave::operator()(Simpack pack, const VIPRA::idxVec& peds,
+                                   const std::vector<Target>& targets, std::vector<bool>& met,
+                                   const std::vector<bool>& /*unused*/, BoolOp /*unused*/) {
   for (auto idx : peds) {
     if (_left.size() < pack.get_pedset().getNumPedestrians())
       _left.resize(pack.get_pedset().getNumPedestrians());
 
     if (_left[targets[idx].targetIdx]) {
-      conditionMet[idx] = false;
+      met[idx] = false;
     }
 
     Location& loc = pack.get_context().locations[_location];
@@ -21,7 +22,7 @@ void SubConditionLeave::operator()(Simpack pack, const VIPRA::idxVec& peds, std:
       _left[targets[idx].targetIdx] = true;
     }
 
-    conditionMet[idx] = leave;
+    met[idx] = leave;
   }
 }
 

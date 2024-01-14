@@ -13,9 +13,9 @@ class SubConditionStart {
   MOVEABLE(SubConditionStart)
 
  public:
-  void operator()(Simpack /*unused*/, const VIPRA::idxVec& /*unused*/, std::vector<bool>& conditionMet,
-                  const std::vector<Target>& /*unused*/) const {
-    std::fill(conditionMet.begin(), conditionMet.end(), true);
+  void operator()(Simpack /*unused*/, const VIPRA::idxVec& /*unused*/, const std::vector<Target>& /*unused*/,
+                  std::vector<bool>& met, const std::vector<bool>& /*unused*/, BoolOp /*unused*/) const {
+    std::fill(met.begin(), met.end(), true);
   }
 };
 }  // namespace BHVR

@@ -24,19 +24,18 @@ class Condition {
   COPYABLE(Condition)
   MOVEABLE(Condition)
  public:
-  enum class OP { AND, OR, NOT };
-
   void initialize(const Simpack&);
 
   void evaluate(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&,
                 std::optional<TimedLatchCollection>&);
 
-  void add_operation(OP oper) { _steps.emplace_back(oper); }
+  void add_operation(BoolOp oper) { _steps.emplace_back(oper); }
   void add_subcondition(SubCondition&& condition) { _conditions.emplace_back(condition); }
 
  private:
   std::vector<SubCondition> _conditions;
-  std::vector<OP>           _steps;
+  std::vector<BoolOp>       _steps;
+  std::vector<bool>         _temp;
 };
 }  // namespace BHVR
 

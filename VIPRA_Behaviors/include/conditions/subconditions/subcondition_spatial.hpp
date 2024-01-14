@@ -15,7 +15,8 @@ class SubConditionSpatial {
  public:
   explicit SubConditionSpatial(NumericValue value) : _within(std::move(value)) {}
 
-  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&) const;
+  void operator()(Simpack, const VIPRA::idxVec&, const std::vector<Target>&, std::vector<bool>&,
+                  const std::vector<bool>&, BoolOp) const;
 
  private:
   NumericValue _within;

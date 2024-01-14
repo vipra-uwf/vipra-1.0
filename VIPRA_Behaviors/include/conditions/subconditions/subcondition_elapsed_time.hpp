@@ -20,7 +20,8 @@ class SubConditionElapsedTimeFromEvent {
   SubConditionElapsedTimeFromEvent(BHVR::NumericValue time, VIPRA::idx event)
       : _event(event), _requiredTime(std::move(time)) {}
 
-  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&);
+  void operator()(Simpack, const VIPRA::idxVec&, const std::vector<Target>&, std::vector<bool>&,
+                  const std::vector<bool>&, BoolOp);
 
  private:
   VIPRA::idx         _event{};

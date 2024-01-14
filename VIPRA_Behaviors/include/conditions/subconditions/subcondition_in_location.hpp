@@ -18,7 +18,8 @@ class SubConditionInLocation {
  public:
   explicit SubConditionInLocation(VIPRA::idx location) : _location(location) {}
 
-  void operator()(Simpack, const VIPRA::idxVec&, std::vector<bool>&, const std::vector<Target>&) const;
+  void operator()(Simpack, const VIPRA::idxVec&, const std::vector<Target>&, std::vector<bool>&,
+                  const std::vector<bool>&, BoolOp) const;
 
  private:
   VIPRA::idx _location;
