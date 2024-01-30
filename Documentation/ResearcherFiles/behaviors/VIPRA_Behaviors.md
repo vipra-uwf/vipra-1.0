@@ -498,8 +498,8 @@ Action (*type*):
 Example:
 ```
 Action (listener): 
-  Condition: !announcement occurring. // Condition (§C.)
-  Response: set velocity {0}          // Set Atom (§A.5.1.)
+  Condition: !announcement occurring // Condition (§C.)
+  Response: set velocity to {0}          // Set Atom (§A.5.1.)
 .
 ```
 Pedestrians of listener will stop moving while the announcement event is occurring.
@@ -531,7 +531,7 @@ Example, Someone Tripping:
 ```
 Action (tripper):
   Condition: 10 seconds after !Start // Condition (§C.)
-  Response: set velocity {0}         // Set Atom (§A.5.1.)
+  Response: set velocity to {0}         // Set Atom (§A.5.1.)
   Duration: 15 seconds               // Duration
 .
 ```
@@ -568,7 +568,7 @@ An `Atom List` is the collection of `Atoms` that make up an `Action`.
 Example:
 
 ```
-set velocity {0}, set state #listening
+set velocity to {0}, set state #listening
 ```
 This `Atom List` will result in the pedestrian stopping and their state being listening
 
@@ -718,7 +718,7 @@ Example:
 ```
 Action (typeA):
   Condition: !example occurred and 5 seconds after !Start
-  Response: set velocity {0}
+  Response: set velocity to {0}
   Duration: 10 seconds
 .
 ```
@@ -756,7 +756,7 @@ Example:
 ```
 Action (typeA):
   Condition: 10 seconds after !Start // Elapsed Time Condition
-  Response: set velocity {0}         // Atom (§A.4)
+  Response: set velocity to {0}         // Atom (§A.4)
   Duration: 5 seconds                // Duration (§A.3)
 .
 ```
@@ -779,7 +779,7 @@ Example:
 ```
 Action (typeA):
   Condition: 10 seconds after !Start // Elapsed Time Condition
-  Response: set velocity {0}         // Atom (§A.4)
+  Response: set velocity to {0}         // Atom (§A.4)
   Duration: 5 seconds                // Duration (§A.3)
 .
 ```
@@ -793,7 +793,7 @@ Action (typeA):
 This `Condition` checks for the status of an `Event` (§E.)
 
 ```
-*event* is *status*
+*event* *status*
 ```
 
 ### Available Statuses:
@@ -809,7 +809,7 @@ Occurred  // True if the event has occurred at all during the simulation
 Example:
 ```
 Action (listener):
-  Condition: !announcement is occurring
+  Condition: !announcement occurring
   Response: set velocity to {0}
 .
 ```
@@ -1112,7 +1112,7 @@ Example:
 ```
 Action (typeA):
   Condition: random 5-10 seconds after !Start
-  Response: set velocity {0}
+  Response: set velocity to {0}
   Duration: random 10-20
 .
 ```
