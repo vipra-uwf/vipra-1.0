@@ -13,7 +13,8 @@ var searchData=
   ['pointmaploader_10',['PointMapLoader',['../d8/d73/classPointMapLoader.html',1,'']]],
   ['pointobstaclemap_11',['PointObstacleMap',['../db/d4f/classPointObstacleMap.html',1,'']]],
   ['policymodel_12',['PolicyModel',['../d3/d60/classVIPRA_1_1PolicyModel.html',1,'VIPRA']]],
-  ['pqueue_13',['pqueue',['../d8/d38/structCALM__PATH_1_1PQueue.html',1,'CALM_PATH::PQueue'],['../db/dca/structpQueue.html',1,'pQueue']]],
-  ['prng_5fengine_14',['pRNG_Engine',['../d8/d8f/classVIPRA_1_1pRNG__Engine.html',1,'VIPRA']]],
-  ['ptype_15',['Ptype',['../d4/d2e/classBHVR_1_1Ptype.html',1,'BHVR']]]
+  ['pqueue_13',['PQueue',['../d8/d38/structCALM__PATH_1_1PQueue.html',1,'CALM_PATH']]],
+  ['pqueue_14',['pQueue',['../db/dca/structpQueue.html',1,'']]],
+  ['prng_5fengine_15',['pRNG_Engine',['../d8/d8f/classVIPRA_1_1pRNG__Engine.html',1,'VIPRA']]],
+  ['ptype_16',['Ptype',['../d4/d2e/classBHVR_1_1Ptype.html',1,'BHVR']]]
 ];
